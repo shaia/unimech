@@ -1,0 +1,8 @@
+# Terms first defined in lesson 1.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: projectile
+  term: זריקה
+  en: projectile motion
+  definition: התנועה של גוף שנזרק ומכאן ואילך נע רק בהשפעת הכובד, בלי התנגדות אוויר. התאוצה שלו קבועה, g כלפי מטה, ולכן r(t) = r₀ + v₀t + ½gt², והמסלול פרבולה במישור שבו נמצאים v₀ ו-g.
+  lesson: '1.2'

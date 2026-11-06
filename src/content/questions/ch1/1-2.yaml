@@ -1,0 +1,300 @@
+# Lesson 1.2 question bank: the comprehension ladder of "תאוצה קבועה וזריקה".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts (G = 9.8):
+#   r₀ = (0, 20) m, v₀ = (6.0, 8.0) m/s: y(2.0 s) = 16.4 m (+g: 55.6, no ½: −3.2, no g: 36); x = 12 m;
+#   v₀ = 20 m/s at 60°: v ⊥ v₀ at t = v₀/(g sinθ) = 2.36 s (top 1.77 s, v₀/g = 2.04 s, with cos 4.08 s; flight 3.53 s);
+#   v₀ = 25 m/s at 40°: H = 13.2 m (no sin 31.9, sin 20.5, cos² 18.7, no 2 26.4);
+#   h = 20 m, v₀ = 15 m/s at 30°: t = 2.93 s, x = 38.0 m (level range 19.9, √(2h/g) 26.2, v₀ instead of v₀cosθ 43.9);
+#   incline α = 20°, v₀ = 20 m/s at θ = 50°: L = 2v₀²cosθ sin(θ − α)/(g cos²α) = 29.7 m (level 40.2, horizontal 27.9);
+#     best θ = 45° + α/2 = 55° (a scan over θ agrees), L_max = v₀²/(g(1 + sinα)) = 30.4 m;
+#   envelope v₀ = 20 m/s at x = 30 m: y = v₀²/(2g) − gx²/(2v₀²) = 9.38 m at θ = 53.7° (v₀²/2g = 20.4, at 45° 7.95).
+
+chapter: 1
+questions:
+  # ---------------------------------------------------------------- OBJ-1.2-1 constant-acceleration equations, vector form
+  - id: Q-1.2-what-is-constant
+    type: multi
+    objectives: [OBJ-1.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      כדור נזרק באלכסון ונע בלי התנגדות אוויר עד שהוא פוגע בקרקע. אילו מהגדלים הבאים קבועים לאורך כל התנועה?
+      סמנו את כולם.
+    choices:
+      - text: וקטור התאוצה
+        correct: true
+        feedback: 'נכון. התאוצה היא $\vec g$, אותו גודל ואותו כיוון בכל רגע, גם בנקודה הגבוהה ביותר.'
+      - text: הרכיב האופקי של המהירות
+        correct: true
+        feedback: 'נכון. לתאוצה אין רכיב אופקי, ולכן $v_x = v_{0x}$ כל הזמן.'
+      - text: הרכיב האנכי של המהירות
+        feedback: 'הוא קטן בקצב קבוע, $v_y = v_{0y} - gt$: חיובי בעלייה, אפס בשיא ושלילי בירידה.'
+      - text: גודל המהירות
+        feedback: '$|\vec v| = \sqrt{v_x^2 + v_y^2}$, ו-$v_y$ משתנה. גודל המהירות קטן בעלייה, מזערי בשיא, ושווה ל-$v_x$ שם.'
+      - text: וקטור התאוצה, פרט לנקודה הגבוהה ביותר, שבה התאוצה מתאפסת
+        feedback: >-
+          בשיא רק $v_y$ מתאפס. אם גם התאוצה הייתה מתאפסת שם, $v_y$ היה נשאר אפס והכדור היה ממשיך אופקית. התאוצה
+          היא $\vec g$ גם בשיא, והיא שמתחילה את הירידה.
+        misconception: MC-1-zero-acceleration-at-top
+    hints:
+      - 'כתבו את $\vec a$, ואחר כך את $\vec v(t) = \vec v_0 + \vec gt$ ברכיבים.'
+
+  - id: Q-1.2-vector-position
+    type: numeric
+    objectives: [OBJ-1.2-1]
+    level: basic
+    prompt: >-
+      גוף נזרק ברגע $t = 0$ מהנקודה $\vec r_0 = (0,\ 20)\,\text{m}$ במהירות $\vec v_0 = (6.0,\ 8.0)\,\text{m/s}$.
+      ציר $y$ פונה כלפי מעלה, כך ש-$\vec a = \vec g = (0,\ -9.8)\,\text{m/s}^2$. מה הרכיב $y$ של המקום שלו ברגע
+      $t = 2.0\,\text{s}$?
+    answer: 16.4
+    unit: m
+    correctFeedback: >-
+      נכון. אינטגרציה של $\vec a = \vec g$ פעמיים, עם תנאי ההתחלה, נותנת $\vec r(t) = \vec r_0 + \vec v_0t + \tfrac12\vec gt^2$.
+      ברכיב $y$: $y = 20 + 8.0\cdot2.0 - \tfrac12\cdot9.8\cdot2.0^2 = 20 + 16 - 19.6 = 16.4\,\text{m}$. וברכיב $x$:
+      $x = 6.0\cdot2.0 = 12\,\text{m}$.
+    wrongFeedback: 'כתבו את $\vec r(t) = \vec r_0 + \vec v_0t + \tfrac12\vec gt^2$ ברכיב $y$, ושימו לב לסימן של $g_y$.'
+    commonWrong:
+      - value: 55.6
+        feedback: 'הוספתם $\tfrac12gt^2$ במקום לחסר. הציר פונה כלפי מעלה, ולכן $g_y = -9.8\,\text{m/s}^2$.'
+      - value: -3.2
+        feedback: 'שכחתם את ה-$\tfrac12$: האינטגרל של $\vec gt$ לפי הזמן הוא $\tfrac12\vec gt^2$, לא $\vec gt^2$.'
+      - value: 36
+        feedback: 'זה $y_0 + v_{0y}t$ בלבד, תנועה במהירות קבועה. הכובד מוסיף את האיבר $\tfrac12g_yt^2$.'
+    hints:
+      - 'בצורה הווקטורית כל רכיב מתנהג כמו תנועה בממד אחד עם הרכיב המתאים של $\vec g$.'
+
+  - id: Q-1.2-two-balls
+    type: twotier
+    objectives: [OBJ-1.2-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      באותו רגע זורקים שני כדורים: את A מהקרקע, באלכסון, ואת B מראש מגדל, אופקית ובכיוון אחר. אין התנגדות
+      אוויר. איך משתנה עם הזמן הווקטור $\vec r_B - \vec r_A$, מ-A אל B, כל עוד שני הכדורים באוויר?
+    choices:
+      - text: הוא משתנה קווית בזמן, כמו וקטור המקום של גוף שנע במהירות קבועה.
+        correct: true
+        feedback: 'נכון. $\vec r_B - \vec r_A = \left(\vec r_{0B} - \vec r_{0A}\right) + \left(\vec v_{0B} - \vec v_{0A}\right)t$, בלי איבר של $t^2$.'
+      - text: הוא משתנה כמו פרבולה, כי כל אחד מהכדורים נע על פרבולה.
+        feedback: >-
+          כל כדור אכן נע על פרבולה, אבל לשתי הפרבולות אותו איבר ריבועי, $\tfrac12\vec gt^2$, והוא מצטמצם בהפרש.
+        misconception: MC-1-gravity-bends-relative-motion
+      - text: הרכיב האנכי שלו קטן בקצב שגדל עם הזמן, כי B נופל מגובה רב יותר.
+        feedback: >-
+          הגובה ההתחלתי נכנס רק בתנאי ההתחלה, $\vec r_{0B}$. שני הכדורים נופלים באותה תאוצה, ולכן ההפרש ביניהם
+          לא מאיץ.
+        misconception: MC-1-gravity-bends-relative-motion
+      - text: האורך שלו קבוע, כי שני הכדורים מקבלים אותה תאוצה.
+        feedback: 'אותה תאוצה מבטלת את האיבר הריבועי, לא את האיבר הקווי: אם המהירויות ההתחלתיות שונות, המרחק משתנה.'
+    reasons:
+      - text: '$\vec r(t) = \vec r_0 + \vec v_0t + \tfrac12\vec gt^2$ לכל כדור, ובחיסור האיבר $\tfrac12\vec gt^2$, שזהה לשניהם, מצטמצם.'
+        correct: true
+        feedback: >-
+          זה הנימוק. בשיעור 1.5 תראו את אותו דבר ממערכת ייחוס אחרת: מנקודת המבט של כדור A, כדור B נע בקו ישר
+          ובמהירות קבועה.
+      - text: ההפרש של שתי פרבולות הוא תמיד פרבולה.
+        feedback: >-
+          לא כשהמקדם הריבועי זהה. $\left(\tfrac12gt^2 + bt + c\right) - \left(\tfrac12gt^2 + b't + c'\right)$ הוא ביטוי
+          קווי ב-$t$.
+        misconception: MC-1-gravity-bends-relative-motion
+      - text: הכדורים נזרקו בכיוונים שונים, ולכן ההפרש ביניהם תלוי בזוויות בצורה מסובכת.
+        feedback: 'הזוויות נכנסות רק ל-$\vec v_{0A}$ ול-$\vec v_{0B}$, שהם וקטורים קבועים. ההפרש ביניהם הוא פשוט מהירות קבועה.'
+    hints:
+      - 'כתבו את $\vec r_A(t)$ ואת $\vec r_B(t)$ בצורה הווקטורית, וחסרו.'
+
+  - id: Q-1.2-perpendicular
+    type: numeric
+    objectives: [OBJ-1.2-1]
+    level: mid
+    prompt: >-
+      כדור נזרק מהקרקע במהירות $v_0 = 20\,\text{m/s}$ בזווית $60^\circ$ מעל האופק, בלי התנגדות אוויר. אחרי כמה זמן
+      וקטור המהירות שלו ניצב לווקטור המהירות ההתחלתית $\vec v_0$?
+    answer: 2.36
+    unit: s
+    correctFeedback: >-
+      נכון. $\vec v(t) = \vec v_0 + \vec gt$, וניצבות פירושה מכפלה סקלרית אפס:
+      $$\vec v\cdot\vec v_0 = v_0^2 + \left(\vec g\cdot\vec v_0\right)t = v_0^2 - gv_0\sin\theta\,t = 0$$
+      ולכן $t = \dfrac{v_0}{g\sin\theta} = \dfrac{20}{9.8\cdot0.866} = 2.36\,\text{s}$. זה בירידה, לפני הנחיתה ב-$3.53\,\text{s}$.
+    wrongFeedback: 'כתבו את $\vec v(t)$ בצורה הווקטורית ודרשו $\vec v(t)\cdot\vec v_0 = 0$. מה זה $\vec g\cdot\vec v_0$?'
+    commonWrong:
+      - value: 1.77
+        feedback: >-
+          זה הזמן עד השיא, $v_0\sin\theta/g$. שם המהירות ניצבת ל-$\vec g$ (היא אופקית), לא ל-$\vec v_0$. הזווית בין
+          המהירות לבין $\vec v_0$ בשיא היא $60^\circ$ בלבד.
+      - value: 2.04
+        feedback: 'קיבלתם $v_0/g$: שכחתם שרק הרכיב של $\vec g$ לאורך $\vec v_0$ נכנס למכפלה, $\vec g\cdot\vec v_0 = -gv_0\sin\theta$.'
+      - value: 4.08
+        feedback: 'השתמשתם ב-$\cos\theta$ במקום $\sin\theta$. הזווית בין $\vec g$, שפונה מטה, לבין $\vec v_0$ היא $90^\circ + \theta$, ו-$\cos\left(90^\circ + \theta\right) = -\sin\theta$. וגם: $4.08\,\text{s}$ הוא אחרי הנחיתה.'
+    hints:
+      - 'וקטורים ניצבים: $\vec v\cdot\vec v_0 = 0$.'
+
+  # ---------------------------------------------------------------- OBJ-1.2-2 projectiles: path, range, height, time, incline
+  - id: Q-1.2-max-height
+    type: numeric
+    objectives: [OBJ-1.2-2]
+    level: basic
+    prompt: >-
+      כדור נבעט מהקרקע במהירות $25\,\text{m/s}$ בזווית $40^\circ$ מעל האופק. בלי התנגדות אוויר, מה הגובה המרבי
+      שהוא מגיע אליו?
+    answer: 13.2
+    unit: m
+    correctFeedback: >-
+      נכון. בשיא $v_y = 0$, ומ-$v_y^2 = v_{0y}^2 - 2gy$ מקבלים
+      $H = \dfrac{v_0^2\sin^2\theta}{2g} = \dfrac{625\cdot0.413}{19.6} = 13.2\,\text{m}$.
+    wrongFeedback: 'רק הרכיב האנכי של המהירות נכנס לגובה. כתבו $v_y^2 = v_{0y}^2 - 2gy$ ודרשו $v_y = 0$.'
+    commonWrong:
+      - value: 31.9
+        feedback: 'זה $v_0^2/(2g)$, הגובה בזריקה אנכית. בזריקה באלכסון רק $v_{0y} = v_0\sin\theta$ נאבק בכובד.'
+      - value: 20.5
+        feedback: 'שכחתם להעלות את הסינוס בריבוע: $v_{0y}^2 = v_0^2\sin^2\theta$.'
+      - value: 18.7
+        feedback: 'השתמשתם בקוסינוס, הרכיב האופקי. הרכיב האופקי לא משתנה ולא קשור לגובה.'
+      - value: 26.4
+        feedback: 'שכחתם את ה-2 במכנה: מ-$0 = v_{0y}^2 - 2gH$ יוצא $H = v_{0y}^2/(2g)$.'
+    hints:
+      - 'מה הרכיב האנכי של המהירות בנקודה הגבוהה ביותר?'
+
+  - id: Q-1.2-complementary
+    type: twotier
+    objectives: [OBJ-1.2-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      על קרקע מישורית, בלי התנגדות אוויר, זורקים כדור פעם בזווית $30^\circ$ מעל האופק ופעם בזווית $60^\circ$, באותה
+      מהירות. מה נכון?
+    choices:
+      - text: הטווח זהה, אבל ב-$60^\circ$ הכדור עולה גבוה יותר ונמצא באוויר זמן רב יותר.
+        correct: true
+        feedback: 'נכון. הטווח שווה, $R = v_0^2\sin2\theta/g$, אבל זמן התנועה והגובה גדלים עם $\theta$.'
+      - text: ב-$60^\circ$ הטווח גדול יותר, כי הכדור נמצא באוויר זמן רב יותר.
+        feedback: >-
+          הזמן באמת ארוך יותר, פי $\sqrt3$, אבל המהירות האופקית קטנה פי $\sqrt3$ בדיוק. הטווח הוא המכפלה שלהם,
+          והוא לא משתנה.
+        misconception: MC-1-longer-flight-longer-range
+      - text: ב-$30^\circ$ הטווח גדול יותר, כי הרכיב האופקי של המהירות גדול יותר.
+        feedback: 'הרכיב האופקי גדול יותר, אבל הכדור נמצא באוויר זמן קצר יותר. צריך את המכפלה של שניהם.'
+      - text: הטווח, הגובה המרבי וזמן התנועה זהים בשתי הזריקות.
+        feedback: 'רק הטווח זהה. הגובה, $v_0^2\sin^2\theta/(2g)$, גדול פי 3 ב-$60^\circ$.'
+    reasons:
+      - text: '$R = v_0\cos\theta\cdot\dfrac{2v_0\sin\theta}{g}$. כשמחליפים $\theta$ ב-$90^\circ - \theta$ הסינוס והקוסינוס מתחלפים, והמכפלה לא משתנה. הגובה וזמן התנועה תלויים רק ב-$\sin\theta$.'
+        correct: true
+        feedback: 'זה הנימוק. מאותה סיבה הטווח מרבי ב-$45^\circ$, הזווית שבה $\theta = 90^\circ - \theta$.'
+      - text: זמן התנועה זהה בשתי הזריקות, כי בשתיהן הכדור עולה ויורד לאותה קרקע.
+        feedback: 'זמן התנועה הוא $2v_0\sin\theta/g$, והוא תלוי בזווית: ב-$60^\circ$ הוא ארוך פי $\sqrt3$.'
+      - text: הכובד מאט יותר כדור שנזרק בזווית גבוהה, ולכן הוא לא מגיע רחוק יותר.
+        feedback: 'התאוצה של שני הכדורים זהה, $\vec g$, ואין לה רכיב אופקי. ההבדל כולו בתנאי ההתחלה.'
+    hints:
+      - 'כתבו את הטווח כמכפלה של המהירות האופקית בזמן התנועה.'
+
+  - id: Q-1.2-cliff
+    type: numeric
+    objectives: [OBJ-1.2-2]
+    level: mid
+    prompt: >-
+      אבן נזרקת מראש צוק שגובהו $20\,\text{m}$ מעל הים, במהירות $15\,\text{m/s}$ בזווית $30^\circ$ **מעל** האופק. בלי
+      התנגדות אוויר, באיזה מרחק אופקי מהצוק היא פוגעת במים?
+    answer: 38
+    unit: m
+    correctFeedback: >-
+      נכון. עם ציר $y$ כלפי מעלה מפני הים: $y(t) = h + v_0\sin\theta\,t - \tfrac12gt^2 = 0$, משוואה ריבועית שהשורש
+      החיובי שלה
+      $$t = \frac{v_0\sin\theta + \sqrt{v_0^2\sin^2\theta + 2gh}}{g} = \frac{7.5 + 21.2}{9.8} = 2.93\,\text{s}$$
+      ולכן $x = v_0\cos\theta\,t = 13.0\cdot2.93 = 38.0\,\text{m}$.
+    wrongFeedback: 'הנחיתה היא ב-$y = 0$, $20\,\text{m}$ מתחת לנקודת הזריקה. פתרו את המשוואה הריבועית ב-$t$, וקחו את השורש החיובי.'
+    commonWrong:
+      - value: 19.9
+        feedback: 'זה הטווח $v_0^2\sin2\theta/g$, שנכון רק כשהנחיתה בגובה הזריקה. כאן האבן ממשיכה לרדת עוד $20\,\text{m}$.'
+      - value: 26.2
+        feedback: 'השתמשתם בזמן הנפילה מהצוק ממנוחה, $\sqrt{2h/g}$. האבן נזרקה כלפי מעלה, ולכן היא באוויר זמן רב יותר.'
+      - value: 43.9
+        feedback: 'כפלתם את הזמן ב-$v_0$ ולא ב-$v_0\cos\theta$. המרחק האופקי נקבע רק על ידי הרכיב האופקי של המהירות.'
+    hints:
+      - 'למשוואה $y(t) = 0$ יש שני שורשים. מה המשמעות של השורש השלילי?'
+
+  - id: Q-1.2-incline-range
+    type: numeric
+    objectives: [OBJ-1.2-2]
+    level: bagrut
+    prompt: >-
+      מדרון עולה בזווית $\alpha = 20^\circ$ מעל האופק. מרגלות המדרון זורקים כדור במעלה המדרון במהירות
+      $v_0 = 20\,\text{m/s}$, בזווית $\theta = 50^\circ$ מעל **האופק**. בלי התנגדות אוויר, באיזה מרחק, נמדד לאורך
+      המדרון, הכדור פוגע בו?
+    answer: 29.7
+    unit: m
+    correctFeedback: >-
+      נכון. המדרון הוא הקו $y = x\tan\alpha$, ומשוואת המסלול היא $y = x\tan\theta - \dfrac{gx^2}{2v_0^2\cos^2\theta}$. משווים
+      ומבודדים את $x$:
+      $$x = \frac{2v_0^2\cos^2\theta\left(\tan\theta - \tan\alpha\right)}{g} = \frac{2v_0^2\cos\theta\sin(\theta - \alpha)}{g\cos\alpha}$$
+      והמרחק לאורך המדרון הוא
+      $L = \dfrac{x}{\cos\alpha} = \dfrac{2v_0^2\cos\theta\sin(\theta - \alpha)}{g\cos^2\alpha} = 29.7\,\text{m}$.
+      **בדיקת גבולות:** כש-$\alpha = 0$ מתקבל $L = v_0^2\sin2\theta/g$, הטווח על קרקע מישורית; וכש-$\theta = \alpha$ הכדור
+      נזרק לאורך המדרון ו-$L = 0$, כמו שצריך.
+    wrongFeedback: 'מצאו את נקודת החיתוך בין משוואת המסלול $y(x)$ לבין הקו $y = x\tan\alpha$, ואז חלקו את $x$ ב-$\cos\alpha$.'
+    commonWrong:
+      - value: 40.2
+        feedback: 'זה הטווח על קרקע מישורית, $v_0^2\sin2\theta/g$. המדרון עולה לקראת הכדור, ולכן הכדור פוגע בו מוקדם יותר.'
+      - value: 27.9
+        feedback: 'זה המרחק **האופקי** $x$ עד נקודת הפגיעה. לאורך המדרון המרחק ארוך יותר: $L = x/\cos\alpha$.'
+    hints:
+      - 'משוואת המסלול מתקבלת מ-$x(t)$ ו-$y(t)$ כשמבודדים $t = x/(v_0\cos\theta)$.'
+      - 'הזהות $\cos\theta\tan\theta - \cos\theta\tan\alpha = \dfrac{\sin(\theta - \alpha)}{\cos\alpha}$ מקצרת את הסוף.'
+
+  - id: Q-1.2-incline-best-angle
+    type: mc
+    objectives: [OBJ-1.2-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      מאותו מדרון ($\alpha = 20^\circ$) זורקים במעלה המדרון במהירות קבועה, ובוחרים את הזווית $\theta$ מעל האופק.
+      הטווח לאורך המדרון הוא $L(\theta) = \dfrac{2v_0^2\cos\theta\sin(\theta - \alpha)}{g\cos^2\alpha}$. באיזו זווית
+      $\theta$ הטווח מרבי?
+    choices:
+      - text: '$55^\circ$, כלומר $45^\circ + \alpha/2$'
+        correct: true
+        feedback: >-
+          נכון. $2\cos\theta\sin(\theta - \alpha) = \sin(2\theta - \alpha) - \sin\alpha$, והוא מרבי כש-$2\theta - \alpha = 90^\circ$,
+          כלומר $\theta = 45^\circ + \alpha/2$. כיוון הזריקה חוצה את הזווית בין המדרון לבין האנך.
+          **בדיקת גבולות:** כש-$\alpha = 0$ מתקבל $45^\circ$, הזווית על קרקע מישורית; וכש-$\alpha \to 90^\circ$, קיר אנכי,
+          $\theta \to 90^\circ$: הכי גבוה מגיעים בזריקה אנכית.
+      - text: '$45^\circ$, כמו תמיד'
+        feedback: '$45^\circ$ היא התשובה רק כשהזריקה והנחיתה באותו גובה. כאן, ב-$45^\circ$, הטווח הוא $27.6\,\text{m}$ במקום $30.4\,\text{m}$, כש-$v_0 = 20\,\text{m/s}$.'
+        misconception: MC-1-forty-five-always-best
+      - text: '$65^\circ$, כלומר $45^\circ + \alpha$'
+        feedback: 'הוספתם את כל זווית המדרון. גזרו את $\sin(2\theta - \alpha)$: המקסימום ב-$2\theta - \alpha = 90^\circ$, ולכן רק חצי מ-$\alpha$ מתווסף.'
+      - text: '$35^\circ$, כלומר $45^\circ - \alpha/2$'
+        feedback: 'זו הזווית הטובה ביותר כשזורקים **במורד** מדרון כזה. במעלה המדרון הקרקע עולה לקראת הכדור, ולכן כדאי לזרוק גבוה יותר.'
+    hints:
+      - 'הפכו את המכפלה $2\cos\theta\sin(\theta - \alpha)$ לסכום של סינוסים.'
+
+  - id: Q-1.2-envelope-wall
+    type: numeric
+    objectives: [OBJ-1.2-2]
+    level: bagrut
+    prompt: >-
+      זרנוק מתיז מים מגובה הקרקע במהירות $v_0 = 20\,\text{m/s}$, ואפשר לכוון אותו לכל זווית. קיר אנכי עומד במרחק
+      אופקי $30\,\text{m}$ ממנו. בלי התנגדות אוויר, מה הגובה המרבי על הקיר שהמים יכולים להגיע אליו?
+    answer: 9.38
+    unit: m
+    correctFeedback: >-
+      נכון. כותבים את משוואת המסלול עם $u = \tan\theta$, כי $1/\cos^2\theta = 1 + u^2$:
+      $$y(x) = xu - \frac{gx^2}{2v_0^2}\left(1 + u^2\right)$$
+      לכל $x$ קבוע, $y$ מרבי כש-$\dfrac{dy}{du} = x - \dfrac{gx^2}{v_0^2}u = 0$, כלומר $u = \dfrac{v_0^2}{gx}$, וזה נותן את
+      **מעטפת המסלולים**
+      $$y_{\max}(x) = \frac{v_0^2}{2g} - \frac{gx^2}{2v_0^2} = 20.4 - 11.0 = 9.38\,\text{m}$$
+      בזווית של $53.7^\circ$. **בדיקת גבולות:** ב-$x = 0$ המעטפת נותנת $v_0^2/(2g)$, הגובה בזריקה אנכית; והיא חותכת את הקרקע
+      ב-$x = v_0^2/g$, הטווח המרבי, שמתקבל ב-$45^\circ$.
+    wrongFeedback: 'קבעו $x = 30\,\text{m}$ במשוואת המסלול, וחפשו את הזווית שנותנת את $y$ הגדול ביותר. נוח לעבוד עם $\tan\theta$ כמשתנה.'
+    commonWrong:
+      - value: 20.4
+        feedback: 'זה $v_0^2/(2g)$, הגובה בזריקה אנכית. אבל זריקה אנכית לא מגיעה לקיר במרחק $30\,\text{m}$.'
+      - value: 7.95
+        feedback: 'כיוונתם ב-$45^\circ$. הזווית הזו נותנת את הטווח המרבי על הקרקע, אבל כדי לפגוע גבוה בקיר צריך זווית גבוהה יותר, כאן $53.7^\circ$.'
+        misconception: MC-1-forty-five-always-best
+    hints:
+      - 'הציבו $1/\cos^2\theta = 1 + \tan^2\theta$, ומצאו מקסימום של $y$ כפונקציה של $\tan\theta$.'
+    explanation: >-
+      המעטפת היא פרבולה שכל המסלולים במהירות $v_0$ משיקים לה מבפנים. כל נקודה מתחתיה אפשר לפגוע בה בשתי זוויות,
+      נקודה עליה בזווית אחת, ונקודה מעליה אי אפשר לפגוע בה בכלל.

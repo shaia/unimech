@@ -1,0 +1,24 @@
+# Terms first defined in lesson 6.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: law-of-gravitation
+  term: חוק הכבידה
+  en: Newton's law of universal gravitation
+  symbol: F = Gm₁m₂/r²
+  unit: N
+  definition: כל שתי מסות נקודתיות מושכות זו את זו בכוח שפועל לאורך הקו שביניהן, ושגודלו פרופורציוני למכפלת המסות והפוך לריבוע המרחק ביניהן, F = Gm₁m₂/r². האנרגיה הפוטנציאלית המתאימה, עם האפס באינסוף, היא U = −Gm₁m₂/r.
+  lesson: '6.1'
+
+- id: gravitational-constant
+  term: קבוע הכבידה
+  en: gravitational constant
+  symbol: G
+  unit: N·m²/kg²
+  definition: הקבוע שבחוק הכבידה, G ≈ 6.67·10⁻¹¹ N·m²/kg². הוא קטן מאוד, ולכן כוח הכבידה בין גופים יומיומיים זניח, ומורגש רק כשאחד הגופים בגודל של כוכב לכת.
+  lesson: '6.1'
+
+- id: shell-theorem
+  term: משפט הקליפה
+  en: shell theorem
+  definition: קליפה כדורית אחידה מושכת גוף שמחוץ לה כאילו כל המסה שלה מרוכזת במרכזה, ואינה מפעילה כוח כלל על גוף שבתוכה. לכן כדור שהצפיפות שלו תלויה רק במרחק מהמרכז מושך מבחוץ כמו מסה נקודתית, ובתוכו מושכת רק המסה שבתוך הרדיוס של הגוף.
+  lesson: '6.1'

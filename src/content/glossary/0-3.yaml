@@ -1,0 +1,23 @@
+# Terms first defined in lesson 0.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: derivative
+  term: נגזרת
+  en: derivative
+  symbol: df/dt
+  definition: קצב השינוי הרגעי של פונקציה, הגבול של (f(t+h) − f(t))/h כש-h שואף לאפס. נגזרת של וקטור לפי הזמן היא וקטור הנגזרות של הרכיבים שלו.
+  lesson: '0.3'
+
+- id: chain-rule
+  term: כלל השרשרת
+  en: chain rule
+  definition: הכלל לגזירת פונקציה מורכבת, d f(u(t))/dt = f′(u)·du/dt. גוזרים את הפונקציה החיצונית ומכפילים בנגזרת של הפנימית.
+  reject: [כלל השרשראות]
+  lesson: '0.3'
+
+- id: taylor-expansion
+  term: פיתוח טיילור
+  en: Taylor expansion
+  definition: קירוב של פונקציה ליד נקודה a בפולינום, f(x) ≈ f(a) + f′(a)(x−a) + f″(a)(x−a)²/2 + … . הקירוב טוב כל עוד האיבר הראשון שהוזנח קטן לעומת האחרונים שנשמרו.
+  reject: [פיתוח טיילר]
+  lesson: '0.3'

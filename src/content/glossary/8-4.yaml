@@ -1,0 +1,7 @@
+# Terms first defined in lesson 8.4. One spelling per concept, course-wide.
+
+- id: rolling-without-slipping
+  term: גלגול בלי החלקה
+  en: rolling without slipping
+  definition: תנועה של גוף עגול על משטח, שבה נקודת המגע של הגוף נמצאת בכל רגע במנוחה ביחס למשטח. התנאי הוא v_cm = ωR, ובעקבותיו a_cm = αR.
+  lesson: '8.4'

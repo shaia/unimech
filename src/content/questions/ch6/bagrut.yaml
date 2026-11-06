@@ -1,0 +1,497 @@
+# Chapter 6 review problems (שאלות חזרה): a shared scenario with lettered parts (א, ב, ג…) that climb from
+# basic to exam level, 25 points each. Each problem joins at least two lessons; together they touch 6.1–6.6.
+#   1: a tangential kick (6.3, 6.4, 6.5, 6.6)   2: a binary star from Doppler speeds (6.2, 6.5)
+#   3: a tunnel through the Earth and a grazing satellite (6.1, 6.5, 6.6)   4: Earth to Mars (6.4, 6.5, 6.6)
+# Open parts follow the course format: law → manipulation → limit → units → substitution → result.
+# YAML note: never "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (.scratch/ch6/q2.ts, q5.ts), GM_E = 3.982e14,
+# GM_S = 1.327e20 m³/s²:
+#   1: r₀ = 7.0e6 m: v_c = 7.54 km/s (√2 v_c 10.7); λ = 1.20: e = λ² − 1 = 0.440 (λ − 1 0.20, λ² 1.44,
+#      2(λ − 1) 0.40); r_a = 1.80e7 m, a = 1.25e7 m, T = 13915 s = 232 min (old orbit 97.2, a = r_a 401);
+#      escape needs λ = √2; the surface escape speed would be λ = 1.48.
+#   2: v₁ = 60, v₂ = 120 km/s, T = 10.0 d = 8.64e5 s: m₁/m₂ = 2.00; a = (v₁ + v₂)T/(2π) = 2.48e10 m
+#      (r₁ only 8.25e9, r₂ only 1.65e10, no 2π 1.56e11); M = (v₁ + v₂)³T/(2πG) = 1.20e31 kg = 6.04 M_S;
+#      m₁ = 8.02e30 kg (= 4.03 M_S; star 2 4.01e30, T in days 9.28e25).
+#   3: g_s = 9.81 m/s², T = 2π√(R³/GM) = 84.4 min; speed at the centre √(GM/R) = 7.91 km/s (constant g:
+#      √(2g_sR) = 11.2); escape from the centre √(3GM/R) = 13.7 km/s (surface value 11.2, speeds added 19.1).
+#   4: v_E = 29.7 km/s (escape from the Sun 42.1, GM/r without the root 885); e = (r₂ − r₁)/(r₂ + r₁) = 0.206
+#      ((r₂ − r₁)/r₂ 0.342, r₂ − r₁ 0.52); Δv₁ = 2.93 km/s (v_E − v_M 5.62, a = r₂ in vis-viva 4.71, v_p 32.7);
+#      t = 259 d, T_M = 687 d, Mars moves 135.9°, lead angle 44.1°; at arrival v_a = 21.5, v_M = 24.1 km/s.
+
+chapter: 6
+questions:
+  # ------------------------------------------------------------ 1: a satellite given a tangential kick
+  - id: Q-6-bagrut-1
+    type: bagrut
+    title: לוויין שמקבל דחיפה בכיוון התנועה
+    prompt: >-
+      לוויין נע סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) במסלול מעגלי ברדיוס $r_0 = 7.0\cdot10^{6}\,\text{m}$.
+      מסת הלוויין זניחה לעומת מסת כדור הארץ, ולכן $\mu \approx m$. בנקודה P המנוע פועל לזמן קצר מאוד, בכיוון התנועה: גודל
+      המהירות גדל מהמהירות המעגלית $v_c$ ל-$\lambda v_c$, עם $\lambda = 1.20$, והכיוון נשאר משיק למעגל. אחרי הדחיפה המנוע
+      כבוי.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-6.3-2]
+        prompt: מה המהירות המעגלית $v_c$ לפני הדחיפה? ענו ב-$\text{km/s}$.
+        answer: 7.54
+        unit: km/s
+        correctFeedback: >-
+          נכון. במסלול המעגלי הכבידה מספקת את הכוח הצנטריפטלי, $\dfrac{mv_c^2}{r_0} = \dfrac{GM_Em}{r_0^2}$, ולכן
+          $v_c = \sqrt{GM_E/r_0} = 7.54\,\text{km/s}$. זה גם המינימום של $U_{\text{eff}}$ עבור התנע הזוויתי $mr_0v_c$.
+        wrongFeedback: 'כתבו את החוק השני ללוויין במסלול מעגלי: הכבידה היא הכוח הצנטריפטלי.'
+        commonWrong:
+          - value: 10.7
+            feedback: 'זו מהירות המילוט ב-$r_0$, $\sqrt{2GM_E/r_0}$. במסלול מעגלי המהירות קטנה ממנה פי $\sqrt2$.'
+        hints:
+          - '$\dfrac{v_c^2}{r_0} = \dfrac{GM_E}{r_0^2}$.'
+
+      - label: ב
+        type: open
+        points: 7
+        level: mid
+        qualitative: true
+        objectives: [OBJ-6.3-1, OBJ-6.3-2]
+        prompt: >-
+          (1) כתבו את האנרגיה של הלוויין אחרי הדחיפה בעזרת הפוטנציאל האפקטיבי, והראו ש-P היא נקודת הקרבה של המסלול
+          החדש.
+
+          (2) הראו שהמסלול החדש קשור, ומצאו את ה-$\lambda$ הגדול ביותר שבו הוא עדיין קשור.
+        hints:
+          - 'מה $\dot r$ מיד אחרי הדחיפה? ואיפה נמצא עכשיו המינימום של $U_{\text{eff}}$, ביחס ל-$r_0$?'
+        solution:
+          - { kind: law, text: 'בכוח מרכזי $L$ ו-$E$ נשמרים, ו-$E = \tfrac12m\dot r^2 + U_{\text{eff}}(r)$ עם $U_{\text{eff}}(r) = \dfrac{L^2}{2mr^2} - \dfrac{GM_Em}{r}$.' }
+          - { kind: manipulation, text: 'מיד אחרי הדחיפה המהירות משיקה למעגל, ניצבת לרדיוס: $\dot r = 0$, ולכן P היא נקודת מפנה, $E = U_{\text{eff}}(r_0)$. התנע הזוויתי החדש $L = m r_0\lambda v_c$, והמינימום של $U_{\text{eff}}$ זז ל-$r = \dfrac{L^2}{m^2GM_E} = \lambda^2r_0 > r_0$. P נמצאת משמאל למינימום, בצד הפנימי של הבור: זו נקודת המפנה הפנימית, נקודת הקרבה.' }
+          - { kind: manipulation, text: 'האנרגיה: $E = \tfrac12m\lambda^2v_c^2 - \dfrac{GM_Em}{r_0} = \left(\dfrac{\lambda^2}{2} - 1\right)\dfrac{GM_Em}{r_0}$, כי $v_c^2 = GM_E/r_0$. המסלול קשור כש-$E < 0$, כלומר כש-$\lambda < \sqrt2$. עם $\lambda = 1.20$: $E = -0.28\,GM_Em/r_0 < 0$.' }
+          - { kind: limit, text: 'כש-$\lambda = 1$: $E = -\dfrac{GM_Em}{2r_0}$, המינימום של $U_{\text{eff}}$, והמסלול נשאר המעגל. כש-$\lambda = \sqrt2$: $E = 0$, והלוויין בורח בפרבולה, ו-$\lambda v_c = \sqrt{2GM_E/r_0}$ היא מהירות המילוט.' }
+          - { kind: units, text: '$\dfrac{GM_Em}{r_0}$ ביחידות $\dfrac{\text{m}^3/\text{s}^2\cdot\text{kg}}{\text{m}} = \text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$, ו-$\lambda$ חסר ממדים.' }
+          - { kind: result, text: 'P היא נקודת הקרבה של מסלול קשור (אליפסה), כי $\dot r = 0$ בה והמינימום החדש של $U_{\text{eff}}$ רחוק יותר, ב-$\lambda^2r_0$. המסלול קשור כל עוד $\lambda < \sqrt2 \approx 1.41$.' }
+        rubric:
+          - text: כתבתי את האנרגיה כ-$\tfrac12m\dot r^2 + U_{\text{eff}}(r)$ וקבעתי ש-$\dot r = 0$ מיד אחרי הדחיפה, ולכן P נקודת מפנה.
+          - text: נימקתי למה P היא נקודת הקרבה ולא נקודת הריחוק, למשל מכך שהמינימום של $U_{\text{eff}}$ זז החוצה, ל-$\lambda^2r_0$.
+          - text: 'חישבתי $E = (\lambda^2/2 - 1)GM_Em/r_0$ ומצאתי שהמסלול קשור כש-$\lambda < \sqrt2$.'
+          - text: בדקתי ש-$\lambda = 1$ מחזיר את המסלול המעגלי ו-$\lambda = \sqrt2$ נותן $E = 0$.
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-6.4-2]
+        prompt: מה האקסצנטריות של המסלול החדש?
+        answer: 0.44
+        unit: ''
+        correctFeedback: >-
+          נכון. עם $k = GM_Em$, $E = (\lambda^2/2 - 1)k/r_0$ ו-$L^2 = mk\,r_0\lambda^2$:
+          $$e^2 = 1 + \frac{2EL^2}{mk^2} = 1 + (\lambda^2 - 2)\lambda^2 = (\lambda^2 - 1)^2$$
+          ולכן $e = \lambda^2 - 1 = 0.44$. בדרך אחרת: $p = L^2/(mk) = \lambda^2r_0$, וב-P, $r_0 = p/(1 + e)$. **בדיקת גבולות:**
+          $\lambda = 1$ נותן $e = 0$, מעגל, ו-$\lambda = \sqrt2$ נותן $e = 1$, פרבולה.
+        wrongFeedback: 'הציבו את $E$ ואת $L$ שאחרי הדחיפה ב-$e^2 = 1 + 2EL^2/(mk^2)$, או השתמשו ב-$r_p = p/(1 + e)$ עם $p = L^2/(mk)$.'
+        commonWrong:
+          - value: 0.2
+            feedback: 'זה $\lambda - 1$. האקסצנטריות תלויה בריבוע המהירות: $e = \lambda^2 - 1$.'
+          - value: 1.44
+            feedback: 'זה $\lambda^2$, בלי להחסיר 1. בבדיקת הגבול: בלי דחיפה, $\lambda = 1$, האקסצנטריות חייבת להיות אפס.'
+          - value: 0.4
+            feedback: 'זה $2(\lambda - 1)$, הקירוב לדחיפה קטנה. עם $\lambda = 1.20$ הדחיפה לא קטנה: $\lambda^2 - 1 = 0.44$.'
+        hints:
+          - '$p = L^2/(mk) = \lambda^2r_0$, ו-P היא נקודת הקרבה.'
+
+      - label: ד
+        type: numeric
+        points: 5
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-6.5-2, OBJ-6.4-1]
+        prompt: מה זמן המחזור של המסלול החדש, בדקות?
+        answer: 232
+        unit: min
+        correctFeedback: >-
+          נכון. נקודת הריחוק: $r_a = r_0\dfrac{1 + e}{1 - e} = 1.80\cdot10^{7}\,\text{m}$, ולכן $a = \dfrac{r_0 + r_a}{2} = 1.25\cdot10^{7}\,\text{m}$
+          (וגם $a = r_0/(2 - \lambda^2)$ מ-$E = -k/(2a)$). מהחוק השלישי $T = 2\pi\sqrt{a^3/GM_E} = 1.39\cdot10^{4}\,\text{s} = 232\,\text{min}$,
+          יותר מכפליים מ-$97\,\text{min}$ של המסלול המעגלי: דחיפה של $20\%$ הגדילה את $a$ ב-$79\%$.
+        wrongFeedback: 'מצאו את $a$: מנקודת הקרבה ונקודת הריחוק, או מהאנרגיה, $E = -GM_Em/(2a)$. אחר כך החוק השלישי.'
+        commonWrong:
+          - value: 97.2
+            feedback: 'זה זמן המחזור של המסלול המעגלי לפני הדחיפה, עם $a = r_0$. הדחיפה הגדילה את האנרגיה, ולכן גם את $a$.'
+          - value: 401
+            feedback: 'הצבתם את נקודת הריחוק, $1.80\cdot10^{7}\,\text{m}$, במקום $a$. חצי הציר הראשי הוא הממוצע של $r_0$ ושל $r_a$.'
+        hints:
+          - '$r_a = r_p\dfrac{1 + e}{1 - e}$.'
+
+      - label: ה
+        type: mc
+        points: 4
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-6.6-1]
+        prompt: מה הערך המינימלי של $\lambda$ שבו הלוויין בורח מכדור הארץ אחרי הדחיפה?
+        choices:
+          - text: '$\lambda = \sqrt2 \approx 1.41$, ואז $\Delta v \approx 0.41\,v_c$.'
+            correct: true
+            feedback: >-
+              נכון. הבריחה דורשת $E \ge 0$, כלומר $\tfrac12(\lambda v_c)^2 \ge GM_E/r_0 = v_c^2$: $\lambda \ge \sqrt2$. זה גם $e = \lambda^2 - 1 = 1$,
+              פרבולה. מהירות המילוט ב-$r_0$ היא $10.7\,\text{km/s}$.
+          - text: '$\lambda = 2$: צריך להכפיל את המהירות.'
+            feedback: 'צריך להכפיל את **האנרגיה הקינטית**, מ-$\tfrac12mv_c^2$ ל-$mv_c^2$. האנרגיה הולכת כמו ריבוע המהירות, ולכן המהירות גדלה פי $\sqrt2$ בלבד.'
+          - text: '$\lambda = \sqrt2$, אבל רק אם הדחיפה החוצה, בכיוון הרדיוס.'
+            feedback: 'תנאי הבריחה הוא על האנרגיה, וזו תלויה רק בגודל המהירות. דחיפה בכיוון התנועה היא דווקא הזולה ביותר, כי המהירות הקיימת מצטרפת אליה.'
+            misconception: MC-6-escape-vertical
+          - text: '$\lambda \approx 1.48$, כדי להגיע למהירות המילוט מפני הקרקע, $11.2\,\text{km/s}$.'
+            feedback: 'מהירות המילוט תלויה במרחק: ב-$r_0$ היא $\sqrt{2GM_E/r_0} = 10.7\,\text{km/s}$, קטנה מזו של פני הקרקע, $11.2\,\text{km/s}$.'
+        hints:
+          - 'מה צריכה להיות $E$ כדי שהלוויין יגיע לאינסוף? השתמשו בביטוי מחלק ב.'
+
+  # ------------------------------------------------------------ 2: a binary star from Doppler speeds
+  - id: Q-6-bagrut-2
+    type: bagrut
+    title: מסות של כוכב כפול מתוך אפקט דופלר
+    prompt: >-
+      אסטרונומים צופים בכוכב כפול שמישור המסלול שלו נראה מהצד, ולכן אפקט דופלר מראה את גודל המהירות המלא של כל כוכב. שני
+      הכוכבים נעים במסלולים מעגליים סביב מרכז המסה המשותף. גודל המהירות של כוכב 1 הוא $v_1 = 60\,\text{km/s}$, של כוכב
+      2 $v_2 = 120\,\text{km/s}$, וזמן המחזור $T = 10.0$ ימים (יום הוא $8.64\cdot10^{4}\,\text{s}$).
+      $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$ ומסת השמש $M_S = 1.99\cdot10^{30}\,\text{kg}$.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-6.2-2]
+        prompt: מה היחס בין המסות, $m_1/m_2$?
+        answer: 2.0
+        unit: ''
+        correctFeedback: >-
+          נכון. לשני הכוכבים אותו זמן מחזור, ולכן $v_1/v_2 = r_1/r_2$. ממרכז המסה, $m_1r_1 = m_2r_2$, ולכן
+          $\dfrac{m_1}{m_2} = \dfrac{r_2}{r_1} = \dfrac{v_2}{v_1} = 2.0$. הכוכב האיטי הוא הכבד.
+        wrongFeedback: 'מרכז המסה: $m_1r_1 = m_2r_2$. ואיך קשורים הרדיוסים למהירויות כשזמן המחזור משותף?'
+        commonWrong:
+          - value: 0.5
+            feedback: 'הפכתם את היחס. הכוכב הכבד קרוב יותר למרכז המסה, נע במעגל קטן ולכן לאט: $m_1/m_2 = v_2/v_1$.'
+          - value: 4
+            feedback: 'העליתם בריבוע. יחס המסות שווה ליחס ההפוך של המהירויות בחזקה ראשונה, מ-$m_1v_1 = m_2v_2$, שימור התנע במערכת מרכז המסה.'
+        hints:
+          - 'במערכת מרכז המסה התנע הכולל אפס.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-6.2-2]
+        prompt: מה המרחק $a$ בין שני הכוכבים?
+        answer: 2.48e10
+        unit: m
+        correctFeedback: >-
+          נכון. $r_i = \dfrac{v_iT}{2\pi}$, ו-$a = r_1 + r_2 = \dfrac{(v_1 + v_2)T}{2\pi} = \dfrac{1.8\cdot10^{5}\cdot8.64\cdot10^{5}}{2\pi} = 2.48\cdot10^{10}\,\text{m}$,
+          כ-$0.17\,\text{AU}$: הכוכבים קרובים זה לזה הרבה יותר מכדור הארץ לשמש.
+        wrongFeedback: 'מצאו את רדיוס המסלול של כל כוכב מהמהירות שלו ומזמן המחזור. מרכז המסה ביניהם, ולכן $a = r_1 + r_2$.'
+        commonWrong:
+          - value: 8.25e9
+            feedback: 'זה $r_1$, רדיוס המסלול של כוכב 1 בלבד. המרחק בין הכוכבים הוא $r_1 + r_2$, כי מרכז המסה ביניהם.'
+          - value: 1.65e10
+            feedback: 'זה $r_2$ בלבד, כאילו כוכב 1 עומד במרכז. גם הוא נע, במעגל ברדיוס $r_1$, בצד השני של מרכז המסה.'
+            misconception: MC-6-heavy-body-fixed
+          - value: 1.56e11
+            feedback: 'כפלתם מהירות בזמן מחזור: זה היקף, לא רדיוס. $2\pi r = vT$.'
+        hints:
+          - '$2\pi r_i = v_iT$.'
+
+      - label: ג
+        type: open
+        points: 9
+        level: bagrut
+        objectives: [OBJ-6.2-1, OBJ-6.5-1]
+        prompt: >-
+          הראו, מתוך משוואת התנועה היחסית, שסכום המסות הוא
+          $$m_1 + m_2 = \frac{(v_1 + v_2)^3\,T}{2\pi G}$$
+          בדקו את הביטוי בגבול שבו כוכב אחד קל מאוד ובדקו את היחידות שלו. אחר כך חשבו אותו, בקילוגרמים ובמסות שמש.
+        hints:
+          - 'במסלול מעגלי ברדיוס $a$, $|\ddot{\vec r}| = \omega^2a$. מה נשאר אחרי שמחלקים את משוואת התנועה היחסית ב-$\mu$?'
+        solution:
+          - { kind: law, text: 'התנועה היחסית: $\mu\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$, עם $\mu = \dfrac{m_1m_2}{m_1 + m_2}$.' }
+          - { kind: manipulation, text: 'המרחק קבוע, $r = a$, והקו בין הכוכבים מסתובב במהירות זוויתית $\omega = 2\pi/T$, ולכן $|\ddot{\vec r}| = \omega^2a$: $$\mu\omega^2a = \frac{Gm_1m_2}{a^2}\ \Rightarrow\ \omega^2a^3 = G(m_1 + m_2)$$ (החוק השלישי של קפלר). מחלק ב, $a = (v_1 + v_2)/\omega$, ולכן $$m_1 + m_2 = \frac{\omega^2a^3}{G} = \frac{(v_1 + v_2)^3}{G\omega} = \frac{(v_1 + v_2)^3\,T}{2\pi G}$$' }
+          - { kind: limit, text: 'כש-$m_2 \to 0$, כוכב 1 עומד ($v_1 \to 0$), ו-$m_1 = \dfrac{v_2^3T}{2\pi G}$. עם $v_2 = 2\pi a/T$ זה $m_1 = \dfrac{4\pi^2a^3}{GT^2}$: המסה של כוכב מתוך מסלול של כוכב לכת קל, כמו שמחשבים את מסת השמש ממסלול כדור הארץ.' }
+          - { kind: units, text: '$\dfrac{(\text{m/s})^3\cdot\text{s}}{\text{N}\cdot\text{m}^2/\text{kg}^2} = \dfrac{\text{m}^3/\text{s}^2}{\text{m}^3/(\text{kg}\cdot\text{s}^2)} = \text{kg}$.' }
+          - { kind: substitution, text: '$m_1 + m_2 = \dfrac{(1.8\cdot10^{5})^3\cdot8.64\cdot10^{5}}{2\pi\cdot6.67\cdot10^{-11}} = 1.20\cdot10^{31}\,\text{kg}$.' }
+          - { kind: result, text: '$m_1 + m_2 = \dfrac{(v_1 + v_2)^3T}{2\pi G} = 1.20\cdot10^{31}\,\text{kg}$, כ-$6.0$ מסות שמש.' }
+        rubric:
+          - text: כתבתי את משוואת התנועה היחסית עם $\mu$, והשתמשתי בתאוצה הצנטריפטלית $\omega^2a$ של המרחק ביניהם.
+          - text: קיבלתי $\omega^2a^3 = G(m_1 + m_2)$, והצבתי $a = (v_1 + v_2)T/(2\pi)$.
+          - text: בדקתי שבגבול של כוכב קל מאוד מתקבל החוק השלישי של קפלר לכוכב לכת.
+          - text: בדקתי שהיחידות של הביטוי הן קילוגרמים.
+          - text: חישבתי $1.20\cdot10^{31}\,\text{kg}$, כ-6 מסות שמש, עם $T$ בשניות.
+
+      - label: ד
+        type: numeric
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-6.2-2, OBJ-6.5-2]
+        prompt: מה המסה של כוכב 1, בקילוגרמים?
+        answer: 8.02e30
+        unit: kg
+        correctFeedback: >-
+          נכון. מחלק א, $m_1 = 2m_2$, ולכן $m_1 = \tfrac23(m_1 + m_2) = \tfrac23\cdot1.20\cdot10^{31} = 8.02\cdot10^{30}\,\text{kg}$,
+          כ-$4.0$ מסות שמש, ו-$m_2 \approx 2.0$ מסות שמש.
+        wrongFeedback: 'חלקו את סכום המסות מחלק ג לפי היחס מחלק א.'
+        commonWrong:
+          - value: 1.2e31
+            feedback: 'זה סכום המסות. כוכב 1 הוא שני שלישים ממנו, כי הוא כבד פי 2 מכוכב 2.'
+          - value: 4.01e30
+            feedback: 'זו המסה של כוכב 2, הקל. כוכב 1 איטי יותר, ולכן הוא הכבד.'
+          - value: 9.28e25
+            feedback: 'הצבתם את $T$ בימים. ב-SI הזמן בשניות: $10.0$ ימים הם $8.64\cdot10^{5}\,\text{s}$.'
+        hints:
+          - '$m_1 + m_2$ מחלק ג, ו-$m_1/m_2$ מחלק א.'
+
+  # ------------------------------------------------------------ 3: a tunnel through the Earth and a grazing satellite
+  - id: Q-6-bagrut-3
+    type: bagrut
+    title: מנהרה דרך כדור הארץ ולוויין צמוד לקרקע
+    prompt: >-
+      מודל: כדור הארץ הוא כדור אחיד בעל מסה $M_E = 5.97\cdot10^{24}\,\text{kg}$ ורדיוס $R_E = 6.37\cdot10^{6}\,\text{m}$,
+      בלי אוויר ובלי סיבוב, ו-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$. קודחים מנהרה ישרה וצרה, בלי חיכוך,
+      דרך המרכז, מנקודה A על פני השטח לנקודה B שמולה. ברגע $t = 0$ משחררים כדור ממנוחה בפתח A. באותו רגע עובר מעל A לוויין
+      במסלול מעגלי צמוד לפני הקרקע (ברדיוס $R_E$), שהמישור שלו מכיל את המנהרה.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-6.1-2]
+        prompt: איך תלוי גודל תאוצת הכבידה $g$ במרחק $r$ מהמרכז, בתוך המנהרה?
+        choices:
+          - text: '$g = g_s\,r/R_E$: גדל בקו ישר עם $r$, ואפס במרכז.'
+            correct: true
+            feedback: >-
+              נכון. לפי משפט הקליפה מושכת רק המסה שבתוך הרדיוס $r$, $M_E r^3/R_E^3$, ולכן $g = \dfrac{GM_Er}{R_E^3} = g_s\dfrac{r}{R_E}$,
+              עם $g_s = GM_E/R_E^2 = 9.81\,\text{m/s}^2$.
+          - text: '$g = GM_E/r^2$: גדל ככל שמתקרבים למרכז.'
+            feedback: 'זה נכון רק מחוץ לכדור. בתוכו, השכבות שמעל הכדור לא מושכות, ורק המסה שמתחתיו מושכת, והיא קטנה ככל שיורדים.'
+            misconception: MC-6-inside-full-mass
+          - text: '$g = g_s$, קבוע לאורך כל המנהרה.'
+            feedback: '$g$ כמעט קבוע רק בעומקים קטנים לעומת $R_E$. לאורך המנהרה המסה המושכת קטנה מ-$M_E$ עד אפס.'
+            misconception: MC-6-mgh-everywhere
+          - text: '$g = 0$ בכל המנהרה, כי לפי משפט הקליפה אין כבידה בתוך כדור.'
+            feedback: 'משפט הקליפה אומר שהקליפות **שמעל** הגוף לא מושכות. המסה שמתחת לגוף, בתוך הרדיוס $r$, מושכת כמו מסה נקודתית במרכז.'
+
+      - label: ב
+        type: open
+        points: 7
+        level: mid
+        objectives: [OBJ-6.1-2]
+        prompt: >-
+          הראו שהכדור נע בתנועה הרמונית, ומצאו ביטוי לזמן המחזור שלה. בדקו את היחידות של הביטוי, וחשבו את זמן המחזור
+          בדקות.
+        hints:
+          - 'כתבו את הכוח על הכדור במרחק $x$ מהמרכז לאורך המנהרה. האם הוא מהצורה $-\kappa x$?'
+        solution:
+          - { kind: law, text: 'משפט הקליפה: במרחק $|x|$ מהמרכז מושכת רק המסה $M(x) = M_E|x|^3/R_E^3$, כאילו היא במרכז. החוק השני לאורך המנהרה: $m\ddot x = F_x$.' }
+          - { kind: manipulation, text: '$F_x = -\dfrac{GM(x)m}{x^2}\,\dfrac{x}{|x|} = -\dfrac{GM_Em}{R_E^3}\,x$. לכן $\ddot x = -\omega^2x$ עם $\omega^2 = \dfrac{GM_E}{R_E^3}$: תנועה הרמונית סביב המרכז, באמפליטודה $R_E$, ו-$$T = \frac{2\pi}{\omega} = 2\pi\sqrt{\frac{R_E^3}{GM_E}} = 2\pi\sqrt{\frac{R_E}{g_s}}$$' }
+          - { kind: limit, text: 'זמן המחזור לא תלוי במסת הכדור ולא באמפליטודה: כדור שמשחררים בעומק כלשהו במנהרה חוזר אחרי אותו זמן. והביטוי $2\pi\sqrt{R_E^3/(GM_E)}$ הוא בדיוק החוק השלישי של קפלר למסלול ברדיוס $R_E$.' }
+          - { kind: units, text: '$\sqrt{\dfrac{\text{m}^3}{\text{m}^3/\text{s}^2}} = \text{s}$, וגם $\sqrt{R_E/g_s}$ ביחידות $\sqrt{\text{m}/(\text{m/s}^2)} = \text{s}$.' }
+          - { kind: substitution, text: '$T = 2\pi\sqrt{\dfrac{(6.37\cdot10^{6})^3}{6.67\cdot10^{-11}\cdot5.97\cdot10^{24}}} = 5.06\cdot10^{3}\,\text{s}$.' }
+          - { kind: result, text: 'תנועה הרמונית עם $T = 2\pi\sqrt{R_E^3/(GM_E)} = 5.06\cdot10^{3}\,\text{s} = 84.4\,\text{min}$: הכדור מגיע ל-B אחרי $42.2$ דקות וחוזר ל-A אחרי $84.4$.' }
+        rubric:
+          - text: השתמשתי במשפט הקליפה, וכתבתי את המסה המושכת $M_E x^3/R_E^3$.
+          - text: קיבלתי כוח מחזיר ליניארי, $-\dfrac{GM_Em}{R_E^3}x$, וזיהיתי תנועה הרמונית עם $\omega^2 = GM_E/R_E^3$.
+          - text: בדקתי שהיחידות של $T$ הן שניות.
+          - text: חישבתי $T \approx 84$ דקות.
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-6.1-2]
+        prompt: מה גודל המהירות של הכדור כשהוא עובר במרכז כדור הארץ? ענו ב-$\text{km/s}$.
+        answer: 7.91
+        unit: km/s
+        correctFeedback: >-
+          נכון. בתנועה הרמונית המהירות המקסימלית היא $\omega R_E = \sqrt{GM_E/R_E} = 7.91\,\text{km/s}$. בדרך אחרת, מאנרגיה:
+          העבודה של הכוח $-\kappa x$ מ-$R_E$ עד 0 היא $\tfrac12\kappa R_E^2 = \tfrac12 m\,GM_E/R_E$. זו בדיוק המהירות של הלוויין.
+        wrongFeedback: 'השתמשו בתנועה ההרמונית מחלק ב: המהירות במרכז היא $\omega$ כפול האמפליטודה. או חשבו את העבודה של הכוח $-\kappa x$.'
+        commonWrong:
+          - value: 11.2
+            feedback: >-
+              זה $\sqrt{2g_sR_E}$, נפילה מגובה $R_E$ עם $g$ קבוע. אבל $g$ קטן בדרך עד אפס במרכז, ובממוצע הוא חצי מ-$g_s$:
+              $\sqrt{2\cdot\tfrac12g_s\cdot R_E} = 7.91\,\text{km/s}$.
+            misconception: MC-6-mgh-everywhere
+        hints:
+          - 'בתנועה הרמונית $v_{\max} = \omega A$.'
+
+      - label: ד
+        type: numeric
+        points: 5
+        level: bagrut
+        objectives: [OBJ-6.6-1, OBJ-6.1-1]
+        prompt: >-
+          מה המהירות המינימלית שצריך לתת לכדור במרכז כדור הארץ, לאורך המנהרה, כדי שייצא ממנה וימשיך עד אינסוף? ענו
+          ב-$\text{km/s}$.
+        answer: 13.7
+        unit: km/s
+        correctFeedback: >-
+          נכון. ליחידת מסה, היציאה מהמרכז אל פני השטח דורשת $\tfrac12\dfrac{GM_E}{R_E}$ (חלק ג), ומפני השטח עד אינסוף עוד
+          $\dfrac{GM_E}{R_E}$. סך הכול $\tfrac12v^2 = \dfrac{3GM_E}{2R_E}$, ולכן $v = \sqrt{3GM_E/R_E} = 13.7\,\text{km/s}$. כלומר
+          $U(0) = -\dfrac{3GM_Em}{2R_E}$, עמוק פי 1.5 מעל פני השטח. **בדיקת גבולות:** בלי החלק שבתוך המנהרה נשארת מהירות
+          המילוט מפני השטח, $\sqrt{2GM_E/R_E} = 11.2\,\text{km/s}$, וזה הגבול התחתון שהתשובה עוברת.
+        wrongFeedback: 'חברו אנרגיות, לא מהירויות: העבודה נגד הכבידה מהמרכז לפני השטח, ועוד העבודה מפני השטח עד אינסוף.'
+        commonWrong:
+          - value: 11.2
+            feedback: 'זו מהירות המילוט מפני השטח. מהמרכז הכדור צריך קודם לטפס במנהרה, נגד כבידה שגדלה בדרך, ולכן צריך יותר.'
+          - value: 19.1
+            feedback: 'חיברתם מהירויות, $7.91 + 11.2$. האנרגיות מתחברות, לא המהירויות: $v^2 = 7.91^2 + 11.2^2$.'
+        hints:
+          - 'מה האנרגיה הקינטית שהכדור מאבד בדרך מהמרכז לפני השטח? (חלק ג)'
+
+      - label: ה
+        type: mc
+        points: 4
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-6.5-2, OBJ-6.1-2]
+        prompt: >-
+          בלי תוספת מהירות, הכדור מחלק ב חוזר על התנועה שלו. איפה נמצא הלוויין כשהכדור עובר, בפעם הראשונה, במרכז כדור הארץ?
+        choices:
+          - text: 'ברבע הדרך סביב כדור הארץ, מעל המרכז בכיוון הניצב למנהרה; ושם מהירותו שווה למהירות הכדור, ומקבילה לה.'
+            correct: true
+            feedback: >-
+              נכון. לזמן המחזור של הלוויין, מהחוק השלישי עם $a = R_E$, אותו ערך כמו של הכדור. אם הוא במקום
+              $(R_E\cos\omega t,\ R_E\sin\omega t)$, ההיטל שלו על המנהרה הוא $R_E\cos\omega t$, בדיוק מקום הכדור. ב-$t = T/4$
+              הלוויין עבר רבע מעגל, ומהירותו $7.91\,\text{km/s}$ בכיוון המנהרה, כמו של הכדור.
+          - text: מעל B, כי הלוויין מהיר יותר מהכדור.
+            feedback: >-
+              הלוויין לא מהיר יותר: מהירותו $7.91\,\text{km/s}$ כל הזמן, והכדור מגיע לאותה מהירות במרכז. הלוויין מגיע מעל B
+              אחרי חצי מחזור, באותו רגע שבו הכדור מגיע ל-B.
+          - text: עדיין קרוב ל-A, כי הדרך שלו סביב כדור הארץ ארוכה יותר.
+            feedback: 'הדרך שלו ארוכה פי $\pi/2$, אבל הוא נע כל הזמן במהירות המקסימלית של הכדור. זמני המחזור שווים, ושניהם עוברים רבע מחזור.'
+          - text: 'אי אפשר לדעת, כי זמן המחזור של הלוויין תלוי במסה שלו.'
+            feedback: 'זמן המחזור, $T^2 = 4\pi^2a^3/(G(M_E + m))$, כמעט לא תלוי במסה הזניחה של הלוויין.'
+            misconception: MC-6-period-depends-on-planet-mass
+        hints:
+          - 'חשבו את זמן המחזור של הלוויין מהחוק השלישי, והשוו לחלק ב.'
+
+  # ------------------------------------------------------------ 4: a Hohmann transfer from the Earth to Mars
+  - id: Q-6-bagrut-4
+    type: bagrut
+    title: מסע הוהמן מכדור הארץ למאדים
+    prompt: >-
+      חללית יוצאת מכדור הארץ למאדים במסלול הוהמן סביב השמש ($GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$). המסלולים של
+      כדור הארץ ושל מאדים מעגליים ובאותו מישור, ברדיוסים $r_1 = 1.00\,\text{AU}$ ו-$r_2 = 1.52\,\text{AU}$
+      ($1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$). הזניחו את הכבידה של כדור הארץ ושל מאדים: כל המהירויות הן ביחס לשמש,
+      והחללית יוצאת ממסלול כדור הארץ במהירות של כדור הארץ.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-6.6-1]
+        prompt: מה המהירות של כדור הארץ במסלולו? ענו ב-$\text{km/s}$.
+        answer: 29.7
+        unit: km/s
+        correctFeedback: 'נכון: $v_E = \sqrt{GM_S/r_1} = \sqrt{\dfrac{1.33\cdot10^{20}}{1.5\cdot10^{11}}} = 29.7\,\text{km/s}$.'
+        wrongFeedback: 'במסלול מעגלי הכבידה של השמש היא הכוח הצנטריפטלי: $v^2/r = GM_S/r^2$.'
+        commonWrong:
+          - value: 42.1
+            feedback: 'זו מהירות המילוט מהשמש במרחק $1\,\text{AU}$, $\sqrt{2GM_S/r_1}$. במסלול מעגלי המהירות קטנה ממנה פי $\sqrt2$.'
+          - value: 885
+            feedback: 'זה $GM_S/r_1$ ביחידות $\text{km}^2/\text{s}^2$, כלומר $v^2$. הוציאו שורש.'
+        hints:
+          - '$v = \sqrt{GM_S/r}$.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-6.4-2]
+        prompt: מה האקסצנטריות של אליפסת המעבר?
+        answer: 0.206
+        unit: ''
+        correctFeedback: >-
+          נכון. $r_p = a(1 - e)$ ו-$r_a = a(1 + e)$, ולכן $e = \dfrac{r_a - r_p}{r_a + r_p} = \dfrac{0.52}{2.52} = 0.206$:
+          אליפסה כמעט עגולה, ובכל זאת הדרך שונה מאוד ממסלולי שני כוכבי הלכת.
+        wrongFeedback: 'נקודת הקרבה של אליפסת המעבר ב-$r_1$ ונקודת הריחוק ב-$r_2$. כתבו כל אחת בעזרת $a$ ו-$e$ ופתרו.'
+        commonWrong:
+          - value: 0.342
+            feedback: 'חילקתם את ההפרש ב-$r_2$. המכנה הוא סכום המרחקים, $2a = r_1 + r_2$.'
+          - value: 0.52
+            feedback: 'זה ההפרש $r_2 - r_1$ ב-$\text{AU}$. האקסצנטריות חסרת ממדים: חלקו בסכום, $r_1 + r_2$.'
+        hints:
+          - '$r_p = a(1 - e)$, $r_a = a(1 + e)$.'
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-6.6-2, OBJ-6.6-1]
+        prompt: מה שינוי המהירות $\Delta v_1$ שצריך בדחיפה הראשונה, ביציאה ממסלול כדור הארץ? ענו ב-$\text{km/s}$.
+        answer: 2.93
+        unit: km/s
+        correctFeedback: >-
+          נכון. על אליפסת המעבר, עם $a = 1.26\,\text{AU}$, vis-viva נותן בנקודת הקרבה
+          $v_p = \sqrt{GM_S\left(\dfrac{2}{r_1} - \dfrac{1}{a}\right)} = 32.7\,\text{km/s}$, ולכן $\Delta v_1 = v_p - v_E = 2.93\,\text{km/s}$,
+          בכיוון התנועה של כדור הארץ.
+        wrongFeedback: 'חשבו את המהירות שהחללית צריכה בנקודת הקרבה של אליפסת המעבר (vis-viva), והחסירו את מהירות כדור הארץ שכבר יש לה.'
+        commonWrong:
+          - value: 5.62
+            feedback: 'זה ההפרש בין המהירויות המעגליות של כדור הארץ ושל מאדים. הדחיפה הראשונה היא ההפרש בין $v_p$ של אליפסת המעבר לבין $v_E$, באותה נקודה.'
+            misconception: MC-6-dv-is-speed-difference
+          - value: 4.71
+            feedback: 'הצבתם $a = r_2$ ב-vis-viva. חצי הציר הראשי של אליפסת המעבר הוא הממוצע, $(r_1 + r_2)/2 = 1.26\,\text{AU}$.'
+          - value: 32.7
+            feedback: 'זו המהירות שהחללית צריכה על אליפסת המעבר. אבל היא כבר נעה עם כדור הארץ ב-$29.7\,\text{km/s}$: חסר רק ההפרש.'
+            misconception: MC-6-delta-v-from-rest
+        hints:
+          - 'vis-viva: $v^2 = GM_S(2/r - 1/a)$.'
+
+      - label: ד
+        type: open
+        points: 7
+        level: bagrut
+        objectives: [OBJ-6.5-2, OBJ-6.6-2]
+        prompt: >-
+          החללית צריכה להגיע לנקודת הריחוק של אליפסת המעבר בדיוק כשמאדים שם. כמה זמן נמשכת הדרך, ובאיזו זווית צריך מאדים
+          להקדים את כדור הארץ (כפי שנמדדת מהשמש) ברגע היציאה?
+        hints:
+          - 'נקודת הריחוק נמצאת מול נקודת היציאה, $180^\circ$ סביב השמש. כמה מעלות עובר מאדים בזמן הדרך?'
+        solution:
+          - { kind: law, text: 'החוק השלישי של קפלר: $T = 2\pi\sqrt{a^3/(GM_S)}$ לכל מסלול סביב השמש. הדרך היא חצי אליפסת המעבר, $a = (r_1 + r_2)/2 = 1.26\,\text{AU}$.' }
+          - { kind: manipulation, text: 'זמן הדרך: $t = \pi\sqrt{a^3/(GM_S)}$. מאדים נע במהירות זוויתית קבועה $360^\circ/T_M$, עם $T_M = 2\pi\sqrt{r_2^3/(GM_S)}$, ובזמן $t$ הוא עובר $\Delta\varphi = 360^\circ\cdot t/T_M = 180^\circ\left(\dfrac{a}{r_2}\right)^{3/2}$. החללית מגיעה לנקודה שמול נקודת היציאה, ולכן מאדים צריך להקדים בזווית $$\theta = 180^\circ - 180^\circ\left(\frac{a}{r_2}\right)^{3/2}$$' }
+          - { kind: limit, text: 'כש-$r_2 \to r_1$, $a \to r_2$ ו-$\theta \to 0$: מעבר בין שני מסלולים כמעט שווים לא דורש הקדמה. וכש-$r_2 \gg r_1$, $a \approx r_2/2$, ו-$\theta \to 180^\circ(1 - 2^{-3/2}) \approx 116^\circ$: כוכב לכת רחוק ואיטי זז מעט בזמן הדרך.' }
+          - { kind: units, text: '$\sqrt{a^3/(GM_S)}$ ביחידות $\sqrt{\text{m}^3/(\text{m}^3/\text{s}^2)} = \text{s}$, ו-$(a/r_2)^{3/2}$ חסר ממדים, ולכן $\theta$ זווית.' }
+          - { kind: substitution, text: '$t = \pi\sqrt{\dfrac{(1.89\cdot10^{11})^3}{1.33\cdot10^{20}}} = 2.24\cdot10^{7}\,\text{s}$, כ-259 ימים. $(1.26/1.52)^{3/2} = 0.755$, ולכן מאדים עובר $135.9^\circ$, ו-$\theta = 44.1^\circ$.' }
+          - { kind: result, text: 'הדרך נמשכת כ-259 ימים. ברגע היציאה מאדים צריך להקדים את כדור הארץ בכ-$44^\circ$.' }
+        rubric:
+          - text: חישבתי את זמן הדרך כחצי זמן המחזור של אליפסת המעבר, עם $a = 1.26\,\text{AU}$, וקיבלתי כ-259 ימים.
+          - text: חישבתי את הזווית שמאדים עובר בזמן הדרך, כ-$136^\circ$, מזמן המחזור שלו.
+          - text: הבנתי שהחללית מגיעה לנקודה שמול נקודת היציאה, וקיבלתי הקדמה של כ-$44^\circ$.
+          - text: בדקתי גבול, למשל ש-$r_2 \to r_1$ נותן הקדמה אפס.
+
+      - label: ה
+        type: mc
+        points: 4
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-6.6-2]
+        prompt: >-
+          בנקודת הריחוק של אליפסת המעבר מהירות החללית ביחס לשמש היא $21.5\,\text{km/s}$, והמהירות של מאדים במסלולו היא
+          $24.1\,\text{km/s}$. מה נכון?
+        choices:
+          - text: 'מאדים משיג את החללית מאחור; כדי להישאר במסלול של מאדים היא צריכה להאיץ ב-$2.6\,\text{km/s}$.'
+            correct: true
+            feedback: >-
+              נכון. בעלייה החללית האטה מ-$32.7$ ל-$21.5\,\text{km/s}$, והיא עכשיו איטית מהמהירות המעגלית ב-$r_2$. דחיפה שנייה
+              בכיוון התנועה, $\Delta v_2 = 2.6\,\text{km/s}$, מעבירה אותה למסלול המעגלי. סך הכול $\Delta v_1 + \Delta v_2 = 5.6\,\text{km/s}$.
+          - text: החללית צריכה להאט, כי המסלול של מאדים איטי ממסלול כדור הארץ.
+            feedback: >-
+              המסלול של מאדים אכן איטי ממסלול כדור הארץ, אבל ההשוואה הנכונה היא למהירות של החללית עכשיו, $21.5\,\text{km/s}$,
+              והיא איטית עוד יותר. לכן מאיצים.
+            misconception: MC-6-outer-orbit-slower-so-brake
+          - text: החללית כבר במסלול של מאדים, ולא צריך דחיפה נוספת.
+            feedback: 'בלי דחיפה החללית ממשיכה על אליפסת המעבר וחוזרת אחרי 259 ימים לנקודת הקרבה, ב-$1.00\,\text{AU}$.'
+          - text: 'בנקודת הריחוק החללית נעצרת, וצריך לתת לה את כל המהירות של מאדים, $24.1\,\text{km/s}$.'
+            feedback: 'בנקודת ריחוק רק הרכיב הרדיאלי של המהירות מתאפס. החללית נעה שם ב-$21.5\,\text{km/s}$, משיקית למסלול.'
+            misconception: MC-6-turning-point-at-rest
+        hints:
+          - 'השוו את שתי המהירויות הנתונות. מי מהיר יותר?'

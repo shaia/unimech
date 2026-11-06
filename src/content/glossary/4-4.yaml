@@ -1,0 +1,8 @@
+# Terms first defined in lesson 4.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: ballistic-pendulum
+  term: מטוטלת בליסטית
+  en: ballistic pendulum
+  definition: גוש שתלוי על חוטים, שקליע נתקע בו. מגובה העלייה של הגוש מוצאים את מהירות הקליע בשני שלבים, שימור תנע בהתנגשות הפלסטית ושימור אנרגיה בעלייה שאחריה, v = ((m + M)/m)·√(2gh).
+  lesson: '4.4'

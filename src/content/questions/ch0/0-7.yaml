@@ -1,0 +1,306 @@
+# Lesson 0.7 question bank: the comprehension ladder of "קואורדינטות קוטביות, גליליות וכדוריות".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Directions in `vector` questions: n = up the page (or north on a map), e = right (east).
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts (R_EARTH from src/physics/constants.ts):
+#   r = 2 m, θ = 150°: x = −1.73 m, y = 1 m;
+#   bead r = 0.2 + 0.4t m, ω = 1 rad/s, t = 2 s: r = 1 m, speed √(0.4² + 1²) = 1.08 m/s (0.4 + 1 = 1.4);
+#   log R = 0.10 m, L = 2.0 m, ρ = ρ₀s/R, ρ₀ = 900 kg/m³: M = 2πρ₀LR²/3 = 37.7 kg (ρ₀V/2 = 28.3, ρ₀V = 56.5);
+#   planet ρ = ρ₀(1 − r/R), ρ₀ = 12 000 kg/m³, R = R_EARTH: M = πρ₀R³/3 = 3.25e24 kg
+#     (uniform 1.30e25, ρ₀/2 · V = 6.50e24, without r² 4.80e11), mean density 3000 kg/m³;
+#   U = 3x² + 2xy at (1, 2) m: ∂U/∂x = 10 J/m (U = 7 J, ∂U/∂y = 2 J/m);
+#   hill h = 50 − 0.002(x² + 4y²) m: ∇h(20, 5) = (−0.08, −0.08), ∇h(20, 10) = (−0.08, −0.16), |∇h| = 0.179,
+#     climb walking south-west 0.170 (0.24 with an unnormalised direction).
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.7-1 polar coordinates, r̂ and θ̂ and their derivatives
+  - id: Q-0.7-polar-to-cartesian
+    type: numeric
+    objectives: [OBJ-0.7-1]
+    level: basic
+    prompt: >-
+      המקום של כדורית על שולחן נתון בקואורדינטות קוטביות: $r = 2.0\,\text{m}$ ו-$\theta = 150^\circ$, כשהזווית
+      נמדדת מהציר $x$ החיובי נגד כיוון השעון. מה הקואורדינטה $x$ שלה?
+    answer: -1.73
+    unit: m
+    correctFeedback: >-
+      נכון. $x = r\cos\theta = 2\cdot\cos150^\circ = -1.73\,\text{m}$, ו-$y = r\sin\theta = 1.0\,\text{m}$: הכדורית ברביע
+      השני, משמאל לציר $y$. בדיקה: $x^2 + y^2 = 3 + 1 = r^2$.
+    wrongFeedback: '$x = r\cos\theta$ ו-$y = r\sin\theta$. זווית של $150^\circ$ נמצאת ברביע השני: מה הסימן של $x$ שם?'
+    commonWrong:
+      - value: 1
+        feedback: 'זה $r\sin\theta$, הקואורדינטה $y$. כשהזווית נמדדת מהציר $x$, הרכיב לאורך $x$ הוא $r\cos\theta$.'
+        misconception: MC-0-sin-cos-swap
+      - value: 1.73
+        feedback: 'הסימן הפוך: $\cos150^\circ = -\cos30^\circ < 0$. ברביע השני $x$ שלילי.'
+    hints:
+      - '$\cos150^\circ = -\dfrac{\sqrt3}{2}$.'
+
+  - id: Q-0.7-thetahat-direction
+    type: vector
+    objectives: [OBJ-0.7-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בקואורדינטות קוטביות, וקטור היחידה $\hat\theta$ מצביע בכיוון שבו $\theta$ גדלה ו-$r$ לא משתנה. נקודה נמצאת על
+      הציר $y$ החיובי, כלומר $\theta = 90^\circ$, כשהציר $x$ ימינה והציר $y$ למעלה. מה הכיוון של $\hat\theta$ בנקודה הזו?
+    answer: w
+    correctFeedback: >-
+      נכון. $\hat\theta = (-\sin\theta,\ \cos\theta)$, וב-$\theta = 90^\circ$ זה $(-1, 0)$: שמאלה. כשמגדילים את $\theta$
+      זזים על המעגל נגד כיוון השעון, ומהנקודה העליונה זה שמאלה. וקטורי היחידה $\hat r$ ו-$\hat\theta$ משתנים מנקודה
+      לנקודה, בניגוד ל-$\hat x$ ו-$\hat y$.
+    wrong:
+      - dir: n
+        feedback: 'זה $\hat r$, הכיוון שבו $r$ גדל, הרחק מהראשית. $\hat\theta$ ניצב לו, משיק למעגל.'
+      - dir: e
+        feedback: 'זה הכיוון שבו $\theta$ **קטנה**, עם כיוון השעון. $\theta$ גדלה נגד כיוון השעון.'
+    wrongFeedback: '$\hat\theta$ משיק למעגל שעובר בנקודה ומרכזו בראשית, בכיוון נגד השעון.'
+
+  - id: Q-0.7-rhat-derivative
+    type: mc
+    objectives: [OBJ-0.7-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      חלקיק נע על מעגל ברדיוס $R$, והזווית שלו $\theta = \omega t$. וקטור המקום שלו הוא $\vec r = R\hat r$, כאשר
+      $\hat r = (\cos\theta,\ \sin\theta)$. מה $\dfrac{d\hat r}{dt}$?
+    choices:
+      - text: $\omega\hat\theta$
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{d\hat r}{dt} = \dot\theta\left(-\sin\theta,\ \cos\theta\right) = \dot\theta\hat\theta$. לכן
+          $\vec v = R\dot\theta\hat\theta$: המהירות משיקה למעגל. באותו אופן $\dfrac{d\hat\theta}{dt} = -\dot\theta\hat r$.
+      - text: אפס, כי הגודל של $\hat r$ תמיד 1.
+        feedback: >-
+          הגודל קבוע, אבל **הכיוון** של $\hat r$ מסתובב עם החלקיק. נגזרת של וקטור שגודלו קבוע ניצבת לו, אבל היא
+          לא אפס כשהוא מסתובב.
+        misconception: MC-0-unit-vector-constant
+      - text: $-\omega\hat r$
+        feedback: 'זו הנגזרת של $\hat\theta$, ולא של $\hat r$. הנגזרת של וקטור שגודלו קבוע ניצבת לו, ולכן $d\hat r/dt$ לא יכולה להיות בכיוון $\hat r$.'
+      - text: $\omega\hat r$
+        feedback: 'אם הנגזרת הייתה בכיוון $\hat r$, האורך של $\hat r$ היה גדל. מ-$\hat r\cdot\hat r = 1$ נובע $\hat r\cdot\dfrac{d\hat r}{dt} = 0$.'
+    hints:
+      - 'גזרו את $(\cos\theta,\ \sin\theta)$ רכיב-רכיב, עם $\dot\theta = \omega$.'
+
+  - id: Q-0.7-bead-speed
+    type: numeric
+    objectives: [OBJ-0.7-1]
+    level: bagrut
+    prompt: >-
+      מוט אופקי מסתובב סביב הקצה שלו במהירות זוויתית קבועה $\omega = 1.0\,\text{rad/s}$. חרוז מחליק לאורך המוט
+      החוצה, והמרחק שלו מהציר הוא $r(t) = r_0 + ut$, עם $r_0 = 0.20\,\text{m}$ ו-$u = 0.40\,\text{m/s}$. גזרו את
+      $\vec r = r\hat r$ ומצאו את גודל המהירות של החרוז ברגע $t = 2.0\,\text{s}$.
+    answer: 1.08
+    unit: m/s
+    correctFeedback: >-
+      נכון. $\dot{\vec r} = \dot r\hat r + r\dfrac{d\hat r}{dt} = \dot r\hat r + r\dot\theta\hat\theta$. ב-$t = 2\,\text{s}$:
+      $r = 1.0\,\text{m}$, ולכן $\vec v = 0.40\,\hat r + 1.0\,\hat\theta$ (ב-$\text{m/s}$), ו-$|\vec v| = \sqrt{0.16 + 1} = 1.08\,\text{m/s}$.
+      **בדיקת גבולות:** כש-$u = 0$ נשאר $r\omega$, תנועה מעגלית. כש-$\omega = 0$ נשאר $u$, תנועה בקו ישר לאורך המוט.
+    wrongFeedback: 'גזרו מכפלה: $\dfrac{d}{dt}(r\hat r) = \dot r\hat r + r\dfrac{d\hat r}{dt}$. גם $\hat r$ משתנה, כי המוט מסתובב.'
+    commonWrong:
+      - value: 0.4
+        feedback: >-
+          זה רק $\dot r$, המהירות לאורך המוט. גזרתם את $r\hat r$ כאילו $\hat r$ קבוע, אבל הוא מסתובב עם המוט,
+          ו-$d\hat r/dt = \dot\theta\hat\theta$ מוסיף רכיב משיקי.
+        misconception: MC-0-unit-vector-constant
+      - value: 1.4
+        feedback: 'חיברתם את הגדלים, $0.4 + 1.0$. שני הרכיבים, $\hat r$ ו-$\hat\theta$, ניצבים זה לזה, ולכן מתחברים בפיתגורס.'
+        misconception: MC-0-magnitudes-add
+      - value: 1
+        feedback: 'זה רק הרכיב המשיקי, $r\omega$. החרוז גם מחליק החוצה לאורך המוט, ב-$0.40\,\text{m/s}$.'
+    hints:
+      - 'כמה זה $r$ ברגע $t = 2\,\text{s}$?'
+      - '$\dfrac{d\hat r}{dt} = \dot\theta\hat\theta$.'
+
+  # ---------------------------------------------------------------- OBJ-0.7-2 line, area and volume elements in integrals
+  - id: Q-0.7-arc-length
+    type: mc
+    objectives: [OBJ-0.7-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בקואורדינטות קוטביות, נקודה במרחק $r$ מהראשית מסתובבת בזווית קטנה $d\theta$, ו-$r$ לא משתנה. מה אורך הקשת
+      שהיא עוברת?
+    choices:
+      - text: $r\,d\theta$
+        correct: true
+        feedback: >-
+          נכון. קשת של מעגל ברדיוס $r$ היא הרדיוס כפול הזווית ברדיאנים. לכן אלמנט האורך הוא
+          $d\vec\ell = dr\,\hat r + r\,d\theta\,\hat\theta$, ואלמנט השטח $dA = r\,dr\,d\theta$.
+      - text: $d\theta$
+        feedback: >-
+          $d\theta$ חסר ממדים, ולכן הוא לא אורך. באותה זווית, נקודה רחוקה מהראשית עוברת דרך ארוכה יותר: צריך
+          לכפול ב-$r$.
+        misconception: MC-0-element-no-jacobian
+      - text: $r^2\,d\theta$
+        feedback: 'זה ביחידות שטח, $\text{m}^2$. (חצי ממנו, $\tfrac12r^2\,d\theta$, הוא השטח של גזרה דקה.) אורך הקשת הוא $r\,d\theta$.'
+      - text: $dr\,d\theta$
+        feedback: '$r$ לא משתנה כאן, ולכן $dr = 0$. וגם בשטח, $dr\,d\theta$ חסר את הגורם $r$: $dA = r\,dr\,d\theta$.'
+        misconception: MC-0-element-no-jacobian
+    hints:
+      - 'מה אורך ההיקף של מעגל ברדיוס $r$, וכמה רדיאנים יש בסיבוב שלם?'
+
+  - id: Q-0.7-shell-volume
+    type: twotier
+    objectives: [OBJ-0.7-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בונים כדור ברדיוס $R$ מקליפות כדוריות דקות. מה הנפח $dV$ של קליפה דקה ברדיוס $r$ ובעובי $dr$?
+    choices:
+      - text: $dV = 4\pi r^2\,dr$
+        correct: true
+        feedback: >-
+          נכון. ומכאן נפח הכדור: $\displaystyle\int_0^R4\pi r^2\,dr = \frac43\pi R^3$. קליפות כאלה הן הדרך לחשב מסה של
+          גוף שהצפיפות שלו תלויה רק ב-$r$.
+      - text: $dV = \tfrac43\pi\,(dr)^3$
+        feedback: 'זה הנפח של כדור זעיר בקוטר בסדר גודל של $dr$, ולא של קליפה. הקליפה דקה, אבל היא משתרעת על כל שטח הספרה.'
+      - text: $dV = 4\pi r\,dr$
+        feedback: 'בדקו יחידות: $\text{m}^2$, לא נפח. שטח הספרה גדל כמו $r^2$, ולא כמו $r$.'
+    reasons:
+      - text: 'שטח הספרה $4\pi r^2$ כפול העובי $dr$. אותו דבר מתקבל מ-$dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$, כשמאנטגרלים על הזוויות.'
+        correct: true
+        feedback: '$\displaystyle\int_0^{2\pi}\int_0^\pi\sin\theta\,d\theta\,d\varphi = 4\pi$, ולכן $dV = 4\pi r^2\,dr$. שתי הדרכים מסכימות.'
+      - text: 'אלמנט הנפח בקואורדינטות כדוריות הוא $dr\,d\theta\,d\varphi$, ולכן אנטגרציה על הזוויות נותנת $2\pi^2\,dr$.'
+        feedback: >-
+          $dr\,d\theta\,d\varphi$ ביחידות מטר בלבד. הצעדים בזוויות הם קשתות באורכים $r\,d\theta$ ו-$r\sin\theta\,d\varphi$,
+          ולכן $dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$.
+        misconception: MC-0-element-no-jacobian
+      - text: 'ההפרש בין שני כדורים, $\tfrac43\pi(r + dr)^3 - \tfrac43\pi r^3$, שווה ל-$\tfrac43\pi\,(dr)^3$.'
+        feedback: '$(r + dr)^3 \ne r^3 + (dr)^3$. בפיתוח, $(r + dr)^3 \approx r^3 + 3r^2\,dr$, וההפרש הוא $4\pi r^2\,dr$.'
+    hints:
+      - 'מה השטח של ספרה ברדיוס $r$?'
+
+  - id: Q-0.7-cylinder-mass
+    type: numeric
+    objectives: [OBJ-0.7-2]
+    level: mid
+    prompt: >-
+      בול עץ גלילי ברדיוס $R = 0.10\,\text{m}$ ובאורך $L = 2.0\,\text{m}$ יבש יותר במרכז, והצפיפות שלו גדלה עם
+      המרחק $s$ מהציר: $\rho(s) = \rho_0\dfrac{s}{R}$, עם $\rho_0 = 900\,\text{kg/m}^3$. חלקו אותו לקליפות גליליות
+      דקות ומצאו את המסה שלו.
+    answer: 37.7
+    unit: kg
+    correctFeedback: >-
+      נכון. לקליפה ברדיוס $s$ ובעובי $ds$ יש נפח $dV = 2\pi sL\,ds$ (היקף כפול אורך כפול עובי), ולכן
+      $M = \displaystyle\int_0^R\rho_0\frac{s}{R}\,2\pi sL\,ds = \frac{2\pi\rho_0LR^2}{3} = \frac{2\pi\cdot900\cdot2.0\cdot0.01}{3} = 37.7\,\text{kg}$.
+      **בדיקה:** הצפיפות הממוצעת $\tfrac23\rho_0$, גדולה מ-$\rho_0/2$, כי לקליפות החיצוניות, הצפופות, יש יותר נפח.
+    wrongFeedback: 'אלמנט הנפח בקואורדינטות גליליות, כשהצפיפות תלויה רק ב-$s$: $dV = 2\pi s\,L\,ds$. הכפילו ב-$\rho(s)$ ואנטגרלו מ-0 עד $R$.'
+    commonWrong:
+      - value: 28.3
+        feedback: >-
+          זה $\tfrac12\rho_0$ כפול הנפח: הנחתם שהצפיפות הממוצעת היא הממוצע של $0$ ו-$\rho_0$. אבל לקליפה החיצונית
+          יש יותר נפח מלפנימית, והיא נכנסת לממוצע במשקל גדול יותר.
+        misconception: MC-0-mean-density-midpoint
+      - value: 56.5
+        feedback: 'זה $\rho_0$ כפול הנפח, כאילו כל הבול צפוף כמו השכבה החיצונית שלו.'
+        misconception: MC-0-constant-rate-assumed
+    hints:
+      - '$\displaystyle\int_0^Rs^2\,ds = \frac{R^3}{3}$.'
+
+  - id: Q-0.7-planet-mass
+    type: numeric
+    objectives: [OBJ-0.7-2]
+    level: bagrut
+    prompt: >-
+      במודל פשוט של כוכב לכת ברדיוס $R = 6.37\cdot10^6\,\text{m}$ הצפיפות יורדת קווית מהמרכז אל פני השטח:
+      $\rho(r) = \rho_0\left(1 - r/R\right)$, עם $\rho_0 = 1.2\cdot10^4\,\text{kg/m}^3$. מה המסה של כוכב הלכת?
+    answer: 3.25e24
+    unit: kg
+    correctFeedback: >-
+      נכון. $M = \displaystyle\int_0^R\rho_0\left(1 - \frac{r}{R}\right)4\pi r^2\,dr = 4\pi\rho_0\left(\frac{R^3}{3} - \frac{R^3}{4}\right) = \frac{\pi\rho_0R^3}{3} = 3.25\cdot10^{24}\,\text{kg}$.
+      **בדיקה:** הצפיפות הממוצעת היא $M/V = \rho_0/4 = 3000\,\text{kg/m}^3$, ולא $\rho_0/2$: רוב הנפח רחוק מהמרכז, שם
+      הצפיפות קטנה. **בדיקת יחידות:** $\text{kg/m}^3\cdot\text{m}^3 = \text{kg}$.
+    wrongFeedback: 'חלקו לקליפות כדוריות, $dm = \rho(r)\,4\pi r^2\,dr$, ואנטגרלו מ-0 עד $R$. אל תשכחו את $r^2$ באלמנט הנפח.'
+    commonWrong:
+      - value: 1.3e25
+        feedback: 'זה $\tfrac43\pi R^3\rho_0$, כאילו הצפיפות $\rho_0$ בכל מקום. רק המרכז צפוף כל כך.'
+        misconception: MC-0-constant-rate-assumed
+      - value: 6.5e24
+        feedback: >-
+          זה $\tfrac{\rho_0}{2}$ כפול הנפח: הצפיפות הממוצעת **לאורך הרדיוס** היא $\rho_0/2$, אבל הממוצע **על הנפח**
+          משוקלל ב-$r^2$, והקליפות החיצוניות, הדלילות, תופסות את רוב הנפח.
+        misconception: MC-0-mean-density-midpoint
+      - value: 4.8e11
+        feedback: 'שכחתם את $r^2$ באלמנט הנפח, וקיבלתם $\int\rho\,4\pi\,dr$, ביחידות $\text{kg/m}^2$. נפח של קליפה הוא $4\pi r^2\,dr$.'
+        misconception: MC-0-element-no-jacobian
+    hints:
+      - '$\displaystyle\int_0^R\left(r^2 - \frac{r^3}{R}\right)dr = \frac{R^3}{3} - \frac{R^3}{4}$.'
+
+  # ---------------------------------------------------------------- OBJ-0.7-3 the gradient as the steepest ascent
+  - id: Q-0.7-grad-component
+    type: numeric
+    objectives: [OBJ-0.7-3]
+    level: basic
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק במישור היא $U(x, y) = 3x^2 + 2xy$, עם $U$ בג׳אול ו-$x$, $y$ במטרים. מה הרכיב $x$
+      של הגרדיאנט, $\partial U/\partial x$, בנקודה $(1, 2)\,\text{m}$?
+    answer: 10
+    unit: J/m
+    correctFeedback: >-
+      נכון. בנגזרת חלקית לפי $x$ מחזיקים את $y$ קבוע: $\dfrac{\partial U}{\partial x} = 6x + 2y = 6 + 4 = 10\,\text{J/m}$.
+      הרכיב השני, $\partial U/\partial y = 2x = 2\,\text{J/m}$. בפרק 3 תראו שהכוח הוא $\vec F = -\nabla U$, ולכן כאן
+      $F_x = -10\,\text{N}$.
+    wrongFeedback: 'גזרו לפי $x$ כאילו $y$ מספר קבוע, ורק אחר כך הציבו $x = 1$, $y = 2$.'
+    commonWrong:
+      - value: 7
+        feedback: 'זה $U(1, 2)$ עצמו, בג׳אול. הגרדיאנט הוא קצב השינוי של $U$, ולא הערך שלו.'
+      - value: 6
+        feedback: 'גזרתם רק את $3x^2$. גם $2xy$ תלוי ב-$x$: הנגזרת שלו לפי $x$, כש-$y$ קבוע, היא $2y$.'
+      - value: 2
+        feedback: 'זה $\partial U/\partial y = 2x$, הרכיב $y$ של הגרדיאנט. התבקשתם את הרכיב $x$.'
+    hints:
+      - '$\dfrac{\partial}{\partial x}(2xy) = 2y$.'
+
+  - id: Q-0.7-steepest
+    type: vector
+    objectives: [OBJ-0.7-3]
+    qualitative: true
+    level: mid
+    prompt: >-
+      הגובה של גבעה הוא $h(x, y) = 50 - 0.002\left(x^2 + 4y^2\right)$, במטרים, כש-$x$ פונה מזרחה ו-$y$ צפונה. הפסגה
+      בראשית, והגבעה תלולה יותר בכיוון צפון-דרום. מטיילת עומדת בנקודה $(20, 5)\,\text{m}$. במפה, צפון למעלה ומזרח
+      ימינה. לאיזה כיוון עליה ללכת כדי לטפס הכי מהר?
+    answer: sw
+    correctFeedback: >-
+      נכון. $\nabla h = \left(-0.004x,\ -0.016y\right) = (-0.08,\ -0.08)$: רכיבים שווים ושליליים, כלומר דרום-מערב.
+      הפסגה נמצאת בכיוון $(-20, -5)$, כמעט מערבה, אבל העלייה התלולה ביותר לא פונה אליה, כי הגבעה תלולה יותר בכיוון
+      $y$. הגרדיאנט ניצב לקו הגובה שעובר בנקודה.
+    wrong:
+      - dir: w
+        feedback: >-
+          זה בערך הכיוון אל הפסגה, $(-20, -5)$. הכיוון התלול ביותר הוא הגרדיאנט, ובגבעה שאינה עגולה הוא לא
+          מצביע אל הפסגה.
+        misconception: MC-0-steepest-toward-summit
+      - dir: ne
+        feedback: 'זה $-\nabla h$, הכיוון שבו הגובה **יורד** הכי מהר, הכיוון שבו מים זורמים. הגרדיאנט מצביע לעלייה.'
+      - dir: s
+        feedback: 'גם הרכיב $x$ של הגרדיאנט שונה מאפס: $-0.004\cdot20 = -0.08$, שווה לרכיב $y$.'
+    wrongFeedback: 'חשבו את $\nabla h = \left(\partial h/\partial x,\ \partial h/\partial y\right)$ בנקודה, ובדקו את הסימנים של שני הרכיבים.'
+
+  - id: Q-0.7-directional
+    type: numeric
+    objectives: [OBJ-0.7-3]
+    level: bagrut
+    prompt: >-
+      על אותה גבעה, $h(x, y) = 50 - 0.002\left(x^2 + 4y^2\right)$ במטרים (עם $x$ מזרחה ו-$y$ צפונה), מטייל עומד
+      בנקודה $(20, 10)\,\text{m}$ והולך בדיוק לדרום-מערב. בכמה מטרים הוא עולה לכל מטר שהוא הולך?
+    answer: 0.17
+    unit: m/m
+    correctFeedback: >-
+      נכון. $\nabla h = (-0.08,\ -0.16)$ והכיוון $\hat s = \left(-\tfrac{1}{\sqrt2},\ -\tfrac{1}{\sqrt2}\right)$, ולכן
+      $\dfrac{dh}{ds} = \nabla h\cdot\hat s = \dfrac{0.08 + 0.16}{\sqrt2} = 0.170$. **בדיקת גבולות:** הקצב המרבי,
+      בכיוון של $\nabla h$ עצמו, הוא $|\nabla h| = 0.179$, ובכיוון קו הגובה הוא אפס. דרום-מערב קרוב לכיוון הגרדיאנט,
+      ולכן $0.170$ קרוב למקסימום.
+    wrongFeedback: 'השינוי בגובה לכל מטר בכיוון $\hat s$ הוא $\nabla h\cdot\hat s$, עם $\hat s$ **וקטור יחידה**.'
+    commonWrong:
+      - value: 0.179
+        feedback: 'זה $|\nabla h|$, הקצב בכיוון התלול ביותר. דרום-מערב אינו בדיוק כיוון הגרדיאנט, $(-1, -2)/\sqrt5$, ולכן הקצב קטן מעט יותר.'
+      - value: 0.24
+        feedback: 'השתמשתם בכיוון $(-1, -1)$, שהאורך שלו $\sqrt2$, ולא 1. נרמלו את הכיוון לפני המכפלה הסקלרית.'
+      - value: 0.08
+        feedback: 'זה רק הרכיב $x$ של הגרדיאנט, בגודלו: העלייה בהליכה מערבה. בדרום-מערב תורמים שני הרכיבים, כל אחד כפול $1/\sqrt2$.'
+    hints:
+      - '$\dfrac{\partial h}{\partial x} = -0.004x$ ו-$\dfrac{\partial h}{\partial y} = -0.016y$.'

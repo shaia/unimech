@@ -1,0 +1,32 @@
+# Terms first defined in lesson 10.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: photon
+  term: פוטון
+  en: photon
+  symbol: γ
+  definition: חלקיק האור, חסר מסה. האנרגיה והתנע שלו קשורים ב-E = pc, הוא נע תמיד במהירות c, ואורך הגל שלו λ = h/p = hc/E.
+  lesson: '10.4'
+
+- id: compton-scattering
+  term: פיזור קומפטון
+  en: Compton scattering
+  definition: פיזור של פוטון מאלקטרון חופשי ונייח. משימור ארבעה-וקטור האנרגיה-תנע מקבלים שאורך הגל של הפוטון גדל ב-Δλ = (h/(mₑc))(1 − cos θ), כאשר θ זווית הפיזור ו-h/(mₑc) = 2.43 pm אורך הגל של קומפטון של האלקטרון.
+  lesson: '10.4'
+
+- id: binding-energy
+  term: אנרגיית קשר
+  en: binding energy
+  symbol: B
+  unit: MeV
+  definition: האנרגיה שצריך להשקיע כדי לפרק מערכת קשורה, למשל גרעין, לחלקיה החופשיים והנחים. היא שווה למסה החסרה כפול c², ולדאוטרון היא 2.22 MeV.
+  lesson: '10.4'
+
+- id: mass-defect
+  term: מסה חסרה
+  en: mass defect
+  symbol: Δm
+  unit: MeV/c²
+  definition: ההפרש בין סכום המסות של החלקים החופשיים של מערכת קשורה לבין המסה של המערכת, Δm = Σmᵢ − M. הוא חיובי, ושווה לאנרגיית הקשר חלקי c².
+  reject: [פגם מסה]
+  lesson: '10.4'

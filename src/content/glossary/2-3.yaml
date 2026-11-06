@@ -1,0 +1,32 @@
+# Terms first defined in lesson 2.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: normal-force
+  term: כוח נורמלי
+  en: normal force
+  symbol: N
+  unit: N
+  definition: כוח המגע שמשטח מפעיל על גוף, בניצב למשטח, כדי שהגוף לא ייכנס לתוכו. אין לו נוסחה משלו. הוא נעלם שהאילוץ קובע, ומוצאים אותו מהחוק השני בכיוון הניצב. משטח יכול רק לדחוף, ולכן N ≥ 0, וכש-N מתאפס הגוף מתנתק.
+  lesson: '2.3'
+
+- id: tension
+  term: מתיחות
+  en: tension
+  symbol: T
+  unit: N
+  definition: הכוח שחוט או חבל מפעילים, לאורכם, על מה שקשור אליהם, ובכל נקודה בחוט, הכוח שכל צד מושך בו את הצד השני. בחוט חסר מסה היא זהה לכל אורכו, ובחבל בעל מסה היא משתנה. חוט יכול רק למשוך, ולכן T ≥ 0.
+  lesson: '2.3'
+
+- id: hookes-law
+  term: חוק הוק
+  en: Hooke's law
+  definition: הכוח שקפיץ מפעיל פרופורציוני להתארכות שלו או להתקצרות שלו מהאורך הרפוי, ופונה נגדן, F = −kx. החוק מתאר היטב קפיצים בהתארכות קטנה.
+  lesson: '2.3'
+
+- id: spring-constant
+  term: קבוע קפיץ
+  en: spring constant
+  symbol: k
+  unit: N/m
+  definition: המקדם בחוק הוק, הכוח לכל מטר של התארכות. קפיץ קשיח הוא קפיץ עם k גדול. שני קפיצים בטור רכים יותר מכל אחד מהם, ושניים במקביל קשיחים יותר.
+  lesson: '2.3'

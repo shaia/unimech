@@ -1,0 +1,35 @@
+# Terms first defined in lesson 9.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). Ids without a prefix are fixed by
+# the course's term table; `c9-` ids are terms chapter 9 added.
+
+- id: event
+  term: מאורע
+  en: event
+  definition: משהו שקורה בנקודה אחת במרחב וברגע אחד בזמן, כמו הבזק של מנורה או פגיעה של ברק. במערכת ייחוס נתונה מאורע מתואר בארבעה מספרים, t, x, y, z. מאורע אחד מתואר בכל מערכת במספרים אחרים, אבל הוא אותו מאורע.
+  lesson: '9.1'
+
+- id: postulates
+  term: הנחות היסוד
+  en: postulates of special relativity
+  definition: שתי ההנחות שעליהן איינשטיין בנה את תורת היחסות הפרטית. הראשונה, עקרון היחסות, אומרת שחוקי הפיזיקה זהים בכל מערכות הייחוס האינרציאליות. השנייה אומרת שמהירות האור בריק, c, זהה בכל מערכות הייחוס האינרציאליות, בלי קשר לתנועת המקור.
+  reject: [פוסטולטים]
+  lesson: '9.1'
+
+- id: simultaneity
+  term: בו-זמניות
+  en: simultaneity
+  definition: שני מאורעות הם בו-זמניים במערכת ייחוס נתונה אם הם קורים באותו זמן t באותה מערכת. מאורעות במקומות שונים שבו-זמניים במערכת אחת אינם בו-זמניים במערכת שנעה ביחס אליה לאורך הקו שמחבר אותם, ולכן בו-זמניות תלויה במערכת הייחוס.
+  reject: [סימולטניות]
+  lesson: '9.1'
+
+- id: c9-ether
+  term: אתר
+  en: luminiferous ether
+  definition: התווך שהפיזיקה של המאה ה-19 הניחה שהאור נע בו, כמו שקול נע באוויר. לפי התאוריה הזו, האור נע במהירות c רק ביחס לאתר, וצופה שנע דרך האתר אמור למדוד מהירות אחרת. ניסוי מייקלסון-מורלי לא מצא את התנועה הזו.
+  lesson: '9.1'
+
+- id: c9-interferometer
+  term: אינטרפרומטר
+  en: interferometer
+  definition: מכשיר שמפצל אלומת אור לשתי אלומות, שולח אותן בשתי דרכים ומאחד אותן שוב. ההפרש בין זמני המעבר בשתי הדרכים קובע את תבנית פסי ההתאבכות, ושינוי של זמן מחזור אחד של האור בהפרש מזיז את התבנית בפס אחד.
+  lesson: '9.1'

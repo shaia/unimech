@@ -1,0 +1,19 @@
+# Terms first defined in lesson 3.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: center-of-mass
+  term: מרכז מסה
+  en: center of mass
+  symbol: R_cm
+  unit: m
+  definition: הממוצע של מקומות החלקיקים במערכת, משוקלל במסות, R = Σmᵢrᵢ/M, ובגוף רציף R = (1/M)∫r dm. הוא נע כמו חלקיק אחד בעל המסה הכוללת שעליו פועל הכוח החיצוני השקול.
+  reject: [מרכז הכובד של מערכת, מרכז מאסה]
+  lesson: '3.4'
+
+- id: external-force
+  term: כוח חיצוני
+  en: external force
+  symbol: F_ext
+  unit: N
+  definition: כוח שגוף מחוץ למערכת מפעיל על חלק של המערכת. כוח פנימי הוא כוח בין שני חלקים של המערכת; לפי החוק השלישי הכוחות הפנימיים מתבטלים בסכום, ולכן M·a_cm = F_ext.
+  lesson: '3.4'

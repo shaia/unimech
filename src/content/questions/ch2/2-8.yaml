@@ -1,0 +1,305 @@
+# Lesson 2.8 question bank: the comprehension ladder of "משוואת התנועה: כוח שתלוי בזמן או במקום".
+# Every objective has ≥ 3 questions, one of them qualitative; the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8, G_NEWTON, M_EARTH, R_EARTH),
+# script .scratch/ch2/q.ts:
+#   F = 6.0t N on 2.0 kg from rest: a = 3t, v = 1.5t², x = 0.5t³: v(2 s) = 6.0 m/s (a(2)·t = 12; x(2) = 4.0 m);
+#   F = F0 cos ωt, F0 = 2.0 N, ω = 4.0 rad/s, m = 0.50 kg, from rest at 0: x = F0(1 - cos ωt)/(mω²),
+#   x_max = 2F0/(mω²) = 0.50 m (F0/(mω²) = 0.25; F0/(mω) = 1.0 m/s);
+#   F = F0 e^(-t/τ), F0 = 4.0 N, τ = 0.50 s, m = 2.0 kg: v∞ = F0τ/m = 1.0 m/s, x(2 s) = v∞(t - τ(1 - e^-4)) = 1.51 m
+#   (v∞t = 2.0; ½(F0/m)t² = 4.0; v∞(t - τ) = 1.50, within 1% of the answer, so not a common wrong);
+#   spring k = 200 N/m, m = 0.50 kg, released at 0.10 m: v(0.05 m) = √((k/m)(x0² - x²)) = 1.73 m/s
+#   (linear 1.0; v at 0: 2.0; v² = 3.0);
+#   fall from rest at 2R_E: v² = 2GM(1/R - 1/2R) = GM/R, v = 7.91 km/s (√(2gR) = √(2GM/R) = 11.2;
+#   g frozen at its start value g/4: √(2(g/4)R) = 5.59).
+
+chapter: 2
+questions:
+  # ---------------------------------------------------------------- OBJ-2.8-1 a force that depends on time: two integrations
+  - id: Q-2.8-linear-force
+    type: mc
+    objectives: [OBJ-2.8-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      על גוף שנמצא במנוחה ב-$t = 0$ פועל כוח שגדל קווית בזמן, $F = ct$, כאשר $c$ קבוע. איך תלויים בזמן המהירות
+      והמקום של הגוף?
+    choices:
+      - text: $v \propto t^2$ ו-$x \propto t^3$
+        correct: true
+        feedback: >-
+          נכון. $a = ct/m$. אינטגרציה אחת עם $v(0) = 0$ נותנת $v = \dfrac{c}{2m}t^2$, ושנייה, עם $x(0) = 0$,
+          $x = \dfrac{c}{6m}t^3$. כל אינטגרציה מעלה את החזקה של $t$ באחת.
+      - text: $v \propto t$ ו-$x \propto t^2$
+        feedback: >-
+          זה נכון רק בתאוצה **קבועה**. כאן התאוצה גדלה עם הזמן, והנוסחאות $v = at$ ו-$x = \tfrac12at^2$ לא חלות. צריך
+          לאנטגרל.
+        misconception: MC-2-constant-acceleration-formulas
+      - text: $v \propto t^2$ ו-$x \propto t^2$
+        feedback: 'המקום הוא האינטגרל של המהירות, ואינטגרל של $t^2$ הוא $t^3/3$.'
+      - text: $v \propto t$ ו-$x \propto t^3$
+        feedback: 'המהירות היא האינטגרל של התאוצה, $\int ct\,dt = ct^2/2$, ולא $ct$.'
+        misconception: MC-2-constant-acceleration-formulas
+    hints:
+      - 'כתבו $dv/dt = ct/m$ ואנטגרלו מ-0 עד $t$.'
+
+  - id: Q-2.8-ft-velocity
+    type: numeric
+    objectives: [OBJ-2.8-1]
+    level: basic
+    prompt: >-
+      על גוף בעל מסה $2.0\,\text{kg}$, שנמצא במנוחה ב-$t = 0$, פועל כוח $F = (6.0\,\text{N/s})\,t$. מה מהירות הגוף
+      ב-$t = 2.0\,\text{s}$?
+    answer: 6.0
+    unit: m/s
+    correctFeedback: >-
+      נכון. $a = F/m = 3.0t$, ולכן $v(t) = \int_0^t 3.0t'\,dt' = 1.5t^2$, ו-$v(2.0) = 6.0\,\text{m/s}$.
+    wrongFeedback: 'מצאו את $a(t)$, ואנטגרלו אותו מ-0 עד $2.0\,\text{s}$, עם $v(0) = 0$.'
+    commonWrong:
+      - value: 12
+        feedback: >-
+          חישבתם $a(2)\cdot t = 6.0\cdot2.0$, כאילו התאוצה הייתה $6.0\,\text{m/s}^2$ כל הזמן. אבל היא גדלה מאפס, ולכן
+          המהירות היא השטח מתחת לגרף של $a(t)$, משולש: חצי מזה.
+        misconception: MC-2-constant-acceleration-formulas
+      - value: 4.0
+        feedback: 'זה המקום, $x(2) = 0.5\cdot2.0^3 = 4.0\,\text{m}$: אנטגרלתם פעמיים. השאלה שואלת על המהירות.'
+    hints:
+      - 'המהירות היא השטח מתחת לגרף של התאוצה כפונקציה של הזמן.'
+
+  - id: Q-2.8-which-integrate
+    type: multi
+    objectives: [OBJ-2.8-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      לאילו מהכוחות הבאים אפשר למצוא את המהירות ישירות מ-$v(t) = v_0 + \dfrac1m\displaystyle\int_0^t F\,dt'$, בלי
+      לדעת קודם את $x(t)$ או את $v(t)$? סמנו את כולם.
+    choices:
+      - text: $F = F_0e^{-t/\tau}$
+        correct: true
+        feedback: נכון. הכוח הוא פונקציה ידועה של הזמן בלבד, ולכן האינטגרל הוא אינטגרל רגיל.
+      - text: $F = F_0\cos\omega t$
+        correct: true
+        feedback: נכון. גם כאן הכוח תלוי רק בזמן.
+      - text: $F = -kx$
+        feedback: >-
+          הכוח תלוי במקום, ו-$x(t)$ הוא בדיוק מה שלא יודעים. כדי לאנטגרל את $-kx(t)$ לפי הזמן צריך את הפתרון מראש.
+          לכוח כזה משתמשים בכלל השרשרת, $a = v\,dv/dx$, ומאנטגרלים לפי $x$.
+        misconception: MC-2-integrate-any-force
+      - text: $F = -bv$
+        feedback: >-
+          הכוח תלוי במהירות, שהיא הנעלם עצמו. כאן מפרידים משתנים, $\dfrac{dv}{v} = -\dfrac bm\,dt$, כמו בגרר הליניארי
+          (שיעור 2.7).
+        misconception: MC-2-integrate-any-force
+    hints:
+      - 'כדי לחשב $\int_0^t F\,dt''$ צריך לדעת את $F$ בכל רגע. לאילו כוחות זה אפשרי לפני שפתרתם את התנועה?'
+
+  - id: Q-2.8-cos-max
+    type: numeric
+    objectives: [OBJ-2.8-1]
+    level: mid
+    prompt: >-
+      על גוף בעל מסה $m = 0.50\,\text{kg}$, שנמצא במנוחה ב-$x = 0$ ברגע $t = 0$, פועל כוח $F = F_0\cos\omega t$, עם
+      $F_0 = 2.0\,\text{N}$ ו-$\omega = 4.0\,\text{rad/s}$. מה המרחק הגדול ביותר של הגוף מנקודת ההתחלה?
+    answer: 0.50
+    unit: m
+    correctFeedback: >-
+      נכון. אינטגרציה אחת: $v = \dfrac{F_0}{m\omega}\sin\omega t$. שנייה, עם $x(0) = 0$:
+      $x = \dfrac{F_0}{m\omega^2}\left(1 - \cos\omega t\right)$. הגוף מתנודד בין $0$ ל-$\dfrac{2F_0}{m\omega^2} = \dfrac{2\cdot2.0}{0.50\cdot16} = 0.50\,\text{m}$,
+      ולא סביב נקודת ההתחלה, אלא סביב $0.25\,\text{m}$.
+    wrongFeedback: >-
+      אנטגרלו פעמיים, ובכל פעם קבעו את קבוע האינטגרציה מתנאי ההתחלה. אחר כך מצאו את הערך הגדול ביותר של $x(t)$.
+    commonWrong:
+      - value: 0.25
+        feedback: >-
+          זו האמפליטודה של האיבר $\cos\omega t$, אבל שכחתם את קבוע האינטגרציה. $x(0) = 0$ נותן
+          $x = \dfrac{F_0}{m\omega^2}(1 - \cos\omega t)$, והמרחק הגדול ביותר כפול.
+      - value: 1.0
+        feedback: 'זה $F_0/(m\omega)$, המהירות המרבית, ביחידות $\text{m/s}$. צריך לאנטגרל פעם נוספת.'
+    hints:
+      - 'אינטגרל של $\sin\omega t$ הוא $-\cos(\omega t)/\omega$. מה צריך להוסיף כדי ש-$x(0) = 0$?'
+
+  - id: Q-2.8-sin-drift
+    type: twotier
+    objectives: [OBJ-2.8-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      אותו גוף, במנוחה ב-$x = 0$ ברגע $t = 0$, אבל עכשיו הכוח הוא $F = F_0\sin\omega t$. הממוצע של הכוח על מחזור שלם
+      הוא אפס. מה עושה הגוף לאורך זמן?
+    choices:
+      - text: הוא מתנודד, אבל גם מתקדם בכיוון $+x$, במהירות ממוצעת $F_0/(m\omega)$.
+        correct: true
+        feedback: נכון. ומה ההסבר?
+      - text: הוא מתנודד סביב נקודת ההתחלה, כי הכוח הממוצע אפס.
+        feedback: >-
+          כוח ממוצע אפס פירושו ש**המהירות** הממוצעת לא משתנה ממחזור למחזור. אבל המהירות הממוצעת לא חייבת להיות אפס:
+          היא נקבעת מתנאי ההתחלה.
+        misconception: MC-2-zero-average-force-no-drift
+      - text: הוא מתנודד, ומתקדם בכיוון $-x$.
+        feedback: 'בחצי המחזור הראשון הכוח חיובי, והגוף מתחיל ממנוחה, ולכן הוא מקבל מהירות חיובית ולא מאבד אותה כולה אחר כך.'
+    reasons:
+      - text: '$v(t) = \dfrac{F_0}{m\omega}\left(1 - \cos\omega t\right)$, שאף פעם לא שלילית, והממוצע שלה $F_0/(m\omega)$. תנאי ההתחלה קובעים אותה.'
+        correct: true
+        feedback: >-
+          זה ההסבר. $v(0) = 0$ דורש את הקבוע $+F_0/(m\omega)$, ולכן $x(t) = \dfrac{F_0}{m\omega}t - \dfrac{F_0}{m\omega^2}\sin\omega t$:
+          סחיפה ועליה תנודה. **בדיקת גבולות:** כש-$\omega \to \infty$ הסחיפה נעלמת, כי כוח שמחליף כיוון מהר מאוד לא
+          מספיק להזיז את הגוף.
+      - text: כוח שהממוצע שלו אפס לא יכול להזיז גוף בממוצע.
+        feedback: >-
+          הוא לא מאיץ את הגוף בממוצע, אבל הגוף יכול לנוע בממוצע במהירות קבועה. כאן הכוח הספיק להאיץ אותו בחצי המחזור
+          הראשון, לפני שהתחיל הממוצע.
+        misconception: MC-2-zero-average-force-no-drift
+      - text: הגוף תמיד נע בכיוון של הכוח.
+        feedback: 'הגוף **מאיץ** בכיוון הכוח. בחצי המחזור השני הכוח שלילי והגוף מאט, אבל המהירות שלו עדיין חיובית.'
+        misconception: MC-2-acceleration-along-velocity
+    hints:
+      - 'אנטגרלו פעם אחת, וקבעו את הקבוע מ-$v(0) = 0$. מתי $v$ שלילית?'
+    explanation: >-
+      עם $F = F_0\cos\omega t$ (השאלה הקודמת) המהירות היא $\dfrac{F_0}{m\omega}\sin\omega t$, והממוצע שלה אפס. אותו כוח,
+      אותה תנודה; ההבדל היחיד הוא באיזה שלב של המחזור הכוח "הודלק".
+
+  - id: Q-2.8-exp-force
+    type: numeric
+    objectives: [OBJ-2.8-1]
+    level: bagrut
+    prompt: >-
+      על גוף בעל מסה $2.0\,\text{kg}$, שנמצא במנוחה ב-$x = 0$ ברגע $t = 0$, פועל כוח שדועך,
+      $F = F_0e^{-t/\tau}$, עם $F_0 = 4.0\,\text{N}$ ו-$\tau = 0.50\,\text{s}$. כמה מטרים הגוף עבר עד $t = 2.0\,\text{s}$?
+    answer: 1.51
+    unit: m
+    correctFeedback: >-
+      נכון. $v(t) = \dfrac{F_0\tau}{m}\left(1 - e^{-t/\tau}\right)$, שמתקרבת ל-$v_\infty = F_0\tau/m = 1.0\,\text{m/s}$.
+      אינטגרציה שנייה: $x(t) = v_\infty\left[t - \tau\left(1 - e^{-t/\tau}\right)\right] = 1.0\cdot(2.0 - 0.5\cdot0.982) = 1.51\,\text{m}$.
+      **בדיקת גבולות:** כש-$t \ll \tau$, $x \approx \tfrac12(F_0/m)t^2$, תאוצה קבועה בכוח ההתחלתי. כש-$t \gg \tau$,
+      $x \approx v_\infty(t - \tau)$: כאילו הגוף יצא באיחור של $\tau$ במהירות הסופית. כאן $t = 4\tau$, והתשובה כבר
+      קרובה ל-$1.50\,\text{m}$.
+    wrongFeedback: >-
+      אנטגרלו את $a(t) = (F_0/m)e^{-t/\tau}$ פעם אחת עם $v(0) = 0$, ואחר כך את $v(t)$ עם $x(0) = 0$.
+    commonWrong:
+      - value: 2.0
+        feedback: 'זה $v_\infty t$, כאילו הגוף נע מההתחלה במהירות הסופית. הוא יצא ממנוחה, ולקח לו בערך $\tau$ להגיע אליה.'
+      - value: 4.0
+        feedback: >-
+          זה $\tfrac12(F_0/m)t^2$, תאוצה קבועה בכוח ההתחלתי. אבל הכוח דועך, ואחרי כמה $\tau$ הוא כמעט אפס.
+        misconception: MC-2-constant-acceleration-formulas
+    hints:
+      - '$\int_0^t e^{-t''/\tau}\,dt'' = \tau\left(1 - e^{-t/\tau}\right)$.'
+
+  # ---------------------------------------------------------------- OBJ-2.8-2 a force that depends on position: the chain rule
+  - id: Q-2.8-chain-rule
+    type: mc
+    objectives: [OBJ-2.8-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      כשהכוח תלוי במקום, $m\dfrac{dv}{dt} = F(x)$, אי אפשר לאנטגרל את שני האגפים לפי $t$, כי $x(t)$ לא ידוע. איזה
+      צעד פותר את הבעיה?
+    choices:
+      - text: '$\dfrac{dv}{dt} = \dfrac{dv}{dx}\dfrac{dx}{dt} = v\dfrac{dv}{dx}$, ולכן $mv\,dv = F(x)\,dx$, ואת שני האגפים אפשר לאנטגרל.'
+        correct: true
+        feedback: >-
+          נכון. כלל השרשרת מחליף את המשתנה מ-$t$ ל-$x$: באגף שמאל רק $v$, ובאגף ימין רק $x$. אינטגרציה נותנת את $v$
+          כפונקציה של $x$, ואחר כך, אם צריך, $dt = dx/v$ נותן את הזמן.
+      - text: '$\dfrac{dv}{dt} = \dfrac{dv}{dx}$, ולכן $m\,dv = F(x)\,dx$.'
+        feedback: >-
+          $dv/dt$ ו-$dv/dx$ הם גדלים שונים, אפילו ביחידות: $\text{m/s}^2$ מול $1/\text{s}$. כלל השרשרת מוסיף גורם
+          $dx/dt = v$.
+        misconception: MC-2-a-is-dv-dx
+      - text: '$\int F(x)\,dt = F(x)\,t$, כי $F$ לא תלוי ב-$t$.'
+        feedback: >-
+          $F$ תלוי ב-$t$ דרך $x(t)$: הגוף זז, והכוח עליו משתנה. אפשר להוציא מהאינטגרל רק גודל שבאמת קבוע בזמן.
+        misconception: MC-2-integrate-any-force
+      - text: מקרבים את הכוח לקבוע, $F(x_0)$, ומשתמשים בנוסחאות של תאוצה קבועה.
+        feedback: 'זה קירוב שטוב רק לתזוזות קטנות. הצעד המדויק הוא להחליף משתנה בעזרת כלל השרשרת.'
+        misconception: MC-2-constant-acceleration-formulas
+    hints:
+      - 'כתבו את $dv/dt$ בעזרת $dv/dx$ ו-$dx/dt$.'
+
+  - id: Q-2.8-spring-speed
+    type: numeric
+    objectives: [OBJ-2.8-2]
+    level: mid
+    prompt: >-
+      גוש בעל מסה $0.50\,\text{kg}$ על משטח אופקי חלק קשור לקפיץ בעל קבוע $k = 200\,\text{N/m}$. מותחים את הקפיץ
+      ב-$x_0 = 0.10\,\text{m}$ ומשחררים ממנוחה. מה מהירות הגוש כשההתארכות היא $x = 0.050\,\text{m}$?
+    answer: 1.73
+    unit: m/s
+    correctFeedback: >-
+      נכון. $mv\,\dfrac{dv}{dx} = -kx$, ולכן $\int_0^v mv'\,dv' = -\int_{x_0}^{x}kx'\,dx'$, כלומר
+      $v^2 = \dfrac km\left(x_0^2 - x^2\right) = 400\cdot0.0075 = 3.0$, ו-$v = 1.73\,\text{m/s}$. בחצי הדרך הגוש כבר נע
+      ב-87% מהמהירות המרבית, $2.0\,\text{m/s}$.
+    wrongFeedback: >-
+      הכוח תלוי במקום. כתבו $a = v\,dv/dx$, הפרידו משתנים, ואנטגרלו מ-$x_0$ (שם $v = 0$) עד $x$.
+    commonWrong:
+      - value: 1.0
+        feedback: >-
+          הנחתם שהמהירות גדלה קווית עם המרחק, $\sqrt{k/m}\,(x_0 - x)$. האינטגרל של $kx$ הוא $\tfrac12kx^2$, ולכן
+          ריבועי המהירות והמקום הם שמתחברים.
+      - value: 2.0
+        feedback: 'זו המהירות ב-$x = 0$, נקודת שיווי המשקל. השאלה שואלת על $x = 0.050\,\text{m}$.'
+      - value: 3.0
+        feedback: 'זה $v^2$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
+    hints:
+      - '$\int_{x_0}^{x}x''\,dx'' = \tfrac12\left(x^2 - x_0^2\right)$.'
+
+  - id: Q-2.8-what-integrates
+    type: mc
+    objectives: [OBJ-2.8-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מאינטגרציה של $mv\,dv = F(x)\,dx$, מנקודה $x_0$ שבה המהירות $v_0$ עד נקודה $x$ שבה המהירות $v$, מקבלים קשר כללי.
+      איזה?
+    choices:
+      - text: $\tfrac12mv^2 - \tfrac12mv_0^2 = \displaystyle\int_{x_0}^{x}F\,dx'$
+        correct: true
+        feedback: >-
+          נכון. הגודל $\tfrac12mv^2$ משתנה בדיוק באינטגרל של הכוח לאורך הדרך. בקפיץ, $\int F\,dx = -\tfrac12k\left(x^2 - x_0^2\right)$,
+          ולכן $\tfrac12mv^2 + \tfrac12kx^2$ לא משתנה לאורך התנועה. בפרק 3 הקשר הזה יקבל שם, ויהיה כלי מרכזי.
+      - text: $mv - mv_0 = \displaystyle\int_{x_0}^{x}F\,dx'$
+        feedback: >-
+          $mv$ משתנה באינטגרל של הכוח לפי **הזמן**, $\int F\,dt$. לפי המקום, אגף שמאל הוא $\int mv\,dv$, ו-$v$ בתוך
+          האינטגרל נותן $\tfrac12mv^2$. בדקו יחידות: $\text{kg}\cdot\text{m/s}$ מול $\text{N}\cdot\text{m}$.
+        misconception: MC-2-force-integral-confusion
+      - text: $v - v_0 = \dfrac1m\displaystyle\int_{x_0}^{x}F\,dx'$
+        feedback: 'שכחתם את $v$ שבאגף שמאל: $mv\,dv$, ולא $m\,dv$. בדקו יחידות: $\text{m/s}$ מול $\text{N}\cdot\text{m/kg} = \text{m}^2/\text{s}^2$.'
+        misconception: MC-2-a-is-dv-dx
+      - text: $\tfrac12mv^2 - \tfrac12mv_0^2 = F\,(x - x_0)$
+        feedback: 'זה נכון רק כשהכוח קבוע. כשהוא תלוי ב-$x$, צריך לאנטגרל אותו, ולא לכפול אותו בדרך.'
+        misconception: MC-2-constant-acceleration-formulas
+    hints:
+      - 'מה האינטגרל של $v\,dv$?'
+
+  - id: Q-2.8-inverse-square
+    type: numeric
+    objectives: [OBJ-2.8-2]
+    level: bagrut
+    prompt: >-
+      גשושית משתחררת ממנוחה במרחק $r_0 = 2R_E$ ממרכז כדור הארץ ונופלת ישר אליו, בלי אוויר. הכוח עליה פונה למרכז,
+      $F = -\dfrac{GM_Em}{r^2}$, עם $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$ ו-$R_E = 6.37\cdot10^{6}\,\text{m}$.
+      באיזו מהירות היא מגיעה לפני כדור הארץ, ב-$r = R_E$? ענו בקילומטרים לשנייה.
+    answer: 7.91
+    unit: km/s
+    correctFeedback: >-
+      נכון. $mv\,\dfrac{dv}{dr} = -\dfrac{GM_Em}{r^2}$, ואינטגרציה מ-$r_0$ (שם $v = 0$) עד $r$:
+      $$v^2 = 2GM_E\left(\frac1r - \frac1{r_0}\right) = 2GM_E\left(\frac1{R_E} - \frac1{2R_E}\right) = \frac{GM_E}{R_E}$$
+      ולכן $v = \sqrt{6.25\cdot10^{7}} = 7.91\,\text{km/s}$. **בדיקת גבולות:** כש-$r_0 \to \infty$,
+      $v \to \sqrt{2GM_E/R_E} = 11.2\,\text{km/s}$. וכשהגשושית נופלת מרחק קטן $h$ מ-$r_0$,
+      $v^2 \approx 2\dfrac{GM_E}{r_0^2}\,h$: נפילה בתאוצה קבועה.
+    wrongFeedback: >-
+      הכוח תלוי במקום, ולכן כתבו $a = v\,dv/dr$ ואנטגרלו מ-$r_0$ עד $R_E$. האינטגרל של $1/r^2$ הוא $-1/r$.
+    commonWrong:
+      - value: 11.2
+        feedback: >-
+          קיבלתם $\sqrt{2GM_E/R_E}$: או ששכחתם את $1/r_0$ באינטגרל (זו נפילה מאינסוף), או שהנחתם תאוצה קבועה $g$ לאורך
+          כל הדרך, $\sqrt{2gR_E}$. רחוק מכדור הארץ המשיכה חלשה יותר, ולכן הגשושית מגיעה לאט יותר.
+        misconception: MC-2-gravity-constant-far
+      - value: 5.59
+        feedback: >-
+          הנחתם תאוצה קבועה, בערך שלה בנקודת ההתחלה, $GM_E/(2R_E)^2 = 2.45\,\text{m/s}^2$. אבל ככל שהגשושית מתקרבת
+          המשיכה גדלה, פי 4 עד פני הקרקע.
+        misconception: MC-2-gravity-constant-far
+    hints:
+      - '$\int_{r_0}^{r}\dfrac{dr''}{r''^2} = \dfrac{1}{r_0} - \dfrac{1}{r}$.'

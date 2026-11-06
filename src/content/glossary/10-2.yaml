@@ -1,0 +1,17 @@
+# Terms first defined in lesson 10.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: four-vector
+  term: ארבעה-וקטור
+  en: four-vector
+  definition: רביעייה של גדלים שעוברת בין מערכות ייחוס בטרנספורמציית לורנץ בדיוק כמו (ct, x, y, z). הגודל (A⁰)² − (A¹)² − (A²)² − (A³)² שלה זהה בכל המערכות. ארבעה-וקטור האנרגיה-תנע הוא (E/c, pₓ, p_y, p_z), והגודל האינווריאנטי שלו הוא (mc)².
+  reject: [ארבע-וקטור, וקטור-4]
+  lesson: '10.2'
+
+- id: invariant-mass
+  term: מסה אינווריאנטית
+  en: invariant mass
+  symbol: M
+  unit: MeV/c²
+  definition: המסה של מערכת חלקיקים, Mc² = √(E² − (pc)²), עם האנרגיה הכוללת E והתנע הכולל p של המערכת. היא זהה בכל מערכת ייחוס, ובמערכת מרכז המסה היא האנרגיה הכוללת חלקי c². היא אינה סכום המסות של החלקיקים.
+  lesson: '10.2'

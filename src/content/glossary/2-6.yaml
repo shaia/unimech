@@ -1,0 +1,14 @@
+# Terms first defined in lesson 2.6. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: c2-banked-curve
+  term: כביש משופע
+  en: banked curve
+  definition: עקומה של כביש שנטויה לעבר מרכז העקומה בזווית θ, כך שהרכיב האופקי של הכוח הנורמלי עוזר לתת את הכוח הרדיאלי. בלי חיכוך יש מהירות אחת, v² = gR tan θ, ועם חיכוך טווח של מהירויות.
+  lesson: '2.6'
+
+- id: c2-conical-pendulum
+  term: מטוטלת קונית
+  en: conical pendulum
+  definition: משקולת שתלויה בחוט ונעה במעגל אופקי, כשהחוט נטוי בזווית קבועה θ מהאנך ומשרטט חרוט. הרכיב האופקי של המתיחות הוא הכוח הרדיאלי, ו-ω² = g/(L cos θ).
+  lesson: '2.6'

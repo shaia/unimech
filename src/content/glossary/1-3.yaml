@@ -1,0 +1,36 @@
+# Terms first defined in lesson 1.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: angular-velocity
+  term: מהירות זוויתית
+  en: angular velocity
+  symbol: ω
+  unit: rad/s
+  definition: קצב השינוי של הזווית, ω = dθ/dt, ברדיאנים לשנייה. בתנועה מעגלית ברדיוס r גודל המהירות הוא v = ωr, ובסיבוב אחיד ω = 2πf, כאשר f מספר הסיבובים בשנייה.
+  reject: [מהירות זויתית]
+  lesson: '1.3'
+
+- id: centripetal-acceleration
+  term: תאוצה צנטריפטלית
+  en: centripetal acceleration
+  symbol: a_c
+  unit: m/s²
+  definition: רכיב התאוצה שניצב למהירות ופונה אל מרכז העקמומיות של המסלול. גודלו v²/ρ, ובתנועה מעגלית ω²r. הוא משנה את הכיוון של המהירות, לא את גודלה.
+  reject: [תאוצה מרכזית]
+  lesson: '1.3'
+
+- id: tangential-acceleration
+  term: תאוצה משיקית
+  en: tangential acceleration
+  symbol: a_t
+  unit: m/s²
+  definition: רכיב התאוצה לאורך המהירות, a_t = d|v|/dt. הוא משנה את גודל המהירות, לא את הכיוון שלה. בתנועה מעגלית בתאוצה זוויתית α, a_t = αr.
+  lesson: '1.3'
+
+- id: radius-of-curvature
+  term: רדיוס עקמומיות
+  en: radius of curvature
+  symbol: ρ
+  unit: m
+  definition: הרדיוס של המעגל שמתאים למסלול הכי טוב בנקודה נתונה. מחשבים אותו מהרכיב הניצב של התאוצה, ρ = v²/a⊥ = |v|³/|v × a|. במעגל הוא הרדיוס של המעגל, ובקו ישר הוא אינסופי.
+  lesson: '1.3'

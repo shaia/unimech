@@ -1,0 +1,9 @@
+# Terms first defined in lesson 10.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). The term table assigns no term to
+# 10.5; c10-hyperbolic-motion is added with the chapter prefix, as the /question-bank skill says.
+
+- id: c10-hyperbolic-motion
+  term: תנועה היפרבולית
+  en: hyperbolic motion
+  definition: התנועה של גוף שמתחיל ממנוחה תחת כוח קבוע בכיוון קבוע, לפי F = dp/dt. התנע גדל קווית, p = Ft, המהירות v = (Ft/m)/√(1 + (Ft/(mc))²) שואפת ל-c, והמקום x = (mc²/F)(√(1 + (Ft/(mc))²) − 1). קו העולם שלה בדיאגרמת מינקובסקי הוא היפרבולה, ומכאן השם.
+  lesson: '10.5'

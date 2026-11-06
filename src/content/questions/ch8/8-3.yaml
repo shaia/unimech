@@ -1,0 +1,250 @@
+# Lesson 8.3 question bank: the comprehension ladder of "דינמיקה של סיבוב סביב ציר קבוע".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch8/q.ts with src/physics/constants.ts (G = 9.8):
+#   door torques: 20·0.80 = 16, 30·0.90·sin30° = 13.5, 40·0.30 = 12, radial force 0 (N·m);
+#   Atwood m1 = 3.0, m2 = 2.0 kg, pulley disc M = 2.0 kg, R = 0.10 m: a = (m1−m2)g/(m1+m2+M/2) = 1.63 m/s²
+#     (massless 1.96, ring pulley 1.40), T1 = 24.5 N, T2 = 22.9 N;
+#   rod pivoted at an end, L = 1.2 m, released horizontal: α = 3g/(2L) = 12.25 rad/s² (g/L 8.17, 3g/L 24.5, 6g/L 49),
+#     tip a = 3g/2 = 14.7 m/s²; hanging vertical: tip v = √(3gL) = 5.94 m/s (free fall √(2gL) 4.85, √(gL) 3.43, √(12gL) 11.9);
+#   flywheel disc M = 10 kg, R = 0.30 m, ω = 100 rad/s: K = 2250 J (ring 4500, ω not squared 22.5);
+#   τ = 4.0 N·m, I = 0.50 kg·m², 3 revolutions: W = 75.4 J, ω = 17.4 rad/s (θ = 3 rad 6.93, forgot ½ 12.3).
+
+chapter: 8
+questions:
+  # ---------------------------------------------------------------- OBJ-8.3-1 τ = Iα about a fixed axis, massive pulley
+  - id: Q-8.3-door-torques
+    type: rank
+    objectives: [OBJ-8.3-1]
+    level: basic
+    prompt: >-
+      דלת מסתובבת על צירים קבועים. בכל אחד מהמקרים פועל עליה כוח אופקי אחד, בנקודה במרחק מסוים מקו הצירים.
+      סדרו את המקרים לפי התאוצה הזוויתית של הדלת, מהגדולה לקטנה.
+    items:
+      - id: a
+        label: '$20\,\text{N}$ במרחק $0.80\,\text{m}$, ניצב לדלת'
+      - id: b
+        label: '$40\,\text{N}$ במרחק $0.30\,\text{m}$, ניצב לדלת'
+      - id: c
+        label: '$50\,\text{N}$ במרחק $0.90\,\text{m}$, לאורך הדלת לכיוון הצירים'
+      - id: d
+        label: '$30\,\text{N}$ במרחק $0.90\,\text{m}$, בזווית $30^\circ$ למישור הדלת'
+    order: [a, d, b, c]
+    correctFeedback: >-
+      נכון. לאותה דלת $\alpha = \tau/I$, ולכן מסדרים לפי מומנט הכוח $\tau = rF\sin\varphi$, כאשר $\varphi$ היא
+      הזווית בין הכוח לקו מהציר: $16$, $13.5$, $12$ ו-$0\,\text{N}\cdot\text{m}$. הכוח הגדול ביותר, $50\,\text{N}$,
+      לא מסובב כלל, כי הקו שלו עובר דרך הציר.
+    wrongFeedback: 'חשבו לכל מקרה $\tau = rF\sin\varphi$. רק הרכיב של הכוח שניצב לדלת מסובב אותה.'
+
+  - id: Q-8.3-pulley-tensions
+    type: twotier
+    objectives: [OBJ-8.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מכונת אטווד: חבל עובר על גלגלת בעלת מסה, שמסתובבת בלי חיכוך על ציר קבוע, ובקצותיו תלויות מסות $m_1 > m_2$.
+      החבל לא מחליק על הגלגלת. כשהמערכת מאיצה, איך משוות המתיחויות $T_1$ (בצד של $m_1$) ו-$T_2$?
+    choices:
+      - text: '$T_1 > T_2$'
+        correct: true
+        feedback: 'נכון. למשל, עם $m_1 = 3.0\,\text{kg}$, $m_2 = 2.0\,\text{kg}$ וגלגלת דסקה של $2.0\,\text{kg}$: $T_1 = 24.5\,\text{N}$ ו-$T_2 = 22.9\,\text{N}$.'
+      - text: '$T_1 = T_2$'
+        feedback: >-
+          זה נכון רק לגלגלת חסרת מסה. אם המתיחויות היו שוות, המומנט השקול על הגלגלת היה אפס, והיא לא הייתה יכולה
+          להאיץ את הסיבוב שלה יחד עם החבל.
+        misconception: MC-8-same-tension-massive-pulley
+      - text: '$T_1 < T_2$'
+        feedback: 'אז המומנט השקול על הגלגלת היה מסובב אותה לכיוון של $m_2$, בעוד ש-$m_1$ יורדת. כיוון התאוצה הזוויתית חייב להתאים לתנועת החבל.'
+    reasons:
+      - text: 'המומנט השקול $(T_1 - T_2)R = I\alpha$ הוא שמאיץ את סיבוב הגלגלת.'
+        correct: true
+        feedback: 'זה הנימוק. ככל ש-$I$ גדול יותר, ההפרש בין המתיחויות גדול יותר. כש-$I \to 0$ המתיחויות משתוות.'
+      - text: 'זה אותו חבל, ולכן המתיחות שווה בכל נקודה בו.'
+        feedback: >-
+          "אותה מתיחות לאורך חבל" נכון לקטע חבל חסר מסה **שלא פועלים עליו כוחות אחרים**. על הגלגלת החיכוך הסטטי
+          בין החבל לגלגלת משנה את המתיחות מצד לצד.
+        misconception: MC-8-same-tension-massive-pulley
+      - text: 'המסה הכבדה מושכת חזק יותר, ולכן $T_1 = m_1g$.'
+        feedback: '$m_1$ מאיצה כלפי מטה, ולכן $m_1g - T_1 = m_1a > 0$, כלומר $T_1 < m_1g$. המתיחות אינה המשקל.'
+    hints:
+      - 'כתבו את משוואת המומנט לגלגלת. מה היה קורה לה אם $T_1 = T_2$?'
+
+  - id: Q-8.3-atwood-acceleration
+    type: numeric
+    objectives: [OBJ-8.3-1]
+    level: mid
+    prompt: >-
+      במכונת אטווד תלויות מסות $m_1 = 3.0\,\text{kg}$ ו-$m_2 = 2.0\,\text{kg}$ על חבל שעובר על גלגלת: דסקה אחידה
+      במסה $M = 2.0\,\text{kg}$ וברדיוס $R = 0.10\,\text{m}$, שמסתובבת בלי חיכוך. החבל לא מחליק. מה תאוצת המסות?
+    answer: 1.63
+    unit: m/s²
+    correctFeedback: >-
+      נכון. שלוש משוואות: $m_1g - T_1 = m_1a$, $T_2 - m_2g = m_2a$, ו-$(T_1 - T_2)R = I\alpha$ עם $\alpha = a/R$
+      ו-$I = \tfrac12MR^2$. החיבור נותן
+      $$a = \frac{(m_1 - m_2)g}{m_1 + m_2 + I/R^2} = \frac{1.0\cdot9.8}{3.0 + 2.0 + 1.0} = 1.63\,\text{m/s}^2$$
+      הגלגלת מתנהגת כמו מסה נוספת $I/R^2 = M/2$ שצריך להאיץ, אבל שאין עליה כוח מניע. הרדיוס $R$ לא משפיע.
+    wrongFeedback: 'כתבו את החוק השני לכל מסה ואת משוואת המומנט לגלגלת, עם שתי מתיחויות שונות, וקשרו $a = \alpha R$.'
+    commonWrong:
+      - value: 1.96
+        feedback: 'זו התאוצה עם גלגלת חסרת מסה, $\dfrac{(m_1 - m_2)g}{m_1 + m_2}$. לגלגלת יש מומנט התמד, והיא מוסיפה למכנה $I/R^2$.'
+        misconception: MC-8-same-tension-massive-pulley
+      - value: 1.4
+        feedback: 'השתמשתם ב-$I = MR^2$, של טבעת. הגלגלת היא דסקה אחידה, $I = \tfrac12MR^2$, ולכן במכנה מתווסף רק $M/2$.'
+    hints:
+      - 'אחרי שמציבים $\alpha = a/R$, משוואת הגלגלת היא $T_1 - T_2 = \tfrac12Ma$.'
+
+  - id: Q-8.3-falling-rod-alpha
+    type: numeric
+    objectives: [OBJ-8.3-1]
+    level: mid
+    prompt: >-
+      מוט אחיד באורך $1.2\,\text{m}$ מחובר בקצהו לציר אופקי קבוע, שמסביבו הוא מסתובב בלי חיכוך. מחזיקים אותו
+      אופקי ומשחררים ממנוחה. מה התאוצה הזוויתית שלו ברגע השחרור?
+    answer: 12.25
+    unit: rad/s²
+    correctFeedback: >-
+      נכון. סביב הציר, הכובד פועל במרכז המסה, במרחק $L/2$: $\tau = Mg\dfrac L2$. עם $I = \tfrac13ML^2$:
+      $\alpha = \dfrac{\tau}{I} = \dfrac{3g}{2L} = \dfrac{3\cdot9.8}{2\cdot1.2} = 12.25\,\text{rad/s}^2$. המסה מצטמצמת.
+    wrongFeedback: 'כתבו $\tau = I\alpha$ סביב הציר הקבוע. איפה פועל הכובד, ומה מומנט ההתמד של מוט סביב הקצה שלו?'
+    commonWrong:
+      - value: 8.17
+        feedback: 'זה $g/L$, של מסה נקודתית בקצה המוט. במוט המסה מפוזרת: הכובד פועל ב-$L/2$, ו-$I = \tfrac13ML^2$.'
+      - value: 24.5
+        feedback: 'זה $3g/L$: חישבתם את מומנט הכובד עם זרוע $L$. הכובד פועל במרכז המסה, ולכן הזרוע $L/2$.'
+      - value: 49
+        feedback: 'זה $6g/L$: השתמשתם ב-$I = \tfrac{1}{12}ML^2$, סביב המרכז. המוט מסתובב סביב הקצה, ושם $I = \tfrac13ML^2$.'
+        misconception: MC-8-inertia-only-mass
+    hints:
+      - 'מומנט הכובד על גוף מתפשט שווה למומנט של כל המשקל כשהוא פועל במרכז המסה.'
+
+  - id: Q-8.3-coin-on-rod
+    type: twotier
+    objectives: [OBJ-8.3-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      מוט אחיד באורך $L$ מחובר בקצהו לציר אופקי קבוע ומוחזק אופקי. על הקצה החופשי שלו מונח מטבע קטן. משחררים
+      את המוט ממנוחה. מה קורה למטבע ברגע הראשון?
+    choices:
+      - text: 'המוט "נשמט" מתחתיו: המטבע נופל בתאוצה $g$, והקצה מתרחק ממנו כלפי מטה.'
+        correct: true
+        feedback: 'נכון. תאוצת הקצה גדולה מ-$g$, והמטבע, שרק מונח שם, לא יכול להאיץ מהר יותר מ-$g$.'
+      - text: 'המטבע נופל יחד עם הקצה, כי שום דבר לא נופל מהר יותר מנפילה חופשית.'
+        feedback: >-
+          גוף שעליו פועל **רק** הכובד נופל ב-$g$. בקצה המוט פועלים גם כוחות פנימיים של המוט, וחלק אחר של המוט, הקרוב
+          לציר, "מושך" את הקצה כלפי מטה מהר יותר.
+        misconception: MC-8-nothing-falls-faster-than-g
+      - text: 'המטבע נזרק כלפי מעלה.'
+        feedback: 'שום כוח לא דוחף את המטבע כלפי מעלה: המוט רק מפסיק לתמוך בו. המטבע נופל ב-$g$, והקצה יורד מהר יותר.'
+    reasons:
+      - text: '$\alpha = \dfrac{3g}{2L}$, ולכן תאוצת הקצה היא $\alpha L = \tfrac32g$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. כל נקודה במרחק $x$ מהציר מאיצה ב-$\tfrac{3g}{2L}x$, וזה יותר מ-$g$ כש-$x > \tfrac23L$. בזמן
+          שהנקודות הקרובות לציר מאטות את הנפילה, הנקודות הרחוקות "נגררות" מהר יותר.
+      - text: 'על המוט פועל רק כוח הכובד, ולכן כל נקודה בו מאיצה ב-$g$.'
+        feedback: 'על המוט פועל גם הציר, שמונע מהקצה המחובר לזוז. המוט מסתובב סביבו, ונקודות שונות מאיצות בתאוצות שונות, $\alpha x$.'
+        misconception: MC-8-nothing-falls-faster-than-g
+      - text: 'מרכז המסה של המוט מאיץ ב-$g$, ולכן הקצה מאיץ ב-$2g$.'
+        feedback: 'מרכז המסה מאיץ ב-$\alpha\dfrac L2 = \tfrac34g$, לא ב-$g$: הציר דוחף את המוט כלפי מעלה. ולכן הקצה מאיץ ב-$\tfrac32g$.'
+    hints:
+      - 'חשבו את $\alpha$ ברגע השחרור, ואז את התאוצה של נקודה במרחק $L$ מהציר.'
+
+  # ---------------------------------------------------------------- OBJ-8.3-2 rotational kinetic energy, work of a torque
+  - id: Q-8.3-flywheel-energy
+    type: numeric
+    objectives: [OBJ-8.3-2]
+    level: basic
+    prompt: >-
+      גלגל תנופה הוא דסקה אחידה במסה $10\,\text{kg}$ וברדיוס $0.30\,\text{m}$, שמסתובבת סביב ציר הסימטריה שלה
+      במהירות זוויתית $100\,\text{rad/s}$. כמה אנרגיה קינטית אגורה בו?
+    answer: 2250
+    unit: J
+    correctFeedback: >-
+      נכון. $I = \tfrac12MR^2 = 0.45\,\text{kg}\cdot\text{m}^2$, ו-$K = \tfrac12I\omega^2 = \tfrac12\cdot0.45\cdot100^2 = 2250\,\text{J}$.
+      זה סכום של $\tfrac12v^2\,dm$ על כל חלקי הדסקה, עם $v = \omega r$.
+    wrongFeedback: 'אנרגיה קינטית סיבובית: $K = \tfrac12I\omega^2$, עם מומנט ההתמד של דסקה.'
+    commonWrong:
+      - value: 4500
+        feedback: 'השתמשתם ב-$I = MR^2$, של טבעת. בדסקה אחידה $I = \tfrac12MR^2$.'
+      - value: 22.5
+        feedback: 'שכחתם להעלות את $\omega$ בריבוע. בדקו יחידות: $\text{kg}\cdot\text{m}^2\cdot\text{s}^{-1}$ אינו ג׳אול.'
+    hints:
+      - 'כמו $\tfrac12mv^2$, עם $I$ במקום $m$ ו-$\omega$ במקום $v$.'
+
+  - id: Q-8.3-torque-work
+    type: numeric
+    objectives: [OBJ-8.3-2]
+    level: mid
+    prompt: >-
+      גלגל שמומנט ההתמד שלו $0.50\,\text{kg}\cdot\text{m}^2$ נמצא במנוחה על ציר קבוע בלי חיכוך. מפעילים עליו
+      מומנט כוח קבוע של $4.0\,\text{N}\cdot\text{m}$ במשך 3 סיבובים שלמים. מה מהירותו הזוויתית בסוף?
+    answer: 17.4
+    unit: rad/s
+    correctFeedback: >-
+      נכון. העבודה של מומנט כוח קבוע היא $W = \tau\theta$, עם $\theta$ ברדיאנים: $\theta = 3\cdot2\pi = 18.8\,\text{rad}$,
+      ו-$W = 4.0\cdot18.8 = 75.4\,\text{J}$. לפי משפט עבודה-אנרגיה, $\tfrac12I\omega^2 = W$, ולכן
+      $\omega = \sqrt{\dfrac{2W}{I}} = \sqrt{\dfrac{2\cdot75.4}{0.50}} = 17.4\,\text{rad/s}$.
+    wrongFeedback: 'עבודה של מומנט כוח קבוע: $W = \tau\theta$, כמו $W = Fs$. המירו סיבובים לרדיאנים, והשוו את העבודה לאנרגיה הקינטית הסיבובית.'
+    commonWrong:
+      - value: 6.93
+        feedback: 'הצבתם $\theta = 3\,\text{rad}$. שלושה סיבובים הם $3\cdot2\pi = 18.8\,\text{rad}$.'
+      - value: 12.3
+        feedback: 'שכחתם את ה-$\tfrac12$: $W = \tfrac12I\omega^2$, ולכן $\omega^2 = 2W/I$, לא $W/I$.'
+    hints:
+      - 'המקבילה של $W = Fs$ בסיבוב היא $W = \tau\theta$.'
+
+  - id: Q-8.3-same-torque
+    type: multi
+    objectives: [OBJ-8.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      טבעת ודסקה, באותה מסה ובאותו רדיוס, נמצאות במנוחה על צירים קבועים בלי חיכוך. על כל אחת פועל אותו מומנט
+      כוח קבוע $\tau$. בחרו את **כל** הטענות הנכונות.
+    choices:
+      - text: 'אחרי שכל אחת הסתובבה באותה זווית, יש להן אותה אנרגיה קינטית.'
+        correct: true
+        feedback: 'נכון. העבודה היא $\tau\theta$, והיא שווה לשתיהן. הטבעת מגיעה לזווית הזו לאט יותר ובמהירות זוויתית קטנה יותר, אבל עם אותה אנרגיה.'
+      - text: 'אחרי אותו זמן, יש להן אותו תנע זוויתי.'
+        correct: true
+        feedback: 'נכון. $\dfrac{dL}{dt} = \tau$, ולכן $L = \tau t$ לשתיהן, בלי קשר למומנט ההתמד.'
+      - text: 'אחרי אותו זמן, יש להן אותה אנרגיה קינטית.'
+        feedback: >-
+          אחרי אותו זמן התנע הזוויתי שווה, אבל $K = \dfrac{L^2}{2I}$, ולכן לדסקה, עם $I$ הקטן, יש פי 2 אנרגיה. היא
+          גם הסתובבה בזווית גדולה פי 2, ולכן המומנט עשה עליה עבודה גדולה פי 2.
+        misconception: MC-8-same-torque-same-energy
+      - text: 'אחרי אותו זמן, הדסקה הסתובבה בזווית גדולה יותר.'
+        correct: true
+        feedback: 'נכון. $\alpha = \tau/I$ גדולה פי 2 בדסקה, ו-$\theta = \tfrac12\alpha t^2$.'
+      - text: 'אחרי אותה זווית, לטבעת יש יותר אנרגיה, כי מומנט ההתמד שלה גדול יותר.'
+        feedback: 'האנרגיה נקבעת מהעבודה שנעשתה, $\tau\theta$, והיא זהה. $I$ גדול יותר פירושו $\omega$ קטנה יותר באותה אנרגיה.'
+    hints:
+      - 'מומנט כוח לאורך **זמן** משנה תנע זוויתי. מומנט כוח לאורך **זווית** עושה עבודה.'
+
+  - id: Q-8.3-rod-tip-speed
+    type: numeric
+    objectives: [OBJ-8.3-2]
+    level: bagrut
+    prompt: >-
+      מוט אחיד באורך $1.2\,\text{m}$ מחובר בקצהו לציר אופקי קבוע בלי חיכוך. משחררים אותו ממנוחה כשהוא אופקי,
+      והוא מסתובב עד שהוא תלוי אנכית. מה גודל מהירות הקצה החופשי שלו ברגע הזה?
+    answer: 5.94
+    unit: m/s
+    correctFeedback: >-
+      נכון. מרכז המסה יורד $L/2$, ולכן $Mg\dfrac L2 = \tfrac12\cdot\tfrac13ML^2\,\omega^2$, כלומר $\omega = \sqrt{3g/L}$, ו-
+      $v_{tip} = \omega L = \sqrt{3gL} = \sqrt{3\cdot9.8\cdot1.2} = 5.94\,\text{m/s}$. גוף שנופל חופשית מגובה $L$ מגיע
+      רק ל-$\sqrt{2gL} = 4.85\,\text{m/s}$. **בדיקת גבולות:** נקודה במרחק $x$ מהציר נעה ב-$x\sqrt{3g/L}$, והיא
+      מהירה מנפילה חופשית מגובה $x$, $\sqrt{2gx}$, בדיוק כש-$x > \tfrac23L$, כמו בתאוצה ברגע השחרור.
+    wrongFeedback: 'שימור אנרגיה: הירידה של **מרכז המסה** נותנת את האנרגיה, והיא כולה אנרגיה קינטית סיבובית סביב הציר. אחר כך $v = \omega L$.'
+    commonWrong:
+      - value: 4.85
+        feedback: 'זה $\sqrt{2gL}$, מהירות של נפילה חופשית מגובה $L$. הקצה של מוט מסתובב יכול לנוע מהר יותר, כי חלקים אחרים של המוט מוסרים לו אנרגיה.'
+        misconception: MC-8-nothing-falls-faster-than-g
+      - value: 3.43
+        feedback: 'זה $\sqrt{gL}$, מהירות מרכז המסה אילו נפל חופשית $L/2$. אבל הוא חלק ממוט מסתובב, והשאלה שואלת על הקצה.'
+      - value: 11.9
+        feedback: 'השתמשתם ב-$I = \tfrac{1}{12}ML^2$, סביב המרכז. המוט מסתובב סביב הקצה המחובר, שם $I = \tfrac13ML^2$.'
+    hints:
+      - 'בכמה יורד מרכז המסה של המוט?'

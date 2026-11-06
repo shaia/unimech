@@ -1,0 +1,26 @@
+# Terms first defined in lesson 3.7. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: angular-momentum
+  term: תנע זוויתי
+  en: angular momentum
+  symbol: L
+  unit: kg·m²/s
+  definition: ביחס לנקודה O, התנע הזוויתי של חלקיק הוא L = r × p, כאשר r המקום של החלקיק ביחס ל-O. הוא תלוי בנקודה שנבחרה, וקצב השינוי שלו הוא המומנט ביחס לאותה נקודה, dL/dt = τ.
+  reject: [תנע סיבובי, תנע זויתי, מומנט התנע]
+  lesson: '3.7'
+
+- id: torque
+  term: מומנט כוח
+  en: torque
+  symbol: τ
+  unit: N·m
+  definition: ביחס לנקודה O, המומנט של כוח F שפועל בנקודה r הוא τ = r × F. גודלו הכוח כפול הזרוע, המרחק הניצב מ-O לקו הפעולה של הכוח.
+  reject: [מומנט סיבוב, טורק]
+  lesson: '3.7'
+
+- id: central-force
+  term: כוח מרכזי
+  en: central force
+  definition: כוח שפונה תמיד לאורך הקו בין הגוף לנקודה קבועה O, אליה או ממנה. המומנט שלו ביחס ל-O אפס, ולכן התנע הזוויתי ביחס ל-O נשמר, והתנועה במישור אחד.
+  lesson: '3.7'

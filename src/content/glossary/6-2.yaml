@@ -1,0 +1,8 @@
+# Terms first defined in lesson 6.2. One spelling per concept, course-wide. The reduced mass and the CM
+# frame belong to chapter 4 (reduced-mass, cm-frame) and are used here without being redefined.
+
+- id: c6-binary-star
+  term: כוכב כפול
+  en: binary star
+  definition: שני כוכבים שקשורים זה לזה בכבידה ומקיפים את מרכז המסה המשותף שלהם, באותו זמן מחזור. מזמן המחזור ומהמרחק ביניהם מחשבים את סכום המסות, ומיחס המהירויות את יחס המסות.
+  lesson: '6.2'

@@ -1,0 +1,26 @@
+# Terms first defined in lesson 6.3. One spelling per concept, course-wide. Periapsis and apoapsis are
+# defined here, as the two turning points of a bound orbit, and named again in 6.4–6.6.
+
+- id: effective-potential
+  term: פוטנציאל אפקטיבי
+  en: effective potential
+  symbol: U_eff
+  unit: J
+  definition: בתנועה תחת כוח מרכזי, האנרגיה הפוטנציאלית ועוד האנרגיה הקינטית של התנועה המשיקית, כתובה בעזרת התנע הזוויתי הקבוע, U_eff(r) = L²/(2μr²) + U(r). האנרגיה היא אז E = ½μṙ² + U_eff(r), כמו של גוף שנע בממד אחד, ומהגרף שלו קוראים את נקודות המפנה, את המסלול המעגלי ואם המסלול קשור.
+  lesson: '6.3'
+
+- id: periapsis
+  term: נקודת הקרבה
+  en: periapsis
+  symbol: r_p
+  unit: m
+  definition: הנקודה במסלול שבה הגוף הכי קרוב למרכז הכוח (לגוף השני). זו נקודת מפנה של התנועה הרדיאלית, ṙ = 0, ושם המהירות הגדולה ביותר במסלול. סביב השמש היא נקראת גם פריהליון, וסביב כדור הארץ פריגיאה.
+  lesson: '6.3'
+
+- id: apoapsis
+  term: נקודת הריחוק
+  en: apoapsis
+  symbol: r_a
+  unit: m
+  definition: הנקודה במסלול קשור שבה הגוף הכי רחוק ממרכז הכוח. זו נקודת המפנה השנייה של התנועה הרדיאלית, ṙ = 0, ושם המהירות הקטנה ביותר במסלול. סביב השמש היא נקראת גם אפהליון, וסביב כדור הארץ אפוגיאה.
+  lesson: '6.3'

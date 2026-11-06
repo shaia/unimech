@@ -1,0 +1,23 @@
+# Terms first defined in lesson 8.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: moment-of-inertia
+  term: מומנט התמד
+  en: moment of inertia
+  symbol: I
+  unit: kg·m²
+  definition: הגודל שמודד עד כמה קשה לשנות את הסיבוב של גוף סביב ציר נתון, I = ∫r² dm, כאשר r הוא המרחק של כל חלק מהציר. הוא תלוי במסה, בפיזור שלה ובציר.
+  reject: [מומנט אינרציה]
+  lesson: '8.2'
+
+- id: parallel-axis-theorem
+  term: משפט הצירים המקבילים
+  en: parallel-axis theorem
+  definition: מומנט ההתמד סביב ציר כלשהו שווה למומנט ההתמד סביב הציר המקביל שעובר במרכז המסה, ועוד Md², כאשר d הוא המרחק בין הצירים. I = I_cm + Md².
+  lesson: '8.2'
+
+- id: perpendicular-axis-theorem
+  term: משפט הצירים הניצבים
+  en: perpendicular-axis theorem
+  definition: בגוף שטוח שמונח במישור xy, מומנט ההתמד סביב הציר z שניצב לו שווה לסכום מומנטי ההתמד סביב שני צירים ניצבים שבמישור ונחתכים באותה נקודה. I_z = I_x + I_y.
+  lesson: '8.2'

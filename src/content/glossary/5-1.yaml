@@ -1,0 +1,49 @@
+# Terms first defined in lesson 5.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: harmonic-oscillator
+  term: מתנד הרמוני
+  en: harmonic oscillator
+  definition: מערכת שהכוח המחזיר בה פרופורציוני להעתק מנקודת שיווי המשקל ובכיוון הפוך לו, F = −kx. משוואת התנועה שלה היא mẍ = −kx, והפתרון תנודה בקוסינוס עם תדירות שלא תלויה באמפליטודה.
+  lesson: '5.1'
+
+- id: amplitude
+  term: אמפליטודה
+  en: amplitude
+  symbol: A
+  definition: ההעתק המרבי מנקודת שיווי המשקל בתנודה, A ב-x = A cos(ωt + φ). היא נקבעת מתנאי ההתחלה, A = √(x₀² + (v₀/ω)²).
+  reject: [משרעת]
+  lesson: '5.1'
+
+- id: phase
+  term: פאזה
+  en: phase
+  symbol: φ
+  unit: rad
+  definition: הזווית φ ב-x = A cos(ωt + φ), שקובעת באיזה שלב של המחזור התנודה נמצאת ברגע t = 0. היא נקבעת מתנאי ההתחלה, x₀ = A cos φ ו-v₀ = −Aω sin φ.
+  lesson: '5.1'
+
+- id: angular-frequency
+  term: תדירות זוויתית
+  en: angular frequency
+  symbol: ω
+  unit: rad/s
+  definition: קצב הגידול של הארגומנט של הקוסינוס בתנודה, ω = 2π/T. במתנד של מסה וקפיץ ω = √(k/m). התדירות f = ω/(2π) היא מספר המחזורים בשנייה.
+  reject: [תדירות מעגלית]
+  lesson: '5.1'
+
+- id: period
+  term: זמן מחזור
+  en: period
+  symbol: T
+  unit: s
+  definition: הזמן שבו תנודה חוזרת על עצמה, T = 2π/ω. במתנד הרמוני הוא לא תלוי באמפליטודה.
+  lesson: '5.1'
+
+- id: c5-equivalent-spring-constant
+  term: קבוע קפיץ שקול
+  en: equivalent spring constant
+  symbol: k_eq
+  unit: N/m
+  definition: קבוע הקפיץ של קפיץ יחיד שפועל על הגוף כמו מערכת הקפיצים כולה. במקביל הקבועים מתחברים, k = k₁ + k₂; בטור ההופכיים מתחברים, 1/k = 1/k₁ + 1/k₂.
+  lesson: '5.1'

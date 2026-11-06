@@ -1,0 +1,37 @@
+# Terms first defined in lesson 6.4. One spelling per concept, course-wide. The orbit equation and the
+# conic's parameter p are not in the course term table; their ids carry the chapter prefix c6-.
+
+- id: c6-orbit-equation
+  term: משוואת המסלול
+  en: orbit equation (Binet equation)
+  definition: משוואה דיפרנציאלית לצורת המסלול בכוח מרכזי, כשהמשתנה הוא u = 1/r והזווית θ מחליפה את הזמן. בכוח שהולך כאחד חלקי ריבוע המרחק היא d²u/dθ² + u = μk/L², ופתרונה הוא חתך חרוט.
+  lesson: '6.4'
+
+- id: conic-section
+  term: חתך חרוט
+  en: conic section
+  definition: עקומה שמתקבלת מחיתוך של חרוט במישור, כלומר מעגל, אליפסה, פרבולה או היפרבולה. בקואורדינטות קוטביות שהראשית שלהן במוקד, r = p/(1 + e cos θ), והאקסצנטריות e קובעת איזה חתך זה.
+  lesson: '6.4'
+
+- id: c6-semi-latus-rectum
+  term: פרמטר המסלול
+  en: semi-latus rectum
+  symbol: p
+  unit: m
+  definition: הקבוע p במשוואת חתך החרוט r = p/(1 + e cos θ), המרחק מהמוקד למסלול בכיוון הניצב לציר הראשי. בכבידה p = L²/(μk), הרדיוס של המסלול המעגלי בעל אותו תנע זוויתי.
+  lesson: '6.4'
+
+- id: eccentricity
+  term: אקסצנטריות
+  en: eccentricity
+  symbol: e
+  definition: מספר חסר ממדים שקובע את צורת חתך החרוט, e = 0 מעגל, 0 < e < 1 אליפסה, e = 1 פרבולה ו-e > 1 היפרבולה. במסלול כבידה e² = 1 + 2EL²/(μk²), ולכן הסימן של E קובע אם המסלול קשור.
+  lesson: '6.4'
+
+- id: semi-major-axis
+  term: חצי הציר הראשי
+  en: semi-major axis
+  symbol: a
+  unit: m
+  definition: חצי האורך של הציר הארוך של אליפסה, הממוצע של המרחקים בנקודת הקרבה ובנקודת הריחוק, a = (r_p + r_a)/2 = p/(1 − e²). במסלול כבידה הוא נקבע רק על ידי האנרגיה, E = −k/(2a), והוא קובע את זמן המחזור.
+  lesson: '6.4'

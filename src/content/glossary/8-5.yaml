@@ -1,0 +1,7 @@
+# Terms first defined in lesson 8.5. Chapter 8 terms outside the course's term table are prefixed c8-.
+
+- id: c8-couple
+  term: זוג כוחות
+  en: couple
+  definition: שני כוחות שווים בגודלם ומנוגדים בכיוונם, שקווי הפעולה שלהם מקבילים ולא מתלכדים. השקול שלהם אפס, והמומנט שלהם Fd זהה סביב כל נקודה, כאשר d הוא המרחק בין קווי הפעולה.
+  lesson: '8.5'

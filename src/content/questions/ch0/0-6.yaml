@@ -1,0 +1,224 @@
+# Lesson 0.6 question bank: the comprehension ladder of "מספרים מרוכבים והאקספוננט המרוכב".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Directions in `vector` questions on the complex plane: e = the positive real axis, n = the positive imaginary axis.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts:
+#   arg(−1 + i√3) = 2π/3 = 2.09 rad (atan(y/x) = −1.05; π/3 = 1.05), modulus 2;
+#   m = 1 kg, k = 100 N/m, b = 2 kg/s, F₀ = 10 N, ω = 8 rad/s: k − mω² + ibω = 36 + 16i, |Ã| = 0.254 m, phase −0.418 rad
+#     (no damping 0.278; 10/52 = 0.192; 10/|den|² = 0.00644; with k + mω² 0.0607);
+#   3cos ωt + 4sin ωt: amplitude 5; 3cos ωt + 2cos(ωt + π/3): |3 + 2e^(iπ/3)| = √19 = 4.36 (√13 = 3.61, √7 = 2.65).
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.6-1 Cartesian and polar forms, Euler's formula
+  - id: Q-0.6-phase-arg
+    type: numeric
+    objectives: [OBJ-0.6-1]
+    level: basic
+    prompt: >-
+      תנודה מתוארת כ-$x(t) = \mathrm{Re}\left(\tilde A e^{i\omega t}\right)$, עם האמפליטודה המרוכבת
+      $\tilde A = \left(-1 + i\sqrt3\right)\,\text{cm}$. כתבו את $\tilde A$ בהצגה קוטבית, $|\tilde A|e^{i\varphi}$. מה
+      הפאזה $\varphi$, ברדיאנים, בתחום $-\pi < \varphi \le \pi$?
+    answer: 2.09
+    unit: rad
+    correctFeedback: >-
+      נכון. $|\tilde A| = \sqrt{1 + 3} = 2\,\text{cm}$, והנקודה $(-1, \sqrt3)$ ברביע השני, ולכן $\varphi = \pi - \dfrac{\pi}{3} = \dfrac{2\pi}{3} = 2.09$.
+      התנודה היא $x(t) = 2\cos\left(\omega t + \dfrac{2\pi}{3}\right)\,\text{cm}$.
+    wrongFeedback: 'סמנו את הנקודה $(-1, \sqrt3)$ במישור המרוכב. באיזה רביע היא? הזווית נמדדת מהציר הממשי החיובי.'
+    commonWrong:
+      - value: -1.05
+        feedback: >-
+          זה $\arctan(\sqrt3/(-1)) = -\pi/3$, נקודה ברביע הרביעי. $\arctan$ לא מבחין בין $(-1, \sqrt3)$ ל-$(1, -\sqrt3)$:
+          צריך להסתכל על הסימנים של שני הרכיבים, ולהוסיף $\pi$ כשהחלק הממשי שלילי.
+        misconception: MC-0-arg-arctan-quadrant
+      - value: 1.05
+        feedback: 'זו הזווית של $1 + i\sqrt3$, ברביע הראשון. כאן החלק הממשי שלילי, והנקודה ברביע השני.'
+        misconception: MC-0-arg-arctan-quadrant
+      - value: 2
+        feedback: 'זה הגודל $|\tilde A|$, בסנטימטרים. הפאזה היא הזווית, ברדיאנים.'
+    hints:
+      - '$\cos\varphi = -\tfrac12$ ו-$\sin\varphi = +\tfrac{\sqrt3}{2}$. איזו זווית מקיימת את שניהם?'
+
+  - id: Q-0.6-euler-point
+    type: vector
+    objectives: [OBJ-0.6-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      במישור המרוכב הציר הממשי פונה ימינה והציר המדומה למעלה. לאיזה כיוון מהראשית נמצא המספר $e^{3\pi i/4}$?
+    answer: nw
+    correctFeedback: >-
+      נכון. לפי נוסחת אוילר, $e^{i\theta} = \cos\theta + i\sin\theta$: נקודה על מעגל היחידה בזווית $\theta$ מהציר
+      הממשי. $e^{3\pi i/4} = \dfrac{-1 + i}{\sqrt2}$, ב-$135^\circ$: למעלה ושמאלה.
+    wrong:
+      - dir: ne
+        feedback: 'זה $e^{i\pi/4}$, בזווית $45^\circ$. כאן הזווית $3\pi/4 = 135^\circ$, ברביע השני.'
+      - dir: n
+        feedback: 'זה $e^{i\pi/2} = i$, בזווית $90^\circ$. הזווית כאן גדולה יותר, $135^\circ$.'
+      - dir: sw
+        feedback: 'זה $-e^{3\pi i/4}$, ב-$315^\circ$. בדקו את הסימן של $\sin(3\pi/4)$: הוא חיובי.'
+    wrongFeedback: 'חשבו $\cos(3\pi/4)$ ו-$\sin(3\pi/4)$: הם החלק הממשי והחלק המדומה.'
+
+  - id: Q-0.6-driven-amplitude
+    type: numeric
+    objectives: [OBJ-0.6-1, OBJ-0.6-2]
+    level: bagrut
+    prompt: >-
+      מתנד מאולץ מקיים $m\ddot x + b\dot x + kx = F_0\cos\omega t$, עם $m = 1.0\,\text{kg}$, $k = 100\,\text{N/m}$,
+      $b = 2.0\,\text{kg/s}$, $F_0 = 10\,\text{N}$ ו-$\omega = 8.0\,\text{rad/s}$. כותבים $F_0\cos\omega t = \mathrm{Re}\left(F_0e^{i\omega t}\right)$
+      ומחפשים פתרון יציב $x = \mathrm{Re}\left(\tilde Ae^{i\omega t}\right)$. ההצבה נותנת
+      $$\tilde A = \frac{F_0}{k - m\omega^2 + ib\omega}$$
+      מה האמפליטודה של התנודה, $|\tilde A|$?
+    answer: 0.254
+    unit: m
+    correctFeedback: >-
+      נכון. המכנה הוא $36 + 16i$ (ב-$\text{N/m}$), והגודל שלו $\sqrt{36^2 + 16^2} = 39.4$, ולכן
+      $|\tilde A| = \dfrac{10}{39.4} = 0.254\,\text{m}$. הפאזה של $\tilde A$ היא $-\arctan\dfrac{16}{36} = -0.418\,\text{rad}$:
+      התזוזה מפגרת אחרי הכוח. **בדיקת גבולות:** כש-$\omega \to 0$, $\tilde A \to F_0/k = 0.1\,\text{m}$, המתיחה הסטטית
+      של הקפיץ. בלי ריסון, $b = 0$, המכנה ממשי ו-$|\tilde A| = F_0/|k - m\omega^2|$, שמתבדר ב-$\omega = \sqrt{k/m}$.
+    wrongFeedback: 'הגודל של מנה הוא מנת הגדלים: $|\tilde A| = \dfrac{F_0}{|k - m\omega^2 + ib\omega|}$, ו-$|a + ib| = \sqrt{a^2 + b^2}$.'
+    commonWrong:
+      - value: 0.278
+        feedback: 'זה $F_0/(k - m\omega^2)$, בלי החלק המדומה. הריסון מוסיף למכנה $ib\omega = 16i$, והגודל של המכנה גדל.'
+      - value: 0.192
+        feedback: 'חיברתם את החלק הממשי והמדומה, $36 + 16 = 52$. הגודל של מספר מרוכב הוא $\sqrt{a^2 + b^2}$, כמו אורך של וקטור.'
+        misconception: MC-0-magnitudes-add
+      - value: 0.00644
+        feedback: 'חילקתם ב-$|z|^2 = 1552$ במקום ב-$|z|$. הוציאו שורש.'
+      - value: 0.0607
+        feedback: 'שימו לב לסימן: $\ddot x$ של $e^{i\omega t}$ נותן $-\omega^2$, ולכן במכנה $k - m\omega^2$, ולא $k + m\omega^2$.'
+    hints:
+      - 'חשבו קודם את המכנה: $k - m\omega^2 = 100 - 64$, ו-$b\omega = 16$.'
+
+  # ---------------------------------------------------------------- OBJ-0.6-2 oscillations as Re(A e^{iωt}), adding them
+  - id: Q-0.6-read-oscillation
+    type: mc
+    objectives: [OBJ-0.6-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      התזוזה של מסה היא $x(t) = \mathrm{Re}\left(\tilde Ae^{i\omega t}\right)$, עם $\tilde A = 3i\,\text{cm}$. איזו פונקציה
+      ממשית היא $x(t)$?
+    choices:
+      - text: $x(t) = -3\sin\omega t\,\text{cm}$
+        correct: true
+        feedback: >-
+          נכון. $3i\left(\cos\omega t + i\sin\omega t\right) = 3i\cos\omega t - 3\sin\omega t$, והחלק הממשי הוא
+          $-3\sin\omega t$. במילים אחרות, $i = e^{i\pi/2}$, ו-$3\cos\left(\omega t + \tfrac\pi2\right) = -3\sin\omega t$.
+      - text: $x(t) = 3\cos\omega t\,\text{cm}$
+        feedback: 'זה $\tilde A = 3$. הכפל ב-$i$ מסובב את האמפליטודה המרוכבת ב-$90^\circ$, ומזיז את הפאזה של התנודה ברבע מחזור.'
+      - text: $x(t) = 3\sin\omega t\,\text{cm}$
+        feedback: 'הסימן הפוך. $i\cdot i\sin\omega t = -\sin\omega t$: זה מה שנשאר בחלק הממשי.'
+      - text: $x(t) = 3i\cos\omega t\,\text{cm}$
+        feedback: 'זה לא מספר ממשי, ותזוזה של מסה היא מספר ממשי. ה-$\mathrm{Re}$ לוקח רק את החלק הממשי של המכפלה.'
+    hints:
+      - 'כפלו את $3i$ ב-$\cos\omega t + i\sin\omega t$, וקחו רק את החלק הממשי.'
+
+  - id: Q-0.6-add-quadrature
+    type: numeric
+    objectives: [OBJ-0.6-2]
+    level: mid
+    prompt: >-
+      מסה מקבלת שתי תזוזות באותה תדירות: $x_1 = 3\cos\omega t$ ו-$x_2 = 4\sin\omega t$ (בסנטימטרים). התזוזה הכוללת
+      $x_1 + x_2$ היא תנודה הרמונית אחת. מה האמפליטודה שלה?
+    answer: 5
+    unit: cm
+    correctFeedback: >-
+      נכון. $x_1 = \mathrm{Re}(3e^{i\omega t})$ ו-$x_2 = \mathrm{Re}(-4ie^{i\omega t})$, ולכן הסכום הוא
+      $\mathrm{Re}\left((3 - 4i)e^{i\omega t}\right)$, עם אמפליטודה $|3 - 4i| = 5\,\text{cm}$. שתי התנודות מוזזות ברבע
+      מחזור, ולכן הן לא מגיעות לשיא יחד.
+    wrongFeedback: 'כתבו כל תנודה כ-$\mathrm{Re}(\tilde A_je^{i\omega t})$, חברו את האמפליטודות המרוכבות, וחשבו את הגודל של הסכום.'
+    commonWrong:
+      - value: 7
+        feedback: 'חיברתם את האמפליטודות כמספרים. זה נכון רק כשהתנודות באותה פאזה. כאן $x_1$ בשיא כש-$x_2 = 0$.'
+        misconception: MC-0-amplitudes-add
+      - value: 1
+        feedback: 'זה $4 - 3$, כאילו התנודות בפאזות הפוכות. ביניהן רבע מחזור, וזה מקרה ביניים: $\sqrt{3^2 + 4^2}$.'
+    hints:
+      - '$\sin\omega t = \mathrm{Re}\left(-ie^{i\omega t}\right)$.'
+
+  - id: Q-0.6-velocity-lead
+    type: mc
+    objectives: [OBJ-0.6-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      התזוזה של מתנד היא $x(t) = \mathrm{Re}\left(\tilde Ae^{i\omega t}\right)$. גוזרים לפי הזמן:
+      $v(t) = \mathrm{Re}\left(i\omega\tilde Ae^{i\omega t}\right)$. מה אומר הגורם $i\omega$ על המהירות לעומת התזוזה?
+    choices:
+      - text: האמפליטודה של המהירות $\omega|\tilde A|$, והמהירות **מקדימה** את התזוזה ברבע מחזור.
+        correct: true
+        feedback: >-
+          נכון. $i\omega = \omega e^{i\pi/2}$: הכפל מגדיל את הגודל פי $\omega$ ומוסיף $\pi/2$ לפאזה. לכן המהירות
+          מגיעה לשיא רבע מחזור לפני התזוזה, כשהמסה עוברת בשיווי המשקל.
+      - text: המהירות והתזוזה באותה פאזה, והמהירות גדולה פי $\omega$.
+        feedback: >-
+          אם הן היו באותה פאזה, המהירות הייתה מרבית בקצה, כשהתזוזה מרבית. אבל בקצה המסה נעצרת ומסתובבת לאחור:
+          המהירות שם אפס.
+      - text: המהירות **מפגרת** אחרי התזוזה ברבע מחזור.
+        feedback: 'הכפל ב-$i$ מוסיף $+\pi/2$ לפאזה. פאזה גדולה יותר פירושה שהשיא מגיע מוקדם יותר, ולכן המהירות מקדימה.'
+      - text: 'המהירות מדומה, כי מופיע בה $i$, ולכן אין לה משמעות פיזיקלית.'
+        feedback: 'המהירות היא החלק **הממשי** של $i\omega\tilde Ae^{i\omega t}$, וזה מספר ממשי לגמרי. ה-$i$ רק מזיז את הפאזה.'
+        misconception: MC-0-i-means-unphysical
+    hints:
+      - 'כתבו את $i$ בהצגה קוטבית: גודל 1, וזווית?'
+
+  - id: Q-0.6-product-trap
+    type: twotier
+    objectives: [OBJ-0.6-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      הכוח על מתנד הוא $F = \mathrm{Re}\left(\tilde Fe^{i\omega t}\right)$ והמהירות שלו $v = \mathrm{Re}\left(\tilde ve^{i\omega t}\right)$.
+      ההספק הוא $P = Fv$. סטודנט מחשב $P = \mathrm{Re}\left(\tilde F\tilde ve^{2i\omega t}\right)$. האם זה נכון?
+    choices:
+      - text: לא. את החלק הממשי מותר לקחת בסוף בחיבור ובגזירה, אבל לא במכפלה.
+        correct: true
+        feedback: 'נכון. $\mathrm{Re}$ הוא פעולה ליניארית: הוא עובר דרך סכומים, דרך כפל בקבוע ממשי ודרך נגזרות, אבל לא דרך מכפלה של שני מספרים מרוכבים.'
+      - text: כן. הייצוג המרוכב מדויק, ולכן מותר לחשב בו הכול ולקחת חלק ממשי בסוף.
+        feedback: >-
+          דוגמה נגדית: $z_1 = z_2 = i$. $\mathrm{Re}\,z_1\cdot\mathrm{Re}\,z_2 = 0$, אבל $\mathrm{Re}(z_1z_2) = \mathrm{Re}(-1) = -1$.
+          הייצוג מדויק רק לפעולות ליניאריות.
+        misconception: MC-0-re-of-product
+      - text: כן, אבל רק בתהודה, כשהכוח והמהירות באותה פאזה.
+        feedback: 'גם באותה פאזה זה לא נכון: עם $\tilde F = \tilde v = 1$, $P = \cos^2\omega t \ge 0$, והביטוי של הסטודנט, $\cos2\omega t$, שלילי בחצי מהזמן.'
+        misconception: MC-0-re-of-product
+    reasons:
+      - text: '$\mathrm{Re}(z_1z_2) = \mathrm{Re}\,z_1\,\mathrm{Re}\,z_2 - \mathrm{Im}\,z_1\,\mathrm{Im}\,z_2$, והאיבר השני לא מתאפס בדרך כלל.'
+        correct: true
+        feedback: >-
+          זה הנימוק. הנכון הוא לכתוב $\mathrm{Re}\,z = \tfrac12(z + z^*)$ לפני הכפל. בממוצע על מחזור מתקבל
+          $\langle P\rangle = \tfrac12\mathrm{Re}\left(\tilde F\tilde v^*\right)$, נוסחה שחוזרת בפרק 5.
+      - text: כל פעולה אלגברית עוברת דרך $\mathrm{Re}$, כמו בוקטורים.
+        feedback: 'גם בווקטורים לא כל פעולה עוברת רכיב-רכיב: הרכיב $x$ של מכפלה וקטורית תלוי ברכיבים $y$ ו-$z$. כאן הכפל מערבב את החלק הממשי והמדומה.'
+        misconception: MC-0-re-of-product
+      - text: 'הביטוי שגוי רק כי בו התדירות $2\omega$, והכוח והמהירות בתדירות $\omega$.'
+        feedback: 'במכפלה האמיתית $Fv$ יש דווקא איבר בתדירות $2\omega$, ועוד איבר קבוע. השגיאה היא שהאיבר הקבוע, שנושא את ההספק הממוצע, חסר.'
+    hints:
+      - 'נסו את הדוגמה $\tilde F = \tilde v = 1$: מה $Fv$, ומה הביטוי של הסטודנט?'
+
+  - id: Q-0.6-add-phase
+    type: numeric
+    objectives: [OBJ-0.6-2]
+    level: bagrut
+    prompt: >-
+      שני מקורות מזיזים את אותה מסה באותה תדירות: $x_1 = 3\cos\omega t$ ו-$x_2 = 2\cos\left(\omega t + \pi/3\right)$
+      (בסנטימטרים). מה האמפליטודה של התזוזה הכוללת?
+    answer: 4.36
+    unit: cm
+    correctFeedback: >-
+      נכון. $\tilde A = 3 + 2e^{i\pi/3} = 3 + 1 + i\sqrt3 = 4 + i\sqrt3$, ו-$|\tilde A| = \sqrt{16 + 3} = \sqrt{19} = 4.36\,\text{cm}$,
+      בפאזה $\arctan(\sqrt3/4) = 0.409\,\text{rad}$. **בדיקת גבולות:** עם הפרש פאזה $\varphi$, $|\tilde A|^2 = 3^2 + 2^2 + 2\cdot3\cdot2\cos\varphi$.
+      ב-$\varphi = 0$ זה $5^2$ (חיזוק מלא), וב-$\varphi = \pi$ זה $1^2$ (ביטול חלקי).
+    wrongFeedback: 'חברו את האמפליטודות המרוכבות $3$ ו-$2e^{i\pi/3}$ כמו וקטורים במישור: חלק ממשי עם חלק ממשי, מדומה עם מדומה.'
+    commonWrong:
+      - value: 5
+        feedback: 'חיברתם את האמפליטודות, $3 + 2$. זה נכון רק כשהפרש הפאזה אפס. כאן ביניהן $\pi/3$.'
+        misconception: MC-0-amplitudes-add
+      - value: 3.61
+        feedback: 'זה $\sqrt{3^2 + 2^2}$, כאילו הפרש הפאזה $\pi/2$. בהפרש $\pi/3$ צריך את האיבר $2\cdot3\cdot2\cos\varphi$.'
+      - value: 2.65
+        feedback: 'זה $\sqrt{9 + 4 - 12\cos(\pi/3)}$, עם מינוס: האורך של **ההפרש** $3 - 2e^{i\pi/3}$. בסכום מופיע $+2\cdot3\cdot2\cos\varphi$.'
+    hints:
+      - '$2e^{i\pi/3} = 2\cos\dfrac\pi3 + 2i\sin\dfrac\pi3 = 1 + i\sqrt3$.'

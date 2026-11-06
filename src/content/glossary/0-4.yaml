@@ -1,0 +1,17 @@
+# Terms first defined in lesson 0.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: definite-integral
+  term: אינטגרל מסוים
+  en: definite integral
+  symbol: ∫ₐᵇ f dx
+  definition: הגבול של סכום החתיכות f(x)·dx על הקטע [a, b] כשהחתיכות קטנות לאפס. הוא צובר כמות לאורך הקטע, עם סימן, ושווה ל-F(b) − F(a) לכל פונקציה קדומה F של f.
+  lesson: '0.4'
+
+- id: linear-density
+  term: צפיפות קווית
+  en: linear density
+  symbol: λ
+  unit: kg/m
+  definition: המסה ליחידת אורך של גוף דק, כמו מוט או חוט. מסה של חתיכה באורך dx היא λ(x)dx, והמסה הכוללת היא האינטגרל של λ לאורך הגוף.
+  lesson: '0.4'

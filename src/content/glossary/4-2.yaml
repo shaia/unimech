@@ -1,0 +1,30 @@
+# Terms first defined in lesson 4.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: cm-frame
+  term: מערכת מרכז המסה
+  en: center-of-mass frame
+  definition: מערכת הייחוס שנעה עם מרכז המסה של המערכת. התנע הכולל בה אפס. כשאין כוח חיצוני שקול היא מערכת ייחוס אינרציאלית, ובהתנגשות אלסטית כל מהירות בה רק מתהפכת.
+  lesson: '4.2'
+
+- id: c4-lab-frame
+  term: מערכת המעבדה
+  en: laboratory frame
+  definition: מערכת הייחוס שבה ניתנו הנתונים של בעיה, בדרך כלל זו שבה המטרה עומדת. מהירות במערכת המעבדה שווה למהירות במערכת מרכז המסה ועוד מהירות מרכז המסה.
+  lesson: '4.2'
+
+- id: reduced-mass
+  term: מסה מצומצמת
+  en: reduced mass
+  symbol: μ
+  unit: kg
+  definition: עבור שני גופים, μ = m₁m₂/(m₁ + m₂). האנרגיה הקינטית של התנועה היחסית היא ½μv², כאשר v המהירות היחסית. μ קטנה מכל אחת מהמסות, ושואפת למסה הקלה כשהמסה השנייה גדלה בלי גבול.
+  reject: [מסה מוקטנת, מסה רדוקטיבית]
+  lesson: '4.2'
+
+- id: c4-available-energy
+  term: אנרגיה זמינה
+  en: available energy
+  unit: J
+  definition: האנרגיה הקינטית שהתנגשות יכולה להפוך לצורות אחרות, כמו עיוות, חום או פירוק. היא האנרגיה של התנועה היחסית, ½μv² עם v המהירות היחסית; האנרגיה של מרכז המסה, ½MV², נשארת כי התנע נשמר.
+  lesson: '4.2'

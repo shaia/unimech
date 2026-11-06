@@ -1,0 +1,8 @@
+# Terms first defined in lesson 3.8. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: c3-koenig-theorem
+  term: משפט קניג
+  en: König's theorem
+  definition: האנרגיה הקינטית של מערכת היא האנרגיה של מרכז המסה, ½MV², ועוד האנרגיה הקינטית של החלקים ביחס למרכז המסה. באותו אופן התנע הזוויתי ביחס לנקודה הוא R × MV ועוד התנע הזוויתי ביחס למרכז המסה, שלא תלוי בנקודה.
+  lesson: '3.8'

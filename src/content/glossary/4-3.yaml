@@ -1,0 +1,9 @@
+# Terms first defined in lesson 4.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: scattering-angle
+  term: זווית פיזור
+  en: scattering angle
+  symbol: θ
+  definition: הזווית בין כיוון התנועה של הגוף הפוגע אחרי ההתנגשות לכיוון התנועה שלו לפניה. כשהפוגע כבד מהמטרה, שעומדת, והתנגשות אלסטית, זווית הפיזור שלו לא עולה על θmax, עם sin θmax = m₂/m₁.
+  lesson: '4.3'

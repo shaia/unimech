@@ -1,0 +1,9 @@
+# Terms first defined in lesson 8.3. Chapter 8 terms outside the course's term table are prefixed c8-.
+
+- id: c8-rotational-kinetic-energy
+  term: אנרגיה קינטית סיבובית
+  en: rotational kinetic energy
+  symbol: K
+  unit: J
+  definition: האנרגיה הקינטית של גוף צפיד שמסתובב סביב ציר קבוע, K = ½Iω², סכום של ½v² dm על כל חלקיו עם v = ωr. בגוף שגם מתקדם, K = ½Mv_cm² + ½I_cm ω².
+  lesson: '8.3'

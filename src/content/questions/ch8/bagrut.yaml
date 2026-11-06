@@ -1,0 +1,426 @@
+# Chapter 8 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each, the
+# parts climbing basic → mid → bagrut (exam level). Open parts are solved in the course format: general law
+# (law) → derivation (manipulation) → limit check (limit) → unit check (units) → numbers (substitution) →
+# result. Together the four problems touch every lesson of the chapter:
+#   1 rod struck on ice: 8.1, 8.2, 8.3, 8.6 · 2 yo-yo: 8.2, 8.3, 8.4 · 3 hinged rod, cable cut: 8.3, 8.5, 8.7 ·
+#   4 bicycle wheel, stool and gyroscope: 8.2, 8.6, 8.8.
+#
+# Every number was computed in .scratch/ch8/r.ts with src/physics/constants.ts (G = 9.8):
+#   1: M = 1.2 kg, L = 0.80 m, J = 0.60 N·s: I_cm = 0.064 (end 0.256, ML² 0.768) kg·m², v_cm = 0.50 m/s, ω = 3.75 rad/s
+#      (I_end 0.94, lever L 7.5), point at rest 0.133 m past the centre = 0.533 m from the struck end (0.267 from the far
+#      end), K_t = 0.15 J, K_r = 0.45 J, K_r/K = 0.75 (K_r/K_t = 3); far end −1.0 m/s, struck end 2.0 m/s.
+#   2: M = 0.12 kg, R = 0.030 m: I = 5.4e-5 kg·m², a = 2g/3 = 6.53 m/s², T = Mg/3 = 0.392 N, after 0.80 m v = 3.23 m/s
+#      (free fall 3.96, a = g/3 2.29), hovering: hand a = 2g = 19.6 m/s².
+#   3: M = 3.0 kg, L = 1.2 m, cable at 30°: T = 29.4 N (no sin 14.7, weight at the end 58.8), hinge 14.7 N up and 25.5 N
+#      out; after the cut α = 3g/(2L) = 12.25 rad/s², a_cm = 3g/4 = 7.35 m/s², hinge Mg/4 = 7.35 N; hanging period
+#      2π√(2L/(3g)) = 1.80 s (simple L 2.20, L/2 1.55, I_cm 0.898).
+#   4: ring M = 2.0 kg, R = 0.30 m, ω = 40 rad/s: L = 7.2 (disc 3.6) kg·m²/s; stool I = 3.0 kg·m²: 2L/I = 4.8 rad/s
+#      (forgot 2: 2.4); string at r = 0.15 m: Ω = Mgr/L = 0.408 rad/s, period 15.4 s, ω/Ω = 98, horizontal force MΩ²r = 0.05 N.
+
+chapter: 8
+questions:
+  # ------------------------------------------------------------ 1: a rod struck on ice
+  - id: Q-8-bagrut-1
+    type: bagrut
+    title: מוט שנפגע על הקרח
+    prompt: >-
+      מוט אחיד במסה $M = 1.2\,\text{kg}$ ובאורך $L = 0.80\,\text{m}$ מונח במנוחה על קרח חלק. מקל הוקי פוגע בקצה
+      אחד שלו מכה קצרה, אופקית ובניצב למוט, עם מתקף $J = 0.60\,\text{N}\cdot\text{s}$. הזניחו כל חיכוך עם הקרח.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-8.2-1]
+        prompt: מה מומנט ההתמד של המוט סביב ציר אנכי שעובר במרכזו?
+        answer: 0.064
+        unit: kg·m²
+        correctFeedback: >-
+          נכון. $I_{cm} = \displaystyle\int_{-L/2}^{L/2}x^2\frac ML\,dx = \frac{1}{12}ML^2 = \frac{1.2\cdot0.64}{12} = 0.064\,\text{kg}\cdot\text{m}^2$.
+        wrongFeedback: 'אינטגרלו $x^2\,dm$ עם $dm = (M/L)\,dx$, מ-$-L/2$ עד $L/2$.'
+        commonWrong:
+          - value: 0.256
+            feedback: 'זה $\tfrac13ML^2$, סביב **הקצה**. הציר עובר במרכז, ושם האינטגרל רץ מ-$-L/2$ עד $L/2$.'
+            misconception: MC-8-inertia-only-mass
+          - value: 0.768
+            feedback: 'זה $ML^2$, כאילו כל המסה במרחק $L$ מהציר. במוט המסה מפוזרת, ורובה קרובה למרכז.'
+        hints:
+          - 'סביב המרכז, המסה מגיעה עד מרחק $L/2$ מכל צד.'
+
+      - label: ב
+        type: open
+        points: 8
+        level: mid
+        objectives: [OBJ-8.6-2, OBJ-8.1-1]
+        prompt: >-
+          מצאו את מהירות מרכז המסה $v_{cm}$ ואת המהירות הזוויתית $\omega$ של המוט מיד אחרי המכה, קודם כביטויים
+          ב-$J$, $M$ ו-$L$ ואחר כך כמספרים. בדקו את הביטויים בגבול ובדקו יחידות.
+        hints:
+          - 'מתקף משנה את התנע הקווי. והמומנט של המתקף סביב מרכז המסה משנה את התנע הזוויתי סביבו.'
+        solution:
+          - { kind: law, text: 'מתקף ותנע: $J = \Delta p = Mv_{cm}$. מתקף זוויתי סביב מרכז המסה: $\int\tau_{cm}\,dt = \Delta L_{cm} = I_{cm}\omega$. משוואת המומנט סביב מרכז המסה תקפה גם כשמרכז המסה מאיץ.' }
+          - { kind: manipulation, text: 'המכה במרחק $L/2$ ממרכז המסה ובניצב למוט, ולכן המתקף הזוויתי שלה $J\dfrac L2$. מכאן $v_{cm} = \dfrac JM$ ו-$\omega = \dfrac{JL/2}{ML^2/12} = \dfrac{6J}{ML}$.' }
+          - { kind: limit, text: 'אם המכה הייתה במרחק $b$ ממרכז המסה, $\omega = \dfrac{Jb}{I_{cm}}$: ב-$b = 0$ (מכה במרכז) המוט רק מתקדם, בלי סיבוב, כמצופה. ו-$v_{cm}$ לא תלוי במקום המכה כלל.' }
+          - { kind: units, text: '$\dfrac JM$: $\dfrac{\text{N}\cdot\text{s}}{\text{kg}} = \text{m/s}$. $\dfrac{J}{ML}$: $\dfrac{\text{N}\cdot\text{s}}{\text{kg}\cdot\text{m}} = \text{s}^{-1}$, יחידות של מהירות זוויתית.' }
+          - { kind: substitution, text: '$v_{cm} = \dfrac{0.60}{1.2} = 0.50\,\text{m/s}$, ו-$\omega = \dfrac{6\cdot0.60}{1.2\cdot0.80} = 3.75\,\text{rad/s}$.' }
+          - { kind: result, text: '$v_{cm} = \dfrac JM = 0.50\,\text{m/s}$ בכיוון המכה, ו-$\omega = \dfrac{6J}{ML} = 3.75\,\text{rad/s}$.' }
+        rubric:
+          - text: כתבתי $J = Mv_{cm}$ וקיבלתי $v_{cm} = 0.50\,\text{m/s}$.
+          - text: כתבתי מתקף זוויתי סביב מרכז המסה, $J\cdot L/2 = I_{cm}\omega$, עם $I_{cm} = \tfrac{1}{12}ML^2$, ולא סביב הקצה.
+          - text: בדקתי שמכה במרכז נותנת $\omega = 0$, ובדקתי את היחידות של שני הביטויים.
+          - text: קיבלתי $\omega = 3.75\,\text{rad/s}$.
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        standalone: false
+        objectives: [OBJ-8.1-1]
+        prompt: >-
+          מיד אחרי המכה, נקודה אחת של המוט נמצאת במנוחה רגעית. באיזה מרחק מהקצה **שהוכה** היא נמצאת?
+        answer: 0.533
+        unit: m
+        correctFeedback: >-
+          נכון. נקודה במרחק $x$ ממרכז המסה, לכיוון הקצה השני, נעה ב-$v_{cm} - \omega x$. היא במנוחה ב-
+          $x = \dfrac{v_{cm}}{\omega} = \dfrac{0.50}{3.75} = 0.133\,\text{m} = \dfrac L6$, ולכן במרחק
+          $\dfrac L2 + \dfrac L6 = \dfrac23L = 0.533\,\text{m}$ מהקצה שהוכה. הקצה השני נע **אחורה**, ב-$1.0\,\text{m/s}$,
+          והקצה שהוכה קדימה ב-$2.0\,\text{m/s}$. זו אותה נקודה כמו מרכז ההקשה: מוט שתלוי מציר בנקודה הזו לא היה
+          מרגיש את המכה.
+        wrongFeedback: 'מהירות נקודה על המוט היא $v_{cm}$ ועוד מהירות הסיבוב, $\omega x$, שסימנה תלוי בצד. איפה הן מבטלות זו את זו?'
+        commonWrong:
+          - value: 0.4
+            feedback: 'זה מרכז המוט, אבל הוא נע ב-$v_{cm} = 0.50\,\text{m/s}$. המוט מסתובב **סביב** מרכז המסה, אבל מרכז המסה עצמו זז.'
+            misconception: MC-8-all-points-move-with-cm
+          - value: 0.8
+            feedback: 'זה הקצה השני. המוט אינו מחובר שם לציר: הקצה הזה נע אחורה ב-$v_{cm} - \omega\dfrac L2 = -1.0\,\text{m/s}$.'
+            misconception: MC-8-free-rod-pivots-at-end
+          - value: 0.267
+            feedback: 'זה המרחק של הנקודה מהקצה **השני**, $L/2 - L/6 = L/3$. השאלה שואלת על המרחק מהקצה שהוכה.'
+        hints:
+          - 'בצד של הקצה השני, מהירות הסיבוב פונה נגד $v_{cm}$.'
+
+      - label: ד
+        type: numeric
+        points: 8
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-8.3-2]
+        prompt: >-
+          איזה חלק מהאנרגיה הקינטית של המוט אחרי המכה הוא אנרגיה של סיבוב סביב מרכז המסה? ענו כשבר, מספר בין 0
+          ל-1. האם התשובה תלויה ב-$J$, ב-$M$ או ב-$L$?
+        answer: 0.75
+        unit: ''
+        correctFeedback: >-
+          נכון. $K_t = \tfrac12Mv_{cm}^2 = 0.15\,\text{J}$ ו-$K_r = \tfrac12I_{cm}\omega^2 = \tfrac12\cdot0.064\cdot3.75^2 = 0.45\,\text{J}$,
+          ולכן $\dfrac{K_r}{K_t + K_r} = \dfrac{0.45}{0.60} = 0.75$. בביטויים: $K_t = \dfrac{J^2}{2M}$ ו-
+          $K_r = \dfrac{(JL/2)^2}{2\cdot ML^2/12} = \dfrac{3J^2}{2M}$. היחס $3:1$ לא תלוי ב-$J$, ב-$M$ או ב-$L$, רק במקום
+          המכה. **בדיקת גבולות:** במכה במרחק $b$ ממרכז המסה, $\dfrac{K_r}{K_t} = \dfrac{Mb^2}{I_{cm}}$, ובמכה במרכז, $b = 0$,
+          כל האנרגיה הולכת לתנועת המרכז.
+        wrongFeedback: 'אנרגיה קינטית של גוף צפיד היא $\tfrac12Mv_{cm}^2 + \tfrac12I_{cm}\omega^2$. חשבו את שני האיברים מתוצאות חלק ב.'
+        commonWrong:
+          - value: 0.25
+            feedback: 'זה החלק של תנועת מרכז המסה, $K_t/K$. החלק של הסיבוב הוא השאר.'
+          - value: 3.0
+            feedback: 'זה היחס $K_r/K_t$. השאלה מבקשת את החלק מהאנרגיה **הכוללת**, $\dfrac{K_r}{K_t + K_r}$.'
+          - value: 0.5
+            feedback: 'אין סיבה שהאנרגיה תתחלק חצי-חצי. חשבו את שני האיברים: $0.15$ ו-$0.45\,\text{J}$.'
+        hints:
+          - 'השתמשו ב-$v_{cm} = 0.50\,\text{m/s}$ וב-$\omega = 3.75\,\text{rad/s}$ מחלק ב.'
+
+  # ------------------------------------------------------------ 2: a yo-yo
+  - id: Q-8-bagrut-2
+    type: bagrut
+    title: יו-יו
+    prompt: >-
+      יו-יו הוא דסקה אחידה במסה $M = 0.12\,\text{kg}$ וברדיוס $R = 0.030\,\text{m}$. חוט דק וקל כרוך סביב השפה
+      שלו, והקצה העליון של החוט מוחזק ביד. החוט אנכי כל הזמן ולא מחליק על השפה. משחררים את היו-יו ממנוחה.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-8.2-1]
+        prompt: מה מומנט ההתמד של היו-יו סביב הציר שלו?
+        answer: 5.4e-5
+        unit: kg·m²
+        correctFeedback: 'נכון: $I = \tfrac12MR^2 = \tfrac12\cdot0.12\cdot0.030^2 = 5.4\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$.'
+        wrongFeedback: 'מומנט ההתמד של דסקה אחידה סביב ציר הסימטריה שלה, עם $R$ במטרים.'
+        commonWrong:
+          - value: 1.08e-4
+            feedback: 'זה $MR^2$, של טבעת. בדסקה אחידה $I = \tfrac12MR^2$.'
+            misconception: MC-8-inertia-only-mass
+          - value: 0.54
+            feedback: 'הצבתם את $R$ בסנטימטרים, $3.0$. הציבו $R = 0.030\,\text{m}$.'
+        hints:
+          - 'סכמו טבעות דקות: $I = \int_0^R r^2\,\sigma\,2\pi r\,dr$.'
+
+      - label: ב
+        type: open
+        points: 9
+        level: mid
+        objectives: [OBJ-8.3-1, OBJ-8.4-1]
+        prompt: >-
+          מצאו את תאוצת מרכז היו-יו ואת המתיחות בחוט, קודם כביטויים ואחר כך כמספרים. בדקו את התוצאה בשני גבולות:
+          יו-יו בלי מומנט התמד, ויו-יו שהוא טבעת.
+        hints:
+          - 'תנאי "החוט לא מחליק" הוא תנאי גלגול: הנקודה של השפה שבה החוט עוזב נמצאת במנוחה רגעית.'
+        solution:
+          - { kind: law, text: 'החוק השני למרכז המסה, עם ציר כלפי מטה: $Mg - T = Ma$. משוואת המומנט סביב מרכז המסה: $TR = I\alpha$. ותנאי הגלגול על החוט: $a = \alpha R$.' }
+          - { kind: manipulation, text: 'מהמשוואה השנייה ומהתנאי, $T = \dfrac{I}{R^2}a$. הצבה בראשונה: $Mg = \left(M + \dfrac{I}{R^2}\right)a$, ולכן $$a = \frac{g}{1 + I/(MR^2)},\qquad T = \frac{Mg}{1 + MR^2/I}$$ לדסקה, $I/(MR^2) = \tfrac12$: $a = \tfrac23g$ ו-$T = \tfrac13Mg$.' }
+          - { kind: limit, text: 'כש-$I \to 0$: $a \to g$ ו-$T \to 0$, נפילה חופשית, כי אין מה לסובב. לטבעת, $I = MR^2$: $a = \tfrac12g$ ו-$T = \tfrac12Mg$. ככל שהמסה רחוקה יותר מהציר, היו-יו נופל לאט יותר והחוט מתוח יותר. ובכל מקרה $T < Mg$, כמו שצריך לגוף שמאיץ כלפי מטה.' }
+          - { kind: units, text: '$a$ הוא $g$ כפול מספר חסר ממדים, ולכן ב-$\text{m/s}^2$, ו-$T$ הוא $Mg$ כפול מספר, ולכן בניוטון.' }
+          - { kind: substitution, text: '$a = \tfrac23\cdot9.8 = 6.53\,\text{m/s}^2$, ו-$T = \tfrac13\cdot0.12\cdot9.8 = 0.392\,\text{N}$.' }
+          - { kind: result, text: '$a = \dfrac{g}{1 + I/(MR^2)} = \tfrac23g = 6.53\,\text{m/s}^2$ כלפי מטה, ו-$T = \tfrac13Mg = 0.392\,\text{N}$.' }
+        rubric:
+          - text: כתבתי את החוק השני למרכז ואת משוואת המומנט סביב מרכז המסה, עם אותה מתיחות בשתיהן.
+          - text: כתבתי את תנאי הגלגול על החוט, $a = \alpha R$, והשתמשתי בו כדי לסלק את $\alpha$.
+          - text: קיבלתי $a = \tfrac23g$ ו-$T = \tfrac13Mg$, ובדקתי ש-$I \to 0$ נותן נפילה חופשית ושטבעת נותנת $g/2$.
+          - text: הצבתי וקיבלתי $6.53\,\text{m/s}^2$ ו-$0.392\,\text{N}$, עם יחידות.
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-8.3-2]
+        prompt: >-
+          מה מהירות מרכז היו-יו אחרי שהוא ירד $0.80\,\text{m}$? פתרו בעזרת שימור אנרגיה.
+        answer: 3.23
+        unit: m/s
+        correctFeedback: >-
+          נכון. החוט מושך בנקודה שנמצאת במנוחה רגעית, ולכן הוא לא עושה עבודה, והאנרגיה המכנית נשמרת:
+          $Mgh = \tfrac12Mv^2 + \tfrac12\cdot\tfrac12MR^2\left(\dfrac vR\right)^2 = \tfrac34Mv^2$, ולכן
+          $v = \sqrt{\tfrac43gh} = \sqrt{\tfrac43\cdot9.8\cdot0.80} = 3.23\,\text{m/s}$. שליש מהאנרגיה הולך לסיבוב. אותה
+          תוצאה מ-$v = \sqrt{2ah}$ עם $a = \tfrac23g$.
+        wrongFeedback: 'כתבו שימור אנרגיה עם אנרגיה קינטית של תנועת המרכז ושל הסיבוב, והציבו $\omega = v/R$.'
+        commonWrong:
+          - value: 3.96
+            feedback: 'זה $\sqrt{2gh}$, נפילה חופשית. חלק מהאנרגיה הולך לסיבוב היו-יו, ולכן המרכז נע לאט יותר.'
+          - value: 2.29
+            feedback: 'זה $\sqrt{2\cdot\tfrac g3\cdot h}$: השתמשתם בתאוצה $g/3$, שהיא היחס $T/M$, ולא בתאוצה, $\tfrac23g$.'
+        hints:
+          - 'בגלגול על החוט, $\omega = v/R$. כמה מהאנרגיה הקינטית הולך לסיבוב?'
+
+      - label: ד
+        type: numeric
+        points: 7
+        level: bagrut
+        objectives: [OBJ-8.3-1, OBJ-8.4-1]
+        prompt: >-
+          עכשיו היד מושכת את החוט כלפי מעלה כך שמרכז היו-יו נשאר כל הזמן באותו גובה, והיו-יו רק מסתובב מהר יותר
+          ויותר. באיזו תאוצה צריכה היד לנוע?
+        answer: 19.6
+        unit: m/s²
+        correctFeedback: >-
+          נכון. מרכז המסה לא מאיץ, ולכן $T = Mg$. סביב המרכז: $\alpha = \dfrac{TR}{I} = \dfrac{MgR}{\tfrac12MR^2} = \dfrac{2g}{R}$.
+          החוט לא מחליק, ולכן הנקודה בשפה שבה הוא עוזב, ואיתה החוט והיד, מאיצה ב-$\alpha R = 2g = 19.6\,\text{m/s}^2$
+          כלפי מעלה. **בדיקת גבולות:** לטבעת, $I = MR^2$, היד הייתה צריכה רק $g$, וככל ש-$I$ קטן יותר, קשה יותר
+          "להחזיק" את היו-יו: כש-$I \to 0$ התאוצה הדרושה שואפת לאינסוף.
+        wrongFeedback: 'מרכז המסה במנוחה: מה זה אומר על המתיחות? אחר כך מצאו את $\alpha$, ואת התאוצה של נקודת השפה שבה החוט עוזב.'
+        commonWrong:
+          - value: 9.8
+            feedback: 'זה $g$. המתיחות אכן $Mg$, אבל היא מסובבת דסקה, $\alpha = 2g/R$, והחוט נמשך בתאוצה $\alpha R = 2g$. $g$ היה נכון לטבעת.'
+          - value: 6.53
+            feedback: 'זו התאוצה של היו-יו כשהיד במנוחה, מחלק ב. כאן היו-יו לא נופל: המתיחות גדולה יותר, $Mg$ במקום $\tfrac13Mg$.'
+        hints:
+          - 'אם מרכז המסה לא זז, $T = Mg$.'
+
+  # ------------------------------------------------------------ 3: a hinged rod held by a cable, then the cable is cut
+  - id: Q-8-bagrut-3
+    type: bagrut
+    title: מוט על ציר בקיר, לפני ואחרי שהכבל נחתך
+    prompt: >-
+      מוט אחיד במסה $M = 3.0\,\text{kg}$ ובאורך $L = 1.2\,\text{m}$ מחובר בקצה אחד לקיר אנכי בציר אופקי, שסביבו
+      הוא יכול להסתובב בלי חיכוך. כבל קל מחבר את הקצה השני של המוט לנקודה על הקיר מעל הציר, ומחזיק את המוט אופקי.
+      הכבל יוצר זווית $30^\circ$ עם המוט.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-8.5-1]
+        prompt: מה המתיחות בכבל?
+        answer: 29.4
+        unit: N
+        correctFeedback: >-
+          נכון. סביב הציר בקיר, כוח הציר הלא ידוע לא נכנס למשוואה: $T\sin30^\circ\cdot L = Mg\cdot\dfrac L2$, ולכן
+          $T = \dfrac{Mg}{2\sin30^\circ} = Mg = 29.4\,\text{N}$.
+        wrongFeedback: 'כתבו את משוואת המומנטים סביב הציר בקיר. רק הרכיב של המתיחות שניצב למוט מסובב אותו.'
+        commonWrong:
+          - value: 14.7
+            feedback: 'זה $Mg/2$: שכחתם את $\sin30^\circ$. רק הרכיב הניצב של המתיחות, $T\sin30^\circ$, יוצר מומנט סביב הציר.'
+          - value: 58.8
+            feedback: 'שמתם את המשקל בקצה המוט. משקלו של מוט אחיד פועל במרכזו, ולכן הזרוע שלו $L/2$, לא $L$.'
+            misconception: MC-8-torque-ignores-position
+        hints:
+          - 'איזו נקודה מוציאה מהמשוואה את הכוח שהציר מפעיל?'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-8.5-1]
+        prompt: מה הרכיב **האנכי** של הכוח שהציר מפעיל על המוט?
+        answer: 14.7
+        unit: N
+        correctFeedback: >-
+          נכון. הדרך המהירה: מומנטים סביב הקצה שבו מחובר הכבל. שם $T$ נעלם, וגם הרכיב האופקי של כוח הציר, שעובר לאורך
+          המוט: $F_y\cdot L = Mg\cdot\dfrac L2$, ולכן $F_y = \dfrac{Mg}{2} = 14.7\,\text{N}$, כלפי מעלה. או מהכוחות:
+          $F_y = Mg - T\sin30^\circ = 29.4 - 14.7$. הרכיב האופקי, $T\cos30^\circ = 25.5\,\text{N}$, דוחף את המוט הרחק מהקיר.
+        wrongFeedback: 'בחרו נקודה שדרכה עוברים גם הכבל וגם הרכיב האופקי של כוח הציר, או השתמשו בסכום הכוחות האנכיים.'
+        commonWrong:
+          - value: 29.4
+            feedback: 'זה כל המשקל. אבל הכבל מושך כלפי מעלה, ונושא חצי ממנו: $T\sin30^\circ = 14.7\,\text{N}$.'
+          - value: 25.5
+            feedback: 'זה הרכיב **האופקי**, $T\cos30^\circ$. הרכיב האנכי מאזן את מה שהכבל לא נושא מהמשקל.'
+        hints:
+          - 'סביב הקצה שבו מחובר הכבל, רק המשקל והרכיב האנכי של כוח הציר יוצרים מומנט.'
+
+      - label: ג
+        type: open
+        points: 8
+        level: bagrut
+        objectives: [OBJ-8.3-1]
+        prompt: >-
+          חותכים את הכבל. מצאו את התאוצה הזוויתית של המוט ואת הכוח שהציר מפעיל עליו **ברגע הראשון** אחרי החיתוך,
+          כביטויים ואחר כך כמספרים. השוו לכוח האנכי של הציר מחלק ב, ובדקו את הביטוי בגבול.
+        hints:
+          - 'ברגע הראשון המוט עוד במנוחה, $\omega = 0$: למרכז המסה אין תאוצה צנטריפטלית, רק משיקית.'
+        solution:
+          - { kind: law, text: 'משוואת המומנט סביב הציר הקבוע: $\tau = I\alpha$, עם $I = \tfrac13ML^2$. החוק השני למרכז המסה: $M\vec a_{cm} = M\vec g + \vec F$, כאשר $\vec F$ כוח הציר.' }
+          - { kind: manipulation, text: 'סביב הציר רק הכובד יוצר מומנט: $Mg\dfrac L2 = \tfrac13ML^2\alpha$, ולכן $\alpha = \dfrac{3g}{2L}$. ברגע הראשון $\omega = 0$, ולכן מרכז המסה מאיץ רק בניצב למוט, כלומר כלפי מטה: $a_{cm} = \alpha\dfrac L2 = \tfrac34g$. ציר אנכי כלפי מטה: $Mg - F = M\cdot\tfrac34g$, ולכן $F = \tfrac14Mg$ כלפי מעלה. הרכיב האופקי אפס, כי אין תאוצה אופקית.' }
+          - { kind: limit, text: 'אילו כל המסה הייתה בקצה החופשי ($I = ML^2$, מומנט $MgL$): $\alpha = g/L$, הקצה נופל ב-$g$, ו-$F = 0$: נפילה חופשית, והציר לא נחוץ. אילו כל המסה הייתה על הציר: $a_{cm} = 0$ ו-$F = Mg$. המוט האחיד, $F = \tfrac14Mg$, בין שני הקצוות.' }
+          - { kind: units, text: '$\dfrac{3g}{2L}$: $\dfrac{\text{m/s}^2}{\text{m}} = \text{s}^{-2}$, יחידות של תאוצה זוויתית. $\tfrac14Mg$ בניוטון.' }
+          - { kind: substitution, text: '$\alpha = \dfrac{3\cdot9.8}{2\cdot1.2} = 12.25\,\text{rad/s}^2$, $a_{cm} = 7.35\,\text{m/s}^2$, ו-$F = \tfrac14\cdot3.0\cdot9.8 = 7.35\,\text{N}$.' }
+          - { kind: result, text: '$\alpha = \dfrac{3g}{2L} = 12.3\,\text{rad/s}^2$, וכוח הציר $\tfrac14Mg = 7.35\,\text{N}$, אנכי כלפי מעלה. הוא ירד בחצי, מ-$14.7\,\text{N}$, ברגע החיתוך: הציר לא צריך עוד להחזיק את המוט, רק להאט את הנפילה של הקצה הקרוב.' }
+        rubric:
+          - text: כתבתי $\tau = I\alpha$ סביב הציר עם $I = \tfrac13ML^2$ וזרוע $L/2$, וקיבלתי $\alpha = \dfrac{3g}{2L}$.
+          - text: קבעתי שברגע הראשון $\omega = 0$, ולכן $a_{cm} = \alpha L/2 = \tfrac34g$ כלפי מטה, בלי רכיב אופקי.
+          - text: כתבתי את החוק השני למרכז המסה וקיבלתי כוח ציר $\tfrac14Mg$ כלפי מעלה.
+          - text: בדקתי את התוצאה בגבול של מסה בקצה (נפילה חופשית, $F = 0$) ובדקתי יחידות.
+
+      - label: ד
+        type: numeric
+        points: 8
+        level: bagrut
+        objectives: [OBJ-8.7-1]
+        prompt: >-
+          המוט מתנודד עד שהחיכוך באוויר עוצר את רוב התנועה, ובסוף הוא מתנודד בזוויות קטנות סביב המצב התלוי, אנכית
+          מתחת לציר. מה זמן המחזור של התנודות?
+        answer: 1.8
+        unit: s
+        correctFeedback: >-
+          נכון. מטוטלת פיזיקלית: $T = 2\pi\sqrt{\dfrac{I}{Mgd}}$, עם $I = \tfrac13ML^2$ ו-$d = L/2$:
+          $T = 2\pi\sqrt{\dfrac{2L}{3g}} = 2\pi\sqrt{\dfrac{2\cdot1.2}{3\cdot9.8}} = 1.80\,\text{s}$. האורך השקול $\tfrac23L = 0.80\,\text{m}$.
+        wrongFeedback: 'השתמשו ב-$T = 2\pi\sqrt{I/(Mgd)}$ עם $I$ סביב הציר ו-$d$ המרחק מהציר למרכז המסה.'
+        commonWrong:
+          - value: 2.2
+            feedback: 'זו מטוטלת פשוטה באורך $L$. במוט רוב המסה קרובה לציר, והאורך השקול הוא רק $\tfrac23L$.'
+          - value: 1.55
+            feedback: 'זו מטוטלת פשוטה באורך $L/2$, המרחק למרכז המסה. האורך השקול ארוך ממנו, כי המסה מפוזרת סביב מרכז המסה.'
+            misconception: MC-8-equivalent-length-is-cm-distance
+          - value: 0.898
+            feedback: 'השתמשתם ב-$I = \tfrac{1}{12}ML^2$, סביב המרכז. המוט מתנודד סביב הציר בקצה, $I = \tfrac13ML^2$.'
+            misconception: MC-8-inertia-only-mass
+        hints:
+          - 'מה מומנט ההתמד של המוט סביב הציר, ובאיזה מרחק ממנו נמצא מרכז המסה?'
+
+  # ------------------------------------------------------------ 4: a bicycle wheel: a turning stool and a gyroscope
+  - id: Q-8-bagrut-4
+    type: bagrut
+    title: גלגל אופניים, כיסא מסתובב וג׳ירוסקופ
+    prompt: >-
+      גלגל אופניים מסתובב סביב הסרן שלו במהירות זוויתית $\omega = 40\,\text{rad/s}$. מתייחסים אליו כטבעת דקה
+      במסה $M = 2.0\,\text{kg}$ וברדיוס $R = 0.30\,\text{m}$, ומזניחים את מסת החישורים, הרכזת והסרן.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-8.2-1]
+        prompt: מה גודל התנע הזוויתי של הגלגל סביב הסרן?
+        answer: 7.2
+        unit: kg·m²/s
+        correctFeedback: 'נכון. $I = MR^2 = 0.18\,\text{kg}\cdot\text{m}^2$, כי כל המסה במרחק $R$, ו-$L = I\omega = 0.18\cdot40 = 7.2\,\text{kg}\cdot\text{m}^2/\text{s}$.'
+        wrongFeedback: '$L = I\omega$, עם מומנט ההתמד של טבעת.'
+        commonWrong:
+          - value: 3.6
+            feedback: 'השתמשתם ב-$I = \tfrac12MR^2$, של דסקה. בטבעת כל המסה בשפה: $I = MR^2$.'
+            misconception: MC-8-inertia-only-mass
+          - value: 24
+            feedback: 'זה $MR\omega$, התנע הקווי של השפה. התנע הזוויתי כולל עוד $R$: $L = MR\cdot R\omega$.'
+        hints:
+          - 'בטבעת דקה, כל המסה באותו מרחק מהסרן.'
+
+      - label: ב
+        type: numeric
+        points: 6
+        level: mid
+        objectives: [OBJ-8.6-1]
+        prompt: >-
+          סטודנט יושב במנוחה על כיסא שמסתובב בלי חיכוך סביב ציר אנכי, ומחזיק את הגלגל כשהסרן אנכי ו-$\vec L$ כלפי
+          מעלה. הוא הופך את הגלגל, כך שהוא מסתובב באותה מהירות עם $\vec L$ כלפי מטה. מומנט ההתמד של הסטודנט, הכיסא
+          והגלגל סביב ציר הכיסא, בלי הסיבוב העצמי של הגלגל, הוא $3.0\,\text{kg}\cdot\text{m}^2$. באיזו מהירות זוויתית
+          מסתובב הכיסא אחרי ההיפוך?
+        answer: 4.8
+        unit: rad/s
+        correctFeedback: >-
+          נכון. אין מומנט חיצוני סביב הציר האנכי, ולכן $L_{tot} = +7.2$ נשמר. אחרי ההיפוך הגלגל תורם $-7.2$, והכיסא
+          צריך $+14.4$: $\Omega = \dfrac{2L}{I} = \dfrac{14.4}{3.0} = 4.8\,\text{rad/s}$, בכיוון שבו הגלגל הסתובב בהתחלה.
+          האנרגיה של הכיסא, $\tfrac12\cdot3.0\cdot4.8^2 = 34.6\,\text{J}$, באה מהעבודה של הסטודנט בזמן שהפך את הגלגל.
+        wrongFeedback: 'כתבו את התנע הזוויתי הכולל סביב הציר האנכי לפני ההיפוך ואחריו, עם סימנים.'
+        commonWrong:
+          - value: 2.4
+            feedback: 'זה $L/I$. התנע הזוויתי של הגלגל השתנה מ-$+L$ ל-$-L$, כלומר ב-$2L$, והכיסא מקבל את כל השינוי.'
+        hints:
+          - 'השינוי בתנע הזוויתי של הגלגל הוא $2L$.'
+
+      - label: ג
+        type: open
+        points: 9
+        level: bagrut
+        objectives: [OBJ-8.8-2]
+        prompt: >-
+          עכשיו תולים את הגלגל, שמסתובב ב-$40\,\text{rad/s}$, בחוט אנכי שקשור לקצה אחד של הסרן, במרחק
+          $r = 0.15\,\text{m}$ ממרכז הגלגל. משחררים אותו כשהסרן אופקי, והוא נוקף סביב החוט. גזרו את קצב הנקיפה
+          $\Omega$, חשבו אותו ואת זמן סיבוב הנקיפה, ובדקו את ההנחה שהגלגל מסתובב "מהר".
+        hints:
+          - 'מומנט הכובד סביב נקודת התלייה אופקי וניצב ל-$\vec L$. מה הוא עושה לגודל של $\vec L$, ומה לכיוון שלו?'
+        solution:
+          - { kind: law, text: 'משוואת המומנט סביב נקודת התלייה: $\dfrac{d\vec L}{dt} = \vec\tau$. בסיבוב מהיר $\vec L$ כמעט כולו לאורך הסרן, $\vec L \approx I\omega\,\hat s$.' }
+          - { kind: manipulation, text: 'מומנט הכובד $\vec\tau = \vec r\times M\vec g$ אופקי וניצב לסרן, בגודל $Mgr$. מכיוון ש-$\vec\tau \perp \vec L$, הגודל של $\vec L$ לא משתנה, ורק הכיוון שלו מסתובב במישור האופקי: בזמן $dt$, $|d\vec L| = L\,d\varphi = Mgr\,dt$. לכן $$\Omega = \frac{d\varphi}{dt} = \frac{Mgr}{I\omega}$$' }
+          - { kind: limit, text: 'כש-$\omega \to \infty$, $\Omega \to 0$: גלגל מהיר מאוד כמעט לא זז. כש-$r \to 0$ (תלייה במרכז המסה), $\Omega \to 0$, כי אין מומנט. וכש-$\omega$ קטנה, $\Omega$ גדלה עד שהיא כבר לא קטנה בהרבה מ-$\omega$, ואז ההנחה $\vec L \approx I\omega\,\hat s$ נשברת, והגלגל מתנדנד ונופל.' }
+          - { kind: units, text: '$\dfrac{Mgr}{I\omega}$: $\dfrac{\text{N}\cdot\text{m}}{\text{kg}\cdot\text{m}^2\cdot\text{s}^{-1}} = \dfrac{\text{kg}\cdot\text{m}^2\cdot\text{s}^{-2}}{\text{kg}\cdot\text{m}^2\cdot\text{s}^{-1}} = \text{s}^{-1}$.' }
+          - { kind: substitution, text: '$\Omega = \dfrac{2.0\cdot9.8\cdot0.15}{7.2} = 0.408\,\text{rad/s}$, וזמן סיבוב נקיפה $\dfrac{2\pi}{\Omega} = 15.4\,\text{s}$. היחס $\omega/\Omega \approx 98$, ולכן ההנחה של סיבוב מהיר טובה.' }
+          - { kind: result, text: '$\Omega = \dfrac{Mgr}{I\omega} = 0.408\,\text{rad/s}$, סיבוב נקיפה אחד בכל $15.4\,\text{s}$, ו-$\omega \approx 98\,\Omega$.' }
+        rubric:
+          - text: כתבתי $d\vec L/dt = \vec\tau$, ומצאתי שמומנט הכובד, $Mgr$, ניצב ל-$\vec L$.
+          - text: הסקתי שרק הכיוון של $\vec L$ משתנה, וכתבתי $L\,d\varphi = \tau\,dt$, וקיבלתי $\Omega = Mgr/(I\omega)$.
+          - text: בדקתי גבולות ($\omega \to \infty$, $r \to 0$) ויחידות.
+          - text: קיבלתי $0.408\,\text{rad/s}$ וזמן נקיפה של כ-$15\,\text{s}$, ובדקתי ש-$\omega \gg \Omega$.
+
+      - label: ד
+        type: mc
+        points: 6
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-8.8-2]
+        prompt: >-
+          בזמן שהגלגל מחלק ג נוקף בקצב קבוע, מה גודל הכוח שהחוט מפעיל עליו?
+        choices:
+          - text: 'כמעט בדיוק $Mg = 19.6\,\text{N}$.'
+            correct: true
+            feedback: >-
+              נכון. מרכז המסה לא עולה ולא יורד, ולכן הכוח האנכי של החוט שווה למשקל. מרכז המסה כן נע במעגל אופקי ברדיוס
+              $r$, ולכן צריך גם כוח אופקי קטן, $M\Omega^2r = 0.05\,\text{N}$, והחוט נוטה מעט מהאנך. גם זה כמעט כלום.
+          - text: 'פחות מ-$Mg$, כי הסיבוב מחזיק חלק מהמשקל.'
+            feedback: >-
+              הסיבוב לא נושא משקל. הוא משנה את מה שהמומנט של הכובד עושה: במקום להפיל את הגלגל, המומנט מסובב את $\vec L$
+              הצידה. את המשקל עצמו, הכוח האנכי, חייב לאזן החוט, אחרת מרכז המסה היה מאיץ כלפי מטה.
+            misconception: MC-8-gyroscope-defies-gravity
+          - text: 'יותר מ-$Mg$, כי החוט צריך גם לאזן את מומנט הכובד.'
+            feedback: 'החוט עובר בנקודת התלייה, ולכן אין לו מומנט סביבה. מומנט הכובד לא מאוזן: הוא זה שגורם לנקיפה.'
+          - text: 'אפס: הגלגל מרחף, והחוט רק מכוון אותו.'
+            feedback: 'בלי כוח מהחוט, הכוח היחיד היה הכובד, ומרכז המסה היה נופל ב-$g$. ג׳ירוסקופ לא מבטל את הכובד.'
+            misconception: MC-8-gyroscope-defies-gravity
+        hints:
+          - 'כתבו את החוק השני למרכז המסה, בכיוון האנכי. האם מרכז המסה מאיץ כלפי מעלה או מטה?'

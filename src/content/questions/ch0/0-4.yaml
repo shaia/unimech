@@ -1,0 +1,220 @@
+# Lesson 0.4 question bank: the comprehension ladder of "אינטגרלים: מסכום לצבירה".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts:
+#   v = 6 − 2t m/s on 0…5 s: displacement 5 m, distance 9 + 4 = 13 m (v(5) = −4 m/s; 6·5 = 30 m);
+#   a = a₀e^(−t/τ), a₀ = 20 m/s², τ = 3 s, T = 6 s: Δv = a₀τ(1 − e^(−2)) = 51.9 m/s
+#     (a₀T = 120, a₀τ = 60, a₀τe^(−2) = 8.12, a(T)·T = 16.2);
+#   λ = λ₀(1 + x/L), λ₀ = 0.20 kg/m, L = 2.0 m: M = 3λ₀L/2 = 0.600 kg (λ₀L = 0.4, λ(L)L = 0.8),
+#     x_cm = 5L/9 = 1.11 m (L/2 = 1, 2L/3 = 1.33, the numerator alone 0.667 kg·m);
+#   centres of mass of rods with λ ∝ 1, x, x², L − x: L/2, 2L/3, 3L/4, L/3.
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.4-1 the definite integral as accumulation
+  - id: Q-0.4-area-meaning
+    type: twotier
+    objectives: [OBJ-0.4-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      גוף נע על ציר $x$. בשנייה הראשונה המהירות שלו $v(t)$ חיובית, ובשנייה השנייה היא שלילית. מה מייצג האינטגרל
+      המסוים $\displaystyle\int_0^{2\,\text{s}} v\,dt$?
+    choices:
+      - text: את ההעתק, $x(2\,\text{s}) - x(0)$.
+        correct: true
+        feedback: נכון. האינטגרל צובר את ההעתקים הקטנים, עם הסימן שלהם.
+      - text: את הדרך הכוללת שהגוף עבר.
+        feedback: >-
+          בשנייה השנייה הגוף חוזר אחורה, והחתיכות שם שליליות: הן **מקטינות** את האינטגרל. הדרך הכוללת היא
+          $\int|v|\,dt$, והיא גדולה מהאינטגרל או שווה לו.
+        misconception: MC-0-integral-is-distance
+      - text: את המקום $x(2\,\text{s})$.
+        feedback: 'האינטגרל נותן רק את **השינוי** במקום. המקום עצמו הוא $x(0)$ ועוד האינטגרל, ובלי תנאי התחלה הוא לא ידוע.'
+      - text: את המהירות הממוצעת.
+        feedback: 'המהירות הממוצעת היא האינטגרל **חלקי** משך הזמן, $2\,\text{s}$. האינטגרל עצמו ביחידות $\text{m/s}\cdot\text{s} = \text{m}$.'
+    reasons:
+      - text: 'בזמן קצר $dt$ הגוף עובר העתק $v\,dt$, והאינטגרל סוכם את כל ההעתקים האלה. כש-$v < 0$ ההעתק הקטן שלילי ומחוסר מהסכום.'
+        correct: true
+        feedback: זה הנימוק. האינטגרל המסוים הוא צבירה של חתיכות, עם הסימנים שלהן.
+      - text: שטח הוא תמיד חיובי, ולכן האינטגרל סוכם את כל הדרך.
+        feedback: 'שטח **מתחת לציר** נספר עם סימן שלילי. לכן האינטגרל נותן העתק, ולא דרך.'
+        misconception: MC-0-integral-is-distance
+      - text: האינטגרל הוא הערך של הפונקציה הקדומה בגבול העליון.
+        feedback: 'הוא ההפרש בין הערכים בשני הגבולות, $F(2) - F(0)$. בלי לחסר את הגבול התחתון מקבלים מספר שתלוי בבחירה שרירותית של קבוע.'
+    hints:
+      - 'כמה הגוף זז בזמן קצר $dt$? ומה הסימן של ההעתק הזה כשהוא נע אחורה?'
+
+  - id: Q-0.4-displacement
+    type: numeric
+    objectives: [OBJ-0.4-1]
+    level: basic
+    prompt: >-
+      המהירות של רוכב אופניים על ציר היא $v(t) = 6 - 2t$, עם $v$ ב-$\text{m/s}$ ו-$t$ בשניות. מה ההעתק שלו
+      בין $t = 0$ ל-$t = 5\,\text{s}$?
+    answer: 5
+    unit: m
+    correctFeedback: 'נכון: $\displaystyle\int_0^5 (6 - 2t)\,dt = \left[6t - t^2\right]_0^5 = 30 - 25 = 5\,\text{m}$.'
+    wrongFeedback: 'מצאו פונקציה קדומה של $6 - 2t$, והציבו את שני הגבולות.'
+    commonWrong:
+      - value: 13
+        feedback: >-
+          זו הדרך הכוללת. ב-$t = 3\,\text{s}$ הרוכב נעצר ומתחיל לנסוע אחורה, והחלק האחרון של התנועה מקטין את
+          ההעתק.
+        misconception: MC-0-integral-is-distance
+      - value: -4
+        feedback: 'זו המהירות ברגע $t = 5\,\text{s}$, ביחידות $\text{m/s}$. העתק הוא צבירה של המהירות לאורך כל הזמן.'
+      - value: 30
+        feedback: 'כפלתם את המהירות ההתחלתית בזמן, כאילו היא קבועה. המהירות יורדת, וצריך לצבור אותה באינטגרל.'
+        misconception: MC-0-constant-rate-assumed
+    hints:
+      - 'פונקציה קדומה של $6 - 2t$ היא $6t - t^2$.'
+
+  - id: Q-0.4-distance
+    type: numeric
+    objectives: [OBJ-0.4-1]
+    level: mid
+    prompt: >-
+      רוכב אופניים נע על ציר במהירות $v(t) = 6 - 2t$ (ב-$\text{m/s}$, עם $t$ בשניות). מה **הדרך** הכוללת
+      שהוא עובר בין $t = 0$ ל-$t = 5\,\text{s}$?
+    answer: 13
+    unit: m
+    correctFeedback: >-
+      נכון. המהירות מתאפסת ב-$t = 3\,\text{s}$. עד אז הוא עובר $\left[6t - t^2\right]_0^3 = 9\,\text{m}$ קדימה,
+      ואחר כך $\left[6t - t^2\right]_3^5 = 5 - 9 = -4\,\text{m}$, כלומר $4\,\text{m}$ אחורה. הדרך $9 + 4 = 13\,\text{m}$,
+      וההעתק רק $5\,\text{m}$.
+    wrongFeedback: 'הדרך היא $\int|v|\,dt$. מצאו מתי $v = 0$, חשבו את האינטגרל בכל קטע בנפרד, וחברו את הערכים המוחלטים.'
+    commonWrong:
+      - value: 5
+        feedback: 'זה ההעתק. בדרך כל מטר נספר כחיובי, גם כשהרוכב נוסע אחורה: מפצלים את הקטע בנקודה שבה $v = 0$.'
+      - value: 9
+        feedback: 'זה רק הקטע הראשון, עד $t = 3\,\text{s}$. אחריו הרוכב נוסע עוד $4\,\text{m}$ אחורה, וגם הם דרך.'
+    hints:
+      - 'פתרו $6 - 2t = 0$.'
+
+  - id: Q-0.4-rocket-dv
+    type: numeric
+    objectives: [OBJ-0.4-1]
+    level: bagrut
+    prompt: >-
+      מנוע של רקטת צעצוע נחלש עם הזמן, והתאוצה שלה (בהזנחת הכובד) היא $a(t) = a_0e^{-t/\tau}$, עם
+      $a_0 = 20\,\text{m/s}^2$ ו-$\tau = 3\,\text{s}$. בכמה גדלה המהירות שלה בשש השניות הראשונות?
+    answer: 51.9
+    unit: m/s
+    correctFeedback: >-
+      נכון. $\Delta v = \displaystyle\int_0^T a_0e^{-t/\tau}dt = a_0\tau\left(1 - e^{-T/\tau}\right) = 60\left(1 - e^{-2}\right) = 51.9\,\text{m/s}$.
+      **בדיקת גבולות:** כש-$T \ll \tau$, $1 - e^{-T/\tau} \approx T/\tau$ ו-$\Delta v \approx a_0T$, כמו בתאוצה קבועה.
+      כש-$T \to \infty$, $\Delta v \to a_0\tau = 60\,\text{m/s}$: גם מנוע שפועל לנצח נותן תוספת סופית.
+    wrongFeedback: 'השינוי במהירות הוא האינטגרל של התאוצה. פונקציה קדומה של $e^{-t/\tau}$ היא $-\tau e^{-t/\tau}$.'
+    commonWrong:
+      - value: 120
+        feedback: 'זה $a_0T$, כאילו התאוצה קבועה. התאוצה יורדת: ב-$t = 6\,\text{s}$ היא כבר רק $2.7\,\text{m/s}^2$.'
+        misconception: MC-0-constant-rate-assumed
+      - value: 60
+        feedback: 'זה $a_0\tau$, התוספת אחרי זמן אינסופי. בשש שניות, שני קבועי זמן, עדיין חסר $e^{-2} \approx 14\%$ ממנה.'
+      - value: 8.12
+        feedback: 'הצבתם רק את הגבול העליון, ובלי הסימן: $a_0\tau e^{-2}$. הציבו את שני הגבולות, $\left[-a_0\tau e^{-t/\tau}\right]_0^T$.'
+      - value: 16.2
+        feedback: 'כפלתם את התאוצה **בסוף** בזמן, $a(6)\cdot6$. בתחילת הדרך התאוצה הייתה גדולה פי 7, וצריך לצבור את כולה.'
+    hints:
+      - '$\Delta v = \displaystyle\int_0^T a\,dt$.'
+      - 'כמה זה $\left[-\tau e^{-t/\tau}\right]_0^T$?'
+
+  # ---------------------------------------------------------------- OBJ-0.4-2 building an integral from small pieces
+  - id: Q-0.4-piece-mass
+    type: mc
+    objectives: [OBJ-0.4-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מוט דק מונח על הציר $x$, מ-$x = 0$ עד $x = L$. הצפיפות הקווית שלו, $\lambda(x)$, היא המסה ליחידת אורך
+      (ב-$\text{kg/m}$), והיא משתנה לאורך המוט. מה המסה $dm$ של חתיכה קצרה באורך $dx$ שנמצאת במקום $x$?
+    choices:
+      - text: $dm = \lambda(x)\,dx$
+        correct: true
+        feedback: >-
+          נכון. בחתיכה קצרה הצפיפות כמעט לא משתנה, ולכן המסה היא צפיפות כפול אורך. המסה הכוללת היא הסכום של כל
+          החתיכות, $M = \int_0^L\lambda(x)\,dx$.
+      - text: $dm = \lambda(x)$
+        feedback: '$\lambda$ ביחידות $\text{kg/m}$, ולא $\text{kg}$. כדי לקבל מסה צריך לכפול באורך החתיכה.'
+      - text: $dm = x\,\lambda(x)\,dx$
+        feedback: 'זה המומנט של החתיכה ביחס לראשית, הגודל שמופיע במונה של מרכז המסה. המסה עצמה לא תלויה במקום שבו החתיכה נמצאת.'
+      - text: $dm = \lambda(L)\,dx$
+        feedback: 'זו הצפיפות בקצה המוט. במקום $x$ הצפיפות היא $\lambda(x)$, וכל חתיכה מקבלת את הצפיפות שלה.'
+    hints:
+      - 'אם הצפיפות הייתה קבועה, מה הייתה המסה של קטע באורך $\ell$?'
+
+  - id: Q-0.4-rod-mass
+    type: numeric
+    objectives: [OBJ-0.4-2]
+    level: mid
+    prompt: >-
+      מוט דק באורך $L = 2.0\,\text{m}$ מונח על הציר $x$, מ-$x = 0$ עד $x = L$. הצפיפות הקווית שלו היא
+      $\lambda(x) = \lambda_0\left(1 + x/L\right)$, עם $\lambda_0 = 0.20\,\text{kg/m}$. מה המסה של המוט?
+    answer: 0.6
+    unit: kg
+    correctFeedback: >-
+      נכון. $M = \displaystyle\int_0^L\lambda_0\left(1 + \frac{x}{L}\right)dx = \lambda_0\left(L + \frac{L}{2}\right) = \frac32\lambda_0L = 0.60\,\text{kg}$.
+      הצפיפות עולה מ-$\lambda_0$ עד $2\lambda_0$, והמסה היא כאילו הצפיפות הייתה $1.5\lambda_0$ לכל האורך.
+    wrongFeedback: 'סכמו את החתיכות, $M = \int_0^L\lambda(x)\,dx$. פונקציה קדומה של $1 + x/L$ היא $x + x^2/(2L)$.'
+    commonWrong:
+      - value: 0.4
+        feedback: 'זה $\lambda_0L$, כאילו הצפיפות קבועה ושווה לערך שלה בקצה $x = 0$. הצפיפות גדלה לאורך המוט.'
+        misconception: MC-0-constant-rate-assumed
+      - value: 0.8
+        feedback: 'זה $\lambda(L)\cdot L$, הצפיפות של הקצה הכבד כפול האורך. רק הקצה עצמו כל כך צפוף.'
+    hints:
+      - 'המסה של חתיכה באורך $dx$ היא $\lambda(x)\,dx$.'
+
+  - id: Q-0.4-cm-rank
+    type: rank
+    objectives: [OBJ-0.4-2]
+    level: mid
+    prompt: >-
+      לארבעה מוטות אותו אורך $L$, וכולם מונחים על הציר $x$ מ-$0$ עד $L$. הצפיפויות הקוויות שלהם שונות. מרכז
+      המסה של מוט הוא $x_\text{cm} = \dfrac{1}{M}\displaystyle\int_0^L x\,\lambda(x)\,dx$. סדרו את המוטות לפי
+      $x_\text{cm}$, מהגדול לקטן.
+    items:
+      - { id: const, label: '$\lambda = \lambda_0$, קבועה' }
+      - { id: lin, label: '$\lambda \propto x$' }
+      - { id: quad, label: '$\lambda \propto x^2$' }
+      - { id: rev, label: '$\lambda \propto L - x$' }
+    order: [quad, lin, const, rev]
+    correctFeedback: >-
+      נכון. $x_\text{cm} = \dfrac{\int_0^L x\lambda\,dx}{\int_0^L\lambda\,dx}$: עם $\lambda \propto x^2$ יוצא
+      $\dfrac{L^4/4}{L^3/3} = \dfrac{3L}{4}$, עם $\lambda \propto x$ יוצא $\dfrac{2L}{3}$, עם צפיפות קבועה $\dfrac{L}{2}$, ועם
+      $\lambda \propto L - x$ יוצא $\dfrac{L}{3}$. ככל שהמסה מרוכזת יותר ליד $x = L$, מרכז המסה קרוב יותר לשם. הקבוע
+      שלפני $\lambda$ מצטמצם במנה.
+    wrongFeedback: >-
+      חשבו לכל מוט את המונה $\int_0^Lx\lambda\,dx$ ואת המכנה $\int_0^L\lambda\,dx$. הקבוע שלפני $\lambda$
+      מצטמצם, ולכן אפשר לקחת אותו 1.
+    hints:
+      - 'עם $\lambda = x$: $\int_0^Lx\cdot x\,dx = L^3/3$ ו-$\int_0^Lx\,dx = L^2/2$.'
+
+  - id: Q-0.4-rod-cm
+    type: numeric
+    objectives: [OBJ-0.4-2]
+    level: bagrut
+    prompt: >-
+      למוט באורך $L = 2.0\,\text{m}$, מ-$x = 0$ עד $x = L$, יש צפיפות קווית $\lambda(x) = \lambda_0\left(1 + x/L\right)$,
+      עם $\lambda_0 = 0.20\,\text{kg/m}$, ולכן המסה שלו $M = \tfrac32\lambda_0L = 0.60\,\text{kg}$. איפה מרכז המסה שלו?
+    answer: 1.11
+    unit: m
+    correctFeedback: >-
+      נכון. $\displaystyle\int_0^Lx\lambda_0\left(1 + \frac{x}{L}\right)dx = \lambda_0\left(\frac{L^2}{2} + \frac{L^2}{3}\right) = \frac56\lambda_0L^2$,
+      ולכן $x_\text{cm} = \dfrac{\frac56\lambda_0L^2}{\frac32\lambda_0L} = \dfrac{5L}{9} = 1.11\,\text{m}$, קצת ימינה מהאמצע.
+      **בדיקת גבולות:** לצפיפות $\lambda_0(1 + \alpha x/L)$ יוצא $x_\text{cm} = L\,\dfrac{\frac12 + \frac\alpha3}{1 + \frac\alpha2}$.
+      ב-$\alpha = 0$ (מוט אחיד) זה $L/2$, וכש-$\alpha \to \infty$ (צפיפות שגדלה מאפס, $\lambda \propto x$) זה $2L/3$.
+      התוצאה, ב-$\alpha = 1$, בין השתיים.
+    wrongFeedback: 'מרכז המסה הוא $\dfrac{1}{M}\int_0^Lx\,\lambda(x)\,dx$: כל חתיכה תורמת את המקום שלה כפול המסה שלה.'
+    commonWrong:
+      - value: 1
+        feedback: 'זה אמצע המוט, $L/2$. הוא מרכז המסה רק כשהצפיפות אחידה. כאן הקצה הימני צפוף פי 2, והוא מושך את מרכז המסה אליו.'
+        misconception: MC-0-cm-at-middle
+      - value: 1.33
+        feedback: 'זה $2L/3$, מרכז המסה של מוט שצפיפותו $\lambda \propto x$, שמתחילה מאפס. כאן הצפיפות בקצה השמאלי היא $\lambda_0$, ולא אפס.'
+      - value: 0.667
+        feedback: 'זה המונה בלבד, $\int x\lambda\,dx$, ביחידות $\text{kg}\cdot\text{m}$. חלקו במסה $M$ כדי לקבל מקום במטרים.'
+    hints:
+      - '$\int_0^Lx\left(1 + \dfrac{x}{L}\right)dx = \dfrac{L^2}{2} + \dfrac{L^2}{3}$.'

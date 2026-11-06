@@ -1,0 +1,34 @@
+# Terms first defined in lesson 5.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: driving-force
+  term: כוח מאלץ
+  en: driving force
+  definition: כוח חיצוני מחזורי שפועל על מתנד, למשל F₀ cos ωt. במצב היציב המתנד נע בתדירות של הכוח המאלץ, לא בתדירות העצמית שלו.
+  lesson: '5.4'
+
+- id: steady-state
+  term: מצב יציב
+  en: steady state
+  definition: התנועה של מתנד מאולץ ומרוסן אחרי שהתגובה המעברית דעכה, x = A cos(ωt − δ). האמפליטודה A והפיגור δ נקבעים רק מהכוח המאלץ ומתכונות המתנד, לא מתנאי ההתחלה.
+  lesson: '5.4'
+
+- id: transient
+  term: תגובה מעברית
+  en: transient
+  definition: החלק בתנועה של מתנד מאולץ שהוא פתרון של המשוואה ההומוגנית, תנודה חופשית מרוסנת. תנאי ההתחלה קובעים אותו, והוא דועך כמו e^(−γt/2), ומשאיר את המצב היציב.
+  lesson: '5.4'
+
+- id: resonance
+  term: תהודה
+  en: resonance
+  definition: התגובה החזקה של מתנד מאולץ כשתדירות הכוח קרובה לתדירות העצמית שלו. בריסון חלש האמפליטודה בשיא גדולה פי Q מההעתק הסטטי F₀/k, וההעתק מפגר ב-90° אחרי הכוח.
+  lesson: '5.4'
+
+- id: c5-resonance-width
+  term: רוחב התהודה
+  en: resonance width
+  symbol: Δω
+  unit: rad/s
+  definition: הרוחב המלא של עקומת A²(ω), או של ההספק הממוצע, בגובה חצי מהשיא. בריסון חלש Δω ≈ γ = ω₀/Q.
+  lesson: '5.4'

@@ -1,0 +1,282 @@
+# Lesson 5.1 question bank: the comprehension ladder of "התנודה ההרמונית הפשוטה".
+# Every objective has ≥ 3 questions, one of them qualitative; the lesson climbs basic → mid → bagrut (exam level).
+# Convention throughout: x(t) = A cos(ωt + φ), so x0 = A cos φ and v0 = −Aω sin φ.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch5/q.ts:
+#   m = 0.50 kg, k = 200 N/m: ω = 20 rad/s, T = 0.314 s (f = 3.18 Hz, 1/ω = 0.050 s, 2πω = 126);
+#   x0 = 3.0 cm, v0 = +80 cm/s: A = 5.00 cm (x0 + v0/ω = 7, v0/ω = 4, √(x0² + v0²) = 80.1);
+#   φ = atan2(−0.8, 0.6) = −0.927 rad (+0.927, 0.644 = atan(x0ω/v0), π − 0.927 = 2.21);
+#   first pass through x = 0 at t = (π/2 − φ)/ω = 0.125 s (T/4 = 0.0785, (π/2 + φ)/ω = 0.0322, (3π/2 − φ)/ω = 0.282);
+#   k1 = 300, k2 = 600 N/m in series, m = 2.0 kg: k = 200 N/m, ω = 10.0 rad/s (parallel 21.2, k/m = 100, mean k 15.0);
+#   m = 0.40 kg, k = 40 N/m released at natural length: mg/k = 9.8 cm, max stretch 2mg/k = 19.6 cm, v_max = 0.98 m/s.
+
+chapter: 5
+questions:
+  # ---------------------------------------------------------------- OBJ-5.1-1 the oscillator equation, A and φ
+  - id: Q-5.1-which-solves
+    type: multi
+    objectives: [OBJ-5.1-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      גוף בעל מסה $m$ קשור לקפיץ אופקי בעל קבוע קפיץ $k$, ונע על משטח בלי חיכוך. $x$ הוא ההעתק שלו מנקודת שיווי
+      המשקל, ומשוואת התנועה היא $m\ddot x = -kx$. נסמן $\omega = \sqrt{k/m}$. אילו מהפונקציות הבאות פותרות את
+      המשוואה? ($A$, $B$, $C$ ו-$\varphi$ הם קבועים.) סמנו את כל התשובות הנכונות.
+    choices:
+      - text: '$x(t) = A\cos(\omega t + \varphi)$'
+        correct: true
+        feedback: >-
+          נכון. גזירה פעמיים נותנת $\ddot x = -\omega^2 A\cos(\omega t + \varphi) = -\omega^2 x$, ובהכפלה ב-$m$
+          מקבלים $m\ddot x = -m\omega^2 x = -kx$.
+      - text: '$x(t) = B\cos\omega t + C\sin\omega t$'
+        correct: true
+        feedback: >-
+          נכון. כל אחד מהאיברים פותר את המשוואה, והמשוואה ליניארית, ולכן גם הסכום. זו אותה משפחה של פתרונות כמו
+          $A\cos(\omega t + \varphi)$, עם $B = A\cos\varphi$ ו-$C = -A\sin\varphi$.
+      - text: '$x(t) = A\cos\omega t + 1$'
+        feedback: >-
+          הנגזרת השנייה היא $-\omega^2 A\cos\omega t$, אבל $-\omega^2 x = -\omega^2 A\cos\omega t - \omega^2$. האיבר
+          הקבוע לא מתאזן. קבוע מתווסף לפתרון רק כשיש כוח קבוע נוסף, כמו הכובד בקפיץ אנכי, ואז הוא מזיז את נקודת שיווי
+          המשקל.
+      - text: '$x(t) = A e^{\omega t}$'
+        feedback: >-
+          כאן $\ddot x = +\omega^2 x$: זו משוואה של גוף שהכוח **מרחיק** אותו מהנקודה, כמו בשיווי משקל לא יציב. הסימן
+          המינוס ב-$-kx$ הוא מה שהופך גדילה אקספוננציאלית לתנודה.
+      - text: '$x(t) = A\cos\left(\dfrac{k}{m}t\right)$'
+        feedback: >-
+          גזירה פעמיים מוציאה את המקדם של $t$ בריבוע: $\ddot x = -\dfrac{k^2}{m^2}x$. כדי לקבל $-\dfrac{k}{m}x$ המקדם
+          צריך להיות השורש, $\omega = \sqrt{k/m}$. בדיקת יחידות מגלה את זה מיד: $k/m$ ביחידות $\text{s}^{-2}$.
+    hints:
+      - 'הציבו כל פונקציה במשוואה: גזרו פעמיים, והשוו ל-$-\omega^2 x$.'
+
+  - id: Q-5.1-period-value
+    type: numeric
+    objectives: [OBJ-5.1-1]
+    level: basic
+    prompt: >-
+      גוף בעל מסה $m = 0.50\,\text{kg}$ קשור לקפיץ אופקי בעל קבוע קפיץ $k = 200\,\text{N/m}$, ונע בלי חיכוך. מה זמן
+      המחזור של התנודות?
+    answer: 0.314
+    unit: s
+    correctFeedback: >-
+      נכון. $\omega = \sqrt{k/m} = \sqrt{200/0.50} = 20\,\text{rad/s}$, וזמן המחזור $T = \dfrac{2\pi}{\omega} = 0.314\,\text{s}$.
+      שימו לב שהוא לא תלוי באמפליטודה.
+    wrongFeedback: 'חשבו קודם את התדירות הזוויתית $\omega = \sqrt{k/m}$. במחזור אחד הארגומנט $\omega t$ גדל ב-$2\pi$.'
+    commonWrong:
+      - value: 0.05
+        feedback: 'זה $1/\omega$. במחזור שלם הארגומנט של הקוסינוס גדל ב-$2\pi$, ולכן $T = 2\pi/\omega$.'
+      - value: 3.18
+        feedback: 'זו התדירות $f = \omega/(2\pi)$, ביחידות $\text{Hz}$: מספר המחזורים בשנייה. זמן המחזור הוא ההופכי שלה.'
+      - value: 125.7
+        feedback: 'כפלתם את $\omega$ ב-$2\pi$ במקום לחלק. בדקו יחידות: $\omega$ ביחידות $\text{s}^{-1}$, וזמן מחזור בשניות.'
+    hints:
+      - 'מה היחידות של $\sqrt{k/m}$? מה צריך לעשות כדי לקבל שניות?'
+
+  - id: Q-5.1-amplitude-from-ic
+    type: numeric
+    objectives: [OBJ-5.1-1]
+    level: mid
+    prompt: >-
+      אותו גוף ($m = 0.50\,\text{kg}$, $k = 200\,\text{N/m}$) נמצא ברגע $t = 0$ ב-$x_0 = 3.0\,\text{cm}$ מנקודת שיווי
+      המשקל, ונע במהירות $v_0 = 80\,\text{cm/s}$ בכיוון החיובי. מה האמפליטודה של התנודה, בסנטימטרים?
+    answer: 5.0
+    unit: cm
+    correctFeedback: >-
+      נכון. מ-$x = A\cos(\omega t + \varphi)$: $x_0 = A\cos\varphi$ ו-$v_0/\omega = -A\sin\varphi$. סכום הריבועים
+      מבטל את הפאזה:
+      $$A = \sqrt{x_0^2 + \left(\frac{v_0}{\omega}\right)^2} = \sqrt{3.0^2 + 4.0^2} = 5.0\,\text{cm}$$
+      **בדיקת גבולות:** כש-$v_0 = 0$ מקבלים $A = x_0$, הגוף שוחרר ממנוחה בקצה התנועה.
+    wrongFeedback: 'כתבו את $x(0)$ ואת $\dot x(0)$ מתוך $A\cos(\omega t + \varphi)$, העלו את שתיהן בריבוע וחברו.'
+    commonWrong:
+      - value: 3.0
+        feedback: 'זה $x_0$. האמפליטודה שווה להעתק ההתחלתי רק כשהגוף מתחיל ממנוחה. כאן הוא עוד נע החוצה, ולכן יגיע רחוק יותר.'
+        misconception: MC-5-amplitude-is-x0
+      - value: 7.0
+        feedback: 'חיברתם $x_0 + v_0/\omega$. שני הגדלים הם רכיבים ניצבים של אותו "וקטור" (קוסינוס וסינוס של הפאזה), ולכן מחברים את הריבועים.'
+      - value: 4.0
+        feedback: 'זה $v_0/\omega$ בלבד: כך היה אילו הגוף יצא מנקודת שיווי המשקל. כאן הוא כבר במרחק $3.0\,\text{cm}$ ממנה.'
+      - value: 80.1
+        feedback: 'חיברתם ריבועים של העתק ושל מהירות, $\sqrt{x_0^2 + v_0^2}$, ויחידות לא מסתדרות. צריך לחלק את המהירות ב-$\omega$ כדי לקבל אורך.'
+    hints:
+      - 'מה היחידות של $v_0/\omega$?'
+      - 'זהות עזר: $\cos^2\varphi + \sin^2\varphi = 1$.'
+
+  - id: Q-5.1-phase-from-ic
+    type: numeric
+    objectives: [OBJ-5.1-1]
+    level: mid
+    prompt: >-
+      באותה תנודה ($\omega = 20\,\text{rad/s}$, $x_0 = 3.0\,\text{cm}$, $v_0 = +80\,\text{cm/s}$, $A = 5.0\,\text{cm}$)
+      כותבים $x(t) = A\cos(\omega t + \varphi)$ עם $-\pi < \varphi \le \pi$. מה הפאזה $\varphi$, ברדיאנים?
+    answer: -0.927
+    unit: rad
+    correctFeedback: >-
+      נכון. $\cos\varphi = x_0/A = 0.6$ ו-$\sin\varphi = -\dfrac{v_0}{A\omega} = -0.8$. הקוסינוס חיובי והסינוס שלילי,
+      ולכן $\varphi$ ברביע הרביעי: $\varphi = -0.927\,\text{rad}$, כ-$53^\circ$ מתחת לציר. סימן הפאזה הפוך לסימן
+      של $v_0$, בגלל המינוס בנגזרת של הקוסינוס.
+    wrongFeedback: >-
+      מצאו את $\cos\varphi$ ואת $\sin\varphi$ בנפרד, ובחרו את הרביע לפי הסימנים של שניהם. $\tan\varphi$ לבדו לא קובע את
+      הרביע.
+    commonWrong:
+      - value: 0.927
+        feedback: 'הגודל נכון והסימן הפוך. $\dot x(0) = -A\omega\sin\varphi$: מהירות חיובית פירושה $\sin\varphi < 0$.'
+        misconception: MC-5-phase-sign-of-velocity
+      - value: 0.644
+        feedback: 'הפכתם את המנה: $\arctan(x_0\omega/v_0)$. כאן $\tan\varphi = -\dfrac{v_0}{\omega x_0}$, המהירות במונה.'
+      - value: 2.21
+        feedback: >-
+          זו התשובה השנייה של $\tan\varphi = -4/3$, ברביע השני. שם $\cos\varphi < 0$, כלומר $x_0 < 0$, והגוף מתחיל
+          בצד השלילי. בדקו את הסימן של $\cos\varphi = x_0/A$.
+    hints:
+      - 'כתבו $x_0 = A\cos\varphi$ ו-$v_0 = -A\omega\sin\varphi$. מה הסימן של כל אחד מהם?'
+
+  - id: Q-5.1-first-zero
+    type: numeric
+    objectives: [OBJ-5.1-1]
+    level: bagrut
+    prompt: >-
+      באותה תנודה ($\omega = 20\,\text{rad/s}$, $x_0 = 3.0\,\text{cm}$, $v_0 = +80\,\text{cm/s}$) הגוף מתרחק תחילה
+      מנקודת שיווי המשקל, נעצר בקצה וחוזר. באיזה רגע הוא עובר לראשונה בנקודת שיווי המשקל, $x = 0$?
+    answer: 0.125
+    unit: s
+    correctFeedback: >-
+      נכון. עם $\varphi = -0.927\,\text{rad}$, $x = 0$ כש-$\omega t + \varphi = \dfrac{\pi}{2}$ (המעבר הראשון, אחרי
+      הקצה), ולכן
+      $$t = \frac{\pi/2 - \varphi}{\omega} = \frac{1.571 + 0.927}{20} = 0.125\,\text{s}$$
+      **בדיקת גבולות:** כש-$v_0 \to 0$, $\varphi \to 0$ ו-$t \to \dfrac{\pi}{2\omega} = T/4$, רבע מחזור מהקצה עד
+      המרכז, כצפוי.
+    wrongFeedback: >-
+      מצאו קודם את $\varphi$ מתנאי ההתחלה. הקוסינוס מתאפס כשהארגומנט שלו $\pi/2$ או $3\pi/2$. איזה מהם מגיע ראשון
+      כש-$\varphi < 0$?
+    commonWrong:
+      - value: 0.0785
+        feedback: 'זה $T/4$, הזמן מהקצה עד המרכז. הגוף לא מתחיל בקצה: הוא צריך קודם להגיע לקצה ($A = 5.0\,\text{cm}$) ורק אז לחזור.'
+        misconception: MC-5-amplitude-is-x0
+      - value: 0.0322
+        feedback: 'השתמשתם ב-$\varphi = +0.927$. עם הסימן הזה הגוף היה נע ברגע $t = 0$ **לכיוון** המרכז, ולא מתרחק ממנו.'
+        misconception: MC-5-phase-sign-of-velocity
+      - value: 0.282
+        feedback: 'זה $(3\pi/2 - \varphi)/\omega$, המעבר השני במרכז, אחרי שהגוף ביקר גם בקצה השלילי. השאלה על המעבר הראשון.'
+    hints:
+      - 'מתי לראשונה $\omega t + \varphi = \pi/2$, אם $\varphi$ שלילי?'
+
+  # ---------------------------------------------------------------- OBJ-5.1-2 recognising SHM: springs, vertical spring
+  - id: Q-5.1-series-value
+    type: numeric
+    objectives: [OBJ-5.1-2]
+    level: basic
+    prompt: >-
+      שני קפיצים, $k_1 = 300\,\text{N/m}$ ו-$k_2 = 600\,\text{N/m}$, מחוברים **בטור**: הקצה של הראשון קשור לקיר, הקצה
+      של השני לגוף בעל מסה $m = 2.0\,\text{kg}$ על משטח בלי חיכוך. מה התדירות הזוויתית של התנודות?
+    answer: 10.0
+    unit: rad/s
+    correctFeedback: >-
+      נכון. בטור שני הקפיצים מושכים באותו כוח, וההתארכויות מתחברות: $\dfrac{1}{k} = \dfrac{1}{k_1} + \dfrac{1}{k_2}$,
+      ולכן $k = 200\,\text{N/m}$ ו-$\omega = \sqrt{200/2.0} = 10.0\,\text{rad/s}$. קבוע הקפיץ השקול קטן מהקטן
+      ביניהם: הטור רך יותר מכל קפיץ לבד.
+    wrongFeedback: 'בטור כל קפיץ מותח באותו כוח $F$. כתבו את ההתארכות של כל אחד, חברו, וחלקו את $F$ בהתארכות הכוללת.'
+    commonWrong:
+      - value: 21.2
+        feedback: 'חיברתם את הקבועים, $k_1 + k_2$. זה החיבור **במקביל**, כששני הקפיצים מתארכים באותו מרחק. בטור הם מתארכים יחד, וההתארכויות מתחברות.'
+        misconception: MC-5-series-springs-add
+      - value: 100
+        feedback: 'זה $k/m$, כלומר $\omega^2$, ביחידות $\text{s}^{-2}$. הוציאו שורש.'
+      - value: 15.0
+        feedback: 'לקחתם את הממוצע של שני הקבועים. קבוע הקפיץ השקול בטור קטן מכל אחד מהם, לא באמצע ביניהם.'
+    hints:
+      - 'משיכה בכוח $F$ מאריכה את הראשון ב-$F/k_1$ ואת השני ב-$F/k_2$.'
+
+  - id: Q-5.1-springs-rank
+    type: rank
+    objectives: [OBJ-5.1-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בכל אחת מהמערכות גוף בעל אותה מסה $m$ נע על משטח בלי חיכוך, וכל הקפיצים זהים, בעלי קבוע קפיץ $k$ ואורך רפוי
+      $L$. דרגו את המערכות לפי התדירות הזוויתית של התנודות, מהגדולה לקטנה. סמנו מערכות שוות כקשורות.
+    items:
+      - { id: single, label: 'קפיץ אחד בין קיר לגוף' }
+      - { id: series, label: 'שני קפיצים בטור, זה אחרי זה, בין קיר לגוף' }
+      - { id: parallel, label: 'שני קפיצים זה לצד זה, שניהם בין קיר לגוף' }
+      - { id: half, label: 'קפיץ אחד שנחתך לחצי, באורך L/2, בין קיר לגוף' }
+    order: [[parallel, half], single, series]
+    correctFeedback: >-
+      נכון. במקביל $k_{\text{eq}} = 2k$, ובטור $k_{\text{eq}} = k/2$. וחצי קפיץ? כל חצי של קפיץ מתוח נושא את כל
+      הכוח ומתארך בחצי מהקפיץ כולו, ולכן קבוע הקפיץ שלו $2k$: קפיץ שלם הוא שני חצאים בטור. לכן מקביל וחצי קפיץ
+      שווים, $\omega = \sqrt{2k/m}$, אחריהם $\sqrt{k/m}$, ובסוף $\sqrt{k/(2m)}$.
+    wrongFeedback: >-
+      חשבו לכל מערכת את קבוע הקפיץ השקול: באיזה כוח צריך למשוך כדי להזיז את הגוף ב-$1\,\text{cm}$? במקביל כל קפיץ
+      מתארך באותו מרחק, בטור כל קפיץ נושא את אותו כוח. ומה קורה לקבוע של קפיץ כשחותכים אותו לחצי?
+    hints:
+      - 'קפיץ שלם הוא שני חצאים זהים מחוברים בטור.'
+
+  - id: Q-5.1-vertical-same-omega
+    type: twotier
+    objectives: [OBJ-5.1-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      קפיץ וגוף מתנודדים על שולחן אופקי בלי חיכוך בתדירות זוויתית $\omega$. תולים את אותו קפיץ ואת אותו גוף אנכית,
+      מהתקרה, ונותנים לגוף לתנודד למעלה ולמטה. מה התדירות הזוויתית עכשיו?
+    choices:
+      - text: 'אותה $\omega$ בדיוק.'
+        correct: true
+        feedback: 'נכון. הכובד מזיז את מרכז התנודה, אבל לא את התדירות.'
+      - text: 'גדולה מ-$\omega$, כי הכובד מוסיף כוח מחזיר.'
+        feedback: >-
+          הכובד הוא כוח **קבוע**: הוא לא גדל כשהגוף מתרחק מהמרכז, ולכן הוא לא כוח מחזיר. כוח מחזיר הוא כוח שתלוי
+          בהעתק, וכזה יש רק לקפיץ.
+        misconception: MC-5-gravity-changes-omega
+      - text: 'קטנה מ-$\omega$, כי הקפיץ כבר מתוח והכובד מתנגד לו בעלייה.'
+        feedback: >-
+          בעלייה הכובד אכן מושך למטה, אבל בירידה הוא מושך באותו כוח לאותו כיוון. השפעה קבועה כזו מתאזנת עם המתיחה
+          ההתחלתית של הקפיץ, ומה שנשאר הוא $-ky$ סביב הנקודה החדשה.
+        misconception: MC-5-gravity-changes-omega
+    reasons:
+      - text: 'סביב נקודת שיווי המשקל החדשה, במתיחה $mg/k$, הכוח השקול הוא $-ky$, כאשר $y$ ההעתק מהנקודה הזו.'
+        correct: true
+        feedback: >-
+          זה הנימוק. עם $x$ ההתארכות כלפי מטה, $m\ddot x = mg - kx$. בהצבה $x = mg/k + y$ הקבועים מתבטלים:
+          $m\ddot y = -ky$, אותה משוואה כמו על השולחן.
+      - text: 'התדירות תלויה ב-$g$, כמו של מטוטלת.'
+        feedback: >-
+          במטוטלת הכוח המחזיר **הוא** רכיב של הכובד, ולכן $g$ נכנס לתדירות. בקפיץ הכוח המחזיר בא מהקפיץ, והכובד רק
+          מזיז את המרכז.
+        misconception: MC-5-gravity-changes-omega
+      - text: 'הכובד מאריך את הקפיץ, וקפיץ ארוך יותר הוא רך יותר.'
+        feedback: >-
+          קבוע הקפיץ של קפיץ נתון לא משתנה כשמותחים אותו (בתחום חוק הוק). "קפיץ ארוך רך יותר" נכון לקפיץ שנבנה ארוך יותר,
+          עם יותר כריכות, לא לאותו קפיץ במתיחה.
+    hints:
+      - 'כתבו את החוק השני לגוף התלוי, עם הכובד ועם הקפיץ, ומצאו את הנקודה שבה השקול אפס.'
+
+  - id: Q-5.1-released-at-natural-length
+    type: numeric
+    objectives: [OBJ-5.1-2, OBJ-5.1-1]
+    level: bagrut
+    prompt: >-
+      גוף בעל מסה $m = 0.40\,\text{kg}$ תלוי על קפיץ אנכי בעל קבוע קפיץ $k = 40\,\text{N/m}$. מחזיקים את הגוף כשהקפיץ
+      באורכו הרפוי, ומשחררים אותו ממנוחה. מה ההתארכות המרבית של הקפיץ בתנועה שאחר כך, בסנטימטרים?
+    answer: 19.6
+    unit: cm
+    correctFeedback: >-
+      נכון. נקודת שיווי המשקל נמצאת בהתארכות $mg/k = 9.8\,\text{cm}$. הגוף משתחרר ממנוחה במרחק $9.8\,\text{cm}$
+      מעליה, ולכן זו האמפליטודה, והוא מגיע עד $9.8\,\text{cm}$ מתחתיה: $x(t) = \dfrac{mg}{k}(1 - \cos\omega t)$,
+      וההתארכות המרבית $\dfrac{2mg}{k} = 19.6\,\text{cm}$. במרכז הוא עובר במהירות $A\omega = 0.098\cdot10 = 0.98\,\text{m/s}$.
+      **בדיקת גבולות:** כש-$k \to \infty$ הקפיץ קשיח, וההתארכות שואפת לאפס. וכש-$g \to 0$ אין מה שיזיז את הגוף.
+    wrongFeedback: >-
+      מצאו את נקודת שיווי המשקל, ואז השתמשו בתוצאה של השאלה על הקפיץ האנכי: סביבה הגוף מתנודד כמו על שולחן.
+      איפה הוא מתחיל ובאיזו מהירות?
+    commonWrong:
+      - value: 9.8
+        feedback: >-
+          זו ההתארכות בשיווי המשקל, $mg/k$. הגוף מגיע אליה במהירות מרבית ולא נעצר שם: הוא ממשיך באותו מרחק מעבר
+          לה.
+        misconception: MC-5-stops-at-equilibrium
+      - value: 4.9
+        feedback: >-
+          זה $mg/(2k)$. אולי השוויתם את העבודה של הכובד לאנרגיה של הקפיץ עם הכוח הממוצע בטעות. בהתארכות המרבית
+          $mgx = \tfrac12kx^2$, ולכן $x = 2mg/k$.
+    hints:
+      - 'הגוף משתחרר ממנוחה: איפה הוא ביחס לנקודת שיווי המשקל, וזו איזו נקודה בתנודה?'

@@ -1,0 +1,28 @@
+# Terms first defined in lesson 2.7. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: drag-force
+  term: כוח גרר
+  en: drag force
+  symbol: F_d
+  unit: N
+  definition: הכוח שהאוויר או נוזל מפעילים על גוף שנע בתוכם, בכיוון הפוך למהירות היחסית. במהירות נמוכה ובגוף זעיר הוא בערך ליניארי במהירות, bv, ובגוף גדול ומהיר בערך ריבועי, cv².
+  reject: [כוח סחיבה]
+  lesson: '2.7'
+
+- id: terminal-velocity
+  term: מהירות סופית
+  en: terminal velocity
+  symbol: v_t
+  unit: m/s
+  definition: המהירות שבה כוח הגרר מאזן את הכוחות האחרים, כך שהשקול מתאפס והמהירות כבר לא משתנה. בגרר ליניארי בנפילה, vₜ = mg/b.
+  reject: [מהירות גבולית]
+  lesson: '2.7'
+
+- id: time-constant
+  term: קבוע זמן
+  en: time constant
+  symbol: τ
+  unit: s
+  definition: הזמן האופייני של תהליך אקספוננציאלי. אחרי קבוע זמן אחד, מה שנשאר מההפרש עד ערך הסוף הוא e⁻¹, כ-37% ממה שהיה בהתחלה. בגרר ליניארי, τ = m/b.
+  lesson: '2.7'

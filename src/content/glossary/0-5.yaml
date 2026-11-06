@@ -1,0 +1,26 @@
+# Terms first defined in lesson 0.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: ode
+  term: משוואה דיפרנציאלית
+  en: ordinary differential equation
+  definition: משוואה שקושרת פונקציה של משתנה אחד, כמו x(t), לנגזרות שלה. הסדר שלה הוא הסדר של הנגזרת הגבוהה ביותר, והיא ליניארית כשהנעלם והנגזרות שלו מופיעים רק בחזקה ראשונה.
+  lesson: '0.5'
+
+- id: initial-conditions
+  term: תנאי התחלה
+  en: initial conditions
+  definition: הערכים של הנעלם ושל הנגזרות שלו ברגע ההתחלה, כמו x(0) ו-v(0). משוואה מסדר n צריכה n תנאי התחלה כדי לקבוע את הפתרון.
+  lesson: '0.5'
+
+- id: separation-of-variables
+  term: הפרדת משתנים
+  en: separation of variables
+  definition: שיטה לפתרון משוואה מסדר ראשון מהצורה dy/dt = f(y)g(t). מעבירים את כל מה שתלוי ב-y לאגף אחד עם dy ואת כל מה שתלוי ב-t לאגף השני עם dt, ומאנטגרלים את שני האגפים.
+  lesson: '0.5'
+
+- id: characteristic-equation
+  term: משוואה אופיינית
+  en: characteristic equation
+  definition: המשוואה האלגברית שמתקבלת מהצבת הניחוש x = e^(rt) במשוואה ליניארית עם מקדמים קבועים; ל-mẍ + bẋ + kx = 0 היא mr² + br + k = 0. שורשים ממשיים נותנים דעיכה, שורשים מרוכבים נותנים תנודה, ושורש כפול נותן גם te^(rt).
+  lesson: '0.5'

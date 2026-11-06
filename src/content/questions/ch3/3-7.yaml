@@ -1,0 +1,312 @@
+# Lesson 3.7 question bank: the comprehension ladder of "תנע זוויתי ומומנט כוח של חלקיק".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Axes: x to the right (e), y up the page (n), z out of the page (out). L = r × p, τ = r × F.
+# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/q2.ts:
+#   m = 2.0 kg, r = (3, 4, 0) m, v = (−1, 2, 0) m/s: L_z = m(xv_y − yv_x) = 20 kg·m²/s (4 with a sign slip,
+#   22.4 from m|r||v|, −20 from v × r);
+#   0.50 kg dropped, 2.0 m to the right of O, at t = 1.0 s: L_z = −m g t d = −9.8 kg·m²/s (98 from the height
+#   20 m as the lever arm; 74.0 from the height at t = 1 s);
+#   conical pendulum m = 0.20 kg, ℓ = 1.0 m, 30°: ω = √(g/(ℓ cos θ)) = 3.36 rad/s, about the pivot |L| = mℓ²ω sin θ
+#   = 0.336, horizontal part 0.291 kg·m²/s = τ/ω with τ = mgℓ sin θ = 0.98 N·m, vertical part 0.168;
+#   puck m = 0.20 kg, 1.5 m/s at 0.40 m, pulled to 0.10 m: v = 6.0 m/s (3.0 from v ∝ 1/√r, 0.375 from v ∝ r,
+#   24 from v ∝ 1/r²); W = ΔK = 3.375 J = ∫T dr with T = m v0² r0²/r³ (3.6 = K_final; 0.675 from v ∝ 1/√r).
+
+chapter: 3
+questions:
+  # ----------------------------------- OBJ-3.7-1 L and τ about a point, and dL/dt = τ
+  - id: Q-3.7-straight-line-L
+    type: mc
+    objectives: [OBJ-3.7-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      חלקיק בעל מסה $m$ נע בקו ישר במהירות קבועה $v$, לאורך הקו $y = d$, במקביל לציר $x$. מה התנע הזוויתי שלו ביחס
+      לראשית $O$?
+    choices:
+      - text: 'קבוע, בגודל $mvd$, אף שהחלקיק לא מסתובב סביב $O$.'
+        correct: true
+        feedback: >-
+          נכון. $L_z = xp_y - yp_x = -mvd$: קבוע, בכיוון אל תוך הדף. $d$ היא "זרוע" התנע, המרחק הניצב מ-$O$ לקו
+          התנועה, והיא לא משתנה. זה מתאים ל-$d\vec L/dt = \vec\tau = 0$ כשאין כוח.
+      - text: אפס, כי החלקיק נע בקו ישר ולא מסתובב.
+        feedback: >-
+          תנע זוויתי מוגדר ביחס לנקודה, $\vec L = \vec r\times\vec p$, ואינו דורש סיבוב. כאן $\vec r$ ו-$\vec p$ לא
+          מקבילים, והמכפלה שונה מאפס.
+        misconception: MC-3-straight-line-no-L
+      - text: הוא קטן ככל שהחלקיק מתרחק, כי $\vec p$ קבוע ו-$|\vec r|$ גדל, והזווית ביניהם קטנה.
+        feedback: >-
+          $|\vec r|$ אכן גדל והזווית $\alpha$ קטנה, אבל המכפלה $|\vec r|\sin\alpha$ היא תמיד $d$, המרחק הניצב
+          לקו. לכן $|\vec L| = mvd$ קבוע.
+      - text: 'בגודל $mvd$ ביחס לכל נקודה במישור, כי המהירות קבועה.'
+        feedback: >-
+          תנע זוויתי תלוי בנקודה שביחס אליה מודדים. ביחס לנקודה על קו התנועה עצמו הוא אפס, וביחס לנקודה במרחק $2d$
+          מהקו הוא $2mvd$.
+        misconception: MC-3-L-independent-of-origin
+    hints:
+      - 'חשבו $L_z = xp_y - yp_x$ עם $y = d$ ו-$\vec p = (mv,\,0)$.'
+
+  - id: Q-3.7-L-components
+    type: numeric
+    objectives: [OBJ-3.7-1]
+    level: basic
+    prompt: >-
+      חלקיק בעל מסה $2.0\,\text{kg}$ נמצא ב-$\vec r = (3,\,4,\,0)\,\text{m}$ ומהירותו $\vec v = (-1,\,2,\,0)\,\text{m/s}$.
+      מהו הרכיב $L_z$ של התנע הזוויתי שלו ביחס לראשית?
+    answer: 20
+    unit: kg·m²/s
+    correctFeedback: >-
+      נכון. $L_z = m(xv_y - yv_x) = 2.0\cdot\left(3\cdot2 - 4\cdot(-1)\right) = 2.0\cdot10 = 20\,\text{kg·m}^2/\text{s}$,
+      חיובי: החלקיק סובב סביב הראשית נגד כיוון השעון.
+    wrongFeedback: 'השתמשו ברכיב $z$ של מכפלה וקטורית: $(\vec r\times\vec p)_z = xp_y - yp_x$, והקפידו על הסימן של $v_x$.'
+    commonWrong:
+      - value: 4
+        feedback: 'חישבתם $3\cdot2 + 4\cdot(-1)$. ברכיב $z$ של מכפלה וקטורית יש **מינוס** בין שני האיברים: $xp_y - yp_x$.'
+      - value: 22.4
+        feedback: 'זה $m|\vec r||\vec v|$, כאילו $\vec r$ ניצב ל-$\vec v$. במכפלה וקטורית נכנס גם $\sin\alpha$ של הזווית ביניהם.'
+      - value: -20
+        feedback: 'חישבתם $\vec v\times\vec r$. הסדר במכפלה וקטורית חשוב: $\vec L = \vec r\times\vec p$, ו-$\vec p\times\vec r = -\vec L$.'
+    hints:
+      - '$(\vec a\times\vec b)_z = a_xb_y - a_yb_x$.'
+
+  - id: Q-3.7-falling-ball-L
+    type: numeric
+    objectives: [OBJ-3.7-1]
+    level: mid
+    prompt: >-
+      כדור בעל מסה $0.50\,\text{kg}$ משתחרר ממנוחה בגובה $20\,\text{m}$, בדיוק מעל נקודה על הקרקע שנמצאת
+      $2.0\,\text{m}$ מימין לנקודה $O$ (גם היא על הקרקע). הזניחו את האוויר. מה גודל התנע הזוויתי של הכדור ביחס ל-$O$,
+      שנייה אחת אחרי השחרור?
+    answer: 9.8
+    unit: kg·m²/s
+    correctFeedback: >-
+      נכון. $\vec p = (0,\,-mgt)$ ו-$\vec r = (d,\,y)$, ולכן $L_z = xp_y - yp_x = -mgtd = -0.50\cdot9.8\cdot1.0\cdot2.0 = -9.8\,\text{kg·m}^2/\text{s}$:
+      גודל $9.8$, אל תוך הדף. הגובה לא משנה, כי התנע אנכי והזרוע שלו היא המרחק האופקי $d$. וביחס לנקודה שמתחת
+      לכדור, על קו הנפילה, התנע הזוויתי אפס.
+    wrongFeedback: 'כתבו את $\vec r$ ואת $\vec p$ ברכיבים ברגע $t = 1.0\,\text{s}$, וחשבו $L_z = xp_y - yp_x$.'
+    commonWrong:
+      - value: 0
+        feedback: >-
+          הכדור נע בקו ישר, אבל $O$ לא נמצאת על הקו הזה. ביחס ל-$O$ הזרוע של התנע היא $2.0\,\text{m}$. התנע הזוויתי
+          תלוי בנקודה.
+        misconception: MC-3-straight-line-no-L
+      - value: 98
+        feedback: 'לקחתם את הגובה, $20\,\text{m}$, כזרוע. התנע אנכי, ולכן הזרוע שלו היא המרחק **האופקי** מ-$O$ לקו הנפילה.'
+      - value: 74
+        feedback: 'לקחתם את הגובה ברגע $t = 1.0\,\text{s}$, $15.1\,\text{m}$, כזרוע. גם הוא לא נכנס: רק המרחק האופקי ניצב לתנע האנכי.'
+    hints:
+      - 'מה הזרוע של וקטור אנכי ביחס לנקודה $O$?'
+
+  - id: Q-3.7-falling-ball-torque
+    type: vector
+    objectives: [OBJ-3.7-1]
+    qualitative: true
+    level: mid
+    allowOutIn: true
+    prompt: >-
+      אותו כדור נופל לאורך קו אנכי שנמצא $2.0\,\text{m}$ **מימין** לנקודה $O$, והדף הוא המישור האנכי שבו נמצאים
+      שניהם: ימינה ולמעלה בדף, ואפשר גם לבחור החוצה מהדף או לתוך הדף. מה הכיוון של המומנט של כוח הכובד על הכדור
+      ביחס ל-$O$?
+    answer: in
+    correctFeedback: >-
+      נכון. $\vec\tau = \vec r\times m\vec g$, עם $\vec r$ ימינה ולמעלה ו-$m\vec g$ למטה: $\tau_z = x\cdot(-mg) < 0$,
+      אל תוך הדף. זה בדיוק הכיוון שבו גדל $\vec L$: $\dfrac{d\vec L}{dt} = \vec\tau$, ו-$L_z = -mgtd$ גדל בגודלו בקצב
+      $mgd$.
+    wrongFeedback: 'כתבו $\vec r = (d,\,y,\,0)$ ו-$\vec F = (0,\,-mg,\,0)$ וחשבו את רכיב $z$ של המכפלה הוקטורית.'
+    wrong:
+      - dir: out
+        feedback: 'הפכתם את הסדר, $\vec F\times\vec r$. בכלל יד ימין: האצבעות לאורך $\vec r$ (ימינה), מכופפות אל $\vec F$ (למטה). האגודל פונה אל תוך הדף.'
+      - dir: s
+        feedback: 'מומנט ניצב גם ל-$\vec r$ וגם לכוח. שניהם במישור הדף, ולכן המומנט ניצב לדף, לא לאורך הכוח.'
+        misconception: MC-3-torque-along-force
+      - dir: zero
+        feedback: 'הכובד לא עובר דרך $O$: הזרוע שלו היא $2.0\,\text{m}$. מומנט מתאפס רק כשהכוח מקביל ל-$\vec r$.'
+    hints:
+      - 'המומנט ניצב למישור שבו נמצאים $\vec r$ והכוח.'
+
+  - id: Q-3.7-conical-pendulum
+    type: numeric
+    objectives: [OBJ-3.7-1]
+    level: bagrut
+    prompt: >-
+      מטוטלת חרוטית: כדור בעל מסה $0.20\,\text{kg}$, תלוי בחוט באורך $1.0\,\text{m}$ מנקודה קבועה $P$, נע במעגל אופקי
+      כשהחוט יוצר זווית $30^\circ$ עם האנך. התנע הזוויתי של הכדור **ביחס ל-$P$** אינו אנכי: יש לו רכיב אופקי שמסתובב
+      עם הכדור. מה גודל הרכיב האופקי הזה?
+    answer: 0.291
+    unit: kg·m²/s
+    correctFeedback: >-
+      נכון. מהחוק השני, $\omega = \sqrt{\dfrac{g}{\ell\cos\theta}} = 3.36\,\text{rad/s}$. ביחס ל-$P$, $\vec r$ (לאורך החוט)
+      ניצב ל-$\vec v$, ולכן $|\vec L| = m\ell v = m\ell^2\omega\sin\theta = 0.336\,\text{kg·m}^2/\text{s}$, ניצב לחוט.
+      הרכיב האופקי $|\vec L|\cos\theta = 0.291\,\text{kg·m}^2/\text{s}$. **בדיקה ב-$d\vec L/dt = \vec\tau$:** המתיחות
+      עוברת דרך $P$, והמומנט של הכובד $mg\ell\sin\theta = 0.98\,\text{N·m}$, אופקי. הרכיב האופקי של $\vec L$ מסתובב
+      ב-$\omega$, ולכן $\left|\dfrac{d\vec L}{dt}\right| = \omega L_h = 3.36\cdot0.291 = 0.98\,\text{N·m}$. **בדיקת גבולות:** כש-$\theta \to 0$
+      הכדור תלוי במנוחה, ו-$L_h \to 0$.
+    wrongFeedback: >-
+      מצאו את $\omega$ מהחוק השני. חשבו את $\vec L = \vec r\times m\vec v$ ביחס ל-$P$, כשהזווית בין החוט למהירות
+      ישרה, ופרקו את $\vec L$, שניצב לחוט, לרכיב אנכי ולרכיב אופקי.
+    commonWrong:
+      - value: 0.336
+        feedback: 'זה הגודל של $\vec L$ כולו. הוא ניצב לחוט, ולכן נוטה בזווית $\theta$ מהאופק; הרכיב האופקי הוא $|\vec L|\cos\theta$.'
+      - value: 0.168
+        feedback: >-
+          זה הרכיב **האנכי**, $|\vec L|\sin\theta$, שהוא גם התנע הזוויתי ביחס למרכז המעגל, $mr^2\omega$. ביחס ל-$P$, שנמצאת
+          מעל מרכז המעגל, מתווסף רכיב אופקי.
+        misconception: MC-3-L-independent-of-origin
+      - value: 0.98
+        feedback: 'זה גודל המומנט של הכובד ביחס ל-$P$, ב-$\text{N·m}$. הוא קצב השינוי של $\vec L$, ולא $\vec L$ עצמו: $L_h = \tau/\omega$.'
+    hints:
+      - 'מהחוק השני, $\tan\theta = \dfrac{\omega^2\ell\sin\theta}{g}$.'
+      - 'ביחס ל-$P$, $\vec r$ לאורך החוט ו-$\vec v$ אופקית ומשיקה למעגל. מה הזווית ביניהם?'
+
+  # --------------------------------- OBJ-3.7-2 a central force: L conserved, planar motion
+  - id: Q-3.7-which-central
+    type: multi
+    objectives: [OBJ-3.7-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      כוח מרכזי ביחס לנקודה $O$ הוא כוח שפונה תמיד לאורך הקו בין הגוף ל-$O$. ביחס לנקודה כזו התנע הזוויתי של הגוף
+      נשמר. באילו מהמקרים הכוח מרכזי ביחס לנקודה שצוינה? סמנו את כל הנכונים.
+    choices:
+      - text: הכובד של השמש על כוכב לכת, ביחס לשמש.
+        correct: true
+        feedback: 'נכון. הכובד פונה אל השמש, ולכן $\vec r\times\vec F = 0$ ביחס אליה, והתנע הזוויתי של כוכב הלכת סביב השמש נשמר.'
+      - text: המתיחות בחוט שעובר דרך חור בשולחן, על דסקית שמסתובבת על השולחן, ביחס לחור.
+        correct: true
+        feedback: 'נכון. החוט מושך תמיד אל החור, גם כשמושכים אותו מלמטה ומקצרים אותו.'
+      - text: הכובד הקבוע $m\vec g$ על אבן שנזרקה, ביחס לנקודת הזריקה.
+        feedback: >-
+          הכובד פונה תמיד למטה, ולא אל נקודת הזריקה. רק כשהאבן בדיוק מעל נקודת הזריקה או מתחתיה הוא לאורך $\vec r$.
+          לכן המומנט שלו לא אפס, והתנע הזוויתי של האבן משתנה.
+      - text: כוח קפיץ שקצהו קשור לנקודה $O$ על שולחן, על דסקית שנעה על השולחן, ביחס ל-$O$.
+        correct: true
+        feedback: 'נכון. הקפיץ מושך או דוחף לאורך הקו בין $O$ לדסקית, ולכן הכוח מרכזי, גם אם גודלו משתנה עם המרחק.'
+      - text: חיכוך קינטי על דסקית שמחליקה על שולחן, ביחס לנקודה קבועה על השולחן.
+        feedback: 'החיכוך פונה נגד המהירות, לא אל הנקודה. הוא מרכזי רק אם הדסקית נעה בדיוק אל הנקודה או ממנה.'
+    hints:
+      - 'בכל מקרה בדקו: האם הכוח מקביל ל-$\vec r$ מהנקודה אל הגוף, בכל רגע?'
+
+  - id: Q-3.7-puck-speed
+    type: numeric
+    objectives: [OBJ-3.7-2]
+    level: mid
+    prompt: >-
+      דסקית על שולחן חלק קשורה לחוט שעובר דרך חור במרכז השולחן. היא מסתובבת במעגל ברדיוס $0.40\,\text{m}$ במהירות
+      $1.5\,\text{m/s}$. מושכים את החוט לאט מלמטה עד שהרדיוס $0.10\,\text{m}$. מה מהירותה עכשיו?
+    answer: 6
+    unit: m/s
+    correctFeedback: >-
+      נכון. המתיחות מרכזית ביחס לחור, ולכן $L = mrv$ נשמר (במעגל $\vec r \perp \vec v$):
+      $v_1 = v_0\dfrac{r_0}{r_1} = 1.5\cdot\dfrac{0.40}{0.10} = 6.0\,\text{m/s}$.
+    wrongFeedback: 'איזה גודל נשמר כשהכוח היחיד במישור השולחן מושך אל החור? כתבו אותו ברדיוס ההתחלתי ובסופי.'
+    commonWrong:
+      - value: 1.5
+        feedback: >-
+          הנחתם שהמהירות לא משתנה, כאילו המתיחות לא עושה עבודה. בזמן המשיכה לדסקית יש גם רכיב מהירות פנימה, לאורך
+          החוט, ולכן המתיחות עושה עליה עבודה חיובית.
+        misconception: MC-3-central-force-no-work
+      - value: 0.375
+        feedback: 'הנחתם שהמהירות הזוויתית נשמרת, $v \propto r$, כמו בגוף צפיד. כאן נשמר $rv$, ולכן $v \propto 1/r$.'
+      - value: 3
+        feedback: 'קיבלתם $v \propto 1/\sqrt r$. מה שנשמר הוא $L = mrv$, וזה נותן $v \propto 1/r$.'
+      - value: 24
+        feedback: 'קיבלתם $v \propto 1/r^2$. זו התלות של המהירות **הזוויתית**, $\omega = v/r \propto 1/r^2$, לא של $v$.'
+    hints:
+      - 'התנע הזוויתי ביחס לחור: $L = mrv$.'
+
+  - id: Q-3.7-planar
+    type: mc
+    objectives: [OBJ-3.7-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גוף נע במרחב תחת כוח מרכזי ביחס לנקודה קבועה $O$, ומהירותו ההתחלתית לא מכוונת אל $O$ או ממנה. למה מסלולו נמצא
+      כולו במישור אחד?
+    choices:
+      - text: 'התנע הזוויתי $\vec L = \vec r\times\vec p$ קבוע, ו-$\vec r$ ניצב לו בכל רגע, ולכן נשאר במישור דרך $O$ שניצב ל-$\vec L$.'
+        correct: true
+        feedback: >-
+          נכון. $\vec\tau = \vec r\times\vec F = 0$, ולכן $\vec L$ קבוע **בכיוון** ובגודל. מכפלה וקטורית ניצבת לשני
+          הגורמים, ולכן $\vec r\cdot\vec L = 0$ בכל רגע. זה המישור שקבעו $\vec r$ ו-$\vec v$ ההתחלתיים.
+      - text: הכוח ניצב למהירות, ולכן הגוף נע במעגל, וכל מעגל נמצא במישור.
+        feedback: >-
+          כוח מרכזי לא חייב להיות ניצב למהירות: במסלול אליפטי יש לו רכיב לאורך המהירות, והגודל שלה משתנה. המישוריות
+          נובעת משימור הכיוון של $\vec L$, גם כשהמסלול לא מעגל.
+      - text: האנרגיה נשמרת, ולכן הגוף לא יכול לצאת מהמישור.
+        feedback: >-
+          שימור אנרגיה הוא תנאי סקלרי אחד, והוא לא קובע כיוון. מה שמחזיק את הגוף במישור הוא שימור **הווקטור**
+          $\vec L$.
+      - text: התנע הזוויתי נשמר רק בגודלו, וגודל קבוע של $\vec L$ מספיק.
+        feedback: 'אם רק הגודל היה נשמר, $\vec L$ היה יכול להסתובב, והמישור איתו. כאן $\vec\tau = 0$, ולכן גם הכיוון נשמר.'
+    hints:
+      - 'מה הזווית בין $\vec r$ לבין $\vec r\times\vec p$?'
+
+  - id: Q-3.7-puck-work
+    type: numeric
+    objectives: [OBJ-3.7-2, OBJ-3.7-1]
+    level: bagrut
+    prompt: >-
+      דסקית בעלת מסה $0.20\,\text{kg}$ על שולחן חלק קשורה לחוט שעובר דרך חור. היא מסתובבת במעגל ברדיוס
+      $r_0 = 0.40\,\text{m}$ במהירות $v_0 = 1.5\,\text{m/s}$, ומושכים את החוט לאט עד $r_1 = 0.10\,\text{m}$. כמה עבודה
+      עשתה היד שמושכת?
+    answer: 3.38
+    unit: J
+    correctFeedback: >-
+      נכון. משימור $L$, $v = v_0r_0/r$, ובמשיכה איטית המתיחות היא הכוח הצנטריפטלי:
+      $T(r) = \dfrac{mv^2}{r} = \dfrac{mv_0^2r_0^2}{r^3}$. העבודה, כשהדסקית נעה פנימה:
+      $$W = \int_{r_1}^{r_0}T\,dr = \frac{mv_0^2r_0^2}{2}\left(\frac{1}{r_1^2} - \frac{1}{r_0^2}\right) = \tfrac12mv_0^2\left(\frac{r_0^2}{r_1^2} - 1\right) = 3.38\,\text{J}$$
+      בדיוק השינוי באנרגיה הקינטית, $\tfrac12\cdot0.20\cdot(36 - 2.25)$. **בדיקת גבולות:** כש-$r_1 \to r_0$ העבודה מתאפסת;
+      כש-$r_1 \to 0$ היא שואפת לאינסוף, ולכן אי אפשר למשוך את הדסקית עד החור.
+    wrongFeedback: >-
+      המתיחות מרכזית, אבל הדסקית נעה פנימה לאורך החוט, ולכן המתיחות כן עושה עבודה. מצאו את המהירות הסופית משימור
+      $L$, והשתמשו במשפט עבודה-אנרגיה.
+    commonWrong:
+      - value: 0
+        feedback: >-
+          כוח מרכזי לא עושה עבודה רק כשהגוף נע במעגל. כאן לדסקית יש גם רכיב מהירות פנימה, לאורך הכוח, והמתיחות
+          עושה עבודה חיובית.
+        misconception: MC-3-central-force-no-work
+      - value: 3.6
+        feedback: 'זו האנרגיה הקינטית הסופית, $\tfrac12mv_1^2$. העבודה היא השינוי, ולדסקית כבר היתה $0.225\,\text{J}$ בהתחלה.'
+      - value: 0.675
+        feedback: 'השתמשתם ב-$v \propto 1/\sqrt r$. משימור $L = mrv$, $v \propto 1/r$, והמהירות הסופית $6.0\,\text{m/s}$.'
+    hints:
+      - 'מצאו את $v_1$ משימור התנע הזוויתי.'
+      - 'או: כתבו $T(r)$ ואינטגרלו מ-$r_1$ עד $r_0$.'
+
+  - id: Q-3.7-comet
+    type: twotier
+    objectives: [OBJ-3.7-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      שביט נע סביב השמש במסלול אליפטי. בנקודה הרחוקה ביותר המרחק שלו מהשמש גדול פי 4 מאשר בנקודה הקרובה ביותר. פי
+      כמה מהירותו בנקודה הקרובה גדולה ממהירותו בנקודה הרחוקה?
+    choices:
+      - text: פי 4
+        correct: true
+        feedback: >-
+          נכון. $L = mrv\sin\alpha$ נשמר, ובשתי הנקודות האלה המהירות ניצבת לקו אל השמש, $\sin\alpha = 1$. לכן
+          $r_pv_p = r_av_a$, ו-$v_p/v_a = r_a/r_p = 4$.
+      - text: פי 2
+        feedback: 'זה $\sqrt4$, כאילו $v \propto 1/\sqrt r$. זו התלות של מהירות במסלולים **מעגליים** ברדיוסים שונים, לא בנקודות של אותו מסלול.'
+      - text: פי 16
+        feedback: 'זה היחס בין הכוחות, $\propto 1/r^2$, ולא בין המהירויות. תנע זוויתי נותן יחס הפוך של המרחקים בחזקה הראשונה.'
+      - text: פי 1, כי האנרגיה נשמרת.
+        feedback: 'האנרגיה המכנית נשמרת, אבל לא האנרגיה הקינטית: קרוב לשמש האנרגיה הפוטנציאלית נמוכה יותר, והקינטית גבוהה יותר.'
+    reasons:
+      - text: 'התנע הזוויתי נשמר, ובשתי הנקודות האלה $\vec v \perp \vec r$, ולכן $rv$ זהה בהן.'
+        correct: true
+        feedback: 'זה הנימוק. שימו לב לחשיבות של $\vec v \perp \vec r$: רק שם $L = mrv$ בלי $\sin\alpha$.'
+      - text: 'התנע הזוויתי נשמר, ולכן $v \propto 1/r$ בכל נקודה של המסלול.'
+        feedback: >-
+          זה נכון רק בנקודות שבהן $\vec v \perp \vec r$. בשאר המסלול נשמר $rv\sin\alpha$, והמהירות לא הפוכה למרחק.
+          התשובה יצאה נכונה כאן כי שאלו בדיוק על הנקודות הקיצוניות.
+        misconception: MC-3-v-inverse-r-everywhere
+      - text: 'מספיק שימור האנרגיה: $\tfrac12mv^2$ גדל כמו $1/r$.'
+        feedback: >-
+          שימור האנרגיה נותן $\tfrac12v_p^2 - \tfrac12v_a^2 = GM\left(\dfrac1{r_p} - \dfrac1{r_a}\right)$, ובו מופיעה המסה
+          של השמש. לבדו הוא לא קובע את היחס בין המהירויות.
+    hints:
+      - 'בנקודות הקיצוניות של אליפסה, מה הזווית בין המהירות לבין הקו אל המוקד?'

@@ -1,0 +1,323 @@
+# Lesson 7.4 question bank: the comprehension ladder of "כדור הארץ המסתובב".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8 taken as the gravitational acceleration
+# without rotation, OMEGA_EARTH = 7.29e-5 rad/s, R_EARTH = 6.37e6 m) in .scratch/ch7/q.ts:
+#   ω²R = 0.0339 m/s² (ωR = 464 m/s; R in km: 3.39e-5);
+#   plumb deviation α(λ) = atan(ω²R sinλ cosλ / (g − ω²R cos²λ)): 0 at 0° and 90°, 0.0859° at 30°,
+#     0.0991° at 45° (the maximum, found by a scan; first order ω²R/(2g) = 0.0990°), 0.0858° at 60°;
+#     without the ½: 0.198°, in radians: 0.00173;
+#   drop of 100 m at Jerusalem, λ = 31.8°: t = 4.52 s, d = (1/3)ωg t³ cosλ = 1.87 cm
+#     (no cos 2.20, no ⅓ 5.60, ½ instead of ⅓ 2.80, sin instead of cos 1.16);
+#   Foucault: sidereal day 2π/ω = 23.9 h; at 31.8°: 23.9/sinλ = 45.4 h (24/sinλ = 45.5 h;
+#     cos: 28.2 h; half: 22.7 h).
+
+chapter: 7
+questions:
+  # ---------------------------------------------------------------- OBJ-7.4-1 effective gravity and the plumb line
+  - id: Q-7.4-equator-centrifugal
+    type: numeric
+    objectives: [OBJ-7.4-1]
+    level: basic
+    prompt: >-
+      מה גודל התאוצה הצנטריפוגלית $\omega^2R$ של גוף שעומד על קו המשווה, במערכת הייחוס של כדור הארץ? קחו
+      $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$ ו-$R = 6.37\cdot10^{6}\,\text{m}$.
+    answer: 0.0339
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $\omega^2R = \left(7.29\cdot10^{-5}\right)^2\cdot6.37\cdot10^{6} = 0.0339\,\text{m/s}^2$, כ-0.35% מ-$g$. לכן
+      בקו המשווה תאוצת הנפילה האפקטיבית קטנה מתאוצת הכובד בכ-0.35%, ובקטבים אין הפרש.
+    wrongFeedback: 'הציבו ב-SI, ואל תשכחו לרבע את $\omega$.'
+    commonWrong:
+      - value: 464
+        feedback: 'זה $\omega R$, מהירות של נקודה על קו המשווה ב-$\text{m/s}$. התאוצה היא $\omega^2R$.'
+      - value: 3.39e-5
+        feedback: 'הצבתם את הרדיוס בקילומטרים. ב-SI, $R = 6.37\cdot10^{6}\,\text{m}$.'
+    hints:
+      - 'בקו המשווה המרחק מציר הסיבוב הוא רדיוס כדור הארץ.'
+
+  - id: Q-7.4-plumb-direction
+    type: mc
+    objectives: [OBJ-7.4-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בירושלים, בחצי הכדור הצפוני, תולים משקולת על חוט ומחכים שתירגע. אנך הוא הכיוון שהחוט מראה. איך הוא נוטה ביחס לקו
+      שמחבר את נקודת התלייה למרכז כדור הארץ?
+    choices:
+      - text: הוא נוטה מעט, כך שהמשקולת מוסטת דרומה, לכיוון קו המשווה.
+        correct: true
+        feedback: >-
+          נכון. החוט מתיישר לאורך $\vec g_{\text{eff}} = \vec g - \vec\omega\times(\vec\omega\times\vec r)$. לכוח הצנטריפוגלי,
+          שפונה הרחק מציר כדור הארץ, יש רכיב אופקי לכיוון קו המשווה, ולכן המשקולת מוסטת דרומה, בזווית של פחות מעשירית מעלה.
+      - text: הוא מצביע בדיוק אל מרכז כדור הארץ.
+        feedback: >-
+          זה נכון רק בקטבים ובקו המשווה. בכל קו רוחב אחר יש לכוח הצנטריפוגלי רכיב שניצב לכיוון למרכז, והוא מטה את האנך.
+        misconception: MC-7-plumb-points-to-center
+      - text: הוא נוטה מעט, כך שהמשקולת מוסטת צפונה, לכיוון הקוטב.
+        feedback: >-
+          הכוח הצנטריפוגלי פונה הרחק מציר הסיבוב. בירושלים לרכיב האופקי שלו יש כיוון דרומה, אל קו המשווה, שם המרחק
+          מהציר גדול יותר.
+      - text: הוא נוטה מעט מזרחה, כי כדור הארץ מסתובב מזרחה.
+        feedback: >-
+          משקולת במנוחה לא מרגישה כוח קוריוליס, ולכוח הצנטריפוגלי אין רכיב מזרחה-מערבה: הוא במישור של קו האורך.
+        misconception: MC-7-coriolis-on-resting-body
+    hints:
+      - 'לאן פונה הכוח הצנטריפוגלי, ומה הרכיב שלו במישור האופקי?'
+
+  - id: Q-7.4-rank-deviation
+    type: rank
+    objectives: [OBJ-7.4-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      $\alpha$ היא הזווית בין האנך לבין הקו אל מרכז כדור הארץ. דרגו את $\alpha$ בחמשת קווי הרוחב, מהגדולה לקטנה, בקירוב
+      מסדר ראשון ב-$\omega^2R/g$. שימו קווי רוחב שבהם $\alpha$ שווה באותה דרגה.
+    items:
+      - { id: lat0, label: 'קו המשווה, 0°' }
+      - { id: lat30, label: '30° צפון' }
+      - { id: lat45, label: '45° צפון' }
+      - { id: lat60, label: '60° צפון' }
+      - { id: lat90, label: 'הקוטב הצפוני, 90°' }
+    order: [lat45, [lat30, lat60], [lat0, lat90]]
+    correctFeedback: >-
+      נכון. הרכיב של הכוח הצנטריפוגלי שניצב לקו אל המרכז הוא $m\omega^2R\cos\lambda\sin\lambda$, ולכן
+      $\alpha \approx \dfrac{\omega^2R}{2g}\sin2\lambda$. הוא מרבי ב-$45^\circ$, כ-$0.099^\circ$, שווה ב-$30^\circ$ וב-$60^\circ$,
+      ואפס בקו המשווה, שם הכוח הצנטריפוגלי מקביל לקו אל המרכז, ובקוטב, שם הוא אפס.
+    wrongFeedback: >-
+      פרקו את הכוח הצנטריפוגלי, $m\omega^2R\cos\lambda$ הרחק מהציר, לרכיב לאורך הקו אל המרכז ולרכיב ניצב לו. איך תלוי
+      הרכיב הניצב ב-$\lambda$?
+    hints:
+      - '$\sin\lambda\cos\lambda = \tfrac12\sin2\lambda$.'
+
+  - id: Q-7.4-max-deviation
+    type: numeric
+    objectives: [OBJ-7.4-1]
+    level: bagrut
+    prompt: >-
+      הראו שהזווית בין האנך לבין הקו אל מרכז כדור הארץ, בקו רוחב $\lambda$, היא בקירוב
+      $$\alpha(\lambda) \approx \frac{\omega^2R}{g}\sin\lambda\cos\lambda$$
+      כאשר $g = 9.8\,\text{m/s}^2$ היא תאוצת הכובד בלי הסיבוב, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$ ו-$R = 6.37\cdot10^{6}\,\text{m}$.
+      מה הערך המרבי של $\alpha$, במעלות?
+    answer: 0.0991
+    unit: °
+    correctFeedback: >-
+      נכון. הכוח הצנטריפוגלי ליחידת מסה, $\omega^2R\cos\lambda$ הרחק מהציר, מתפרק לרכיב $\omega^2R\cos^2\lambda$ לאורך
+      הקו מהמרכז ולרכיב $\omega^2R\cos\lambda\sin\lambda$ ניצב לו. לכן
+      $\tan\alpha = \dfrac{\omega^2R\sin\lambda\cos\lambda}{g - \omega^2R\cos^2\lambda} \approx \dfrac{\omega^2R}{2g}\sin2\lambda$,
+      מרבי ב-$\lambda = 45^\circ$: $\alpha = \dfrac{0.0339}{2\cdot9.8} = 1.73\cdot10^{-3}\,\text{rad} = 0.0991^\circ$.
+      **בדיקת גבולות:** בקו המשווה ובקוטב $\sin2\lambda = 0$ והאנך מצביע בדיוק אל המרכז, וכש-$\omega \to 0$ גם $\alpha \to 0$.
+    wrongFeedback: >-
+      $\sin\lambda\cos\lambda = \tfrac12\sin2\lambda$, ולכן הערך המרבי הוא כש-$\sin2\lambda = 1$. זכרו להמיר רדיאנים
+      למעלות.
+    commonWrong:
+      - value: 0.198
+        feedback: 'זה $\omega^2R/g$ במעלות. הערך המרבי של $\sin\lambda\cos\lambda$ הוא $\tfrac12$, לא 1.'
+      - value: 0.00173
+        feedback: 'זו התשובה ברדיאנים. כפלו ב-$180/\pi$.'
+    hints:
+      - 'פרקו את $\omega^2R\cos\lambda$ לרכיב לאורך הקו מהמרכז ולרכיב שניצב לו.'
+      - 'הזווית הקטנה היא בקירוב היחס בין הרכיב הניצב ל-$g$.'
+
+  # ---------------------------------------------------------------- OBJ-7.4-2 Coriolis effects on Earth
+  - id: Q-7.4-fall-east
+    type: mc
+    objectives: [OBJ-7.4-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      משחררים אבן ממנוחה מראש מגדל גבוה בירושלים, באוויר דומם. היכן תפגע בקרקע, ביחס לנקודה שהאנך מראה בדיוק מתחת לנקודת
+      השחרור?
+    choices:
+      - text: מעט מזרחה ממנה.
+        correct: true
+        feedback: >-
+          נכון. במערכת כדור הארץ האבן נעה כלפי מטה, וכוח קוריוליס $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$ פונה מזרחה. במערכת
+          האינרציאלית: ראש המגדל רחוק יותר מהציר מהבסיס, ולכן נע מזרחה מהר יותר, והאבן שומרת על המהירות הזו.
+      - text: מעט מערבה ממנה, כי כדור הארץ מסתובב מזרחה מתחת לאבן בזמן הנפילה.
+        feedback: >-
+          האבן לא ״עומדת״ בזמן שכדור הארץ מסתובב: לפני השחרור היא נעה עם ראש המגדל מזרחה, ומהר יותר מבסיס המגדל. לכן היא
+          מקדימה אותו, ופוגעת מזרחה.
+        misconception: MC-7-falling-lands-west
+      - text: בדיוק בה.
+        feedback: >-
+          האנך כבר כולל את הכוח הצנטריפוגלי, אבל לא את כוח קוריוליס, שפועל רק על גוף נע. האבן נעה, ולכן מוסטת ממנו.
+      - text: מעט דרומה ממנה, כי הכוח הצנטריפוגלי דוחף אותה לכיוון קו המשווה.
+        feedback: >-
+          הכוח הצנטריפוגלי פועל גם על משקולת האנך, ולכן הוא כבר בתוך הכיוון שהאנך מראה. ההסטה בסדר ראשון באה מכוח קוריוליס,
+          והיא מזרחה.
+    hints:
+      - 'במערכת כדור הארץ $\vec\omega$ פונה צפונה ולמעלה, והמהירות של האבן כלפי מטה. חשבו $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v''$.'
+
+  - id: Q-7.4-fall-deflection
+    type: numeric
+    objectives: [OBJ-7.4-2]
+    level: mid
+    prompt: >-
+      בקירוב מסדר ראשון ב-$\omega$, גוף שנופל ממנוחה מגובה $h$ בקו רוחב $\lambda$ מוסט מזרחה במרחק
+      $$d = \frac13\,\omega g t^3\cos\lambda,\qquad t = \sqrt{\frac{2h}{g}}$$
+      בכמה סנטימטרים מוסטת אבן שנופלת $100\,\text{m}$ בירושלים, $\lambda = 31.8^\circ$? הזניחו את התנגדות האוויר. קחו
+      $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$.
+    answer: 1.87
+    unit: cm
+    correctFeedback: >-
+      נכון. $t = \sqrt{\dfrac{2\cdot100}{9.8}} = 4.52\,\text{s}$, ו-
+      $d = \tfrac13\cdot7.29\cdot10^{-5}\cdot9.8\cdot4.52^3\cdot\cos31.8^\circ = 0.0187\,\text{m} = 1.87\,\text{cm}$.
+      ההסטה זעירה ביחס לגובה, ולכן הקירוב מסדר ראשון מצוין.
+    wrongFeedback: 'חשבו קודם את זמן הנפילה, ואז הציבו. שימו לב שבנוסחה $\cos\lambda$ והמקדם $\tfrac13$.'
+    commonWrong:
+      - value: 2.2
+        feedback: 'שכחתם את $\cos\lambda$. רק הרכיב של $\vec\omega$ שניצב למהירות, $\omega\cos\lambda$, מסיט גוף שנופל אנכית.'
+      - value: 5.6
+        feedback: 'שכחתם את $\tfrac13$, שבא מאינטגרציה כפולה של התאוצה $2\omega g t\cos\lambda$.'
+      - value: 2.8
+        feedback: 'השתמשתם ב-$\tfrac12$. התאוצה המזרחית גדלה עם הזמן, $2\omega gt\cos\lambda$, ולכן אינטגרציה כפולה נותנת $\tfrac13\omega gt^3\cos\lambda$.'
+      - value: 1.16
+        feedback: 'השתמשתם ב-$\sin\lambda$. ההסטה מרבית בקו המשווה, שם $\vec\omega$ ניצב לאנך, ומתאפסת בקוטב: $\cos\lambda$.'
+    hints:
+      - '$t^3$: חשבו את $t$ קודם, ואז העלו בחזקה.'
+
+  - id: Q-7.4-foucault-jerusalem
+    type: numeric
+    objectives: [OBJ-7.4-2]
+    level: mid
+    prompt: >-
+      מישור התנודה של מטוטלת פוקו מסתובב ביחס לקרקע בקצב $\omega\sin\lambda$. כמה שעות לוקח לו להשלים סיבוב שלם בירושלים,
+      $\lambda = 31.8^\circ$? קחו $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$.
+    answer: 45.4
+    unit: h
+    correctFeedback: >-
+      נכון. $T = \dfrac{2\pi}{\omega\sin\lambda} = \dfrac{2\pi}{7.29\cdot10^{-5}\cdot0.527} = 1.64\cdot10^{5}\,\text{s} = 45.4\,\text{h}$.
+      $2\pi/\omega = 23.9\,\text{h}$ הוא היום הכוכבי, זמן סיבוב של כדור הארץ ביחס לכוכבים. בקוטב המישור משלים סיבוב
+      ביום כוכבי אחד, ובקו המשווה הוא לא מסתובב כלל.
+    wrongFeedback: 'חשבו את $2\pi/(\omega\sin\lambda)$ בשניות, וחלקו ב-3600.'
+    commonWrong:
+      - value: 23.9
+        feedback: 'זה זמן הסיבוב בקוטב בלבד. בקו רוחב $\lambda$ רק הרכיב האנכי של $\vec\omega$, $\omega\sin\lambda$, מסובב את המישור.'
+        misconception: MC-7-foucault-one-day-everywhere
+      - value: 28.2
+        feedback: 'השתמשתם ב-$\cos\lambda$. את המישור מסובב הרכיב **האנכי** של $\vec\omega$, $\omega\sin\lambda$.'
+      - value: 22.7
+        feedback: 'חילקתם ב-$2\omega\sin\lambda$. כוח קוריוליס הוא $2m\omega v$, אבל המישור עצמו מסתובב בקצב $\omega\sin\lambda$.'
+    hints:
+      - 'זמן מחזור של סיבוב בקצב זוויתי $\Omega$ הוא $2\pi/\Omega$.'
+
+  - id: Q-7.4-foucault-equator
+    type: twotier
+    objectives: [OBJ-7.4-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מטוטלת פוקו תלויה בקיטו, אקוודור, כמעט על קו המשווה. מה קורה למישור התנודה שלה ביחס לקרקע?
+    choices:
+      - text: הוא כמעט לא מסתובב.
+        correct: true
+        feedback: >-
+          נכון. בקו המשווה $\sin\lambda = 0$: הציר של כדור הארץ אופקי שם, צפונה, ואין לו רכיב אנכי שיסובב את המישור.
+      - text: הוא משלים סיבוב ביום אחד, כמו בכל מקום על כדור הארץ.
+        feedback: >-
+          רק בקטבים. בקו רוחב $\lambda$ זמן הסיבוב הוא היום הכוכבי חלקי $\sin\lambda$, ובקו המשווה הוא אינסופי.
+        misconception: MC-7-foucault-one-day-everywhere
+      - text: הוא מסתובב הכי מהר, כי שם הקרקע נעה הכי מהר, $464\,\text{m/s}$.
+        feedback: >-
+          המהירות של הקרקע לא קובעת דבר: במערכת כדור הארץ מה שמסובב את המישור הוא כוח קוריוליס האופקי, והוא תלוי ברכיב
+          האנכי של $\vec\omega$, לא במרחק מהציר.
+        misconception: MC-7-coriolis-depends-on-radius
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: >-
+          לתנועה אופקית, רק הרכיב האנכי של $\vec\omega$, $\omega\sin\lambda$, נותן כוח קוריוליס אופקי, והוא אפס בקו המשווה.
+        correct: true
+        feedback: >-
+          זה הנימוק. הרכיב האופקי $\omega\cos\lambda$ נותן לגוף שנע אופקית כוח **אנכי**, שרק משנה מעט את המתיחות בחוט.
+      - text: בקו המשווה כוח קוריוליס אפס.
+        feedback: >-
+          לא נכון: גוף שנופל בקו המשווה מוסט מזרחה, וגוף שנע מזרחה נדחף מעלה. מה שמתאפס הוא רק הרכיב **האופקי** של כוח
+          קוריוליס על גוף שנע אופקית.
+        misconception: MC-7-coriolis-zero-at-equator
+      - text: כדור הארץ מסתובב מתחת לכל מטוטלת פעם ביום.
+        feedback: >-
+          כדור הארץ מסתובב סביב ציר שעובר בקטבים. בקוטב הקרקע מסתובבת סביב האנך ומתחת למטוטלת, אבל בקו המשווה הסיבוב הוא
+          סביב ציר אופקי.
+        misconception: MC-7-foucault-one-day-everywhere
+    hints:
+      - 'פרקו את $\vec\omega$ לרכיב אנכי ולרכיב אופקי, צפונה. מה גודל כל אחד בקו המשווה?'
+
+  - id: Q-7.4-thrown-up-equator
+    type: vector
+    objectives: [OBJ-7.4-2]
+    level: bagrut
+    prompt: >-
+      על קו המשווה זורקים כדור אנכית כלפי מעלה. מסתכלים צפונה: בדף, ימינה הוא מזרח, למעלה בדף הוא כלפי מעלה, האנך,
+      ו״החוצה מהדף״ הוא אל הצופה, כלומר דרומה. לאן פונה כוח קוריוליס על הכדור בזמן שהוא עולה?
+    answer: w
+    allowOutIn: true
+    correctFeedback: >-
+      נכון. בקו המשווה $\vec\omega$ פונה צפונה, לתוך הדף, והמהירות כלפי מעלה, למעלה בדף. עם $\hat x$ ימינה, $\hat y$
+      למעלה ו-$\hat z$ החוצה: $\vec\omega\times\vec v' \propto (-\hat z)\times\hat y = \hat x$, ולכן $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$
+      פונה מערבה. זה הפוך להסטה מזרחה של גוף נופל, כי המהירות הפוכה. בנפילה חזרה הכוח פונה מזרחה, אבל הכדור כבר נע
+      מערבה, והוא נוחת מערבה מנקודת הזריקה.
+    wrongFeedback: >-
+      כתבו את $\vec\omega$ ואת $\vec v'$ בצירי הדף. איזה ציר מתאים לצפון, כשהצופה מסתכל צפונה?
+    wrong:
+      - dir: e
+        feedback: >-
+          מזרחה מוסט גוף **נופל**. גוף שעולה נע בכיוון ההפוך, ולכן גם כוח קוריוליס עליו הפוך.
+        misconception: MC-7-falling-lands-west
+      - dir: zero
+        feedback: >-
+          בקו המשווה כוח קוריוליס על תנועה **אופקית** אינו אופקי, אבל על תנועה אנכית הוא מרבי: $\vec\omega$ אופקי וניצב
+          למהירות.
+        misconception: MC-7-coriolis-zero-at-equator
+      - dir: in
+        feedback: 'צפונה, לתוך הדף, פונה $\vec\omega$ עצמה. כוח קוריוליס ניצב ל-$\vec\omega$.'
+      - dir: out
+        feedback: 'הכוח ניצב ל-$\vec\omega$, שפונה צפונה-דרומה, ולכן אין לו רכיב לאורך הקו הזה.'
+    hints:
+      - 'צופה שמסתכל צפונה רואה את הצפון ״לתוך הדף״.'
+
+  - id: Q-7.4-cyclone
+    type: twotier
+    objectives: [OBJ-7.4-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      סביב מרכז של לחץ נמוך בחצי הכדור הצפוני נוצרת סערה בקוטר מאות קילומטרים. לאיזה כיוון מסתובבת הרוח סביב המרכז,
+      במבט מלמעלה?
+    choices:
+      - text: נגד כיוון השעון.
+        correct: true
+        feedback: >-
+          נכון. האוויר זורם פנימה, אל הלחץ הנמוך, וכוח קוריוליס מסיט כל חלק ממנו ימינה. אוויר שמגיע מדרום ונע צפונה מוסט
+          מזרחה, ואוויר שמגיע מצפון מוסט מערבה: יחד זו זרימה נגד כיוון השעון סביב המרכז.
+      - text: עם כיוון השעון.
+        feedback: >-
+          כוח קוריוליס אכן מסיט ימינה, אבל ימינה **מכיוון הזרימה פנימה**. זרימה פנימה שמוסטת ימינה מקיפה את המרכז נגד
+          כיוון השעון. עם כיוון השעון מסתובבות הסערות בחצי הכדור הדרומי.
+        misconception: MC-7-cyclone-follows-deflection
+      - text: 'לא מסתובבת: הרוח זורמת ישר אל המרכז.'
+        feedback: >-
+          בסערה בקוטר מאות קילומטרים הזרימה נמשכת שעות, וכוח קוריוליס, אף שהוא קטן, מספיק להסיט אותה. ישר אל המרכז זורם
+          אוויר רק במערבולת קטנה ומהירה.
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: >-
+          כוח הלחץ מושך את האוויר פנימה, כוח קוריוליס מסיט אותו ימינה, ובמצב יציב הרוח זורמת כמעט במשיק למעגל, כשהלחץ
+          פנימה וכוח קוריוליס החוצה מאזנים זה את זה.
+        correct: true
+        feedback: >-
+          זה הנימוק. כדי שכוח קוריוליס יפנה החוצה, בניגוד לכוח הלחץ, הרוח צריכה לנוע כך שהחוץ נמצא מימינה: נגד כיוון
+          השעון סביב המרכז.
+      - text: הרוח מוסטת ימינה, ולכן היא מסתובבת ימינה, עם כיוון השעון.
+        feedback: >-
+          ״ימינה מכיוון התנועה״ ו״עם כיוון השעון סביב המרכז״ הם שני דברים שונים. אוויר שזורם פנימה ומוסט ימינה כל הזמן
+          נע סביב המרכז נגד כיוון השעון.
+        misconception: MC-7-cyclone-follows-deflection
+      - text: מאותה סיבה המים בכיור בחצי הכדור הצפוני מתנקזים תמיד נגד כיוון השעון.
+        feedback: >-
+          בכיור הזרימה נמשכת שניות ובקנה מידה של סנטימטרים, וכוח קוריוליס זניח שם לעומת סיבובים קטנים שנשארים במים. כיוון
+          המערבולת בכיור נקבע על ידי האופן שבו הוא התמלא, ולא על ידי סיבוב כדור הארץ.
+        misconception: MC-7-coriolis-sets-sink-drain
+    hints:
+      - 'שרטטו מרכז, וחיצים של אוויר שזורם אליו מארבעה כיוונים. הסיטו כל חץ מעט ימינה.'

@@ -1,0 +1,252 @@
+# Lesson 8.2 question bank: the comprehension ladder of "מומנט התמד".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch8/q.ts (the λ(x) rod also by a numerical sum):
+#   hollow ball M = 0.60 kg, R = 0.12 m: (2/3)MR² = 5.76e-3 (solid 3.46e-3, MR² 8.64e-3, disc 4.32e-3) kg·m²;
+#   rod L = 2.0 m, M = 3.0 kg, λ = λ0 x/L: light end ML²/2 = 6.0, heavy end ML²/6 = 2.0 (uniform 4.0, ML² 12) kg·m²;
+#   disc M = 4.0 kg, R = 0.25 m about a rim point: (3/2)MR² = 0.375 (centre 0.125, MR² 0.25) kg·m²;
+#   rod about an axis L/4 from its end: 7ML²/48 (wrong 19/48 from the end axis);
+#   square plate a = 0.40 m, M = 1.5 kg: centre Ma²/6 = 0.04, corner (2/3)Ma² = 0.16 (d = a 0.28, edge 0.08) kg·m².
+
+chapter: 8
+questions:
+  # ---------------------------------------------------------------- OBJ-8.2-1 I by integration
+  - id: Q-8.2-rod-end-vs-centre
+    type: mc
+    objectives: [OBJ-8.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מוט אחיד באורך $L$ ובמסה $M$. מומנט ההתמד שלו סביב ציר ניצב שעובר במרכזו הוא $I_{cm} = \tfrac{1}{12}ML^2$.
+      מה מומנט ההתמד שלו סביב ציר מקביל שעובר בקצה שלו?
+    choices:
+      - text: '$\tfrac13ML^2$, פי 4 מסביב למרכז.'
+        correct: true
+        feedback: >-
+          נכון. $I = \displaystyle\int_0^L x^2\,\frac{M}{L}\,dx = \tfrac13ML^2$. סביב המרכז כל חצי של המוט נמשך רק
+          עד $L/2$, וסביב הקצה המסה מגיעה עד $L$. מכיוון שמרחק נכנס בריבוע, התוצאה גדלה פי 4.
+      - text: '$\tfrac{1}{12}ML^2$, כמו סביב המרכז, כי המסה והאורך לא השתנו.'
+        feedback: >-
+          מומנט ההתמד אינו תכונה של הגוף לבדו: הוא תלוי גם בציר. $I = \int r^2\,dm$ סוכם את ריבוע המרחק של כל
+          חלק מהציר, וכשהציר עובר בקצה רוב המסה רחוקה ממנו יותר.
+        misconception: MC-8-inertia-only-mass
+      - text: '$\tfrac16ML^2$, פי 2 מסביב למרכז, כי המרחק המרבי מהציר גדל פי 2.'
+        feedback: 'המרחק המרבי אכן גדל פי 2, אבל הוא נכנס ל-$I$ בריבוע. חשבו את האינטגרל $\int_0^L x^2\,\lambda\,dx$.'
+      - text: '$ML^2$, כי כל המסה במרחק של עד $L$ מהציר.'
+        feedback: '$ML^2$ מתאים לגוף שכל מסתו בקצה הרחוק. במוט אחיד רוב המסה קרובה יותר לציר, ולכן $I$ קטן יותר.'
+    hints:
+      - 'כתבו $dm = (M/L)\,dx$, ואינטגרלו $x^2\,dm$ מ-$0$ עד $L$.'
+
+  - id: Q-8.2-disc-integral
+    type: mc
+    objectives: [OBJ-8.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      רוצים לחשב את מומנט ההתמד של דסקה אחידה ברדיוס $R$, עם צפיפות שטחית $\sigma$ (מסה ליחידת שטח), סביב הציר
+      שניצב לה ועובר במרכזה. מחלקים את הדסקה לטבעות דקות ברדיוס $r$ וברוחב $dr$. איזה אינטגרל נותן את $I$?
+    choices:
+      - text: '$\displaystyle I = \int_0^R r^2\,\sigma\,2\pi r\,dr$'
+        correct: true
+        feedback: >-
+          נכון. השטח של טבעת דקה הוא ההיקף כפול הרוחב, $2\pi r\,dr$, ולכן $dm = \sigma\,2\pi r\,dr$, וכל המסה שלה
+          במרחק $r$ מהציר. $I = 2\pi\sigma\dfrac{R^4}{4} = \tfrac12MR^2$, כי $M = \sigma\pi R^2$.
+      - text: '$\displaystyle I = \int_0^R r\,\sigma\,2\pi r\,dr$'
+        feedback: 'במומנט התמד המרחק מהציר נכנס **בריבוע**, $I = \int r^2\,dm$. האינטגרל הזה נותן גודל אחר, ויחידותיו $\text{kg}\cdot\text{m}$.'
+      - text: '$\displaystyle I = \int_0^R r^2\,\sigma\,dr$'
+        feedback: '$\sigma\,dr$ אינו מסה: $\sigma$ היא מסה ליחידת **שטח**, וצריך להכפיל אותה בשטח של הטבעת, $2\pi r\,dr$.'
+      - text: '$I = MR^2$, כי כל טבעת מוסיפה את המסה שלה.'
+        feedback: '$MR^2$ נכון לטבעת אחת שכל מסתה בשפה. בדסקה רוב הטבעות קרובות יותר לציר, ולכן התוצאה קטנה יותר.'
+        misconception: MC-8-inertia-only-mass
+    hints:
+      - 'מה השטח של טבעת דקה ברדיוס $r$ וברוחב $dr$?'
+
+  - id: Q-8.2-ring-vs-disc
+    type: twotier
+    objectives: [OBJ-8.2-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      לטבעת דקה ולדסקה מלאה אותה מסה ואותו רדיוס. לאיזו מהן מומנט התמד גדול יותר סביב ציר הסימטריה שלהן, הניצב
+      למישור?
+    choices:
+      - text: לטבעת.
+        correct: true
+        feedback: 'נכון: $I_{ring} = MR^2$, ו-$I_{disc} = \tfrac12MR^2$.'
+      - text: לדסקה.
+        feedback: 'בדסקה יש "יותר חומר" במובן של שטח, אבל לא יותר מסה: המסות שוות. מה שקובע הוא היכן המסה נמצאת.'
+        misconception: MC-8-inertia-only-mass
+      - text: הם שווים, כי המסה והרדיוס שווים.
+        feedback: 'מסה ורדיוס לא מספיקים. $I = \int r^2\,dm$ תלוי בפיזור המסה סביב הציר.'
+        misconception: MC-8-inertia-only-mass
+    reasons:
+      - text: 'בטבעת כל המסה במרחק $R$ מהציר, ובדסקה רובה קרובה יותר.'
+        correct: true
+        feedback: 'זה הנימוק. מכיוון שכל $dm$ מוכפל ב-$r^2$, המסה הרחוקה תורמת הרבה יותר. בדסקה, לכל $r < R$ יש $r^2 < R^2$.'
+      - text: 'מומנט ההתמד גדל עם השטח של הגוף.'
+        feedback: 'השטח לא מופיע ב-$I = \int r^2\,dm$. טבעת דקה מאוד, כמעט בלי שטח, מגיעה למומנט ההתמד הגדול ביותר שאפשר בהינתן $M$ ו-$R$.'
+      - text: 'הדסקה כבדה יותר במרכז, ולכן קשה יותר לסובב אותה.'
+        feedback: 'מסה ליד הציר כמעט לא תורמת ל-$I$, כי $r^2$ שם קטן. דווקא המסה הרחוקה מקשה על הסיבוב.'
+        misconception: MC-8-inertia-only-mass
+    hints:
+      - 'איפה נמצאת המסה בכל אחד מהגופים, ומה עושה לה הריבוע של המרחק?'
+
+  - id: Q-8.2-hollow-ball
+    type: numeric
+    objectives: [OBJ-8.2-1]
+    level: mid
+    prompt: >-
+      כדור כדורסל הוא בקירוב קליפה כדורית דקה, במסה $0.60\,\text{kg}$ וברדיוס $0.12\,\text{m}$. האינטגרל על
+      הקליפה נותן $I = \tfrac23MR^2$ סביב קוטר. מה מומנט ההתמד שלו? (שימו לב: לכדור מלא, $I = \tfrac25MR^2$.)
+    answer: 0.00576
+    unit: kg·m²
+    correctFeedback: >-
+      נכון: $I = \tfrac23\cdot0.60\cdot0.12^2 = 5.76\cdot10^{-3}\,\text{kg}\cdot\text{m}^2$. מקור המקדם: בקליפה כל
+      המסה במרחק $R$ מהמרכז, אבל המרחק מ**ציר** של נקודה בזווית $\theta$ מהציר הוא $R\sin\theta$, והממוצע של
+      $\sin^2\theta$ על פני הכדור הוא $\tfrac23$.
+    wrongFeedback: 'הציבו בנוסחה של קליפה: $\tfrac23MR^2$, עם $R$ במטרים.'
+    commonWrong:
+      - value: 0.00346
+        feedback: 'זה $\tfrac25MR^2$, של כדור **מלא**. בקליפה כל המסה בשפה, ולכן מומנט ההתמד גדול יותר.'
+      - value: 0.00864
+        feedback: 'זה $MR^2$, כאילו כל המסה במרחק $R$ מהציר. בקליפה המסה במרחק $R$ מהמרכז, אבל ליד הקטבים היא קרובה לציר.'
+      - value: 0.00432
+        feedback: 'זה $\tfrac12MR^2$, של דסקה או גליל מלא סביב ציר הסימטריה. לקליפה כדורית המקדם הוא $\tfrac23$.'
+    hints:
+      - 'המרחק של נקודה על הקליפה מהציר אינו $R$, אלא $R\sin\theta$.'
+
+  - id: Q-8.2-tapered-rod
+    type: numeric
+    objectives: [OBJ-8.2-1]
+    level: bagrut
+    prompt: >-
+      מוט באורך $L = 2.0\,\text{m}$ ובמסה $M = 3.0\,\text{kg}$ עבה יותר בקצה אחד: הצפיפות הקווית שלו היא
+      $\lambda(x) = \lambda_0\,x/L$, כאשר $x$ נמדד מהקצה הדק. מה מומנט ההתמד שלו סביב ציר ניצב שעובר בקצה הדק,
+      $x = 0$?
+    answer: 6.0
+    unit: kg·m²
+    correctFeedback: >-
+      נכון. קודם המסה: $M = \displaystyle\int_0^L\lambda_0\frac{x}{L}\,dx = \frac{\lambda_0L}{2}$, ולכן $\lambda_0 = \dfrac{2M}{L}$.
+      אז $I = \displaystyle\int_0^L x^2\lambda_0\frac{x}{L}\,dx = \frac{\lambda_0L^3}{4} = \frac12ML^2 = \frac12\cdot3.0\cdot4.0 = 6.0\,\text{kg}\cdot\text{m}^2$.
+      **בדיקת גבולות:** התוצאה בין $\tfrac13ML^2$ של מוט אחיד ל-$ML^2$ של מסה שכולה בקצה הרחוק, כמו שצריך כשהמסה
+      מרוכזת יותר בקצה הרחוק.
+    wrongFeedback: 'בטאו את $\lambda_0$ בעזרת $M$ מתוך $M = \int\lambda\,dx$, ואז חשבו $\int x^2\lambda(x)\,dx$.'
+    commonWrong:
+      - value: 4.0
+        feedback: 'זה $\tfrac13ML^2$ של מוט **אחיד**. כאן רוב המסה בקצה העבה, הרחוק מהציר, ולכן $I$ גדול יותר.'
+      - value: 2.0
+        feedback: 'זה $\tfrac16ML^2$, מומנט ההתמד סביב הקצה **העבה**. הציר בשאלה עובר בקצה הדק, $x = 0$.'
+      - value: 12
+        feedback: 'זה $ML^2$, כאילו כל המסה בקצה הרחוק. המסה מפוזרת לאורך כל המוט, ולכן צריך אינטגרל.'
+    hints:
+      - 'אל תשכחו לקבוע את $\lambda_0$: הוא נקבע מכך שהמסה הכוללת היא $M$.'
+
+  # ---------------------------------------------------------------- OBJ-8.2-2 parallel- and perpendicular-axis theorems
+  - id: Q-8.2-disc-rim-axis
+    type: numeric
+    objectives: [OBJ-8.2-2]
+    level: basic
+    prompt: >-
+      דסקה אחידה במסה $4.0\,\text{kg}$ וברדיוס $0.25\,\text{m}$ מסתובבת סביב ציר שניצב לה ועובר בנקודה על השפה
+      שלה. מה מומנט ההתמד שלה סביב הציר הזה? סביב הציר המקביל שעובר במרכז, $I_{cm} = \tfrac12MR^2$.
+    answer: 0.375
+    unit: kg·m²
+    correctFeedback: >-
+      נכון. לפי משפט הצירים המקבילים, $I = I_{cm} + Md^2$ עם $d = R$:
+      $I = \tfrac12MR^2 + MR^2 = \tfrac32\cdot4.0\cdot0.25^2 = 0.375\,\text{kg}\cdot\text{m}^2$.
+    wrongFeedback: 'משפט הצירים המקבילים: $I = I_{cm} + Md^2$, כאשר $d$ הוא המרחק בין הציר החדש לציר שעובר במרכז המסה.'
+    commonWrong:
+      - value: 0.125
+        feedback: 'זה $I_{cm}$, סביב המרכז. הציר הוזז למרחק $R$, ולכן צריך להוסיף $MR^2$.'
+      - value: 0.25
+        feedback: 'זה רק $Md^2$. משפט הצירים המקבילים מוסיף אותו **ל**-$I_{cm}$, לא מחליף אותו.'
+    hints:
+      - 'מה המרחק בין הציר שבשפה לבין הציר שבמרכז?'
+
+  - id: Q-8.2-parallel-from-cm
+    type: mc
+    objectives: [OBJ-8.2-2]
+    level: mid
+    prompt: >-
+      ידוע שמומנט ההתמד של מוט אחיד באורך $L$ ובמסה $M$ סביב ציר ניצב בקצה שלו הוא $\tfrac13ML^2$. מה מומנט ההתמד
+      שלו סביב ציר מקביל שעובר במרחק $L/4$ מהקצה (כלומר, באמצע הדרך בין הקצה למרכז)?
+    choices:
+      - text: '$\tfrac{7}{48}ML^2$'
+        correct: true
+        feedback: >-
+          נכון. משפט הצירים המקבילים מתחיל ממרכז המסה: $I = I_{cm} + Md^2$, כאשר $d = L/4$ הוא המרחק **מהמרכז**:
+          $\tfrac{1}{12}ML^2 + \tfrac{1}{16}ML^2 = \tfrac{7}{48}ML^2$. אם מתחילים מהציר שבקצה, קודם יורדים אל המרכז:
+          $\tfrac13ML^2 - M\left(\tfrac L2\right)^2 = \tfrac{1}{12}ML^2$.
+      - text: '$\tfrac{19}{48}ML^2$'
+        feedback: >-
+          זה $\tfrac13ML^2 + M(L/4)^2$: הוספתם $Md^2$ לציר שבקצה. המשפט נכון רק כשאחד משני הצירים עובר במרכז
+          המסה. חוץ מזה, $I$ חייב לקטון כשהציר מתקרב למרכז, והתוצאה הזו גדולה מ-$\tfrac13ML^2$.
+        misconception: MC-8-parallel-axis-any-axis
+      - text: '$\tfrac{13}{48}ML^2$'
+        feedback: >-
+          זה $\tfrac13ML^2 - M(L/4)^2$. גם הפחתה מציר שאינו עובר במרכז המסה שגויה: מהציר שבקצה מפחיתים
+          $M(L/2)^2$ כדי להגיע למרכז, ורק משם מוסיפים $M(L/4)^2$.
+        misconception: MC-8-parallel-axis-any-axis
+      - text: '$\tfrac{1}{12}ML^2$'
+        feedback: 'זה מומנט ההתמד סביב המרכז. הציר בשאלה נמצא במרחק $L/4$ ממנו, ולכן צריך להוסיף $M(L/4)^2$.'
+    hints:
+      - 'מכל ציר מקביל, $I$ הקטן ביותר הוא סביב הציר שעובר במרכז המסה. התחילו ממנו.'
+
+  - id: Q-8.2-perpendicular-flat-only
+    type: twotier
+    objectives: [OBJ-8.2-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      סטודנטית מנסה להפעיל את משפט הצירים הניצבים, $I_z = I_x + I_y$, על כדור מלא סביב שלושה צירים ניצבים שעוברים
+      במרכזו. מסימטריה $I_x = I_y = I_z = I$, ולכן היא מקבלת $I = 2I$, כלומר $I = 0$. מה הטעות?
+    choices:
+      - text: 'המשפט נכון רק לגוף שטוח, שכל המסה שלו במישור $xy$.'
+        correct: true
+        feedback: 'נכון. הכדור אינו שטוח, ולכן המשפט לא חל עליו.'
+      - text: 'המשפט נכון לכל גוף, אבל לכדור $I_z$ גדול מ-$I_x$ ומ-$I_y$.'
+        feedback: 'בכדור אחיד כל הקטרים שקולים, ולכן שלושת מומנטי ההתמד שווים באמת. הטעות היא בשימוש במשפט, לא בסימטריה.'
+        misconception: MC-8-perpendicular-axis-any-body
+      - text: 'המשפט נכון רק לצירים שעוברים בשפת הגוף, לא במרכזו.'
+        feedback: 'משפט הצירים הניצבים מתייחס לשלושה צירים ניצבים זה לזה שנחתכים בנקודה אחת במישור הגוף, בכל מקום במישור. התנאי הוא שהגוף שטוח.'
+    reasons:
+      - text: '$I_x + I_y = \sum m(x^2 + y^2) + 2\sum mz^2$, ו-$\sum mz^2 = 0$ רק כשכל המסה במישור $z = 0$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $I_x = \sum m(y^2 + z^2)$ ו-$I_y = \sum m(x^2 + z^2)$, ולכן $I_x + I_y = I_z + 2\sum mz^2$. בכדור
+          האיבר האחרון לא אפס. ומאותה זהות יוצאת דרך יפה לכדור: $I_x + I_y + I_z = 2\sum mr^2$, ולכן
+          $I = \tfrac23\sum mr^2$, ובכדור מלא זה $\tfrac25MR^2$.
+      - text: 'בכדור המסה מפוזרת באופן לא אחיד, ולכן אי אפשר לסכם את הרכיבים.'
+        feedback: 'הכדור בשאלה אחיד. הבעיה היא ממד שלישי של מסה, $z \neq 0$, לא פיזור לא אחיד.'
+      - text: 'המשפט דורש שהצירים לא יעברו במרכז המסה.'
+        feedback: 'אין דרישה כזו. בדסקה, למשל, המשפט נותן נכון $I_{diameter} = \tfrac14MR^2$ מצירים שעוברים במרכז.'
+        misconception: MC-8-perpendicular-axis-any-body
+    hints:
+      - 'כתבו את $I_x$, $I_y$ ו-$I_z$ כסכומים של $m$ כפול ריבועי קואורדינטות, וחברו את שני הראשונים.'
+
+  - id: Q-8.2-plate-corner
+    type: numeric
+    objectives: [OBJ-8.2-2]
+    level: bagrut
+    prompt: >-
+      לוח ריבועי דק ואחיד, באורך צלע $a = 0.40\,\text{m}$ ובמסה $M = 1.5\,\text{kg}$, מסתובב סביב ציר שניצב ללוח
+      ועובר באחת הפינות שלו. מה מומנט ההתמד שלו? מומנט ההתמד של הלוח סביב ציר שעובר במרכזו, במישור הלוח ומקביל
+      לצלע, הוא $\tfrac{1}{12}Ma^2$, כמו של מוט.
+    answer: 0.16
+    unit: kg·m²
+    correctFeedback: >-
+      נכון. משפט הצירים הניצבים (הלוח שטוח): סביב הציר הניצב שעובר במרכז, $I_z = I_x + I_y = \tfrac16Ma^2 = 0.040\,\text{kg}\cdot\text{m}^2$.
+      הפינה במרחק חצי האלכסון, $d = a/\sqrt2$, ולכן לפי משפט הצירים המקבילים
+      $I = \tfrac16Ma^2 + \tfrac12Ma^2 = \tfrac23Ma^2 = \tfrac23\cdot1.5\cdot0.16 = 0.16\,\text{kg}\cdot\text{m}^2$.
+      **בדיקת גבולות:** כל נקודה בלוח רחוקה מהפינה לכל היותר $\sqrt2a$, ולכן $I < 2Ma^2$, ואכן $\tfrac23 < 2$.
+    wrongFeedback: 'שני שלבים: משפט הצירים הניצבים נותן את $I$ סביב הציר הניצב במרכז, ומשפט הצירים המקבילים מעביר אותו לפינה.'
+    commonWrong:
+      - value: 0.04
+        feedback: 'זה $I$ סביב הציר הניצב שעובר **במרכז**. הציר עובר בפינה, במרחק $a/\sqrt2$, ולכן מוסיפים $Md^2$.'
+      - value: 0.28
+        feedback: 'השתמשתם ב-$d = a$. הפינה רחוקה מהמרכז חצי אלכסון, $d = a/\sqrt2$, ולכן $d^2 = a^2/2$.'
+      - value: 0.08
+        feedback: 'זה $\tfrac13Ma^2$, מומנט ההתמד סביב צלע של הלוח, ציר שבמישור הלוח. הציר בשאלה ניצב ללוח.'
+    hints:
+      - 'הלוח שטוח: $I_z = I_x + I_y$ סביב שלושה צירים ניצבים שנחתכים במרכז.'

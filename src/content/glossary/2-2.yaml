@@ -1,0 +1,15 @@
+# Terms first defined in lesson 2.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: free-body-diagram
+  term: תרשים כוחות
+  en: free-body diagram
+  definition: שרטוט של גוף אחד, מבודד משאר המערכת, עם כל הכוחות שפועלים עליו ורק הם. לכל חץ בתרשים יש גוף שמפעיל אותו. במערכת של כמה גופים משרטטים תרשים נפרד לכל גוף.
+  reject: [דיאגרמת גוף חופשי]
+  lesson: '2.2'
+
+- id: c2-third-law-pair
+  term: זוג כוחות של החוק השלישי
+  en: third-law pair (action-reaction pair)
+  definition: שני הכוחות של אותה פעולה בין שני גופים, A על B ו-B על A. הם שווים בגודלם, הפוכים בכיוונם ומאותו סוג, ופועלים על גופים שונים, ולכן לעולם לא מופיעים באותו תרשים כוחות.
+  lesson: '2.2'

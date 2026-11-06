@@ -1,0 +1,221 @@
+# Lesson 2.7 question bank: the comprehension ladder of "כוח שתלוי במהירות: גרר ומהירות סופית".
+# The model bank of the course (see the /question-bank skill): every objective has ≥ 3 questions, one
+# of them qualitative, and the lesson climbs basic → mid → bagrut (exam level).
+# Strings may hold $inline$ / $$display$$ TeX and **bold**; lint-content and the build render them.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8):
+#   m = 0.02 kg, b = 0.05 kg/s: v_t = mg/b = 3.92 m/s, τ = m/b = 0.40 s, t(90%) = τ ln 10 = 0.921 s;
+#   thrown up at 10 m/s: t_top = τ ln(1 + v0/v_t) = 0.507 s (1.02 s without drag);
+#   M = 80 kg, c = 0.25 kg/m: v_t = √(Mg/c) = 56 m/s.
+
+chapter: 2
+questions:
+  # ---------------------------------------------------------------- OBJ-2.7-1 linear drag: v_t and τ
+  - id: Q-2.7-terminal-meaning
+    type: mc
+    objectives: [OBJ-2.7-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      כדור קטן נופל באוויר, וכוח הגרר עליו הוא $\vec F_d = -b\vec v$. אחרי זמן רב הוא נע במהירות הסופית שלו.
+      מה נכון לגבי הכדור ברגע הזה?
+    choices:
+      - text: הכוח השקול עליו אפס, ולכן גם התאוצה שלו אפס.
+        correct: true
+        feedback: >-
+          נכון. המהירות הסופית היא בדיוק המהירות שבה כוח הגרר שווה בגודלו לכובד, $bv_t = mg$. השקול מתאפס, ולפי
+          החוק השני המהירות מפסיקה להשתנות.
+      - text: התאוצה שלו עדיין $g$ כלפי מטה, כי כוח הכובד עדיין פועל עליו.
+        feedback: >-
+          כוח הכובד אכן פועל, אבל הוא לא לבד: כוח הגרר כלפי מעלה שווה לו בגודלו. התאוצה נקבעת על ידי **הכוח השקול**,
+          $m\vec a = \sum \vec F$, והשקול כאן אפס.
+        misconception: MC-2-terminal-still-accelerates
+      - text: הכוח השקול עליו כלפי מעלה, כי הגרר כבר גדול מהכובד.
+        feedback: >-
+          אם השקול היה כלפי מעלה, הכדור היה מאט, הגרר היה קטן, והשקול היה חוזר לאפס. המהירות הסופית היא שיווי משקל:
+          הגרר לא עובר את הכובד כשמתחילים ממנוחה.
+      - text: התאוצה אפס, אבל רק כי האוויר עוצר את הכדור לרגע.
+        feedback: 'הכדור לא נעצר: הוא נע במהירות קבועה ושונה מאפס. תאוצה אפס פירושה מהירות קבועה, לא מנוחה.'
+        misconception: MC-2-zero-acceleration-means-rest
+    hints:
+      - 'כתבו את החוק השני לכדור, עם שני הכוחות. מתי $dv/dt = 0$?'
+
+  - id: Q-2.7-terminal-value
+    type: numeric
+    objectives: [OBJ-2.7-1]
+    level: basic
+    prompt: >-
+      טיפה בעלת מסה $m = 0.020\,\text{kg}$ (טיפה גדולה מאוד, אבל זה רק מודל) נופלת, וכוח הגרר עליה ליניארי במהירות,
+      עם $b = 0.050\,\text{kg/s}$. מה המהירות הסופית שלה?
+    answer: 3.92
+    unit: m/s
+    correctFeedback: 'נכון: בשיווי המשקל $bv_t = mg$, ולכן $v_t = \dfrac{mg}{b} = \dfrac{0.020\cdot9.8}{0.050} = 3.92\,\text{m/s}$.'
+    wrongFeedback: 'במהירות הסופית השקול מתאפס: $mg - bv_t = 0$. בודדו את $v_t$ ובדקו שהיחידות יוצאות $\text{m/s}$.'
+    commonWrong:
+      - value: 0.255
+        feedback: 'חילקתם הפוך: $b/(mg)$ יוצא ביחידות $\text{s/m}$, לא מהירות. מ-$bv_t = mg$ מקבלים $v_t = mg/b$.'
+      - value: 0.0098
+        feedback: 'כפלתם $mg\cdot b$. בדקו יחידות: $\text{N}\cdot\text{kg/s}$ אינו מהירות. צריך לחלק ב-$b$.'
+    hints:
+      - 'מה הגודל של כוח הגרר ברגע שהטיפה כבר לא מאיצה?'
+
+  - id: Q-2.7-time-to-ninety
+    type: numeric
+    objectives: [OBJ-2.7-1]
+    level: mid
+    prompt: >-
+      אותה טיפה ($m = 0.020\,\text{kg}$, $b = 0.050\,\text{kg/s}$) משתחררת ממנוחה. פתרון משוואת התנועה הוא
+      $$v(t) = v_t\left(1 - e^{-t/\tau}\right),\qquad \tau = \frac{m}{b}$$
+      אחרי כמה זמן מהירותה מגיעה ל-90% מהמהירות הסופית?
+    answer: 0.921
+    unit: s
+    correctFeedback: >-
+      נכון. $1 - e^{-t/\tau} = 0.9$, כלומר $e^{-t/\tau} = 0.1$, ולכן $t = \tau\ln10 = 0.40\cdot2.30 = 0.92\,\text{s}$.
+      אחרי קבוע זמן אחד בלבד המהירות היא רק $1 - e^{-1} \approx 63\%$ מהסופית.
+    wrongFeedback: 'השוו $v(t) = 0.9\,v_t$, בודדו את האקספוננט, ואז קחו לוגריתם טבעי של שני האגפים.'
+    commonWrong:
+      - value: 0.4
+        feedback: 'זה קבוע הזמן $\tau = m/b$ עצמו. אחריו המהירות היא $1 - e^{-1} \approx 63\%$ מהסופית, לא 90%.'
+        misconception: MC-2-time-constant-is-full-time
+      - value: 0.0421
+        feedback: 'פתרתם $e^{-t/\tau} = 0.9$, כלומר הזמן שבו המהירות היא 10% מהסופית. ב-90% מה שנשאר מהאקספוננט הוא 0.1.'
+      - value: 0.36
+        feedback: 'כפלתם $0.9\cdot\tau$. המהירות לא גדלה קווית בזמן: היא מתקרבת ל-$v_t$ באקספוננט, ולכן צריך לוגריתם.'
+    hints:
+      - '$e^{-t/\tau} = 0.1$. מה הלוגריתם הטבעי של 0.1?'
+
+  - id: Q-2.7-double-mass
+    type: twotier
+    objectives: [OBJ-2.7-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      שני כדורים באותו גודל ובאותה צורה, ולכן עם אותו מקדם גרר ליניארי $b$, נופלים ממנוחה. המסה של כדור B כפולה
+      מזו של כדור A. מה נכון לגבי המהירות הסופית $v_t$ ולגבי קבוע הזמן $\tau$ של B, בהשוואה ל-A?
+    choices:
+      - text: גם $v_t$ וגם $\tau$ גדלים פי 2.
+        correct: true
+        feedback: נכון. שני הגדלים פרופורציוניים למסה כשהגרר ליניארי ו-$b$ זהה.
+      - text: $v_t$ זהה, כי בלי אוויר כל הגופים נופלים באותה תאוצה.
+        feedback: >-
+          בלי אוויר זה נכון. עם גרר, הכובד גדל עם המסה והגרר תלוי רק במהירות ובצורה. לכן הכדור הכבד צריך מהירות גדולה
+          יותר כדי שהגרר יאזן אותו.
+        misconception: MC-2-heavy-and-light-same-terminal
+      - text: $v_t$ גדל פי 2, ו-$\tau$ לא משתנה.
+        feedback: '$\tau = m/b$ תלוי גם הוא במסה: כדור כבד יותר מגיע למהירות גדולה יותר, ולוקח לו יותר זמן להגיע אליה.'
+      - text: $v_t$ גדל פי $\sqrt2$, ו-$\tau$ פי 2.
+        feedback: 'שורש של המסה מתקבל בגרר **ריבועי**, $cv^2 = mg$. בגרר ליניארי $bv_t = mg$, והתלות ישרה.'
+        misconception: MC-2-drag-always-quadratic
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: '$v_t = mg/b$ ו-$\tau = m/b$, ושניהם ביחס ישר ל-$m$ כש-$b$ קבוע.'
+        correct: true
+        feedback: זה הנימוק. כדאי לזכור את שני הביטויים יחד, כי $v_t = g\tau$.
+      - text: התאוצה של כל גוף בנפילה היא $g$, ולכן התנועה זהה.
+        feedback: התאוצה היא $g$ רק ברגע השחרור, כשהגרר עוד אפס. אחר כך היא $g - (b/m)v$, והיא תלויה במסה.
+        misconception: MC-2-heavy-and-light-same-terminal
+      - text: גוף כבד מקבל כוח גרר קטן יותר.
+        feedback: הגרר תלוי במהירות ובגודל הגוף, לא במסה שלו. באותה מהירות שני הכדורים מקבלים אותו גרר.
+    hints:
+      - 'כתבו את $v_t$ ואת $\tau$ כביטויים ב-$m$, $b$ ו-$g$.'
+
+  - id: Q-2.7-thrown-up
+    type: numeric
+    objectives: [OBJ-2.7-1]
+    level: bagrut
+    prompt: >-
+      זורקים את הטיפה מהשאלות הקודמות ($m = 0.020\,\text{kg}$, $b = 0.050\,\text{kg/s}$) כלפי מעלה במהירות
+      $v_0 = 10\,\text{m/s}$. בעלייה גם הכובד וגם הגרר פונים כלפי מטה. כמה זמן נמשכת העלייה עד הנקודה הגבוהה ביותר?
+    answer: 0.507
+    unit: s
+    correctFeedback: >-
+      נכון. עם ציר כלפי מעלה, $m\dfrac{dv}{dt} = -mg - bv$. הפתרון הוא $v(t) = (v_0 + v_t)e^{-t/\tau} - v_t$, והוא
+      מתאפס ב-$t = \tau\ln\left(1 + \dfrac{v_0}{v_t}\right) = 0.40\cdot\ln\left(1 + \dfrac{10}{3.92}\right) = 0.51\,\text{s}$.
+      **בדיקת גבולות:** כש-$b \to 0$, $\tau\ln(1 + v_0/v_t) \approx \tau\cdot v_0/v_t = v_0/g$, זמן העלייה בלי אוויר.
+    wrongFeedback: >-
+      כתבו את החוק השני עם ציר כלפי מעלה, שני הכוחות כלפי מטה. הפרידו משתנים, $\dfrac{dv}{g + (b/m)v} = -dt$,
+      ואינטגרלו מ-$v_0$ עד 0.
+    commonWrong:
+      - value: 1.02
+        feedback: 'זה $v_0/g$, זמן העלייה בלי אוויר. הגרר מוסיף כוח כלפי מטה בכל העלייה, ולכן העלייה קצרה יותר.'
+        misconception: MC-2-drag-negligible
+      - value: 0.375
+        feedback: 'קיבלתם $\tau\ln(v_0/v_t)$. בדקו את גבולות האינטגרל: בתחתית המהירות היא $v_0$, ולכן בתוך הלוגריתם יש $1 + v_0/v_t$.'
+    hints:
+      - 'בעלייה המהירות חיובית, והגרר $\vec F_d = -b\vec v$ פונה כלפי מטה, כמו הכובד.'
+      - 'הציבו $u = v + v_t$: המשוואה הופכת ל-$du/dt = -u/\tau$.'
+
+  # ---------------------------------------------------------------- OBJ-2.7-2 linear vs quadratic drag
+  - id: Q-2.7-quadratic-mass
+    type: mc
+    objectives: [OBJ-2.7-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      על צנחן פועל גרר **ריבועי**, $F_d = cv^2$. הצנחן לוקח איתו תרמיל, ומסתו הכוללת גדלה פי 4. המקדם $c$ לא משתנה.
+      פי כמה גדלה המהירות הסופית שלו?
+    choices:
+      - text: פי 2
+        correct: true
+        feedback: 'נכון. $cv_t^2 = mg$, ולכן $v_t = \sqrt{mg/c}$: מסה פי 4 נותנת מהירות פי $\sqrt4 = 2$.'
+      - text: פי 4
+        feedback: 'זו התשובה בגרר ליניארי, $v_t = mg/b$. בגרר ריבועי המסה נכנסת מתחת לשורש.'
+        misconception: MC-2-drag-always-linear
+      - text: פי 16
+        feedback: 'הפכתם את הקשר: לא $v_t \propto m^2$ אלא $v_t^2 \propto m$.'
+      - text: היא לא משתנה.
+        feedback: >-
+          בנפילה בלי אוויר כל הגופים נופלים יחד, אבל המהירות הסופית נקבעת על ידי איזון בין הכובד, שגדל עם המסה, לבין
+          הגרר, שלא תלוי בה.
+        misconception: MC-2-heavy-and-light-same-terminal
+
+  - id: Q-2.7-skydiver
+    type: numeric
+    objectives: [OBJ-2.7-2]
+    level: mid
+    prompt: >-
+      צנחן בעל מסה כוללת $80\,\text{kg}$ נופל בגוף פרוש, והגרר עליו ריבועי: $F_d = cv^2$ עם $c = 0.25\,\text{kg/m}$.
+      מה המהירות הסופית שלו?
+    answer: 56
+    unit: m/s
+    correctFeedback: 'נכון: $v_t = \sqrt{\dfrac{mg}{c}} = \sqrt{\dfrac{80\cdot9.8}{0.25}} = \sqrt{3136} = 56\,\text{m/s}$, כ-200 קמ"ש.'
+    wrongFeedback: 'במהירות הסופית $cv_t^2 = mg$. בודדו את $v_t^2$ ואל תשכחו את השורש.'
+    commonWrong:
+      - value: 3136
+        feedback: 'זה $v_t^2$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
+      - value: 0.0179
+        feedback: 'הפכתם את המנה: $\sqrt{c/(mg)}$ יוצא ביחידות $\text{s/m}$. צריך $\sqrt{mg/c}$.'
+    hints:
+      - 'בדקו יחידות: $\dfrac{\text{kg}\cdot\text{m/s}^2}{\text{kg/m}}$ הן יחידות של מה?'
+
+  - id: Q-2.7-which-regime
+    type: mc
+    objectives: [OBJ-2.7-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      לגוף כדורי בקוטר $D$ שנע במהירות $v$ באוויר, הגרר הליניארי הוא בערך $F_1 \approx c_1 D v$ והריבועי בערך
+      $F_2 \approx c_2 D^2 v^2$, כאשר $c_1$ ו-$c_2$ תלויים רק באוויר. מה נכון?
+    choices:
+      - text: 'היחס $F_2/F_1 \propto Dv$: בגוף גדול ומהיר הגרר הריבועי שולט, ובגוף זעיר ואיטי, כמו טיפת ערפל, הליניארי שולט.'
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{F_2}{F_1} = \dfrac{c_2}{c_1}Dv$. היחס גדל גם עם הגודל וגם עם המהירות, ולכן כדור בייסבול וצנחן
+          נמצאים בתחום הריבועי, וטיפות ערפל ואבק בתחום הליניארי.
+      - text: הגרר הריבועי תמיד גדול יותר, כי $v^2 > v$.
+        feedback: >-
+          $v^2 > v$ רק כש-$v > 1$, ו"1" תלוי ביחידות שבחרנו, ולכן ההשוואה הזו חסרת משמעות. משווים את **היחס** בין
+          שני הכוחות, שהוא חסר ממדים.
+        misconception: MC-2-drag-always-quadratic
+      - text: הגרר הליניארי שולט בכל גוף שנופל באוויר, כי האוויר דליל.
+        feedback: >-
+          הצפיפות של האוויר נכנסת דווקא לגרר הריבועי. בגופים יומיומיים, מכדור ועד אדם, הגרר הריבועי גדול בהרבה
+          מהליניארי.
+        misconception: MC-2-drag-always-linear
+      - text: איזה גרר שולט תלוי רק בצורת הגוף, לא בגודלו או במהירותו.
+        feedback: 'הצורה משנה את המקדמים $c_1$ ו-$c_2$, אבל היחס בין הכוחות תלוי גם במכפלה $Dv$.'
+    hints:
+      - 'חלקו את $F_2$ ב-$F_1$. מה נשאר?'
+    explanation: >-
+      המכפלה $Dv$, יחד עם תכונות האוויר, היא בסיס למספר חסר ממדים שנקרא מספר ריינולדס. כשהוא גדול, הגרר הריבועי שולט.

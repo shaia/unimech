@@ -1,0 +1,26 @@
+# Terms first defined in lesson 3.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: conservative-force
+  term: כוח משמר
+  en: conservative force
+  definition: כוח שהעבודה שלו בין שתי נקודות לא תלויה במסלול, ובאופן שקול, שהעבודה שלו בכל מסלול סגור אפס. לכוח כזה יש אנרגיה פוטנציאלית, F = −∇U. כובד, כוח קפיץ וכוח חשמלי משמרים; חיכוך וגרר לא.
+  reject: [כוח קונסרבטיבי]
+  lesson: '3.2'
+
+- id: potential-energy
+  term: אנרגיה פוטנציאלית
+  en: potential energy
+  symbol: U
+  unit: J
+  definition: פונקציה של המקום, שמוגדרת רק לכוח משמר, עד כדי קבוע. ההפרש שלה בין שתי נקודות הוא מינוס העבודה של הכוח בדרך ביניהן, ΔU = −W, ובכל נקודה F = −∇U.
+  reject: [אנרגית מצב, אנרגיית מצב]
+  lesson: '3.2'
+
+- id: curl
+  term: רוטור
+  en: curl
+  symbol: ∇×F
+  definition: מידה של הסיבוב של שדה וקטורי סביב נקודה. במישור, (∇×F)_z = ∂F_y/∂x − ∂F_x/∂y. כוח שהרוטור שלו אפס בכל תחום בלי חורים הוא משמר.
+  reject: [סלסול]
+  lesson: '3.2'

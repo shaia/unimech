@@ -1,0 +1,33 @@
+# Terms first defined in lesson 9.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). `c9-` ids are terms chapter 9 added.
+
+- id: spacetime-interval
+  term: אינטרוול
+  en: spacetime interval
+  symbol: s²
+  definition: הגודל s² = c²Δt² − Δx² − Δy² − Δz² בין שני מאורעות, שיוצא זהה בכל מערכות הייחוס האינרציאליות. אם הוא חיובי האינטרוול זמני, ו-√(s²)/c הוא הזמן העצמי בין המאורעות; אם הוא שלילי האינטרוול מרחבי; ואם הוא אפס האינטרוול אורי, ואור יכול לעבור מאחד לשני.
+  lesson: '9.5'
+
+- id: worldline
+  term: קו עולם
+  en: worldline
+  definition: הקו בדיאגרמת מרחב-זמן שמתאר את כל המאורעות בהיסטוריה של גוף אחד. גוף נח מצייר קו מקביל לציר הזמן, גוף במהירות קבועה קו ישר נוטה, ואור קו בזווית 45° כשהצירים הם x ו-ct.
+  lesson: '9.5'
+
+- id: light-cone
+  term: חרוט האור
+  en: light cone
+  definition: אוסף המאורעות שאור שיוצא ממאורע O, או שמגיע אליו, עובר דרכם. הוא מחלק את המרחב-זמן לעתיד של O, שבתוך החרוט העליון, לעבר של O, שבתוך החרוט התחתון, ולשאר המאורעות, שאינם יכולים להיות קשורים ל-O סיבתית.
+  lesson: '9.5'
+
+- id: minkowski-diagram
+  term: דיאגרמת מינקובסקי
+  en: Minkowski diagram
+  definition: שרטוט של מרחב-זמן עם ציר x אופקי וציר ct אנכי, כך שקווי העולם של אור הם בזווית 45°. הצירים של מערכת שנעה במהירות v נוטים לקראת קו האור, ct′ מציר ct ו-x′ מציר x, כל אחד בזווית α עם tan α = v/c.
+  lesson: '9.5'
+
+- id: c9-causality
+  term: סיבתיות
+  en: causality
+  definition: העיקרון שתוצאה לא קודמת לסיבה שלה בשום מערכת ייחוס. ביחסות פירושו שמאורע יכול לגרום רק למאורעות שבעתיד שלו, בתוך חרוט האור שלו או עליו, ושאין אות מהיר מהאור.
+  lesson: '9.5'

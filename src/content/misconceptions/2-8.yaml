@@ -1,0 +1,39 @@
+# Misconceptions first detected in lesson 2.8. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.8
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-2-constant-acceleration-formulas
+  title: נוסחאות של תאוצה קבועה לכל כוח
+  belief: גם כשהכוח משתנה, אפשר להשתמש ב-v = at וב-x = ½at², עם התאוצה הנוכחית או ההתחלתית.
+  truth: הנוסחאות האלה הן האינטגרלים של תאוצה קבועה בלבד. כשהכוח תלוי בזמן מאנטגרלים את a(t) פעמיים, וכשהוא תלוי במקום משתמשים בכלל השרשרת.
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: כוח שתלוי בזמן, שתי אינטגרציות' }
+
+- id: MC-2-zero-average-force-no-drift
+  title: כוח שהממוצע שלו אפס לא מזיז את הגוף בממוצע
+  belief: גוף שפועל עליו כוח מחזורי עם ממוצע אפס מתנודד סביב נקודת ההתחלה.
+  truth: כוח ממוצע אפס רק שומר על המהירות הממוצעת, והיא נקבעת מתנאי ההתחלה. גוף שיוצא ממנוחה תחת F₀ sin ωt נסחף במהירות ממוצעת F₀/(mω).
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: אותו כוח מחזורי, שני תנאי התחלה' }
+
+- id: MC-2-integrate-any-force
+  title: את כל כוח אפשר לאנטגרל לפי הזמן
+  belief: כדי למצוא את המהירות תמיד אפשר לחשב את האינטגרל של F לפי הזמן, גם כשהכוח תלוי במקום או במהירות.
+  truth: האינטגרל לפי הזמן אפשרי רק כשהכוח הוא פונקציה ידועה של הזמן. כוח שתלוי במקום או במהירות תלוי בנעלם עצמו. אז משתמשים בכלל השרשרת או בהפרדת משתנים.
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: לפי מה תלוי הכוח, וכך בוחרים שיטה' }
+
+- id: MC-2-a-is-dv-dx
+  title: התאוצה היא dv/dx
+  belief: כשהכוח תלוי במקום, אפשר לכתוב את התאוצה כ-dv/dx.
+  truth: לפי כלל השרשרת, a = dv/dt = (dv/dx)(dx/dt) = v dv/dx. בלי הגורם v היחידות לא מתאימות, s⁻¹ במקום m/s².
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: כלל השרשרת במשוואת התנועה' }
+
+- id: MC-2-force-integral-confusion
+  title: האינטגרל של הכוח לפי הדרך משנה את mv
+  belief: האינטגרל של הכוח לאורך הדרך, ∫F dx, שווה לשינוי ב-mv.
+  truth: ∫F dt משנה את mv, ו-∫F dx משנה את ½mv². שני האינטגרלים שונים, וגם היחידות שלהם שונות.
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: מה האינטגרל לפי x נותן' }
+
+- id: MC-2-gravity-constant-far
+  title: תאוצת הנפילה g קבועה גם רחוק מכדור הארץ
+  belief: גוף שנופל לכדור הארץ ממרחק גדול מאיץ כל הדרך ב-g, או בתאוצה קבועה אחרת.
+  truth: המשיכה יורדת כמו 1/r². בנפילה ממרחק שדומה לרדיוס כדור הארץ צריך לאנטגרל את הכוח המשתנה, ותאוצה קבועה נותנת תשובה שגויה בעשרות אחוזים.
+  remedy: { lesson: '2.8', label: 'שיעור 2.8: נפילה ממנוחה תחת כוח 1/r²' }

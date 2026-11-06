@@ -1,0 +1,277 @@
+# Lesson 1.3 question bank: the comprehension ladder of "תנועה מעגלית ומסלול עקום".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts (G = 9.8):
+#   centrifuge 3000 rpm, r = 0.10 m: ω = 314 rad/s, a = ω²r = 9870 m/s² ≈ 1010 g (rpm as rad/s 9.0e5,
+#     f = 50 1/s as ω 250, ωr = 31.4 m/s);
+#   α = 2.0 rad/s² from rest, r = 0.50 m, t = 1.0 s: a_t = 1.0, a_c = 2.0, |a| = 2.24 m/s² (sum 3);
+#   a_c = a_t when ω² = α, and ω² = 2αθ gives θ = 1/2 rad for every α (checked for α = 0.6, 4, 14 rad/s²);
+#   v₀ = 20 m/s at 60°: ρ_top = (v₀cosθ)²/g = 10.2 m (H = 15.3, v₀²/g = 40.8, with 2g 5.10);
+#     ρ_launch = v₀²/(g cosθ) = 81.6 m (v₀²/(g sinθ) = 47.1);
+#   r = (bt, ct²), b = 2.0 m/s, c = 1.0 m/s², t = 2.0 s: v = (2, 4), a = (0, 2), a_t = 1.79, a⊥ = 0.894,
+#     ρ = |v|³/|v × a| = 22.4 m (v²/|a| = 10, v²/a_t = 11.2, vertex b²/(2c) = 2.0).
+
+chapter: 1
+questions:
+  # ---------------------------------------------------------------- OBJ-1.3-1 circular motion: ω, radial acceleration
+  - id: Q-1.3-direction
+    type: vector
+    objectives: [OBJ-1.3-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מכונית נוסעת על מעגל אופקי, וגודל המהירות שלה קבוע. במבט מלמעלה, שבו הצפון למעלה בדף, היא נוסעת נגד כיוון
+      השעון. ברגע מסוים היא בנקודה הצפונית ביותר של המעגל. מה כיוון התאוצה שלה ברגע הזה?
+    answer: s
+    correctFeedback: >-
+      נכון. כשגודל המהירות קבוע, התאוצה ניצבת למהירות ופונה אל מרכז המעגל, שנמצא דרומית למכונית. גודלה
+      $v^2/r = \omega^2r$.
+    wrongFeedback: 'מהי המהירות ברגע הזה, ומה הכיוון שבו היא מסתובבת? התאוצה היא קצב השינוי של וקטור המהירות.'
+    wrong:
+      - dir: w
+        feedback: >-
+          זה כיוון המהירות: בנקודה הצפונית, בתנועה נגד כיוון השעון, המכונית נוסעת מערבה. גודל המהירות קבוע, ולכן
+          לתאוצה אין רכיב לאורך המהירות.
+        misconception: MC-1-acceleration-along-velocity
+      - dir: n
+        feedback: >-
+          זה הכיוון החוצה, הרחק מהמרכז. התחושה שנזרקים החוצה בסיבוב היא תיאור ממערכת שמסתובבת. במערכת של הכביש
+          המהירות מסתובבת פנימה, וזה כיוון התאוצה.
+        misconception: MC-1-centripetal-points-outward
+      - dir: zero
+        feedback: 'גודל המהירות קבוע, אבל הכיוון שלה מסתובב, ולכן התאוצה שונה מאפס.'
+        misconception: MC-1-constant-speed-no-acceleration
+    hints:
+      - 'ציירו את המהירות רגע לפני הנקודה הצפונית ורגע אחריה. לאן מצביע ההפרש ביניהן?'
+
+  - id: Q-1.3-centrifuge
+    type: numeric
+    objectives: [OBJ-1.3-1]
+    level: basic
+    prompt: >-
+      צנטריפוגה במעבדה מסתובבת ב-3000 סיבובים לדקה, ומבחנה נמצאת במרחק $10\,\text{cm}$ מהציר. מה גודל התאוצה של
+      המבחנה?
+    answer: 9870
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $f = 3000/60 = 50$ סיבובים בשנייה, ו-$\omega = 2\pi f = 314\,\text{rad/s}$. לכן
+      $a = \omega^2r = 314^2\cdot0.10 = 9.87\cdot10^3\,\text{m/s}^2$, בערך פי 1000 מ-$g$.
+    wrongFeedback: 'המירו קודם לרדיאנים לשנייה: סיבוב אחד הוא $2\pi$ רדיאנים, ודקה היא $60\,\text{s}$. אחר כך $a = \omega^2r$.'
+    commonWrong:
+      - value: 900000
+        feedback: 'הצבתם 3000 כאילו הם $\text{rad/s}$. סיבובים לדקה צריך להמיר: לחלק ב-60 ולכפול ב-$2\pi$.'
+      - value: 250
+        feedback: 'הצבתם $f = 50\,\text{s}^{-1}$ במקום $\omega$. סיבוב אחד הוא $2\pi$ רדיאנים, ולכן $\omega = 2\pi f$, ו-$a$ גדל פי $(2\pi)^2$.'
+        misconception: MC-1-frequency-is-angular-velocity
+      - value: 31.4
+        feedback: 'זה גודל המהירות, $\omega r$, ביחידות $\text{m/s}$. התאוצה היא $\omega^2r = v^2/r$.'
+    hints:
+      - 'כמה רדיאנים יש בסיבוב אחד?'
+
+  - id: Q-1.3-alpha-total
+    type: numeric
+    objectives: [OBJ-1.3-1]
+    level: mid
+    prompt: >-
+      גלגל מתחיל להסתובב ממנוחה בתאוצה זוויתית קבועה $\alpha = 2.0\,\text{rad/s}^2$. מה גודל התאוצה של נקודה במרחק
+      $0.50\,\text{m}$ מהציר, ברגע $t = 1.0\,\text{s}$?
+    answer: 2.24
+    unit: m/s²
+    correctFeedback: >-
+      נכון. ברגע הזה $\omega = \alpha t = 2.0\,\text{rad/s}$. התאוצה המשיקית $a_t = \alpha r = 1.0\,\text{m/s}^2$, התאוצה
+      הצנטריפטלית $a_c = \omega^2r = 2.0\,\text{m/s}^2$, והן ניצבות זו לזו: $|\vec a| = \sqrt{1.0^2 + 2.0^2} = 2.24\,\text{m/s}^2$.
+    wrongFeedback: 'יש כאן שני רכיבים ניצבים: אחד משנה את גודל המהירות ($\alpha r$), והשני את הכיוון שלה ($\omega^2r$).'
+    commonWrong:
+      - value: 2
+        feedback: 'זו רק התאוצה הצנטריפטלית. הגלגל גם מאיץ, ולכן יש לתאוצה רכיב משיקי, $\alpha r = 1.0\,\text{m/s}^2$.'
+        misconception: MC-1-circular-acceleration-always-central
+      - value: 3
+        feedback: 'חיברתם את הרכיבים כמספרים. הם ניצבים זה לזה, אחד לאורך המהירות ואחד אל המרכז, ולכן מחברים אותם בפיתגורס.'
+      - value: 1
+        feedback: 'זו רק התאוצה המשיקית, $\alpha r$. הנקודה כבר נעה, ולכן יש לה גם תאוצה אל המרכז, $\omega^2r$.'
+        misconception: MC-1-acceleration-along-velocity
+    hints:
+      - 'חשבו קודם את $\omega$ ברגע $t = 1.0\,\text{s}$.'
+
+  - id: Q-1.3-angle-grows
+    type: twotier
+    objectives: [OBJ-1.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גלגל מתחיל להסתובב ממנוחה בתאוצה זוויתית קבועה. מה קורה עם הזמן לזווית בין וקטור התאוצה של נקודה על השפה
+      לבין וקטור המהירות שלה?
+    choices:
+      - text: 'היא גדלה, מאפס בהתחלה, ושואפת ל-$90^\circ$.'
+        correct: true
+        feedback: 'נכון. בהתחלה התאוצה כולה משיקית, ועם הזמן הרכיב אל המרכז גדל ושולט.'
+      - text: היא קבועה, כי התאוצה הזוויתית קבועה.
+        feedback: 'רק הרכיב המשיקי, $\alpha r$, קבוע. הרכיב אל המרכז, $\omega^2r$, גדל עם $\omega$.'
+      - text: 'היא קטנה, מ-$90^\circ$ בהתחלה לאפס.'
+        feedback: 'בהתחלה $\omega = 0$, ולכן אין תאוצה צנטריפטלית: התאוצה כולה לאורך המהירות, והזווית אפס.'
+      - text: 'היא תמיד $90^\circ$, כי בתנועה מעגלית התאוצה פונה למרכז.'
+        feedback: 'התאוצה פונה בדיוק למרכז רק כשגודל המהירות קבוע. כאן הגלגל מאיץ, ולכן יש לתאוצה גם רכיב משיקי.'
+        misconception: MC-1-circular-acceleration-always-central
+    reasons:
+      - text: '$a_t = \alpha r$ קבוע ו-$a_c = \omega^2r = \alpha^2t^2r$ גדל, ולכן $\tan\varphi = \dfrac{a_c}{a_t} = \alpha t^2$.'
+        correct: true
+        feedback: 'זה הנימוק. $\tan\varphi = \alpha t^2$ גדל מאפס בלי גבול, ולכן $\varphi \to 90^\circ$.'
+      - text: התאוצה הזוויתית קבועה, ולכן גם וקטור התאוצה של כל נקודה קבוע.
+        feedback: '$\alpha$ קבוע הוא קצב קבוע של שינוי ב-$\omega$. התאוצה של נקודה תלויה גם ב-$\omega$ עצמו, והוא גדל.'
+      - text: בהתחלה המהירות אפס, ולכן גם התאוצה אפס, והזווית לא מוגדרת עד שהגלגל מסתובב.
+        feedback: 'ב-$t = 0$ המהירות אפס, אבל התאוצה $\alpha r$ לא: אחרת הגלגל לא היה מתחיל לנוע.'
+    hints:
+      - 'כתבו את שני הרכיבים של התאוצה כפונקציות של $t$.'
+
+  - id: Q-1.3-half-radian
+    type: numeric
+    objectives: [OBJ-1.3-1]
+    level: bagrut
+    prompt: >-
+      גלגל ברדיוס $R$ מתחיל להסתובב ממנוחה בתאוצה זוויתית קבועה $\alpha$. דרך איזו זווית, ברדיאנים, הוא הסתובב
+      ברגע שבו וקטור התאוצה של נקודה על השפה יוצר זווית של $45^\circ$ עם וקטור המהירות שלה?
+    answer: 0.5
+    unit: rad
+    correctFeedback: >-
+      נכון. זווית של $45^\circ$ פירושה $a_c = a_t$, כלומר $\omega^2R = \alpha R$, ולכן $\omega^2 = \alpha$. בתאוצה זוויתית
+      קבועה ממנוחה $\omega^2 = 2\alpha\theta$ (כמו $v^2 = 2ax$), ולכן $2\alpha\theta = \alpha$ ו-$\theta = \tfrac12\,\text{rad}$, כ-$29^\circ$,
+      לכל $\alpha$ ולכל $R$. **בדיקת ממדים וגבולות:** הזווית חסרת ממדים, והפרמטר היחיד שיש לו ממדים הוא $\alpha$, ביחידות
+      $\text{s}^{-2}$. אין ממנו מספר חסר ממדים, ולכן התשובה לא יכולה להיות תלויה ב-$\alpha$: גלגל איטי מגיע ל-$45^\circ$
+      מאוחר יותר, אבל אחרי אותה זווית.
+    wrongFeedback: 'מתי $a_c = a_t$? כתבו את התנאי עם $\omega$ ו-$\alpha$, ואז השתמשו בקשר בין $\omega$ לזווית שהגלגל עבר.'
+    commonWrong:
+      - value: 0.785
+        feedback: 'זה $\pi/4$, הזווית בין התאוצה למהירות, ברדיאנים. שאלו על הזווית שהגלגל **הסתובב** עד אותו רגע.'
+      - value: 1
+        feedback: 'קיבלתם $\theta = 1\,\text{rad}$: כנראה $\theta = \alpha t^2$ בלי ה-$\tfrac12$. ממנוחה $\theta = \tfrac12\alpha t^2$, וגם $\omega^2 = 2\alpha\theta$.'
+    hints:
+      - 'בזווית של $45^\circ$ שני הרכיבים של התאוצה שווים.'
+      - 'היעזרו באנלוגיה $v^2 = 2ax$ ↔ $\omega^2 = 2\alpha\theta$.'
+
+  # ---------------------------------------------------------------- OBJ-1.3-2 tangential and normal components; radius of curvature
+  - id: Q-1.3-speeding-curve
+    type: vector
+    objectives: [OBJ-1.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      במבט מלמעלה, עם הצפון למעלה בדף: מכונית נוסעת מזרחה (ימינה בדף) ונכנסת לעיקול שמאלה, כך שמרכז העקמומיות
+      של הכביש נמצא צפונית לה. באותו רגע הנהג לוחץ על הגז, וגודל המהירות גדל. מה הכיוון הקרוב ביותר לכיוון התאוצה?
+    answer: ne
+    correctFeedback: >-
+      נכון. לתאוצה שני רכיבים: רכיב משיקי מזרחה, כי גודל המהירות גדל, ורכיב צנטריפטלי צפונה, אל מרכז העקמומיות,
+      כי הכיוון של המהירות מסתובב שמאלה. הסכום שלהם פונה לצפון-מזרח.
+    wrongFeedback: 'פרקו את התאוצה לשני רכיבים: אחד לאורך המהירות (מה קורה לגודל שלה?), ואחד ניצב לה (לאן היא מסתובבת?).'
+    wrong:
+      - dir: n
+        feedback: 'זה רק הרכיב שמסובב את המהירות. גודל המהירות גדל, ולכן יש גם רכיב לאורך המהירות, מזרחה.'
+        misconception: MC-1-circular-acceleration-always-central
+      - dir: e
+        feedback: 'זה רק הרכיב שמגדיל את המהירות. המכונית גם מסתובבת שמאלה, ולכן יש גם רכיב צפונה, אל מרכז העקמומיות.'
+        misconception: MC-1-acceleration-along-velocity
+      - dir: se
+        feedback: 'הרכיב הניצב פונה **אל** מרכז העקמומיות, צפונה, לא החוצה ממנו.'
+        misconception: MC-1-centripetal-points-outward
+      - dir: nw
+        feedback: 'כך נראית התאוצה כשהמכונית **מאטה** בעיקול: הרכיב המשיקי מנוגד למהירות. כאן היא מאיצה.'
+    hints:
+      - 'גודל המהירות גדל: מה זה אומר על הרכיב של $\vec a$ לאורך $\vec v$?'
+
+  - id: Q-1.3-top-parabola
+    type: numeric
+    objectives: [OBJ-1.3-2]
+    level: basic
+    prompt: >-
+      כדור נזרק במהירות $20\,\text{m/s}$ בזווית $60^\circ$ מעל האופק, בלי התנגדות אוויר. מה רדיוס העקמומיות של המסלול
+      בנקודה הגבוהה ביותר?
+    answer: 10.2
+    unit: m
+    correctFeedback: >-
+      נכון. בשיא המהירות אופקית, $v = v_0\cos\theta = 10\,\text{m/s}$, והתאוצה $\vec g$ ניצבת לה כולה, כך ש-$a_\perp = g$.
+      לכן $\rho = \dfrac{v^2}{a_\perp} = \dfrac{100}{9.8} = 10.2\,\text{m}$.
+    wrongFeedback: 'מה גודל המהירות בשיא, ואיזה חלק מ-$\vec g$ ניצב לה שם? השתמשו ב-$\rho = v^2/a_\perp$.'
+    commonWrong:
+      - value: 15.3
+        feedback: 'זה הגובה המרבי, $v_0^2\sin^2\theta/(2g)$. רדיוס העקמומיות הוא לא מרחק בציור: הוא נקבע מהמהירות ומהתאוצה בשיא.'
+        misconception: MC-1-curvature-radius-is-a-distance
+      - value: 40.8
+        feedback: 'הצבתם את מהירות הזריקה, $v_0$. בשיא נשאר רק הרכיב האופקי, $v_0\cos\theta = 10\,\text{m/s}$.'
+      - value: 5.1
+        feedback: 'חילקתם ב-$2g$, כמו בנוסחת הגובה. הקשר הוא $a_\perp = v^2/\rho$, בלי 2.'
+    hints:
+      - 'בנקודה הגבוהה ביותר המהירות אופקית. מה הזווית בינה לבין $\vec g$?'
+
+  - id: Q-1.3-launch-curvature
+    type: numeric
+    objectives: [OBJ-1.3-2]
+    level: mid
+    prompt: >-
+      לאותו כדור ($20\,\text{m/s}$ בזווית $60^\circ$ מעל האופק): מה רדיוס העקמומיות של המסלול ברגע הזריקה?
+    answer: 81.6
+    unit: m
+    correctFeedback: >-
+      נכון. ברגע הזריקה המהירות בזווית $60^\circ$ מעל האופק, וה-$\vec g$ פונה מטה. הרכיב של $\vec g$ שניצב למהירות הוא
+      $a_\perp = g\cos\theta = 4.9\,\text{m/s}^2$, ולכן $\rho = \dfrac{v_0^2}{g\cos\theta} = \dfrac{400}{4.9} = 81.6\,\text{m}$, פי 8 מהשיא.
+    wrongFeedback: 'רק הרכיב של $\vec g$ שניצב למהירות מעקם את המסלול. מה הזווית בין $\vec g$ לבין הניצב למהירות?'
+    commonWrong:
+      - value: 40.8
+        feedback: 'חילקתם ב-$g$ כולו. ברגע הזריקה חלק מ-$\vec g$ פועל לאורך המהירות ומאט אותה; רק $g\cos\theta$ ניצב לה ומעקם את המסלול.'
+        misconception: MC-1-curvature-from-total-acceleration
+      - value: 47.1
+        feedback: 'השתמשתם ב-$g\sin\theta$, הרכיב של $\vec g$ **לאורך** המהירות. הוא משנה את גודל המהירות; הרכיב הניצב הוא $g\cos\theta$.'
+      - value: 10.2
+        feedback: 'זה רדיוס העקמומיות בשיא. ברגע הזריקה המהירות גדולה יותר והרכיב הניצב של $\vec g$ קטן יותר, ולכן המסלול עקום פחות.'
+    hints:
+      - 'פרקו את $\vec g$ לרכיב לאורך המהירות ולרכיב ניצב לה.'
+
+  - id: Q-1.3-where-min
+    type: mc
+    objectives: [OBJ-1.3-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      לאורך המסלול של כדור שנזרק באלכסון, בלי התנגדות אוויר, איפה רדיוס העקמומיות הכי קטן (המסלול הכי עקום)?
+    choices:
+      - text: בנקודה הגבוהה ביותר.
+        correct: true
+        feedback: >-
+          נכון. $\rho = v^2/a_\perp$. בשיא גודל המהירות הכי קטן, ו-$\vec g$ כולו ניצב למהירות, כך ש-$a_\perp$ הכי גדול. שני
+          הגורמים מקטינים את $\rho$ באותה נקודה.
+      - text: ברגע הזריקה וברגע הנחיתה.
+        feedback: 'שם דווקא גודל המהירות הכי גדול, ורק חלק מ-$\vec g$ ניצב למהירות. שם $\rho$ הכי **גדול**.'
+      - text: הוא שווה בכל המסלול, כי התאוצה קבועה.
+        feedback: 'התאוצה קבועה, אבל גם המהירות וגם הרכיב הניצב של $\vec g$ משתנים לאורך המסלול, ו-$\rho$ תלוי בשניהם.'
+        misconception: MC-1-curvature-from-total-acceleration
+      - text: הוא אינסופי בשיא, כי שם המהירות האנכית אפס.
+        feedback: 'רדיוס אינסופי פירושו קו ישר, ו-$a_\perp = 0$. בשיא המהירות אופקית ו-$\vec g$ ניצב לה כולו, כך ש-$a_\perp$ דווקא הכי גדול.'
+    hints:
+      - 'כתבו $\rho = v^2/a_\perp$, ובדקו איך כל אחד מהגורמים משתנה לאורך המסלול.'
+
+  - id: Q-1.3-general-curve
+    type: numeric
+    objectives: [OBJ-1.3-2]
+    level: bagrut
+    prompt: >-
+      גוף נע במישור, ווקטור המקום שלו
+      $$\vec r(t) = \left(bt,\ ct^2\right)$$
+      עם $b = 2.0\,\text{m/s}$ ו-$c = 1.0\,\text{m/s}^2$. מה רדיוס העקמומיות של המסלול ברגע $t = 2.0\,\text{s}$?
+    answer: 22.4
+    unit: m
+    correctFeedback: >-
+      נכון. $\vec v = (b,\ 2ct) = (2.0,\ 4.0)\,\text{m/s}$ ו-$\vec a = (0,\ 2c) = (0,\ 2.0)\,\text{m/s}^2$. הרכיב הניצב של התאוצה
+      הוא $a_\perp = \dfrac{|v_xa_y - v_ya_x|}{|\vec v|} = \dfrac{4.0}{4.47} = 0.894\,\text{m/s}^2$, ולכן
+      $\rho = \dfrac{|\vec v|^2}{a_\perp} = \dfrac{|\vec v|^3}{|v_xa_y - v_ya_x|} = \dfrac{20}{0.894} = 22.4\,\text{m}$.
+      **בדיקת גבולות:** ב-$t = 0$, בקודקוד הפרבולה, הנוסחה נותנת $\rho = \dfrac{b^2}{2c} = 2.0\,\text{m}$, וזה הרדיוס
+      בקודקוד של הפרבולה $y = \dfrac{c}{b^2}x^2$ שמוכר מחשבון דיפרנציאלי. ככל ש-$t$ גדל המסלול מתיישר, ו-$\rho$ גדל.
+    wrongFeedback: 'חשבו את $\vec v$ ואת $\vec a$, פרקו את $\vec a$ לרכיב לאורך $\vec v$ ולרכיב ניצב לו, והשתמשו רק בניצב.'
+    commonWrong:
+      - value: 10
+        feedback: 'חישבתם $|\vec v|^2/|\vec a| = 20/2.0$. רק הרכיב הניצב של $\vec a$ מעקם את המסלול; הרכיב המשיקי, $1.79\,\text{m/s}^2$, מגדיל את גודל המהירות.'
+        misconception: MC-1-curvature-from-total-acceleration
+      - value: 11.2
+        feedback: 'חילקתם ברכיב **המשיקי**, $\vec v\cdot\vec a/|\vec v| = 1.79\,\text{m/s}^2$. רדיוס העקמומיות נקבע ברכיב הניצב, $0.894\,\text{m/s}^2$.'
+      - value: 2
+        feedback: 'זה רדיוס העקמומיות בקודקוד, ב-$t = 0$. ב-$t = 2.0\,\text{s}$ הגוף רחוק מהקודקוד, והמסלול שם שטוח בהרבה.'
+    hints:
+      - 'במישור, $|\vec v\times\vec a| = |v_xa_y - v_ya_x|$, וזה $|\vec v|\cdot a_\perp$.'

@@ -1,0 +1,23 @@
+# Terms first defined in lesson 3.6. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: c3-exhaust-speed
+  term: מהירות פליטה
+  en: exhaust speed
+  symbol: u
+  unit: m/s
+  definition: המהירות שבה גזים יוצאים מרקטה, ביחס לרקטה עצמה. ביחס למערכת אינרציאלית שבה הרקטה נעה במהירות v, מהירות הגזים היא v − u.
+  lesson: '3.6'
+
+- id: rocket-equation
+  term: משוואת הרקטה
+  en: rocket equation
+  definition: הקשר M·dv = −u·dM, שנובע משימור התנע בפרק זמן קצר שבו הרקטה פולטת מסה. בחלל, בלי כוחות חיצוניים, הוא נותן Δv = u·ln(m₀/m). מכונה גם משוואת ציולקובסקי.
+  lesson: '3.6'
+
+- id: thrust
+  term: כוח דחף
+  en: thrust
+  unit: N
+  definition: הכוח שהגזים הנפלטים מפעילים על הרקטה, u·|dm/dt|, כלומר מהירות הפליטה כפול קצב הפליטה. רקטה מתרוממת מהקרקע רק כשהדחף גדול מהכובד עליה.
+  lesson: '3.6'

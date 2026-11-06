@@ -1,0 +1,43 @@
+# Terms first defined in lesson 1.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: position-vector
+  term: וקטור מקום
+  en: position vector
+  symbol: r
+  unit: m
+  definition: הווקטור מראשית הצירים אל המקום של הגוף. ברכיבים, r = (x, y, z). כשהגוף נע, וקטור המקום הוא פונקציה של הזמן, r(t).
+  reject: [וקטור מיקום]
+  lesson: '1.1'
+
+- id: displacement
+  term: העתק
+  en: displacement
+  symbol: Δr
+  unit: m
+  definition: השינוי בווקטור המקום בין שני רגעים, Δr = r(t₂) − r(t₁). ההעתק תלוי רק בנקודת ההתחלה ובנקודת הסוף, לא בדרך, ולכן הגודל שלו יכול להיות קטן מהדרך שהגוף עבר.
+  lesson: '1.1'
+
+- id: velocity
+  term: מהירות
+  en: velocity
+  symbol: v
+  unit: m/s
+  definition: הנגזרת של וקטור המקום לפי הזמן, v = dr/dt. זה וקטור, והוא משיק למסלול בכל נקודה. ברכיבים, כל רכיב של המהירות הוא הנגזרת של הרכיב המתאים של המקום.
+  lesson: '1.1'
+
+- id: speed
+  term: גודל המהירות
+  en: speed
+  symbol: '|v|'
+  unit: m/s
+  definition: הגודל של וקטור המהירות, |v| = |dr/dt|, מה שמד המהירות מראה. זה לא d|r|/dt, קצב השינוי של המרחק מהראשית.
+  lesson: '1.1'
+
+- id: acceleration
+  term: תאוצה
+  en: acceleration
+  symbol: a
+  unit: m/s²
+  definition: הנגזרת של וקטור המהירות לפי הזמן, a = dv/dt = d²r/dt². התאוצה שונה מאפס גם כשרק הכיוון של המהירות משתנה.
+  lesson: '1.1'

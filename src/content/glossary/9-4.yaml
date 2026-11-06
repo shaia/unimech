@@ -1,0 +1,14 @@
+# Terms first defined in lesson 9.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). `c9-` ids are terms chapter 9 added.
+
+- id: c9-velocity-addition
+  term: חיבור מהירויות יחסותי
+  en: relativistic velocity addition
+  definition: הכלל שנותן את המהירות u של גוף במערכת S, כשהוא נע במהירות u′ במערכת S′ ו-S′ נעה במהירות v ביחס ל-S, הכול לאורך אותו ציר. u = (u′ + v)/(1 + u′v/c²). כשהמהירויות קטנות מ-c בהרבה הוא חוזר ל-u = u′ + v, וכש-u′ = c יוצא u = c בכל מהירות v.
+  lesson: '9.4'
+
+- id: c9-relativistic-doppler
+  term: אפקט דופלר היחסותי
+  en: relativistic Doppler effect
+  definition: השינוי בתדירות של אור כשהמקור והצופה נעים זה ביחס לזה לאורך קו הראייה. בהתקרבות במהירות יחסית βc התדירות הנקלטת היא f₀√((1 + β)/(1 − β)), ובהתרחקות f₀√((1 − β)/(1 + β)). הוא תלוי רק במהירות היחסית, ולא בשאלה מי נע.
+  lesson: '9.4'

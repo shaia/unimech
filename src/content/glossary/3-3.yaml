@@ -1,0 +1,30 @@
+# Terms first defined in lesson 3.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: c3-mechanical-energy
+  term: אנרגיה מכנית
+  en: mechanical energy
+  symbol: E
+  unit: J
+  definition: הסכום של האנרגיה הקינטית והאנרגיה הפוטנציאלית, E = K + U. כשרק כוחות משמרים עושים עבודה היא נשמרת, ובאופן כללי השינוי בה שווה לעבודה של הכוחות הלא משמרים.
+  lesson: '3.3'
+
+- id: power
+  term: הספק
+  en: power
+  symbol: P
+  unit: W
+  definition: קצב העבודה, P = dW/dt. ההספק של כוח שפועל על גוף שנע במהירות v הוא P = F·v.
+  lesson: '3.3'
+
+- id: turning-point
+  term: נקודת מפנה
+  en: turning point
+  definition: נקודה בתנועה בממד אחד שבה האנרגיה הפוטנציאלית שווה לאנרגיה המכנית, ולכן המהירות אפס לרגע. הכוח שם בדרך כלל שונה מאפס, והגוף חוזר על עקבותיו.
+  lesson: '3.3'
+
+- id: stable-equilibrium
+  term: שיווי משקל יציב
+  en: stable equilibrium
+  definition: נקודה שבה הכוח אפס, וגוף שמוזז ממנה מעט מקבל כוח שמחזיר אותו אליה. בממד אחד זה מינימום של U, U′ = 0 ו-U″ > 0. במקסימום, U″ < 0, שיווי המשקל לא יציב.
+  lesson: '3.3'

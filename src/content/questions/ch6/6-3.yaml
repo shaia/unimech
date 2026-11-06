@@ -1,0 +1,277 @@
+# Lesson 6.3 question bank: the comprehension ladder of "כוח מרכזי ופוטנציאל אפקטיבי".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Notation throughout: k = Gm₁m₂, μ the reduced mass, L the angular momentum,
+# U_eff(r) = L²/(2μr²) − k/r. YAML note: never "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (.scratch/ch6/q.ts, q2.ts, q3.ts), GM_E = 3.982e14 m³/s²:
+#   probe 200 kg at r = 1.0e7 m, v_r = 3.0, v_t = 5.0 km/s: U_eff = ½mv_t² − GMm/r = −5.46e9 J (E = −4.56e9 J,
+#     U = −7.96e9 J);
+#   m = 1000 kg, L = 7.0e13 kg·m²/s: r₀ = L²/(m²GM) = 1.23e7 m (U_eff = 0 at 6.15e6 m; without m²: 1.23e10);
+#   ε = E/m = −2.0e7 J/kg, h = L/m = 6.0e10 m²/s: r_p = 6.94e6 m, r_a = 1.30e7 m, r_p + r_a = GM/|ε| = 1.99e7 m,
+#     h²/GM = 9.04e6 m, U_eff,min/m = −(GM)²/(2h²) = −2.20e7 J/kg.
+
+chapter: 6
+questions:
+  # ---------------------------------------------------------------- OBJ-6.3-1 the energy with the effective potential
+  - id: Q-6.3-l-conserved
+    type: mc
+    objectives: [OBJ-6.3-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      על גוף פועל רק כוח מרכזי, $\vec F = f(r)\,\hat r$, שכיוונו תמיד לאורך הקו אל נקודה קבועה. איזה גודל נשמר בתנועה,
+      ולמה?
+    choices:
+      - text: 'התנע הזוויתי $\vec L$ סביב הנקודה, כי מומנט הכוח $\vec r\times\vec F$ אפס.'
+        correct: true
+        feedback: >-
+          נכון. $\vec F \parallel \vec r$, ולכן $\vec r\times\vec F = 0$ ו-$d\vec L/dt = 0$. מכאן גם שהתנועה כולה במישור
+          אחד, המישור הניצב ל-$\vec L$, ושאפשר לתאר אותה בשתי קואורדינטות קוטביות, $r$ ו-$\theta$.
+      - text: התנע הזוויתי, אבל רק כשהמסלול מעגלי.
+        feedback: >-
+          ההוכחה, $\vec r\times\vec F = 0$, לא משתמשת בצורת המסלול. גם באליפסה ארוכה $L = \mu r^2\dot\theta$ קבוע: כש-$r$
+          קטן, $\dot\theta$ גדל.
+        misconception: MC-6-l-only-circular
+      - text: 'התנע הקווי $\vec p$, כי הכוח מרכזי.'
+        feedback: 'על הגוף פועל כוח, ולכן $d\vec p/dt = \vec F \neq 0$. מה שמתאפס הוא המומנט של הכוח, לא הכוח עצמו.'
+      - text: גודל המהירות, כי הכוח תמיד ניצב לתנועה.
+        feedback: >-
+          הכוח ניצב לתנועה רק במסלול מעגלי. במסלול כללי יש לו רכיב לאורך המהירות, והגוף מאיץ ומאט: הוא מהיר ליד נקודת
+          הקרבה ואיטי ליד נקודת הריחוק.
+    hints:
+      - '$\dfrac{d\vec L}{dt} = \vec r\times\vec F$. מה המכפלה הווקטורית של שני וקטורים מקבילים?'
+
+  - id: Q-6.3-ueff-form
+    type: mc
+    objectives: [OBJ-6.3-1]
+    level: basic
+    prompt: >-
+      בתנועה היחסית של שני גופים בכבידה, עם $k = Gm_1m_2$, מסה מצומצמת $\mu$ ותנע זוויתי $L$, כותבים את האנרגיה כ-
+      $E = \tfrac12\mu\dot r^2 + U_{\text{eff}}(r)$. מה $U_{\text{eff}}(r)$?
+    choices:
+      - text: '$\dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$'
+        correct: true
+        feedback: >-
+          נכון. האנרגיה הקינטית היא $\tfrac12\mu\dot r^2 + \tfrac12\mu r^2\dot\theta^2$, ועם $\dot\theta = L/(\mu r^2)$ החלק
+          הזוויתי הוא $L^2/(2\mu r^2)$. הוא מצטרף לאנרגיה הפוטנציאלית $-k/r$, ונשארת משוואה במשתנה אחד, $r$.
+      - text: '$-\dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$'
+        feedback: 'האיבר $L^2/(2\mu r^2)$ הוא אנרגיה קינטית, ולכן חיובי. הוא מה שמונע מגוף עם $L \neq 0$ ליפול למרכז.'
+      - text: '$\dfrac{L^2}{2\mu r} - \dfrac{k}{r}$'
+        feedback: >-
+          בדקו יחידות: $L^2/(\mu r)$ ביחידות $\text{J}\cdot\text{m}$, לא אנרגיה. מ-$\tfrac12\mu r^2\dot\theta^2$ עם
+          $\dot\theta = L/(\mu r^2)$ יוצא $1/r^2$.
+      - text: '$\tfrac12\mu\dot r^2 + \dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$'
+        feedback: 'זו האנרגיה כולה, $E$. הפוטנציאל האפקטיבי הוא מה שנשאר אחרי שמוציאים את האנרגיה הקינטית של התנועה הרדיאלית.'
+    hints:
+      - 'פרקו את המהירות לרכיב רדיאלי $\dot r$ ולרכיב משיקי $r\dot\theta$, והחליפו את $\dot\theta$ בעזרת $L = \mu r^2\dot\theta$.'
+
+  - id: Q-6.3-centrifugal-term
+    type: twotier
+    objectives: [OBJ-6.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בפוטנציאל האפקטיבי $U_{\text{eff}}(r) = \dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$ יש איבר דוחה, $\dfrac{L^2}{2\mu r^2}$,
+      שגדל מאוד כש-$r \to 0$. מה הוא מבחינה פיזיקלית?
+    choices:
+      - text: האנרגיה הקינטית של התנועה המשיקית, כתובה בעזרת התנע הזוויתי.
+        correct: true
+        feedback: >-
+          נכון. $\tfrac12\mu(r\dot\theta)^2 = \dfrac{L^2}{2\mu r^2}$. כש-$L$ קבוע, התקרבות למרכז מחייבת מהירות משיקית
+          גדולה יותר, והאנרגיה לכך באה מהתנועה הרדיאלית: לכן היא מתנהגת כמו מחסום.
+      - text: האנרגיה הפוטנציאלית של כוח אמיתי שדוחף את הגוף החוצה, הכוח הצנטריפוגלי.
+        feedback: >-
+          במערכת אינרציאלית פועלת על הגוף רק הכבידה, והיא מושכת פנימה. האיבר הוא אנרגיה קינטית, שכתבנו כפונקציה של $r$
+          כדי שהבעיה תהיה חד-ממדית. "כוח" צנטריפוגלי מופיע רק כשעוברים למערכת מסתובבת.
+        misconception: MC-6-centrifugal-real-force
+      - text: תיקון שנובע מהתנועה של הגוף הכבד.
+        feedback: 'התנועה של שני הגופים כבר נכנסה דרך $\mu$. האיבר קיים גם כשהגוף הכבד קבוע לגמרי, ואז $\mu = m$.'
+      - text: האנרגיה הפוטנציאלית הכבידתית במרחקים קטנים, שבהם חוק הכבידה משתנה.
+        feedback: 'חוק הכבידה לא משתנה במרחקים קטנים. האיבר לא תלוי בכלל ב-$G$: הוא קיים בכל כוח מרכזי, וגם בגוף חופשי.'
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: '$L = \mu r^2\dot\theta$ קבוע, ולכן $\dot\theta = L/(\mu r^2)$ ו-$\tfrac12\mu r^2\dot\theta^2 = L^2/(2\mu r^2)$.'
+        correct: true
+        feedback: 'זה הנימוק. החלפנו משתנה שמשתנה, $\dot\theta$, בקבוע $L$, והאנרגיה הקינטית המשיקית הפכה לפונקציה של $r$ בלבד.'
+      - text: במערכת האינרציאלית פועל על הגוף כוח צנטריפוגלי שדוחף אותו החוצה.
+        feedback: >-
+          במערכת אינרציאלית אין כוח כזה. גוף שנע בקו ישר, בלי כוח בכלל, מתרחק מכל נקודה, וזה כל מה שהאיבר מתאר: גם
+          לגוף חופשי $r(t)$ יורד עד מינימום ואז עולה.
+        misconception: MC-6-centrifugal-real-force
+      - text: האיבר קבוע, כי התנע הזוויתי נשמר.
+        feedback: '$L$ קבוע, אבל $r$ משתנה, ולכן $L^2/(2\mu r^2)$ משתנה עם $r$. זה מה שהופך אותו לחלק מהפוטנציאל.'
+    hints:
+      - 'בדקו מה מקבלים עבור גוף חופשי, $k = 0$. האם יש לו "מחסום"?'
+
+  - id: Q-6.3-ueff-value
+    type: numeric
+    objectives: [OBJ-6.3-1]
+    level: mid
+    prompt: >-
+      גשושית בעלת מסה $m = 200\,\text{kg}$ נמצאת במרחק $r = 1.0\cdot10^{7}\,\text{m}$ ממרכז כדור הארץ
+      ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$). רכיב המהירות שלה לאורך הרדיוס, החוצה, הוא $3.0\,\text{km/s}$,
+      והרכיב הניצב לרדיוס הוא $5.0\,\text{km/s}$. המסה של הגשושית זניחה ביחס לכדור הארץ, ולכן $\mu \approx m$. מה ערך
+      הפוטנציאל האפקטיבי $U_{\text{eff}}(r)$ בנקודה הזו?
+    answer: -5.46e9
+    unit: J
+    correctFeedback: >-
+      נכון. $L = m r v_t$, ולכן $\dfrac{L^2}{2mr^2} = \tfrac12 m v_t^2 = 2.50\cdot10^{9}\,\text{J}$, ו-$-\dfrac{GM_Em}{r} = -7.96\cdot10^{9}\,\text{J}$.
+      סכומם $U_{\text{eff}} = -5.46\cdot10^{9}\,\text{J}$. האנרגיה הכוללת גדולה ממנו באנרגיה הקינטית הרדיאלית,
+      $\tfrac12mv_r^2 = 9.0\cdot10^{8}\,\text{J}$: $E = -4.56\cdot10^{9}\,\text{J}$.
+    wrongFeedback: >-
+      $U_{\text{eff}}$ כולל את האנרגיה הפוטנציאלית ואת האנרגיה הקינטית של הרכיב **המשיקי** בלבד. חשבו את
+      $L^2/(2mr^2) = \tfrac12mv_t^2$ והוסיפו את $-GM_Em/r$.
+    commonWrong:
+      - value: -4.56e9
+        feedback: 'זו האנרגיה הכוללת $E$: הוספתם גם את האנרגיה הקינטית הרדיאלית, $\tfrac12mv_r^2$. היא מה שמבדיל בין $E$ ל-$U_{\text{eff}}$.'
+      - value: -7.96e9
+        feedback: 'זו האנרגיה הפוטנציאלית הכבידתית בלבד. הפוטנציאל האפקטיבי כולל גם את האיבר $L^2/(2mr^2)$.'
+      - value: 2.5e9
+        feedback: 'זה רק האיבר $L^2/(2mr^2)$. הוסיפו את האנרגיה הפוטנציאלית הכבידתית $-GM_Em/r$, שהיא שלילית.'
+    hints:
+      - 'הביעו את $L$ בעזרת הרכיב הניצב לרדיוס בלבד: $L = m r v_t$.'
+
+  - id: Q-6.3-inverse-cube
+    type: mc
+    objectives: [OBJ-6.3-1, OBJ-6.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      נניח שבעולם אחר הכוח המרכזי בין שני גופים היה $\vec F = -\dfrac{c}{r^3}\hat r$ (עם $c > 0$), ולכן
+      $U(r) = -\dfrac{c}{2r^2}$. התנע הזוויתי $L \neq 0$. מה נכון לגבי המסלולים?
+    choices:
+      - text: 'אין מסלול מעגלי יציב: $U_{\text{eff}} = \dfrac{L^2 - \mu c}{2\mu r^2}$ הולך כמו $1/r^2$ ואין לו מינימום.'
+        correct: true
+        feedback: >-
+          נכון. האיבר הדוחה והמושך הולכים שניהם כמו $1/r^2$, ולכן $U_{\text{eff}}$ מונוטוני. אם $L^2 > \mu c$, הגוף נדחה
+          ובורח לאינסוף; אם $L^2 < \mu c$, הוא נופל אל המרכז. מסלול מעגלי קיים רק כש-$L^2 = \mu c$ בדיוק, והוא לא יציב.
+          בכבידה, $-k/r$ חזק יותר מהמחסום רחוק ($1/r$ מול $1/r^2$) וחלש ממנו קרוב, ולכן יש מינימום.
+      - text: 'יש מסלול מעגלי יציב במינימום של $U_{\text{eff}}$, כמו בכבידה.'
+        feedback: >-
+          כתבו את $U_{\text{eff}}$: $\dfrac{L^2}{2\mu r^2} - \dfrac{c}{2r^2} = \dfrac{L^2 - \mu c}{2\mu r^2}$. זו פונקציה
+          מהצורה $\text{const}/r^2$, בלי מינימום. בכבידה המינימום נוצר מפני שהמשיכה והמחסום הולכים בחזקות שונות של $r$.
+      - text: כל המסלולים קשורים, כי הכוח מושך.
+        feedback: >-
+          כוח מושך לא מבטיח מסלול קשור. גם בכבידה גוף עם $E \ge 0$ בורח. כאן, עם $L^2 > \mu c$, $U_{\text{eff}}$ חיובי
+          ויורד לאפס, וכל גוף בורח לאינסוף.
+      - text: התנע הזוויתי לא נשמר, כי הכוח לא הולך כמו $1/r^2$.
+        feedback: 'שימור התנע הזוויתי דורש רק שהכוח יהיה מרכזי: $\vec r\times\vec F = 0$ לכל $f(r)$. החזקה של $r$ לא משנה.'
+        misconception: MC-6-l-needs-inverse-square
+    hints:
+      - 'כתבו את $U_{\text{eff}}$ לכוח הזה, וחפשו נקודה שבה $dU_{\text{eff}}/dr = 0$.'
+
+  # ---------------------------------------------------------------- OBJ-6.3-2 reading orbits from U_eff
+  - id: Q-6.3-circular-at-minimum
+    type: mc
+    objectives: [OBJ-6.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בגרף של $U_{\text{eff}}(r) = \dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$, עבור $L$ נתון, משרטטים קו אופקי בגובה האנרגיה
+      $E$. מתי המסלול מעגלי?
+    choices:
+      - text: 'כש-$E$ שווה לערך המינימלי של $U_{\text{eff}}$, ואז $r$ קבוע ברדיוס של המינימום.'
+        correct: true
+        feedback: >-
+          נכון. אז $\tfrac12\mu\dot r^2 = E - U_{\text{eff}}(r) \ge 0$ מתקיים רק בנקודה אחת, ו-$\dot r = 0$ כל הזמן. במינימום
+          גם $dU_{\text{eff}}/dr = 0$: הכבידה מספקת בדיוק את הכוח הצנטריפטלי.
+      - text: 'כש-$E$ שווה לערך שבו $U_{\text{eff}} = 0$.'
+        feedback: >-
+          $U_{\text{eff}} = 0$ בנקודה שבה המחסום והמשיכה שווים בגודלם, וזו לא נקודה מיוחדת לתנועה. גוף עם $E = 0$ נע
+          במסלול לא קשור (פרבולה), לא במעגל.
+        misconception: MC-6-circular-where-ueff-zero
+      - text: 'בכל רדיוס שבו $E = U_{\text{eff}}(r)$, כי שם $\dot r = 0$.'
+        feedback: >-
+          בנקודה שבה $E = U_{\text{eff}}(r)$ אכן $\dot r = 0$, אבל רק לרגע: זו נקודת מפנה, ו-$r$ מתחיל לחזור. המסלול
+          מעגלי רק כש-$\dot r = 0$ **כל הזמן**, כלומר כשהנקודה היא המינימום.
+      - text: 'כש-$E$ גדולה מאוד, כי אז $U_{\text{eff}}$ זניח.'
+        feedback: 'כש-$E \ge 0$ המסלול אפילו לא קשור. המסלול המעגלי הוא בעל האנרגיה **הנמוכה** ביותר עבור $L$ נתון.'
+    hints:
+      - '$\tfrac12\mu\dot r^2 = E - U_{\text{eff}}(r)$. מתי $\dot r = 0$ לאורך כל התנועה?'
+
+  - id: Q-6.3-bound-statements
+    type: multi
+    objectives: [OBJ-6.3-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      לוויין נע בשדה הכבידה של כדור הארץ, ו-$L \neq 0$. האנרגיה שלו $E$ נמצאת בין המינימום של $U_{\text{eff}}$ לבין אפס.
+      סמנו את כל הטענות הנכונות.
+    choices:
+      - text: 'יש שתי נקודות מפנה, $r_p$ ו-$r_a$, שבהן $E = U_{\text{eff}}(r)$.'
+        correct: true
+        feedback: 'נכון. הקו האופקי $E$ חותך את בור הפוטנציאל האפקטיבי בשתי נקודות: נקודת הקרבה ונקודת הריחוק.'
+      - text: 'המרחק $r$ מתנודד בין $r_p$ ל-$r_a$, והמסלול קשור.'
+        correct: true
+        feedback: 'נכון. מחוץ לתחום הזה $E < U_{\text{eff}}$, והאנרגיה הקינטית הרדיאלית הייתה שלילית. לכן הלוויין לא מגיע לאינסוף.'
+      - text: בנקודות המפנה הלוויין נעצר לרגע.
+        feedback: >-
+          רק הרכיב הרדיאלי של המהירות מתאפס שם, $\dot r = 0$. הרכיב המשיקי, $L/(\mu r)$, לא אפס: הלוויין חולף על פני
+          נקודת הקרבה במהירות הגדולה ביותר שלו.
+        misconception: MC-6-turning-point-at-rest
+      - text: 'אם נגדיל מעט את $E$ אבל נשאיר אותה שלילית, הלוויין יברח לאינסוף.'
+        feedback: 'כל עוד $E < 0$, הקו האופקי פוגש את $U_{\text{eff}}$ גם בצד הרחוק, כי $U_{\text{eff}} \to 0^-$. הלוויין בורח רק כש-$E \ge 0$.'
+      - text: 'בנקודת הקרבה גם מהירות הלוויין וגם $|U_{\text{eff}}|$ מקסימליים.'
+        feedback: >-
+          המהירות אכן מקסימלית בנקודת הקרבה, אבל $U_{\text{eff}}(r_p) = E$, כמו ב-$r_a$. $|U_{\text{eff}}|$ מקסימלי במינימום
+          של הבור, בין שתי נקודות המפנה.
+    hints:
+      - 'שרטטו את $U_{\text{eff}}$ ואת הקו $E$. איפה הקו מעל העקומה?'
+
+  - id: Q-6.3-circular-radius
+    type: numeric
+    objectives: [OBJ-6.3-2]
+    level: mid
+    prompt: >-
+      ללוויין בעל מסה $m = 1000\,\text{kg}$ סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) יש תנע זוויתי
+      $L = 7.0\cdot10^{13}\,\text{kg}\cdot\text{m}^2/\text{s}$, ו-$\mu \approx m$. מה הרדיוס של המסלול המעגלי בעל התנע
+      הזוויתי הזה?
+    answer: 1.23e7
+    unit: m
+    correctFeedback: >-
+      נכון. המסלול המעגלי במינימום של $U_{\text{eff}}$:
+      $$\frac{dU_{\text{eff}}}{dr} = -\frac{L^2}{mr^3} + \frac{GM_Em}{r^2} = 0\ \Rightarrow\ r_0 = \frac{L^2}{m^2GM_E} = 1.23\cdot10^{7}\,\text{m}$$
+      כשתי פעמים רדיוס כדור הארץ. בדיקה: $v = L/(mr_0) = 5.69\,\text{km/s} = \sqrt{GM_E/r_0}$, המהירות המעגלית.
+    wrongFeedback: 'גזרו את $U_{\text{eff}}(r)$ לפי $r$, השוו לאפס ובודדו את $r$.'
+    commonWrong:
+      - value: 6.15e6
+        feedback: >-
+          זו הנקודה שבה $U_{\text{eff}} = 0$, כלומר $r = L^2/(2m^2GM_E)$. המסלול המעגלי לא שם אלא במינימום, שבו
+          **הנגזרת** מתאפסת, רחוק פי 2.
+        misconception: MC-6-circular-where-ueff-zero
+      - value: 1.23e10
+        feedback: 'במכנה צריך $m^2$: אחת מהמחסום $L^2/(2mr^2)$ ואחת מהכבידה $GM_Em/r$. בדקו שהיחידות יוצאות מטרים.'
+    hints:
+      - '$U_{\text{eff}}(r) = \dfrac{L^2}{2mr^2} - \dfrac{GM_Em}{r}$.'
+
+  - id: Q-6.3-turning-points
+    type: numeric
+    objectives: [OBJ-6.3-2]
+    level: bagrut
+    prompt: >-
+      ללוויין סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$, מסת הלוויין זניחה) יש אנרגיה ליחידת מסה
+      $\varepsilon = E/m = -2.0\cdot10^{7}\,\text{J/kg}$ ותנע זוויתי ליחידת מסה $h = L/m = 6.0\cdot10^{10}\,\text{m}^2/\text{s}$.
+      מה המרחק המקסימלי שלו ממרכז כדור הארץ (נקודת הריחוק)?
+    answer: 1.30e7
+    unit: m
+    correctFeedback: >-
+      נכון. בנקודות המפנה $\dot r = 0$, ולכן $\varepsilon = \dfrac{h^2}{2r^2} - \dfrac{GM_E}{r}$, כלומר
+      $$\varepsilon r^2 + GM_E\,r - \tfrac12h^2 = 0\ \Rightarrow\ r = \frac{-GM_E \mp \sqrt{(GM_E)^2 + 2\varepsilon h^2}}{2\varepsilon}$$
+      השורשים: $r_p = 6.94\cdot10^{6}\,\text{m}$ ו-$r_a = 1.30\cdot10^{7}\,\text{m}$. **בדיקת גבולות:** כש-$\varepsilon$
+      יורדת לערך המינימלי $-\dfrac{(GM_E)^2}{2h^2} = -2.20\cdot10^{7}\,\text{J/kg}$, השורש מתאפס, ושני השורשים מתלכדים
+      במסלול המעגלי, $h^2/GM_E = 9.04\cdot10^{6}\,\text{m}$. וסכום השורשים, $GM_E/|\varepsilon|$, לא תלוי ב-$h$.
+    wrongFeedback: >-
+      בנקודת מפנה כל האנרגיה הקינטית משיקית: $\varepsilon = h^2/(2r^2) - GM_E/r$. כפלו ב-$r^2$ ופתרו משוואה ריבועית. לשני
+      השורשים משמעות: הקטן נקודת הקרבה, והגדול נקודת הריחוק.
+    commonWrong:
+      - value: 6.94e6
+        feedback: 'זה השורש הקטן, נקודת הקרבה. השאלה מבקשת את נקודת הריחוק, השורש הגדול.'
+      - value: 1.99e7
+        feedback: 'זה $GM_E/|\varepsilon|$, סכום שני השורשים, $r_p + r_a$. כדי לקבל את $r_a$ צריך לפתור את המשוואה עד הסוף.'
+      - value: 9.04e6
+        feedback: >-
+          זה $h^2/GM_E$, הרדיוס של המסלול המעגלי בעל אותו תנע זוויתי. אבל ל-$\varepsilon$ הנתונה יש יותר אנרגיה מהמינימום,
+          והמסלול נע בין שתי נקודות מפנה משני צדדיו.
+    hints:
+      - 'כתבו $\tfrac12\dot r^2 = \varepsilon - \dfrac{h^2}{2r^2} + \dfrac{GM_E}{r}$, והציבו $\dot r = 0$.'
+      - 'משוואה ריבועית ב-$r$ עם $\varepsilon < 0$: השורש הגדול הוא זה עם המינוס לפני השורש הריבועי.'

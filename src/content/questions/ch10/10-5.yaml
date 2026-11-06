@@ -1,0 +1,259 @@
+# Lesson 10.5 question bank: the comprehension ladder of "כוח ביחסות".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed by .scratch/ch10/q.ts and q2.ts with constants.ts (M_PROTON = 1.67e-27,
+# C_LIGHT = 3.0e8, E_CHARGE = 1.6e-19) and the data given in the prompts:
+#   proton, F = 1.6e-13 N, t = 5.0 μs: Ft/(mc) = 1.597, β = 0.848 (classical 1.60; Ft/mc read as γ: 0.780);
+#     x = (mc²/F)(√(1 + (Ft/mc)²) − 1) = 939.4·0.884 = 830 m (classical ½(F/m)t² = 1198 m, ct = 1500 m);
+#   electron (0.511 MeV), F = 1.6e-13 N over 2.0 m: W = 2.0 MeV, pc = √(2.511² − 0.511²) = 2.46 MeV
+#     (classical √(2mK) = 1.43, pc = W = 2.00);
+#   proton (938 MeV): W(0 → 0.90c) = 1214 MeV, W(0.90c → 0.99c) = 4497 MeV, ratio 3.70
+#     (classical 0.21; W(0 → 0.99c)/W₁ = 4.70).
+
+chapter: 10
+questions:
+  # ---------------------------------------------------------------- OBJ-10.5-1 F = dp/dt, motion under a constant force
+  - id: Q-10.5-what-grows-linearly
+    type: mc
+    objectives: [OBJ-10.5-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      גוף בעל מסה $m$ מתחיל ממנוחה, ופועל עליו כוח קבוע $F$ בכיוון קבוע. החוק השני ביחסות הוא $F = dp/dt$ עם התנע
+      היחסותי $p = \gamma mv$. איזה גודל גדל קווית עם הזמן?
+    choices:
+      - text: התנע $p$
+        correct: true
+        feedback: >-
+          נכון. מ-$F = dp/dt$ עם $F$ קבוע מקבלים $p = Ft$, בדיוק כמו אצל ניוטון. ההבדל הוא בקשר בין $p$ ל-$v$: המהירות
+          היא $v = \dfrac{Ft/m}{\sqrt{1 + (Ft/(mc))^2}}$, והיא לא קווית.
+      - text: המהירות $v$
+        feedback: >-
+          זה נכון אצל ניוטון, כש-$p = mv$. ביחסות $p = \gamma mv$ גדל קווית, ו-$\gamma$ גדל גם הוא, ולכן $v$ גדל לאט
+          יותר ויותר ושואף ל-$c$.
+        misconception: MC-10-constant-force-constant-accel
+      - text: גם התנע וגם המהירות
+        feedback: 'אם גם $p$ וגם $v$ היו קוויים בזמן, היחס ביניהם, $\gamma m$, היה קבוע. אבל $\gamma$ גדל עם המהירות.'
+        misconception: MC-10-constant-force-constant-accel
+      - text: האנרגיה הקינטית $K$
+        feedback: >-
+          קצב השינוי של האנרגיה הוא ההספק, $dE/dt = Fv$, והוא גדל עם המהירות. רק בזמנים ארוכים, כש-$v \approx c$,
+          האנרגיה גדלה בקירוב קווית.
+    hints:
+      - 'אינטגרלו את $F = dp/dt$ עם $F$ קבוע ועם $p(0) = 0$.'
+
+  - id: Q-10.5-proton-speed
+    type: numeric
+    objectives: [OBJ-10.5-1]
+    level: mid
+    prompt: >-
+      פרוטון ($m = 1.67\cdot10^{-27}\,\text{kg}$) מתחיל ממנוחה בשדה חשמלי אחיד, שמפעיל עליו כוח קבוע
+      $F = 1.6\cdot10^{-13}\,\text{N}$ בכיוון קבוע. מה מהירותו אחרי $t = 5.0\,\mu\text{s}$? ענו ביחידות של $c$
+      ($c = 3.0\cdot10^8\,\text{m/s}$).
+    answer: 0.848
+    unit: c
+    correctFeedback: >-
+      נכון. $p = Ft = 8.0\cdot10^{-19}\,\text{kg·m/s}$, ו-$mc = 5.01\cdot10^{-19}\,\text{kg·m/s}$, ולכן
+      $\gamma\beta = p/(mc) = 1.60$. מבודדים את $\beta$:
+      $$\beta = \frac{\gamma\beta}{\sqrt{1 + (\gamma\beta)^2}} = \frac{1.60}{\sqrt{1 + 1.60^2}} = 0.848$$
+    wrongFeedback: >-
+      התנע הוא $p = Ft$. כתבו $p = \gamma mv$ כ-$p/(mc) = \gamma\beta = \beta/\sqrt{1 - \beta^2}$, ובודדו את $\beta$.
+    commonWrong:
+      - value: 1.6
+        feedback: >-
+          זה $v = Ft/m$, המהירות של ניוטון, ויצא מהיר מהאור. תחת כוח קבוע התנע גדל קווית, לא המהירות.
+        misconception: MC-10-constant-force-constant-accel
+      - value: 0.78
+        feedback: >-
+          פירשתם את $p/(mc) = 1.60$ כ-$\gamma$. אבל $p/(mc) = \gamma\beta$, ולא $\gamma$: ב-$\beta$ קטן הוא כמעט אפס,
+          ו-$\gamma$ כמעט 1.
+    hints:
+      - 'חשבו את המספר חסר הממדים $Ft/(mc)$.'
+      - 'מ-$\gamma\beta = x$ מקבלים $\beta^2 = x^2(1 - \beta^2)$, כלומר $\beta = x/\sqrt{1 + x^2}$.'
+
+  - id: Q-10.5-acceleration-drops
+    type: twotier
+    objectives: [OBJ-10.5-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גוף מתחיל ממנוחה ונע תחת כוח קבוע $F$ בכיוון המהירות שלו. מה קורה לתאוצה שלו, $a = dv/dt$, ככל שהזמן עובר?
+    choices:
+      - text: היא קטנה, ושואפת לאפס.
+        correct: true
+        feedback: >-
+          נכון. בהתחלה $a = F/m$, כמו אצל ניוטון, וככל שהמהירות מתקרבת ל-$c$ התאוצה קטנה כמו $1/\gamma^3$. המהירות
+          מתקרבת ל-$c$ ולא מגיעה אליה.
+      - text: היא נשארת $F/m$.
+        feedback: >-
+          זה החוק השני של ניוטון, $F = ma$, שתקף רק כש-$v \ll c$. עם $F/m$ קבוע המהירות הייתה עוברת את $c$ אחרי זמן
+          $mc/F$.
+        misconception: MC-10-constant-force-constant-accel
+      - text: היא גדלה, כי התנע גדל מהר יותר ויותר.
+        feedback: 'התנע גדל בקצב קבוע, $dp/dt = F$, לא מהר יותר ויותר. והמהירות גדלה לאט יותר מהתנע.'
+    reasons:
+      - text: 'כשהכוח מקביל למהירות, $F = \dfrac{d(\gamma mv)}{dt} = \gamma^3ma$, ולכן $a = F/(\gamma^3m)$, ו-$\gamma$ גדל.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $\dfrac{d(\gamma v)}{dt} = \gamma^3\dfrac{dv}{dt}$, כי $\dfrac{d\gamma}{dv} = \gamma^3v/c^2$.
+      - text: הכוח קבוע, ולכן לפי $F = ma$ גם התאוצה קבועה.
+        feedback: '$F = ma$ הוא הגבול של $F = dp/dt$ כש-$\gamma \approx 1$. ביחסות התנע הוא $\gamma mv$, וגזירתו נותנת $\gamma^3ma$.'
+        misconception: MC-10-constant-force-constant-accel
+      - text: המסה של הגוף גדלה, $\gamma m$, ולכן $a = F/(\gamma m)$.
+        feedback: >-
+          המסה $m$ לא משתנה, והביטוי $F/(\gamma m)$ גם אינו נכון לכוח מקביל למהירות: גזירת $\gamma mv$ נותנת
+          $\gamma^3$, לא $\gamma$. "מסה שגדלה" מובילה כאן לחזקה הלא נכונה.
+        misconception: MC-10-relativistic-mass
+    hints:
+      - 'גזרו את $p = \gamma mv$ לפי הזמן, וזכרו ש-$\gamma$ תלוי ב-$v$.'
+
+  - id: Q-10.5-hyperbolic-distance
+    type: numeric
+    objectives: [OBJ-10.5-1]
+    level: bagrut
+    prompt: >-
+      הפרוטון מהשאלה הקודמת ($m = 1.67\cdot10^{-27}\,\text{kg}$, $F = 1.6\cdot10^{-13}\,\text{N}$, מתחיל ממנוחה) נע
+      בתנועה היפרבולית:
+      $$v(t) = \frac{Ft/m}{\sqrt{1 + \left(\dfrac{Ft}{mc}\right)^2}}$$
+      איזה מרחק הוא עובר ב-$5.0\,\mu\text{s}$ הראשונות?
+    answer: 830
+    unit: m
+    correctFeedback: >-
+      נכון. אינטגרל של $v(t)$ מ-0 עד $t$:
+      $$x(t) = \frac{mc^2}{F}\left[\sqrt{1 + \left(\frac{Ft}{mc}\right)^2} - 1\right] = 939\cdot\left(\sqrt{1 + 1.60^2} - 1\right) = 830\,\text{m}$$
+      **בדיקת גבולות:** כש-$Ft \ll mc$, $\sqrt{1 + u^2} - 1 \approx u^2/2$, ו-$x \approx \tfrac12(F/m)t^2$, תנועה בתאוצה
+      קבועה. כש-$Ft \gg mc$, $x \approx ct - mc^2/F$: הגוף נע כמעט ב-$c$, ומפגר אחרי האור במרחק קבוע.
+      ובדיקה בדרך אחרת: $Fx = (\gamma - 1)mc^2$, משפט עבודה-אנרגיה.
+    wrongFeedback: >-
+      הציבו $u = Ft/(mc)$. אז $v\,dt = \dfrac{mc^2}{F}\cdot\dfrac{u\,du}{\sqrt{1 + u^2}}$, והאינטגרל של
+      $u/\sqrt{1 + u^2}$ הוא $\sqrt{1 + u^2}$.
+    commonWrong:
+      - value: 1198
+        feedback: >-
+          זה $\tfrac12(F/m)t^2$, המרחק בתאוצה קבועה. הוא מניח שהמהירות גדלה קווית, ובסוף היא הייתה $1.6c$.
+        misconception: MC-10-constant-force-constant-accel
+      - value: 1500
+        feedback: 'זה $ct$, המרחק שהאור עובר. הפרוטון מתחיל ממנוחה ותמיד איטי מהאור, ולכן הוא עובר פחות.'
+    hints:
+      - 'הציבו $u = Ft/(mc)$ באינטגרל של $v\,dt$.'
+      - 'אפשר גם בלי אינטגרל: לפי משפט עבודה-אנרגיה, $Fx$ שווה לשינוי באנרגיה היחסותית.'
+
+  # ---------------------------------------------------------------- OBJ-10.5-2 work equals the change in E; why no body reaches c
+  - id: Q-10.5-why-not-c
+    type: mc
+    objectives: [OBJ-10.5-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מדוע אי אפשר להאיץ גוף בעל מסה עד מהירות האור, גם בכוח גדול מאוד שפועל זמן רב מאוד?
+    choices:
+      - text: העבודה הדרושה, $(\gamma - 1)mc^2$, שואפת לאינסוף כש-$v \to c$, וכוח סופי עושה עבודה סופית בזמן סופי.
+        correct: true
+        feedback: >-
+          נכון. לפי משפט עבודה-אנרגיה, העבודה של הכוח שווה לשינוי באנרגיה היחסותית. אנרגיה של גוף במהירות $c$ הייתה
+          אינסופית, ולכן אף כוח לא מביא אותו לשם. אותו דבר בתנע: $p = Ft$ סופי, ו-$\gamma mv$ אינסופי ב-$v = c$.
+      - text: אפשר, אם הכוח פועל מספיק זמן, כי $v = Ft/m$ גדל בלי גבול.
+        feedback: >-
+          $v = Ft/m$ הוא הקירוב של ניוטון. ביחסות התנע $p = Ft$ גדל בלי גבול, אבל המהירות
+          $v = \dfrac{Ft/m}{\sqrt{1 + (Ft/(mc))^2}}$ תמיד קטנה מ-$c$.
+        misconception: MC-10-constant-force-constant-accel
+      - text: כי המסה של הגוף גדלה לאינסוף, ואז הכוח כבר לא מזיז אותו.
+        feedback: >-
+          בקורס הזה המסה $m$ זהה בכל מערכת ייחוס ולא גדלה. מה שגדל בלי גבול הם התנע $\gamma mv$ והאנרגיה $\gamma mc^2$,
+          והכוח ממשיך להגדיל אותם: התנע גדל בקצב $F$, תמיד.
+        misconception: MC-10-relativistic-mass
+      - text: כי בקרבת מהירות האור הגוף פולט קרינה שמאטה אותו.
+        feedback: 'גוף ניטרלי לא פולט קרינה, וגם בלי שום הפסד הוא לא מגיע ל-$c$. הסיבה היא באנרגיה ובתנע עצמם, לא בהפסדים.'
+    hints:
+      - 'כמה עבודה צריך כדי להביא גוף ממנוחה למהירות $v$? מה קורה לה כש-$v \to c$?'
+
+  - id: Q-10.5-electron-work
+    type: numeric
+    objectives: [OBJ-10.5-2]
+    level: mid
+    prompt: >-
+      אלקטרון ($m_ec^2 = 0.511\,\text{MeV}$) מתחיל ממנוחה, וכוח קבוע $F = 1.6\cdot10^{-13}\,\text{N}$ פועל עליו לאורך
+      $2.0\,\text{m}$ בכיוון התנועה. מה התנע שלו בסוף הדרך? ענו ב-$\text{MeV}/c$.
+      ($1\,\text{MeV} = 1.6\cdot10^{-13}\,\text{J}$.)
+    answer: 2.46
+    unit: MeV/c
+    correctFeedback: >-
+      נכון. העבודה $W = Fd = 3.2\cdot10^{-13}\,\text{J} = 2.0\,\text{MeV}$, והיא שווה לשינוי באנרגיה היחסותית:
+      $E = 0.511 + 2.0 = 2.511\,\text{MeV}$. לכן $pc = \sqrt{E^2 - (m_ec^2)^2} = \sqrt{2.511^2 - 0.511^2} = 2.46\,\text{MeV}$.
+    wrongFeedback: >-
+      משפט עבודה-אנרגיה ביחסות: $W = \Delta E$, עם $E = \gamma mc^2$. מצאו את $E$ בסוף, ואז את $p$ מתוך
+      $E^2 = (pc)^2 + (mc^2)^2$.
+    commonWrong:
+      - value: 1.43
+        feedback: 'זה $\sqrt{2mK}$, הקשר של ניוטון בין תנע לאנרגיה קינטית. כאן $K$ כמעט פי ארבעה מ-$mc^2$, והוא לא תקף.'
+        misconception: MC-10-classical-ke
+      - value: 2
+        feedback: >-
+          $pc = W$ נכון רק לחלקיק חסר מסה. לאלקטרון $E = W + m_ec^2$, ו-$pc = \sqrt{E^2 - (m_ec^2)^2}$, קצת יותר מ-$W$.
+    hints:
+      - 'המירו את העבודה ל-$\text{MeV}$: חלקו ב-$1.6\cdot10^{-13}\,\text{J/MeV}$.'
+
+  - id: Q-10.5-energy-keeps-growing
+    type: twotier
+    objectives: [OBJ-10.5-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      כוח קבוע $F$ פועל זמן רב מאוד על פרוטון, בכיוון התנועה שלו. מה קורה לאנרגיה היחסותית של הפרוטון כשהמהירות שלו
+      כבר קרובה מאוד ל-$c$?
+    choices:
+      - text: היא ממשיכה לגדול, בקצב שקרוב ל-$Fc$.
+        correct: true
+        feedback: >-
+          נכון. המהירות כמעט לא משתנה, אבל האנרגיה והתנע ממשיכים לגדול בלי גבול. מאיצי חלקיקים חיים בדיוק בתחום הזה:
+          הם מוסיפים אנרגיה, לא מהירות.
+      - text: היא כמעט מפסיקה לגדול, כי המהירות כמעט לא משתנה.
+        feedback: >-
+          זה נכון אם האנרגיה הייתה $\tfrac12mv^2$. ביחסות $E = \gamma mc^2$, ו-$\gamma$ גדל מאוד גם כש-$v$ משתנה מעט.
+        misconception: MC-10-classical-ke
+      - text: היא מפסיקה לגדול ברגע שהמהירות מגיעה ל-$c$.
+        feedback: 'גוף בעל מסה לא מגיע ל-$c$ אף פעם, ולכן אין רגע כזה. האנרגיה גדלה כל הזמן.'
+        misconception: MC-10-constant-force-constant-accel
+    reasons:
+      - text: '$dE/dt = Fv$, ההספק של הכוח, ו-$v \to c$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. משפט עבודה-אנרגיה, $dE = F\,dx$, מחולק ב-$dt$ נותן $dE/dt = Fv$. אותו דבר מתקבל מ-$dE/dp = v$
+          ומ-$dp/dt = F$.
+      - text: 'האנרגיה הקינטית תלויה רק במהירות, $\tfrac12mv^2$, והמהירות כבר כמעט קבועה.'
+        feedback: 'האנרגיה הקינטית היא $(\gamma - 1)mc^2$, ו-$\gamma$ שואף לאינסוף כש-$v \to c$. שינוי זעיר במהירות הוא שינוי גדול באנרגיה.'
+        misconception: MC-10-classical-ke
+      - text: האנרגיה גדלה רק כשהתאוצה גדולה, והתאוצה כבר כמעט אפס.
+        feedback: 'קצב העלייה של האנרגיה הוא $Fv$, ולא תלוי בתאוצה. התאוצה קטנה כי $\gamma$ גדול, לא כי הכוח מפסיק לעשות עבודה.'
+    hints:
+      - 'כמה עבודה עושה הכוח בזמן $dt$, כשהגוף נע במהירות $v$?'
+
+  - id: Q-10.5-last-percent
+    type: numeric
+    objectives: [OBJ-10.5-2]
+    level: bagrut
+    prompt: >-
+      מאיץ מביא פרוטון ($mc^2 = 938\,\text{MeV}$) ממנוחה ל-$0.90c$ בעבודה $W_1$, ואחר כך מ-$0.90c$ ל-$0.99c$ בעבודה
+      נוספת $W_2$. מה היחס $W_2/W_1$?
+    answer: 3.70
+    unit: ''
+    correctFeedback: >-
+      נכון. לפי משפט עבודה-אנרגיה, $W = \Delta E = mc^2\,\Delta\gamma$. $\gamma(0.90) = 2.29$ ו-$\gamma(0.99) = 7.09$, ולכן
+      $$\frac{W_2}{W_1} = \frac{7.09 - 2.29}{2.29 - 1} = 3.70$$
+      $W_1 = 1.21\,\text{GeV}$ ו-$W_2 = 4.50\,\text{GeV}$: תוספת של $10\%$ במהירות דורשת פי $3.7$ יותר עבודה.
+      **בדיקת גבולות:** במהירויות נמוכות $\Delta\gamma \approx \Delta(\beta^2)/2$, והיחס חוזר לזה של ניוטון,
+      $(v_2^2 - v_1^2)/v_1^2$. כש-$v_2 \to c$, $\gamma(v_2) \to \infty$ ו-$W_2 \to \infty$.
+    wrongFeedback: >-
+      העבודה שווה לשינוי באנרגיה היחסותית, $(\gamma_{\text{end}} - \gamma_{\text{start}})mc^2$. חשבו את $\gamma$ בשלוש
+      המהירויות: $0$, $0.90c$ ו-$0.99c$.
+    commonWrong:
+      - value: 0.21
+        feedback: >-
+          זה היחס של ניוטון, $(0.99^2 - 0.90^2)/0.90^2$. הוא נותן שהשלב השני זול יותר, אבל ביחסות האנרגיה שואפת לאינסוף
+          כש-$v \to c$, והשלב השני יקר בהרבה.
+        misconception: MC-10-classical-ke
+      - value: 4.70
+        feedback: 'זה היחס בין העבודה ממנוחה עד $0.99c$ לבין $W_1$. $W_2$ מתחיל ב-$0.90c$: הפחיתו את $\gamma(0.90)$, לא 1.'
+    hints:
+      - 'העבודה מ-$v_1$ ל-$v_2$ היא $\left[\gamma(v_2) - \gamma(v_1)\right]mc^2$.'

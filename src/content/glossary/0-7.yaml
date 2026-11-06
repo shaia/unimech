@@ -1,0 +1,30 @@
+# Terms first defined in lesson 0.7. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: polar-coordinates
+  term: קואורדינטות קוטביות
+  en: polar coordinates
+  symbol: (r, θ)
+  definition: תיאור של נקודה במישור במרחק r מהראשית ובזווית θ מהציר x, עם x = r cos θ ו-y = r sin θ. וקטורי היחידה r̂ ו-θ̂ משתנים מנקודה לנקודה, ואלמנט השטח הוא r dr dθ.
+  lesson: '0.7'
+
+- id: cylindrical-coordinates
+  term: קואורדינטות גליליות
+  en: cylindrical coordinates
+  symbol: (s, φ, z)
+  definition: קואורדינטות קוטביות במישור xy, (s, φ), ועוד הגובה z. מתאימות לגופים עם ציר סימטריה, ואלמנט הנפח הוא s ds dφ dz.
+  lesson: '0.7'
+
+- id: spherical-coordinates
+  term: קואורדינטות כדוריות
+  en: spherical coordinates
+  symbol: (r, θ, φ)
+  definition: תיאור של נקודה במרחב במרחק r מהראשית, בזווית θ מהציר z ובזווית φ סביבו. אלמנט הנפח הוא r² sin θ dr dθ dφ, ולקליפה כדורית dV = 4πr² dr.
+  lesson: '0.7'
+
+- id: gradient
+  term: גרדיאנט
+  en: gradient
+  symbol: ∇f
+  definition: הווקטור שרכיביו הם הנגזרות החלקיות של פונקציה סקלרית, ∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z). הוא מצביע בכיוון שבו f עולה הכי מהר, גודלו הוא קצב העלייה הזה, והוא ניצב לקווי הגובה (משטחי הגובה) של f.
+  lesson: '0.7'

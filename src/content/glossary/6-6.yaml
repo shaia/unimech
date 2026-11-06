@@ -1,0 +1,24 @@
+# Terms first defined in lesson 6.6. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). Vis-viva is not in the course term
+# table; its id carries the chapter prefix c6-.
+
+- id: escape-velocity
+  term: מהירות מילוט
+  en: escape velocity
+  symbol: v_esc
+  unit: m/s
+  definition: המהירות המינימלית שבה גוף שנמצא במרחק r ממסה M מגיע לאינסוף בלי הנעה נוספת, v_esc = √(2GM/r). בה האנרגיה הכוללת אפס. היא לא תלויה במסה של הגוף ולא בכיוון התנועה, והיא גדולה פי √2 מהמהירות של מסלול מעגלי באותו מרחק.
+  reject: [מהירות בריחה]
+  lesson: '6.6'
+
+- id: c6-vis-viva
+  term: משוואת vis-viva
+  en: vis-viva equation
+  definition: הקשר בין גודל המהירות של גוף במסלול כבידה למרחק שלו מהמרכז, v² = GM(2/r − 1/a), שנובע משימור האנרגיה עם E = −GMm/(2a). כש-r = a מתקבלת המהירות המעגלית, וכש-a → ∞ מהירות המילוט.
+  lesson: '6.6'
+
+- id: hohmann-transfer
+  term: מסלול הוהמן
+  en: Hohmann transfer orbit
+  definition: מעבר בין שני מסלולים מעגליים באותו מישור לאורך חצי אליפסה שמשיקה לשניהם, שנקודת הקרבה שלה על המעגל הפנימי ונקודת הריחוק על החיצוני, עם a = (r₁ + r₂)/2. הוא דורש שתי דחיפות קצרות בכיוון התנועה, ובין מסלולים שהיחס ביניהם קטן מ-11.9 הוא המעבר שצורך הכי מעט שינוי מהירות.
+  lesson: '6.6'

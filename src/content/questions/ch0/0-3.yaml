@@ -1,0 +1,277 @@
+# Lesson 0.3 question bank: the comprehension ladder of "נגזרות וקירובים".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts (constants from src/physics/constants.ts):
+#   x = 2t³ − 3t² + 4 at t = 2 s: v = 12 m/s (x = 8 m, a = 18 m/s²);
+#   r = √(d² + v²t²), d = 30 m, v = 20 m/s, t = 2 s: r = 50 m, dr/dt = 16 m/s (32 without the ½, 0.01 without the inner derivative);
+#   ladder L = 5 m, x = 3 m, u = 0.6 m/s: top speed 0.45 m/s (0.8 with the ratio inverted);
+#   sin θ ≈ θ is 1% off at θ = 13.99° exactly, 14.0° from θ²/6 = 0.01 (0.245 rad; 8.10° from θ²/2; 22.4° from θ³/6 = 0.01);
+#   g at h = 10 km with R_EARTH: Δg ≈ 2gh/R = 0.0308 m/s² (exact 0.0307; 0.0154 with n = −1);
+#   v = 7.8 km/s, C_LIGHT: γ − 1 ≈ v²/(2c²) = 3.38e-10 (β² = 6.76e-10, β/2 = 1.30e-5);
+#   0.99^100 = 0.366, e^(−1) = 0.368.
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.3-1 derivatives in time, the chain rule, vectors
+  - id: Q-0.3-velocity-from-x
+    type: numeric
+    objectives: [OBJ-0.3-1]
+    level: basic
+    prompt: >-
+      המקום של גוף על ציר הוא $x(t) = 2t^3 - 3t^2 + 4$, עם $x$ במטרים ו-$t$ בשניות. מה המהירות שלו ברגע
+      $t = 2\,\text{s}$?
+    answer: 12
+    unit: m/s
+    correctFeedback: 'נכון: $v = \dfrac{dx}{dt} = 6t^2 - 6t$, וב-$t = 2\,\text{s}$: $24 - 12 = 12\,\text{m/s}$.'
+    wrongFeedback: 'המהירות היא הנגזרת של המקום לפי הזמן. גזרו כל איבר: $\dfrac{d}{dt}t^n = nt^{n-1}$, והנגזרת של קבוע היא אפס.'
+    commonWrong:
+      - value: 8
+        feedback: 'זה המקום $x(2)$, לא המהירות. קודם גוזרים, ורק אחר כך מציבים $t = 2$.'
+      - value: 18
+        feedback: 'זו התאוצה, הנגזרת השנייה: $12t - 6$. המהירות היא הנגזרת הראשונה.'
+      - value: 4
+        feedback: 'זה $x(2)/2$, מהירות ממוצעת מהראשית, ולא המהירות **הרגעית**. וגם ב-$t = 0$ הגוף לא היה בראשית, אלא ב-$x = 4\,\text{m}$.'
+    hints:
+      - '$\dfrac{d}{dt}(2t^3) = 6t^2$.'
+
+  - id: Q-0.3-accel-direction
+    type: vector
+    objectives: [OBJ-0.3-1]
+    level: basic
+    prompt: >-
+      וקטור המקום של כדור הוא $\vec r(t) = \left(3t,\ 4t - 5t^2\right)$ במטרים, עם $t$ בשניות, $x$ ימינה ו-$y$
+      למעלה. מה הכיוון של וקטור התאוצה שלו ברגע $t = 1\,\text{s}$?
+    answer: s
+    correctFeedback: >-
+      נכון. גוזרים כל רכיב בנפרד: $\vec v = (3,\ 4 - 10t)$ ו-$\vec a = (0,\ -10)\,\text{m/s}^2$, כלפי מטה, באותו
+      גודל בכל רגע. זו זריקה, עם $g = 10\,\text{m/s}^2$ במודל הזה.
+    wrong:
+      - dir: se
+        feedback: 'זה בערך הכיוון של **המהירות** ב-$t = 1\,\text{s}$, $\vec v = (3, -6)$. התאוצה היא הנגזרת של המהירות, ולא המהירות עצמה.'
+      - dir: n
+        feedback: 'הרכיב $4t$ גדל, אבל $-5t^2$ מנצח בנגזרת השנייה: $\dfrac{d^2}{dt^2}(4t - 5t^2) = -10$.'
+      - dir: e
+        feedback: 'הרכיב $x = 3t$ קווי בזמן, ולכן הנגזרת השנייה שלו אפס: אין תאוצה ימינה.'
+    wrongFeedback: 'גזרו את כל אחד מהרכיבים פעמיים: $a_x = \ddot x$ ו-$a_y = \ddot y$.'
+
+  - id: Q-0.3-circle-accel
+    type: twotier
+    objectives: [OBJ-0.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      נקודה נעה על מעגל: $\vec r(t) = R\left(\cos\omega t,\ \sin\omega t\right)$, עם $R$ ו-$\omega$ קבועים. גודל
+      המהירות שלה קבוע, $R\omega$. האם התאוצה שלה אפס?
+    choices:
+      - text: 'לא. התאוצה בגודל $R\omega^2$, ומצביעה אל מרכז המעגל.'
+        correct: true
+        feedback: 'נכון. $\vec a = \ddot{\vec r} = -\omega^2\vec r$: בכיוון הפוך למקום, כלומר אל המרכז.'
+      - text: כן, כי גודל המהירות קבוע.
+        feedback: >-
+          גודל המהירות קבוע, אבל **הכיוון** שלה משתנה כל הזמן. תאוצה היא הנגזרת של וקטור המהירות, והיא שונה מאפס
+          כשהכיוון משתנה, גם בלי שינוי בגודל.
+        misconception: MC-0-constant-speed-no-acceleration
+      - text: 'לא. התאוצה בגודל $R\omega^2$, ומשיקה למעגל.'
+        feedback: 'תאוצה משיקה משנה את **גודל** המהירות, והוא כאן קבוע. חשבו את $\ddot{\vec r}$ רכיב-רכיב, וקבלו $-\omega^2\vec r$.'
+    reasons:
+      - text: 'גוזרים כל רכיב בנפרד, ומקבלים $\ddot{\vec r} = -\omega^2R\left(\cos\omega t,\ \sin\omega t\right) = -\omega^2\vec r \ne 0$.'
+        correct: true
+        feedback: 'זה הנימוק. נגזרת של וקטור היא וקטור הנגזרות של הרכיבים שלו, והרכיבים כאן משתנים.'
+      - text: הנגזרת של וקטור היא הנגזרת של הגודל שלו, והגודל של המהירות קבוע.
+        feedback: >-
+          לא: $\dfrac{d}{dt}|\vec v|$ ו-$\left|\dfrac{d\vec v}{dt}\right|$ הם שני דברים שונים. הראשון אפס כאן, השני
+          $R\omega^2$.
+        misconception: MC-0-constant-speed-no-acceleration
+      - text: הנקודה נדחפת החוצה מהמעגל, ולכן התאוצה מצביעה החוצה.
+        feedback: 'הנגזרת השנייה של $\vec r$ היא $-\omega^2\vec r$, עם מינוס: פנימה. אין כאן כוח שדוחף החוצה.'
+    hints:
+      - '$\dfrac{d}{dt}\cos\omega t = -\omega\sin\omega t$, לפי כלל השרשרת.'
+
+  - id: Q-0.3-car-distance
+    type: numeric
+    objectives: [OBJ-0.3-1]
+    level: mid
+    prompt: >-
+      מכונית נוסעת בכביש ישר במהירות קבועה $v = 20\,\text{m/s}$. צופה עומד במרחק $d = 30\,\text{m}$ מהכביש.
+      ב-$t = 0$ המכונית בנקודה הקרובה ביותר אליו, ולכן המרחק שלה ממנו הוא $r(t) = \sqrt{d^2 + v^2t^2}$. בקצב
+      של כמה מטרים לשנייה גדל המרחק ברגע $t = 2\,\text{s}$?
+    answer: 16
+    unit: m/s
+    correctFeedback: >-
+      נכון. בכלל השרשרת, $\dfrac{dr}{dt} = \dfrac{1}{2\sqrt{d^2 + v^2t^2}}\cdot2v^2t = \dfrac{v^2t}{r}$. ב-$t = 2\,\text{s}$:
+      $r = 50\,\text{m}$, ו-$\dfrac{dr}{dt} = \dfrac{400\cdot2}{50} = 16\,\text{m/s}$. **בדיקת גבולות:** ב-$t = 0$ הקצב
+      אפס (המכונית נעה ניצב לקו אל הצופה), וכש-$t \to \infty$ הוא שואף ל-$v$ (המכונית מתרחקת כמעט לאורך הקו).
+    wrongFeedback: 'כתבו $r = u^{1/2}$ עם $u = d^2 + v^2t^2$. אז $\dfrac{dr}{dt} = \dfrac{1}{2}u^{-1/2}\cdot\dfrac{du}{dt}$.'
+    commonWrong:
+      - value: 20
+        feedback: >-
+          זו המהירות של המכונית לאורך הכביש. המרחק מהצופה גדל לאט יותר, כי רק הרכיב של המהירות לאורך הקו אל
+          הצופה מרחיק אותה ממנו.
+      - value: 32
+        feedback: 'שכחתם את ה-$\tfrac12$ מהנגזרת של השורש: $\dfrac{d}{du}\sqrt u = \dfrac{1}{2\sqrt u}$.'
+      - value: 0.01
+        feedback: >-
+          זה $\dfrac{1}{2\sqrt u}$ בלבד: גזרתם את השורש ושכחתם לכפול בנגזרת של מה שבתוכו, $\dfrac{du}{dt} = 2v^2t$.
+          זה כלל השרשרת.
+        misconception: MC-0-chain-rule-forgotten
+      - value: 25
+        feedback: 'זה $r/t$, ממוצע מסוג אחר, ולא קצב השינוי של $r$ ברגע $t = 2\,\text{s}$.'
+    hints:
+      - 'הפונקציה החיצונית היא שורש, והפנימית $d^2 + v^2t^2$.'
+
+  - id: Q-0.3-ladder
+    type: numeric
+    objectives: [OBJ-0.3-1]
+    level: bagrut
+    prompt: >-
+      סולם באורך $L = 5\,\text{m}$ נשען על קיר אנכי. מושכים את התחתית שלו מהקיר במהירות קבועה
+      $u = 0.6\,\text{m/s}$, והראש שלו מחליק כלפי מטה לאורך הקיר. מה גודל המהירות של ראש הסולם ברגע שהתחתית
+      במרחק $x = 3\,\text{m}$ מהקיר?
+    answer: 0.45
+    unit: m/s
+    correctFeedback: >-
+      נכון. הגובה של הראש הוא $y = \sqrt{L^2 - x^2}$, ובכלל השרשרת
+      $\dfrac{dy}{dt} = \dfrac{-x}{\sqrt{L^2 - x^2}}\cdot\dfrac{dx}{dt} = -\dfrac{3}{4}\cdot0.6 = -0.45\,\text{m/s}$: יורד
+      ב-$0.45\,\text{m/s}$. **בדיקת גבולות:** כש-$x \to 0$ הראש כמעט לא זז, וכש-$x \to L$ הביטוי מתבדר. במציאות
+      הסולם מתנתק מהקיר לפני כן, והמודל, שבו הראש צמוד לקיר, מפסיק לתאר אותו.
+    wrongFeedback: 'כתבו את $y$ כפונקציה של $x$, וגזרו לפי הזמן בכלל השרשרת: $\dfrac{dy}{dt} = \dfrac{dy}{dx}\cdot\dfrac{dx}{dt}$.'
+    commonWrong:
+      - value: 0.6
+        feedback: >-
+          הסולם קשיח, אבל זה לא אומר ששני הקצוות נעים באותה מהירות: רק האורך $L$ קבוע. גזרו את
+          $x^2 + y^2 = L^2$ ותקבלו $x\dot x + y\dot y = 0$.
+      - value: 0.8
+        feedback: 'הפכתם את היחס: מ-$x\dot x + y\dot y = 0$ מקבלים $|\dot y| = \dfrac{x}{y}\dot x = \dfrac{3}{4}\cdot0.6$, ולא $\dfrac{4}{3}\cdot0.6$.'
+    hints:
+      - 'ברגע הזה הראש בגובה $\sqrt{25 - 9} = 4\,\text{m}$.'
+      - 'אפשר לגזור ישר את $x^2 + y^2 = L^2$ לפי הזמן.'
+
+  # ---------------------------------------------------------------- OBJ-0.3-2 Taylor expansions and their validity
+  - id: Q-0.3-small-angle
+    type: mc
+    objectives: [OBJ-0.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      במשוואת התנועה של מטוטלת מופיע $\sin\theta$, כאשר $\theta$ זווית הסטייה מהאנך. מה פיתוח טיילור מסדר ראשון
+      של $\sin\theta$ סביב $\theta = 0$?
+    choices:
+      - text: $\sin\theta \approx \theta$, כש-$\theta$ ברדיאנים
+        correct: true
+        feedback: >-
+          נכון. $\sin0 = 0$ ו-$\cos0 = 1$, ולכן $\sin\theta \approx 0 + 1\cdot\theta$. האיבר הבא הוא $-\theta^3/6$,
+          ולכן הקירוב טוב במיוחד: אין לו תיקון מסדר שני.
+      - text: $\sin\theta \approx \theta$, כש-$\theta$ במעלות
+        feedback: >-
+          הנגזרת $\dfrac{d}{d\theta}\sin\theta = \cos\theta$ נכונה רק ברדיאנים. אם מציבים את הזווית במעלות, הקירוב
+          נותן $\sin10^\circ \approx 10$, והערך האמיתי $0.174$. ברדיאנים $10^\circ = 0.175\,\text{rad}$, והקירוב מצוין.
+        misconception: MC-0-small-angle-degrees
+      - text: $\sin\theta \approx 1$
+        feedback: '$\sin0 = 0$, ולא 1. האיבר מסדר אפס הוא הערך בנקודה, אפס. אולי חשבתם על $\cos\theta \approx 1$.'
+      - text: $\sin\theta \approx \theta - \dfrac{\theta^3}{6}$
+        feedback: 'זה נכון, אבל זה פיתוח מסדר **שלישי**. בסדר ראשון שומרים רק את האיבר הקווי.'
+    hints:
+      - 'פיתוח מסדר ראשון: $f(\theta) \approx f(0) + f\,''(0)\,\theta$.'
+
+  - id: Q-0.3-angle-one-percent
+    type: numeric
+    objectives: [OBJ-0.3-2]
+    level: mid
+    prompt: >-
+      הקירוב $\sin\theta \approx \theta$ מתחיל לשגות כשהזווית גדלה. בעזרת האיבר הבא בפיתוח,
+      $\sin\theta \approx \theta - \dfrac{\theta^3}{6}$, מצאו מאיזו זווית בערך השגיאה **היחסית** של הקירוב,
+      $\dfrac{\theta - \sin\theta}{\sin\theta}$, מגיעה ל-1%. ענו במעלות.
+    answer: 14
+    unit: '°'
+    correctFeedback: >-
+      נכון. $\dfrac{\theta - \sin\theta}{\sin\theta} \approx \dfrac{\theta^3/6}{\theta} = \dfrac{\theta^2}{6}$, ו-$\dfrac{\theta^2}{6} = 0.01$
+      נותן $\theta = \sqrt{0.06} = 0.245\,\text{rad} \approx 14^\circ$. החישוב המדויק נותן $13.99^\circ$. לכן "זווית קטנה"
+      במטוטלת היא עד כ-$15^\circ$, לא רק זוויות זעירות.
+    wrongFeedback: 'חלקו את האיבר הראשון שהזנחתם, $\theta^3/6$, בגודל עצמו, $\theta$. השוו ל-$0.01$, ופתרו ברדיאנים.'
+    commonWrong:
+      - value: 0.245
+        feedback: 'זו הזווית ברדיאנים. התבקשתם מעלות: $0.245\cdot\dfrac{180}{\pi} \approx 14^\circ$.'
+      - value: 8.1
+        feedback: 'השוויתם $\theta^2/2 = 0.01$. זה האיבר של $\cos\theta$. בסינוס האיבר שמזניחים הוא $\theta^3/6$.'
+      - value: 22.4
+        feedback: 'השוויתם את השגיאה **המוחלטת** $\theta^3/6$ ל-$0.01$. השגיאה היחסית היא השגיאה חלקי הגודל, $\theta^2/6$.'
+    hints:
+      - 'השגיאה היחסית היא בקירוב $\dfrac{\theta^3/6}{\theta}$.'
+
+  - id: Q-0.3-g-altitude
+    type: numeric
+    objectives: [OBJ-0.3-2]
+    level: mid
+    prompt: >-
+      תאוצת הכובד בגובה $h$ מעל פני כדור הארץ היא $g(h) = \dfrac{g}{\left(1 + h/R\right)^2}$, עם
+      $g = 9.8\,\text{m/s}^2$ ו-$R = 6.37\cdot10^6\,\text{m}$. בעזרת הקירוב $(1 + x)^n \approx 1 + nx$, בכמה קטנה
+      תאוצת הכובד בגובה טיסה של $10\,\text{km}$?
+    answer: 0.0308
+    unit: m/s²
+    correctFeedback: >-
+      נכון. עם $n = -2$ ו-$x = h/R$: $g(h) \approx g\left(1 - \dfrac{2h}{R}\right)$, ולכן
+      $\Delta g = \dfrac{2gh}{R} = \dfrac{2\cdot9.8\cdot10^4}{6.37\cdot10^6} = 0.0308\,\text{m/s}^2$, ירידה של $0.3\%$.
+      החישוב המדויק נותן $0.0307$: הקירוב טוב כי $x = 1.6\cdot10^{-3}$.
+    wrongFeedback: 'כתבו $g(h) = g\left(1 + h/R\right)^{-2}$, כלומר $n = -2$, ופתחו לסדר ראשון ב-$h/R$.'
+    commonWrong:
+      - value: 0.0154
+        feedback: 'השתמשתם ב-$n = -1$. הכובד יורד כמו $1/r^2$, ולכן המעריך $-2$ והירידה כפולה.'
+      - value: 9.77
+        feedback: 'זה $g(h)$ עצמו. התבקשתם בכמה הוא **קטן**: $g - g(h)$.'
+    hints:
+      - '$x = h/R = 10^4/(6.37\cdot10^6)$, ו-$n = -2$.'
+
+  - id: Q-0.3-gamma-satellite
+    type: numeric
+    objectives: [OBJ-0.3-2]
+    level: bagrut
+    prompt: >-
+      בתורת היחסות מופיע הגורם $\gamma = \left(1 - v^2/c^2\right)^{-1/2}$. לוויין נע במהירות
+      $v = 7.8\,\text{km/s}$, ו-$c = 3.0\cdot10^8\,\text{m/s}$. מחשבון שמציג עשר ספרות מראה כאן $\gamma = 1$. חשבו
+      בעזרת הקירוב $(1 + x)^n \approx 1 + nx$ את ההפרש $\gamma - 1$.
+    answer: 3.38e-10
+    unit: ''
+    correctFeedback: >-
+      נכון. עם $x = -v^2/c^2$ ו-$n = -\tfrac12$: $\gamma \approx 1 + \dfrac{v^2}{2c^2}$, ולכן
+      $\gamma - 1 = \dfrac{(7.8\cdot10^3)^2}{2\cdot(3.0\cdot10^8)^2} = 3.38\cdot10^{-10}$. **בדיקת גבולות:** כפול
+      $mc^2$, האנרגיה הקינטית היחסותית $(\gamma - 1)mc^2$ נותנת $\tfrac12mv^2$, האנרגיה של ניוטון. זה הגבול הלא
+      יחסותי שפרק 10 בודק.
+    wrongFeedback: 'זהו את $x$ ואת $n$: $x = -v^2/c^2$, ו-$n = -\tfrac12$. אז $\gamma - 1 \approx nx$.'
+    commonWrong:
+      - value: 6.76e-10
+        feedback: 'זה $v^2/c^2$ עצמו. שכחתם לכפול ב-$n$: $nx = \left(-\tfrac12\right)\left(-v^2/c^2\right)$.'
+      - value: 1.3e-5
+        feedback: 'זה $\dfrac{v}{2c}$. בתוך הסוגריים יש $v^2/c^2$: המהירות בריבוע.'
+      - value: -3.38e-10
+        feedback: 'הסימן הפוך: $\gamma > 1$ תמיד. עם $n = -\tfrac12$ ו-$x < 0$, המכפלה $nx$ חיובית.'
+    hints:
+      - 'כתבו $\gamma = (1 + x)^n$. מה $x$ ומה $n$?'
+
+  - id: Q-0.3-damping-cycles
+    type: mc
+    objectives: [OBJ-0.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      האמפליטודה של מתנד עם ריסון חלש קטנה בכל מחזור בחלק קטן $\varepsilon = 0.01$ מערכה, ולכן אחרי $N$ מחזורים
+      היא $A_N = A_0(1 - \varepsilon)^N$. סטודנט מקרב $(1 - \varepsilon)^N \approx 1 - N\varepsilon$ ומחשב את
+      האמפליטודה אחרי $N = 100$ מחזורים. מה נכון?
+    choices:
+      - text: 'הקירוב נכשל: הוא דורש $N\varepsilon \ll 1$, ולא רק $\varepsilon \ll 1$. הוא נותן אפס, והערך האמיתי $0.366\,A_0$.'
+        correct: true
+        feedback: >-
+          נכון. האיבר הבא בפיתוח הוא $\dfrac{N(N-1)}{2}\varepsilon^2 \approx \dfrac{(N\varepsilon)^2}{2}$, והוא קטן מהאיבר
+          הקווי רק כש-$N\varepsilon \ll 1$. כאן $N\varepsilon = 1$. התשובה הנכונה קרובה ל-$e^{-N\varepsilon} = e^{-1} = 0.368$.
+      - text: הקירוב טוב, כי $\varepsilon = 0.01$ קטן מאוד לעומת 1.
+        feedback: >-
+          $\varepsilon$ אכן קטן, אבל הוא מוכפל ב-$N$. המעריך הגדול מגדיל את האיברים הבאים בפיתוח: הקירוב טוב רק כש-$N\varepsilon$
+          קטן. אחרי 100 מחזורים הקירוב נותן אמפליטודה אפס, והמתנד עדיין זז.
+        misconception: MC-0-small-x-enough
+      - text: 'הקירוב נכשל רק כי $\varepsilon$ לא קטן מספיק. עם $\varepsilon = 0.001$ ו-$N = 1000$ הוא היה טוב.'
+        feedback: 'גם שם $N\varepsilon = 1$, והקירוב נכשל באותה מידה. מה שקובע הוא המכפלה $N\varepsilon$.'
+        misconception: MC-0-small-x-enough
+      - text: הקירוב מדויק, כי $N$ מספר שלם.
+        feedback: 'בפיתוח הבינומי עם $N$ שלם יש $N + 1$ איברים. הקירוב זורק את כולם חוץ משניים, והשגיאה גדולה כשהם לא קטנים.'
+    hints:
+      - 'כתבו גם את האיבר מסדר שני בפיתוח: $\dfrac{N(N-1)}{2}\varepsilon^2$. מתי הוא קטן מ-$N\varepsilon$?'

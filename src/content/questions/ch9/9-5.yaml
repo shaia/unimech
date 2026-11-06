@@ -1,0 +1,316 @@
+# Lesson 9.5 question bank: the comprehension ladder of "מרחב-זמן ודיאגרמות מינקובסקי".
+# Conventions in every prompt: s² = c²Δt² − Δx²; a Minkowski diagram has x to the right and ct up, so
+# light runs at 45°; S′ moves at +v along x. Distances are often in light-seconds (or light-minutes) and
+# times in seconds (or minutes), so c = 1 in those units.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (C_LIGHT = 3.0e8), .scratch/ch9/nums.ts:
+#   Δt = 5.0 s, Δx = 9.0e8 m = 3 light-s: s² = 16 (light-s)², proper time 4.00 s (wrong √34 = 5.83, 5.00);
+#   axes tilt at β = 0.6: atan 0.6 = 31.0° (wrong 90° − 31.0° = 59.0°, asin 0.6 = 36.9°);
+#   A → B: Δx = 10 light-min, Δt = 6.0 min, s² = −64; β = 0.8 (γ = 5/3): Δt′ = γ(Δt − βΔx) = −3.33 min,
+#   Δx′ = 8.67 light-min (check 8.67² − 3.33² = 64); wrong −2.00 (no γ), +23.3 (sign), 6.00 (t′ = t);
+#   P = (x, ct) = (3, 5) light-s, β = 0.6: x′ = 0, ct′ = γ(5 − 1.8) = 4.00 light-s = √(25 − 9)
+#   (wrong ruler length √34 = 5.83, γ·5 = 6.25); P = (4, 2) lies on ct = 0.5 x, the x′ axis of β = 0.5;
+#   rank at β = 0.5: ct − 0.5x = 2 (P1), 0.5 (P2), 2 (P3), 1 (P4) → [P1 = P3], P4, P2.
+
+chapter: 9
+questions:
+  # ---------------------------------------------------------------- OBJ-9.5-1 interval, classification, causality
+  - id: Q-9.5-invariant
+    type: mc
+    objectives: [OBJ-9.5-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      שני מאורעות נמדדים על ידי צופים בכמה מערכות ייחוס אינרציאליות שנעות זו ביחס לזו לאורך $x$. על איזה גודל
+      **כולם** מסכימים?
+    choices:
+      - text: $s^2 = c^2\Delta t^2 - \Delta x^2$
+        correct: true
+        feedback: >-
+          נכון. האינטרוול זהה בכל המערכות. אפשר לבדוק זאת בהצבה של טרנספורמציית לורנץ: האיבר המעורב
+          $2\gamma^2 v\Delta x\Delta t$ מופיע עם מינוס גם ב-$c^2\Delta t'^2$ וגם ב-$\Delta x'^2$, ומתבטל בהפרש, ונשאר $\gamma^2(1 - \beta^2)\left(c^2\Delta t^2 - \Delta x^2\right)$, כלומר אותו $s^2$.
+      - text: $\Delta x^2 + c^2\Delta t^2$
+        feedback: >-
+          זה "פיתגורס" במרחב-זמן, והוא משתנה ממערכת למערכת. במערכת שבה שני המאורעות באותו מקום, למשל, הוא $c^2\Delta\tau^2$,
+          ובמערכת אחרת גדול ממנו. הגודל הקבוע הוא ההפרש, עם מינוס.
+        misconception: MC-9-euclidean-interval
+      - text: הזמן $\Delta t$ ביניהם.
+        feedback: 'הזמן בין מאורעות תלוי במערכת: זו התארכות הזמן, ובמאורעות במקומות שונים גם יחסיות הבו-זמניות.'
+        misconception: MC-9-absolute-time
+      - text: המרחק $\Delta x$ ביניהם.
+        feedback: >-
+          גם המרחק תלוי במערכת. במערכת שבה שני המאורעות קורים באותו מקום הוא אפס, ובמערכות אחרות לא.
+
+  - id: Q-9.5-light-cone
+    type: multi
+    objectives: [OBJ-9.5-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מאורע O קורה בראשית, $x = 0$ ו-$t = 0$. מרחקים בשניות אור וזמנים בשניות, כך שאור עובר שנייה אור אחת בשנייה. על
+      אילו מהמאורעות הבאים O יכול להשפיע? סמנו את כולם.
+    choices:
+      - text: A, ב-$x = 1$ וב-$t = 3$.
+        correct: true
+        feedback: >-
+          נכון. $s^2 = 9 - 1 = 8 > 0$, אינטרוול זמני, ו-A בעתיד של O. גוף שנע במהירות $c/3$ יכול לעבור מ-O ל-A.
+      - text: C, ב-$x = -2$ וב-$t = 2$.
+        correct: true
+        feedback: >-
+          נכון. $s^2 = 4 - 4 = 0$, אינטרוול אורי: C על חרוט האור של O, ופולס אור שיוצא מ-O שמאלה מגיע בדיוק אליו.
+      - text: B, ב-$x = 3$ וב-$t = 1$.
+        feedback: >-
+          $s^2 = 1 - 9 = -8 < 0$, אינטרוול מרחבי. אות מ-O ל-B צריך לנוע במהירות $3c$. B מחוץ לחרוט האור של O, ובמערכות
+          שנעות מהר מספיק ימינה B אף קורה לפני O.
+        misconception: MC-9-ftl-harmless
+      - text: D, ב-$x = 1$ וב-$t = -2$.
+        feedback: >-
+          $s^2 = 4 - 1 = 3 > 0$, אינטרוול זמני, אבל D ב**עבר** של O: הוא בתוך החרוט התחתון. D יכול להשפיע על O, ולא להפך.
+          לאינטרוול זמני יש סדר זמנים שכל המערכות מסכימות עליו.
+    hints:
+      - 'לכל מאורע חשבו $s^2 = t^2 - x^2$ ובדקו את הסימן של $t$.'
+
+  - id: Q-9.5-proper-time
+    type: numeric
+    objectives: [OBJ-9.5-1]
+    level: mid
+    prompt: >-
+      בין שני מאורעות עוברים במערכת $S$ זמן $\Delta t = 5.0\,\text{s}$ ומרחק $\Delta x = 9.0\cdot10^8\,\text{m}$ (שלוש
+      שניות אור). מה הזמן העצמי ביניהם, כלומר הזמן שמודד שעון שנמצא בשני המאורעות?
+    answer: 4.0
+    unit: s
+    correctFeedback: >-
+      נכון. $c^2\Delta\tau^2 = s^2 = c^2\Delta t^2 - \Delta x^2$, ובשניות אור $s^2 = 25 - 9 = 16$, ולכן $\Delta\tau = 4.0\,\text{s}$.
+      זה השעון שנע במהירות $\Delta x/\Delta t = 0.6c$, ואכן $5.0/\gamma = 5.0/1.25 = 4.0\,\text{s}$.
+    wrongFeedback: >-
+      במערכת של השעון שני המאורעות באותו מקום, ולכן שם $s^2 = c^2\Delta\tau^2$. האינטרוול זהה בכל המערכות: חשבו אותו
+      ב-$S$.
+    commonWrong:
+      - value: 5.83
+        feedback: >-
+          חישבתם $\sqrt{25 + 9}$, פיתגורס. באינטרוול יש מינוס: $c^2\Delta t^2 - \Delta x^2$. הזמן העצמי תמיד **קצר** מ-$\Delta t$.
+        misconception: MC-9-euclidean-interval
+      - value: 5.0
+        feedback: >-
+          זה הזמן ב-$S$, שבה המאורעות במקומות שונים. הזמן העצמי נמדד במערכת שבה הם באותו מקום, והוא הקצר ביותר.
+        misconception: MC-9-proper-time-rest-frame
+    hints:
+      - 'כתבו את $\Delta x$ בשניות אור. כמה זה $c^2\Delta t^2 - \Delta x^2$?'
+
+  - id: Q-9.5-causal
+    type: twotier
+    objectives: [OBJ-9.5-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מאורע A: הבזק על כדור הארץ, ב-$t = 0$. מאורע B: פיצוץ בתחנת חלל שנחה במרחק 10 דקות אור מכדור הארץ, ב-$t = 6.0\,\text{min}$
+      במערכת של כדור הארץ. האם A יכול להיות הסיבה של B?
+    choices:
+      - text: לא. האינטרוול ביניהם מרחבי, ושום אות לא מגיע מ-A ל-B בזמן.
+        correct: true
+        feedback: >-
+          נכון. $s^2 = (6.0)^2 - (10)^2 = -64 < 0$ (בדקות אור בריבוע). אור מ-A מגיע לתחנה רק ב-$t = 10\,\text{min}$, ארבע
+          דקות אחרי הפיצוץ.
+      - text: כן, אם A שולח לתחנה אות שנע במהירות $1.67c$.
+        feedback: >-
+          אות כזה מהיר מהאור. מעבר לכך שאין אות כזה, זוג המאורעות הזה מרחבי, ובמערכות שנעות מהר מ-$0.6c$ מכדור הארץ
+          לכיוון התחנה B קורה **לפני** A. אז האות היה מגיע לפני שנשלח.
+        misconception: MC-9-ftl-harmless
+      - text: זה תלוי בצופה. במערכות מסוימות כן ובאחרות לא.
+        feedback: >-
+          $s^2$ זהה בכל המערכות, ולכן גם הסימן שלו. בכל מערכת האינטרוול מרחבי, ובכל מערכת אור מ-A לא מגיע ל-B בזמן. רק
+          **הסדר** בזמן של A ו-B תלוי במערכת.
+        misconception: MC-9-causality-frame-dependent
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: >-
+          $|\Delta x| > c\Delta t$, ולזוג כזה יש מערכות שבהן הסדר בזמן מתהפך. סיבה חייבת לקדום לתוצאה בכל מערכת.
+        correct: true
+        feedback: >-
+          זה הנימוק. מאורעות שיכולים להיות קשורים סיבתית הם רק אלה עם אינטרוול זמני או אורי, וסדר הזמנים שלהם זהה בכל
+          המערכות.
+      - text: B קורה אחרי A, ולכן A יכול להיות הסיבה שלו.
+        feedback: >-
+          "אחרי" נכון במערכת של כדור הארץ בלבד. לזוג עם אינטרוול מרחבי אין סדר זמנים שכל המערכות מסכימות עליו, ולכן
+          סדר בזמן לבד לא מספיק לסיבתיות.
+        misconception: MC-9-simultaneity-absolute
+      - text: האינטרוול שלילי, ולכן הזמן ביניהם מדומה ואין להם משמעות פיזיקלית.
+        feedback: >-
+          שני המאורעות אמיתיים לגמרי. אינטרוול שלילי אומר רק שאין שעון שנמצא בשניהם; יש במקום זה מערכת שבה הם
+          בו-זמניים, ובה המרחק ביניהם הוא $\sqrt{-s^2} = 8$ דקות אור.
+    hints:
+      - 'אחרי כמה דקות מגיע לתחנה אור שיצא מכדור הארץ ב-$t = 0$?'
+
+  - id: Q-9.5-order-reversal
+    type: numeric
+    objectives: [OBJ-9.5-1]
+    level: bagrut
+    prompt: >-
+      למאורעות A ו-B מהשאלה הקודמת ($\Delta x = 10$ דקות אור, $\Delta t = 6.0\,\text{min}$ במערכת של כדור הארץ), מה הזמן
+      $\Delta t' = t'_B - t'_A$ במערכת של חללית שנעה במהירות $0.8c$ מכדור הארץ לכיוון התחנה? ענו בדקות, עם הסימן.
+    answer: -3.33
+    unit: min
+    correctFeedback: >-
+      נכון. בדקות ובדקות אור, $\Delta t' = \gamma(\Delta t - \beta\Delta x) = \tfrac53(6.0 - 8.0)$, כלומר
+      $\Delta t' = -3.33\,\text{min}$: בחללית הפיצוץ קורה לפני ההבזק. בדיקה: $\Delta x' = \tfrac53(10 - 0.8\cdot6.0) = 8.67$,
+      ו-$3.33^2 - 8.67^2 = -64$, אותו $s^2$. **בדיקת גבולות:** הסדר מתהפך רק כש-$\beta > c\Delta t/\Delta x = 0.6$, וב-$\beta = 0.6$
+      שני המאורעות בו-זמניים. אילו A היה שולח אות שגורם ל-B, בחללית התוצאה הייתה קודמת לסיבה.
+    wrongFeedback: >-
+      $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$. ביחידות של דקות ודקות אור, $v\Delta x/c^2 = \beta\Delta x$.
+    commonWrong:
+      - value: 3.33
+        feedback: >-
+          הסימן הפוך. $\Delta t - \beta\Delta x = 6.0 - 8.0$ שלילי: בחללית B קודם ל-A. זו כל הנקודה של השאלה.
+      - value: -2.0
+        feedback: 'שכחתם את $\gamma = 5/3$.'
+      - value: 23.3
+        feedback: 'סימן: $\Delta t'' = \gamma(\Delta t - \beta\Delta x)$, עם מינוס, כשהחללית נעה לכיוון $+x$, כמו B.'
+      - value: 6.0
+        feedback: 'זה $\Delta t'' = \Delta t$, זמן מוחלט. ביחסות הזמן בין מאורעות במקומות שונים תלוי במערכת.'
+        misconception: MC-9-absolute-time
+    hints:
+      - 'עבדו בדקות ובדקות אור, כך ש-$c = 1$.'
+
+  # ---------------------------------------------------------------- OBJ-9.5-2 Minkowski diagrams with a moving frame
+  - id: Q-9.5-axes-tilt
+    type: numeric
+    objectives: [OBJ-9.5-2]
+    level: basic
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$, עם ציר $x$ אופקי וציר $ct$ אנכי, משרטטים את ציר $ct'$ של מערכת שנעה במהירות $0.6c$.
+      הציר הזה הוא קו העולם של הראשית של $S'$. באיזו זווית הוא נוטה מציר $ct$? ענו במעלות.
+    answer: 31.0
+    unit: °
+    correctFeedback: >-
+      נכון. על ציר $ct'$, $x = vt = \beta\cdot ct$, ולכן $\tan\alpha = \dfrac{x}{ct} = \beta = 0.6$ ו-$\alpha = 31.0^\circ$. קו
+      האור נוטה ב-$45^\circ$, ו-$\beta < 1$ שומר על ציר $ct'$ בתוך חרוט האור.
+    wrongFeedback: >-
+      כתבו את קו העולם של $x' = 0$, כלומר $x = vt$, וחשבו את היחס בין $x$ ל-$ct$ לאורכו.
+    commonWrong:
+      - value: 59.0
+        feedback: >-
+          זו הזווית מציר $x$. הזווית מציר $ct$ היא המשלימה, עם $\tan\alpha = x/(ct) = \beta$.
+      - value: 36.9
+        feedback: 'חישבתם $\arcsin 0.6$. היחס בין $x$ ל-$ct$ לאורך הציר הוא טנגנס הזווית, לא סינוס.'
+    hints:
+      - 'כמה $x$ מתקדם הקו לכל שנייה אור של $ct$?'
+
+  - id: Q-9.5-xprime-axis
+    type: mc
+    objectives: [OBJ-9.5-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      באותה דיאגרמה, ציר $ct'$ של המערכת שנעה במהירות $0.6c$ כבר משורטט: הוא נוטה ימינה מציר $ct$ ב-$31^\circ$. איפה
+      נמצא ציר $x'$, כלומר כל המאורעות שבהם $t' = 0$?
+    choices:
+      - text: >-
+          על הקו $ct = 0.6x$: הוא נוטה **מעל** ציר $x$ ב-$31^\circ$, לקראת קו האור.
+        correct: true
+        feedback: >-
+          נכון. $t' = \gamma\left(t - vx/c^2\right) = 0$ פירושו $ct = \beta x$. שני הצירים של $S'$ נסגרים כמו מספריים סביב קו
+          האור, $ct = x$, וכשהמהירות מתקרבת ל-$c$ שניהם מתקרבים אליו.
+      - text: מתחת לציר $x$ ב-$31^\circ$, כך שיישאר ניצב לציר $ct'$.
+        feedback: >-
+          כך נראה סיבוב של צירים במישור, שבו המרחק נשמר לפי פיתגורס. טרנספורמציית לורנץ שומרת על $c^2t^2 - x^2$, ולכן
+          הצירים נוטים זה **לקראת** זה ואינם ניצבים בשרטוט. הציבו $t' = 0$ ובדקו.
+        misconception: MC-9-minkowski-euclidean
+      - text: על ציר $x$ עצמו, כי מאורעות שבו-זמניים ב-$S$ בו-זמניים גם ב-$S'$.
+        feedback: >-
+          המאורעות על ציר $x$ מקיימים $t = 0$, ולכן $t' = -\gamma vx/c^2$, שונה מאפס לכל $x \neq 0$. זו יחסיות הבו-זמניות
+          בשרטוט: הקו של "עכשיו" נוטה.
+        misconception: MC-9-simultaneity-absolute
+      - text: על קו האור, $ct = x$.
+        feedback: >-
+          קו האור הוא ציר משותף רק כש-$v \to c$. ב-$0.6c$ הציר $x'$ נמצא בין ציר $x$ לקו האור.
+
+  - id: Q-9.5-read-event
+    type: mc
+    objectives: [OBJ-9.5-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ מסומן מאורע O בראשית, ומאורע P ב-$x = 4$ שניות אור, $ct = 2$ שניות אור. קו ישר שעובר דרך
+      O ו-P הוא ציר $x'$ של מערכת $S'$ שנעה במהירות $0.5c$. מה נכון לגבי O ו-P?
+    choices:
+      - text: במערכת $S'$, P ו-O בו-זמניים.
+        correct: true
+        feedback: >-
+          נכון. ציר $x'$ הוא אוסף המאורעות עם $t' = 0$, כמו O. בדיקה: $t' = \gamma\left(t - \beta x/c\right)$, ובשניות
+          ובשניות אור $\gamma(2 - 0.5\cdot4) = 0$. ומ-$s^2 = 4 - 16 = -12$: המרחק ביניהם ב-$S'$ הוא $\sqrt{12} = 3.46$ שניות אור.
+      - text: P נמצא על קו העולם של גוף שעבר ב-O ונע במהירות $0.5c$.
+        feedback: >-
+          קו עולם של גוף איטי מ-$c$ נוטה מציר $ct$, כמו ציר $ct'$, ולא מציר $x$. גוף שעובר ב-O וב-P צריך לנוע במהירות
+          $4/2 = 2c$, וזה אינו קו עולם של שום גוף.
+        misconception: MC-9-any-pair-same-place
+      - text: O יכול לגרום ל-P, כי P מאוחר ממנו ב-$S$.
+        feedback: >-
+          $s^2 = 4 - 16 < 0$: P מחוץ לחרוט האור של O. ב-$S$ הוא אכן מאוחר יותר, ב-$S'$ בו-זמני, ובמערכות מהירות מ-$0.5c$
+          מוקדם יותר. אין קשר סיבתי.
+        misconception: MC-9-ftl-harmless
+      - text: בכל מערכת ייחוס P קורה אחרי O.
+        feedback: >-
+          ב-$S'$ הם בו-זמניים, ובמערכת שנעה מהר יותר מ-$0.5c$ הסדר מתהפך. לזוג עם אינטרוול מרחבי אין סדר מוחלט.
+        misconception: MC-9-simultaneity-absolute
+    hints:
+      - 'מה מאפיין את כל המאורעות על ציר $x''$?'
+
+  - id: Q-9.5-rank-by-tprime
+    type: rank
+    objectives: [OBJ-9.5-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ מסומנים ארבעה מאורעות, ב-$(x,\ ct)$ בשניות אור: P1 ב-$(0,\ 2)$, P2 ב-$(3,\ 2)$, P3 ב-$(-2,\ 1)$
+      ו-P4 ב-$(4,\ 3)$. דרגו אותם לפי הזמן $t'$ במערכת $S'$ שנעה במהירות $0.5c$, מהמאוחר ביותר למוקדם ביותר. מאורעות עם
+      אותו $t'$ שימו באותה דרגה.
+    items:
+      - { id: p1, label: P1 }
+      - { id: p2, label: P2 }
+      - { id: p3, label: P3 }
+      - { id: p4, label: P4 }
+    order: [[p1, p3], p4, p2]
+    correctFeedback: >-
+      נכון. קווי הבו-זמניות של $S'$ מקבילים לציר $x'$, $ct = 0.5x + \text{const}$, ולכן $ct'$ פרופורציוני ל-$ct - 0.5x$: P1 ו-P3
+      נותנים 2, P4 נותן 1 ו-P2 נותן 0.5 (כפול $\gamma$, שלא משנה את הסדר). ב-$S$ הסדר אחר: שם P4 הכי מאוחר ו-P3 הכי מוקדם, וב-$S'$ דווקא P3 בין המאוחרים. בדיאגרמה
+      מעבירים דרך כל מאורע קו מקביל לציר $x'$ ורואים איפה הוא חותך את ציר $ct'$.
+    wrongFeedback: >-
+      הסדר לפי $t'$ לא נקבע לפי הגובה בדיאגרמה, אלא לפי קווים **מקבילים לציר** $x'$, שנוטים מעל ציר $x$, $ct = 0.5x + \text{const}$.
+      חשבו לכל מאורע את $ct - 0.5x$.
+    hints:
+      - 'שני מאורעות בו-זמניים ב-$S''$ אם הקו שמחבר אותם מקביל לציר $x''$.'
+
+  - id: Q-9.5-read-tilted-axis
+    type: numeric
+    objectives: [OBJ-9.5-2, OBJ-9.5-1]
+    level: bagrut
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ משורטטים הצירים של מערכת $S'$ שנעה במהירות $0.6c$. מאורע P מסומן ב-$x = 3$ שניות אור
+      וב-$ct = 5$ שניות אור, והוא נמצא בדיוק על ציר $ct'$. מה מראה ב-P שעון שנמצא בראשית של $S'$ ומראה אפס ב-O? ענו
+      בשניות.
+    answer: 4.0
+    unit: s
+    correctFeedback: >-
+      נכון. P על ציר $ct'$, כלומר $x' = 0$, ולכן $s^2 = c^2t'^2$. מ-$S$: $s^2 = 25 - 9 = 16$, ולכן $ct' = 4$ שניות אור
+      ו-$t' = 4.0\,\text{s}$. אותו דבר מהטרנספורמציה: $ct' = \gamma(ct - \beta x) = 1.25(5 - 1.8) = 4.0$. **בדיקת גבולות:**
+      כש-$\beta \to 0$ ציר $ct'$ הופך לציר $ct$ ו-$t' \to t$. שימו לב: בשרטוט הקטע מ-O ל-P **ארוך** מ-5 יחידות, אבל
+      הוא מייצג רק 4 שניות. קנה המידה על הצירים הנוטים שונה.
+    wrongFeedback: >-
+      ב-$S'$ המאורע P קורה בראשית, $x' = 0$. השתמשו באינטרוול, שזהה בשתי המערכות.
+    commonWrong:
+      - value: 5.83
+        feedback: >-
+          מדדתם את אורך הקטע OP בשרטוט, $\sqrt{9 + 25}$. דיאגרמת מינקובסקי היא לא מפה רגילה: הזמן לאורך קו עולם נקבע
+          באינטרוול, $\sqrt{c^2t^2 - x^2}$.
+        misconception: MC-9-minkowski-euclidean
+      - value: 5.0
+        feedback: >-
+          זה הזמן ב-$S$. השעון בראשית של $S'$ נמצא גם ב-O וגם ב-P, ולכן הוא מודד את הזמן העצמי, הקצר יותר.
+        misconception: MC-9-proper-time-rest-frame
+      - value: 6.25
+        feedback: >-
+          כפלתם ב-$\gamma$. השעון של $S'$ נמצא בשני המאורעות ומודד את הזמן העצמי, ולכן הוא מראה **פחות** מ-$S$.
+        misconception: MC-9-proper-time-rest-frame
+    hints:
+      - 'מה $x''$ של P? מה זה אומר על $s^2$ במערכת $S''$?'

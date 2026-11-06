@@ -1,0 +1,295 @@
+# Lesson 5.3 question bank: the comprehension ladder of "המתנד המרוסן".
+# Every objective has ≥ 3 questions, one of them qualitative; the lesson climbs basic → mid → bagrut (exam level).
+# Convention throughout (stated in every prompt): ẍ + γẋ + ω0²x = 0 with γ = b/m, ω0² = k/m, and Q = ω0/γ.
+# Then the amplitude decays as e^{−γt/2}, the energy as e^{−γt}, and ω_d = √(ω0² − γ²/4).
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts, in .scratch/ch5/q.ts and extra.ts:
+#   m = 0.50 kg, k = 50 N/m: ω0 = 10 rad/s, b_c = 2√(km) = 10 kg/s; b = 7.0 kg/s: γ = 14 s⁻¹ < 2ω0, roots −7 ± 7.14i;
+#   b = 3.0 kg/s: γ = 6.0 s⁻¹, ω_d = √91 = 9.54 rad/s (ω0 = 10, √(ω0² − γ²) = 8.00, ω0 − γ/2 = 7.00);
+#   critical, ω0 = 6.0 rad/s, x0 = 5.0 cm from rest: x(0.50 s) = x0(1 + ω0t)e^{−ω0t} = 0.996 cm
+#     (x0 e^{−ω0t} = 0.249, x0 e^{−ω0t/2} = 1.12);
+#   ω0 = 10 rad/s, γ = 0.20 s⁻¹: Q = 50 (γ/ω0 = 0.02, ω0/(2γ) = 25, 2ω0/γ = 100);
+#     amplitude halves in 2 ln 2/γ = 6.93 s (ln 2/γ = 3.47, 2/γ = 10.0);
+#   tuning fork f = 440 Hz, amplitude to 1/10 in 4.0 s: γ = 2 ln 10/4 = 1.15 s⁻¹, Q = 2π·440/γ = 2.40e3
+#     (energy law 4.80e3, f/γ = 382); 1760 oscillations in those 4 s.
+
+chapter: 5
+questions:
+  # ---------------------------------------------------------------- OBJ-5.3-1 solving and classifying the damped oscillator
+  - id: Q-5.3-classify
+    type: mc
+    objectives: [OBJ-5.3-1]
+    level: basic
+    prompt: >-
+      גוף בעל מסה $m = 0.50\,\text{kg}$ על קפיץ בעל קבוע קפיץ $k = 50\,\text{N/m}$, וכוח ריסון $-b\dot x$ עם
+      $b = 7.0\,\text{kg/s}$. נכתוב את משוואת התנועה בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$, עם $\gamma = b/m$
+      ו-$\omega_0^2 = k/m$. איזה סוג ריסון זה?
+    choices:
+      - text: 'תת-ריסון: הגוף מתנודד, והאמפליטודה דועכת.'
+        correct: true
+        feedback: >-
+          נכון. $\gamma = 14\,\text{s}^{-1}$ ו-$\omega_0 = 10\,\text{rad/s}$. השורשים של המשוואה האופיינית
+          $s^2 + \gamma s + \omega_0^2 = 0$ הם $s = -\dfrac{\gamma}{2} \pm \sqrt{\dfrac{\gamma^2}{4} - \omega_0^2}$, ו-$\gamma^2/4 = 49 < 100$:
+          השורשים מרוכבים, $s = -7 \pm 7.14i$. החלק הממשי נותן דעיכה, והמדומה תנודה.
+      - text: 'על-ריסון, כי $\gamma > \omega_0$.'
+        feedback: >-
+          הגבול בין הסוגים הוא $\gamma = 2\omega_0$, לא $\gamma = \omega_0$: השורש $\sqrt{\gamma^2/4 - \omega_0^2}$ ממשי
+          רק כש-$\gamma/2 > \omega_0$. כאן $\gamma = 14 < 20$.
+        misconception: MC-5-critical-at-gamma-omega0
+      - text: 'ריסון קריטי, כי $b$ קרוב ל-$\sqrt{km}$.'
+        feedback: 'הריסון הקריטי הוא $b_c = 2\sqrt{km} = 10\,\text{kg/s}$, ו-$b = 7.0\,\text{kg/s}$ קטן ממנו.'
+        misconception: MC-5-critical-at-gamma-omega0
+      - text: 'אין ריסון ממשי, כי $b < k$.'
+        feedback: 'אי אפשר להשוות את $b$ ל-$k$: היחידות שלהם שונות ($\text{kg/s}$ ו-$\text{N/m}$). משווים את $\gamma$ ל-$2\omega_0$, שניהם ב-$\text{s}^{-1}$.'
+    hints:
+      - 'הציבו $x = e^{st}$ וקבלו משוואה ריבועית ב-$s$. מתי השורשים שלה מרוכבים?'
+
+  - id: Q-5.3-damped-frequency
+    type: numeric
+    objectives: [OBJ-5.3-1]
+    level: mid
+    prompt: >-
+      אותו גוף ואותו קפיץ ($m = 0.50\,\text{kg}$, $k = 50\,\text{N/m}$), עם ריסון חלש יותר, $b = 3.0\,\text{kg/s}$.
+      בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$, הפתרון הוא $x = Ae^{-\gamma t/2}\cos(\omega_dt + \varphi)$. מה
+      התדירות הזוויתית $\omega_d$ של התנודות המרוסנות?
+    answer: 9.54
+    unit: rad/s
+    correctFeedback: >-
+      נכון. $\gamma = 6.0\,\text{s}^{-1}$, ו-$\omega_d = \sqrt{\omega_0^2 - \dfrac{\gamma^2}{4}} = \sqrt{100 - 9} = 9.54\,\text{rad/s}$.
+      הריסון מאט את התנודה מעט: ההפרש מ-$\omega_0$ הוא מסדר $\gamma^2/\omega_0$, ולכן בריסון חלש הוא זניח.
+      **בדיקת גבולות:** כש-$\gamma \to 0$, $\omega_d \to \omega_0$; וכש-$\gamma \to 2\omega_0$, $\omega_d \to 0$, הריסון הקריטי.
+    wrongFeedback: 'הציבו $x = e^{st}$. החלק המדומה של השורש הוא $\omega_d$. שימו לב ל-$\gamma/2$ שבשורש.'
+    commonWrong:
+      - value: 10
+        feedback: >-
+          זו $\omega_0$, התדירות בלי ריסון. הריסון לא רק מקטין את האמפליטודה: הוא גם מאט את התנודה, $\omega_d < \omega_0$.
+          כאן ההבדל קטן, כ-5%, אבל הוא שם.
+        misconception: MC-5-damping-keeps-frequency
+      - value: 8.0
+        feedback: 'חישבתם $\sqrt{\omega_0^2 - \gamma^2}$. השורשים הם $-\gamma/2 \pm \sqrt{\gamma^2/4 - \omega_0^2}$: בשורש יש $\gamma^2/4$.'
+      - value: 7.0
+        feedback: 'חיסרתם $\omega_0 - \gamma/2$. ההפרש בא מתוך שורש של הפרש ריבועים, לא מחיסור ישיר.'
+    hints:
+      - 'החלק המדומה של $s = -\dfrac{\gamma}{2} \pm \sqrt{\dfrac{\gamma^2}{4} - \omega_0^2}$.'
+
+  - id: Q-5.3-fastest-return
+    type: twotier
+    objectives: [OBJ-5.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מתכננים בולם זעזועים לרכב. התדירות $\omega_0$ של הרכב על הקפיצים נתונה, ומקדם הריסון $\gamma$ ניתן לבחירה. אחרי
+      שהרכב עובר בור, באיזה ריסון הוא יחזור לשיווי המשקל הכי מהר, בלי לעבור אותו?
+    choices:
+      - text: 'בריסון קריטי, $\gamma = 2\omega_0$.'
+        correct: true
+        feedback: 'נכון. זה הריסון הקטן ביותר שבו אין תנודה, והחזרה בו המהירה ביותר.'
+      - text: 'בריסון הגדול ככל האפשר.'
+        feedback: >-
+          ריסון חזק מאוד גם מאט את החזרה: הבולם מתנגד לכל תנועה, גם לתנועה **לכיוון** שיווי המשקל. רכב עם בולמים
+          קשיחים מדי חוזר לאט מאוד, כמו דלת עם בולם שמן סמיך.
+        misconception: MC-5-more-damping-faster
+      - text: 'בריסון חלש, כי אז הכוח של הקפיץ פועל כמעט בלי הפרעה.'
+        feedback: 'בריסון חלש הרכב מגיע מהר לשיווי המשקל, אבל עובר אותו וממשיך לנדנד. השאלה היא על חזרה בלי מעבר.'
+    reasons:
+      - text: 'בעל-ריסון השורש האיטי, $s = -\dfrac{\gamma}{2} + \sqrt{\dfrac{\gamma^2}{4} - \omega_0^2}$, מתקרב לאפס כש-$\gamma$ גדל, בערך $-\omega_0^2/\gamma$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. הפתרון בעל-ריסון הוא סכום של שני אקספוננטים, והאיטי שבהם קובע את החזרה. קצב הדעיכה שלו
+          $\omega_0^2/\gamma$ קטן ככל ש-$\gamma$ גדל. בריסון קריטי שני השורשים שווים, $-\omega_0$, והדעיכה מהירה ככל
+          האפשר בלי תנודה.
+      - text: 'ככל שהריסון חזק יותר, האנרגיה מתבזבזת מהר יותר, ולכן הגוף נרגע מהר יותר.'
+        feedback: >-
+          קצב פיזור האנרגיה הוא $bv^2$, והוא תלוי גם במהירות. ריסון חזק מקטין את המהירות כל כך, שהגוף זוחל לשיווי
+          המשקל, והאנרגיה מתפזרת לאט.
+        misconception: MC-5-more-damping-faster
+      - text: 'בריסון קריטי אין אקספוננט בפתרון, ולכן הוא לא דועך לאט.'
+        feedback: 'גם בריסון קריטי יש אקספוננט: $x = (C_1 + C_2t)e^{-\omega_0t}$. מה שמיוחד בו הוא ששני השורשים מתלכדים.'
+    hints:
+      - 'בעל-ריסון שני השורשים ממשיים ושליליים. איזה מהם קובע כמה זמן לוקחת החזרה?'
+
+  - id: Q-5.3-critical-release
+    type: numeric
+    objectives: [OBJ-5.3-1]
+    level: bagrut
+    prompt: >-
+      מתלה של רכב מרוסן בריסון קריטי, ותדירות ההתנודדות שלו בלי ריסון $\omega_0 = 6.0\,\text{rad/s}$. בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = 0$ פירוש הדבר $\gamma = 2\omega_0$. לוחצים את הרכב כלפי מטה ב-$x_0 = 5.0\,\text{cm}$
+      ומשחררים ממנוחה. מה ההעתק אחרי $0.50\,\text{s}$, בסנטימטרים?
+    answer: 0.996
+    unit: cm
+    correctFeedback: >-
+      נכון. בריסון קריטי לשורש $s = -\omega_0$ יש ריבוי 2, והפתרון הכללי $x = (C_1 + C_2t)e^{-\omega_0t}$. מ-$x(0) = x_0$:
+      $C_1 = x_0$; מ-$\dot x(0) = 0$: $C_2 - \omega_0C_1 = 0$, כלומר $C_2 = \omega_0x_0$. לכן
+      $$x(t) = x_0(1 + \omega_0t)e^{-\omega_0t} = 5.0\cdot(1 + 3.0)\cdot e^{-3.0} = 0.996\,\text{cm}$$
+      **בדיקת גבולות:** ב-$t = 0$ מתקבל $x_0$, והנגזרת שם אפס, כפי שנדרש. כש-$t \to \infty$, $x \to 0$ בלי לעבור את
+      האפס.
+    wrongFeedback: >-
+      כשלמשוואה האופיינית יש שורש כפול, $e^{-\omega_0t}$ לבדו לא יכול לקיים שני תנאי התחלה. מה הפתרון השני? קבעו את
+      שני הקבועים מ-$x(0)$ ומ-$\dot x(0)$.
+    commonWrong:
+      - value: 0.249
+        feedback: >-
+          זה $x_0e^{-\omega_0t}$. הפתרון הזה מתחיל במהירות $-\omega_0x_0$, לא ממנוחה. צריך את האיבר $C_2te^{-\omega_0t}$
+          כדי לקיים $\dot x(0) = 0$.
+      - value: 1.12
+        feedback: >-
+          זה $x_0e^{-\omega_0t/2}$, כאילו $\gamma = \omega_0$ בריסון קריטי. התנאי לריסון קריטי הוא $\gamma = 2\omega_0$,
+          והדעיכה היא $e^{-\gamma t/2} = e^{-\omega_0t}$.
+        misconception: MC-5-critical-at-gamma-omega0
+    hints:
+      - 'הפתרון הכללי בריסון קריטי הוא $x = (C_1 + C_2t)e^{-\omega_0t}$.'
+
+  - id: Q-5.3-overdamped-crossing
+    type: mc
+    objectives: [OBJ-5.3-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      מתנד על-מרוסן, $\gamma > 2\omega_0$ בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$. כמה פעמים לכל היותר הוא יכול
+      לעבור דרך $x = 0$, לכל תנאי התחלה שהוא?
+    choices:
+      - text: 'פעם אחת לכל היותר, למשל כשנותנים לו מהירות התחלתית גדולה לכיוון שיווי המשקל.'
+        correct: true
+        feedback: >-
+          נכון. $x(t) = C_1e^{s_1t} + C_2e^{s_2t}$ עם $s_1$, $s_2$ ממשיים ושונים. $x = 0$ פירושו
+          $e^{(s_1 - s_2)t} = -C_2/C_1$, ולפונקציה מונוטונית יש לכל היותר פתרון אחד. דחיפה חזקה לכיוון האפס מעבירה את
+          הגוף לצד השני, ומשם הוא זוחל חזרה בלי לעבור שוב.
+      - text: 'אף פעם: מתנד על-מרוסן אף פעם לא עובר את נקודת שיווי המשקל.'
+        feedback: >-
+          זה נכון כשהוא מתחיל ממנוחה. אבל עם מהירות התחלתית גדולה לכיוון האפס הוא עובר אותו פעם אחת: למשל ב-$x_0 = 0$
+          עם $v_0 \ne 0$ הוא כבר "עובר" בהתחלה.
+        misconception: MC-5-overdamped-never-crosses
+      - text: 'מספר סופי של פעמים, שגדל ככל שהריסון חלש יותר.'
+        feedback: 'זה תיאור של תת-ריסון בקירוב, אבל שם המעברים אין-סופיים. בעל-ריסון אין תנודה בכלל: אין חלק מדומה בשורשים.'
+      - text: 'אין-סוף פעמים, אבל עם אמפליטודה שדועכת מהר.'
+        feedback: 'אין-סוף מעברים דורשים קוסינוס, כלומר שורשים מרוכבים: זה תת-ריסון. כש-$\gamma > 2\omega_0$ השורשים ממשיים.'
+    hints:
+      - 'כתבו את $x(t) = 0$ כמשוואה ל-$e^{(s_1 - s_2)t}$. כמה פתרונות יש לה?'
+
+  # ---------------------------------------------------------------- OBJ-5.3-2 decay rate, Q, oscillations until the energy decays
+  - id: Q-5.3-energy-rate
+    type: mc
+    objectives: [OBJ-5.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      במתנד בתת-ריסון, בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$, האמפליטודה דועכת כמו $e^{-\gamma t/2}$. איך דועכת
+      האנרגיה, בממוצע על מחזור?
+    choices:
+      - text: '$e^{-\gamma t}$'
+        correct: true
+        feedback: 'נכון. האנרגיה פרופורציונית לריבוע האמפליטודה, $E \propto A^2$, ו-$\left(e^{-\gamma t/2}\right)^2 = e^{-\gamma t}$.'
+      - text: '$e^{-\gamma t/2}$, כמו האמפליטודה.'
+        feedback: 'האנרגיה של מתנד היא $\tfrac12kA^2$, ריבועית באמפליטודה. כשהאמפליטודה יורדת לחצי, האנרגיה יורדת לרבע.'
+        misconception: MC-5-energy-decays-like-amplitude
+      - text: '$e^{-\gamma t/4}$'
+        feedback: 'זה היה נכון אילו האנרגיה הייתה פרופורציונית לשורש האמפליטודה. היא פרופורציונית לריבוע שלה.'
+      - text: 'האנרגיה יורדת קווית בזמן.'
+        feedback: 'ההספק שהריסון מפזר, $bv^2$, פרופורציוני לאנרגיה עצמה, ולכן $dE/dt \approx -\gamma E$: דעיכה אקספוננציאלית, לא קווית.'
+    hints:
+      - 'איך האנרגיה של מתנד תלויה באמפליטודה?'
+
+  - id: Q-5.3-q-value
+    type: numeric
+    objectives: [OBJ-5.3-2]
+    level: basic
+    prompt: >-
+      במתנד מרוסן $\omega_0 = 10\,\text{rad/s}$ ו-$\gamma = 0.20\,\text{s}^{-1}$, בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$.
+      מה מקדם האיכות שלו, $Q = \omega_0/\gamma$?
+    answer: 50
+    unit: ''
+    correctFeedback: >-
+      נכון. $Q = \dfrac{10}{0.20} = 50$, מספר חסר ממדים. $Q$ גדול פירושו ריסון חלש: המתנד מבצע תנודות רבות עד
+      שהאנרגיה שלו דועכת.
+    wrongFeedback: 'הציבו בהגדרה. שני הגדלים ביחידות $\text{s}^{-1}$, ולכן $Q$ חסר ממדים.'
+    commonWrong:
+      - value: 0.02
+        feedback: 'חילקתם הפוך, $\gamma/\omega_0$. $Q$ גדול כשהריסון חלש, ולכן $\gamma$ במכנה.'
+      - value: 25
+        feedback: >-
+          זה $\omega_0/(2\gamma)$, ההגדרה במוסכמה שבה המשוואה כתובה $\ddot x + 2\beta\dot x + \omega_0^2x = 0$ ו-$Q = \omega_0/(2\beta)$.
+          בצורה שלנו $\gamma = 2\beta$, ולכן $Q = \omega_0/\gamma$. ודאו תמיד באיזו מוסכמה כתובה המשוואה.
+      - value: 100
+        feedback: 'חישבתם $2\omega_0/\gamma$. בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$ ההגדרה היא $Q = \omega_0/\gamma$, בלי 2.'
+    hints:
+      - 'בדקו יחידות: $\text{rad/s}$ חלקי $\text{s}^{-1}$.'
+
+  - id: Q-5.3-amplitude-half
+    type: numeric
+    objectives: [OBJ-5.3-2]
+    level: mid
+    prompt: >-
+      באותו מתנד ($\omega_0 = 10\,\text{rad/s}$, $\gamma = 0.20\,\text{s}^{-1}$, בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$),
+      אחרי כמה זמן יורדת האמפליטודה לחצי מערכה ההתחלתי?
+    answer: 6.93
+    unit: s
+    correctFeedback: >-
+      נכון. $e^{-\gamma t/2} = \tfrac12$, ולכן $t = \dfrac{2\ln2}{\gamma} = \dfrac{1.386}{0.20} = 6.93\,\text{s}$. באותו זמן
+      האנרגיה יורדת לרבע. בזמן הזה המתנד מבצע כ-11 תנודות.
+    wrongFeedback: 'האמפליטודה דועכת כמו $e^{-\gamma t/2}$. השוו ל-$\tfrac12$ וקחו לוגריתם טבעי.'
+    commonWrong:
+      - value: 3.47
+        feedback: 'זה $\ln2/\gamma$, הזמן שבו **האנרגיה** יורדת לחצי. האמפליטודה דועכת בחצי מהקצב, $e^{-\gamma t/2}$, ולכן לוקח לה פי 2 זמן.'
+        misconception: MC-5-energy-decays-like-amplitude
+      - value: 10.0
+        feedback: 'זה $2/\gamma$, קבוע הזמן של האמפליטודה: אחריו היא יורדת ל-$e^{-1} \approx 37\%$, לא ל-50%.'
+        misconception: MC-2-time-constant-is-full-time
+      - value: 5.0
+        feedback: 'זה $1/\gamma$, קבוע הזמן של האנרגיה. השאלה על האמפליטודה, ועל ירידה לחצי, לא ל-$e^{-1}$.'
+    hints:
+      - '$e^{-\gamma t/2} = 1/2$. מה $\ln 2$?'
+
+  - id: Q-5.3-energy-e2pi
+    type: mc
+    objectives: [OBJ-5.3-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מתנד בריסון חלש, $Q = \omega_0/\gamma \gg 1$ בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$. אחרי כמה תנודות
+      יורדת האנרגיה שלו פי $e^{2\pi}$, כלומר ל-$e^{-2\pi}$ מערכה ההתחלתי?
+    choices:
+      - text: 'אחרי $Q$ תנודות.'
+        correct: true
+        feedback: >-
+          נכון. אחרי $N$ תנודות עבר זמן $t \approx N\cdot2\pi/\omega_0$, והאנרגיה $E_0e^{-\gamma t} = E_0e^{-2\pi N\gamma/\omega_0} = E_0e^{-2\pi N/Q}$.
+          היא שווה ל-$E_0e^{-2\pi}$ כש-$N = Q$. זו גם דרך מעשית למדוד את $Q$: לספור תנודות.
+      - text: 'אחרי $2\pi Q$ תנודות.'
+        feedback: 'ה-$2\pi$ כבר נמצא בזמן של תנודה אחת, $2\pi/\omega_0$. אם תכפילו בו שוב, תקבלו $e^{-4\pi^2}$, לא $e^{-2\pi}$.'
+      - text: 'אחרי $Q/2$ תנודות, כי האנרגיה דועכת פי 2 מהר יותר מהאמפליטודה.'
+        feedback: >-
+          האנרגיה אכן דועכת פי 2 מהר יותר מהאמפליטודה, ו-$Q$ מוגדר כבר דרך קצב הדעיכה של **האנרגיה**, $\gamma$. אחרי
+          $Q$ תנודות האנרגיה יורדת פי $e^{2\pi}$ והאמפליטודה רק פי $e^{\pi}$.
+        misconception: MC-5-energy-decays-like-amplitude
+      - text: 'אחרי $Q/(2\pi)$ תנודות.'
+        feedback: 'אחרי $Q/(2\pi)$ תנודות עבר זמן $1/\gamma$, והאנרגיה ירדה רק פי $e$.'
+    hints:
+      - 'כמה זמן נמשכות $N$ תנודות? הציבו אותו ב-$e^{-\gamma t}$.'
+
+  - id: Q-5.3-tuning-fork
+    type: numeric
+    objectives: [OBJ-5.3-2]
+    level: bagrut
+    prompt: >-
+      מזלג קול מתנודד בתדירות $f = 440\,\text{Hz}$. מודדים את האמפליטודה של הקצה שלו, ומוצאים שהיא יורדת לעשירית מערכה
+      ההתחלתי תוך $4.0\,\text{s}$. נניח שהמזלג הוא מתנד מרוסן בצורה $\ddot x + \gamma\dot x + \omega_0^2x = 0$. מה מקדם
+      האיכות שלו, $Q = \omega_0/\gamma$?
+    answer: 2.40e3
+    unit: ''
+    correctFeedback: >-
+      נכון. מהאמפליטודה: $e^{-\gamma t/2} = \tfrac1{10}$, ולכן $\gamma = \dfrac{2\ln10}{4.0} = 1.15\,\text{s}^{-1}$. עם
+      $\omega_0 = 2\pi f = 2.76\cdot10^{3}\,\text{rad/s}$:
+      $$Q = \frac{\omega_0}{\gamma} = \frac{2\pi f\,t}{2\ln10} = 2.40\cdot10^{3}$$
+      בזמן הזה המזלג מבצע $1760$ תנודות. $Q$ גבוה כל כך, ש-$\omega_d$ ו-$\omega_0$ שווים כמעט לגמרי.
+      **בדיקת גבולות:** אם הדעיכה הייתה איטית לאין-סוף ($t \to \infty$), $Q \to \infty$, מתנד בלי ריסון.
+    wrongFeedback: >-
+      מצאו את $\gamma$ מהדעיכה של האמפליטודה (איזה אקספוננט?), והמירו את התדירות $f$ לתדירות זוויתית לפני שמחלקים.
+    commonWrong:
+      - value: 4.80e3
+        feedback: 'השתמשתם ב-$e^{-\gamma t}$ לאמפליטודה, ולכן קיבלתם $\gamma$ קטן פי 2. $e^{-\gamma t}$ הוא הדעיכה של האנרגיה; האמפליטודה דועכת כמו $e^{-\gamma t/2}$.'
+        misconception: MC-5-energy-decays-like-amplitude
+      - value: 382
+        feedback: 'חילקתם את $f$ ב-$\gamma$. ההגדרה היא עם התדירות **הזוויתית**, $\omega_0 = 2\pi f$.'
+    hints:
+      - 'השוו $e^{-\gamma t/2}$ ל-$0.1$ ב-$t = 4.0\,\text{s}$.'

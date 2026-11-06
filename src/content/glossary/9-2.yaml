@@ -1,0 +1,39 @@
+# Terms first defined in lesson 9.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: lorentz-factor
+  term: גורם לורנץ
+  en: Lorentz factor
+  symbol: γ
+  definition: הגודל γ = 1/√(1 − v²/c²), שתמיד גדול מ-1 או שווה לו. הוא קרוב ל-1 במהירויות יומיומיות, וגדל בלי גבול כש-v מתקרבת ל-c. למשל, ב-v = 0.6c הוא 1.25, וב-v = 0.8c הוא 5/3.
+  lesson: '9.2'
+
+- id: proper-time
+  term: זמן עצמי
+  en: proper time
+  symbol: τ
+  unit: s
+  definition: הזמן בין שני מאורעות שמודד שעון אחד שנמצא בשניהם, כלומר הזמן במערכת שבה שני המאורעות קורים באותו מקום. זה הזמן הקצר ביותר שמערכת אינרציאלית כלשהי מודדת בין שני המאורעות.
+  lesson: '9.2'
+
+- id: time-dilation
+  term: התארכות זמן
+  en: time dilation
+  definition: במערכת שבה שעון נע במהירות v, הזמן בין שני תקתוקים שלו ארוך פי γ מהזמן העצמי שהשעון עצמו מודד, Δt = γΔτ. ההשפעה סימטרית, כל צופה מוצא שהשעונים שנעים ביחס אליו מפגרים.
+  reject: [התרחבות זמן]
+  lesson: '9.2'
+
+- id: proper-length
+  term: אורך עצמי
+  en: proper length
+  symbol: L₀
+  unit: m
+  definition: האורך של גוף במערכת שבה הוא נח. זה האורך הגדול ביותר שמודדים לו במערכת אינרציאלית כלשהי.
+  lesson: '9.2'
+
+- id: length-contraction
+  term: התקצרות אורך
+  en: length contraction
+  definition: במערכת שבה גוף נע במהירות v, האורך שלו לאורך כיוון התנועה, כשמודדים את שני הקצוות באותו רגע, קצר פי γ מהאורך העצמי, L = L₀/γ. המידות הניצבות לתנועה לא משתנות.
+  reject: [התכווצות אורך, התכווצות לורנץ]
+  lesson: '9.2'

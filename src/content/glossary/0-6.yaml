@@ -1,0 +1,16 @@
+# Terms first defined in lesson 0.6. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: complex-number
+  term: מספר מרוכב
+  en: complex number
+  symbol: z = x + iy
+  definition: מספר מהצורה x + iy, כאשר i² = −1, x החלק הממשי ו-y החלק המדומה. הוא נקודה במישור, ואפשר לכתוב אותו גם בהצגה קוטבית, z = |z|e^(iφ), עם הגודל |z| והזווית φ.
+  lesson: '0.6'
+
+- id: euler-formula
+  term: נוסחת אוילר
+  en: Euler's formula
+  definition: הזהות e^(iθ) = cos θ + i sin θ. היא מציבה את e^(iθ) על מעגל היחידה בזווית θ, ולכן כפל ב-e^(iθ) הוא סיבוב, ותנודה A cos(ωt + φ) היא החלק הממשי של Ae^(i(ωt+φ)).
+  reject: [נוסחת אויילר]
+  lesson: '0.6'

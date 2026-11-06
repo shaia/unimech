@@ -1,0 +1,288 @@
+# Lesson 1.1 question bank: the comprehension ladder of "מקום, מהירות ותאוצה כווקטורים".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts (G = 9.8):
+#   helix A = 2.0 m, ω = 3.0 rad/s, c = 4.0 m/s: |v| = √(A²ω² + c²) = 7.21 m/s (Aω = 6, Aω + c = 10,
+#     √(A² + c²) = 4.47); |a| = Aω² = 18 m/s², and v·a = 0 at every t;
+#   r = (2t³ − 3t, 4t²) at t = 1 s: v = (3, 8), |v| = 8.54 m/s; a = (12, 8), |a| = 14.4 m/s²; d|v|/dt = 11.7 m/s²;
+#   ellipse a = 3.0 m, b = 2.0 m, ω = 2.0 rad/s: a = −ω²r (checked by finite differences); the speed is largest
+#     at (0, ±b), where |a| = ω²b = 8.0 m/s² (ω²a = v_max²/a = 12, v_max²/b = 18);
+#   a = kt, k = 6.0 m/s³, v₀ = 2.0 m/s: x(2 s) = v₀t + kt³/6 = 12 m (v₀t + ½a(2)t² = 28, kt³/6 = 8, v(2) = 14);
+#   boat a = −kv², k = 0.050 1/m, v₀ = 10 m/s: x(v₀/2) = ln2/k = 13.9 m (1/k = 20, 0.5/k = 10, 1/(kv₀) = 2.0 s);
+#     x(t) = ln(1 + kv₀t)/k: 124 m after 1000 s, when v = 0.020 m/s.
+
+chapter: 1
+questions:
+  # ---------------------------------------------------------------- OBJ-1.1-1 v and a from r(t); velocity vs speed
+  - id: Q-1.1-speed-vs-velocity
+    type: mc
+    objectives: [OBJ-1.1-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מכונית נוסעת על מסלול מעגלי, ומד המהירות שלה מראה כל הזמן $72\,\text{km/h}$. מה נכון לגבי התנועה שלה?
+    choices:
+      - text: גודל המהירות קבוע, אבל וקטור המהירות משתנה, ולכן התאוצה שונה מאפס.
+        correct: true
+        feedback: >-
+          נכון. מד המהירות מראה את $|\vec v|$, גודל המהירות. וקטור המהירות משיק למסלול, והכיוון שלו מסתובב יחד עם
+          המכונית. תאוצה היא $\vec a = d\vec v/dt$, ושינוי של כיוון בלבד הוא כבר שינוי של הווקטור.
+      - text: המהירות קבועה, ולכן התאוצה אפס.
+        feedback: >-
+          קבוע כאן רק **גודל** המהירות. תאוצה היא הנגזרת של וקטור המהירות, וגם וקטור שגודלו קבוע משתנה כשהוא
+          מסתובב. לכן המכונית מאיצה כל הזמן, אל מרכז המעגל.
+        misconception: MC-1-constant-speed-no-acceleration
+      - text: גודל המהירות של המכונית אפס, כי המרחק שלה ממרכז המעגל לא משתנה.
+        feedback: >-
+          זה $d|\vec r|/dt$, קצב השינוי של המרחק מהראשית, והוא אכן אפס כשהראשית במרכז המעגל. אבל גודל המהירות הוא
+          $|d\vec r/dt|$, הגודל של הנגזרת של הווקטור, ו-$72\,\text{km/h}$ הם בדיוק הגודל הזה.
+        misconception: MC-1-speed-is-rate-of-distance
+      - text: וקטור המהירות קבוע, אבל התאוצה שונה מאפס, כי המכונית מסתובבת.
+        feedback: >-
+          שתי הטענות לא מתיישבות: אם $\vec v$ קבוע, הנגזרת שלו, $\vec a$, אפס. מה שקבוע הוא הגודל של $\vec v$, והכיוון
+          שלו הוא מה שמשתנה.
+    hints:
+      - 'מה מד המהירות מודד: את הווקטור $\vec v$ או את הגודל שלו?'
+
+  - id: Q-1.1-helix-speed
+    type: numeric
+    objectives: [OBJ-1.1-1]
+    level: basic
+    prompt: >-
+      חלקיק נע לאורך סליל, ווקטור המקום שלו הוא
+      $$\vec r(t) = \left(A\cos\omega t,\ A\sin\omega t,\ ct\right)$$
+      עם $A = 2.0\,\text{m}$, $\omega = 3.0\,\text{rad/s}$ ו-$c = 4.0\,\text{m/s}$. מה גודל המהירות שלו?
+    answer: 7.21
+    unit: m/s
+    correctFeedback: >-
+      נכון. גוזרים כל רכיב לפי הזמן, עם כלל השרשרת:
+      $$\vec v = \left(-A\omega\sin\omega t,\ A\omega\cos\omega t,\ c\right)$$
+      ולכן $|\vec v| = \sqrt{A^2\omega^2\left(\sin^2\omega t + \cos^2\omega t\right) + c^2} = \sqrt{36 + 16} = 7.21\,\text{m/s}$,
+      בכל רגע.
+    wrongFeedback: 'גזרו את שלושת הרכיבים של $\vec r(t)$ לפי $t$, וחשבו את הגודל של הווקטור שקיבלתם בפיתגורס.'
+    commonWrong:
+      - value: 6
+        feedback: 'זה $A\omega$, רק החלק המעגלי של התנועה. גם הרכיב $z$ של המקום משתנה, ונגזרתו $c$ היא רכיב שלישי של המהירות.'
+      - value: 10
+        feedback: 'חיברתם $A\omega + c$. הרכיב המעגלי של המהירות ניצב לרכיב לאורך $z$, ולכן מחברים אותם בפיתגורס, לא כמספרים.'
+      - value: 4.47
+        feedback: 'קיבלתם $\sqrt{A^2 + c^2}$: שכחתם את כלל השרשרת. $\dfrac{d}{dt}\cos\omega t = -\omega\sin\omega t$, ולכן החלק המעגלי הוא $A\omega$, לא $A$.'
+    hints:
+      - 'בסוף הדרך תשתמשו ב-$\sin^2 + \cos^2 = 1$.'
+
+  - id: Q-1.1-helix-acceleration
+    type: twotier
+    objectives: [OBJ-1.1-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בשאלה הקודמת מצאתם שגודל המהירות של החלקיק על הסליל
+      $\vec r(t) = \left(A\cos\omega t,\ A\sin\omega t,\ ct\right)$ קבוע בזמן. מה נכון לגבי התאוצה שלו?
+    choices:
+      - text: 'היא אופקית (ניצבת לציר $z$), פונה אל ציר הסליל, וגודלה $A\omega^2$.'
+        correct: true
+        feedback: נכון. זו התאוצה של התנועה המעגלית שבתוך הסליל; לתנועה לאורך $z$ אין תאוצה.
+      - text: היא אפס, כי גודל המהירות קבוע.
+        feedback: >-
+          גודל קבוע לא אומר וקטור קבוע. ההיטל של התנועה על המישור $xy$ הוא מעגל, והכיוון של המהירות במישור הזה
+          מסתובב כל הזמן.
+        misconception: MC-1-constant-speed-no-acceleration
+      - text: 'היא פונה אל ציר הסליל, וגודלה $\sqrt{A^2\omega^4 + c^2}$, כי גם התנועה לאורך $z$ תורמת.'
+        feedback: 'הרכיב $z$ של המהירות הוא $c$, קבוע, והנגזרת שלו אפס. התנועה לאורך $z$ לא תורמת לתאוצה דבר.'
+      - text: 'יש לה רכיב לאורך $z$, כי החלקיק עולה לאורך הציר.'
+        feedback: 'החלקיק עולה, אבל בקצב קבוע: $z = ct$ קווי בזמן, והנגזרת השנייה של פונקציה קווית אפס.'
+    reasons:
+      - text: '$\vec a = \ddot{\vec r} = -\omega^2\left(A\cos\omega t,\ A\sin\omega t,\ 0\right)$: זה וקטור מינוס $\omega^2$ כפול ההיטל של $\vec r$ על המישור $xy$.'
+        correct: true
+        feedback: >-
+          זה הנימוק, וכדאי לבדוק אותו: $\vec v\cdot\vec a = A^2\omega^3\sin\omega t\cos\omega t - A^2\omega^3\cos\omega t\sin\omega t + 0 = 0$.
+          כשגודל המהירות קבוע, התאוצה תמיד ניצבת למהירות, כי $\dfrac{d}{dt}\left(\vec v\cdot\vec v\right) = 2\vec v\cdot\vec a$.
+      - text: התאוצה היא קצב השינוי של גודל המהירות, וכאן הגודל לא משתנה.
+        feedback: >-
+          קצב השינוי של גודל המהירות הוא רק הרכיב של התאוצה לאורך המהירות. כאן הרכיב הזה אכן אפס, אבל הרכיב
+          הניצב, שמסובב את המהירות, שונה מאפס.
+        misconception: MC-1-acceleration-is-speed-rate
+      - text: 'הרכיב $z$ של המקום גדל עם הזמן, ולכן גם לתאוצה יש רכיב $z$.'
+        feedback: 'מקום שגדל לא אומר תאוצה. כדי שתהיה תאוצה לאורך $z$, צריך שהמהירות לאורך $z$ תשתנה, ו-$\dot z = c$ קבוע.'
+    hints:
+      - 'גזרו את $\vec v(t)$ מהשאלה הקודמת פעם נוספת, רכיב-רכיב.'
+
+  - id: Q-1.1-accel-magnitude
+    type: numeric
+    objectives: [OBJ-1.1-1]
+    level: mid
+    prompt: >-
+      וקטור המקום של גוף במישור הוא
+      $$\vec r(t) = \left(2t^3 - 3t,\ 4t^2\right)$$
+      כאשר $t$ בשניות ו-$\vec r$ במטרים (למקדמים יש היחידות המתאימות). מה גודל התאוצה של הגוף ברגע
+      $t = 1.0\,\text{s}$?
+    answer: 14.4
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $\vec v = \left(6t^2 - 3,\ 8t\right)$ ו-$\vec a = \left(12t,\ 8\right)$. ב-$t = 1.0\,\text{s}$:
+      $\vec a = (12,\ 8)\,\text{m/s}^2$, ולכן $|\vec a| = \sqrt{144 + 64} = 14.4\,\text{m/s}^2$.
+    wrongFeedback: 'גזרו פעמיים כל רכיב, הציבו $t = 1.0\,\text{s}$, ורק בסוף חשבו את הגודל של הווקטור.'
+    commonWrong:
+      - value: 8.54
+        feedback: 'זה גודל המהירות ב-$t = 1.0\,\text{s}$: $\vec v = (3,\ 8)\,\text{m/s}$. גזרו פעם נוספת כדי לקבל את התאוצה.'
+      - value: 11.7
+        feedback: >-
+          גזרתם את גודל המהירות: $\dfrac{d|\vec v|}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|} = \dfrac{36 + 64}{8.54} = 11.7\,\text{m/s}^2$.
+          זה רק הרכיב של התאוצה לאורך המהירות. יש לה גם רכיב ניצב למהירות, שמסובב אותה, ולכן הגודל של $\vec a$ גדול יותר.
+        misconception: MC-1-acceleration-is-speed-rate
+    hints:
+      - 'קודם וקטור, אחר כך גודל: גזרו את הרכיבים, לא את $|\vec r|$ או את $|\vec v|$.'
+
+  - id: Q-1.1-ellipse
+    type: numeric
+    objectives: [OBJ-1.1-1]
+    level: bagrut
+    prompt: >-
+      גוף נע במישור על אליפסה:
+      $$\vec r(t) = \left(a\cos\omega t,\ b\sin\omega t\right)$$
+      עם $a = 3.0\,\text{m}$, $b = 2.0\,\text{m}$ ו-$\omega = 2.0\,\text{rad/s}$. גודל המהירות שלו משתנה לאורך
+      המסלול. מה גודל התאוצה ברגע שגודל המהירות מרבי?
+    answer: 8
+    unit: m/s²
+    correctFeedback: >-
+      נכון. גזירה פעמיים נותנת $\vec a = -\omega^2\left(a\cos\omega t,\ b\sin\omega t\right) = -\omega^2\vec r$: התאוצה
+      תמיד פונה אל מרכז האליפסה, וגודלה $\omega^2|\vec r|$. גודל המהירות הוא
+      $|\vec v| = \omega\sqrt{a^2\sin^2\omega t + b^2\cos^2\omega t}$, ומכיוון ש-$a > b$ הוא מרבי כש-$\sin\omega t = \pm1$,
+      בנקודות $(0,\ \pm b)$. שם $|\vec r| = b$, ולכן $|\vec a| = \omega^2 b = 4\cdot2.0 = 8.0\,\text{m/s}^2$.
+      **בדיקת גבולות:** כש-$a = b = R$ האליפסה היא מעגל, $|\vec v| = R\omega$ קבוע ו-$|\vec a| = R\omega^2 = |\vec v|^2/R$, התאוצה
+      של תנועה מעגלית.
+    wrongFeedback: >-
+      הראו קודם ש-$\vec a = -\omega^2\vec r$. אחר כך מצאו איפה $|\vec v|^2 = \omega^2\left(a^2\sin^2\omega t + b^2\cos^2\omega t\right)$
+      מרבי, ומה המרחק מהמרכז באותה נקודה.
+    commonWrong:
+      - value: 12
+        feedback: >-
+          זה $\omega^2 a$, גודל התאוצה בקצוות הציר הארוך, $(\pm a,\ 0)$. שם דווקא גודל המהירות **מזערי**, $b\omega$.
+          המהירות מרבית בקצוות הציר הקצר, במרחק $b$ מהמרכז.
+      - value: 18
+        feedback: >-
+          חישבתם $v_{\max}^2/b = 36/2.0$, כאילו הגוף נע על מעגל ברדיוס $b$. האליפסה בנקודה $(0,\ b)$ שטוחה יותר
+          ממעגל כזה, ולכן אי אפשר להשתמש ב-$b$ כרדיוס. חשבו את $\vec a$ ישירות, בגזירה.
+      - value: 0
+        feedback: >-
+          בתנודה בממד אחד, $x = a\cos\omega t$, התאוצה אכן מתאפסת כשהמהירות מרבית. כאן התנועה בשני ממדים, ו-$\vec a = -\omega^2\vec r$
+          מתאפס רק במרכז, שהגוף לא עובר בו.
+    hints:
+      - 'השוו את $\ddot{\vec r}$ ל-$\vec r$ עצמו.'
+      - 'הגודל $a^2\sin^2\omega t + b^2\cos^2\omega t$ מרבי כש-$\sin^2\omega t = 1$, כי $a > b$.'
+
+  # ---------------------------------------------------------------- OBJ-1.1-2 v and x from a by integration
+  - id: Q-1.1-integration-constants
+    type: mc
+    objectives: [OBJ-1.1-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      שני גופים, A ו-B, יוצאים ב-$t = 0$ מהנקודה $x = 0$ ונעים לאורך ציר $x$ עם **אותה** פונקציית תאוצה $a(t)$.
+      המהירות ההתחלתית של A היא $1\,\text{m/s}$, ושל B היא $3\,\text{m/s}$. מה נכון בכל רגע $t > 0$?
+    choices:
+      - text: 'ההפרש בין המהירויות נשאר $2\,\text{m/s}$, והמרחק בין הגופים הוא $(2\,\text{m/s})\cdot t$.'
+        correct: true
+        feedback: >-
+          נכון. $v(t) = v(0) + \int_0^t a(t')\,dt'$, והאינטגרל זהה לשני הגופים. לכן $v_B - v_A = 2\,\text{m/s}$ בכל רגע,
+          ואינטגרציה נוספת נותנת $x_B - x_A = (2\,\text{m/s})\cdot t$, יהיה $a(t)$ אשר יהיה.
+      - text: שני הגופים נעים יחד, כי התאוצה קובעת את התנועה.
+        feedback: >-
+          התאוצה קובעת את התנועה רק עד כדי קבועי אינטגרציה. כל אינטגרציה מוסיפה קבוע, ואת הקבוע קובעים תנאי
+          ההתחלה: כאן המהירויות ההתחלתיות שונות.
+        misconception: MC-1-acceleration-fixes-motion
+      - text: ההפרש בין המהירויות קטן עם הזמן, כי שני הגופים מקבלים אותה תאוצה.
+        feedback: >-
+          אותה תאוצה מוסיפה לשני הגופים אותו שינוי מהירות, $\int a\,dt$. מה שמתווסף לשניהם לא משנה את ההפרש
+          ביניהם.
+      - text: אי אפשר לדעת בלי לדעת את $a(t)$.
+        feedback: 'את $v_A(t)$ ואת $v_B(t)$ עצמם אי אפשר לדעת, אבל את **ההפרש** ביניהם אפשר: האינטגרל של $a(t)$ מצטמצם בחיסור.'
+    hints:
+      - 'כתבו $v(t) = v(0) + \int_0^t a\,dt''$ לכל גוף, וחסרו.'
+
+  - id: Q-1.1-jerk
+    type: numeric
+    objectives: [OBJ-1.1-2]
+    level: basic
+    prompt: >-
+      רכב נע לאורך ציר $x$, והתאוצה שלו גדלה עם הזמן: $a(t) = kt$, עם $k = 6.0\,\text{m/s}^3$. ב-$t = 0$ הוא
+      בנקודה $x = 0$ ומהירותו $2.0\,\text{m/s}$. איפה הוא ברגע $t = 2.0\,\text{s}$?
+    answer: 12
+    unit: m
+    correctFeedback: >-
+      נכון. $v(t) = v_0 + \int_0^t kt'\,dt' = v_0 + \tfrac12kt^2$, ו-$x(t) = v_0t + \tfrac16kt^3$. ב-$t = 2.0\,\text{s}$:
+      $x = 2.0\cdot2.0 + \tfrac16\cdot6.0\cdot8.0 = 4.0 + 8.0 = 12\,\text{m}$.
+    wrongFeedback: 'בצעו שתי אינטגרציות, מ-$a$ ל-$v$ ומ-$v$ ל-$x$, ובכל אחת קבעו את הקבוע מתנאי ההתחלה.'
+    commonWrong:
+      - value: 28
+        feedback: >-
+          הצבתם את התאוצה של הרגע, $a(2.0) = 12\,\text{m/s}^2$, בנוסחה $x = v_0t + \tfrac12at^2$. הנוסחה הזו נכונה רק
+          לתאוצה קבועה. כאן התאוצה גדלה מאפס, ולכן הממוצע שלה קטן בהרבה מהערך הסופי.
+        misconception: MC-1-constant-acceleration-formulas-always
+      - value: 8
+        feedback: 'זה $\tfrac16kt^3$ בלבד: שכחתם את קבוע האינטגרציה של המהירות, $v_0 = 2.0\,\text{m/s}$, שמוסיף $v_0t = 4.0\,\text{m}$.'
+      - value: 14
+        feedback: 'זו המהירות ב-$t = 2.0\,\text{s}$, ב-$\text{m/s}$: עצרתם אחרי אינטגרציה אחת. צריך עוד אחת כדי לקבל מקום.'
+    hints:
+      - 'האינטגרל של $t$ הוא $t^2/2$, ושל $t^2$ הוא $t^3/3$.'
+
+  - id: Q-1.1-boat-half
+    type: numeric
+    objectives: [OBJ-1.1-2]
+    level: mid
+    prompt: >-
+      סירה מנועית מכבה את המנוע כשמהירותה $v_0 = 10\,\text{m/s}$. מאותו רגע התאוצה שלה תלויה במהירות:
+      $a = -kv^2$, עם $k = 0.050\,\text{m}^{-1}$. איזה מרחק היא עוברת עד שמהירותה יורדת לחצי?
+    answer: 13.9
+    unit: m
+    correctFeedback: >-
+      נכון. כדי לקבל מרחק בלי לעבור דרך הזמן, כותבים בכלל השרשרת $a = \dfrac{dv}{dt} = \dfrac{dv}{dx}\cdot\dfrac{dx}{dt} = v\,\dfrac{dv}{dx}$.
+      אז $v\,\dfrac{dv}{dx} = -kv^2$, כלומר $\dfrac{dv}{v} = -k\,dx$, ולכן $v(x) = v_0e^{-kx}$. חצי מהירות
+      מתקבלת ב-$x = \dfrac{\ln2}{k} = \dfrac{0.693}{0.050} = 13.9\,\text{m}$, בלי קשר ל-$v_0$.
+    wrongFeedback: 'כתבו את התאוצה כ-$v\,dv/dx$, הפרידו משתנים, ואינטגרלו מ-$v_0$ עד $v_0/2$.'
+    commonWrong:
+      - value: 20
+        feedback: 'זה $1/k$, המרחק שבו המהירות יורדת פי $e$, ל-$37\%$ מ-$v_0$. לחצי מגיעים מוקדם יותר, ב-$\ln2/k$.'
+      - value: 10
+        feedback: 'קיבלתם $0.5/k$, כאילו המהירות יורדת קווית עם המרחק. היא יורדת באקספוננט, ולכן צריך לוגריתם: $\ln2 = 0.693$, לא $0.5$.'
+      - value: 2
+        feedback: 'זה הזמן עד חצי מהירות, $1/(kv_0) = 2.0\,\text{s}$, ולא המרחק. שאלו על מרחק: החליפו את $dv/dt$ ב-$v\,dv/dx$.'
+    hints:
+      - 'כלל השרשרת: $\dfrac{dv}{dt} = \dfrac{dv}{dx}\cdot\dfrac{dx}{dt}$.'
+
+  - id: Q-1.1-boat-never-stops
+    type: mc
+    objectives: [OBJ-1.1-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      לאותה סירה ($a = -kv^2$, $k = 0.050\,\text{m}^{-1}$, $v_0 = 10\,\text{m/s}$) מצאו את $v(t)$ ואת $x(t)$. האם הסירה
+      נעצרת, ואם כן, אחרי איזה מרחק?
+    choices:
+      - text: 'לא. $v(t) = \dfrac{v_0}{1 + kv_0t}$ שואפת לאפס, אבל $x(t) = \dfrac1k\ln\left(1 + kv_0t\right)$ גדל בלי גבול.'
+        correct: true
+        feedback: >-
+          נכון. מ-$\dfrac{dv}{v^2} = -k\,dt$ מקבלים $\dfrac1v - \dfrac1{v_0} = kt$. אינטגרציה של $v(t)$ נותנת את $x(t)$, וכשמציבים
+          את המספרים: אחרי $1000\,\text{s}$ הסירה עברה $124\,\text{m}$ ונעה ב-$0.020\,\text{m/s}$, והיא ממשיכה, לאט מאוד.
+          **בדיקת גבולות:** בזמן קצר, $\ln(1 + \varepsilon) \approx \varepsilon$, ולכן $x \approx v_0t$, תנועה במהירות קבועה; וכש-$k \to 0$
+          אותו קירוב נכון בכל זמן.
+      - text: 'כן, אחרי $1/k = 20\,\text{m}$.'
+        feedback: >-
+          מ-$v(x) = v_0e^{-kx}$ רואים שב-$x = 1/k$ המהירות היא $v_0/e$, לא אפס. אקספוננט לא מתאפס באף $x$ סופי, ולכן
+          אין מרחק שבו הסירה עומדת.
+        misconception: MC-1-slowing-body-stops
+      - text: 'כן, אחרי זמן $1/(kv_0) = 2.0\,\text{s}$.'
+        feedback: 'הציבו $t = 1/(kv_0)$ ב-$v(t)$: יוצא $v_0/2$. זה הזמן עד חצי מהירות, ואין זמן סופי שבו $v(t) = 0$.'
+        misconception: MC-1-slowing-body-stops
+      - text: כן, כי התאוצה מנוגדת למהירות כל הזמן, וגוף שמאט כל הזמן חייב להיעצר.
+        feedback: >-
+          ההאטה כאן נחלשת מהר, כמו $v^2$, ככל שהסירה מאטה. מה שקובע אם הגוף נעצר הוא האינטגרל של המהירות,
+          והאינטגרל של $1/(1 + kv_0t)$ מתבדר.
+        misconception: MC-1-slowing-body-stops
+    hints:
+      - 'הפרידו משתנים ב-$dv/dt = -kv^2$: $dv/v^2 = -k\,dt$.'
+      - 'האינטגרל של $\dfrac{1}{1 + \beta t}$ הוא $\dfrac1\beta\ln(1 + \beta t)$.'
+    explanation: >-
+      במים אמיתיים הסירה כן נעצרת: במהירות נמוכה הגרר כבר לא ריבועי במהירות, וגם גורמים אחרים נכנסים. המודל
+      $a = -kv^2$ מתאים רק כל עוד הסירה מהירה.

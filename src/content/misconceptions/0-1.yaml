@@ -1,0 +1,27 @@
+# Misconceptions first detected in lesson 0.1. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 0.1
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-0-add-different-dimensions
+  title: אפשר לחבר גדלים בממדים שונים
+  belief: ביטוי כמו v₀ + g/2 הוא ביטוי חוקי, ורק המספר שיוצא ממנו קובע אם הוא נכון.
+  truth: אפשר לחבר, לחסר ולהשוות רק גדלים באותם ממדים. סכום של מהירות ותאוצה משנה את ערכו כשמחליפים שניות בדקות, ולכן אין לו משמעות פיזיקלית.
+  remedy: { lesson: '0.1', label: 'שיעור 0.1: כל איבר במשוואה באותם ממדים' }
+
+- id: MC-0-period-depends-on-mass
+  title: מטוטלת כבדה מתנודדת בקצב אחר
+  belief: זמן המחזור של מטוטלת פשוטה תלוי במסת המשקולת, כי על משקולת כבדה פועל כוח כובד גדול יותר.
+  truth: הכוח גדל עם המסה, אבל גם ההתמדה גדלה באותו יחס. ניתוח ממדים מראה זאת מיד, כי אין גודל אחר עם קילוגרמים שיבטל את המסה, ולכן T = C√(L/g).
+  remedy: { lesson: '0.1', label: 'שיעור 0.1: זמן המחזור של מטוטלת בניתוח ממדים' }
+
+- id: MC-0-dimensions-give-constant
+  title: ניתוח ממדים נותן גם את הקבוע
+  belief: אם ניתוח ממדים נותן v ∝ √(GM/R), אז v = √(GM/R) בדיוק.
+  truth: ניתוח ממדים קובע את התלות בגדלים, אבל לא את הקבוע חסר הממדים (2π, √2, ½). את הקבוע נותנים פתרון מלא או מדידה.
+  remedy: { lesson: '0.1', label: 'שיעור 0.1: מה ניתוח ממדים לא יכול לקבוע' }
+
+- id: MC-0-dimensions-always-unique
+  title: ניתוח ממדים תמיד קובע את הנוסחה
+  belief: ניתוח ממדים תמיד קובע את התלות בכל הגדלים, עד כדי קבוע.
+  truth: כשאפשר לבנות מהגדלים צירוף חסר ממדים, כמו ρvD/η, ניתוח ממדים קובע את התשובה רק עד כדי פונקציה לא ידועה של הצירוף.
+  remedy: { lesson: '0.1', label: 'שיעור 0.1: גרר עם צפיפות וצמיגות' }

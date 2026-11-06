@@ -1,0 +1,276 @@
+# Lesson 9.3 question bank: the comprehension ladder of "טרנספורמציות לורנץ".
+# Convention in every prompt: S′ moves at +v along x relative to S, the origins coincide at t = t′ = 0,
+# x′ = γ(x − vt), t′ = γ(t − vx/c²). Every objective has ≥ 3 questions, one of them qualitative.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (C_LIGHT = 3.0e8), .scratch/ch9/nums.ts:
+#   event x = 9.0e8 m, t = 2.0 s, β = 0.6 (γ = 1.25): vx/c² = 1.80 s; x′ = 6.75e8 m, t′ = 0.250 s;
+#   wrong x − vt = 5.40e8, (x − vt)/γ = 4.32e8, γ(x + vt) = 1.575e9; t = 2.00, γt = 2.50,
+#   γ(t + vx/c²) = 4.75, t − vx/c² = 0.200; check c²t² − x² = −5 (light-s)² in both frames;
+#   beacons Δx = 1.5e9 m, simultaneous in S, β = 0.6: Δt′ = −γβΔx/c = −3.75 s (wrong −3.00, −2.40);
+#   A = (0, 0), B = (1.5e9 m, 3.0 s): simultaneous in β = c Δt/Δx·c = 0.600, where Δx′ = 1.2e9 m = √(−s²).
+
+chapter: 9
+questions:
+  # ---------------------------------------------------------------- OBJ-9.3-1 derive and use the transformation
+  - id: Q-9.3-assumptions
+    type: multi
+    objectives: [OBJ-9.3-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בגזירה של טרנספורמציית לורנץ בין מערכת $S$ למערכת $S'$ שנעה ביחס אליה במהירות $v$ לאורך $x$, אילו מההנחות
+      הבאות משתמשים? סמנו את כולן.
+    choices:
+      - text: >-
+          הטרנספורמציה ליניארית ב-$x$ וב-$t$, כי המרחב והזמן אחידים, וגוף שנע במהירות קבועה במערכת אחת נע במהירות קבועה
+          גם בשנייה.
+        correct: true
+        feedback: >-
+          נכון. אילו הטרנספורמציה הייתה כוללת, למשל, $x^2$, לנקודה $x = 0$ היה מעמד מיוחד, ותנועה במהירות קבועה הייתה
+          נראית מואצת במערכת השנייה.
+      - text: מהירות האור היא $c$ בשתי המערכות.
+        correct: true
+        feedback: >-
+          נכון. זו ההנחה השנייה, וממנה נקבע $\gamma$: פולס אור $x = ct$ ב-$S$ חייב לצאת $x' = ct'$ ב-$S'$.
+      - text: >-
+          לפי עקרון היחסות, הטרנספורמציה ההפוכה, מ-$S'$ ל-$S$, נראית אותו דבר כשמחליפים את $v$ ב-$(-v)$.
+        correct: true
+        feedback: >-
+          נכון. $S$ נעה ביחס ל-$S'$ במהירות $(-v)$, ושתי המערכות שקולות. לכן אותו $\gamma$ מופיע בשני הכיוונים.
+      - text: הזמן זהה בשתי המערכות, $t' = t$.
+        feedback: >-
+          זו בדיוק ההנחה שהגזירה מוותרת עליה. עם $t' = t$ מקבלים את טרנספורמציית גליליי, ובה האור נע במהירות $c - v$
+          ב-$S'$, בניגוד להנחה השנייה.
+        misconception: MC-9-absolute-time
+      - text: יש מערכת ייחוס מועדפת, האתר, שבה האור נע במהירות $c$.
+        feedback: >-
+          הגזירה לא נזקקת לאתר, וההנחה הראשונה שוללת מערכת מועדפת. ניסוי מייקלסון-מורלי לא מצא אותה.
+
+  - id: Q-9.3-event-x
+    type: numeric
+    objectives: [OBJ-9.3-1]
+    level: basic
+    prompt: >-
+      מאורע קורה ב-$S$ במקום $x = 9.0\cdot10^8\,\text{m}$ (שלוש שניות אור) ובזמן $t = 2.0\,\text{s}$. מערכת $S'$ נעה
+      ביחס ל-$S$ במהירות $0.6c$ לאורך $+x$, והראשיות מתלכדות ב-$t = t' = 0$. מה המקום $x'$ של המאורע ב-$S'$?
+    answer: 6.75e8
+    unit: m
+    correctFeedback: >-
+      נכון. $\gamma = 1.25$ ו-$vt = 1.8\cdot10^8\cdot2.0 = 3.6\cdot10^8\,\text{m}$, ולכן
+      $x' = \gamma(x - vt) = 1.25\cdot5.4\cdot10^8 = 6.75\cdot10^8\,\text{m}$.
+    wrongFeedback: 'הציבו ב-$x'' = \gamma(x - vt)$, עם $v = 0.6c$ ו-$\gamma = 1/\sqrt{1 - 0.36}$.'
+    commonWrong:
+      - value: 5.4e8
+        feedback: >-
+          זה $x - vt$, טרנספורמציית גליליי. ביחסות יש עוד גורם $\gamma = 1.25$. רק כש-$v \ll c$ הוא קרוב ל-1.
+      - value: 4.32e8
+        feedback: >-
+          חילקתם ב-$\gamma$ במקום לכפול. בדקו בעזרת פולס אור: עם $x = ct$ צריך לצאת $x' = ct'$, וזה עובד רק עם
+          $x' = \gamma(x - vt)$.
+      - value: 1.575e9
+        feedback: >-
+          הוספתם $vt$ במקום להחסיר. $S'$ נעה לכיוון $+x$, ולכן הראשית שלה נמצאת ב-$x = vt$, ומקום ביחס אליה הוא $x - vt$.
+
+  - id: Q-9.3-event-t
+    type: numeric
+    objectives: [OBJ-9.3-1]
+    level: mid
+    prompt: >-
+      לאותו מאורע ($x = 9.0\cdot10^8\,\text{m}$, $t = 2.0\,\text{s}$ ב-$S$, ו-$S'$ נעה במהירות $0.6c$ לאורך $+x$), מה
+      הזמן $t'$ ב-$S'$?
+    answer: 0.25
+    unit: s
+    correctFeedback: >-
+      נכון. $\dfrac{vx}{c^2} = \dfrac{0.6\cdot9.0\cdot10^8}{3.0\cdot10^8} = 1.8\,\text{s}$, ולכן
+      $t' = \gamma\left(t - \dfrac{vx}{c^2}\right) = 1.25\cdot(2.0 - 1.8) = 0.25\,\text{s}$. בדיקה: $c^2t^2 - x^2$ יוצא
+      מינוס 5 שניות אור בריבוע בשתי המערכות, כפי שתראו בשיעור 9.5.
+    wrongFeedback: >-
+      $t' = \gamma\left(t - vx/c^2\right)$. חשבו קודם את $vx/c^2$ בשניות, ורק אחר כך כפלו ב-$\gamma$.
+    commonWrong:
+      - value: 2.0
+        feedback: >-
+          זה $t' = t$, הזמן המוחלט של גליליי. בטרנספורמציית לורנץ הזמן במערכת החדשה תלוי גם במקום של המאורע.
+        misconception: MC-9-absolute-time
+      - value: 2.5
+        feedback: >-
+          חישבתם $\gamma t$ ושכחתם את האיבר $vx/c^2$. האיבר הזה הוא יחסיות הבו-זמניות: מאורעות שבו-זמניים ב-$S$ ובמקומות
+          שונים מקבלים ב-$S'$ זמנים שונים.
+        misconception: MC-9-simultaneity-absolute
+      - value: 4.75
+        feedback: 'סימן: $t'' = \gamma(t - vx/c^2)$, עם מינוס. הפלוס שייך לטרנספורמציה ההפוכה, מ-$S''$ ל-$S$.'
+      - value: 0.2
+        feedback: 'שכחתם לכפול ב-$\gamma = 1.25$.'
+    hints:
+      - 'מה היחידות של $vx/c^2$? חשבו אותו לבד.'
+
+  - id: Q-9.3-derive-gamma
+    type: mc
+    objectives: [OBJ-9.3-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      בגזירה מניחים $x' = \gamma(x - vt)$, ולפי עקרון היחסות גם $x = \gamma(x' + vt')$, עם אותו $\gamma$. פולס אור יוצא
+      מהראשית המשותפת ב-$t = t' = 0$ לכיוון $+x$, ולפי ההנחה השנייה הוא מקיים $x = ct$ ב-$S$ וגם $x' = ct'$ ב-$S'$.
+      איזו משוואה ל-$\gamma$ מתקבלת מהצבת הפולס בשתי המשוואות?
+    choices:
+      - text: >-
+          $\gamma^2\left(1 - v^2/c^2\right) = 1$
+        correct: true
+        feedback: >-
+          נכון. ההצבה נותנת $ct' = \gamma(c - v)t$ ו-$ct = \gamma(c + v)t'$. כופלים את שתיהן: $c^2tt' = \gamma^2(c^2 - v^2)tt'$,
+          ולכן $\gamma = 1/\sqrt{1 - v^2/c^2}$. **בדיקת גבולות:** כש-$v \to 0$, $\gamma \to 1$ ומקבלים את גליליי;
+          כש-$v \to c$, $\gamma \to \infty$, ומערכת במהירות האור אינה אפשרית.
+      - text: >-
+          $\gamma\left(1 - v/c\right) = 1$
+        feedback: >-
+          זה מה שיוצא מהמשוואה הראשונה לבד, עם $t' = t$. אבל אסור להניח $t' = t$: זמן הפולס בכל מערכת הוא נעלם בפני עצמו,
+          ולכן צריך את שתי המשוואות. וגם הבדיקה נכשלת: $\gamma = 1/(1 - v/c)$ לא נותן את אותו $\gamma$ למהירות $v$ ולמהירות ההפוכה.
+        misconception: MC-9-absolute-time
+      - text: >-
+          $\gamma^2\left(1 + v^2/c^2\right) = 1$
+        feedback: >-
+          בדקו את הסימן: בכפל מופיע $(c - v)(c + v) = c^2 - v^2$. עם פלוס היה יוצא $\gamma < 1$, ומשם שעונים נעים
+          ממהרים, בניגוד לשעון האור.
+      - text: >-
+          $\gamma = 1$, כי הפולס נע במהירות $c$ בשתי המערכות.
+        feedback: >-
+          עם $\gamma = 1$ המשוואה הראשונה נותנת $ct' = (c - v)t$ והשנייה $ct = (c + v)t'$. כפל שלהן נותן $c^2 = c^2 - v^2$,
+          סתירה כש-$v \neq 0$.
+    hints:
+      - 'הציבו $x = ct$ ו-$x'' = ct''$ בשתי המשוואות, וכפלו את שתיהן אחת בשנייה.'
+
+  # ---------------------------------------------------------------- OBJ-9.3-2 dilation, contraction, simultaneity from it
+  - id: Q-9.3-sim-shift
+    type: numeric
+    objectives: [OBJ-9.3-2]
+    level: mid
+    prompt: >-
+      שני משדרים נחים ב-$S$: משדר A ב-$x = 0$ ומשדר B ב-$x = 1.5\cdot10^9\,\text{m}$ (חמש שניות אור). הם מהבהבים
+      בו-זמנית ב-$S$. מערכת $S'$ נעה ביחס ל-$S$ במהירות $0.6c$ לאורך $+x$. חשבו את $\Delta t' = t'_B - t'_A$, עם הסימן.
+    answer: -3.75
+    unit: s
+    correctFeedback: >-
+      נכון. עם $\Delta t = 0$: $\Delta t' = \gamma\left(\Delta t - \dfrac{v\Delta x}{c^2}\right) = -1.25\cdot0.6\cdot5.0\,\text{s}$,
+      כלומר $\Delta t' = -3.75\,\text{s}$. ב-$S'$ משדר B מהבהב קודם. מ-$S'$ נראה ש-$S$ נעה לכיוון $x$ השלילי, ו-B נמצא בחלק
+      **האחורי** שלה: המאורע האחורי מבין שני מאורעות בו-זמניים קורה קודם.
+    wrongFeedback: >-
+      שני המאורעות בו-זמניים ב-$S$, ולכן $\Delta t = 0$. הציבו בטרנספורמציה של $t'$ את ההפרשים, עם הסימן.
+    commonWrong:
+      - value: 3.75
+        feedback: >-
+          הגודל נכון, הסימן הפוך. $\Delta t' = \gamma\left(0 - v\Delta x/c^2\right)$ שלילי כש-$\Delta x > 0$: ב-$S'$ משדר B
+          מהבהב לפני A.
+      - value: -3.0
+        feedback: 'שכחתם את $\gamma$: $v\Delta x/c^2 = 3.0\,\text{s}$, ו-$\Delta t''$ גדול ממנו פי $1.25$.'
+      - value: -2.4
+        feedback: 'חילקתם ב-$\gamma$ במקום לכפול: $\Delta t'' = \gamma(\Delta t - v\Delta x/c^2)$.'
+    hints:
+      - 'כתבו את טרנספורמציית לורנץ להפרשים: $\Delta t'' = \gamma\left(\Delta t - v\Delta x/c^2\right)$.'
+
+  - id: Q-9.3-dilation-from-lt
+    type: twotier
+    objectives: [OBJ-9.3-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      שעון נח בראשית של $S'$ ומתקתק פעמיים, בהפרש $\Delta t'$ בשעון שלו. מה הזמן $\Delta t$ בין שני התקתוקים ב-$S$, לפי
+      טרנספורמציית לורנץ?
+    choices:
+      - text: $\Delta t = \gamma\Delta t'$
+        correct: true
+        feedback: >-
+          נכון. זו התארכות הזמן, והפעם היא נובעת מהטרנספורמציה, בלי שעון אור.
+      - text: $\Delta t = \Delta t'/\gamma$
+        feedback: >-
+          כך יוצא אם מציבים $\Delta x = 0$ במשוואה של $t'$. אבל ב-$S$ השעון נע, ובין התקתוקים הוא זז $\Delta x = v\Delta t$.
+        misconception: MC-9-same-place-wrong-frame
+      - text: $\Delta t = \Delta t'$
+        feedback: >-
+          זה נכון רק בטרנספורמציית גליליי. בלורנץ $\Delta t = \gamma\left(\Delta t' + v\Delta x'/c^2\right)$, והגורם
+          $\gamma$ נשאר גם כש-$\Delta x' = 0$.
+        misconception: MC-9-absolute-time
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: >-
+          בטרנספורמציה ההפוכה, $\Delta t = \gamma\left(\Delta t' + v\Delta x'/c^2\right)$, שני התקתוקים באותו מקום ב-$S'$, כלומר $\Delta x' = 0$.
+        correct: true
+        feedback: >-
+          זה הנימוק. אפשר גם בדרך השנייה: $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$ עם $\Delta x = v\Delta t$
+          נותן $\Delta t' = \gamma\Delta t\left(1 - v^2/c^2\right) = \Delta t/\gamma$, אותה תוצאה.
+      - text: >-
+          ב-$\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$ השעון מתקתק באותו מקום, ולכן $\Delta x = 0$.
+        feedback: >-
+          השעון מתקתק באותו מקום רק במערכת שבה הוא נח, $S'$. ב-$S$ הוא זז בין התקתוקים, ו-$\Delta x = v\Delta t \neq 0$.
+        misconception: MC-9-same-place-wrong-frame
+      - text: השעונים של $S$ הם שמפגרים, כי $S$ נעה ביחס ל-$S'$.
+        feedback: >-
+          בעיני $S'$, שעוני $S$ אכן מפגרים, וזה סימטרי. אבל השאלה משווה שעון **אחד** של $S'$ לשעונים של $S$, ובהשוואה
+          הזו השעון הבודד מודד את הזמן העצמי.
+        misconception: MC-9-dilation-asymmetric
+    hints:
+      - 'באיזו מערכת שני התקתוקים קורים באותו מקום? כתבו את הטרנספורמציה שבה ההפרש במקום הזה מופיע.'
+
+  - id: Q-9.3-contraction-from-lt
+    type: mc
+    objectives: [OBJ-9.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      מוט נח ב-$S'$ בין $x' = 0$ ל-$x' = L_0$. ב-$S$ המוט נע במהירות $v$. איך מקבלים את האורך שלו ב-$S$ מטרנספורמציית
+      לורנץ, ומה יוצא?
+    choices:
+      - text: >-
+          מסמנים את שני הקצוות באותו זמן $t$ ב-$S$, כלומר $\Delta t = 0$. אז $L_0 = \Delta x' = \gamma(\Delta x - v\Delta t) = \gamma\Delta x$,
+          ולכן $\Delta x = L_0/\gamma$.
+        correct: true
+        feedback: >-
+          נכון. האורך במערכת מסוימת הוא המרחק בין הקצוות באותו רגע **שלה**. **בדיקת גבולות:** כש-$v \to 0$, $\Delta x \to L_0$,
+          וכש-$v \to c$, $\Delta x \to 0$. בדרך הזו גם מתקבלת יחסיות הבו-זמניות: שני הסימונים קורים ב-$S'$ בזמנים שונים,
+          $\Delta t' = -\gamma v\Delta x/c^2 = -vL_0/c^2$, והקצה הקדמי סומן קודם.
+      - text: >-
+          מסמנים את שני הקצוות באותו זמן $t'$ ב-$S'$, כלומר $\Delta t' = 0$. אז $\Delta x = \gamma(\Delta x' + v\Delta t') = \gamma L_0$,
+          והמוט ארוך יותר ב-$S$.
+        feedback: >-
+          שני סימונים בו-זמניים ב-$S'$ אינם בו-זמניים ב-$S$, ובין שני הסימונים, במערכת $S$, המוט זז. המרחק בין שני
+          הסימנים האלה ב-$S$ אינו האורך של המוט ב-$S$.
+        misconception: MC-9-ends-not-simultaneous
+      - text: לא משנה מתי מסמנים את הקצוות, כי המוט קשיח והאורך שלו קבוע.
+        feedback: >-
+          המוט נע ב-$S$. אם מסמנים קצה אחד ומחכים, הקצה השני מספיק לזוז, והמרחק בין הסימנים תלוי בזמן ההמתנה. רק
+          סימון בו-זמני ב-$S$ מודד את האורך ב-$S$.
+        misconception: MC-9-ends-not-simultaneous
+      - text: >-
+          $\Delta x = \gamma L_0$, כי כמו שהזמן מתארך פי $\gamma$, גם האורך מתארך.
+        feedback: >-
+          הזמן העצמי הוא הקצר ביותר והאורך העצמי הוא **הארוך** ביותר. שתי ההשפעות נובעות מאותה טרנספורמציה, אבל בכיוונים
+          הפוכים.
+        misconception: MC-9-moving-rod-longer
+    hints:
+      - 'מה צריך להיות $\Delta t$ כדי שהמרחק $\Delta x$ בין הסימנים יהיה האורך ב-$S$?'
+
+  - id: Q-9.3-simultaneous-frame
+    type: numeric
+    objectives: [OBJ-9.3-1, OBJ-9.3-2]
+    level: bagrut
+    prompt: >-
+      ב-$S$ מאורע A קורה ב-$x = 0$, $t = 0$, ומאורע B ב-$x = 1.5\cdot10^9\,\text{m}$, $t = 3.0\,\text{s}$. באיזו מהירות
+      $v$ לאורך $+x$ צריכה לנוע מערכת $S'$ כדי ששני המאורעות יהיו בה בו-זמניים? ענו ביחידות של $c$.
+    answer: 0.6
+    unit: c
+    correctFeedback: >-
+      נכון. $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right) = 0$ נותן
+      $\dfrac{v}{c} = \dfrac{c\Delta t}{\Delta x} = \dfrac{9.0\cdot10^8}{1.5\cdot10^9} = 0.6$. במערכת הזו
+      $\Delta x' = \gamma(\Delta x - v\Delta t) = 1.25\cdot9.6\cdot10^8 = 1.2\cdot10^9\,\text{m}$, והוא שווה ל-$\sqrt{\Delta x^2 - c^2\Delta t^2}$,
+      כפי שתראו בשיעור 9.5. **בדיקת גבולות:** כש-$\Delta t \to 0$ גם $v \to 0$: מאורעות שכבר בו-זמניים לא צריכים
+      מערכת אחרת. וכש-$c\Delta t$ גדל עד $\Delta x$, $v \to c$: אין מערכת כזו לשני מאורעות שאור יכול לקשר ביניהם.
+    wrongFeedback: >-
+      בו-זמניים ב-$S'$ פירושו $\Delta t' = 0$. הציבו בטרנספורמציה של הזמן ובודדו את $v$.
+    commonWrong:
+      - value: 1.67
+        feedback: >-
+          חישבתם $\Delta x/(c\Delta t)$, המהירות של מערכת שבה שני המאורעות קורים **באותו מקום**, $\Delta x' = 0$. התוצאה גדולה
+          מ-$c$, ולכן אין מערכת כזו לזוג הזה. מה שהשאלה מבקשת הוא $\Delta t' = 0$.
+        misconception: MC-9-any-pair-same-place
+    hints:
+      - 'הציבו $\Delta t'' = 0$ בטרנספורמציה. $\gamma$ מצטמצם.'

@@ -1,0 +1,300 @@
+# Lesson 7.3 question bank: the comprehension ladder of "הכוח הצנטריפוגלי וכוח קוריוליס".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8) in .scratch/ch7/q.ts:
+#   carousel, T = 8.0 s: ω = 2π/T = 0.785 rad/s; rider 60 kg at 4.0 m: mω²r = 148 N (mωr 188 N,
+#     m r/T² 3.75 N); ball 0.20 kg at 3.0 m/s: 2mωv' = 0.942 N (mωv' 0.471 N, times r = 2.0 m: 1.89 N,
+#     the centrifugal force at 2.0 m: 0.247 N; its weight 1.96 N);
+#   bead, R = 0.20 m, ω = 10 rad/s: cos θ = g/(ω²R) = 0.49, θ = 60.7° (90° − θ = 29.3°, atan(ω²R/g) = 63.9°);
+#     ω_c = √(g/R) = 7.0 rad/s;
+#   bucket, R = 0.15 m, ω = 6.0 rad/s: Δz = ω²R²/(2g) = 4.13 cm (no 2: 8.27 cm, ω unsquared: 0.689 cm).
+
+chapter: 7
+questions:
+  # ---------------------------------------------------------------- OBJ-7.3-1 magnitude and direction of the two forces
+  - id: Q-7.3-coriolis-direction
+    type: vector
+    objectives: [OBJ-7.3-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      פטיפון גדול, במבט מלמעלה, מסתובב נגד כיוון השעון, ולכן $\vec\omega$ פונה החוצה מהדף. דיסקית מחליקה עליו בלי חיכוך.
+      ברגע מסוים המהירות שלה **במערכת הפטיפון**, $\vec v'$, פונה למעלה בדף. לאן פונה כוח קוריוליס
+      $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$ עליה ברגע הזה?
+    answer: e
+    allowOutIn: true
+    correctFeedback: >-
+      נכון. עם $\hat x$ ימינה, $\hat y$ למעלה ו-$\hat z$ החוצה: $\vec\omega\times\vec v' \propto \hat z\times\hat y = -\hat x$,
+      ועם המינוס הכוח פונה ימינה. בסיבוב נגד כיוון השעון כוח קוריוליס מסיט כל גוף נע **ימינה** מכיוון התנועה שלו, כמו
+      בחצי הכדור הצפוני.
+    wrongFeedback: >-
+      חשבו את $\hat z\times\hat y$ בכלל יד ימין, ואל תשכחו את סימן המינוס שלפני הכוח.
+    wrong:
+      - dir: w
+        feedback: 'זה הכיוון של $\vec\omega\times\vec v''$ עצמו. כוח קוריוליס הוא מינוס $2m$ כפול הווקטור הזה.'
+      - dir: n
+        feedback: 'כוח קוריוליס ניצב תמיד ל-$\vec v''$, ולכן הוא לא מאיץ ולא מאט את הדיסקית: הוא רק מסיט אותה.'
+      - dir: out
+        feedback: 'מכפלה וקטורית ב-$\vec\omega$ ניצבת ל-$\vec\omega$, ולכן הכוח במישור הפטיפון.'
+      - dir: zero
+        feedback: 'הדיסקית נעה ביחס לפטיפון, $\vec v'' \ne 0$, והמהירות ניצבת ל-$\vec\omega$: הכוח בגודלו המרבי, $2m\omega v''$.'
+    hints:
+      - '$\hat z\times\hat y = -\hat x$.'
+
+  - id: Q-7.3-centrifugal-value
+    type: numeric
+    objectives: [OBJ-7.3-1]
+    level: basic
+    prompt: >-
+      קרוסלה משלימה סיבוב בכל $8.0\,\text{s}$. ילד בעל מסה $60\,\text{kg}$ יושב במרחק $4.0\,\text{m}$ מהציר. מה גודל
+      הכוח הצנטריפוגלי עליו במערכת הקרוסלה?
+    answer: 148
+    unit: N
+    correctFeedback: >-
+      נכון. $\omega = \dfrac{2\pi}{T} = \dfrac{2\pi}{8.0} = 0.785\,\text{rad/s}$, ו-$F = m\omega^2\rho = 60\cdot0.785^2\cdot4.0 = 148\,\text{N}$,
+      החוצה מהציר. המושב מאזן אותו בכוח אמיתי בגודל זהה כלפי הציר.
+    wrongFeedback: 'חשבו קודם את $\omega$ מזמן המחזור, ואז $m\omega^2\rho$.'
+    commonWrong:
+      - value: 188
+        feedback: 'חישבתם $m\omega\rho$. היחידות הן $\text{kg}\cdot\text{m/s}$, לא ניוטון: הכוח הוא $m\omega^2\rho$.'
+      - value: 3.75
+        feedback: >-
+          השתמשתם ב-$1/T$, בסיבובים לשנייה, במקום ב-$\omega$. ברדיאנים לשנייה $\omega = 2\pi/T$, ובלי ה-$2\pi$ הכוח יוצא
+          קטן פי $4\pi^2$.
+    hints:
+      - '$\omega = 2\pi/T$.'
+
+  - id: Q-7.3-coriolis-magnitude
+    type: numeric
+    objectives: [OBJ-7.3-1]
+    level: mid
+    prompt: >-
+      על רצפת הקרוסלה, שמשלימה סיבוב בכל $8.0\,\text{s}$, מתגלגל כדור בעל מסה $0.20\,\text{kg}$. ברגע מסוים הוא נמצא במרחק
+      $2.0\,\text{m}$ מהציר, ומהירותו ביחס לקרוסלה $3.0\,\text{m/s}$, אופקית. מה גודל כוח קוריוליס עליו ברגע הזה?
+    answer: 0.942
+    unit: N
+    correctFeedback: >-
+      נכון. $\vec\omega$ אנכי ו-$\vec v'$ אופקי, ולכן הם ניצבים ו-$F = 2m\omega v' = 2\cdot0.20\cdot0.785\cdot3.0 = 0.942\,\text{N}$,
+      כמחצית משקל הכדור, $1.96\,\text{N}$. המרחק מהציר לא נכנס: כוח קוריוליס תלוי במהירות, לא במקום.
+    wrongFeedback: '$\vec F = -2m\vec\omega\times\vec v''$. מה הזווית בין $\vec\omega$ ל-$\vec v''$?'
+    commonWrong:
+      - value: 0.471
+        feedback: 'שכחתם את המקדם 2: כוח קוריוליס הוא $2m\omega v''$.'
+      - value: 1.89
+        feedback: >-
+          כפלתם גם במרחק מהציר. בכוח קוריוליס אין $r$: הוא זהה בכל נקודה על הקרוסלה, ותלוי רק במהירות ביחס אליה.
+        misconception: MC-7-coriolis-depends-on-radius
+      - value: 0.247
+        feedback: 'זה הכוח הצנטריפוגלי במרחק $2.0\,\text{m}$, $m\omega^2r$. כוח קוריוליס תלוי במהירות, $2m\omega v''$.'
+    hints:
+      - 'חשבו קודם את $\omega$ מזמן המחזור.'
+
+  - id: Q-7.3-coriolis-out
+    type: vector
+    objectives: [OBJ-7.3-1]
+    level: mid
+    prompt: >-
+      מסתכלים על קרוסלה **מהצד**: הדף הוא מישור אנכי, ציר הסיבוב אנכי, למעלה בדף. במבט מלמעלה הקרוסלה מסתובבת נגד
+      כיוון השעון, ולכן $\vec\omega$ פונה למעלה בדף. ילד על הקרוסלה זורק כדור, וברגע מסוים מהירות הכדור במערכת הקרוסלה
+      אופקית, ימינה בדף. לאן פונה כוח קוריוליס על הכדור?
+    answer: out
+    allowOutIn: true
+    correctFeedback: >-
+      נכון. עם $\hat x$ ימינה, $\hat y$ למעלה ו-$\hat z$ החוצה מהדף: $\vec\omega\times\vec v' \propto \hat y\times\hat x = -\hat z$,
+      ו-$\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$ פונה החוצה מהדף. גם כאן הכדור מוסט ימינה מכיוון תנועתו, כפי שרואים במבט מלמעלה.
+    wrongFeedback: >-
+      כתבו את $\vec\omega$ ואת $\vec v'$ ברכיבים, חשבו את המכפלה בכלל יד ימין, ואז הוסיפו את המינוס.
+    wrong:
+      - dir: in
+        feedback: 'זה הכיוון של $\vec\omega\times\vec v''$. הכוח הוא מינוס $2m$ כפול הווקטור הזה.'
+      - dir: n
+        feedback: 'הכוח ניצב ל-$\vec\omega$, ולכן אין לו רכיב אנכי, לאורך הציר.'
+      - dir: e
+        feedback: 'הכוח ניצב גם ל-$\vec v''$, ולכן הוא לא בכיוון התנועה.'
+      - dir: zero
+        feedback: 'הכוח מתאפס רק כשהמהירות מקבילה לציר. כאן היא ניצבת לו, והכוח מרבי.'
+        misconception: MC-7-coriolis-on-resting-body
+    hints:
+      - '$\hat y\times\hat x = -\hat z$.'
+
+  - id: Q-7.3-force-statements
+    type: multi
+    objectives: [OBJ-7.3-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      במערכת שמסתובבת במהירות זוויתית קבועה $\vec\omega$ פועלים על גוף נע הכוח הצנטריפוגלי וכוח קוריוליס. אילו מהטענות
+      הבאות נכונות? סמנו את כל התשובות הנכונות.
+    choices:
+      - text: כוח קוריוליס לא עושה עבודה במערכת המסתובבת.
+        correct: true
+        feedback: 'נכון. $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v''$ ניצב ל-$\vec v''$, ולכן ההספק שלו $\vec F\cdot\vec v''$ אפס. הוא משנה כיוון, לא גודל מהירות.'
+      - text: 'לכוח הצנטריפוגלי יש אנרגיה פוטנציאלית, $U = -\tfrac12 m\omega^2\rho^2$, כאשר $\rho$ המרחק מהציר.'
+        correct: true
+        feedback: 'נכון. $F_\rho = -\dfrac{dU}{d\rho} = m\omega^2\rho$, החוצה. הכוח תלוי רק במקום, ולכן הוא משמר.'
+      - text: כוח קוריוליס על גוף שנע במקביל לציר הסיבוב הוא אפס.
+        correct: true
+        feedback: 'נכון. אם $\vec v'' \parallel \vec\omega$, המכפלה הווקטורית מתאפסת.'
+      - text: כוח קוריוליס גדל ככל שהגוף רחוק יותר מהציר.
+        feedback: >-
+          זה נכון לכוח הצנטריפוגלי, $m\omega^2\rho$. כוח קוריוליס, $2m\omega v'$, תלוי רק במהירות ביחס למערכת ולא במקום.
+        misconception: MC-7-coriolis-depends-on-radius
+      - text: הכוח הצנטריפוגלי פועל גם במערכת האינרציאלית, ולכן גוף שמשתחרר מקרוסלה עף החוצה בכיוון הרדיוס.
+        feedback: >-
+          במערכת האינרציאלית אין כוח צנטריפוגלי. גוף שמשתחרר ממשיך בקו ישר, משיק למעגל, ומתרחק מהציר רק משום שקו ישר
+          מתרחק ממעגל.
+        misconception: MC-7-fictitious-force-in-inertial-frame
+    hints:
+      - 'כתבו כל כוח כנוסחה, ושאלו: במה הוא תלוי, ומה הכיוון שלו ביחס ל-$\vec v''$?'
+
+  # ---------------------------------------------------------------- OBJ-7.3-2 motion in the rotating frame vs the inertial frame
+  - id: Q-7.3-released-puck
+    type: mc
+    objectives: [OBJ-7.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      דיסקית מחוברת בחוט למרכז של פטיפון מסתובב, ונעה איתו במעגל. הפטיפון חלק, בלי חיכוך. החוט נקרע. איך נראה המסלול
+      של הדיסקית אחרי הקריעה **לצופה שעומד בחדר**?
+    choices:
+      - text: קו ישר, משיק למעגל בנקודה שבה החוט נקרע.
+        correct: true
+        feedback: >-
+          נכון. אחרי הקריעה אין כוח אופקי על הדיסקית, ולפי החוק הראשון היא ממשיכה במהירות שהייתה לה, $\omega r$, משיקה
+          למעגל. במערכת הפטיפון אותה תנועה נראית כספירלה החוצה, שמתעקלת אחורה ביחס לכיוון הסיבוב.
+      - text: קו ישר החוצה, לאורך הרדיוס.
+        feedback: >-
+          כוח צנטריפוגלי שדוחף החוצה קיים רק במערכת המסתובבת. בחדר אין כוח כזה, והמהירות של הדיסקית ברגע הקריעה
+          משיקית, לא רדיאלית.
+        misconception: MC-7-released-flies-radially
+      - text: ספירלה החוצה, כי הכוח הצנטריפוגלי מרחיק אותה מהמרכז בזמן שהיא מסתובבת.
+        feedback: >-
+          זה התיאור במערכת **הפטיפון**. לצופה בחדר אין כוחות מדומים: על הדיסקית לא פועל כוח אופקי, והיא נעה בקו ישר.
+        misconception: MC-7-fictitious-force-in-inertial-frame
+      - text: היא ממשיכה במעגל עוד זמן מה, בגלל ההתמד.
+        feedback: 'ההתמד שומר על **מהירות** קבועה, כלומר על תנועה בקו ישר. תנועה במעגל צריכה כוח שקול כלפי המרכז, והחוט כבר נקרע.'
+    hints:
+      - 'אילו כוחות אופקיים פועלים על הדיסקית אחרי הקריעה, במערכת אינרציאלית?'
+
+  - id: Q-7.3-bead-angle
+    type: numeric
+    objectives: [OBJ-7.3-2]
+    level: mid
+    prompt: >-
+      חרוז מושחל על חישוק חלק ברדיוס $R = 0.20\,\text{m}$. החישוק אנכי ומסתובב סביב הקוטר האנכי שלו במהירות זוויתית
+      קבועה $\omega = 10\,\text{rad/s}$. החרוז נמצא בשיווי משקל ביחס לחישוק, בזווית $\theta$ שנמדדת מהנקודה התחתונה של
+      החישוק, דרך המרכז. מה $\theta$, במעלות?
+    answer: 60.7
+    unit: °
+    correctFeedback: >-
+      נכון. במערכת החישוק פועלים על החרוז הכובד, הכוח הנורמלי והכוח הצנטריפוגלי $m\omega^2R\sin\theta$, אופקי והחוצה מהציר.
+      שיווי משקל לאורך המשיק לחישוק: $m\omega^2R\sin\theta\cos\theta = mg\sin\theta$. מחוץ לנקודה התחתונה
+      $\cos\theta = \dfrac{g}{\omega^2R} = \dfrac{9.8}{100\cdot0.20} = 0.49$, ו-$\theta = 60.7^\circ$.
+    wrongFeedback: >-
+      הטילו את הכובד ואת הכוח הצנטריפוגלי על המשיק לחישוק במקום החרוז. הכוח הנורמלי ניצב למשיק, ולכן הוא לא נכנס.
+    commonWrong:
+      - value: 29.3
+        feedback: 'זו הזווית מהאופק, $90^\circ - \theta$. השאלה מודדת מהנקודה התחתונה, ו-$\cos\theta = g/(\omega^2R)$.'
+      - value: 63.9
+        feedback: >-
+          פתרתם $\tan\theta = \omega^2R/g$, כאילו החרוז תלוי בחוט וחופשי לנוע לכל כיוון. על החישוק הכוח הצנטריפוגלי תלוי
+          במקום, $m\omega^2R\sin\theta$, ולכן מתקבל $\cos\theta = g/(\omega^2R)$.
+    hints:
+      - 'המרחק של החרוז מהציר הוא $R\sin\theta$.'
+
+  - id: Q-7.3-bead-slow
+    type: twotier
+    objectives: [OBJ-7.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      אותו חישוק, ברדיוס $R = 0.20\,\text{m}$, מסתובב עכשיו לאט יותר, ב-$\omega = 5.0\,\text{rad/s}$. היכן נמצא החרוז
+      בשיווי משקל **יציב**?
+    choices:
+      - text: בנקודה התחתונה, $\theta = 0$.
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{g}{\omega^2R} = \dfrac{9.8}{25\cdot0.20} = 1.96 > 1$, ולכן ל-$\cos\theta = g/(\omega^2R)$ אין פתרון. נשארות
+          רק הנקודה התחתונה, שהיא יציבה, והעליונה, שאינה יציבה.
+      - text: בזווית קטנה מעל הנקודה התחתונה, שגדלה עם $\omega$.
+        feedback: >-
+          זה מה שקורה רק מעל המהירות הקריטית $\omega_c = \sqrt{g/R} = 7.0\,\text{rad/s}$. מתחתיה הכובד ״מנצח״ את הכוח
+          הצנטריפוגלי בכל זווית, והחרוז נשאר בתחתית.
+        misconception: MC-7-bead-rises-at-any-speed
+      - text: בגובה המרכז, $\theta = 90^\circ$, שם הכוח הצנטריפוגלי מרבי.
+        feedback: >-
+          ב-$90^\circ$ הכובד משיק לחישוק ואין שום כוח שמאזן אותו: החרוז יחליק למטה. אל $90^\circ$ מתקרבים רק כש-$\omega \to \infty$.
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: >-
+          שיווי משקל מחוץ לתחתית דורש $\cos\theta = g/(\omega^2R) \le 1$, כלומר $\omega \ge \sqrt{g/R}$. מתחת לזה, בתחתית
+          $U_{\text{eff}} = -mgR\cos\theta - \tfrac12m\omega^2R^2\sin^2\theta$ מינימלית.
+        correct: true
+        feedback: >-
+          זה הנימוק. בקרבת התחתית $U_{\text{eff}} \approx \tfrac12mR(g - \omega^2R)\theta^2 + \text{const}$, ולכן היא מינימום
+          כל עוד $\omega^2R < g$. **בדיקת גבולות:** כש-$\omega \to \infty$, $\cos\theta \to 0$ והחרוז עולה לגובה המרכז.
+      - text: כל סיבוב, איטי ככל שיהיה, יוצר כוח צנטריפוגלי שמרים את החרוז מעט.
+        feedback: >-
+          הכוח הצנטריפוגלי אכן פועל בכל $\omega$, אבל בזווית קטנה הוא $m\omega^2R\theta$ לעומת $mg\theta$ של הכובד. כש-$\omega^2R < g$
+          הכובד גדול יותר, ומחזיר את החרוז לתחתית.
+        misconception: MC-7-bead-rises-at-any-speed
+      - text: בתחתית אין לחרוז מהירות, ולכן אין עליו כוח קוריוליס.
+        feedback: >-
+          נכון שבשיווי משקל $\vec v' = 0$ וכוח קוריוליס אפס, אבל זה נכון בכל מצב שיווי משקל ולא מכריע היכן הוא. ההכרעה
+          באה מהשוואת הכובד לכוח הצנטריפוגלי.
+    hints:
+      - 'חשבו את $g/(\omega^2R)$. האם יש זווית שהקוסינוס שלה שווה לזה?'
+
+  - id: Q-7.3-bucket
+    type: numeric
+    objectives: [OBJ-7.3-2]
+    level: bagrut
+    prompt: >-
+      דלי גלילי ברדיוס $R = 0.15\,\text{m}$, ובו מים, מסתובב סביב הציר שלו ב-$\omega = 6.0\,\text{rad/s}$. אחרי זמן מה המים
+      מסתובבים עם הדלי כגוף אחד. בכמה סנטימטרים גבוה פני המים בדופן מאשר במרכז?
+    answer: 4.13
+    unit: cm
+    correctFeedback: >-
+      נכון. במערכת הדלי המים במנוחה, ופני המים ניצבים בכל נקודה ל-$\vec g_{\text{eff}}$, הכובד יחד עם
+      $\omega^2r$ אופקי החוצה. לכן השיפוע של פני המים הוא $\dfrac{dz}{dr} = \dfrac{\omega^2r}{g}$, ובאינטגרציה
+      $z(r) = z(0) + \dfrac{\omega^2r^2}{2g}$, פרבולואיד. בדופן:
+      $\Delta z = \dfrac{36\cdot0.15^2}{2\cdot9.8} = 0.0413\,\text{m} = 4.13\,\text{cm}$.
+      **בדיקת גבולות:** כש-$\omega \to 0$ פני המים שטוחים, וכש-$g \to \infty$ גם כן.
+    wrongFeedback: >-
+      במערכת הדלי פני המים ניצבים לתאוצת הנפילה האפקטיבית. כתבו את השיפוע $dz/dr$ כיחס בין הרכיב האופקי לאנכי שלה,
+      ואינטגרלו מ-0 עד $R$.
+    commonWrong:
+      - value: 8.27
+        feedback: 'שכחתם את ה-2 שבא מהאינטגרל: $\int_0^R \dfrac{\omega^2r}{g}\,dr = \dfrac{\omega^2R^2}{2g}$.'
+      - value: 0.689
+        feedback: 'השתמשתם ב-$\omega$ במקום ב-$\omega^2$. בדקו יחידות: $\omega R^2/g$ יוצא ביחידות $\text{m}\cdot\text{s}$, לא מטר.'
+    hints:
+      - 'במערכת הדלי, $\vec g_{\text{eff}}$ בכל נקודה הוא $g$ כלפי מטה ו-$\omega^2r$ החוצה.'
+      - 'פני נוזל במנוחה ניצבים תמיד לתאוצת הנפילה האפקטיבית, כמו במכונית מאיצה.'
+
+  - id: Q-7.3-puck-two-frames
+    type: mc
+    objectives: [OBJ-7.3-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      על פטיפון חלק, שמסתובב נגד כיוון השעון במבט מלמעלה, מצויר קו לאורך רדיוס. ברגע מסוים הקו פונה מזרחה, ודוחפים
+      דיסקית מהמרכז מזרחה, לאורך הקו. הדיסקית מחליקה בלי חיכוך. מה רואה צופה שעומד על הפטיפון?
+    choices:
+      - text: הדיסקית מתרחקת מהמרכז, ומסלולה מתעקל ימינה מכיוון התנועה שלה, אל מאחורי הקו.
+        correct: true
+        feedback: >-
+          נכון. בחדר הדיסקית נעה מזרחה בקו ישר, והקו המצויר מסתובב נגד כיוון השעון, צפונה, ומשאיר אותה מאחור. במערכת
+          הפטיפון זו הסטה ימינה, בדיוק מה שכוח קוריוליס עושה בסיבוב נגד כיוון השעון: שני התיאורים מסכימים.
+      - text: הדיסקית נעה לאורך הקו המצויר, כי היא נדחפה לאורכו.
+        feedback: >-
+          הקו מסתובב והדיסקית לא, כי אין כוח אופקי שיסובב אותה. במערכת הפטיפון כוח קוריוליס מסיט אותה מהקו.
+      - text: הדיסקית מתעקלת שמאלה, לפני הקו, כי הפטיפון ״גורר״ אותה איתו.
+        feedback: >-
+          פטיפון חלק לא גורר דבר. הקו מתקדם נגד כיוון השעון והדיסקית מפגרת אחריו, ולכן היא נמצאת מאחוריו, מימין לכיוון
+          התנועה שלה.
+      - text: הדיסקית מסתובבת במעגל סביב המרכז.
+        feedback: 'במערכת הפטיפון המרחק שלה מהמרכז גדל כל הזמן: בחדר היא מתרחקת בקו ישר, והמרחק מהמרכז זהה בשתי המערכות.'
+    hints:
+      - 'פתרו קודם בחדר: איזה כוח אופקי פועל על הדיסקית? ואז שאלו מה עושה הקו המצויר בזמן הזה.'

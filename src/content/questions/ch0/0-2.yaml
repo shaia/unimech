@@ -1,0 +1,274 @@
+# Lesson 0.2 question bank: the comprehension ladder of "וקטורים: רכיבים, מכפלה סקלרית ומכפלה וקטורית".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Directions in `vector` questions: n = up the page, e = right, out/in = out of / into the page.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts:
+#   40 N at 30°: F_x = 34.6 N (20 N with the sine, 46.2 N divided by the cosine);
+#   300 N east + 200 N at 60°: |sum| = 436 N at 23.4° (500 N adding magnitudes, 361 N as if at 90°, 265 N with a minus);
+#   F = (3,4,0) N, d = (2,−1,2) m: F·d = 2 J, angle 82.3° (7.66° with arcsin, 48.2° without the minus, 1.44 in rad);
+#   F = (30,20,10) N, û = (0.6,0.8,0): F∥ = 34 N, |F| = 37.4 N, F⊥ = 15.6 N, work over 100 m 3400 J;
+#   r = (0.4,0.3,0) m, F = (10,20,30) N: r×F = (9,−12,5) N·m, |τ| = 15.8 N·m (|r||F| = 18.7, r·F = 10).
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.2-1 components, sums, magnitude and direction
+  - id: Q-0.2-components
+    type: numeric
+    objectives: [OBJ-0.2-1]
+    level: basic
+    prompt: >-
+      ילד מושך מזחלת בחבל, בכוח של $40\,\text{N}$ בזווית $30^\circ$ מעל האופק. מה הרכיב האופקי של הכוח?
+    answer: 34.6
+    unit: N
+    correctFeedback: >-
+      נכון: $F_x = F\cos30^\circ = 40\cdot0.866 = 34.6\,\text{N}$. הרכיב האנכי, $F\sin30^\circ = 20\,\text{N}$,
+      מרים מעט את המזחלת. בדיקה: $34.6^2 + 20^2 = 40^2$.
+    wrongFeedback: 'ציירו משולש ישר זווית שהיתר שלו הוא הכוח. הרכיב האופקי הוא הניצב הסמוך לזווית של $30^\circ$.'
+    commonWrong:
+      - value: 20
+        feedback: 'זה $F\sin30^\circ$, הרכיב האנכי. הזווית נמדדת מהאופק, ולכן הרכיב האופקי הוא הניצב **הסמוך** לה, $F\cos30^\circ$.'
+        misconception: MC-0-sin-cos-swap
+      - value: 46.2
+        feedback: 'חילקתם ב-$\cos30^\circ$ במקום לכפול. רכיב תמיד קטן מגודל הווקטור, או שווה לו.'
+    hints:
+      - 'רכיב של וקטור בכיוון שיוצר איתו זווית $\alpha$ הוא $F\cos\alpha$.'
+
+  - id: Q-0.2-walk-direction
+    type: vector
+    objectives: [OBJ-0.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מטיילת הולכת $3\,\text{km}$ צפונה, ואחר כך $3\,\text{km}$ מערבה. במפה, צפון הוא למעלה ומזרח ימינה. מה
+      הכיוון של ההעתק הכולל שלה, מנקודת ההתחלה לנקודת הסוף?
+    answer: nw
+    correctFeedback: >-
+      נכון. ברכיבים, עם $x$ מזרחה ו-$y$ צפונה, $\Delta\vec r = (0, 3) + (-3, 0) = (-3, 3)\,\text{km}$: רכיבים
+      שווים בגודלם, ולכן בדיוק צפון-מערב. הגודל $3\sqrt2 \approx 4.2\,\text{km}$, ולא $6\,\text{km}$.
+    wrong:
+      - dir: n
+        feedback: 'זה רק הקטע הראשון. ההעתק הכולל הוא הסכום של שני הקטעים: חברו את הרכיבים.'
+      - dir: w
+        feedback: 'זה רק הקטע האחרון. גם הקטע צפונה נשאר בהעתק הכולל.'
+      - dir: se
+        feedback: 'זה הכיוון מנקודת הסוף חזרה לנקודת ההתחלה, $-\Delta\vec r$. ההעתק מצביע מההתחלה אל הסוף.'
+    wrongFeedback: 'כתבו כל קטע כווקטור ברכיבים, עם $x$ מזרחה ו-$y$ צפונה, וחברו רכיב-רכיב.'
+
+  - id: Q-0.2-boat-sum
+    type: numeric
+    objectives: [OBJ-0.2-1]
+    level: mid
+    prompt: >-
+      סירה נגררת בשני חבלים אופקיים. חבל אחד מושך בכוח של $300\,\text{N}$ מזרחה, והשני בכוח של $200\,\text{N}$
+      בכיוון $60^\circ$ צפונית למזרח. מה הגודל של סכום שני הכוחות?
+    answer: 436
+    unit: N
+    correctFeedback: >-
+      נכון. ברכיבים: $F_x = 300 + 200\cos60^\circ = 400\,\text{N}$, $F_y = 200\sin60^\circ = 173\,\text{N}$, ולכן
+      $|\vec F| = \sqrt{400^2 + 173^2} = 436\,\text{N}$, בזווית $\arctan(173/400) = 23.4^\circ$ צפונית למזרח.
+    wrongFeedback: 'פרקו כל כוח לרכיב מזרחה ולרכיב צפונה, חברו כל רכיב בנפרד, ורק בסוף חשבו גודל בפיתגורס.'
+    commonWrong:
+      - value: 500
+        feedback: >-
+          חיברתם גדלים. גדלים מתחברים רק כששני הווקטורים באותו כיוון. כאן ביניהם $60^\circ$, ולכן הסכום קטן
+          מ-$500\,\text{N}$.
+        misconception: MC-0-magnitudes-add
+      - value: 361
+        feedback: 'זה $\sqrt{300^2 + 200^2}$, כאילו החבלים ניצבים זה לזה. פיתגורס על הגדלים עובד רק בזווית ישרה.'
+      - value: 265
+        feedback: 'זה ההפרש בין הכוחות, $|\vec F_1 - \vec F_2|$ (משפט הקוסינוסים עם מינוס). בסכום שני הכוחות מושכים באותו צד.'
+    hints:
+      - 'הרכיבים של החבל השני: $(200\cos60^\circ,\ 200\sin60^\circ)$.'
+
+  # ---------------------------------------------------------------- OBJ-0.2-2 the dot product: angle and projection
+  - id: Q-0.2-work-normal
+    type: mc
+    objectives: [OBJ-0.2-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      ארגז נגרר $5\,\text{m}$ ימינה על רצפה אופקית. הרצפה מפעילה עליו כוח נורמלי $\vec N$ כלפי מעלה, בגודל
+      $200\,\text{N}$. העבודה של כוח על גוף היא המכפלה הסקלרית $W = \vec N\cdot\vec d$. מה העבודה של הכוח הנורמלי?
+    choices:
+      - text: אפס
+        correct: true
+        feedback: >-
+          נכון. $\vec N\cdot\vec d = Nd\cos90^\circ = 0$: כוח שניצב להעתק לא תורם לו כלום. ברכיבים,
+          $(0, 200)\cdot(5, 0) = 0$.
+      - text: $1000\,\text{J}$
+        feedback: 'זו מכפלת הגדלים, $Nd$. המכפלה הסקלרית היא $Nd\cos\theta$, וכאן $\theta = 90^\circ$.'
+        misconception: MC-0-product-ignores-angle
+      - text: $-1000\,\text{J}$
+        feedback: 'עבודה שלילית מתקבלת כשהכוח פונה נגד ההעתק, כמו חיכוך. הכוח הנורמלי לא פונה נגד התנועה: הוא ניצב לה.'
+      - text: וקטור של $1000\,\text{J}$ כלפי מעלה
+        feedback: 'מכפלה סקלרית של שני וקטורים היא **מספר**, סקלר, ולא וקטור. אין לה כיוון.'
+        misconception: MC-0-dot-is-vector
+    hints:
+      - '$\vec A\cdot\vec B = AB\cos\theta$. מה הזווית בין כוח כלפי מעלה להעתק ימינה?'
+
+  - id: Q-0.2-angle
+    type: numeric
+    objectives: [OBJ-0.2-2]
+    level: mid
+    prompt: >-
+      כוח $\vec F = (3, 4, 0)\,\text{N}$ פועל על גוף, והגוף עובר העתק $\vec d = (2, -1, 2)\,\text{m}$. מה הזווית
+      בין הכוח להעתק, במעלות?
+    answer: 82.3
+    unit: '°'
+    correctFeedback: >-
+      נכון. $\vec F\cdot\vec d = 3\cdot2 + 4\cdot(-1) + 0\cdot2 = 2\,\text{J}$, $|\vec F| = 5\,\text{N}$ ו-$|\vec d| = 3\,\text{m}$,
+      ולכן $\cos\theta = \dfrac{2}{15}$ ו-$\theta = 82.3^\circ$. הכוח כמעט ניצב לתנועה, ולכן העבודה שלו קטנה.
+    wrongFeedback: 'חשבו את $\vec F\cdot\vec d$ ברכיבים ואת שני הגדלים, ואז $\cos\theta = \dfrac{\vec F\cdot\vec d}{|\vec F||\vec d|}$.'
+    commonWrong:
+      - value: 7.66
+        feedback: 'השתמשתם ב-$\arcsin$. המכפלה הסקלרית נותנת את **הקוסינוס** של הזווית: $\theta = \arccos(2/15)$.'
+      - value: 48.2
+        feedback: 'איבדתם את המינוס: $4\cdot(-1) = -4$, ולכן המכפלה היא $6 - 4 = 2$, ולא $10$.'
+      - value: 1.44
+        feedback: 'זו הזווית ברדיאנים. התבקשתם מעלות: $1.44\,\text{rad} = 82.3^\circ$.'
+    hints:
+      - '$|\vec d| = \sqrt{2^2 + 1^2 + 2^2}$.'
+
+  - id: Q-0.2-sail-perp
+    type: numeric
+    objectives: [OBJ-0.2-2, OBJ-0.2-1]
+    level: bagrut
+    prompt: >-
+      כוח הרוח על המפרש של סירה הוא $\vec F = (30, 20, 10)\,\text{N}$, כשהציר $z$ אנכי. הסירה נעה על המים בכיוון
+      של וקטור היחידה $\hat u = (0.6, 0.8, 0)$.
+
+      (1) מה הרכיב של הכוח בכיוון התנועה?
+
+      (2) מה **הגודל** של הרכיב של הכוח שניצב לכיוון התנועה? (זו התשובה שמזינים.)
+    answer: 15.6
+    unit: N
+    correctFeedback: >-
+      נכון. (1) $F_\parallel = \vec F\cdot\hat u = 30\cdot0.6 + 20\cdot0.8 = 34\,\text{N}$. (2) הרכיב הניצב הוא
+      $\vec F_\perp = \vec F - F_\parallel\hat u$, ובפיתגורס $|\vec F_\perp| = \sqrt{|\vec F|^2 - F_\parallel^2} = \sqrt{1400 - 34^2} = 15.6\,\text{N}$.
+      **בדיקת גבולות:** אם $\vec F \parallel \hat u$, אז $F_\parallel = |\vec F|$ והרכיב הניצב אפס; אם
+      $\vec F \perp \hat u$, אז $F_\parallel = 0$ וכל הכוח ניצב. לאורך $100\,\text{m}$ הרוח עושה עבודה
+      $34\cdot100 = 3400\,\text{J}$, והרכיב הניצב לא עושה עבודה בכלל.
+    wrongFeedback: >-
+      קודם ההיטל על הכיוון: $F_\parallel = \vec F\cdot\hat u$. הכוח הוא סכום של רכיב מקביל ורכיב ניצב שניצבים זה
+      לזה, ולכן $|\vec F|^2 = F_\parallel^2 + F_\perp^2$.
+    commonWrong:
+      - value: 34
+        feedback: 'זה הרכיב **בכיוון** התנועה, מסעיף (1). הרכיב הניצב הוא מה שנשאר: $\vec F - F_\parallel\hat u$.'
+      - value: 37.4
+        feedback: 'זה הגודל של הכוח כולו, $\sqrt{30^2 + 20^2 + 10^2}$. ממנו צריך להוריד את הרכיב המקביל, בפיתגורס.'
+      - value: 3.42
+        feedback: >-
+          חיסרתם גדלים, $|\vec F| - F_\parallel$. הרכיב המקביל והרכיב הניצב ניצבים זה לזה, ולכן הם מתחברים
+          בפיתגורס ולא כמספרים.
+        misconception: MC-0-magnitudes-add
+    hints:
+      - 'בדקו ש-$\hat u$ באמת וקטור יחידה: $0.6^2 + 0.8^2 = 1$.'
+      - 'צריך את $|\vec F|^2$: $30^2 + 20^2 + 10^2$.'
+
+  # ---------------------------------------------------------------- OBJ-0.2-3 the cross product and the right-hand rule
+  - id: Q-0.2-torque-direction
+    type: vector
+    objectives: [OBJ-0.2-3]
+    qualitative: true
+    level: basic
+    allowOutIn: true
+    prompt: >-
+      מפתח ברגים מונח במישור הדף. הווקטור $\vec r$, מהבורג אל היד, מצביע ימינה, והיד מפעילה כוח $\vec F$ כלפי
+      מעלה בדף. מה הכיוון של $\vec r\times\vec F$?
+    answer: out
+    correctFeedback: >-
+      נכון. בכלל יד ימין: האצבעות לאורך $\vec r$ (ימינה), מקפלים אותן לעבר $\vec F$ (למעלה), והאגודל מצביע החוצה
+      מהדף. ברכיבים, $\hat x\times\hat y = \hat z$. הכוח מסובב את המפתח נגד כיוון השעון, ו-$\hat z$ החוצה מהדף
+      הוא הציר של הסיבוב הזה.
+    wrong:
+      - dir: in
+        feedback: 'זה $\vec F\times\vec r = -\vec r\times\vec F$: הסדר במכפלה וקטורית קובע את הסימן. אולי השתמשתם ביד שמאל?'
+        misconception: MC-0-cross-order
+      - dir: n
+        feedback: 'זה הכיוון של $\vec F$. מכפלה וקטורית ניצבת **לשני** הווקטורים, ולכן אם שניהם בדף, היא ניצבת לדף.'
+        misconception: MC-0-cross-in-plane
+      - dir: e
+        feedback: 'זה הכיוון של $\vec r$. מכפלה וקטורית ניצבת לשני הגורמים שלה, ולא מקבילה לאחד מהם.'
+        misconception: MC-0-cross-in-plane
+    wrongFeedback: 'מכפלה וקטורית ניצבת לשני הווקטורים. כששניהם בדף, נשארים רק שני כיוונים: החוצה מהדף או לתוכו.'
+
+  - id: Q-0.2-parallel-zero
+    type: twotier
+    objectives: [OBJ-0.2-3]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מושכים את הידית של מפתח ברגים באורך $0.3\,\text{m}$ בכוח של $50\,\text{N}$, בדיוק לאורך המפתח, הרחק
+      מהבורג. מה הגודל של $\vec r\times\vec F$, כאשר $\vec r$ הוא הווקטור מהבורג אל היד?
+    choices:
+      - text: אפס
+        correct: true
+        feedback: נכון. הכוח מקביל ל-$\vec r$, והמפתח לא מסתובב, כמה חזק שלא נמשוך.
+      - text: $15\,\text{N}\cdot\text{m}$
+        feedback: 'זו מכפלת הגדלים, $rF$. הגודל של מכפלה וקטורית הוא $rF\sin\theta$, וכאן $\theta = 0$.'
+        misconception: MC-0-product-ignores-angle
+      - text: הגדול ביותר האפשרי, כי כל הכוח מנוצל לאורך המפתח.
+        feedback: 'להפך: רק הרכיב של הכוח **הניצב** למפתח מסובב אותו. כאן הרכיב הזה אפס.'
+    reasons:
+      - text: '$|\vec r\times\vec F| = rF\sin\theta$, ובווקטורים מקבילים $\sin0 = 0$. המקבילית ששני הווקטורים פורשים שטוחה, ושטחה אפס.'
+        correct: true
+        feedback: 'זה הנימוק. גודל המכפלה הווקטורית הוא השטח של המקבילית שהווקטורים פורשים.'
+      - text: 'גודל המכפלה הווקטורית שווה למכפלה הסקלרית, $rF\cos\theta$.'
+        feedback: 'המכפלה הסקלרית כאן דווקא מקסימלית, $rF = 15\,\text{N}\cdot\text{m}$. במכפלה הווקטורית יש $\sin\theta$, ולא $\cos\theta$.'
+      - text: מכפלה וקטורית של כל שני וקטורים בדף היא אפס, כי אין לה לאן להצביע בדף.
+        feedback: 'היא לא אפס: היא מצביעה ניצב לדף, החוצה או פנימה. היא מתאפסת רק כשהווקטורים מקבילים או כשאחד מהם אפס.'
+        misconception: MC-0-cross-in-plane
+    hints:
+      - 'מה הזווית בין $\vec r$ ל-$\vec F$ כשמושכים לאורך המפתח?'
+
+  - id: Q-0.2-torque-3d
+    type: numeric
+    objectives: [OBJ-0.2-3]
+    level: bagrut
+    prompt: >-
+      כוח $\vec F = (10, 20, 30)\,\text{N}$ פועל בנקודה $\vec r = (0.4, 0.3, 0)\,\text{m}$ ביחס לראשית. חשבו את
+      $\vec\tau = \vec r\times\vec F$ ברכיבים. מה הגודל שלו?
+    answer: 15.8
+    unit: N·m
+    correctFeedback: >-
+      נכון. $\tau_x = r_yF_z - r_zF_y = 0.3\cdot30 - 0 = 9$, $\tau_y = r_zF_x - r_xF_z = 0 - 0.4\cdot30 = -12$,
+      $\tau_z = r_xF_y - r_yF_x = 0.4\cdot20 - 0.3\cdot10 = 5$, ולכן $\vec\tau = (9, -12, 5)\,\text{N}\cdot\text{m}$
+      ו-$|\vec\tau| = \sqrt{250} = 15.8\,\text{N}\cdot\text{m}$. **בדיקה:** $\vec\tau\cdot\vec r = 3.6 - 3.6 + 0 = 0$
+      ו-$\vec\tau\cdot\vec F = 90 - 240 + 150 = 0$: התוצאה ניצבת לשני הגורמים, כמו שצריך.
+    wrongFeedback: >-
+      הרכיבים של מכפלה וקטורית נבנים במחזוריות $x \to y \to z \to x$: $\tau_x = r_yF_z - r_zF_y$, ואת השאר מקבלים
+      בהחלפה מחזורית. בסוף בדקו ש-$\vec\tau\cdot\vec r = 0$.
+    commonWrong:
+      - value: 18.7
+        feedback: 'זו מכפלת הגדלים, $|\vec r||\vec F| = 0.5\cdot37.4$. הווקטורים לא ניצבים זה לזה, ולכן $|\vec r\times\vec F| < rF$.'
+        misconception: MC-0-product-ignores-angle
+      - value: 10
+        feedback: 'זו המכפלה הסקלרית, $\vec r\cdot\vec F = 4 + 6 + 0$, סקלר. המכפלה הווקטורית היא וקטור, וצריך את שלושת הרכיבים שלו.'
+    hints:
+      - '$\tau_z = r_xF_y - r_yF_x$. התחילו ממנו, ואז החליפו מחזורית.'
+
+  - id: Q-0.2-turntable
+    type: vector
+    objectives: [OBJ-0.2-3]
+    qualitative: true
+    level: bagrut
+    allowOutIn: true
+    prompt: >-
+      דיסקה שטוחה מונחת במישור הדף ומסתובבת נגד כיוון השעון, ולכן וקטור המהירות הזוויתית שלה, $\vec\omega$,
+      מצביע החוצה מהדף. נקודה על הדיסקה נמצאת ימינה ממרכז הדיסקה, במקום $\vec r$ ביחס למרכז. המהירות שלה היא
+      $\vec v = \vec\omega\times\vec r$. מה הכיוון של $\vec v$?
+    answer: n
+    correctFeedback: >-
+      נכון. $\hat z\times\hat x = \hat y$: למעלה בדף. ובדיקה בלי נוסחה: נקודה בצד הימני של דיסקה שמסתובבת נגד
+      כיוון השעון אכן נעה כלפי מעלה. הנוסחה $\vec v = \vec\omega\times\vec r$ חוזרת בפרק 1 ובפרק 8.
+    wrong:
+      - dir: s
+        feedback: 'זה $\vec r\times\vec\omega$, בסדר הפוך. בדקו בציור: נגד כיוון השעון, הנקודה הימנית עולה.'
+        misconception: MC-0-cross-order
+      - dir: out
+        feedback: 'זה הכיוון של $\vec\omega$. המכפלה ניצבת ל-$\vec\omega$, ולכן היא בתוך הדף.'
+        misconception: MC-0-cross-in-plane
+      - dir: e
+        feedback: 'זה הכיוון של $\vec r$. מהירות של נקודה על דיסקה מסתובבת משיקה למעגל שלה, ניצבת לרדיוס.'
+    wrongFeedback: 'בכלל יד ימין: האצבעות לאורך $\vec\omega$, מקפלים לעבר $\vec r$. או ברכיבים: $\hat z\times\hat x$.'

@@ -1,0 +1,27 @@
+# Misconceptions first detected in lesson 1.4. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 1.4
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-1-polar-unit-vectors-fixed
+  title: וקטורי היחידה הקוטביים קבועים
+  belief: אפשר לגזור r = r·r̂ כמו שגוזרים x·x̂, כלומר להתייחס ל-r̂ ול-θ̂ כאל וקטורים קבועים.
+  truth: 'r̂ ו-θ̂ מסתובבים יחד עם הגוף: dr̂/dt = θ̇θ̂ ו-dθ̂/dt = −θ̇r̂. מכאן בא האיבר rθ̇θ̂ במהירות, ומכאן באים האיברים −rθ̇² ו-2ṙθ̇ בתאוצה.'
+  remedy: { lesson: '1.4', label: 'שיעור 1.4: הנגזרות של וקטורי היחידה הקוטביים' }
+
+- id: MC-1-rddot-is-radial-acceleration
+  title: הרכיב הרדיאלי של התאוצה הוא r̈
+  belief: הרכיב של התאוצה בכיוון r̂ הוא הנגזרת השנייה של המרחק, r̈.
+  truth: הרכיב הרדיאלי הוא r̈ − rθ̇². גם כשהתאוצה אפס, למשל בתנועה בקו ישר שלא עובר בראשית, r̈ = rθ̇² שונה מאפס.
+  remedy: { lesson: '1.4', label: 'שיעור 1.4: המשמעות של כל איבר בתאוצה הקוטבית' }
+
+- id: MC-1-theta-component-is-tangential
+  title: הרכיב בכיוון θ̂ הוא התאוצה המשיקית
+  belief: הרכיב הזוויתי של התאוצה, a_θ, הוא הרכיב שלה לאורך המסלול, זה שמשנה את גודל המהירות.
+  truth: θ̂ משיק למעגל סביב הראשית, לא בהכרח למסלול. כשהגוף מתרחק מהראשית או מתקרב אליה, המהירות לא בכיוון θ̂, והתאוצה המשיקית היא a·v/|v|, שמערבת את שני הרכיבים הקוטביים.
+  remedy: { lesson: '1.4', label: 'שיעור 1.4: רכיבים קוטביים מול רכיבים לאורך המסלול' }
+
+- id: MC-1-radial-pull-keeps-speed
+  title: משיכה אל המרכז לא משנה את גודל המהירות
+  belief: כשהתאוצה פונה רק אל המרכז, גודל המהירות לא משתנה, ולכן rθ̇ נשאר קבוע גם כשהמרחק מהמרכז משתנה.
+  truth: תאוצה אל המרכז ניצבת למהירות רק כשהמסלול מעגלי. כשהמרחק משתנה, למהירות יש רכיב רדיאלי, וגודל המהירות משתנה. מה שנשמר כש-a_θ = 0 הוא r²θ̇.
+  remedy: { lesson: '1.4', label: 'שיעור 1.4: הרכיב הזוויתי של התאוצה ככתיבה של (1/r)·d(r²θ̇)/dt' }

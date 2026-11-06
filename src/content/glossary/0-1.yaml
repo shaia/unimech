@@ -1,0 +1,15 @@
+# Terms first defined in lesson 0.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: dimensional-analysis
+  term: ניתוח ממדים
+  en: dimensional analysis
+  definition: בדיקה של ביטוי או של משוואה לפי הממדים של הגדלים (מסה, אורך, זמן). כל איבר בסכום חייב להיות באותם ממדים, ומכאן אפשר לפסול ביטויים שגויים ולמצוא תלות בין גדלים עד כדי קבוע חסר ממדים.
+  reject: [אנליזה ממדית, אנליזת ממדים]
+  lesson: '0.1'
+
+- id: order-of-magnitude
+  term: סדר גודל
+  en: order of magnitude
+  definition: החזקה של 10 הקרובה ביותר לערך של גודל. הערכת סדר גודל עונה על השאלה "בערך כמה" בלי חישוב מדויק, ובודקת אם תוצאה סבירה.
+  lesson: '0.1'

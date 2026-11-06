@@ -1,0 +1,249 @@
+# Lesson 0.1 question bank: the comprehension ladder of "יחידות, ממדים וסדרי גודל".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level), as in the model bank ch2/2-7.yaml.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (.scratch/ch0/ladder.ts):
+#   escape speed √(2GM/R) with G_NEWTON, M_EARTH, R_EARTH: 11.2 km/s (7.91 with C = 1; 125 km²/s² without the root);
+#   classroom 10 × 8 × 3 m, ρ = 1.2 kg/m³: 288 kg (240 000 kg with water's density);
+#   raindrop D = 2 mm, F = ρ_air v²D², m = ρ_w(π/6)D³: v = 2.92 m/s (4.04 without π/6, 8.55 without the root);
+#     with the full drag constant ½·0.5·π/4 ≈ 0.196 it is 6.60 m/s, the measured value is about 6.5 m/s;
+#   a 5 m standing jump needs 9.90 m/s at take-off; a 2 mm drop has a mass of 4.19 mg; a 50 g water drop is 4.57 cm across;
+#   100 km/h to rest in 3 s is 9.26 m/s².
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.1-1 dimensional analysis
+  - id: Q-0.1-height-check
+    type: mc
+    objectives: [OBJ-0.1-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      כדור נזרק אנכית כלפי מעלה במהירות $v_0$, ותאוצת הנפילה היא $g$. בלי לפתור את התנועה, רק לפי **ניתוח ממדים**:
+      איזה מהביטויים הבאים יכול להיות הגובה המרבי של הכדור?
+    choices:
+      - text: $\dfrac{v_0^2}{2g}$
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{(\text{m/s})^2}{\text{m/s}^2} = \text{m}$: זה הביטוי היחיד ביחידות של אורך. ניתוח ממדים לא יכול
+          לאשר את ה-$\tfrac12$, אבל הוא פוסל מיד את כל השאר.
+      - text: $\dfrac{v_0}{2g}$
+        feedback: >-
+          $\dfrac{\text{m/s}}{\text{m/s}^2} = \text{s}$: זה זמן, לא גובה. ($v_0/g$ הוא אכן זמן העלייה עד השיא.)
+      - text: $\dfrac{v_0^2\,g}{2}$
+        feedback: '$\dfrac{\text{m}^2}{\text{s}^2}\cdot\dfrac{\text{m}}{\text{s}^2} = \text{m}^3/\text{s}^4$: לא אורך. גם בלי חישוב, תאוצה גדולה יותר צריכה לתת גובה **קטן** יותר, ולא גדול יותר.'
+      - text: $v_0 + \tfrac12 g$
+        feedback: >-
+          אי אפשר לחבר מהירות ותאוצה: לגדלים יש ממדים שונים, והסכום תלוי ביחידות שבחרנו (בשניות או בדקות יוצא מספר
+          אחר). כל איבר בסכום חייב להיות באותם ממדים.
+        misconception: MC-0-add-different-dimensions
+    hints:
+      - 'כתבו ליד כל גודל את היחידות שלו: $[v_0] = \text{m/s}$, $[g] = \text{m/s}^2$. איזה ביטוי יוצא במטרים?'
+
+  - id: Q-0.1-pendulum-mass
+    type: twotier
+    objectives: [OBJ-0.1-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מטוטלת פשוטה: משקולת קטנה בעלת מסה $m$ תלויה בחוט באורך $L$, ותאוצת הנפילה היא $g$. נניח שזמן המחזור $T$
+      של תנודות קטנות תלוי רק ב-$m$, ב-$L$ וב-$g$. מחליפים את המשקולת במשקולת כבדה פי 4, ואורך החוט לא משתנה.
+      מה קורה לזמן המחזור?
+    choices:
+      - text: זמן המחזור לא משתנה.
+        correct: true
+        feedback: נכון. ניתוח ממדים נותן $T = C\sqrt{L/g}$, בלי $m$.
+      - text: זמן המחזור קטן פי 2.
+        feedback: >-
+          זה היה נכון אילו $T \propto 1/\sqrt m$. אבל אין גודל אחר עם קילוגרמים שיכול לצמצם את ה-$\text{kg}$ של $m$,
+          ולכן $m$ לא יכול להופיע בביטוי בכלל.
+        misconception: MC-0-period-depends-on-mass
+      - text: זמן המחזור גדל פי 2.
+        feedback: 'גידול פי 2 פירושו $T \propto \sqrt m$, ואז ל-$T$ היו יחידות של $\sqrt{\text{kg}}$, שאף גודל אחר ברשימה לא מבטל.'
+        misconception: MC-0-period-depends-on-mass
+      - text: זמן המחזור קטן פי 4.
+        feedback: 'זה $T \propto 1/m$. בדקו את יחידות הביטוי: נשארים $\text{kg}^{-1}$ שלא מתבטלים.'
+        misconception: MC-0-period-depends-on-mass
+    reasons:
+      - text: 'רק ל-$m$ יש יחידות של מסה. אין גודל אחר שיבטל את ה-$\text{kg}$, ולכן $T$ לא תלוי ב-$m$, ו-$T = C\sqrt{L/g}$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. כתבו $T = C\,m^a L^b g^c$: הקילוגרמים נותנים $a = 0$, המטרים $b + c = 0$ והשניות $-2c = 1$,
+          ולכן $c = -\tfrac12$ ו-$b = \tfrac12$.
+      - text: על משקולת כבדה פועל כוח כובד גדול יותר, ולכן היא חוזרת מהר יותר לנקודת שיווי המשקל.
+        feedback: >-
+          הכוח גדל פי 4, אבל גם המסה שצריך להאיץ גדלה פי 4, והתאוצה לא משתנה. ניתוח הממדים מראה את אותו הדבר בלי
+          לדבר על כוחות.
+        misconception: MC-0-period-depends-on-mass
+      - text: 'בכל מתנד $T = 2\pi\sqrt{m/k}$, ולכן $T$ גדל עם המסה.'
+        feedback: 'זה זמן המחזור של מסה על קפיץ, ושם יש גודל נוסף, $k$, ביחידות $\text{kg/s}^2$, שמבטל את הקילוגרמים. במטוטלת אין $k$.'
+    hints:
+      - 'כתבו $T = C\,m^a L^b g^c$ והשוו את המעריכים של $\text{kg}$, $\text{m}$ ו-$\text{s}$ בשני האגפים.'
+
+  - id: Q-0.1-escape-speed
+    type: numeric
+    objectives: [OBJ-0.1-1]
+    level: mid
+    prompt: >-
+      מהירות המילוט מפני השטח של כוכב לכת תלויה רק בקבוע הכבידה $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$,
+      במסה $M$ של כוכב הלכת וברדיוס $R$ שלו.
+
+      (1) מצאו בניתוח ממדים את התלות של מהירות המילוט ב-$G$, ב-$M$ וב-$R$, עד כדי קבוע חסר ממדים $C$.
+
+      (2) הפתרון המלא (בפרק 6) נותן $C = \sqrt2$. חשבו את מהירות המילוט מכדור הארץ, עם
+      $M = 5.97\cdot10^{24}\,\text{kg}$ ו-$R = 6.37\cdot10^6\,\text{m}$. ענו ב-$\text{km/s}$.
+    answer: 11.2
+    unit: km/s
+    correctFeedback: >-
+      נכון. $[G] = \text{m}^3/(\text{kg}\cdot\text{s}^2)$, ולכן $[GM/R] = \text{m}^2/\text{s}^2$, ומהירות היא השורש:
+      $v = C\sqrt{GM/R}$. עם $C = \sqrt2$:
+      $v = \sqrt{\dfrac{2\cdot6.67\cdot10^{-11}\cdot5.97\cdot10^{24}}{6.37\cdot10^6}} = 1.12\cdot10^4\,\text{m/s} = 11.2\,\text{km/s}$.
+    wrongFeedback: 'כתבו את היחידות של $G$ בעזרת $\text{N} = \text{kg}\cdot\text{m/s}^2$. איזה צירוף של $G$, $M$ ו-$R$ יוצא ביחידות $\text{m}^2/\text{s}^2$?'
+    commonWrong:
+      - value: 7.91
+        feedback: >-
+          זה $\sqrt{GM/R}$, כלומר $C = 1$. ניתוח ממדים לא קובע את הקבוע חסר הממדים: כאן הוא נתון, $\sqrt2$, ובלעדיו
+          התשובה קטנה פי $1.41$.
+        misconception: MC-0-dimensions-give-constant
+      - value: 125
+        feedback: 'זה $2GM/R$ ב-$\text{km}^2/\text{s}^2$, ריבוע של מהירות. הוציאו שורש.'
+      - value: 0.00443
+        feedback: 'חילקתם ב-$R^2$: $\sqrt{2GM/R^2}$ יוצא ביחידות $\text{m}^{1/2}/\text{s}$, לא מהירות. $GM/R^2$ הוא תאוצה, ולא ריבוע של מהירות.'
+    hints:
+      - '$[G] = \dfrac{\text{N}\cdot\text{m}^2}{\text{kg}^2} = \dfrac{\text{m}^3}{\text{kg}\cdot\text{s}^2}$. מה צריך לעשות עם $M$ כדי שהקילוגרמים יתבטלו?'
+
+  - id: Q-0.1-drag-exponents
+    type: mc
+    objectives: [OBJ-0.1-1]
+    level: bagrut
+    prompt: >-
+      כוח הגרר על כדור גדול שנע מהר באוויר תלוי בצפיפות האוויר $\rho$ (ב-$\text{kg/m}^3$), במהירות $v$ ובקוטר $D$
+      של הכדור. נניח $F = C\rho^a v^b D^c$, עם $C$ קבוע חסר ממדים. מהם המעריכים?
+    choices:
+      - text: $a = 1$, $b = 2$, $c = 2$
+        correct: true
+        feedback: >-
+          נכון. הקילוגרמים: $a = 1$. השניות: $-b = -2$, ולכן $b = 2$. המטרים: $-3a + b + c = 1$, ולכן $c = 2$.
+          אז $F = C\rho v^2D^2$. **בדיקת גבולות:** בריק, $\rho \to 0$, הכוח מתאפס, כמו שצריך. כדור בקוטר כפול
+          שנע בחצי מהירות מקבל אותו כוח: $4\cdot\tfrac14 = 1$.
+      - text: $a = 1$, $b = 1$, $c = 1$
+        feedback: >-
+          בדקו יחידות: $\dfrac{\text{kg}}{\text{m}^3}\cdot\dfrac{\text{m}}{\text{s}}\cdot\text{m} = \text{kg}/(\text{m}\cdot\text{s})$,
+          לא ניוטון. גרר ליניארי במהירות דורש גודל אחר, הצמיגות, ולא הצפיפות.
+      - text: $a = 1$, $b = 2$, $c = 1$
+        feedback: 'המטרים לא מתאזנים: $-3 + 2 + 1 = 0$, וניוטון צריך מטר אחד ($\text{kg}\cdot\text{m/s}^2$). צריך $c = 2$.'
+      - text: $a = 0$, $b = 2$, $c = 2$
+        feedback: 'בלי $\rho$ אין שום גודל עם קילוגרמים, וכוח חייב לכלול $\text{kg}$. גם פיזיקלית: בריק אין גרר.'
+    hints:
+      - 'כתבו $\text{N} = \text{kg}\cdot\text{m}\cdot\text{s}^{-2}$, ושלוש משוואות: אחת לכל אחת מהיחידות $\text{kg}$, $\text{m}$, $\text{s}$.'
+      - 'התחילו מהקילוגרמים ומהשניות: כל אחת מהן מופיעה רק בגודל אחד.'
+
+  - id: Q-0.1-two-groups
+    type: mc
+    objectives: [OBJ-0.1-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      כוח הגרר $F$ על כדור בקוטר $D$ שנע במהירות $v$ באוויר תלוי בצפיפות האוויר $\rho$ ובצמיגות שלו $\eta$,
+      שהיחידות שלה $\text{kg}/(\text{m}\cdot\text{s})$. נניח ש-$F$ תלוי רק בארבעת הגדלים האלה. מה ניתוח ממדים יכול לקבוע במקרה הזה?
+    choices:
+      - text: 'רק ש-$F = \rho v^2D^2\,f\!\left(\dfrac{\rho vD}{\eta}\right)$, כאשר $f$ פונקציה שהממדים לא קובעים.'
+        correct: true
+        feedback: >-
+          נכון. ארבעה מעריכים ושלוש משוואות (קילוגרם, מטר, שנייה) משאירים חופש אחד, כי הצירוף $\rho vD/\eta$ חסר ממדים:
+          אפשר להכפיל בכל פונקציה שלו בלי לשנות את היחידות. את $f$ קובעים בניסוי. כש-$\rho vD/\eta$ גדול הפונקציה
+          $f$ כמעט קבועה (גרר ריבועי), וכשהוא קטן $f \propto \eta/(\rho vD)$, ואז $F \propto \eta vD$ (גרר ליניארי).
+      - text: את כל ארבעת המעריכים, כמו קודם, ולכן $F = C\rho^a\eta^b v^c D^d$ עם מעריכים ידועים.
+        feedback: >-
+          יש ארבעה נעלמים ורק שלוש משוואות, אחת לכל יחידה בסיסית. כשיש צירוף חסר ממדים של הגדלים, ניתוח ממדים לבדו
+          לא קובע את התלות בו.
+        misconception: MC-0-dimensions-always-unique
+      - text: ש-$\eta$ לא יכולה להופיע, כי היחידות שלה לא מתאימות לכוח.
+        feedback: '$\eta vD$ יוצא בדיוק בניוטונים: $\dfrac{\text{kg}}{\text{m}\cdot\text{s}}\cdot\dfrac{\text{m}}{\text{s}}\cdot\text{m} = \text{kg}\cdot\text{m/s}^2$. זה הגרר הליניארי של גופים זעירים.'
+      - text: ש-$F = C\eta vD$, כי הצמיגות היא תמיד הגורם העיקרי.
+        feedback: 'זה רק גבול אחד, כש-$\rho vD/\eta$ קטן (גופים זעירים ואיטיים). בכדור או במכונית הגרר כמעט ריבועי.'
+    hints:
+      - 'נסו לבנות מ-$\rho$, $\eta$, $v$ ו-$D$ צירוף שאין לו יחידות בכלל. מה זה אומר על מספר הפתרונות?'
+    explanation: >-
+      הצירוף $\rho vD/\eta$ נקרא מספר ריינולדס. כשקיים צירוף חסר ממדים של הגדלים, ניתוח ממדים נותן את התשובה רק עד
+      כדי פונקציה לא ידועה שלו, ולא עד כדי קבוע.
+
+  # ---------------------------------------------------------------- OBJ-0.1-2 orders of magnitude
+  - id: Q-0.1-air-mass
+    type: numeric
+    objectives: [OBJ-0.1-2]
+    level: basic
+    prompt: >-
+      כיתה היא חדר של $10\,\text{m}\times8\,\text{m}\times3\,\text{m}$, וצפיפות האוויר בה $1.2\,\text{kg/m}^3$. מה
+      המסה של האוויר בכיתה?
+    answer: 288
+    unit: kg
+    correctFeedback: >-
+      נכון: הנפח $240\,\text{m}^3$, והמסה $240\cdot1.2 = 288\,\text{kg}$, סדר גודל של $10^2\,\text{kg}$: בערך
+      ארבעה אנשים. האוויר שמסביבנו כבד יותר ממה שנדמה.
+    wrongFeedback: 'מסה היא צפיפות כפול נפח. חשבו קודם את הנפח במטרים מעוקבים.'
+    commonWrong:
+      - value: 240000
+        feedback: 'השתמשתם בצפיפות של מים, $1000\,\text{kg/m}^3$. האוויר דליל פי כ-800 מהמים.'
+      - value: 240
+        feedback: 'זה הנפח, $240\,\text{m}^3$. כדי לקבל מסה כפלו בצפיפות.'
+    hints:
+      - '$m = \rho V$.'
+
+  - id: Q-0.1-reasonable
+    type: multi
+    objectives: [OBJ-0.1-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      סטודנטים פתרו כמה תרגילים. סמנו את כל התוצאות שאפשר לפסול מיד בהערכת סדר גודל, בלי לחזור לחישוב.
+    choices:
+      - text: מכונית נבלמת ממהירות $100\,\text{km/h}$ עד עצירה תוך $3\,\text{s}$.
+        feedback: >-
+          זה סביר. $100\,\text{km/h} \approx 28\,\text{m/s}$, והתאוצה כ-$9\,\text{m/s}^2$: בלימת חירום בכביש יבש,
+          קרוב לגבול של החיכוך.
+      - text: המסה של טיפת גשם היא $50\,\text{g}$.
+        correct: true
+        feedback: >-
+          נכון, לפסול. טיפת מים של $50\,\text{g}$ היא כדור בקוטר של כ-$4.6\,\text{cm}$. טיפת גשם בקוטר
+          $2\,\text{mm}$ שוקלת כ-$4\,\text{mg}$, פי עשרת אלפים פחות.
+      - text: לוויין במסלול נמוך סביב כדור הארץ נע במהירות של כ-$8\,\text{km/s}$.
+        feedback: 'זה סביר: זה בדיוק סדר הגודל של $\sqrt{gR}$ עם $R \approx 6.4\cdot10^6\,\text{m}$.'
+      - text: אדם קופץ מהמקום לגובה $5\,\text{m}$.
+        correct: true
+        feedback: >-
+          נכון, לפסול. כדי להגיע ל-$5\,\text{m}$ צריך מהירות המראה של $\sqrt{2gh} \approx 10\,\text{m/s}$, כמו
+          המהירות המרבית של אצן עולמי, ובקפיצה אנכית. קפיצה אמיתית מהמקום מגיעה לכחצי מטר.
+      - text: אדם שעומד דוחף את הרצפה בכוח של כ-$700\,\text{N}$.
+        feedback: 'זה סביר: אדם של $70\,\text{kg}$ דוחף את הרצפה בכוח $mg \approx 700\,\text{N}$.'
+    hints:
+      - 'לכל תוצאה, השוו לגודל שאתם מכירים מהיום-יום: משקל של אדם, גודל של טיפה, מהירות של אצן.'
+
+  - id: Q-0.1-raindrop
+    type: numeric
+    objectives: [OBJ-0.1-2, OBJ-0.1-1]
+    level: bagrut
+    prompt: >-
+      העריכו את המהירות הסופית של טיפת גשם בקוטר $D = 2\,\text{mm}$. השתמשו בגרר ריבועי בלי הקבוע חסר הממדים,
+      $F \approx \rho_\text{a} v^2D^2$, עם $\rho_\text{a} = 1.2\,\text{kg/m}^3$ לאוויר, ובמסה
+      $m = \rho_\text{w}\dfrac{\pi}{6}D^3$, עם $\rho_\text{w} = 1000\,\text{kg/m}^3$ למים. במהירות הסופית הגרר
+      מאזן את הכובד.
+    answer: 2.92
+    unit: m/s
+    correctFeedback: >-
+      נכון. $\rho_\text{a}v^2D^2 = \rho_\text{w}\dfrac{\pi}{6}D^3g$, ולכן
+      $v = \sqrt{\dfrac{\pi\rho_\text{w}gD}{6\rho_\text{a}}} = \sqrt{\dfrac{\pi\cdot1000\cdot9.8\cdot0.002}{6\cdot1.2}} \approx 2.9\,\text{m/s}$.
+      הנמדד הוא כ-$6.5\,\text{m/s}$: אותו סדר גודל. הקבוע שהשמטנו הוא בערך $0.2$, והוא מגדיל את התוצאה פי
+      $1/\sqrt{0.2} \approx 2.2$. **בדיקת גבולות:** $v \propto \sqrt D$, ולכן כש-$D \to 0$ המהירות קטנה, וטיפות
+      ערפל כמעט מרחפות.
+    wrongFeedback: 'השוו את הגרר לכובד, $\rho_\text{a}v^2D^2 = mg$, ובודדו את $v$. בדקו שהיחידות יוצאות $\text{m/s}$.'
+    commonWrong:
+      - value: 4.04
+        feedback: 'לקחתם את הנפח $D^3$ במקום $\dfrac{\pi}{6}D^3$, הנפח של כדור בקוטר $D$. הנפח של הקובייה שחוסמת את הכדור גדול פי כמעט 2.'
+      - value: 8.55
+        feedback: 'זה $v^2$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
+      - value: 0.00351
+        feedback: 'החלפתם בין הצפיפויות: את הכובד קובעת צפיפות המים, ואת הגרר צפיפות האוויר.'
+    hints:
+      - 'הקוטר מופיע בשני האגפים: $D^2$ בגרר ו-$D^3$ במסה. מה נשאר אחרי שמצמצמים?'

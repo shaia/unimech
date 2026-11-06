@@ -1,0 +1,554 @@
+# Chapter 4 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each, parts
+# graded easy → hard. Each problem joins objectives from at least two lessons, and the four together touch
+# every lesson: 1 (4.2, 4.3), 2 (4.1, 4.4), 3 (4.1, 4.2, 4.4), 4 (4.1, 4.2, 4.3). Open parts are solved in
+# the course format: law → derivation (manipulation) → limit check (limit) → unit check (units) → numbers
+# (substitution) when asked → result. YAML note: never use "…" for TeX.
+#
+# Every number was computed by .scratch/ch4/review.ts with src/physics/constants.ts (G = 9.8):
+#   1: 0.20 kg at 3.0 m/s on 0.10 kg at rest, elastic: V = 2.0 m/s, u1 = 1.0 m/s, K = 0.90 J = K_cm 0.60 +
+#      K_rel 0.30 J; θmax = asin(1/2) = 30°; speed at θmax √(V² − u1²) = 1.73 m/s (equals
+#      v √(m1² − m2²)/(m1 + m2)); m2 then leaves at 3.46 m/s, 30° to the other side, and energy checks;
+#   2: m = 20 g, M = 0.98 kg, h = 0.20 m: V = 1.98 m/s, v = 99.0 m/s (energy alone 14.0), K 98.0 J → 1.96 J,
+#      lost 96.0 J; a ball bouncing back with restitution e: h_e = (1 + e)² h, 0.450 m at e = 0.5
+#      ((1 + e)h 0.30; (1 + e²)h 0.25), and its momentum balance checks;
+#   3: 1.0 kg at 4.0 m/s on 3.0 kg at rest, k = 300 N/m: V = 1.0 m/s, K_rel = 6.0 J, x = 0.200 m (all KE
+#      0.231); after the spring: v1' = −2.0, v2' = +2.0 m/s; B toward A at 2.0 m/s: v_rel = 6.0 m/s,
+#      K_rel = 13.5 J, x = 0.300 m (ignoring B 0.200; speeds subtracted 0.100);
+#   4: neutron on C-12, head-on: kept (11/13)² = 0.716, transferred 4mM/(m + M)² = 0.284; 2.0 MeV → 0.025 eV
+#      needs ln(1.25·10⁻⁸)/ln 0.716 = 54.5, so at least 55 head-on collisions (with 11/13: 109); recoil at φ:
+#      fraction 4mM cos²φ/(m + M)², checked against the CM construction at three angles; φ = 30°: 0.426 MeV
+#      (head-on 0.568; cos not squared 0.492; sin² 0.142).
+
+chapter: 4
+questions:
+  # ------------------------------------------------------------ 1: a 2D elastic collision in the lab and CM frames
+  - id: Q-4-bagrut-1
+    type: bagrut
+    title: דיסקית כבדה פוגעת בדיסקית קלה
+    prompt: >-
+      על שולחן אוויר אופקי, דיסקית בעלת מסה $m_1 = 0.20\,\text{kg}$ נעה במהירות $v = 3.0\,\text{m/s}$ ופוגעת, לא
+      במרכז, בדיסקית בעלת מסה $m_2 = 0.10\,\text{kg}$ שעומדת במנוחה. ההתנגשות אלסטית, והחיכוך והסיבוב של הדיסקיות
+      זניחים. הנקודה שבה הדיסקיות נוגעות זו בזו משתנה מניסוי לניסוי, ואיתה זווית הפיזור $\theta$ של הדיסקית הכבדה.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-4.2-1]
+        prompt: מה גודל המהירות של מרכז המסה של שתי הדיסקיות?
+        answer: 2.0
+        unit: m/s
+        correctFeedback: >-
+          נכון. $V = \dfrac{m_1v}{m_1 + m_2} = \dfrac{0.20\cdot3.0}{0.30} = 2.0\,\text{m/s}$, בכיוון של $\vec v$. היא לא
+          משתנה בהתנגשות, בכל נקודה שבה הדיסקיות ייגעו.
+        wrongFeedback: 'מהירות מרכז המסה היא התנע הכולל חלקי המסה הכוללת.'
+        commonWrong:
+          - value: 1.5
+            feedback: 'זה הממוצע הפשוט של המהירויות. מהירות מרכז המסה היא ממוצע משוקלל במסות.'
+            misconception: MC-4-vcm-plain-average
+          - value: 1.0
+            feedback: 'כפלתם את המהירות במסה של הדיסקית העומדת. כל מהירות נכפלת במסה של הגוף שלה.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-4.2-2]
+        prompt: >-
+          כמה מהאנרגיה הקינטית של הדיסקיות שייכת לתנועה היחסית, כלומר זמינה בהתנגשות?
+        answer: 0.3
+        unit: J
+        correctFeedback: >-
+          נכון. $\mu = \dfrac{0.20\cdot0.10}{0.30} = 0.0667\,\text{kg}$, ו-$\tfrac12\mu v^2 = \tfrac12\cdot0.0667\cdot3.0^2 = 0.30\,\text{J}$.
+          השאר, $\tfrac12(m_1 + m_2)V^2 = 0.60\,\text{J}$, שייך למרכז המסה, והסכום $0.90\,\text{J}$ הוא $\tfrac12m_1v^2$.
+          ההתנגשות אלסטית, ולכן גם האנרגיה הזמינה לא אובדת: היא רק מחליפה כיוון.
+        wrongFeedback: 'חשבו את המסה המצומצמת. המהירות היחסית היא $3.0\,\text{m/s}$, כי הדיסקית השנייה עומדת.'
+        commonWrong:
+          - value: 0.9
+            feedback: 'זו כל האנרגיה הקינטית. $0.60\,\text{J}$ ממנה שייכים לתנועה של מרכז המסה, ותמיד נשארים בה.'
+            misconception: MC-4-all-ke-lost
+          - value: 0.6
+            feedback: 'זו האנרגיה של מרכז המסה, $\tfrac12(m_1 + m_2)V^2$. השאלה שואלת על החלק השני.'
+          - value: 1.35
+            feedback: 'הצבתם את המסה הכוללת במקום המסה המצומצמת, $\mu = \dfrac{m_1m_2}{m_1 + m_2}$.'
+
+      - label: ג
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-4.3-2, OBJ-4.2-1]
+        prompt: >-
+          (1) הראו, בעזרת מערכת מרכז המסה, שזווית הפיזור של הדיסקית הכבדה לא יכולה לעבור זווית מרבית $\theta_{\max}$,
+          שבה $\sin\theta_{\max} = \dfrac{m_2}{m_1}$.
+
+          (2) בדקו את התוצאה בגבולות, וחשבו את $\theta_{\max}$ לדיסקיות שלנו.
+        hints:
+          - 'במערכת מרכז המסה, התנגשות אלסטית רק מסובבת את המהירות של כל דיסקית ולא משנה את גודלה. מה הגודל הזה?'
+          - 'במערכת המעבדה $\vec v_1'' = \vec V + \vec u_1''$. אילו נקודות יכול הקצה של $\vec v_1''$ לתפוס?'
+        solution:
+          - kind: law
+            text: >-
+              התנע הכולל נשמר, ולכן מרכז המסה נע במהירות קבועה $\vec V$, ומערכת מרכז המסה אינרציאלית. בה התנע הכולל
+              אפס, ובהתנגשות אלסטית כל מהירות שומרת על גודלה ורק מסתובבת. החזרה למעבדה: $\vec v_1' = \vec V + \vec u_1'$.
+          - kind: manipulation
+            text: >-
+              $V = \dfrac{m_1v}{m_1 + m_2}$, ובמערכת מרכז המסה הדיסקית הכבדה נעה לפני ההתנגשות במהירות
+              $u_1 = v - V = \dfrac{m_2v}{m_1 + m_2}$. אחרי ההתנגשות $\vec u_1'$ באותו גודל, $u_1$, בכיוון שתלוי
+              בנקודת המגע. לכן הקצה של $\vec v_1'$ נמצא על מעגל שרדיוסו $u_1$ ומרכזו בקצה של $\vec V$.
+          - kind: manipulation
+            text: >-
+              כש-$m_1 > m_2$, $u_1 < V$: המעגל לא מקיף את הראשית, וכל המהירויות האפשריות פונות קדימה. הזווית בין
+              $\vec v_1'$ ל-$\vec V$ הכי גדולה כש-$\vec v_1'$ משיק למעגל. אז המשיק ניצב לרדיוס, ובמשולש ישר הזווית
+              שהיתר שלו $V$:
+              $$\sin\theta_{\max} = \frac{u_1}{V} = \frac{m_2v/(m_1 + m_2)}{m_1v/(m_1 + m_2)} = \frac{m_2}{m_1}$$
+          - kind: limit
+            text: >-
+              כש-$m_2 \to 0$: $\theta_{\max} \to 0$, מטרה זעירה לא מסיטה את הפוגע. כש-$m_2 \to m_1$: $\theta_{\max} \to 90^\circ$,
+              בהתאם לזווית הישרה של מסות שוות. כש-$m_2 > m_1$ אין פתרון ל-$\sin\theta_{\max} = m_2/m_1 > 1$: אז $u_1 > V$,
+              המעגל מקיף את הראשית, והפוגע יכול לצאת לכל כיוון, גם אחורה.
+          - kind: units
+            text: '$\sin\theta_{\max}$ הוא יחס של שתי מסות, חסר ממדים, כמו שסינוס צריך להיות. גם $u_1/V$ הוא יחס של שתי מהירויות.'
+          - kind: substitution
+            text: '$\sin\theta_{\max} = \dfrac{0.10}{0.20} = 0.50$, ולכן $\theta_{\max} = 30^\circ$.'
+          - kind: result
+            text: >-
+              $\sin\theta_{\max} = m_2/m_1$; לדיסקיות שלנו $\theta_{\max} = 30^\circ$. התוצאה לא תלויה במהירות $v$,
+              והיא מחזירה $90^\circ$ במסות שוות ואפס במטרה זעירה.
+        rubric:
+          - text: כתבתי שבמערכת מרכז המסה התנגשות אלסטית שומרת על גודל המהירות של כל דיסקית, וחישבתי $V$ ו-$u_1$.
+          - text: תיארתי את המהירויות האפשריות במעבדה כמעגל ברדיוס $u_1$ סביב הקצה של $\vec V$.
+          - text: נימקתי שהזווית המרבית מתקבלת במשיק למעגל, וקיבלתי $\sin\theta_{\max} = u_1/V = m_2/m_1$.
+          - text: בדקתי את הגבולות $m_2 \to 0$ ו-$m_2 \to m_1$, והסברתי מה קורה כש-$m_2 > m_1$.
+          - text: חישבתי $\theta_{\max} = 30^\circ$.
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-4.3-2]
+        prompt: >-
+          בניסוי אחד הדיסקית הכבדה מוסטת בדיוק בזווית הפיזור המרבית. מה גודל המהירות שלה אחרי ההתנגשות?
+        answer: 1.73
+        unit: m/s
+        correctFeedback: >-
+          נכון. במשולש ישר הזווית של חלק ג, $v_1' = \sqrt{V^2 - u_1^2} = \sqrt{2.0^2 - 1.0^2} = 1.73\,\text{m/s}$.
+          באופן כללי $v_1' = v\,\dfrac{\sqrt{m_1^2 - m_2^2}}{m_1 + m_2}$, ובגבול $m_2 \to 0$ זה $v$. בדיקה: הדיסקית
+          הקלה יוצאת אז ב-$3.46\,\text{m/s}$, ב-$30^\circ$ לצד השני, ו-$\tfrac12\cdot0.20\cdot1.73^2 + \tfrac12\cdot0.10\cdot3.46^2 = 0.90\,\text{J}$.
+        wrongFeedback: >-
+          בזווית המרבית $\vec v_1'$ ניצב ל-$\vec u_1'$. השתמשו בפיתגורס במשולש שהיתר שלו $\vec V$.
+        commonWrong:
+          - value: 1.0
+            feedback: >-
+              זה $u_1$, המהירות במערכת מרכז המסה, וגם המהירות אחרי פגיעה **חזיתית**. בזווית המרבית $\vec u_1'$ ניצב
+              ל-$\vec v_1'$, ו-$v_1'$ הוא ניצב במשולש שהיתר שלו $V$.
+            misconception: MC-4-cm-frame-is-lab-answer
+          - value: 3.0
+            feedback: >-
+              זה $V + u_1$, המהירות כש-$\vec u_1'$ ו-$\vec V$ באותו כיוון: הדיסקית לא פגעה כלל. בזווית המרבית הם לא
+              מקבילים.
+          - value: 2.0
+            feedback: 'זו מהירות מרכז המסה, $V$. היא היתר של המשולש, לא $v_1''$.'
+
+  # ------------------------------------------------------------ 2: a ballistic pendulum and a bouncing ball
+  - id: Q-4-bagrut-2
+    type: bagrut
+    title: מטוטלת בליסטית וכדור שנרתע
+    prompt: >-
+      גוש עץ בעל מסה $M = 0.98\,\text{kg}$ תלוי על שני חוטים ארוכים, קלים ומקבילים. קליע בעל מסה $m = 20\,\text{g}$
+      נע אופקית, נתקע בגוש, והגוש עם הקליע עולה לגובה $h = 0.20\,\text{m}$ מעל נקודת ההתחלה. ההתנגשות קצרה מאוד.
+      התנגדות האוויר זניחה.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-4.4-1]
+        prompt: מה נשמר בין הרגע שלפני ההתנגשות לרגע שמיד אחריה?
+        choices:
+          - text: התנע של הקליע והגוש, אבל לא האנרגיה הקינטית שלהם.
+            correct: true
+            feedback: >-
+              נכון. המתקף של הכובד ושל החוטים בזמן ההתנגשות הקצר זניח, ולכן התנע נשמר. ההתנגשות פלסטית, ולכן רוב
+              האנרגיה הקינטית הופכת לחום ולעיוות.
+          - text: גם התנע וגם האנרגיה הקינטית.
+            feedback: >-
+              אילו האנרגיה הקינטית נשמרה, הקליע היה צריך להירתע מהגוש, כמו בהתנגשות אלסטית. כשהוא נתקע, ההתנגשות פלסטית.
+            misconception: MC-4-energy-through-collision
+          - text: האנרגיה הקינטית בלבד; התנע לא נשמר, כי כוח הכובד פועל על הגוש.
+            feedback: >-
+              הכובד אכן פועל, אבל המתקף שלו בזמן ההתנגשות, $(m + M)g\,\Delta t$, זניח. ודווקא האנרגיה הקינטית היא זו
+              שלא נשמרת.
+            misconception: MC-4-finite-force-spoils-momentum
+          - text: שום דבר. החוטים מושכים את הגוש ומשנים את התנע שלו.
+            feedback: >-
+              בזמן ההתנגשות החוטים אנכיים, והם לא מפעילים כוח אופקי. הם משנים את התנע של הגוש רק בעלייה, בזמן ארוך.
+
+      - label: ב
+        type: numeric
+        points: 6
+        level: mid
+        objectives: [OBJ-4.4-1, OBJ-4.4-2]
+        prompt: מה הייתה מהירות הקליע לפני ההתנגשות?
+        answer: 99.0
+        unit: m/s
+        correctFeedback: >-
+          נכון. בעלייה: $V = \sqrt{2gh} = \sqrt{2\cdot9.8\cdot0.20} = 1.98\,\text{m/s}$. בהתנגשות:
+          $v = \dfrac{m + M}{m}\,V = \dfrac{1.00}{0.020}\cdot1.98 = 99.0\,\text{m/s}$.
+        wrongFeedback: >-
+          התחילו מהסוף. גובה העלייה נותן את מהירות הגוש עם הקליע מיד אחרי ההתנגשות; שימור התנע בהתנגשות נותן את מהירות
+          הקליע.
+        commonWrong:
+          - value: 14.0
+            feedback: >-
+              השוויתם את האנרגיה של הקליע ל-$(m + M)gh$. האנרגיה נשמרת רק בעלייה, אחרי ההתנגשות; בהתנגשות עצמה נשמר
+              רק התנע.
+            misconception: MC-4-energy-through-collision
+          - value: 1.98
+            feedback: 'זו מהירות הגוש עם הקליע מיד אחרי ההתנגשות. מהירות הקליע גדולה ממנה פי $(m + M)/m = 50$.'
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        standalone: false
+        objectives: [OBJ-4.1-2]
+        prompt: כמה אנרגיה קינטית הפכה לחום ולעיוות בהתנגשות?
+        answer: 96.0
+        unit: J
+        correctFeedback: >-
+          נכון. לפני: $\tfrac12\cdot0.020\cdot99.0^2 = 98.0\,\text{J}$. אחרי: $\tfrac12\cdot1.00\cdot1.98^2 = 1.96\,\text{J}$.
+          אבדו $96.0\,\text{J}$, 98% מהאנרגיה, בדיוק $\dfrac{M}{m + M}$. רק 2% ממנה מרימים את הגוש.
+        wrongFeedback: 'חשבו את האנרגיה הקינטית של הקליע לפני ההתנגשות ושל הגוש עם הקליע מיד אחריה, וחסרו.'
+        commonWrong:
+          - value: 98.0
+            feedback: >-
+              זו כל האנרגיה של הקליע. חלק ממנה, $1.96\,\text{J}$, נשאר בתנועה של הגוש עם הקליע, וממנו הגוש עולה.
+            misconception: MC-4-all-ke-lost
+          - value: 1.96
+            feedback: 'זו האנרגיה שנשארה, וזו שהרימה את הגוש: $(m + M)gh$. השאלה שואלת על מה שאבד.'
+          - value: 0
+            feedback: 'הקליע נתקע בגוש: ההתנגשות פלסטית, ואנרגיה קינטית אובדת בה.'
+            misconception: MC-4-ke-always-conserved
+
+      - label: ד
+        type: open
+        points: 7
+        level: bagrut
+        objectives: [OBJ-4.1-2, OBJ-4.1-1]
+        prompt: >-
+          מחליפים את הקליע בכדור גומי קשיח בעל אותה מסה $m$ ואותה מהירות $v$, שפוגע בגוש חזיתית ונרתע ממנו לאחור.
+          מקדם התקומה בין הכדור לגוש הוא $e$. הראו שהגוש (עכשיו בלי הכדור) עולה לגובה $h_e = (1 + e)^2h$, כאשר $h$
+          הוא הגובה עם הקליע שנתקע. בדקו את הביטוי בגבולות.
+        hints:
+          - 'כתבו שימור תנע ואת ההגדרה של מקדם התקומה. יש שני נעלמים: מהירות הכדור ומהירות הגוש.'
+        solution:
+          - kind: law
+            text: >-
+              בהתנגשות הקצרה התנע נשמר, $mv = mv_b + MV_b$, ומקדם התקומה קובע את מהירות ההתרחקות:
+              $V_b - v_b = e\,v$. אחרי ההתנגשות הגוש עולה, ואנרגיה נשמרת: $h_e = \dfrac{V_b^2}{2g}$.
+          - kind: manipulation
+            text: >-
+              מהשנייה $v_b = V_b - ev$; הצבה בראשונה: $mv = mV_b - mev + MV_b$, ולכן $V_b = \dfrac{m(1 + e)v}{m + M}$.
+              עם הקליע שנתקע $V_0 = \dfrac{mv}{m + M}$, ולכן $V_b = (1 + e)V_0$. הגובה פרופורציוני לריבוע המהירות,
+              ולכן $h_e = (1 + e)^2h$.
+          - kind: limit
+            text: >-
+              כש-$e = 0$, הכדור לא נרתע אלא נע יחד עם הגוש, וזו בדיוק המטוטלת הבליסטית: $h_e = h$. כש-$e = 1$,
+              $h_e = 4h$: כדור שנרתע דוחף את הגוש גם כשהוא נעצר וגם כשהוא נזרק לאחור, ולכן מהירות הגוש כפולה, והגובה
+              פי 4. כדור שנרתע מרים את הגוש גבוה יותר מקליע שנתקע.
+          - kind: units
+            text: '$(1 + e)^2$ חסר ממדים, ולכן $h_e$ במטרים, כמו $h$. גם $\dfrac{m(1 + e)v}{m + M}$ במטר לשנייה.'
+          - kind: result
+            text: >-
+              $V_b = \dfrac{m(1 + e)v}{m + M} = (1 + e)V_0$, ולכן $h_e = (1 + e)^2h$: מ-$h$ בהתנגשות פלסטית ועד $4h$
+              בהתנגשות אלסטית.
+        rubric:
+          - text: כתבתי שימור תנע עם שלושה איברים, ואת ההגדרה של מקדם התקומה עם הסימנים הנכונים.
+          - text: פתרתי ומצאתי $V_b = \dfrac{m(1 + e)v}{m + M}$, והשוויתי למהירות $V_0$ של הגוש עם הקליע.
+          - text: עברתי מהמהירות לגובה דרך שימור אנרגיה, וקיבלתי את הריבוע $(1 + e)^2$.
+          - text: בדקתי שב-$e = 0$ מתקבל $h$ וב-$e = 1$ מתקבל $4h$, והסברתי את שניהם.
+
+      - label: ה
+        type: numeric
+        points: 3
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-4.1-2, OBJ-4.4-2]
+        prompt: לאיזה גובה עולה הגוש כשמקדם התקומה הוא $e = 0.50$?
+        answer: 0.45
+        unit: m
+        correctFeedback: 'נכון. $h_e = (1 + 0.50)^2\cdot0.20 = 2.25\cdot0.20 = 0.45\,\text{m}$.'
+        wrongFeedback: 'הציבו בביטוי של חלק ד, עם $h = 0.20\,\text{m}$.'
+        commonWrong:
+          - value: 0.3
+            feedback: 'זה $(1 + e)h$. המהירות גדלה פי $1 + e$, והגובה פי הריבוע שלו.'
+          - value: 0.25
+            feedback: 'זה $(1 + e^2)h$. הריבוע הוא של $1 + e$ כולו: $(1 + e)^2 = 1 + 2e + e^2$.'
+            misconception: MC-4-restitution-is-height-ratio
+          - value: 0.8
+            feedback: 'זה $4h$, הגובה כשהכדור נרתע אלסטית, $e = 1$. כאן $e = 0.50$.'
+            misconception: MC-4-ke-always-conserved
+
+  # ------------------------------------------------------------ 3: two carts and a spring bumper
+  - id: Q-4-bagrut-3
+    type: bagrut
+    title: שתי עגלות וקפיץ פגוש
+    prompt: >-
+      על מסילה ישרה בלי חיכוך, עגלה A בעלת מסה $m_A = 1.0\,\text{kg}$ נעה ימינה במהירות $4.0\,\text{m/s}$ אל עגלה B
+      בעלת מסה $m_B = 3.0\,\text{kg}$ שעומדת במנוחה. לצד של B שפונה אל A מחובר קפיץ קל עם קבוע $k = 300\,\text{N/m}$.
+      A פוגעת בקפיץ, מכווצת אותו, והקפיץ דוחף את העגלות זו מזו עד שהוא חוזר לאורכו הרפוי.
+    diagramAlt: >-
+      מבט מהצד על מסילה אופקית. משמאל עגלה A, מלבן קטן על שני גלגלים, ומעליה חץ ימינה, המהירות של A. מימין עגלה B,
+      מלבן גדול יותר על שני גלגלים. מהצד השמאלי של B יוצא שמאלה קפיץ בצורת זיגזג, שמסומן $k$, ובקצה שלו לוחית
+      קטנה שפונה אל A.
+    diagram: |
+      <svg viewBox="0 0 420 130" width="420" height="130" font-size="14" aria-hidden="true">
+        <line x1="10" y1="104" x2="410" y2="104" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="40" y="66" width="70" height="32" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="56" cy="100" r="4" fill="currentColor"/>
+        <circle cx="94" cy="100" r="4" fill="currentColor"/>
+        <text x="75" y="87" text-anchor="middle" fill="currentColor" font-style="italic">A</text>
+        <line x1="55" y1="48" x2="118" y2="48" stroke="var(--velocity)" stroke-width="2.5"/>
+        <polygon points="118,42 131,48 118,54" fill="var(--velocity)"/>
+        <text x="84" y="38" fill="var(--velocity)" font-style="italic">v</text>
+        <text x="93" y="42" fill="var(--velocity)" font-size="10" font-style="italic">A</text>
+        <line x1="196" y1="70" x2="196" y2="90" stroke="currentColor" stroke-width="2"/>
+        <polyline points="196,80 202,71 210,89 218,71 226,89 234,71 242,89 250,71 256,80 262,80" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="226" y="62" text-anchor="middle" fill="currentColor" font-style="italic">k</text>
+        <rect x="262" y="54" width="110" height="44" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="282" cy="100" r="4" fill="currentColor"/>
+        <circle cx="352" cy="100" r="4" fill="currentColor"/>
+        <text x="317" y="81" text-anchor="middle" fill="currentColor" font-style="italic">B</text>
+      </svg>
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-4.4-2]
+        prompt: מה גודל המהירות של שתי העגלות ברגע שבו הקפיץ מכווץ ביותר?
+        answer: 1.0
+        unit: m/s
+        correctFeedback: >-
+          נכון. ברגע הכיווץ המרבי הקפיץ לא מתקצר ולא מתארך, ולכן לעגלות אותה מהירות. התנע נשמר:
+          $V = \dfrac{1.0\cdot4.0}{4.0} = 1.0\,\text{m/s}$, מהירות מרכז המסה.
+        wrongFeedback: 'מה המהירות היחסית של העגלות כשהקפיץ מפסיק להתכווץ? השתמשו בשימור התנע.'
+        commonWrong:
+          - value: 2.0
+            feedback: 'זה הממוצע הפשוט של המהירויות. המהירות המשותפת היא ממוצע משוקלל במסות, ו-B כבדה פי 3.'
+            misconception: MC-4-vcm-plain-average
+          - value: 0
+            feedback: >-
+              אילו שתי העגלות היו נעצרות, התנע הכולל היה הופך לאפס. אין כוח חיצוני אופקי, ולכן הן ממשיכות יחד ימינה.
+            misconception: MC-4-all-ke-lost
+
+      - label: ב
+        type: numeric
+        points: 6
+        level: mid
+        objectives: [OBJ-4.2-2, OBJ-4.4-2]
+        prompt: מה הכיווץ המרבי של הקפיץ?
+        answer: 0.2
+        unit: m
+        correctFeedback: >-
+          נכון. האנרגיה שנאגרת בקפיץ היא האנרגיה הזמינה, $\tfrac12\mu v_{\text{rel}}^2$, עם $\mu = \dfrac{1.0\cdot3.0}{4.0} = 0.75\,\text{kg}$:
+          $\tfrac12\cdot0.75\cdot4.0^2 = 6.0\,\text{J}$. לכן $\tfrac12kx^2 = 6.0\,\text{J}$ ו-$x = \sqrt{\dfrac{2\cdot6.0}{300}} = 0.20\,\text{m}$.
+          בדיקה: $8.0\,\text{J}$ לפני, ו-$\tfrac12\cdot4.0\cdot1.0^2 + 6.0 = 8.0\,\text{J}$ ברגע הכיווץ.
+        wrongFeedback: >-
+          השוו את האנרגיה הקינטית לפני ההתנגשות לאנרגיה ברגע הכיווץ המרבי: קינטית של שתי העגלות במהירות המשותפת, ועוד
+          האנרגיה בקפיץ.
+        commonWrong:
+          - value: 0.231
+            feedback: >-
+              הנחתם שכל האנרגיה, $8.0\,\text{J}$, נאגרת בקפיץ. ברגע הכיווץ המרבי העגלות עדיין נעות ב-$1.0\,\text{m/s}$,
+              ו-$2.0\,\text{J}$ נשארים בתנועה של מרכז המסה.
+            misconception: MC-4-all-ke-lost
+          - value: 0.04
+            feedback: 'זה $x^2$, ביחידות $\text{m}^2$. הוציאו שורש.'
+
+      - label: ג
+        type: open
+        points: 9
+        level: bagrut
+        objectives: [OBJ-4.2-1, OBJ-4.1-1]
+        prompt: >-
+          מצאו את המהירויות של שתי העגלות אחרי שהקפיץ חוזר לאורכו הרפוי. נמקו למה ההתנגשות אלסטית, ופתרו אותה
+          במערכת מרכז המסה. בדקו את התוצאה בגבולות.
+        hints:
+          - 'כמה אנרגיה נשארת בקפיץ כשהוא חוזר לאורכו הרפוי?'
+          - 'במערכת מרכז המסה, התנגשות אלסטית בממד אחד רק הופכת את הסימן של כל מהירות.'
+        solution:
+          - kind: law
+            text: >-
+              אין כוח חיצוני אופקי, ולכן התנע נשמר. כוח הקפיץ משמר, וכשהקפיץ חוזר לאורכו הרפוי האנרגיה שנאגרה בו
+              חוזרת כולה לתנועה: האנרגיה הקינטית בסוף שווה לזו שבהתחלה, וההתנגשות אלסטית. במערכת מרכז המסה, התנגשות
+              אלסטית בממד אחד הופכת את הסימן של כל מהירות.
+          - kind: manipulation
+            text: >-
+              עם ציר ימינה, $V = 1.0\,\text{m/s}$. במערכת מרכז המסה $u_A = 4.0 - 1.0 = 3.0\,\text{m/s}$ ו-$u_B = 0 - 1.0 = -1.0\,\text{m/s}$.
+              אחרי ההתנגשות $u_A' = -3.0\,\text{m/s}$ ו-$u_B' = 1.0\,\text{m/s}$. חזרה למעבדה, מוסיפים את $V$:
+              $$v_A' = -3.0 + 1.0 = -2.0\,\text{m/s},\qquad v_B' = 1.0 + 1.0 = 2.0\,\text{m/s}$$
+              בדיקה: תנע $1.0\cdot(-2.0) + 3.0\cdot2.0 = 4.0\,\text{kg}\cdot\text{m/s}$, ואנרגיה $\tfrac12\cdot1.0\cdot2.0^2 + \tfrac12\cdot3.0\cdot2.0^2 = 8.0\,\text{J}$, כמו בהתחלה.
+          - kind: limit
+            text: >-
+              באופן כללי, $v_A' = \dfrac{m_A - m_B}{m_A + m_B}\,v$ ו-$v_B' = \dfrac{2m_A}{m_A + m_B}\,v$. כש-$m_B \to \infty$, B היא
+              קיר: $v_A' \to -v$ ו-$v_B' \to 0$. כש-$m_B = m_A$, העגלות מחליפות מהירויות: A נעצרת ו-B יוצאת ב-$v$.
+              המהירות היחסית מתהפכת: $v_B' - v_A' = 4.0\,\text{m/s}$, כמו מהירות ההתקרבות.
+          - kind: units
+            text: 'בכל ביטוי מהירות כפול יחס מסות חסר ממדים, ולכן התוצאות במטר לשנייה.'
+          - kind: result
+            text: >-
+              אחרי שהקפיץ חוזר לאורכו, A נרתעת שמאלה ב-$2.0\,\text{m/s}$ ו-B נעה ימינה ב-$2.0\,\text{m/s}$. הקפיץ הקל
+              עושה את ההתנגשות אלסטית, כי הוא מחזיר את כל האנרגיה שאגר.
+        rubric:
+          - text: נימקתי שההתנגשות אלסטית, כי הקפיץ משמר ומחזיר את כל האנרגיה כשהוא חוזר לאורכו הרפוי.
+          - text: חסרתי $V$, הפכתי את הסימן של כל מהירות במערכת מרכז המסה, והוספתי $V$ בחזרה.
+          - text: 'קיבלתי $v_A'' = -2.0\,\text{m/s}$ ו-$v_B'' = 2.0\,\text{m/s}$, ובדקתי שהתנע והאנרגיה נשמרים.'
+          - text: בדקתי את הגבולות של B כבדה מאוד ושל מסות שוות.
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        objectives: [OBJ-4.2-2]
+        prompt: >-
+          חוזרים על הניסוי, אבל הפעם B לא עומדת: היא נעה שמאלה, לקראת A, במהירות $2.0\,\text{m/s}$, ו-A נעה ימינה
+          ב-$4.0\,\text{m/s}$ כמו קודם. מה הכיווץ המרבי של הקפיץ עכשיו?
+        answer: 0.3
+        unit: m
+        correctFeedback: >-
+          נכון. עכשיו $v_{\text{rel}} = 4.0 - (-2.0) = 6.0\,\text{m/s}$, והאנרגיה הזמינה $\tfrac12\mu v_{\text{rel}}^2 = \tfrac12\cdot0.75\cdot6.0^2 = 13.5\,\text{J}$.
+          לכן $x = \sqrt{\dfrac{2\cdot13.5}{300}} = 0.30\,\text{m}$. הכיווץ תלוי רק במהירות היחסית: הוא כמו כיווץ שבו B עומדת
+          ו-A נעה ב-$6.0\,\text{m/s}$. **בדיקת גבולות:** כש-B עומדת חוזרים ל-$0.20\,\text{m}$ של חלק ב.
+        wrongFeedback: >-
+          הכיווץ המרבי נקבע על ידי האנרגיה של התנועה היחסית. מה המהירות היחסית של העגלות כשהן נעות זו לקראת זו?
+        commonWrong:
+          - value: 0.2
+            feedback: 'זה הכיווץ של חלק ב, כש-B עומדת. התנועה של B לקראת A מגדילה את המהירות היחסית.'
+          - value: 0.1
+            feedback: >-
+              חיסרתם את הגדלים, $4.0 - 2.0$. העגלות נעות זו לקראת זו, ולכן המהירות היחסית היא סכום הגדלים, $6.0\,\text{m/s}$.
+        hints:
+          - 'האנרגיה הזמינה היא $\tfrac12\mu v_{\text{rel}}^2$, ו-$\mu$ לא השתנתה.'
+
+  # ------------------------------------------------------------ 4: neutrons slowed by carbon nuclei
+  - id: Q-4-bagrut-4
+    type: bagrut
+    title: האטת נייטרונים בפחמן
+    prompt: >-
+      בכור גרעיני מאטים נייטרונים מהירים בעזרת התנגשויות אלסטיות בגרעיני פחמן שעומדים בקירוב במנוחה. מסת גרעין
+      הפחמן היא $M = 12m$, כאשר $m$ מסת הנייטרון. נייטרון נוצר עם אנרגיה קינטית של $2.0\,\text{MeV}$, וצריך להאט אותו
+      עד $0.025\,\text{eV}$. כל ההתנגשויות אלסטיות.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-4.1-1]
+        prompt: >-
+          בהתנגשות **חזיתית** של נייטרון בגרעין פחמן, איזה חלק מהאנרגיה הקינטית שלו נשאר לנייטרון?
+        answer: 0.716
+        unit: ''
+        correctFeedback: >-
+          נכון. בהתנגשות אלסטית חזיתית $v_1' = \dfrac{m - M}{m + M}\,v = -\dfrac{11}{13}\,v$, והנייטרון נרתע לאחור. החלק
+          מהאנרגיה שנשאר לו הוא $\left(\dfrac{11}{13}\right)^2 = 0.716$, ו-28% עוברים לגרעין.
+        wrongFeedback: 'מצאו את מהירות הנייטרון אחרי התנגשות אלסטית חזיתית, וחשבו את היחס בין האנרגיות.'
+        commonWrong:
+          - value: 0.846
+            feedback: 'זה היחס בין **המהירויות**, $11/13$. האנרגיה פרופורציונית לריבוע המהירות.'
+          - value: 0.284
+            feedback: 'זה החלק שעובר לגרעין, $\dfrac{4mM}{(m + M)^2}$. השאלה שואלת על החלק שנשאר לנייטרון.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        standalone: false
+        objectives: [OBJ-4.1-1, OBJ-4.1-2]
+        prompt: >-
+          התנגשות חזיתית מאטה את הנייטרון יותר מכל התנגשות אחרת. מה המספר הקטן ביותר של התנגשויות שאחריו האנרגיה של
+          הנייטרון יורדת מ-$2.0\,\text{MeV}$ אל $0.025\,\text{eV}$ או פחות?
+        answer: 55
+        unit: ''
+        tolerance: 0.01
+        correctFeedback: >-
+          נכון. אחרי $N$ התנגשויות חזיתיות נשארת אנרגיה $0.716^N\cdot2.0\,\text{MeV}$. צריך
+          $0.716^N \le \dfrac{0.025}{2.0\cdot10^6} = 1.25\cdot10^{-8}$, ולכן
+          $N \ge \dfrac{\ln\left(1.25\cdot10^{-8}\right)}{\ln0.716} = 54.5$: לפחות 55 התנגשויות. בכור אמיתי רוב ההתנגשויות
+          אינן חזיתיות, ולכן צריך יותר.
+        wrongFeedback: >-
+          בכל התנגשות האנרגיה נכפלת ב-0.716. כתבו את התנאי $0.716^N \le E_f/E_0$, וקחו לוגריתם. שימו לב ש-$\ln0.716 < 0$,
+          ולכן הכיוון של אי-השוויון מתהפך כשמחלקים בו.
+        commonWrong:
+          - value: 109
+            feedback: 'השתמשתם ביחס המהירויות, $11/13$, כגורם של האנרגיה. בכל התנגשות האנרגיה נכפלת בריבוע שלו, 0.716.'
+
+      - label: ג
+        type: open
+        points: 9
+        level: bagrut
+        objectives: [OBJ-4.3-1, OBJ-4.2-1]
+        prompt: >-
+          בהתנגשות שאינה חזיתית, גרעין הפחמן נרתע בזווית $\varphi$ לכיוון התנועה ההתחלתי של הנייטרון. הראו שהחלק
+          מהאנרגיה של הנייטרון שעובר לגרעין הוא
+          $$f(\varphi) = \frac{4mM}{(m + M)^2}\cos^2\varphi$$
+          ובדקו את הביטוי בגבולות.
+        hints:
+          - 'במערכת מרכז המסה, באיזו מהירות נע הגרעין לפני ההתנגשות, ובאיזו אחריה?'
+          - 'במערכת המעבדה $\vec v_2'' = \vec V + \vec u_2''$, ושני הווקטורים באותו אורך. מה זה אומר על המשולש שהם יוצרים?'
+        solution:
+          - kind: law
+            text: >-
+              התנע נשמר, ולכן מרכז המסה נע במהירות קבועה $V = \dfrac{mv}{m + M}$. במערכת מרכז המסה הגרעין, שעמד
+              במעבדה, נע לפני ההתנגשות במהירות $-\vec V$. בהתנגשות אלסטית הגודל נשמר, ולכן אחריה $|\vec u_2'| = V$,
+              בכיוון כלשהו. חזרה למעבדה: $\vec v_2' = \vec V + \vec u_2'$.
+          - kind: manipulation
+            text: >-
+              $\vec V$ ו-$\vec u_2'$ באותו אורך, $V$, ולכן המשולש שהם יוצרים עם $\vec v_2'$ שווה שוקיים, ו-$\vec v_2'$ חוצה
+              את הזווית ביניהם. ההיטל של כל אחד מהם על כיוון $\vec v_2'$ הוא $V\cos\varphi$, ולכן
+              $v_2' = 2V\cos\varphi = \dfrac{2mv\cos\varphi}{m + M}$. החלק מהאנרגיה:
+              $$f = \frac{\tfrac12Mv_2'^2}{\tfrac12mv^2} = \frac{M}{m}\cdot\frac{4m^2\cos^2\varphi}{(m + M)^2} = \frac{4mM}{(m + M)^2}\cos^2\varphi$$
+          - kind: limit
+            text: >-
+              כש-$\varphi = 0$, התנגשות חזיתית: $f = \dfrac{4mM}{(m + M)^2} = 1 - \left(\dfrac{M - m}{M + m}\right)^2 = 0.284$,
+              בדיוק מה שהנייטרון איבד בחלק א. כש-$\varphi \to 90^\circ$, פגיעה משיקית: $f \to 0$, הגרעין כמעט לא זז.
+              כש-$M = m$ ו-$\varphi = 0$: $f = 1$, הנייטרון נעצר ומוסר הכול, כמו במסות שוות. ובכל פגיעה $\varphi < 90^\circ$:
+              המטרה תמיד נרתעת קדימה.
+          - kind: units
+            text: '$\dfrac{4mM}{(m + M)^2}$ הוא מסה בריבוע חלקי מסה בריבוע, ו-$\cos^2\varphi$ חסר ממדים: $f$ חסר ממדים, כמו שחלק צריך להיות.'
+          - kind: result
+            text: >-
+              $f(\varphi) = \dfrac{4mM}{(m + M)^2}\cos^2\varphi$. לפחמן $\dfrac{4\cdot12}{13^2} = 0.284$ כפול $\cos^2\varphi$:
+              הכי הרבה בפגיעה חזיתית, ושום דבר בפגיעה משיקית.
+        rubric:
+          - text: כתבתי שבמערכת מרכז המסה הגרעין נע לפני ההתנגשות ואחריה באותו גודל מהירות, $V = mv/(m + M)$.
+          - text: חיברתי $\vec v_2' = \vec V + \vec u_2'$, וזיהיתי משולש שווה שוקיים שנותן $v_2' = 2V\cos\varphi$.
+          - text: חישבתי את יחס האנרגיות וקיבלתי $f(\varphi)$.
+          - text: בדקתי ש-$\varphi = 0$ מחזיר את התוצאה החזיתית של חלק א, ושפגיעה משיקית נותנת אפס.
+
+      - label: ד
+        type: numeric
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-4.3-1]
+        prompt: >-
+          בניסוי בתא ענן רואים גרעין פחמן שנרתע בזווית $30^\circ$ לכיוון של נייטרון שהאנרגיה שלו $2.0\,\text{MeV}$. מה
+          האנרגיה הקינטית של הגרעין? ענו ב-$\text{MeV}$.
+        answer: 0.426
+        unit: MeV
+        correctFeedback: >-
+          נכון. $f = 0.284\cdot\cos^2 30^\circ = 0.284\cdot0.75 = 0.213$, ולכן לגרעין $0.213\cdot2.0 = 0.426\,\text{MeV}$, ולנייטרון
+          נשארו $1.57\,\text{MeV}$.
+        wrongFeedback: 'הציבו $\varphi = 30^\circ$ בביטוי של חלק ג, והכפילו באנרגיה של הנייטרון.'
+        commonWrong:
+          - value: 0.568
+            feedback: 'זו האנרגיה בהתנגשות חזיתית, $\varphi = 0$. כשהגרעין נרתע בזווית, הוא מקבל פחות.'
+          - value: 0.492
+            feedback: 'כפלתם ב-$\cos30^\circ$ ולא בריבוע שלו. המהירות פרופורציונית ל-$\cos\varphi$, והאנרגיה לריבוע.'
+          - value: 0.142
+            feedback: >-
+              השתמשתם ב-$\sin^2 30^\circ$. הזווית $\varphi$ נמדדת מהכיוון ההתחלתי של הנייטרון, ובכיוון הזה, $\varphi = 0$,
+              הגרעין מקבל הכי הרבה.

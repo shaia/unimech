@@ -1,0 +1,24 @@
+# Terms first defined in lesson 1.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: reference-frame
+  term: מערכת ייחוס
+  en: reference frame
+  definition: גוף או מערכת צירים שממנה מודדים מקומות, וגם שעון שממנו מודדים זמנים. מקום, מהירות ומסלול של גוף תלויים במערכת הייחוס שבה מתארים אותו.
+  reject: [מערכת יחוס]
+  lesson: '1.5'
+
+- id: relative-velocity
+  term: מהירות יחסית
+  en: relative velocity
+  symbol: v_AB
+  unit: m/s
+  definition: המהירות של גוף A כפי שהיא נמדדת במערכת הייחוס של גוף B, v_AB = v_A − v_B. המהירות היחסית בין שני גופים זהה בכל מערכות הייחוס שנעות זו ביחס לזו במהירות קבועה.
+  lesson: '1.5'
+
+- id: galilean-transformation
+  term: טרנספורמציית גליליי
+  en: Galilean transformation
+  definition: המעבר בין מערכת ייחוס S למערכת S' שנעה ביחס אליה במהירות קבועה V, r' = r − Vt ו-t' = t. ממנה נובע v' = v − V ו-a' = a. היא מדויקת כשהמהירויות קטנות בהרבה ממהירות האור; בפרק 9 טרנספורמציית לורנץ מחליפה אותה.
+  reject: [טרנספורמציית גלילאו, טרנספורמציה גלילאית]
+  lesson: '1.5'

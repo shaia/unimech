@@ -1,0 +1,8 @@
+# Terms first defined in lesson 5.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: harmonic-approximation
+  term: קירוב הרמוני
+  en: harmonic approximation
+  definition: החלפת פוטנציאל כללי U(x) ליד מינימום x₀ בפרבולה, U(x) ≈ U(x₀) + ½U″(x₀)(x − x₀)², האיבר הראשון שלא מתאפס בפיתוח טיילור. הוא נותן תנודות הרמוניות עם ω² = U″(x₀)/m, ותקף כשההעתק קטן מספיק כדי שהאיבר הבא בפיתוח זניח.
+  lesson: '5.2'

@@ -1,0 +1,534 @@
+# Chapter 10 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each, the parts
+# climbing basic → mid → bagrut (exam level). Each problem joins objectives from at least two lessons, and the four
+# together touch every lesson: 1 (10.1, 10.2, 10.3), 2 (10.2, 10.3, 10.5), 3 (10.1, 10.2, 10.4), 4 (10.1, 10.5).
+# Open parts are solved in the course format: law → manipulation → limit → units → substitution → result.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed by .scratch/ch10/q.ts and q2.ts (constants.ts: C_LIGHT = 3.0e8, E_CHARGE = 1.6e-19,
+# M_ELECTRON = 9.11e-31; rest energies given in the prompts):
+#   1: π⁺ (140 MeV) with E = 280 MeV: γ = 2, β = 0.866, pc = 242 MeV (mv: 121); rest frame E*_μ = 110.1 MeV,
+#      p* = 29.9 MeV/c; forward neutrino E_ν = γ(1 + β)·29.9 = 111.5 MeV (γE* = 59.7, wrong sign 8.0);
+#      muon E_μ = 168.5 MeV, p_μ = +131.0 MeV/c, √(168.5² − 131.0²) = 106 MeV.
+#   2: head-on, per beam K = 938 MeV; fixed target K = 6mc² = 5628 MeV; linac at 20 MeV/m: 281 m (2mc²: 93.8,
+#      7mc²: 328); products at threshold β = √48/8 = 0.866, γ = 2 (beam proton β = 0.990).
+#   3: E = 0.400 MeV, λ = λ_C·mc²/E = 3.10 pm (inverted 1.90); at 90°: λ' = 5.53 pm, E' = 0.224 MeV;
+#      electron K = 0.176 MeV, pc = √(0.400² + 0.224²) = 0.459 MeV, β = pc/E = 0.668 (classical 0.829; p = E/c only 0.583).
+#   4: electron, F = 1.6e-14 N: mc/F = 17.1 ns, mc²/F = 5.12 m; to 0.99c: γβ = 7.02, t = 120 ns (classical 16.9 ns);
+#      x = (γ − 1)mc²/F = 31.2 m (classical 2.51 m, ct = 36.0 m).
+
+chapter: 10
+questions:
+  # ------------------------------------------------------------ 1: a pion decaying in flight
+  - id: Q-10-bagrut-1
+    type: bagrut
+    title: פיון שדועך בתנועה
+    prompt: >-
+      פיון $\pi^+$ נע במעבדה בכיוון $+x$ עם אנרגיה יחסותית $E_\pi = 280\,\text{MeV}$, ודועך למיואון ולנייטרינו,
+      $\pi^+ \to \mu^+ + \nu$. אנרגיות המנוחה: פיון $m_\pi c^2 = 140\,\text{MeV}$, מיואון $m_\mu c^2 = 106\,\text{MeV}$, ואת
+      הנייטרינו נחשיב לחסר מסה. בדעיכה הזו הנייטרינו יוצא בדיוק קדימה, בכיוון $+x$, והמיואון נע לאורך אותו ציר.
+    parts:
+      - label: א
+        type: numeric
+        points: 5
+        level: basic
+        objectives: [OBJ-10.1-1, OBJ-10.1-2]
+        prompt: מה התנע של הפיון במעבדה? ענו ב-$\text{MeV}/c$.
+        answer: 242
+        unit: MeV/c
+        correctFeedback: >-
+          נכון. $p_\pi c = \sqrt{E_\pi^2 - (m_\pi c^2)^2} = \sqrt{280^2 - 140^2} = 242\,\text{MeV}$. כאן $\gamma = 280/140 = 2$
+          ו-$\beta = 0.866$, ואכן $\gamma\beta\,m_\pi c^2 = 2\cdot0.866\cdot140 = 242\,\text{MeV}$.
+        wrongFeedback: 'השתמשו בקשר $E^2 = (pc)^2 + (mc^2)^2$, או מצאו את $\gamma$ ואת $\beta$ וחשבו $p = \gamma mv$.'
+        commonWrong:
+          - value: 121
+            feedback: 'זה $m_\pi v$ עם $v = 0.866c$, התנע של ניוטון. התנע היחסותי גדול ממנו פי $\gamma = 2$.'
+            misconception: MC-10-newtonian-momentum
+          - value: 280
+            feedback: '$pc = E$ נכון רק לחלקיק חסר מסה. לפיון $(pc)^2 = E^2 - (mc^2)^2$.'
+        hints:
+          - '$\gamma = E_\pi/(m_\pi c^2)$.'
+
+      - label: ב
+        type: open
+        points: 8
+        level: mid
+        objectives: [OBJ-10.3-1]
+        prompt: >-
+          עברו למערכת המנוחה של הפיון. מצאו בה, בביטוי כללי ובמספרים, את האנרגיה היחסותית $E^*_\mu$ של המיואון ואת
+          גודל התנע $p^*$ של שני התוצרים. בדקו את הביטוי לתנע בשני גבולות ובדקו את היחידות.
+        hints:
+          - 'במערכת המנוחה של הפיון התנע הכולל אפס. מה זה אומר על התנעים של שני התוצרים?'
+        solution:
+          - kind: law
+            text: >-
+              שימור אנרגיה ותנע במערכת המנוחה של הפיון: $E^*_\mu + E^*_\nu = m_\pi c^2$ ו-$\vec p^{\,*}_\mu + \vec p^{\,*}_\nu = 0$.
+              לכל חלקיק $E^2 = (pc)^2 + (mc^2)^2$, ולנייטרינו חסר המסה $E^*_\nu = p^*c$.
+          - kind: manipulation
+            text: >-
+              התוצרים יוצאים גב אל גב עם אותו גודל תנע $p^*$. מציבים $E^*_\mu = m_\pi c^2 - p^*c$ ב-$E^{*2}_\mu = (p^*c)^2 + (m_\mu c^2)^2$:
+              $(m_\pi c^2)^2 - 2m_\pi c^2\,p^*c = (m_\mu c^2)^2$, ולכן
+              $$p^* = \frac{(m_\pi^2 - m_\mu^2)c}{2m_\pi},\qquad E^*_\mu = m_\pi c^2 - p^*c = \frac{(m_\pi^2 + m_\mu^2)c^2}{2m_\pi}$$
+          - kind: limit
+            text: >-
+              כש-$m_\mu \to 0$, $p^* \to m_\pi c/2$: שני חלקיקים חסרי מסה מתחלקים שווה באנרגיה. כש-$m_\mu \to m_\pi$, $p^* \to 0$: לא
+              נשארת אנרגיה לתנועה. ו-$E^*_\mu \ge m_\mu c^2$ תמיד, כי $m_\pi^2 + m_\mu^2 - 2m_\pi m_\mu = (m_\pi - m_\mu)^2 \ge 0$.
+          - kind: units
+            text: >-
+              אם המסות ב-$\text{MeV}/c^2$, אז $(m_\pi^2 - m_\mu^2)c/(2m_\pi)$ יוצא ב-$\text{MeV}/c$, יחידות של תנע, ו-$E^*_\mu$
+              ב-$\text{MeV}$.
+          - kind: substitution
+            text: >-
+              $p^*c = \dfrac{140^2 - 106^2}{280} = \dfrac{8364}{280} = 29.9\,\text{MeV}$, ו-$E^*_\mu = \dfrac{140^2 + 106^2}{280} = 110.1\,\text{MeV}$.
+          - kind: result
+            text: >-
+              $E^*_\mu = 110.1\,\text{MeV}$ (אנרגיה קינטית של $4.1\,\text{MeV}$ בלבד) ו-$p^* = 29.9\,\text{MeV}/c$ לשני התוצרים, בכיוונים
+              מנוגדים. הנייטרינו נושא $E^*_\nu = 29.9\,\text{MeV}$.
+        rubric:
+          - text: כתבתי שימור אנרגיה ושימור תנע, וקבעתי שלשני התוצרים אותו גודל תנע.
+          - text: השתמשתי ב-$E_\nu = pc$ לנייטרינו וב-$E^2 = (pc)^2 + (mc^2)^2$ למיואון, ופתרתי ל-$p^*$ ול-$E^*_\mu$.
+          - text: בדקתי את הגבולות $m_\mu \to 0$ ו-$m_\mu \to m_\pi$, ובדקתי שהיחידות של $p^*$ הן יחידות של תנע.
+          - text: קיבלתי $p^* \approx 29.9\,\text{MeV}/c$ ו-$E^*_\mu \approx 110\,\text{MeV}$.
+
+      - label: ג
+        type: numeric
+        points: 6
+        level: mid
+        standalone: false
+        objectives: [OBJ-10.2-1]
+        prompt: >-
+          הנייטרינו יוצא קדימה, בכיוון $+x$, גם במערכת המנוחה של הפיון. העבירו את הארבעה-וקטור שלו בטרנספורמציית לורנץ
+          למעבדה, ומצאו את האנרגיה שלו שם.
+        answer: 111.5
+        unit: MeV
+        correctFeedback: >-
+          נכון. מערכת המנוחה של הפיון נעה ביחס למעבדה ב-$\beta = 0.866$, עם $\gamma = 2$. הטרנספורמציה ההפוכה, מהמערכת הנעה
+          למעבדה, היא עם סימן פלוס:
+          $$E_\nu = \gamma\left(E^*_\nu + \beta\,p^*_xc\right) = 2\cdot29.9\cdot(1 + 0.866) = 111.5\,\text{MeV}$$
+          פי $3.7$ מהאנרגיה במערכת המנוחה: נוסחת דופלר, $\sqrt{(1 + \beta)/(1 - \beta)} = 3.73$.
+        wrongFeedback: >-
+          במערכת המנוחה של הפיון, $E^*_\nu = p^*_xc = 29.9\,\text{MeV}$. המעבדה נעה ביחס אליה במהירות $0.866c$ בכיוון $-x$,
+          ולכן $E_\nu = \gamma\left(E^* + \beta\,p^*_xc\right)$.
+        commonWrong:
+          - value: 59.7
+            feedback: 'חישבתם $\gamma E^*_\nu$ והשמטתם את איבר התנע. לנייטרינו יש תנע, $p^*_xc = E^*_\nu$, והוא מוסיף עוד $\gamma\beta\,p^*_xc$.'
+          - value: 29.9
+            feedback: 'זו האנרגיה במערכת המנוחה של הפיון. אנרגיה משתנה בין מערכות: היא רכיב של ארבעה-וקטור.'
+            misconception: MC-10-energy-invariant
+          - value: 8.0
+            feedback: >-
+              השתמשתם בסימן מינוס, כאילו המעבדה נעה בכיוון $+x$ ביחס לפיון. הפיון נע במעבדה בכיוון $+x$, ולכן נייטרינו
+              שיוצא קדימה מקבל במעבדה **יותר** אנרגיה.
+        hints:
+          - 'המעבר ממערכת המנוחה של הפיון למעבדה הוא טרנספורמציה עם $-\beta$, כלומר עם סימן פלוס.'
+
+      - label: ד
+        type: open
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-10.2-1, OBJ-10.2-2]
+        prompt: >-
+          מצאו את האנרגיה ואת התנע של המיואון במעבדה בשתי דרכים: משימור אנרגיה ותנע במעבדה, ובטרנספורמציית לורנץ
+          מהמערכת של הפיון. בדקו בעזרת הגודל האינווריאנטי שזה אכן מיואון. לאיזה כיוון הוא נע במעבדה?
+        hints:
+          - 'במערכת המנוחה של הפיון המיואון נע בכיוון $-x$, כי הנייטרינו יוצא ב-$+x$.'
+        solution:
+          - kind: law
+            text: >-
+              שימור ארבעה-וקטור האנרגיה-תנע במעבדה: $E_\mu = E_\pi - E_\nu$ ו-$p_\mu = p_\pi - p_\nu$. ולחלופין, טרנספורמציית
+              לורנץ מהמערכת של הפיון: $E_\mu = \gamma\left(E^*_\mu + \beta\,p^*_{\mu x}c\right)$ ו-$p_{\mu x}c = \gamma\left(p^*_{\mu x}c + \beta E^*_\mu\right)$.
+          - kind: manipulation
+            text: >-
+              שימור: $E_\mu = 280 - 111.5 = 168.5\,\text{MeV}$, ו-$p_\mu c = 242.5 - 111.5 = 131.0\,\text{MeV}$, כי לנייטרינו
+              $p_\nu c = E_\nu$. טרנספורמציה, עם $p^*_{\mu x}c = -29.9\,\text{MeV}$: $E_\mu = 2(110.1 - 0.866\cdot29.9) = 168.5\,\text{MeV}$
+              ו-$p_{\mu x}c = 2(-29.9 + 0.866\cdot110.1) = 131.0\,\text{MeV}$. שתי הדרכים מסכימות.
+          - kind: limit
+            text: >-
+              בדיקת האינווריאנט: $\sqrt{E_\mu^2 - (p_\mu c)^2} = \sqrt{168.5^2 - 131.0^2} = 106\,\text{MeV}$, אנרגיית המנוחה של
+              המיואון. ובגבול $\beta \to 0$, פיון נח, הטרנספורמציה מחזירה את $E^*_\mu$ ואת $-p^*$ מחלק ב.
+          - kind: units
+            text: 'כל האנרגיות ב-$\text{MeV}$, וכל התנעים ב-$\text{MeV}/c$, ולכן $p_\mu c$ ב-$\text{MeV}$ ומותר להחסיר אותו מ-$E_\mu$ בריבוע.'
+          - kind: result
+            text: >-
+              $E_\mu = 168.5\,\text{MeV}$ ו-$p_\mu = 131\,\text{MeV}/c$ **בכיוון $+x$**. במערכת המנוחה של הפיון המיואון נע
+              אחורה, במהירות $0.27c$, אבל הפיון עצמו נע ב-$0.866c$, ולכן במעבדה גם המיואון נע קדימה.
+        rubric:
+          - text: חישבתי את $E_\mu$ ואת $p_\mu$ משימור במעבדה, עם $p_\nu c = E_\nu$.
+          - text: העברתי את הארבעה-וקטור של המיואון מהמערכת של הפיון, עם $p^*_{\mu x} < 0$, וקיבלתי אותם ערכים.
+          - text: בדקתי ש-$E_\mu^2 - (p_\mu c)^2 = (106\,\text{MeV})^2$.
+          - text: קבעתי שהמיואון נע במעבדה בכיוון $+x$, והסברתי למה.
+
+  # ------------------------------------------------------------ 2: making antiprotons
+  - id: Q-10-bagrut-2
+    type: bagrut
+    title: ייצור אנטי-פרוטונים
+    prompt: >-
+      אנטי-פרוטונים נוצרים בתגובה $p + p \to p + p + p + \bar p$. לאנטי-פרוטון אותה מסה כמו לפרוטון,
+      $mc^2 = 938\,\text{MeV}$. משווים שתי דרכים: (1) קרן של פרוטונים פוגעת בפרוטונים נייחים במטרה, (2) שתי קרנות של
+      פרוטונים, באותה אנרגיה, מתנגשות חזיתית.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-10.3-2]
+        prompt: מה נכון לגבי ארבעת התוצרים באנרגיית הסף, בכל אחת משתי הדרכים?
+        choices:
+          - text: בהתנגשות החזיתית הם נחים במעבדה. במטרה הנייחת הם נעים יחד, באותה מהירות.
+            correct: true
+            feedback: >-
+              נכון. בסף, התוצרים נחים במערכת מרכז המסה. בהתנגשות החזיתית זו המעבדה עצמה, כי התנע הכולל אפס. במטרה
+              הנייחת מרכז המסה נע עם התנע של הקרן, והתוצרים נעים איתו.
+          - text: בשתי הדרכים הם נחים במעבדה.
+            feedback: >-
+              במטרה נייחת התנע הכולל לפני ההתנגשות הוא התנע של הקרן, ולא אפס. אם התוצרים היו נחים, התנע לא היה נשמר.
+            misconception: MC-10-threshold-is-mass-gain
+          - text: בשתי הדרכים הם נעים, כי חלק מהאנרגיה תמיד הולך לתנועה.
+            feedback: 'בהתנגשות חזיתית של קרנות זהות התנע הכולל אפס, ולכן התוצרים יכולים לנוח, וכל האנרגיה הקינטית הופכת למסה.'
+          - text: במטרה הנייחת הם נחים, ובהתנגשות החזיתית הם נעים זה מזה.
+            feedback: 'הפוך: במטרה הנייחת יש תנע כולל, והתוצרים חייבים לשאת אותו.'
+        hints:
+          - 'מה התנע הכולל לפני ההתנגשות בכל אחת מהדרכים?'
+
+      - label: ב
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-10.3-2]
+        prompt: מה האנרגיה הקינטית המזערית של כל פרוטון בהתנגשות החזיתית?
+        answer: 938
+        unit: MeV
+        correctFeedback: >-
+          נכון. בסף, $2E = 4mc^2$, ולכן $K = E - mc^2 = mc^2 = 938\,\text{MeV}$ לכל קרן, ובסך הכול $2mc^2$: בדיוק המסה
+          החדשה.
+        wrongFeedback: 'בסף ארבעת התוצרים נחים, ולכן האנרגיה הכוללת של שתי הקרנות היא $4mc^2$.'
+        commonWrong:
+          - value: 1876
+            feedback: 'זו כל המסה החדשה. שתי הקרנות תורמות אותה יחד, חצי כל אחת.'
+          - value: 2814
+            feedback: 'חילקתם את התשובה של מטרה נייחת בין שתי קרנות. בהתנגשות חזיתית שום אנרגיה לא הולכת לתנועת מרכז המסה, ולכן צריך פחות.'
+            misconception: MC-10-available-is-lab-energy
+
+      - label: ג
+        type: open
+        points: 8
+        level: mid
+        objectives: [OBJ-10.2-2, OBJ-10.3-2]
+        prompt: >-
+          הראו בעזרת הגודל האינווריאנטי $s = E_{\text{tot}}^2 - (p_{\text{tot}}c)^2$ שאנרגיית הסף במטרה נייחת היא
+          $K_{\text{th}} = 6mc^2$. כתבו קודם ביטוי כללי לקרן ולמטרה בעלות אותה מסה $m$ ותוצרים בעלי מסה כוללת $M_f$,
+          ובדקו אותו בגבול.
+        hints:
+          - 'חשבו את $s$ במעבדה, לפני ההתנגשות, ובמערכת מרכז המסה בסף, אחריה.'
+        solution:
+          - kind: law
+            text: >-
+              $s$ זהה בכל מערכת ייחוס, ונשמר בהתנגשות. במעבדה, לפני: $E_{\text{tot}} = E + mc^2$ ו-$p_{\text{tot}}c = pc$, עם
+              $(pc)^2 = E^2 - (mc^2)^2$. בסף, במערכת מרכז המסה, כל התוצרים נחים: $s = (M_fc^2)^2$.
+          - kind: manipulation
+            text: >-
+              $s = (E + mc^2)^2 - E^2 + (mc^2)^2 = 2(mc^2)^2 + 2mc^2E$. משווים ל-$(M_fc^2)^2$:
+              $$E_{\text{th}} = \frac{M_f^2 - 2m^2}{2m}\,c^2,\qquad K_{\text{th}} = E_{\text{th}} - mc^2 = \frac{M_f^2 - (2m)^2}{2m}\,c^2$$
+              כאן $M_f = 4m$: $K_{\text{th}} = \dfrac{16 - 4}{2}\,mc^2 = 6mc^2$.
+          - kind: limit
+            text: >-
+              כש-$M_f = 2m$, תגובה שלא יוצרת שום דבר, $K_{\text{th}} = 0$, כמו שצריך. ותגובה שיוצרת מסה קטנה $\Delta m \ll m$,
+              $M_f = 2m + \Delta m$, נותנת $K_{\text{th}} \approx 2\Delta m\,c^2$: מטרה שקלה כמו הקרן דורשת פי 2 מהמסה החדשה.
+          - kind: units
+            text: '$\dfrac{M_f^2}{m}c^2$ ביחידות של מסה כפול $c^2$, כלומר אנרגיה. עם מסות ב-$\text{MeV}/c^2$ התשובה ב-$\text{MeV}$.'
+          - kind: substitution
+            text: '$K_{\text{th}} = 6\cdot938 = 5628\,\text{MeV} \approx 5.6\,\text{GeV}$, ו-$E_{\text{th}} = 7mc^2 = 6566\,\text{MeV}$.'
+          - kind: result
+            text: >-
+              $K_{\text{th}} = 6mc^2 \approx 5.6\,\text{GeV}$ במטרה נייחת, לעומת $2mc^2$ בסך הכול בהתנגשות חזיתית: פי 3. רק
+              שליש מהאנרגיה הקינטית של הקרן הופך למסה.
+        rubric:
+          - text: חישבתי את $s$ במעבדה עם פרוטון נייח, וקיבלתי $2(mc^2)^2 + 2mc^2E$.
+          - text: קבעתי שבסף התוצרים נחים במערכת מרכז המסה, ולכן $s = (4mc^2)^2$.
+          - text: בודדתי את $E$, ובסוף הפחתתי את $mc^2$ כדי לקבל אנרגיה קינטית.
+          - text: בדקתי את הגבול $M_f = 2m$, שבו $K_{\text{th}} = 0$.
+
+      - label: ד
+        type: numeric
+        points: 4
+        level: mid
+        standalone: false
+        objectives: [OBJ-10.5-2]
+        prompt: >-
+          מאיץ קווי מאיץ את פרוטוני הקרן ממנוחה בכוח קבוע $F = 3.2\cdot10^{-12}\,\text{N}$, כלומר $20\,\text{MeV}$ של עבודה
+          לכל מטר. כמה ארוך צריך להיות המאיץ כדי שהקרן תגיע לאנרגיית הסף של מטרה נייחת?
+        answer: 281
+        unit: m
+        correctFeedback: >-
+          נכון. לפי משפט עבודה-אנרגיה, $FL = \Delta E = K_{\text{th}}$, ולכן $L = \dfrac{5628\,\text{MeV}}{20\,\text{MeV/m}} = 281\,\text{m}$.
+          המשפט תקף ביחסות כמו אצל ניוטון, עם האנרגיה היחסותית: אין צורך לדעת איך המהירות השתנתה בדרך.
+        wrongFeedback: 'העבודה של כוח קבוע לאורך $L$ היא $FL$, והיא שווה לשינוי באנרגיה, כלומר לאנרגיה הקינטית בסוף.'
+        commonWrong:
+          - value: 93.8
+            feedback: 'זה האורך שנותן $2mc^2$, רק המסה החדשה. במטרה נייחת צריך $6mc^2$.'
+            misconception: MC-10-threshold-is-mass-gain
+          - value: 328
+            feedback: 'השתמשתם ב-$E_{\text{th}} = 7mc^2$. הפרוטון מתחיל ממנוחה עם $mc^2$, והעבודה צריכה לספק רק את האנרגיה הקינטית.'
+            misconception: MC-10-total-vs-kinetic
+
+      - label: ה
+        type: numeric
+        points: 5
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-10.2-2, OBJ-10.3-2]
+        prompt: >-
+          במטרה הנייחת, באנרגיית הסף, ארבעת התוצרים נעים יחד. מה מהירותם במעבדה? ענו ביחידות של $c$.
+        answer: 0.866
+        unit: c
+        correctFeedback: >-
+          נכון. התוצרים נעים יחד במהירות של מרכז המסה, $\beta = \dfrac{p_{\text{tot}}c}{E_{\text{tot}}} = \dfrac{\sqrt{48}\,mc^2}{8mc^2} = 0.866$,
+          עם $\gamma = 2$. בדיקה: $4mc^2\cdot\gamma = 8mc^2 = E_{\text{th}} + mc^2$, והאנרגיה נשמרת. מתוך $6mc^2$ של אנרגיה
+          קינטית, $4mc^2$ נשארים בתנועה של התוצרים.
+        wrongFeedback: >-
+          מהירות של מערכת היא $\beta = p_{\text{tot}}c/E_{\text{tot}}$, כמו $v = pc^2/E$ לחלקיק אחד. בסף $E_{\text{tot}} = 8mc^2$, ו-$p_{\text{tot}}c = \sqrt{(7mc^2)^2 - (mc^2)^2}$.
+        commonWrong:
+          - value: 0.99
+            feedback: 'זו המהירות של פרוטון הקרן לבד, עם $E = 7mc^2$. אחרי ההתנגשות אותו תנע מתחלק על מסה פי 4, והמהירות קטנה.'
+          - value: 0
+            feedback: 'התוצרים נחים רק במערכת מרכז המסה. במעבדה הם חייבים לשאת את התנע של הקרן.'
+            misconception: MC-10-threshold-is-mass-gain
+        hints:
+          - 'המהירות של מרכז המסה היא $\beta = p_{\text{tot}}c/E_{\text{tot}}$.'
+
+  # ------------------------------------------------------------ 3: Compton scattering at a right angle
+  - id: Q-10-bagrut-3
+    type: bagrut
+    title: פיזור קומפטון בזווית ישרה
+    prompt: >-
+      פוטון באנרגיה $E = 0.400\,\text{MeV}$ פוגע באלקטרון חופשי ונייח, ונפזר בזווית $\theta = 90^\circ$ מהכיוון המקורי
+      שלו. אנרגיית המנוחה של האלקטרון $m_ec^2 = 0.511\,\text{MeV}$, ואורך הגל של קומפטון שלו
+      $\lambda_C = h/(m_ec) = 2.43\,\text{pm}$. לפוטון $E = pc = hc/\lambda$.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-10.4-1]
+        prompt: מה אורך הגל של הפוטון לפני הפיזור? ענו ב-$\text{pm}$.
+        answer: 3.10
+        unit: pm
+        correctFeedback: >-
+          נכון. $hc = \lambda_C\cdot m_ec^2$, ולכן $\lambda = \dfrac{hc}{E} = \lambda_C\cdot\dfrac{m_ec^2}{E} = 2.43\cdot\dfrac{0.511}{0.400} = 3.10\,\text{pm}$.
+        wrongFeedback: 'כפלו את $\lambda_C = h/(m_ec)$ ב-$m_ec^2$ כדי לקבל את $hc$, וחלקו ב-$E$.'
+        commonWrong:
+          - value: 1.9
+            feedback: 'הפכתם את היחס. פוטון בעל אנרגיה **קטנה** מ-$m_ec^2$ ארוך גל מ-$\lambda_C$: $\lambda = \lambda_C\,m_ec^2/E$.'
+          - value: 2.43
+            feedback: 'זה $\lambda_C$ עצמו, אורך הגל של פוטון באנרגיה $m_ec^2$ בדיוק. כאן האנרגיה קטנה יותר, ולכן אורך הגל ארוך יותר.'
+        hints:
+          - '$hc = \lambda_C\,m_ec^2$, כי $\lambda_C = h/(m_ec)$.'
+
+      - label: ב
+        type: open
+        points: 9
+        level: mid
+        objectives: [OBJ-10.4-1, OBJ-10.2-2]
+        prompt: >-
+          הראו משימור ארבעה-וקטור האנרגיה-תנע ש-$\lambda' - \lambda = \dfrac{h}{m_ec}(1 - \cos\theta)$. השתמשו במכפלה
+          הפנימית של ארבעה-וקטורים, $A\cdot B = A^0B^0 - \vec A\cdot\vec B$, שזהה בכל מערכת ייחוס. בדקו את התוצאה בגבולות
+          ובדקו את היחידות.
+        hints:
+          - 'סמנו $P$, $P_e$, $P''$, $P''_e$ לארבעה-וקטורים של הפוטון ושל האלקטרון לפני ואחרי. בודדו את $P''_e$ והעלו בריבוע.'
+          - 'לפוטון $P\cdot P = 0$, ולאלקטרון $P_e\cdot P_e = (m_ec)^2$.'
+        solution:
+          - kind: law
+            text: >-
+              שימור ארבעה-וקטור האנרגיה-תנע: $P + P_e = P' + P'_e$, עם $P = (E/c,\ \vec p)$ לפוטון ו-$P_e = (m_ec,\ \vec 0)$
+              לאלקטרון הנייח. ריבוע של ארבעה-וקטור הוא המסה בריבוע כפול $c^2$: $P\cdot P = P'\cdot P' = 0$ ו-$P_e\cdot P_e = P'_e\cdot P'_e = (m_ec)^2$.
+          - kind: manipulation
+            text: >-
+              מבודדים את האלקטרון שלא מודדים: $P'_e = P + P_e - P'$. מעלים בריבוע:
+              $$(m_ec)^2 = 0 + (m_ec)^2 + 0 + 2P\cdot P_e - 2P'\cdot P_e - 2P\cdot P'$$
+              עם $P\cdot P_e = Em_e$, $P'\cdot P_e = E'm_e$ ו-$P\cdot P' = \dfrac{EE'}{c^2}(1 - \cos\theta)$, מתקבל
+              $m_e(E - E') = \dfrac{EE'}{c^2}(1 - \cos\theta)$, כלומר $\dfrac1{E'} - \dfrac1E = \dfrac{1 - \cos\theta}{m_ec^2}$.
+              כופלים ב-$hc$ ומשתמשים ב-$\lambda = hc/E$: $\lambda' - \lambda = \dfrac{h}{m_ec}(1 - \cos\theta)$.
+          - kind: limit
+            text: >-
+              ב-$\theta = 0$ אין שינוי: הפוטון לא נפזר. ב-$\theta = 180^\circ$ השינוי מרבי, $2\lambda_C$. וכשהמטרה כבדה מאוד,
+              $m \to \infty$, השינוי שואף לאפס: אור שנפזר מגרעין כבד או מגוף מקרוסקופי שומר על אורך הגל שלו, כמו בפיזיקה
+              הקלאסית.
+          - kind: units
+            text: '$\dfrac{h}{m_ec}$ ביחידות $\dfrac{\text{J·s}}{\text{kg·m/s}} = \dfrac{\text{kg·m}^2/\text{s}}{\text{kg·m/s}} = \text{m}$: אורך, כמו $\lambda'' - \lambda$.'
+          - kind: result
+            text: >-
+              $\lambda' - \lambda = \dfrac{h}{m_ec}(1 - \cos\theta) = \lambda_C(1 - \cos\theta)$. השינוי לא תלוי באורך הגל
+              ההתחלתי, ולכן הוא בולט רק כש-$\lambda$ קרוב ל-$\lambda_C$, בקרני רנטגן וגמא.
+        rubric:
+          - text: כתבתי את שימור ארבעה-וקטור האנרגיה-תנע, ובודדתי את הארבעה-וקטור של האלקטרון אחרי הפיזור.
+          - text: העליתי בריבוע והשתמשתי ב-$P\cdot P = 0$ לפוטון וב-$(m_ec)^2$ לאלקטרון.
+          - text: חישבתי את שלוש המכפלות הפנימיות, וקיבלתי $1/E' - 1/E = (1 - \cos\theta)/(m_ec^2)$.
+          - text: עברתי לאורכי גל, ובדקתי את הגבולות $\theta = 0$ ו-$m \to \infty$ ואת היחידות.
+
+      - label: ג
+        type: numeric
+        points: 6
+        level: mid
+        standalone: false
+        objectives: [OBJ-10.4-1]
+        prompt: מה האנרגיה של הפוטון אחרי הפיזור, בזווית $90^\circ$?
+        answer: 0.224
+        unit: MeV
+        correctFeedback: >-
+          נכון. ב-$90^\circ$, $\lambda' = \lambda + \lambda_C = 3.10 + 2.43 = 5.53\,\text{pm}$, ולכן
+          $E' = E\cdot\dfrac{\lambda}{\lambda'} = 0.400\cdot\dfrac{3.10}{5.53} = 0.224\,\text{MeV}$. אותו דבר מ-$1/E' = 1/E + 1/(m_ec^2)$.
+        wrongFeedback: 'מצאו את $\lambda''$ ואז $E'' = hc/\lambda''$, או השתמשו ישירות ב-$1/E'' - 1/E = (1 - \cos\theta)/(m_ec^2)$.'
+        commonWrong:
+          - value: 0.4
+            feedback: 'זו האנרגיה לפני הפיזור. הפוטון מסר לאלקטרון חלק מהתנע ומהאנרגיה שלו, ולכן אורך הגל גדל והאנרגיה קטנה.'
+          - value: 0.176
+            feedback: 'זו האנרגיה הקינטית של האלקטרון, $E - E''$. השאלה שואלת על הפוטון המפוזר.'
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-10.1-1, OBJ-10.1-2]
+        prompt: >-
+          מה המהירות של האלקטרון אחרי הפיזור? ענו ביחידות של $c$. (רמז: התנע של האלקטרון הוא ההפרש בין התנע של הפוטון
+          לפני הפיזור לבין התנע שלו אחריו.)
+        answer: 0.668
+        unit: c
+        correctFeedback: >-
+          נכון. התנעים של הפוטון לפני ואחרי ניצבים זה לזה, ולכן $p_ec = \sqrt{0.400^2 + 0.224^2} = 0.459\,\text{MeV}$. האנרגיה
+          של האלקטרון $E_e = 0.511 + 0.176 = 0.687\,\text{MeV}$, ולכן $\beta = \dfrac{p_ec}{E_e} = 0.668$.
+          בדיקה: $\sqrt{E_e^2 - (p_ec)^2} = 0.511\,\text{MeV}$, אנרגיית המנוחה של האלקטרון. שימור התנע ושימור האנרגיה מסכימים.
+        wrongFeedback: >-
+          מצאו את התנע של האלקטרון כהפרש וקטורי, $\vec p_e = \vec p - \vec p\,'$, ואת האנרגיה שלו, $m_ec^2 + (E - E')$. אז
+          $\beta = p_ec/E_e$.
+        commonWrong:
+          - value: 0.829
+            feedback: >-
+              זה $\sqrt{2K/(m_ec^2)}$ עם $K = 0.176\,\text{MeV}$, הקשר של ניוטון. $K$ הוא כשליש מ-$m_ec^2$, והקירוב כבר לא
+              טוב: הוא מגזים במהירות ב-$24\%$.
+            misconception: MC-10-classical-ke
+          - value: 0.583
+            feedback: >-
+              לקחתם רק את התנע ההתחלתי של הפוטון, $0.400\,\text{MeV}/c$. הפוטון המפוזר נושא תנע בכיוון ניצב, והאלקטרון נושא
+              את ההפרש הווקטורי, שגודלו $0.459\,\text{MeV}/c$.
+        hints:
+          - 'המהירות של חלקיק היא $v = pc^2/E$, כלומר $\beta = pc/E$.'
+
+  # ------------------------------------------------------------ 4: an electron under a constant force
+  - id: Q-10-bagrut-4
+    type: bagrut
+    title: אלקטרון תחת כוח קבוע
+    prompt: >-
+      אלקטרון ($m_e = 9.11\cdot10^{-31}\,\text{kg}$) מתחיל ממנוחה בשדה חשמלי אחיד, שמפעיל עליו כוח קבוע
+      $F = 1.6\cdot10^{-14}\,\text{N}$ בכיוון קבוע. מהירות האור $c = 3.0\cdot10^8\,\text{m/s}$. שני גדלים אופייניים לתנועה
+      הם $mc/F = 17.1\,\text{ns}$ ו-$mc^2/F = 5.12\,\text{m}$.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-10.5-1]
+        prompt: איזה תיאור מתאים לגרפים של התנע $p(t)$ ושל המהירות $v(t)$ של האלקטרון?
+        choices:
+          - text: $p(t)$ קו ישר שעולה בלי גבול. $v(t)$ עולה, ומתקרב לקו האופקי $v = c$ בלי לגעת בו.
+            correct: true
+            feedback: >-
+              נכון. $p = Ft$ מ-$F = dp/dt$. המהירות עולה בהתחלה כמו $Ft/m$, בשיפוע $F/m$, והשיפוע קטן ככל שהיא מתקרבת
+              ל-$c$.
+          - text: שני הגרפים קווים ישרים, ו-$v(t)$ עובר את $c$ אחרי $17.1\,\text{ns}$.
+            feedback: >-
+              כך היה אצל ניוטון, עם תאוצה קבועה $F/m$. ביחסות הכוח קובע את קצב השינוי של התנע, והמהירות לא עוברת את
+              $c$.
+            misconception: MC-10-constant-force-constant-accel
+          - text: $v(t)$ קו ישר עד $c$, ושם נעצר. $p(t)$ קו ישר כל הזמן.
+            feedback: >-
+              אם $v$ היה קבוע מרגע מסוים, גם $p = \gamma mv$ היה קבוע, אבל $p = Ft$ ממשיך לגדול. המהירות מתקרבת ל-$c$
+              בהדרגה, ולא נעצרת בפתאומיות.
+            misconception: MC-10-constant-force-constant-accel
+          - text: שני הגרפים מתקרבים לקווים אופקיים.
+            feedback: '$dp/dt = F$ קבוע, ולכן התנע גדל בקצב קבוע כל הזמן. רק המהירות מתקרבת לגבול.'
+        hints:
+          - 'מה החוק השני ביחסות? מה הוא אומר על $p(t)$ כש-$F$ קבוע?'
+
+      - label: ב
+        type: open
+        points: 9
+        level: mid
+        objectives: [OBJ-10.5-1]
+        prompt: >-
+          פתרו את החוק השני, $F = dp/dt$, ומצאו את $v(t)$. בדקו את התוצאה בזמנים קצרים ובזמנים ארוכים, ובדקו את היחידות.
+        hints:
+          - 'אינטגרלו פעם אחת וקבלו $\gamma mv = Ft$. אחר כך בודדו את $v$.'
+        solution:
+          - kind: law
+            text: 'החוק השני ביחסות: $F = \dfrac{dp}{dt}$, עם התנע היחסותי $p = \gamma mv = \dfrac{mv}{\sqrt{1 - v^2/c^2}}$.'
+          - kind: manipulation
+            text: >-
+              $F$ קבוע ו-$p(0) = 0$, ולכן $p = Ft$, כלומר $\dfrac{mv}{\sqrt{1 - v^2/c^2}} = Ft$. מעלים בריבוע:
+              $m^2v^2 = F^2t^2\left(1 - v^2/c^2\right)$, ולכן $v^2\left(m^2 + F^2t^2/c^2\right) = F^2t^2$, ו-
+              $$v(t) = \frac{Ft/m}{\sqrt{1 + \left(\dfrac{Ft}{mc}\right)^2}}$$
+          - kind: limit
+            text: >-
+              כש-$t \ll mc/F$, המכנה כמעט 1 ו-$v \approx Ft/m$: תאוצה קבועה $F/m$, כמו אצל ניוטון. כש-$t \gg mc/F$,
+              $v \approx \dfrac{Ft/m}{Ft/(mc)} = c$, ותמיד $v < c$ כי המונה קטן מהמכנה כפול $c$.
+          - kind: units
+            text: '$Ft/(mc)$ חסר ממדים: $\dfrac{\text{N·s}}{\text{kg·m/s}} = 1$. ולכן $v$ ביחידות של $Ft/m$, כלומר $\text{m/s}$.'
+          - kind: result
+            text: >-
+              $v(t) = \dfrac{Ft/m}{\sqrt{1 + (Ft/(mc))^2}}$: עולה כמו $Ft/m$ בהתחלה, ומתקרבת ל-$c$ בלי להגיע אליה. הזמן
+              האופייני הוא $mc/F = 17.1\,\text{ns}$.
+        rubric:
+          - text: כתבתי $F = dp/dt$ עם $p = \gamma mv$, ואינטגרלתי ל-$\gamma mv = Ft$.
+          - text: בודדתי את $v$ בלי לשכוח ש-$\gamma$ תלוי ב-$v$, וקיבלתי את הביטוי.
+          - text: בדקתי שבזמנים קצרים $v \approx Ft/m$ ושבזמנים ארוכים $v \to c$.
+          - text: בדקתי ש-$Ft/(mc)$ חסר ממדים.
+
+      - label: ג
+        type: numeric
+        points: 6
+        level: mid
+        standalone: false
+        objectives: [OBJ-10.5-1]
+        prompt: אחרי כמה זמן מגיע האלקטרון ל-$0.99c$? ענו בננו-שניות.
+        answer: 120
+        unit: ns
+        correctFeedback: >-
+          נכון. מ-$p = Ft$: $t = \dfrac{\gamma\beta\,mc}{F}$. ב-$\beta = 0.99$, $\gamma = 7.09$ ו-$\gamma\beta = 7.02$, ולכן
+          $t = 7.02\cdot17.1\,\text{ns} = 120\,\text{ns}$.
+        wrongFeedback: 'הפכו את $p = Ft$: $t = p/F = \gamma\beta\,mc/F$. חשבו את $\gamma\beta$ ב-$\beta = 0.99$.'
+        commonWrong:
+          - value: 16.9
+            feedback: >-
+              זה $0.99\,mc/F$, הזמן בתאוצה קבועה $F/m$. ביחסות התאוצה קטנה ככל שהמהירות גדלה, ולכן צריך פי 7 יותר זמן.
+            misconception: MC-10-constant-force-constant-accel
+        hints:
+          - '$\gamma\beta = \beta/\sqrt{1 - \beta^2}$.'
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-10.5-2, OBJ-10.1-1]
+        prompt: איזה מרחק עובר האלקטרון עד שהוא מגיע ל-$0.99c$?
+        answer: 31.2
+        unit: m
+        correctFeedback: >-
+          נכון. לפי משפט עבודה-אנרגיה, $Fx = \Delta E = (\gamma - 1)mc^2$, ולכן $x = (\gamma - 1)\dfrac{mc^2}{F} = 6.09\cdot5.12 = 31.2\,\text{m}$.
+          אותו דבר נותן האינטגרל של $v(t)$ מחלק ב. **בדיקת גבולות:** כש-$\beta \ll 1$, $(\gamma - 1) \approx \beta^2/2$, ו-$x \approx v^2/(2a)$
+          עם $a = F/m$, כמו אצל ניוטון.
+        wrongFeedback: >-
+          אין צורך באינטגרל: העבודה של כוח קבוע לאורך $x$ היא $Fx$, והיא שווה לשינוי באנרגיה היחסותית.
+        commonWrong:
+          - value: 2.51
+            feedback: >-
+              זה $v^2/(2a) = \tfrac12(0.99)^2\,mc^2/F$, המרחק בתאוצה קבועה. האנרגיה הקינטית ב-$0.99c$ גדולה פי 12 מ-$\tfrac12mv^2$,
+              ולכן גם המרחק.
+            misconception: MC-10-classical-ke
+          - value: 36.0
+            feedback: 'זה $ct$ עם $t = 120\,\text{ns}$, כאילו האלקטרון נע ב-$c$ כל הדרך. הוא התחיל ממנוחה, ולכן עבר פחות.'
+        hints:
+          - 'מה העבודה שהכוח עושה לאורך $x$? למה היא שווה?'

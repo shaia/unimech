@@ -1,0 +1,291 @@
+# Lesson 6.2 question bank: the comprehension ladder of "מבעיה של שני גופים לבעיה של גוף אחד".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). The reduced mass is a chapter-4 term (reduced-mass): used here, defined there.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (.scratch/ch6/q.ts):
+#   μ(3M_S, M_S) = 0.75 M_S = 1.49e30 kg (sum 7.96e30, lighter 1.99e30);
+#   2.0 kg + 6.0 kg at 0.50 m: F = 3.20e-9 N, a_rel = G(m₁+m₂)/d² = 2.13e-9 m/s² (one body fixed: 1.60e-9);
+#   asteroids 1e12 + 3e12 kg from 10 km to 1 km: v_rel = √(2G(m₁+m₂)(1/d − 1/d₀)) = 0.693 m/s
+#     (heavy one fixed 0.600, from infinity 0.730, the lighter one's speed 0.520);
+#   Earth–Moon CM: D·M_M/(M_E+M_M) = 4670 km from the Earth's centre (midpoint 192000, from the Moon 379000);
+#   Sun–Jupiter (m_J = 1.90e27 kg, a = 7.78e11 m, T = 11.9 yr): r_S = 7.42e8 m, v_S = 12.4 m/s (Jupiter 1.30e4,
+#     without 2π 1.98);
+#   binary a = 2.0 AU, T = 2.0 yr: M = 4π²a³/(GT²) = 4.01e30 kg, heavier (2:1) = 2.67e30 kg (lighter 1.34e30,
+#     with the heavier star's own radius a/3 instead of a: 9.90e28).
+
+chapter: 6
+questions:
+  # ---------------------------------------------------------------- OBJ-6.2-1 CM motion plus relative motion with μ
+  - id: Q-6.2-cm-uniform
+    type: mc
+    objectives: [OBJ-6.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      שני כוכבים רחוקים מכל גוף אחר מושכים זה את זה, ונעים בתנועה מסובכת זה סביב זה. מה עושה מרכז המסה של שניהם?
+    choices:
+      - text: נע בקו ישר במהירות קבועה (או עומד).
+        correct: true
+        feedback: >-
+          נכון. על המערכת לא פועל כוח חיצוני, והכוחות שהכוכבים מפעילים זה על זה שווים והפוכים. לכן
+          $(m_1 + m_2)\ddot{\vec R} = 0$: מרכז המסה לא מאיץ. כל התנועה המסובכת נמצאת בתנועה היחסית.
+      - text: נשאר צמוד לכוכב הכבד יותר, שכמעט לא זז.
+        feedback: >-
+          מרכז המסה קרוב יותר לכוכב הכבד, אבל הוא לא עליו, וגם הכוכב הכבד נע: שני הכוכבים מקיפים את מרכז המסה. הכוכב
+          הכבד "קבוע" רק בגבול שבו המסה של השני זניחה.
+        misconception: MC-6-heavy-body-fixed
+      - text: מאיץ לעבר הכוכב הכבד יותר, כי הוא מושך חזק יותר.
+        feedback: >-
+          לפי החוק השלישי, שני הכוכבים מושכים זה את זה בכוחות שווים בגודלם. הכוח החיצוני השקול אפס, ולכן מרכז המסה לא
+          מאיץ לשום כיוון.
+      - text: נע במעגל יחד עם הכוכבים.
+        feedback: >-
+          הכוכבים הם שמקיפים את מרכז המסה. הוא עצמו נע בקו ישר במהירות קבועה, כי אין כוח חיצוני שיעקם את הדרך שלו.
+    hints:
+      - 'כתבו את החוק השני לכל כוכב וחברו את שתי המשוואות. מה קורה לכוחות הפנימיים?'
+
+  - id: Q-6.2-reduced-mass
+    type: numeric
+    objectives: [OBJ-6.2-1]
+    level: basic
+    prompt: >-
+      בכוכב כפול, מסה של כוכב אחד היא $3M_S$ ושל השני $M_S$, כאשר $M_S = 1.99\cdot10^{30}\,\text{kg}$ היא מסת השמש.
+      מה המסה המצומצמת $\mu$ של המערכת?
+    answer: 1.49e30
+    unit: kg
+    correctFeedback: >-
+      נכון. $\mu = \dfrac{m_1m_2}{m_1 + m_2} = \dfrac{3M_S\cdot M_S}{4M_S} = 0.75\,M_S = 1.49\cdot10^{30}\,\text{kg}$. המסה
+      המצומצמת תמיד קטנה מהמסה הקטנה מבין השתיים.
+    wrongFeedback: 'המסה המצומצמת היא המכפלה של שתי המסות חלקי הסכום שלהן. הציבו ובדקו שיצא פחות מהמסה הקטנה.'
+    commonWrong:
+      - value: 7.96e30
+        feedback: 'זו המסה הכוללת, $M = m_1 + m_2 = 4M_S$, שמופיעה בתנועת מרכז המסה. בתנועה היחסית מופיעה $\mu = m_1m_2/M$.'
+      - value: 1.99e30
+        feedback: >-
+          זו מסת הכוכב הקל. $\mu \approx m_2$ רק כש-$m_1 \gg m_2$, כמו שמש וכוכב לכת. כאן הכוכב הכבד רק פי 3 כבד יותר,
+          והוא נע בעצמו.
+        misconception: MC-6-heavy-body-fixed
+    hints:
+      - '$\mu = \dfrac{m_1m_2}{m_1 + m_2}$. כתבו את שתי המסות כמכפלות של $M_S$.'
+
+  - id: Q-6.2-relative-equation
+    type: twotier
+    objectives: [OBJ-6.2-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      שני גופים, $m_1$ במקום $\vec r_1$ ו-$m_2$ במקום $\vec r_2$, מושכים רק זה את זה. המקום היחסי הוא
+      $\vec r = \vec r_1 - \vec r_2$, $\hat r$ הוא וקטור היחידה בכיוונו, ו-$\mu = \dfrac{m_1m_2}{m_1 + m_2}$. איזו
+      משוואה מקיים $\vec r$?
+    choices:
+      - text: '$\mu\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$'
+        correct: true
+        feedback: >-
+          נכון. הכוח הוא הכוח האמיתי בין הגופים, עם המכפלה $m_1m_2$, והאינרציה של התנועה היחסית היא $\mu$. זו משוואה
+          של גוף אחד בשדה של מרכז קבוע.
+      - text: '$m_1\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$'
+        feedback: >-
+          זו המשוואה של $m_1$ כש-$m_2$ קבוע במקומו. היא נכונה רק בגבול $m_2 \gg m_1$. באופן כללי גם $m_2$ מאיץ, וההאצה
+          היחסית גדולה יותר מזו של $m_1$ לבדו.
+        misconception: MC-6-heavy-body-fixed
+      - text: '$\mu\ddot{\vec r} = -\dfrac{G\mu^2}{r^2}\hat r$'
+        feedback: >-
+          $\mu$ מחליפה את המסה רק בצד של האינרציה. הכוח הוא הכוח הפיזיקלי בין שני הגופים, והוא תלוי במסות האמיתיות:
+          $Gm_1m_2/r^2$.
+        misconception: MC-6-mu-in-force
+      - text: '$(m_1 + m_2)\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$'
+        feedback: >-
+          המסה הכוללת מופיעה במשוואה של מרכז המסה, $(m_1 + m_2)\ddot{\vec R} = 0$. בתנועה היחסית האינרציה היא $\mu$,
+          שקטנה גם מ-$m_1$ וגם מ-$m_2$.
+    reasonPrompt: ומה הנימוק?
+    reasons:
+      - text: 'מחסרים את משוואות התנועה של שני הגופים: $\ddot{\vec r} = \vec F/m_1 + \vec F/m_2 = \vec F/\mu$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $\ddot{\vec r}_1 = \vec F/m_1$ ו-$\ddot{\vec r}_2 = -\vec F/m_2$, ולכן
+          $\ddot{\vec r} = \vec F\left(\dfrac{1}{m_1} + \dfrac{1}{m_2}\right) = \dfrac{\vec F}{\mu}$. הכוח $\vec F$ לא השתנה.
+      - text: הגוף הכבד כמעט לא זז, ולכן אפשר להתייחס אליו כקבוע.
+        feedback: >-
+          זה קירוב, ולא תמיד טוב: בכוכב כפול שני הכוכבים זזים באותה מידה בערך. המשוואה עם $\mu$ מדויקת לכל יחס מסות.
+        misconception: MC-6-heavy-body-fixed
+      - text: בבעיה המצומצמת מחליפים את כל המסות ב-$\mu$, גם בכוח.
+        feedback: 'רק המסה שכופלת את התאוצה מתחלפת. הכוח נשאר הכוח בין שני הגופים האמיתיים, $Gm_1m_2/r^2$.'
+        misconception: MC-6-mu-in-force
+    hints:
+      - 'כתבו $m_1\ddot{\vec r}_1 = \vec F$ ו-$m_2\ddot{\vec r}_2 = -\vec F$, חלקו כל אחת במסה שלה וחסרו.'
+
+  - id: Q-6.2-relative-acceleration
+    type: numeric
+    objectives: [OBJ-6.2-1]
+    level: mid
+    prompt: >-
+      בחלל, רחוק מכל גוף אחר, משחררים ממנוחה שני כדורי עופרת: מסה של $2.0\,\text{kg}$ ומסה של $6.0\,\text{kg}$, כשהמרחק
+      בין המרכזים שלהם $0.50\,\text{m}$. מה גודל התאוצה היחסית שלהם, $|\ddot{\vec r}|$, ברגע השחרור? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    answer: 2.13e-9
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $F = \dfrac{Gm_1m_2}{d^2} = 3.20\cdot10^{-9}\,\text{N}$, ו-$\mu = \dfrac{2.0\cdot6.0}{8.0} = 1.5\,\text{kg}$, ולכן
+      $|\ddot{\vec r}| = F/\mu = 2.13\cdot10^{-9}\,\text{m/s}^2$. אותו דבר בצורה ישירה: $\dfrac{G(m_1 + m_2)}{d^2}$, סכום
+      התאוצות של שני הכדורים.
+    wrongFeedback: 'שני הכדורים מאיצים זה לעבר זה. חלקו את הכוח ב-$\mu$, או חברו את התאוצות של שני הכדורים.'
+    commonWrong:
+      - value: 1.6e-9
+        feedback: >-
+          זו התאוצה של הכדור הקל בלבד, $Gm_2/d^2$, כאילו הכדור הכבד קבוע. אבל גם הוא מאיץ, לעבר הקל, ולכן ההתקרבות
+          מהירה יותר.
+        misconception: MC-6-heavy-body-fixed
+      - value: 3.2e-9
+        feedback: 'זה גודל הכוח, בניוטונים. התאוצה היחסית היא הכוח חלקי $\mu = 1.5\,\text{kg}$.'
+      - value: 5.34e-10
+        feedback: 'זו התאוצה של הכדור הכבד בלבד. התאוצה היחסית היא סכום התאוצות של שני הכדורים.'
+    hints:
+      - '$\ddot{\vec r} = \ddot{\vec r}_1 - \ddot{\vec r}_2$, והכדורים מאיצים בכיוונים הפוכים.'
+
+  - id: Q-6.2-asteroids
+    type: numeric
+    objectives: [OBJ-6.2-1]
+    level: bagrut
+    prompt: >-
+      שני אסטרואידים כדוריים, בעלי מסות $m_1 = 1.0\cdot10^{12}\,\text{kg}$ ו-$m_2 = 3.0\cdot10^{12}\,\text{kg}$, נמצאים
+      במנוחה זה ביחס לזה, והמרחק בין המרכזים שלהם $10\,\text{km}$. הם נופלים זה לעבר זה עד שהם נוגעים, כשהמרחק בין
+      המרכזים $1.0\,\text{km}$. מה המהירות היחסית שלהם ברגע המגע? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    answer: 0.693
+    unit: m/s
+    correctFeedback: >-
+      נכון. במערכת מרכז המסה התנע אפס, והאנרגיה הקינטית כולה היא $\tfrac12\mu v^2$, כאשר $v$ המהירות היחסית. שימור
+      אנרגיה:
+      $$\tfrac12\mu v^2 = Gm_1m_2\left(\frac{1}{d} - \frac{1}{d_0}\right)\ \Rightarrow\ v = \sqrt{2G(m_1 + m_2)\left(\frac{1}{d} - \frac{1}{d_0}\right)} = 0.693\,\text{m/s}$$
+      **בדיקת גבולות:** כש-$m_1 \to 0$ מתקבלת המהירות של גוף קטן שנופל על גוף קבוע, $\sqrt{2Gm_2(1/d - 1/d_0)}$. וכש-$d \to d_0$, $v \to 0$.
+    wrongFeedback: >-
+      עבדו במערכת מרכז המסה, ושם האנרגיה הקינטית היא $\tfrac12\mu v^2$. השוו אותה לירידה באנרגיה הפוטנציאלית
+      $-Gm_1m_2/r$ בין $10\,\text{km}$ ל-$1.0\,\text{km}$.
+    commonWrong:
+      - value: 0.6
+        feedback: >-
+          זה מה שמתקבל כשהאסטרואיד הכבד קבוע ורק הקל נופל, עם $m_2$ בלבד בשורש. אבל גם הכבד נע, ובשורש מופיע הסכום
+          $m_1 + m_2$.
+        misconception: MC-6-heavy-body-fixed
+      - value: 0.73
+        feedback: 'השמטתם את $1/d_0$, כאילו האסטרואידים התחילו ממרחק אינסופי. הם התחילו מ-$10\,\text{km}$.'
+      - value: 0.52
+        feedback: >-
+          זו המהירות של האסטרואיד הקל במערכת מרכז המסה, $\dfrac{m_2}{m_1 + m_2}v$. המהירות היחסית היא סכום המהירויות של
+          שניהם.
+    hints:
+      - 'מה התנע הכולל במערכת מרכז המסה? כתבו את האנרגיה הקינטית בעזרת המהירות היחסית ו-$\mu$.'
+      - 'האנרגיה הפוטנציאלית של הזוג היא $-Gm_1m_2/r$.'
+
+  # ---------------------------------------------------------------- OBJ-6.2-2 both bodies orbit the common CM
+  - id: Q-6.2-earth-moon-cm
+    type: numeric
+    objectives: [OBJ-6.2-2]
+    level: basic
+    prompt: >-
+      מסת כדור הארץ $M_E = 5.97\cdot10^{24}\,\text{kg}$, מסת הירח $M_M = 7.35\cdot10^{22}\,\text{kg}$, והמרחק בין המרכזים
+      $D = 3.84\cdot10^{8}\,\text{m}$. כמה רחוק ממרכז כדור הארץ נמצא מרכז המסה של שניהם? ענו בקילומטרים.
+    answer: 4670
+    unit: km
+    correctFeedback: >-
+      נכון. $x = D\,\dfrac{M_M}{M_E + M_M} = 3.84\cdot10^{8}\cdot\dfrac{7.35\cdot10^{22}}{6.04\cdot10^{24}} = 4.67\cdot10^{6}\,\text{m}$,
+      כ-$4670\,\text{km}$. זה פחות מרדיוס כדור הארץ, $6370\,\text{km}$: מרכז המסה נמצא בתוך כדור הארץ, וכדור הארץ
+      "מתנדנד" סביבו פעם בחודש.
+    wrongFeedback: 'מרכז המסה מחלק את המרחק ביחס הפוך למסות. מדדו ממרכז כדור הארץ: $x = D\,M_M/(M_E + M_M)$.'
+    commonWrong:
+      - value: 192000
+        feedback: 'זה אמצע הדרך. מרכז המסה קרוב לגוף הכבד, ויחס המרחקים אליו הפוך ליחס המסות, כאן כ-81.'
+        misconception: MC-6-cm-midpoint
+      - value: 379000
+        feedback: 'זה המרחק של מרכז המסה ממרכז הירח. השאלה שואלת על המרחק ממרכז כדור הארץ.'
+    hints:
+      - 'שימו את הראשית במרכז כדור הארץ: $x_{cm} = \dfrac{M_E\cdot0 + M_M D}{M_E + M_M}$.'
+
+  - id: Q-6.2-binary-statements
+    type: multi
+    objectives: [OBJ-6.2-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      בכוכב כפול, מסת כוכב A היא $2m$ ומסת כוכב B היא $m$. שניהם נעים במסלולים מעגליים סביב מרכז המסה המשותף. סמנו את
+      כל הטענות הנכונות.
+    choices:
+      - text: לשני הכוכבים אותו זמן מחזור.
+        correct: true
+        feedback: >-
+          נכון. מרכז המסה תמיד על הקו שבין הכוכבים, ולכן הם נמצאים תמיד משני צדדיו: הקו ביניהם מסתובב כגוף אחד, ושניהם
+          משלימים סיבוב באותו זמן.
+      - text: רדיוס המסלול של A חצי מזה של B.
+        correct: true
+        feedback: 'נכון. $m_Ar_A = m_Br_B$, ולכן $r_A/r_B = m_B/m_A = 1/2$.'
+      - text: המהירות של A חצי מזו של B.
+        correct: true
+        feedback: 'נכון. באותו זמן מחזור $v = 2\pi r/T$, ולכן יחס המהירויות שווה ליחס הרדיוסים, $1/2$. גם התנע של שניהם שווה בגודלו.'
+      - text: לכוכב A זמן מחזור ארוך יותר, כי הוא כבד יותר.
+        feedback: 'אם זמני המחזור היו שונים, הכוכבים היו מגיעים לאותו צד של מרכז המסה, ומרכז המסה לא היה ביניהם. זמן המחזור משותף.'
+        misconception: MC-6-binary-different-periods
+      - text: כוכב A עומד במרכז, ורק B מקיף אותו.
+        feedback: >-
+          A נע במעגל קטן, ברדיוס שליש מהמרחק ביניהם. כוכב "עומד" רק כשהמסה של בן הזוג זניחה לעומתו, וכאן היא חצי
+          ממסתו.
+        misconception: MC-6-heavy-body-fixed
+      - text: מרכז המסה נמצא באמצע הדרך בין הכוכבים.
+        feedback: 'מרכז המסה באמצע רק כשהמסות שוות. כאן הוא קרוב פי 2 לכוכב הכבד.'
+        misconception: MC-6-cm-midpoint
+    hints:
+      - 'איפה נמצא מרכז המסה ביחס לשני הכוכבים בכל רגע?'
+
+  - id: Q-6.2-sun-wobble
+    type: numeric
+    objectives: [OBJ-6.2-2]
+    level: mid
+    prompt: >-
+      יופיטר, בעל מסה $m_J = 1.90\cdot10^{27}\,\text{kg}$, והשמש, בעלת מסה $M_S = 1.99\cdot10^{30}\,\text{kg}$, מקיפים את
+      מרכז המסה המשותף במסלולים כמעט מעגליים. המרחק ביניהם $7.78\cdot10^{11}\,\text{m}$, וזמן המחזור $11.9$ שנים
+      (שנה היא $3.156\cdot10^{7}\,\text{s}$). הזניחו את שאר כוכבי הלכת. מה מהירות השמש סביב מרכז המסה?
+    answer: 12.4
+    unit: m/s
+    correctFeedback: >-
+      נכון. רדיוס המסלול של השמש: $r_S = a\,\dfrac{m_J}{M_S + m_J} = 7.42\cdot10^{8}\,\text{m}$, קצת יותר מרדיוס השמש
+      עצמה. במחזור של $11.9$ שנים: $v_S = \dfrac{2\pi r_S}{T} = \dfrac{2\pi\cdot7.42\cdot10^{8}}{3.76\cdot10^{8}} = 12.4\,\text{m/s}$.
+      תנודה כזו של כוכב, שנמדדת באפקט דופלר, היא אחת הדרכים לגלות כוכבי לכת סביב כוכבים אחרים.
+    wrongFeedback: 'מצאו קודם את רדיוס המסלול של השמש סביב מרכז המסה, ואז את המהירות מזמן המחזור המשותף.'
+    commonWrong:
+      - value: 1.3e4
+        feedback: 'זו המהירות של יופיטר. השמש מקיפה את מרכז המסה במעגל קטן פי $M_S/m_J \approx 1050$, ולכן מהירותה קטנה באותו יחס.'
+      - value: 1.98
+        feedback: 'חילקתם את הרדיוס בזמן המחזור. בסיבוב אחד השמש עוברת את היקף המעגל, $2\pi r_S$.'
+    hints:
+      - '$M_Sr_S = m_Jr_J$, ו-$r_S + r_J = a$.'
+
+  - id: Q-6.2-binary-masses
+    type: numeric
+    objectives: [OBJ-6.2-2]
+    level: bagrut
+    prompt: >-
+      אסטרונומים מודדים כוכב כפול: שני הכוכבים נעים במסלולים מעגליים סביב מרכז המסה המשותף, המרחק ביניהם קבוע,
+      $a = 2.0\,\text{AU}$ (כאשר $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$), וזמן המחזור $T = 2.0$ שנים (שנה היא
+      $3.156\cdot10^{7}\,\text{s}$). המהירות של כוכב אחד חצי מהמהירות של השני. מה מסת הכוכב הכבד? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    answer: 2.67e30
+    unit: kg
+    correctFeedback: >-
+      נכון. בתנועה היחסית, $\mu\omega^2a = \dfrac{Gm_1m_2}{a^2}$, ואחרי חלוקה ב-$\mu$:
+      $$\omega^2a^3 = G(m_1 + m_2)\ \Rightarrow\ m_1 + m_2 = \frac{4\pi^2a^3}{GT^2} = 4.01\cdot10^{30}\,\text{kg}$$
+      יחס המהירויות הוא יחס הרדיוסים, והוא הפוך ליחס המסות: הכוכב האיטי כבד פי 2. לכן הכבד הוא $\tfrac23$ מהסכום,
+      $2.67\cdot10^{30}\,\text{kg}$, כ-$1.3$ מסות שמש. **בדיקת גבולות:** כש-$m_2 \to 0$ מתקבל $T^2 = 4\pi^2a^3/(Gm_1)$, החוק
+      של כוכב לכת קל סביב כוכב.
+    wrongFeedback: >-
+      כתבו את משוואת התנועה היחסית למסלול מעגלי ברדיוס $a$. המסה המצומצמת מצטמצמת ומשאירה את הסכום $m_1 + m_2$. אחר כך
+      חלקו את הסכום לפי יחס המהירויות.
+    commonWrong:
+      - value: 4.01e30
+        feedback: 'זה סכום המסות, $4\pi^2a^3/(GT^2)$. נשאר לחלק אותו: הכוכב האיטי כבד פי 2, ולכן מסתו $\tfrac23$ מהסכום.'
+      - value: 1.34e30
+        feedback: >-
+          זה הכוכב הקל: $\tfrac13$ מהסכום. הכוכב הכבד הוא האיטי, כי הוא קרוב יותר למרכז המסה ונע במעגל הקטן.
+      - value: 9.9e28
+        feedback: >-
+          הצבתם את רדיוס המסלול של הכוכב הכבד, $a/3$, במקום המרחק בין הכוכבים. בכוח הכבידה ובתנועה היחסית מופיע המרחק
+          ביניהם, $a$.
+    hints:
+      - 'משוואת התנועה היחסית: $\mu\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$, עם $r = a$ ו-$|\ddot{\vec r}| = \omega^2a$.'
+      - 'איזה כוכב קרוב יותר למרכז המסה, האיטי או המהיר?'

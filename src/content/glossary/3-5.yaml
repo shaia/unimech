@@ -1,0 +1,19 @@
+# Terms first defined in lesson 3.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: momentum
+  term: תנע
+  en: momentum
+  symbol: p
+  unit: kg·m/s
+  definition: המכפלה של המסה במהירות, p = mv, וקטור. החוק השני הוא dp/dt = F. התנע של מערכת הוא סכום התנעים של חלקיה, P = M·v_cm, והוא נשמר כשהכוח החיצוני השקול אפס.
+  reject: [מומנטום, כמות תנועה]
+  lesson: '3.5'
+
+- id: impulse
+  term: מתקף
+  en: impulse
+  symbol: J
+  unit: N·s
+  definition: האינטגרל של כוח בזמן, J = ∫F dt, השטח מתחת לגרף כוח-זמן. המתקף של הכוח השקול שווה לשינוי בתנע, J = Δp.
+  lesson: '3.5'

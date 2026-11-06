@@ -1,0 +1,21 @@
+# Terms first defined in lesson 5.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: c5-coupled-oscillators
+  term: מתנדים מצומדים
+  en: coupled oscillators
+  definition: מתנדים שמפעילים כוח זה על זה, למשל שני גופים על קפיצים שקפיץ צימוד מחבר ביניהם. התנועה של כל אחד תלויה בתנועה של האחר, ואופני התנודה הם תנועות משותפות של כולם.
+  lesson: '5.5'
+
+- id: normal-mode
+  term: אופן תנודה
+  en: normal mode
+  definition: תנועה של מערכת מתנדים שבה כל החלקים מתנודדים באותה תדירות, התדירות העצמית של האופן, וביחס אמפליטודות ופאזה קבוע. כל תנועה של מערכת ליניארית היא סופרפוזיציה של אופני התנודה שלה.
+  reject: [מוד נורמלי]
+  lesson: '5.5'
+
+- id: beats
+  term: פעימות
+  en: beats
+  definition: מעטפת איטית של תנודה שהיא סכום של שתי תנודות בתדירויות קרובות, ω₁ ו-ω₂. בשני מתנדים בצימוד חלש האנרגיה עוברת מגוף לגוף וחוזרת, וזמן ההעברה המלאה הוא π/(ω₂ − ω₁).
+  lesson: '5.5'

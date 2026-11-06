@@ -1,0 +1,15 @@
+# Misconceptions first detected in lesson 10.3. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 10.3
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-10-equal-share
+  title: בדעיכה התוצרים מתחלקים שווה באנרגיה
+  belief: כשחלקיק נח דועך לשני חלקיקים, כל אחד מהם מקבל חצי מהאנרגיה הקינטית שמשתחררת.
+  truth: שימור האנרגיה נותן רק את הסכום. שימור התנע קובע שלשני התוצרים אותו גודל תנע, ובאותו תנע החלקיק הקל מקבל את רוב האנרגיה הקינטית. בדעיכת פיון למיואון ולנייטרינו, הנייטרינו לוקח 29.9 MeV מתוך 34.
+  remedy: { lesson: '10.3', label: 'שיעור 10.3: דעיכה לשני חלקיקים משימור האנרגיה והתנע' }
+
+- id: MC-10-threshold-is-mass-gain
+  title: אנרגיית הסף היא אנרגיית המנוחה של החלקיקים החדשים
+  belief: כדי ליצור חלקיקים חדשים מספיק שלקרן תהיה אנרגיה קינטית השווה לאנרגיית המנוחה שלהם.
+  truth: זה נכון רק בהתנגשות שבה התנע הכולל אפס. כשהמטרה נייחת, התוצרים חייבים לשאת את התנע של הקרן, ולכן צריך יותר. ליצירת זוג פרוטון ואנטי-פרוטון על מטרה נייחת צריך 6mc² ולא 2mc².
+  remedy: { lesson: '10.3', label: 'שיעור 10.3: אנרגיית סף במטרה נייחת ובהתנגשות חזיתית' }

@@ -1,0 +1,31 @@
+# Terms first defined in lesson 7.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: non-inertial-frame
+  term: מערכת ייחוס לא-אינרציאלית
+  en: non-inertial frame
+  definition: מערכת ייחוס שמאיצה או מסתובבת ביחס למערכת אינרציאלית. בה החוק הראשון של ניוטון לא מתקיים כפי שהוא, ואת החוק השני כותבים עם כוחות מדומים.
+  lesson: '7.1'
+
+- id: fictitious-force
+  term: כוח מדומה
+  en: fictitious force
+  symbol: F_fict
+  unit: N
+  definition: איבר שמוסיפים לחוק השני כשכותבים אותו במערכת ייחוס לא-אינרציאלית. הוא פרופורציוני למסה של הגוף, אף גוף לא מפעיל אותו ואין לו כוח תגובה. במערכת בתאוצה קווית A הוא שווה למינוס mA.
+  reject: [כוח פיקטיבי]
+  lesson: '7.1'
+
+- id: equivalence-principle
+  term: עקרון השקילות
+  en: equivalence principle
+  definition: בניסוי מקומי אי אפשר להבחין בין שדה כובד אחיד לבין מערכת ייחוס בתאוצה קווית קבועה. הסיבה היא שגם הכובד וגם הכוח המדומה פרופורציוניים למסה של הגוף.
+  lesson: '7.1'
+
+- id: effective-gravity
+  term: תאוצת נפילה אפקטיבית
+  en: effective gravity
+  symbol: g_eff
+  unit: m/s²
+  definition: התאוצה שגוף חופשי מקבל ביחס למערכת לא-אינרציאלית כשהוא במנוחה בה, הכובד יחד עם הכוחות המדומים שאינם תלויים במהירות. במערכת בתאוצה קווית A היא g פחות A, כסכום וקטורי, וחוט משקולת תלוי מתיישר בכיוונה.
+  lesson: '7.1'

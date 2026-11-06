@@ -1,0 +1,271 @@
+# Lesson 3.2 question bank: the comprehension ladder of "כוחות משמרים ואנרגיה פוטנציאלית".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Curl in the plane: (∇×F)_z = ∂F_y/∂x − ∂F_x/∂y. Every number was computed in .scratch/ch3/q.ts:
+#   (y, x): 0; (−y, x): 2; (2xy, x²): 0; (y, −x): −2; (x, y): 0;
+#   F = c(−y, x), c = 3.0 N/m, circle R = 0.50 m counterclockwise: W = 2πcR² = 4.71 J
+#     (πcR² = 2.36 J without the 2 of the curl; 2πcR = 9.42 J with |F| = c instead of cR);
+#   F = (cy, 0): (∇×F)_z = −c ≠ 0;
+#   U = a x² y, a = 2.0 J/m³, at (1, 2) m: F_x = −2axy = −8.0 N (+8 sign; −4 from ∂(x²)/∂x = x; −2 = F_y);
+#   F = (2xy + 3, x²) N: U = −(x²y + 3x) + C, U(2,1) − U(0,0) = −10 J (+10 sign; −14 adding ∫F_x dx at y = 1
+#   and ∫F_y dy at x = 2).
+
+chapter: 3
+questions:
+  # ------------------------------------------------- OBJ-3.2-1 is the force conservative: loop, paths, curl
+  - id: Q-3.2-friction-loop
+    type: mc
+    objectives: [OBJ-3.2-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      גוררים ארגז על רצפה עם חיכוך קינטי לאורך ריבוע שצלעו $L$, ומחזירים אותו לנקודת ההתחלה. גודל כוח החיכוך
+      הוא $f$ לאורך כל הדרך. כמה עבודה עשה החיכוך במסלול הסגור?
+    choices:
+      - text: '$-4fL$'
+        correct: true
+        feedback: >-
+          נכון. בכל קטע החיכוך פונה נגד התנועה, ולכן כל צלע תורמת $W = -fL$, ואין שום קטע שמחזיר את העבודה. עבודה שונה
+          מאפס במסלול סגור היא הסימן של כוח **לא משמר**.
+      - text: אפס, כי הארגז חזר לנקודת ההתחלה.
+        feedback: >-
+          ההעתק הכולל אפס, אבל החיכוך לא קבוע: הוא מסתובב עם כיוון התנועה. לכן לא מכפילים בהעתק הכולל, אלא סוכמים
+          $\vec f\cdot d\vec r$ על כל קטע, וכל האיברים שליליים.
+        misconception: MC-3-closed-loop-always-zero
+      - text: '$+4fL$'
+        feedback: 'החיכוך הקינטי מתנגד לתנועה היחסית, ולכן $\vec f\cdot d\vec r < 0$ בכל קטע. העבודה שלו שלילית.'
+      - text: אפס, כי שתי צלעות נגדיות מבטלות זו את זו.
+        feedback: >-
+          זה היה נכון לכוח קבוע: הוא היה עושה $W = +FL$ בצלע אחת ו-$W = -FL$ בצלע שמולה. אבל החיכוך מתהפך כשכיוון התנועה
+          מתהפך, ולכן שתי הצלעות תורמות $W = -fL$.
+        misconception: MC-3-closed-loop-always-zero
+    hints:
+      - 'מה הסימן של $\vec f\cdot d\vec r$ בכל אחת מארבע הצלעות?'
+
+  - id: Q-3.2-curl-test
+    type: multi
+    objectives: [OBJ-3.2-1]
+    level: mid
+    prompt: >-
+      במישור $xy$ הכוח $\vec F = (F_x,\,F_y)$ משמר (בכל המישור) אם ורק אם
+      $$\left(\nabla\times\vec F\right)_z = \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y} = 0$$
+      בכל נקודה. אילו מהכוחות הבאים משמרים? ($x$ ו-$y$ במטרים, ומקדם של $1\,\text{N/m}$ מושמט.) סמנו את כל הנכונים.
+    choices:
+      - text: '$\vec F = (y,\,x)$'
+        correct: true
+        feedback: 'משמר: $\dfrac{\partial F_y}{\partial x} - \dfrac{\partial F_x}{\partial y} = 1 - 1 = 0$. הוא מינוס הגרדיאנט של $U = -xy$.'
+      - text: '$\vec F = (-y,\,x)$'
+        feedback: >-
+          לא משמר: $1 - (-1) = 2$. זה שדה שמסתובב סביב הראשית נגד כיוון השעון, והעבודה שלו לאורך מעגל סביב הראשית
+          חיובית.
+      - text: '$\vec F = (2xy,\,x^2)$'
+        correct: true
+        feedback: 'משמר: $2x - 2x = 0$. הוא מינוס הגרדיאנט של $U = -x^2y$.'
+      - text: '$\vec F = (y,\,-x)$'
+        feedback: 'לא משמר: $(\nabla\times\vec F)_z = -1 - 1 = -2$. זה השדה $(-y,\,x)$ בכיוון ההפוך: סיבוב עם כיוון השעון.'
+      - text: '$\vec F = (x,\,y)$'
+        correct: true
+        feedback: 'משמר: שתי הנגזרות המעורבות אפס. זה כוח רדיאלי מהראשית החוצה, מינוס הגרדיאנט של $U = -\tfrac12(x^2 + y^2)$.'
+    hints:
+      - 'לכל כוח חשבו שתי נגזרות: של $F_y$ לפי $x$, ושל $F_x$ לפי $y$.'
+
+  - id: Q-3.2-swirl-loop
+    type: numeric
+    objectives: [OBJ-3.2-1]
+    level: mid
+    prompt: >-
+      במישור פועל הכוח $\vec F = c\,(-y,\,x)$ עם $c = 3.0\,\text{N/m}$. חלקיק מקיף פעם אחת, נגד כיוון השעון, מעגל
+      ברדיוס $R = 0.50\,\text{m}$ שמרכזו בראשית. כמה עבודה עושה הכוח בסיבוב אחד?
+    answer: 4.71
+    unit: J
+    correctFeedback: >-
+      נכון. על המעגל הכוח משיק למסלול ובכיוון התנועה, וגודלו $cR$. לכן
+      $W = cR\cdot2\pi R = 2\pi cR^2 = 2\pi\cdot3.0\cdot0.25 = 4.71\,\text{J}$. גם הרוטור מאשר:
+      $\left(\nabla\times\vec F\right)_z = 2c$, כפול שטח העיגול $\pi R^2$. עבודה שונה מאפס במסלול סגור: הכוח לא משמר.
+    wrongFeedback: 'בדקו את הכיוון של $\vec F$ בנקודה $(R,\,0)$ ובנקודה $(0,\,R)$. מה הזווית שלו עם המשיק למעגל, ומה גודלו?'
+    commonWrong:
+      - value: 0
+        feedback: 'במסלול סגור העבודה מתאפסת רק לכוח משמר. הרוטור של הכוח הזה $2c \ne 0$, והכוח דוחף את החלקיק קדימה לאורך כל המעגל.'
+        misconception: MC-3-closed-loop-always-zero
+      - value: 2.36
+        feedback: 'כפלתם $c$ בשטח $\pi R^2$. הרוטור הוא $1 - (-1) = 2$ כפול $c$, לא $c$.'
+      - value: 9.42
+        feedback: 'כפלתם $c$ בהיקף. גודל הכוח על המעגל הוא $c\sqrt{x^2 + y^2} = cR$, ולא $c$: חסר עוד גורם $R$.'
+    hints:
+      - 'בנקודה $(x,\,y)$ על המעגל, $\vec F\cdot(x,\,y) = 0$. מה זה אומר על הכיוון של $\vec F$?'
+
+  - id: Q-3.2-two-paths-enough
+    type: twotier
+    objectives: [OBJ-3.2-1]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      סטודנטית בודקת את הכוח $\vec F = (y^2,\,x^2)$ (ביחידות SI). היא מחשבת את העבודה מ-$(0,\,0)$ ל-$(1,\,1)$ בשני
+      מסלולים: קודם לאורך $x$ עד $(1,\,0)$ ואז לאורך $y$, וקודם לאורך $y$ עד $(0,\,1)$ ואז לאורך $x$. בשניהם היא
+      מקבלת $1\,\text{J}$, ומסיקה שהכוח משמר. האם המסקנה נכונה?
+    choices:
+      - text: לא. הכוח לא משמר, אף ששני המסלולים האלה נותנים אותה עבודה.
+        correct: true
+        feedback: >-
+          נכון. $\left(\nabla\times\vec F\right)_z = 2x - 2y$, שונה מאפס מחוץ לאלכסון. למשל, לאורך האלכסון $y = x$
+          העבודה היא $\int_0^1\left(x^2 + x^2\right)dx = \tfrac23\,\text{J}$, ולא $1\,\text{J}$.
+      - text: כן. שני מסלולים שונים עם אותה עבודה מוכיחים אי-תלות במסלול.
+        feedback: >-
+          אי-תלות במסלול היא טענה על **כל** המסלולים. שני מסלולים שמסכימים לא מוכיחים אותה, ומסלול שלישי אחד שלא
+          מסכים מפריך אותה.
+        misconception: MC-3-two-paths-prove-conservative
+      - text: אי אפשר לדעת בלי לחשב את העבודה בעוד מסלולים רבים.
+        feedback: >-
+          לא צריך לנסות מסלולים: מבחן הרוטור עונה בבת אחת. אם $\partial F_y/\partial x \ne \partial F_x/\partial y$
+          בנקודה כלשהי, הכוח לא משמר.
+    reasons:
+      - text: 'הרוטור $2x - 2y$ שונה מאפס, ולכן יש מסלול סגור שהעבודה בו שונה מאפס.'
+        correct: true
+        feedback: >-
+          זה הנימוק. שני המסלולים שלה יחד הם ריבוע סגור, ובו העבודה אפס במקרה: הרוטור חיובי מתחת לאלכסון ושלילי מעליו,
+          והתרומות מתקזזות. במשולש הסגור שמתחת לאלכסון (המסלול התחתון הלוך, והאלכסון חזרה) העבודה היא
+          $1 - \tfrac23 = \tfrac13\,\text{J}$, לא אפס.
+      - text: הכוח תלוי גם ב-$x$ וגם ב-$y$, וכוח כזה אף פעם לא משמר.
+        feedback: 'הכוח $(2xy,\,x^2)$ תלוי בשניהם והוא משמר. הקריטריון הוא השוויון בין הנגזרות המעורבות, לא איזה משתנים מופיעים.'
+      - text: שני המסלולים נותנים אותה עבודה, ולכן הרוטור אפס לאורכם, וזה מספיק.
+        feedback: 'הרוטור צריך להתאפס בכל נקודה של התחום. כאן הוא אפס רק על הקו $y = x$.'
+        misconception: MC-3-two-paths-prove-conservative
+    hints:
+      - 'חשבו את $\partial F_y/\partial x - \partial F_x/\partial y$.'
+      - 'נסו את המסלול לאורך האלכסון $y = x$, שעליו $dy = dx$.'
+
+  # ----------------------------------------------- OBJ-3.2-2 U from F, and F = −∇U
+  - id: Q-3.2-u-from-repulsion
+    type: mc
+    objectives: [OBJ-3.2-2]
+    level: basic
+    prompt: >-
+      על חלקיק על ציר $x$, ב-$x > 0$, פועל כוח דוחה $F_x = \dfrac{A}{x^2}$, עם $A > 0$. מהי האנרגיה הפוטנציאלית שלו,
+      אם בוחרים $U = 0$ רחוק מאוד, כש-$x \to \infty$?
+    choices:
+      - text: '$U(x) = \dfrac{A}{x}$'
+        correct: true
+        feedback: >-
+          נכון. $U(x) = -\int_\infty^x F_x\,dx' = -\left[-\dfrac{A}{x'}\right]_\infty^x = \dfrac{A}{x}$. בדיקה:
+          $F_x = -\dfrac{dU}{dx} = \dfrac{A}{x^2}$. והאנרגיה גדלה כשהחלקיק מתקרב, כמו שצריך בכוח דוחה.
+      - text: '$U(x) = -\dfrac{A}{x}$'
+        feedback: >-
+          זה האינטגרל של הכוח בלי סימן המינוס. בדקו: $F_x = -\dfrac{d}{dx}\left(-\dfrac{A}{x}\right) = -\dfrac{A}{x^2}$,
+          כוח מושך. ההגדרה היא $U = -\int F\,dx$.
+        misconception: MC-3-u-sign-of-integral
+      - text: '$U(x) = -\dfrac{2A}{x^3}$'
+        feedback: 'גזרתם את הכוח במקום לעשות לו אינטגרל. $U$ היא הפונקציה שמינוס הנגזרת שלה היא הכוח.'
+      - text: '$U(x) = \dfrac{A}{x^2}\cdot x = \dfrac{A}{x}$, כי $U = F\cdot x$.'
+        feedback: >-
+          התוצאה במקרה נכונה, אבל השיטה לא: $U = Fx$ לא נכון בכלל. לכוח $F_x = A/x^3$, למשל, הוא נותן $A/x^2$,
+          ואילו הנכון הוא $A/(2x^2)$. מחשבים $U = -\int F\,dx$.
+        misconception: MC-3-work-magnitudes
+    hints:
+      - '$U(x) - U(\infty) = -\int_\infty^x F_x\,dx$.'
+
+  - id: Q-3.2-bowl-force
+    type: vector
+    objectives: [OBJ-3.2-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      על שולחן אופקי, האנרגיה הפוטנציאלית של דסקית היא $U(x,\,y) = \beta\left(x^2 + y^2\right)$ עם $\beta > 0$. קווי
+      הגובה של $U$ הם מעגלים סביב הראשית, ו-$U$ גדלה כלפי חוץ. הדסקית נמצאת בנקודה $(2,\,0)$, מימין לראשית. לאן פונה
+      הכוח עליה? (בשושנת הכיוונים, למעלה הוא כיוון $+y$, וימינה הוא כיוון $+x$.)
+    answer: w
+    correctFeedback: >-
+      נכון. $\vec F = -\nabla U = -2\beta(x,\,y)$, ובנקודה $(2,\,0)$ זה $(-4\beta,\,0)$: שמאלה, אל הראשית. הכוח ניצב
+      לקווי הגובה ופונה לכיוון שבו $U$ **יורדת** הכי מהר.
+    wrongFeedback: 'חשבו $\vec F = -\nabla U =-\left(\partial U/\partial x,\ \partial U/\partial y\right)$ בנקודה $(2,\,0)$.'
+    wrong:
+      - dir: e
+        feedback: 'זה הכיוון של $\nabla U$, שבו $U$ עולה. הכוח הוא **מינוס** הגרדיאנט: הוא דוחף את הדסקית למטה בקערה.'
+        misconception: MC-3-force-along-gradient
+      - dir: n
+        feedback: 'זה כיוון לאורך קו הגובה, המעגל דרך $(2,\,0)$. לאורך קו גובה $U$ לא משתנה, ולכן אין שם רכיב של הכוח.'
+        misconception: MC-3-force-along-contour
+      - dir: s
+        feedback: 'זה כיוון לאורך קו הגובה, המעגל דרך $(2,\,0)$. לאורך קו גובה $U$ לא משתנה, ולכן אין שם רכיב של הכוח.'
+        misconception: MC-3-force-along-contour
+    hints:
+      - 'הכוח ניצב לקווי הגובה. לאיזה משני הכיוונים הניצבים?'
+
+  - id: Q-3.2-force-component
+    type: numeric
+    objectives: [OBJ-3.2-2]
+    level: mid
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק במישור היא $U(x,\,y) = a\,x^2y$ עם $a = 2.0\,\text{J/m}^3$. מהו רכיב ה-$x$ של
+      הכוח עליו בנקודה $(1,\,2)$, במטרים?
+    answer: -8
+    unit: N
+    correctFeedback: >-
+      נכון. $F_x = -\dfrac{\partial U}{\partial x} = -2axy = -2\cdot2.0\cdot1\cdot2 = -8.0\,\text{N}$. באותה נקודה
+      $F_y = -\dfrac{\partial U}{\partial y} = -ax^2 = -2.0\,\text{N}$.
+    wrongFeedback: 'גזרו את $U$ חלקית לפי $x$ (כש-$y$ קבוע), הוסיפו סימן מינוס, ורק אז הציבו את הנקודה.'
+    commonWrong:
+      - value: 8
+        feedback: 'שכחתם את המינוס: $\vec F = -\nabla U$. הכוח פונה לכיוון שבו $U$ יורדת.'
+        misconception: MC-3-force-along-gradient
+      - value: -4
+        feedback: 'הנגזרת של $x^2$ היא $2x$, לא $x$. בדקו שוב את $\partial(ax^2y)/\partial x$.'
+      - value: -2
+        feedback: 'זה $F_y = -\partial U/\partial y = -ax^2$. השאלה מבקשת את הרכיב לאורך $x$.'
+    hints:
+      - 'בנגזרת חלקית לפי $x$, המשתנה $y$ מתנהג כמו קבוע.'
+
+  - id: Q-3.2-u-from-2d-force
+    type: numeric
+    objectives: [OBJ-3.2-2, OBJ-3.2-1]
+    level: bagrut
+    prompt: >-
+      על חלקיק במישור פועל הכוח $\vec F = \left(2xy + 3,\ x^2\right)$, ב-$\text{N}$ כש-$x$ ו-$y$ במטרים. הוא משמר
+      (בדקו). מצאו את ההפרש באנרגיה הפוטנציאלית $U(2,\,1) - U(0,\,0)$.
+    answer: -10
+    unit: J
+    correctFeedback: >-
+      נכון. $\partial F_y/\partial x = 2x = \partial F_x/\partial y$, ולכן יש $U$. מהמשוואה
+      $F_x = -\partial U/\partial x = 2xy + 3$ יוצא $U = -x^2y - 3x + g(y)$, ומהמשוואה
+      $F_y = -\partial U/\partial y = x^2$ יוצא $g'(y) = 0$. לכן $U = -(x^2y + 3x) + C$, וההפרש הוא
+      $U(2,\,1) - U(0,\,0) = -(4 + 6) = -10\,\text{J}$. **בדיקה:** העבודה של הכוח בדרך היא $W = 10\,\text{J}$, והאנרגיה
+      הפוטנציאלית ירדה באותו שיעור.
+    wrongFeedback: >-
+      מצאו פונקציה $U$ שמקיימת את שתי המשוואות $F_x = -\partial U/\partial x$ ו-$F_y = -\partial U/\partial y$
+      יחד. אפשר גם לחשב את העבודה לאורך מסלול נוח, למשל קודם לאורך $x$ ב-$y = 0$, ואז $\Delta U = -W$.
+    commonWrong:
+      - value: 10
+        feedback: 'זו העבודה של הכוח. ההפרש באנרגיה הפוטנציאלית הוא מינוס העבודה: $\Delta U = -W$.'
+        misconception: MC-3-u-sign-of-integral
+      - value: -14
+        feedback: >-
+          חישבתם $\int F_x\,dx$ כש-$y = 1$ לאורך כל הדרך ($4 + 6$) והוספתם $\int F_y\,dy$ כש-$x = 2$ לאורך כל הדרך
+          ($4$). כך האיבר $x^2y$ נספר פעמיים. אינטגרלו לאורך מסלול אמיתי, או מצאו את $U$ ובדקו אותה בשתי הנגזרות.
+    hints:
+      - 'עשו אינטגרל של $F_x$ לפי $x$, הפכו את הסימן, והוסיפו "קבוע" שתלוי ב-$y$. את הקבוע הזה קובעת המשוואה של $F_y$.'
+
+  - id: Q-3.2-saddle
+    type: mc
+    objectives: [OBJ-3.2-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      האנרגיה הפוטנציאלית של דסקית על שולחן היא $U(x,\,y) = a\left(x^2 - y^2\right)$ עם $a > 0$, בצורת אוכף. בראשית
+      $\nabla U = 0$. מה נכון לגבי הדסקית שמונחת בראשית ומקבלת דחיפה קטנה?
+    choices:
+      - text: בדחיפה לאורך $x$ היא חוזרת לראשית, ובדחיפה לאורך $y$ היא מתרחקת. זה לא שיווי משקל יציב.
+        correct: true
+        feedback: >-
+          נכון. $\vec F = -\nabla U = (-2ax,\ 2ay)$. לאורך $x$ הכוח מחזיר אל הראשית, ולאורך $y$ הוא דוחף החוצה. די
+          בכיוון אחד שבו $U$ יורדת כדי ששיווי המשקל יהיה לא יציב: כל דחיפה כמעט, שיש לה רכיב $y$, מתרחקת.
+      - text: היא חוזרת לראשית בכל דחיפה, כי שם $\nabla U = 0$ ו-$\partial^2U/\partial x^2 > 0$.
+        feedback: >-
+          $\nabla U = 0$ אומר רק שהכוח מתאפס, כלומר שזו נקודת שיווי משקל. היציבות נקבעת בכל הכיוונים: כאן
+          $\partial^2U/\partial y^2 = -2a < 0$, ולאורך $y$ הנקודה היא מקסימום.
+        misconception: MC-3-equilibrium-always-stable
+      - text: היא מתרחקת בכל דחיפה, כי $U$ לא מינימלית בראשית.
+        feedback: 'לאורך ציר $x$ הנקודה היא מינימום של $U$, והכוח מחזיר. דחיפה לאורך $x$ בדיוק נותנת תנודה סביב הראשית.'
+      - text: הראשית לא נקודת שיווי משקל, כי $U$ לא קבועה סביבה.
+        feedback: 'שיווי משקל פירושו שהכוח אפס בנקודה, כלומר $\nabla U = 0$ שם. $U$ לא צריכה להיות קבועה בסביבה.'
+    hints:
+      - 'חשבו את $\vec F = -\nabla U$ בנקודות $(\epsilon,\,0)$ ו-$(0,\,\epsilon)$ ליד הראשית.'

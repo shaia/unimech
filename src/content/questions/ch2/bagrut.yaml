@@ -1,0 +1,481 @@
+# Chapter 2 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each,
+# climbing basic → mid → bagrut (exam level). Each problem joins objectives from at least two lessons,
+# and the four together touch every lesson of the chapter: 1 (2.2, 2.3, 2.4, 2.5), 2 (2.1, 2.4, 2.6),
+# 3 (2.7, 2.8), 4 (2.2, 2.3, 2.6). Open parts follow the course format: law → manipulation → limit →
+# units → substitution → result.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8), script .scratch/ch2/review.ts:
+#   1: m1 = 2.0 kg on a 30° incline, μs = 0.40, μk = 0.30, m2 = 6.0 kg on a movable pulley (a1 = 2a2):
+#      held at rest T = m2g/2 = 29.4 N, friction needed 29.4 - 9.8 = 19.6 N > μs m1 g cos30° = 6.79 N;
+#      a2 = g(m2 - 2m1(sinθ + μk cosθ))/(m2 + 4m1) = 2.07 m/s², a1 = 4.15 m/s², T = 23.2 N
+#      (a1 = a2 assumed: T = 20.7; no acceleration term: 14.9);
+#   2: R = 80 m, θ = 20°, μs = 0.25: v0 = √(gR tanθ) = 16.9 m/s (gR tanθ = 285, √(gR/tanθ) = 46.4);
+#      v_max = √(gR(sinθ+μcosθ)/(cosθ-μsinθ)) = 23.0 m/s (82.8 km/h), v_min = 9.05 m/s;
+#   3: boat 500 kg, v0 = 10 m/s, b = 100 kg/s: τ = 5.0 s, stopping distance m v0/b = 50 m
+#      (constant deceleration b v0/m: 25 m; distance in one τ: 31.6 m);
+#   4: R = 1.0 m, bucket 1.0 kg, water 2.0 kg: v_top,min = √(gR) = 3.13 m/s (√(5gR) = 7.00);
+#      at the top at 4.0 m/s: N = m(v²/R - g) = 12.4 N, T = (M+m)(v²/R - g) = 18.6 N;
+#      at the bottom at 7.43 m/s (= √(4² + 4gR), the energy result of chapter 3): T = 3(9.8 + 55.2) = 195 N
+#      (minus g: 136; without g: 166; water only: 130).
+
+chapter: 2
+questions:
+  # ------------------------------------------------------------ 1: a block on an incline pulled through a movable pulley
+  - id: Q-2-bagrut-1
+    type: bagrut
+    title: גוש על מדרון וגלגלת נעה
+    prompt: >-
+      גוש בעל מסה $m_1 = 2.0\,\text{kg}$ מונח על מדרון קבוע שזווית השיפוע שלו $\theta = 30^\circ$. בין הגוש למדרון
+      $\mu_s = 0.40$ ו-$\mu_k = 0.30$. מהגוש יוצא חוט, במקביל למדרון, אל גלגלת קבועה בראש המדרון. מהגלגלת החוט יורד
+      אנכית אל גלגלת נעה, עוקף אותה מלמטה, ועולה אנכית אל וו קבוע בתקרה. על הגלגלת הנעה תלוי גוש בעל מסה
+      $m_2 = 6.0\,\text{kg}$. החוט והגלגלות חסרי מסה וחסרי חיכוך, והחוט לא נמתח. משחררים את המערכת ממנוחה.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-2.5-1]
+        prompt: הגוש $m_1$ עולה במדרון $20\,\text{cm}$. מה עושה הגוש $m_2$?
+        choices:
+          - text: הוא יורד $10\,\text{cm}$.
+            correct: true
+            feedback: >-
+              נכון. האורך של החוט הוא $\ell + 2y_2$ ועוד קבוע, כאשר $\ell$ הוא הקטע על המדרון ו-$y_2$ העומק של הגלגלת
+              הנעה. $\ell$ מתקצר ב-$20\,\text{cm}$, ולכן כל אחד משני הקטעים האנכיים מתארך ב-$10\,\text{cm}$. בתאוצות:
+              $a_1 = 2a_2$.
+          - text: הוא יורד $20\,\text{cm}$.
+            feedback: '$m_2$ תלוי על **שני** קטעים של החוט. ה-$20\,\text{cm}$ שהתפנו מתחלקים ביניהם.'
+            misconception: MC-2-constraint-equal-accel
+          - text: הוא יורד $40\,\text{cm}$.
+            feedback: 'הפכתם את היחס. הגלגלת הנעה זזה **פחות** מהקצה של החוט, כי כל תזוזה שלה מאריכה שני קטעים.'
+          - text: 'זה תלוי במסות ובחיכוך.'
+            feedback: 'משוואת האילוץ היא גיאומטריה בלבד: היא באה מאורך החוט, ולא תלויה בכוחות.'
+        hints:
+          - 'כתבו את האורך של החוט כסכום של הקטע על המדרון ושני הקטעים האנכיים.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-2.4-1, OBJ-2.3-1]
+        prompt: >-
+          נניח לרגע שהמערכת נשארת במנוחה. מה היה צריך להיות הגודל של כוח החיכוך הסטטי על $m_1$? השוו אותו לחיכוך
+          הסטטי המרבי, וקבעו אם המערכת באמת נשארת במנוחה.
+        answer: 19.6
+        unit: N
+        correctFeedback: >-
+          נכון. במנוחה, לגוש $m_2$: $2T = m_2g$, ולכן $T = 29.4\,\text{N}$. לגוש $m_1$, לאורך המדרון: $T - m_1g\sin\theta - f = 0$,
+          ולכן $f = 29.4 - 9.8 = 19.6\,\text{N}$, במורד המדרון. אבל $f_{\max} = \mu_sm_1g\cos\theta = 6.79\,\text{N}$ בלבד,
+          ולכן החיכוך לא יכול להחזיק: $m_1$ עולה במדרון, ו-$m_2$ יורד.
+        wrongFeedback: >-
+          מצאו את המתיחות במנוחה מהגוש $m_2$ והגלגלת. אחר כך כתבו את החוק השני לגוש $m_1$ לאורך המדרון, עם החיכוך
+          כנעלם.
+        commonWrong:
+          - value: 29.4
+            feedback: 'זו המתיחות. החיכוך צריך לאזן רק את מה שהמתיחות מוסיפה על רכיב הכובד במורד, $m_1g\sin\theta = 9.8\,\text{N}$.'
+          - value: 39.2
+            feedback: >-
+              הוספתם את רכיב הכובד במקום לחסר. המתיחות מושכת במעלה, והכובד במורד. החיכוך משלים את מה שחסר לכובד:
+              $29.4 - 9.8$.
+          - value: 6.79
+            feedback: >-
+              זה $\mu_sN$, החיכוך הסטטי **המרבי**. השאלה היא כמה חיכוך היה דרוש. החיכוך הדרוש גדול מהמרבי, ולכן אין
+              מנוחה.
+            misconception: MC-2-static-friction-always-max
+        hints:
+          - 'שני קטעים של החוט מחזיקים את הגלגלת הנעה.'
+
+      - label: ג
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-2.5-2, OBJ-2.4-2, OBJ-2.2-2]
+        prompt: >-
+          (1) כתבו את משוואות התנועה של שני הגושים ואת משוואת האילוץ, ומצאו ביטוי לתאוצה $a_2$ של $m_2$, בעזרת $m_1$,
+          $m_2$, $\theta$, $\mu_k$ ו-$g$.
+
+          (2) בדקו את הביטוי בשני גבולות: $m_1 \to 0$, וגם מדרון אנכי חלק ($\theta = 90^\circ$, $\mu_k = 0$). בדקו יחידות.
+
+          (3) חשבו את $a_1$ ואת $a_2$.
+        hints:
+          - 'הגוש $m_1$ עולה במדרון, ולכן החיכוך הקינטי עליו פונה במורד.'
+          - 'מהמשוואה של $m_1$ בודדו את $T$, והציבו במשוואה של $m_2$ יחד עם $a_1 = 2a_2$.'
+        solution:
+          - { kind: law, text: 'החוק השני לכל גוש, עם הכיוון החיובי בכיוון התנועה: $m_1$ במעלה המדרון, $m_2$ כלפי מטה. בניצב למדרון $N = m_1g\cos\theta$, והחיכוך הקינטי $\mu_km_1g\cos\theta$ במורד. האילוץ מאורך החוט: $a_1 = 2a_2$.' }
+          - { kind: manipulation, text: 'לגוש $m_1$: $T - m_1g\sin\theta - \mu_km_1g\cos\theta = m_1a_1$. לגוש $m_2$ עם הגלגלת: $m_2g - 2T = m_2a_2$. מהראשונה, עם $a_1 = 2a_2$: $T = m_1\left(2a_2 + g(\sin\theta + \mu_k\cos\theta)\right)$. מציבים בשנייה: $$a_2 = g\,\frac{m_2 - 2m_1\left(\sin\theta + \mu_k\cos\theta\right)}{m_2 + 4m_1}$$' }
+          - { kind: limit, text: 'כש-$m_1 \to 0$: $a_2 \to g$. החוט לא מושך כלום, והגוש $m_2$ נופל חופשית. מדרון אנכי חלק: $a_2 = g\,\dfrac{m_2 - 2m_1}{m_2 + 4m_1}$, התוצאה של גלגלת נעה עם גוש תלוי בקצה החופשי (שיעור 2.5), ו-$a_2 = 0$ כש-$m_2 = 2m_1$.' }
+          - { kind: units, text: 'המנה של המסות חסרת ממדים, וכך גם $\sin\theta + \mu_k\cos\theta$, ולכן $a_2$ ביחידות של $g$, $\text{m/s}^2$.' }
+          - { kind: substitution, text: '$\sin\theta + \mu_k\cos\theta = 0.5 + 0.3\cdot0.866 = 0.760$. $a_2 = 9.8\cdot\dfrac{6.0 - 2\cdot2.0\cdot0.760}{6.0 + 8.0} = 9.8\cdot\dfrac{2.96}{14} = 2.07\,\text{m/s}^2$, ו-$a_1 = 2a_2 = 4.15\,\text{m/s}^2$.' }
+          - { kind: result, text: '$a_2 = g\,\dfrac{m_2 - 2m_1(\sin\theta + \mu_k\cos\theta)}{m_2 + 4m_1} = 2.07\,\text{m/s}^2$ כלפי מטה, ו-$a_1 = 4.15\,\text{m/s}^2$ במעלה המדרון. הביטוי חיובי, כמו שהנחנו: $m_2$ באמת יורד.' }
+        rubric:
+          - text: 'כתבתי את משוואת האילוץ, $a_1 = 2a_2$, מאורך החוט.'
+          - text: שרטטתי תרשים כוחות לכל גוש, עם שני קטעי חוט על $m_2$ וחיכוך קינטי במורד המדרון על $m_1$.
+          - text: חילצתי את $T$ וקיבלתי את הביטוי ל-$a_2$.
+          - text: 'בדקתי את הגבולות: $a_2 \to g$ כש-$m_1 \to 0$, והתוצאה של גלגלת נעה במדרון אנכי חלק.'
+          - text: 'חישבתי $a_2 \approx 2.07\,\text{m/s}^2$ ו-$a_1 \approx 4.15\,\text{m/s}^2$, ובדקתי שהסימן מתאים לכיוון שהנחתי.'
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-2.3-1, OBJ-2.2-2]
+        prompt: מה המתיחות בחוט בזמן התנועה?
+        answer: 23.2
+        unit: N
+        correctFeedback: >-
+          נכון. $T = m_1\left(a_1 + g(\sin\theta + \mu_k\cos\theta)\right) = 2.0\cdot(4.15 + 7.45) = 23.2\,\text{N}$. בדיקה מהגוש
+          השני: $m_2g - 2T = 58.8 - 46.4 = 12.4\,\text{N} = m_2a_2$. המתיחות קטנה מ-$29.4\,\text{N}$ של המנוחה, כי $m_2$ מאיץ
+          כלפי מטה.
+        wrongFeedback: 'הציבו את $a_1$ מחלק ג במשוואה של $m_1$ לאורך המדרון, ובדקו את התוצאה במשוואה של $m_2$.'
+        commonWrong:
+          - value: 29.4
+            feedback: 'זו המתיחות במנוחה, $m_2g/2$. בזמן התנועה $m_2$ מאיץ כלפי מטה, ולכן $2T < m_2g$.'
+            misconception: MC-2-tension-equals-hanging-weight
+          - value: 20.7
+            feedback: >-
+              זו המתיחות אם שני הגושים מאיצים באותה תאוצה. אבל $m_1$ נע מהר פי 2 מ-$m_2$, ולכן צריך יותר כוח כדי להאיץ
+              אותו.
+            misconception: MC-2-constraint-equal-accel
+          - value: 14.9
+            feedback: 'שכחתם את האיבר $m_1a_1$: זה הכוח שהיה מושך את $m_1$ במהירות קבועה. הגוש מאיץ, ולכן המתיחות גדולה יותר.'
+
+  # ------------------------------------------------------------ 2: a banked curve, and a plumb line inside the car
+  - id: Q-2-bagrut-2
+    type: bagrut
+    title: עקומה משופעת ומטוטלת בתוך המכונית
+    prompt: >-
+      עקומה של כביש היא קשת של מעגל אופקי ברדיוס $R = 80\,\text{m}$, והכביש משופע לעבר מרכז העקומה בזווית
+      $\theta = 20^\circ$. מקדם החיכוך הסטטי בין הצמיגים לכביש $\mu_s = 0.25$. מכונית עוברת את העקומה במהירות קבועה
+      בגודלה. נוסעת במכונית תלתה משקולת קטנה על חוט מהמראה, והמשקולת במנוחה ביחס למכונית.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-2.6-1, OBJ-2.1-2]
+        prompt: במערכת הקרקע, לאיזה כיוון פונה הכוח השקול על המכונית?
+        choices:
+          - text: אופקית, לעבר מרכז המעגל.
+            correct: true
+            feedback: >-
+              נכון. המכונית נעה במעגל אופקי, ולכן התאוצה שלה $v^2/R$, אופקית ולעבר המרכז. לפי החוק השני, השקול באותו
+              כיוון, ולא לאורך הכביש המשופע.
+          - text: במורד השיפוע, במקביל לפני הכביש.
+            feedback: >-
+              המעגל שהמכונית מקיפה אופקי, ומרכזו באותו גובה כמוה. התאוצה הצנטריפטלית פונה אל המרכז, אופקית, ולא לאורך
+              השיפוע.
+          - text: 'אין כוח שקול: המהירות קבועה, והכוח הצנטריפוגלי מאזן את הכוחות האחרים.'
+            feedback: >-
+              גודל המהירות קבוע, אבל הכיוון שלה משתנה, ולכן יש תאוצה. במערכת הקרקע אין כוח צנטריפוגלי שיאזן אותה.
+            misconception: MC-2-centrifugal-in-inertial
+          - text: בכיוון הנסיעה, כי המנוע דוחף את המכונית.
+            feedback: >-
+              המהירות קבועה בגודלה, ולכן אין רכיב של תאוצה בכיוון הנסיעה. הדחיפה של המנוע, דרך החיכוך, רק מאזנת את
+              הגרר.
+            misconception: MC-2-acceleration-along-velocity
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-2.6-2]
+        prompt: באיזו מהירות המכונית עוברת את העקומה בלי שום חיכוך לרוחב הכביש?
+        answer: 16.9
+        unit: m/s
+        correctFeedback: >-
+          נכון. $N\cos\theta = mg$ ו-$N\sin\theta = mv_0^2/R$, ולכן $v_0 = \sqrt{gR\tan\theta} = \sqrt{9.8\cdot80\cdot0.364} = 16.9\,\text{m/s}$,
+          כ-61 קילומטר לשעה.
+        wrongFeedback: 'בלי חיכוך, הנורמלי לבד צריך לתת גם את האיזון האנכי וגם את הכוח הרדיאלי. פרקו אותו לאנך ולאופק.'
+        commonWrong:
+          - value: 285
+            feedback: 'זה $gR\tan\theta$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
+          - value: 46.4
+            feedback: 'חישבתם $\sqrt{gR/\tan\theta}$. הרכיב האופקי של הנורמלי הוא $N\sin\theta$, ולכן $\tan\theta$ במונה.'
+        hints:
+          - 'חלקו את המשוואה האופקית באנכית.'
+
+      - label: ג
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-2.6-2, OBJ-2.4-2]
+        prompt: >-
+          (1) מצאו ביטוי למהירות המרבית שבה המכונית עוברת את העקומה בלי להחליק, בעזרת $g$, $R$, $\theta$ ו-$\mu_s$.
+
+          (2) בדקו את הביטוי בגבולות $\mu_s \to 0$ ו-$\theta \to 0$, ובדקו יחידות.
+
+          (3) חשבו את המהירות המרבית.
+        hints:
+          - 'במהירות המרבית המכונית נוטה להחליק החוצה, במעלה השיפוע. לאן פונה החיכוך?'
+        solution:
+          - { kind: law, text: 'החוק השני באנך ובאופק (לעבר המרכז). במהירות המרבית החיכוך הסטטי מגיע לגבול שלו, $\mu_sN$, ופונה במורד השיפוע. הנורמלי נטוי ב-$\theta$ מהאנך, והחיכוך ב-$\theta$ מהאופק.' }
+          - { kind: manipulation, text: 'באנך: $N\cos\theta - \mu_sN\sin\theta = mg$. באופק: $N\sin\theta + \mu_sN\cos\theta = \dfrac{mv^2}{R}$. מחלקים את השנייה בראשונה, ו-$N$ ו-$m$ מצטמצמים: $$v_{\max}^2 = gR\,\frac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}$$' }
+          - { kind: limit, text: 'כש-$\mu_s \to 0$: $v_{\max}^2 \to gR\tan\theta$, המהירות של חלק ב. כש-$\theta \to 0$: $v_{\max}^2 \to \mu_sgR$, הכביש השטוח. ואם $\mu_s \to \cot\theta$, המכנה מתאפס: בשיפוע כזה החיכוך מחזיק בכל מהירות.' }
+          - { kind: units, text: 'המנה חסרת ממדים, ו-$gR$ ביחידות $\text{m/s}^2\cdot\text{m} = \text{m}^2/\text{s}^2$, ולכן $v_{\max}$ ב-$\text{m/s}$.' }
+          - { kind: substitution, text: '$\sin20^\circ = 0.342$, $\cos20^\circ = 0.940$: $v_{\max}^2 = 9.8\cdot80\cdot\dfrac{0.342 + 0.235}{0.940 - 0.0855} = 784\cdot0.675 = 530\,\text{m}^2/\text{s}^2$.' }
+          - { kind: result, text: '$v_{\max} = \sqrt{gR\,\dfrac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}} = 23.0\,\text{m/s}$, כ-83 קילומטר לשעה. (באותו אופן, עם החיכוך במעלה, המהירות המינימלית $9.05\,\text{m/s}$.)' }
+        rubric:
+          - text: קבעתי שבמהירות המרבית החיכוך הוא $\mu_sN$ ופונה במורד השיפוע.
+          - text: כתבתי את החוק השני באנך ובאופק, לא לאורך הכביש, עם הרכיבים של הנורמלי ושל החיכוך.
+          - text: חילקתי את המשוואות, וקיבלתי ביטוי בלי $N$ ובלי $m$.
+          - text: בדקתי שהביטוי חוזר ל-$gR\tan\theta$ בלי חיכוך ול-$\mu_sgR$ בכביש שטוח.
+          - text: 'חישבתי $v_{\max} \approx 23\,\text{m/s}$.'
+
+      - label: ד
+        type: twotier
+        points: 6
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-2.1-1, OBJ-2.1-2, OBJ-2.6-2]
+        prompt: >-
+          המכונית נוסעת במהירות של חלק ב, שבה אין חיכוך לרוחב הכביש. באיזה כיוון נטוי החוט של המשקולת, ביחס למכונית?
+        choices:
+          - text: ניצב לפני הכביש. המשקולת נטויה מהאנך בזווית $\theta$, הרחק מהמרכז.
+            correct: true
+            feedback: נכון. ולמה בדיוק $\theta$?
+          - text: אנכי, כי המכונית נעה במהירות קבועה.
+            feedback: >-
+              גודל המהירות קבוע, אבל המכונית מאיצה לעבר המרכז, ולכן היא לא מערכת ייחוס אינרציאלית. גם המשקולת מאיצה
+              איתה, וחוט אנכי לא יכול לתת לה כוח אופקי.
+            misconception: MC-2-uniform-motion-inertial
+          - text: נטוי מהאנך לעבר מרכז העקומה.
+            feedback: >-
+              המתיחות צריכה רכיב אופקי **לעבר** המרכז. החוט מושך את המשקולת לכיוון נקודת התלייה, ולכן המשקולת עצמה
+              נמצאת בצד הרחוק מהמרכז.
+            misconception: MC-2-flies-outward
+        reasons:
+          - text: 'במערכת הקרקע: $T\sin\alpha = mv_0^2/R$ ו-$T\cos\alpha = mg$, ולכן $\tan\alpha = v_0^2/(gR) = \tan\theta$. החוט מקביל לכוח הנורמלי על המכונית.'
+            correct: true
+            feedback: >-
+              זה הנימוק. המשקולת והמכונית מאיצות באותה תאוצה, ולכל אחת מהן כוח אחד, מלבד הכובד, שנותן אותה: הנורמלי
+              למכונית, המתיחות למשקולת. במהירות התכנון הנוסעים מרגישים "כובד" ניצב למושב, בלי דחיפה הצידה.
+          - text: כוח צנטריפוגלי דוחף את המשקולת החוצה, ומאזן את המתיחות.
+            feedback: >-
+              מהקרקע אין כוח כזה: אין גוף שמפעיל אותו. המתיחות והכובד לא מאוזנים: השקול שלהם הוא בדיוק הכוח הרדיאלי
+              שהמשקולת צריכה.
+            misconception: MC-2-centrifugal-in-inertial
+          - text: החוט תמיד אנכי במכונית שלא מחליקה.
+            feedback: 'החוט אנכי רק כשהמכונית לא מאיצה. במכונית שמאיצה בקו ישר, או סובבת, הוא נטוי.'
+            misconception: MC-2-uniform-motion-inertial
+
+  # ------------------------------------------------------------ 3: a boat coasting against water drag
+  - id: Q-2-bagrut-3
+    type: bagrut
+    title: סירה שמנועה כבה
+    prompt: >-
+      סירה בעלת מסה $m = 500\,\text{kg}$ נעה במהירות $v_0 = 10\,\text{m/s}$ במים שקטים, ובזמן $t = 0$, בנקודה $x = 0$,
+      המנוע שלה כבה. מכאן פועל עליה בכיוון התנועה רק כוח הגרר של המים, שבמודל הזה ליניארי במהירות,
+      $F = -bv$, עם $b = 100\,\text{kg/s}$.
+    parts:
+      - label: א
+        type: numeric
+        points: 4
+        level: basic
+        objectives: [OBJ-2.7-1]
+        prompt: מה קבוע הזמן $\tau$ של ההאטה?
+        answer: 5.0
+        unit: s
+        correctFeedback: 'נכון. $m\,dv/dt = -bv$ נותן $v = v_0e^{-t/\tau}$, עם $\tau = m/b = 500/100 = 5.0\,\text{s}$.'
+        wrongFeedback: 'בדקו יחידות: איזה צירוף של $m$ ו-$b$ יוצא בשניות?'
+        commonWrong:
+          - value: 0.2
+            feedback: 'זה $b/m$, ביחידות $1/\text{s}$: קצב הדעיכה, לא קבוע הזמן. $\tau = m/b$.'
+          - value: 50
+            feedback: 'זה $mv_0/b$, ביחידות מטרים: מרחק, לא זמן. קבוע הזמן לא תלוי במהירות ההתחלתית.'
+
+      - label: ב
+        type: numeric
+        points: 6
+        level: mid
+        objectives: [OBJ-2.8-2]
+        prompt: >-
+          כתבו את משוואת התנועה בעזרת כלל השרשרת, $a = v\,\dfrac{dv}{dx}$, ומצאו את $v$ כפונקציה של $x$. איזה מרחק עוברת
+          הסירה עד שהיא נעצרת?
+        answer: 50
+        unit: m
+        correctFeedback: >-
+          נכון. $mv\,\dfrac{dv}{dx} = -bv$, ולכן $\dfrac{dv}{dx} = -\dfrac bm$: המהירות יורדת **קווית** עם הדרך,
+          $v = v_0 - \dfrac bm x$. היא מתאפסת ב-$x = \dfrac{mv_0}{b} = v_0\tau = 50\,\text{m}$. מרחק סופי, אף שבזמן, לפי
+          חלק א, הסירה אף פעם לא נעצרת לגמרי.
+        wrongFeedback: 'הציבו $a = v\,dv/dx$. ה-$v$ מצטמצם משני האגפים, ונשארת משוואה פשוטה מאוד.'
+        commonWrong:
+          - value: 25
+            feedback: >-
+              הנחתם האטה קבועה, בערך ההתחלתי שלה $bv_0/m = 2.0\,\text{m/s}^2$, וקיבלתם $v_0^2/(2a)$. אבל ההאטה קטנה
+              יחד עם המהירות, ולכן הסירה עוברת יותר.
+            misconception: MC-2-constant-acceleration-formulas
+          - value: 31.6
+            feedback: 'זה המרחק שהסירה עוברת עד $t = \tau$, $v_0\tau(1 - e^{-1})$. אז היא עוד נעה ב-37% מהמהירות ההתחלתית.'
+            misconception: MC-2-time-constant-is-full-time
+        hints:
+          - '$mv\,dv/dx = -bv$. מה נשאר אחרי שמחלקים ב-$v$?'
+
+      - label: ג
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-2.7-1, OBJ-2.8-2]
+        prompt: >-
+          (1) מצאו את $v(t)$, ובאינטגרציה נוספת את $x(t)$.
+
+          (2) הראו שכש-$t \to \infty$, $x(t)$ מתקרב למרחק של חלק ב, ובדקו את הביטוי גם בגבול $b \to 0$ וביחידות.
+
+          (3) איזה מרחק עברה הסירה אחרי $t = 10\,\text{s}$?
+        hints:
+          - 'הפרידו משתנים: $\dfrac{dv}{v} = -\dfrac bm\,dt$.'
+        solution:
+          - { kind: law, text: 'החוק השני בכיוון התנועה: $m\dfrac{dv}{dt} = -bv$, עם $v(0) = v_0$ ו-$x(0) = 0$.' }
+          - { kind: manipulation, text: 'הפרדת משתנים: $\displaystyle\int_{v_0}^{v}\frac{dv''}{v''} = -\frac1\tau\int_0^t dt''$, עם $\tau = m/b$, ולכן $v(t) = v_0e^{-t/\tau}$. אינטגרציה נוספת: $x(t) = \displaystyle\int_0^t v_0e^{-t''/\tau}\,dt'' = v_0\tau\left(1 - e^{-t/\tau}\right)$.' }
+          - { kind: limit, text: 'כש-$t \to \infty$, $e^{-t/\tau} \to 0$, ו-$x \to v_0\tau = mv_0/b$: המרחק של חלק ב. כש-$b \to 0$, $\tau \to \infty$, ופיתוח $1 - e^{-t/\tau} \approx t/\tau$ נותן $x \approx v_0t$: תנועה במהירות קבועה, בלי מים.' }
+          - { kind: units, text: '$v_0\tau$ ביחידות $\text{m/s}\cdot\text{s} = \text{m}$, והמעריך $t/\tau$ חסר ממדים.' }
+          - { kind: substitution, text: 'ב-$t = 10\,\text{s} = 2\tau$: $x = 10\cdot5.0\cdot\left(1 - e^{-2}\right) = 50\cdot0.865 = 43.2\,\text{m}$, והמהירות $10e^{-2} = 1.35\,\text{m/s}$.' }
+          - { kind: result, text: '$v(t) = v_0e^{-t/\tau}$ ו-$x(t) = v_0\tau\left(1 - e^{-t/\tau}\right)$, שמתקרב ל-$50\,\text{m}$ ולא עובר אותו. אחרי $10\,\text{s}$ הסירה עברה $43.2\,\text{m}$.' }
+        rubric:
+          - text: הפרדתי משתנים ומצאתי $v = v_0e^{-t/\tau}$ עם $\tau = m/b$.
+          - text: 'אנטגרלתי שוב עם $x(0) = 0$, וקיבלתי $x = v_0\tau(1 - e^{-t/\tau})$, כולל קבוע האינטגרציה.'
+          - text: הראיתי ש-$x \to v_0\tau$, המרחק של חלק ב, ושבגבול $b \to 0$ מתקבל $x \approx v_0t$.
+          - text: 'חישבתי $x(10\,\text{s}) \approx 43\,\text{m}$.'
+
+      - label: ד
+        type: mc
+        points: 5
+        level: bagrut
+        qualitative: true
+        objectives: [OBJ-2.7-2, OBJ-2.8-2]
+        prompt: >-
+          במהירויות גבוהות הגרר של המים קרוב יותר לגרר ריבועי, $F = -cv^2$. נניח שהגרר ריבועי בכל המהירויות. מה משתנה
+          במרחק העצירה?
+        choices:
+          - text: 'הסירה לא נעצרת בשום מרחק סופי: $v = v_0e^{-cx/m}$, והמהירות דועכת אקספוננציאלית עם הדרך.'
+            correct: true
+            feedback: >-
+              נכון. $mv\,\dfrac{dv}{dx} = -cv^2$, ולכן $\dfrac{dv}{v} = -\dfrac cm\,dx$, ו-$v = v_0e^{-cx/m}$: המהירות אף פעם לא
+              מתאפסת. גם $x(t) = \dfrac mc\ln\left(1 + \dfrac{cv_0}{m}t\right)$ גדל בלי גבול, לאט מאוד. במהירות נמוכה הגרר
+              הריבועי חלש מהליניארי, ולכן הוא לבד לא עוצר את הסירה.
+          - text: 'היא נעצרת במרחק $m/c$, כמו בגרר הליניארי עם $b$ במקום $c$.'
+            feedback: >-
+              בגרר ליניארי $v$ מצטמצם, ו-$dv/dx$ קבוע. בגרר ריבועי נשאר $v$ אחד, ו-$dv/dx = -(c/m)v$: המהירות יורדת
+              עם הדרך לאט יותר ככל שהיא קטנה.
+            misconception: MC-2-drag-always-linear
+          - text: היא נעצרת מוקדם יותר, כי גרר ריבועי חזק יותר מליניארי.
+            feedback: >-
+              גרר ריבועי חזק יותר רק במהירות גבוהה. כשהסירה מאטה, $cv^2$ קטן מהר יותר מ-$bv$, והסירה כמעט מפסיקה
+              להאט.
+            misconception: MC-2-drag-always-quadratic
+          - text: היא נעצרת במרחק סופי, אבל אחרי זמן אינסופי.
+            feedback: 'זה המצב בגרר **ליניארי**: $50\,\text{m}$ בזמן אינסופי. בגרר ריבועי גם המרחק אינסופי.'
+        explanation: >-
+          בסירה אמיתית שני הגררים קיימים יחד. במהירות גבוהה הריבועי שולט, ובמהירות נמוכה הליניארי, והוא שעוצר את
+          הסירה במרחק סופי. מודל של גרר אחד טוב רק בתחום המהירויות שבו הוא שולט.
+
+  # ------------------------------------------------------------ 4: a bucket of water on a vertical circle
+  - id: Q-2-bagrut-4
+    type: bagrut
+    title: דלי מים במעגל אנכי
+    prompt: >-
+      תלמידה מסובבת דלי בעל מסה $M = 1.0\,\text{kg}$, ובו $m = 2.0\,\text{kg}$ מים, במעגל אנכי, בעזרת חבל קל. הדלי
+      והמים נעים במעגל ברדיוס $R = 1.0\,\text{m}$ (הזניחו את ההבדל ברדיוס בין המים לדלי). בנקודה העליונה פי הדלי
+      פונה כלפי מטה.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-2.2-1]
+        prompt: >-
+          בנקודה העליונה, תחתית הדלי דוחפת את המים כלפי מטה, לעבר מרכז המעגל. מהו הכוח שיוצר איתו זוג של החוק
+          השלישי?
+        choices:
+          - text: המים דוחפים את תחתית הדלי כלפי מעלה.
+            correct: true
+            feedback: >-
+              נכון. זו אותה פעולה, מגע בין המים לתחתית, משני הצדדים. הכוח הזה פועל על הדלי, ולכן מופיע בתרשים הכוחות של
+              הדלי, ולא של המים.
+          - text: הכובד של המים, כלפי מטה.
+            feedback: >-
+              הכובד של המים הוא פעולה בין המים לכדור הארץ, והזוג שלו הוא המשיכה של המים את כדור הארץ. ושני הכוחות פועלים
+              על המים, ולכן הם לא זוג.
+            misconception: MC-2-normal-is-reaction
+          - text: הכוח הצנטריפוגלי על המים, כלפי מעלה.
+            feedback: 'במערכת הקרקע אין כוח צנטריפוגלי, ולכוח שאין גוף שמפעיל אותו אין זוג. השקול על המים פונה למרכז.'
+            misconception: MC-2-centrifugal-in-inertial
+          - text: המתיחות בחבל, שמושכת את הדלי כלפי מטה.
+            feedback: 'המתיחות היא פעולה בין החבל לדלי. הזוג שלה הוא הכוח שהדלי מושך בו את החבל.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-2.6-2]
+        prompt: מה המהירות המינימלית של הדלי בנקודה העליונה, כדי שהמים לא ייפלו ממנו?
+        answer: 3.13
+        unit: m/s
+        correctFeedback: >-
+          נכון. על המים בנקודה העליונה: $mg + N = mv^2/R$. תחתית הדלי רק דוחפת, $N \ge 0$, ולכן $v^2 \ge gR$, ו-$v_{\min} = \sqrt{9.8\cdot1.0} = 3.13\,\text{m/s}$.
+          תחתית הדלי היא כמו חוט: היא יכולה לפעול רק בכיוון אחד.
+        wrongFeedback: 'כתבו את החוק השני למים ברכיב הרדיאלי. מה הערך הקטן ביותר של הכוח שהתחתית מפעילה עליהם?'
+        commonWrong:
+          - value: 9.8
+            feedback: 'זה $gR$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
+          - value: 0
+            feedback: >-
+              תחתית הדלי לא יכולה למשוך את המים כלפי מעלה. אם הדלי איטי מ-$\sqrt{gR}$, הכובד לבד גדול מהכוח הרדיאלי
+              הדרוש, והמים עוזבים את הדלי.
+            misconception: MC-2-string-like-rod
+          - value: 7.0
+            feedback: 'זה $\sqrt{5gR}$, המהירות המינימלית בנקודה **התחתונה** (משימור אנרגיה, פרק 3).'
+
+      - label: ג
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-2.6-2, OBJ-2.2-2, OBJ-2.3-1]
+        prompt: >-
+          בנקודה העליונה מהירות הדלי $4.0\,\text{m/s}$.
+
+          (1) מצאו ביטויים לכוח $N$ שתחתית הדלי מפעילה על המים, ולמתיחות $T$ בחבל.
+
+          (2) בדקו את שני הביטויים בגבול $v \to \sqrt{gR}$ ובדקו יחידות.
+
+          (3) חשבו את $N$ ואת $T$.
+        hints:
+          - 'שרטטו שני תרשימי כוחות: למים, ולמערכת של הדלי עם המים. מה הכוחות הפנימיים במערכת השנייה?'
+        solution:
+          - { kind: law, text: 'החוק השני ברכיב הרדיאלי, כלפי מטה אל המרכז, $\sum F_r = mv^2/R$, לכל גוף. כל הכוחות כאן אנכיים.' }
+          - { kind: manipulation, text: 'למים: $mg + N = \dfrac{mv^2}{R}$, ולכן $N = m\left(\dfrac{v^2}{R} - g\right)$. למערכת דלי + מים, שבה $N$ והזוג שלו פנימיים ומתבטלים: $(M + m)g + T = \dfrac{(M + m)v^2}{R}$, ולכן $T = (M + m)\left(\dfrac{v^2}{R} - g\right)$.' }
+          - { kind: limit, text: 'כש-$v \to \sqrt{gR}$, שני הביטויים מתאפסים יחד: הדלי והמים נופלים יחד חופשית בנקודה העליונה, בתאוצה $g = v^2/R$, ואף אחד לא דוחף את השני. כש-$v^2/R \gg g$ הכובד זניח, והכוחות הם $mv^2/R$ ו-$(M + m)v^2/R$, כמו במעגל אופקי.' }
+          - { kind: units, text: '$v^2/R$ ביחידות $\text{m/s}^2$, כמו $g$, ולכן $m(v^2/R - g)$ בניוטון.' }
+          - { kind: substitution, text: '$v^2/R = 16\,\text{m/s}^2$, ו-$v^2/R - g = 6.2\,\text{m/s}^2$. $N = 2.0\cdot6.2 = 12.4\,\text{N}$, ו-$T = 3.0\cdot6.2 = 18.6\,\text{N}$.' }
+          - { kind: result, text: '$N = m\left(v^2/R - g\right) = 12.4\,\text{N}$ על המים, כלפי מטה, ו-$T = (M + m)\left(v^2/R - g\right) = 18.6\,\text{N}$. הדלי דוחף את המים, ולפי החוק השלישי המים דוחפים את תחתית הדלי כלפי מעלה ב-$12.4\,\text{N}$.' }
+        rubric:
+          - text: כתבתי את החוק השני ברכיב הרדיאלי, עם הכובד והכוח של התחתית שניהם כלפי המרכז.
+          - text: מצאתי את $T$ ממערכת של הדלי והמים יחד, או מתרשים של הדלי עם הכוח של המים עליו כלפי מעלה, ושתי הדרכים נותנות אותה תוצאה.
+          - text: 'בדקתי ש-$N$ ו-$T$ מתאפסים יחד כש-$v^2 = gR$.'
+          - text: 'חישבתי $N \approx 12.4\,\text{N}$ ו-$T \approx 18.6\,\text{N}$.'
+
+      - label: ד
+        type: numeric
+        points: 6
+        level: bagrut
+        objectives: [OBJ-2.6-2, OBJ-2.3-1]
+        prompt: >-
+          בנקודה התחתונה מהירות הדלי $7.43\,\text{m/s}$. מה המתיחות בחבל שם?
+        answer: 195
+        unit: N
+        correctFeedback: >-
+          נכון. בנקודה התחתונה המרכז מעל הדלי. המתיחות כלפי מעלה, אל המרכז, והכובד כלפי מטה:
+          $T - (M + m)g = \dfrac{(M + m)v^2}{R}$, ולכן $T = 3.0\cdot(9.8 + 55.2) = 195\,\text{N}$, פי 6.6 מהכובד של הדלי והמים.
+          (המהירות הזו היא בדיוק מה ששימור אנרגיה, בפרק 3, נותן מהנקודה העליונה.)
+        wrongFeedback: 'בנקודה התחתונה המתיחות והכובד פונים לכיוונים הפוכים. מי מהם פונה אל המרכז?'
+        commonWrong:
+          - value: 136
+            feedback: 'חיסרתם את $g$, כמו בנקודה העליונה. למטה הכובד פונה **הרחק** מהמרכז, והמתיחות צריכה להתגבר גם עליו.'
+          - value: 166
+            feedback: 'זה $(M + m)v^2/R$ בלבד. המתיחות צריכה גם לשאת את הכובד, $(M + m)g = 29.4\,\text{N}$.'
+          - value: 130
+            feedback: 'זה הכוח שהדלי מפעיל על המים. החבל מושך את הדלי ואת המים יחד, $M + m = 3.0\,\text{kg}$.'

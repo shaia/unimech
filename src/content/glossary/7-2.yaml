@@ -1,0 +1,25 @@
+# Terms first defined in lesson 7.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). `c7-` ids are terms the course's
+# term table lacks.
+
+- id: centrifugal-force
+  term: כוח צנטריפוגלי
+  en: centrifugal force
+  unit: N
+  definition: הכוח המדומה מינוס m ω × (ω × r) במערכת מסתובבת. גודלו mω²ρ, כאשר ρ המרחק מציר הסיבוב, והוא פונה הרחק מהציר. הוא תלוי רק במקום, לא במהירות.
+  lesson: '7.2'
+
+- id: coriolis-force
+  term: כוח קוריוליס
+  en: Coriolis force
+  unit: N
+  definition: הכוח המדומה מינוס 2m ω × v' במערכת מסתובבת, כאשר v' המהירות במערכת הזו. הוא ניצב למהירות ולכן אינו עושה עבודה, והוא אפס לגוף במנוחה במערכת או לגוף שנע לאורך הציר.
+  reject: [כוח קוריאוליס]
+  lesson: '7.2'
+
+- id: c7-euler-force
+  term: כוח אוילר
+  en: Euler force
+  unit: N
+  definition: הכוח המדומה מינוס m (dω/dt) × r במערכת שהמהירות הזוויתית שלה משתנה. הוא פועל רק כשקצב הסיבוב או ציר הסיבוב משתנים.
+  lesson: '7.2'

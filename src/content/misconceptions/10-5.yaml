@@ -1,0 +1,9 @@
+# Misconceptions first detected in lesson 10.5. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 10.5
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-10-constant-force-constant-accel
+  title: כוח קבוע נותן תאוצה קבועה גם קרוב ל-c
+  belief: תחת כוח קבוע, התאוצה היא F/m והמהירות v = Ft/m, ולכן אחרי זמן מספיק הגוף עובר את מהירות האור.
+  truth: החוק השני ביחסות הוא F = dp/dt. תחת כוח קבוע התנע p = Ft גדל קווית, אבל המהירות v = (Ft/m)/√(1 + (Ft/(mc))²) שואפת ל-c ולא מגיעה אליה, והתאוצה קטנה כמו 1/γ³.
+  remedy: { lesson: '10.5', label: 'שיעור 10.5: תנועה היפרבולית תחת כוח קבוע' }

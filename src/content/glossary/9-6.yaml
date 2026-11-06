@@ -1,0 +1,14 @@
+# Terms first defined in lesson 9.6. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). `c9-` ids are terms chapter 9 added.
+
+- id: c9-twin-paradox
+  term: פרדוקס התאומים
+  en: twin paradox
+  definition: תאום אחד נשאר על כדור הארץ, והשני טס במהירות גבוהה לכוכב רחוק וחוזר. כשהם נפגשים, הנוסע צעיר יותר. זה נראה כסתירה, כי כל אחד רואה את השעון של השני מפגר. הפתרון הוא שהנוסע מחליף מערכת ייחוס אינרציאלית בנקודת הסיבוב, והתאום שנשאר לא.
+  lesson: '9.6'
+
+- id: c9-pole-barn
+  term: פרדוקס המוט והאסם
+  en: pole-and-barn paradox
+  definition: מוט ארוך מאסם נע מהר כך שבמערכת של האסם הוא קצר מהאסם ונכנס אליו כולו, ושתי הדלתות נסגרות עליו באותו רגע. במערכת של המוט האסם הוא שקצר יותר. הפתרון הוא יחסיות הבו-זמניות. במערכת של המוט הדלתות לא נסגרות באותו רגע, והמוט אף פעם לא כלוא בין שתי דלתות סגורות.
+  lesson: '9.6'

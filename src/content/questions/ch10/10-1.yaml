@@ -1,0 +1,286 @@
+# Lesson 10.1 question bank: the comprehension ladder of "תנע ואנרגיה יחסותיים".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed by .scratch/ch10/q.ts (rest energies given in the prompts: electron 0.511 MeV,
+# muon 106 MeV, proton 938 MeV):
+#   p(0.8c)/p(0.4c) = (0.8·1.667)/(0.4·1.091) = 3.06;
+#   electron at 0.80c: γ = 5/3, K = 0.341 MeV (½mv² = 0.164 MeV, E = 0.852 MeV);
+#   proton with K = 2mc²: γ = 3, β = 0.943 (γ = 2 gives 0.866; ½mv² = 2mc² gives β = 2);
+#   K = 1.0 MeV over 10 m: β_e = 0.941, β_p = 0.0461, t_p/t_e = 20.4 (classical √(938/0.511) = 42.8);
+#   p = 100 MeV/c: β = 1 (photon), 0.99999 (e), 0.686 (μ), 0.106 (p);
+#   β = 0.1: K/(½mv²) − 1 = 0.756% (series ¾β² = 0.75%; γ − 1 = 0.504%);
+#   muon with p = 200 MeV/c: E = 226 MeV, K = 120 MeV (p²/2m = 189 MeV), β = 0.884.
+
+chapter: 10
+questions:
+  # ---------------------------------------------------------------- OBJ-10.1-1 relativistic momentum and energy
+  - id: Q-10.1-momentum-grows
+    type: mc
+    objectives: [OBJ-10.1-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      גוף נע במהירות $v = 0.4c$, ומאיצים אותו עד $v = 0.8c$: המהירות שלו גדלה פי 2. פי כמה גדל התנע היחסותי
+      שלו, $p = \gamma mv$, כאשר $\gamma = 1/\sqrt{1 - v^2/c^2}$ הוא גורם לורנץ?
+    choices:
+      - text: יותר מפי 2.
+        correct: true
+        feedback: >-
+          נכון. גם $v$ גדל פי 2 וגם $\gamma$ גדל, מ-$1.09$ ל-$1.67$. היחס בין התנעים הוא
+          $\dfrac{0.8\cdot1.667}{0.4\cdot1.091} \approx 3.06$. ככל שהמהירות קרובה יותר ל-$c$, אותה תוספת מהירות
+          מוסיפה יותר תנע.
+      - text: בדיוק פי 2.
+        feedback: >-
+          זה נכון לתנע של ניוטון, $p = mv$, שמתאים רק כש-$v \ll c$. ביחסות $p = \gamma mv$, וגם $\gamma$ גדל עם
+          המהירות, ולכן התנע גדל יותר מהמהירות.
+        misconception: MC-10-newtonian-momentum
+      - text: פי 4.
+        feedback: >-
+          פי 4 הוא היחס בין האנרגיות הקינטיות של ניוטון, $\tfrac12mv^2$, כשהמהירות גדלה פי 2. כאן שואלים על
+          התנע, והיחס הוא כ-$3.06$.
+      - text: פחות מפי 2, כי קרוב ל-$c$ קשה יותר להאיץ את הגוף.
+        feedback: >-
+          קשה יותר להגדיל את **המהירות**, וזה בדיוק כי התנע גדל מהר ממנה: שינוי גדול בתנע מוסיף מעט מהירות. היחס
+          בין התנעים הוא כ-$3.06$, יותר מפי 2.
+    hints:
+      - 'חשבו את $\gamma$ בכל אחת משתי המהירויות, ואז את המכפלה $\gamma v$.'
+
+  - id: Q-10.1-electron-kinetic
+    type: numeric
+    objectives: [OBJ-10.1-1]
+    level: basic
+    prompt: >-
+      אלקטרון, שאנרגיית המנוחה שלו $mc^2 = 0.511\,\text{MeV}$, נע במהירות $v = 0.80c$. מה האנרגיה הקינטית שלו?
+    answer: 0.341
+    unit: MeV
+    correctFeedback: >-
+      נכון. $\gamma = 1/\sqrt{1 - 0.64} = 5/3$, ולכן $K = (\gamma - 1)mc^2 = \tfrac23\cdot0.511 = 0.341\,\text{MeV}$.
+    wrongFeedback: >-
+      האנרגיה הקינטית היא האנרגיה היחסותית פחות אנרגיית המנוחה, $K = \gamma mc^2 - mc^2$. חשבו קודם את $\gamma$.
+    commonWrong:
+      - value: 0.1635
+        feedback: >-
+          זה $\tfrac12mv^2 = \tfrac12\cdot0.511\cdot0.64$, הביטוי של ניוטון. ב-$v = 0.8c$ הוא קטן פי שניים בערך
+          מהאנרגיה הקינטית האמיתית.
+        misconception: MC-10-classical-ke
+      - value: 0.852
+        feedback: >-
+          זו האנרגיה היחסותית כולה, $\gamma mc^2$, כולל אנרגיית המנוחה. האנרגיה הקינטית היא מה שנוסף על אנרגיית
+          המנוחה: הפחיתו $0.511\,\text{MeV}$.
+        misconception: MC-10-total-vs-kinetic
+    hints:
+      - '$\gamma = 1/\sqrt{1 - \beta^2}$ עם $\beta = v/c = 0.80$.'
+
+  - id: Q-10.1-speed-from-kinetic
+    type: numeric
+    objectives: [OBJ-10.1-1]
+    level: mid
+    prompt: >-
+      פרוטון, שאנרגיית המנוחה שלו $mc^2 = 938\,\text{MeV}$, מואץ עד שהאנרגיה הקינטית שלו שווה לפעמיים אנרגיית
+      המנוחה, $K = 2mc^2$. מה מהירותו? ענו ביחידות של $c$, כלומר את $\beta = v/c$.
+    answer: 0.943
+    unit: c
+    correctFeedback: >-
+      נכון. $E = K + mc^2 = 3mc^2$, ולכן $\gamma = 3$ ו-$\beta = \sqrt{1 - 1/\gamma^2} = \sqrt{8/9} = 0.943$. שימו לב
+      שהתוצאה לא תלויה במספר $938\,\text{MeV}$: את המהירות קובע רק היחס $K/(mc^2)$.
+    wrongFeedback: >-
+      מצאו קודם את $\gamma$ מתוך $\gamma mc^2 = K + mc^2$, ואז בודדו את $\beta$ מתוך $\gamma = 1/\sqrt{1 - \beta^2}$.
+    commonWrong:
+      - value: 0.866
+        feedback: >-
+          זו המהירות שבה $\gamma = 2$, כלומר שבה האנרגיה **כולה** היא $2mc^2$. כאן האנרגיה הקינטית היא $2mc^2$, ולכן
+          האנרגיה היחסותית היא $3mc^2$ ו-$\gamma = 3$.
+        misconception: MC-10-total-vs-kinetic
+      - value: 2
+        feedback: >-
+          פתרתם $\tfrac12mv^2 = 2mc^2$ וקיבלתם $v = 2c$, מהיר מהאור. הביטוי של ניוטון לאנרגיה הקינטית לא תקף כש-$K$
+          בסדר גודל של $mc^2$.
+        misconception: MC-10-classical-ke
+    hints:
+      - 'כמה פעמים אנרגיית המנוחה היא האנרגיה היחסותית $E = K + mc^2$? זה $\gamma$.'
+
+  - id: Q-10.1-unbounded-momentum
+    type: twotier
+    objectives: [OBJ-10.1-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      המהירות של גוף בעל מסה $m$ תמיד קטנה מ-$c$. האם גם התנע שלו חסום, כלומר האם תמיד $p < mc$?
+    choices:
+      - text: לא. התנע יכול להיות גדול כרצוננו.
+        correct: true
+        feedback: >-
+          נכון. אין גבול לתנע ולאנרגיה של גוף, אף שיש גבול למהירות שלו. תנע של $10\,mc$, למשל, הוא תנע של גוף
+          שנע ב-$\beta = 10/\sqrt{101} \approx 0.995$.
+      - text: כן. תמיד $p < mc$.
+        feedback: 'זה נכון לתנע של ניוטון, $p = mv$. התנע היחסותי מכיל את $\gamma$, שאינו חסום.'
+        misconception: MC-10-newtonian-momentum
+      - text: כן, אבל החסם הוא $\gamma mc$ ולא $mc$.
+        feedback: >-
+          $\gamma$ עצמו תלוי במהירות ושואף לאינסוף כש-$v \to c$, ולכן $\gamma mc$ אינו חסם קבוע. אכן $p = \gamma m v < \gamma mc$,
+          אבל אגף ימין גדל בלי גבול.
+    reasons:
+      - text: '$p = \gamma mv$, ו-$\gamma \to \infty$ כש-$v \to c$, בעוד ש-$v$ נשאר קרוב ל-$c$.'
+        correct: true
+        feedback: זה הנימוק. המהירות מתקרבת ל-$c$ ונעצרת שם, אבל $\gamma$ ממשיך לגדול, ואיתו התנע.
+      - text: '$p = mv$, ו-$v < c$.'
+        feedback: 'הביטוי $p = mv$ הוא הגבול של $p = \gamma mv$ כש-$v \ll c$, כש-$\gamma \approx 1$. קרוב ל-$c$ הוא לא נכון.'
+        misconception: MC-10-newtonian-momentum
+      - text: המסה של הגוף גדלה עם המהירות, ולכן התנע גדל גם כשהמהירות כמעט לא משתנה.
+        feedback: >-
+          המסקנה נכונה, אבל הקורס לא משתמש ב"מסה שגדלה". המסה $m$ של גוף היא אחת ואותה בכל מערכת ייחוס, וגורם לורנץ
+          $\gamma$ שייך לתנע ולאנרגיה, $p = \gamma mv$ ו-$E = \gamma mc^2$. "מסה גדלה" מובילה לטעויות בכוח ובתאוצה
+          (שיעור 10.5).
+        misconception: MC-10-relativistic-mass
+    hints:
+      - 'מה קורה ל-$\gamma$ כש-$v$ מתקרב ל-$c$?'
+
+  - id: Q-10.1-electron-vs-proton
+    type: numeric
+    objectives: [OBJ-10.1-1]
+    level: bagrut
+    prompt: >-
+      אלקטרון ($mc^2 = 0.511\,\text{MeV}$) ופרוטון ($mc^2 = 938\,\text{MeV}$) מואצים כל אחד ממנוחה עד אנרגיה קינטית
+      $K = 1.0\,\text{MeV}$, ואחר כך כל אחד עובר מרחק של $10\,\text{m}$ בקו ישר במהירות קבועה. כמה פעמים ארוך
+      זמן המעבר של הפרוטון מזמן המעבר של האלקטרון, $t_p/t_e$?
+    answer: 20.4
+    unit: ''
+    correctFeedback: >-
+      נכון. לכל חלקיק $\gamma = 1 + K/(mc^2)$ ו-$\beta = \sqrt{1 - 1/\gamma^2}$. לאלקטרון $\gamma = 2.96$ ו-$\beta_e = 0.941$,
+      לפרוטון $\gamma = 1.00107$ ו-$\beta_p = 0.0461$. אותו מרחק, ולכן $t_p/t_e = \beta_e/\beta_p = 20.4$.
+      **בדיקת גבולות:** לפרוטון $K/(mc^2) \approx 10^{-3}$, והנוסחה של ניוטון, $\beta = \sqrt{2K/(mc^2)} = 0.0462$,
+      נותנת כמעט אותו דבר. לאלקטרון $K/(mc^2) \approx 2$, והנוסחה של ניוטון נותנת $\beta = 1.98$, מהיר מהאור.
+    wrongFeedback: >-
+      מצאו לכל חלקיק את $\gamma$ מתוך $K = (\gamma - 1)mc^2$, ואחר כך את $\beta$. זמן המעבר הוא $L/(\beta c)$, ולכן
+      היחס בין הזמנים הוא היחס ההפוך בין המהירויות.
+    commonWrong:
+      - value: 42.8
+        feedback: >-
+          זה $\sqrt{938/0.511}$, היחס שנותנת $K = \tfrac12mv^2$ לשני החלקיקים. לפרוטון זה כמעט נכון, אבל לאלקטרון
+          $K$ גדול מ-$mc^2$, והנוסחה של ניוטון נותנת לו מהירות גדולה מ-$c$.
+        misconception: MC-10-classical-ke
+      - value: 0.049
+        feedback: 'הפכתם את היחס. הפרוטון הכבד איטי בהרבה, ולכן הזמן שלו **ארוך** יותר: $t_p/t_e > 1$.'
+    hints:
+      - 'מ-$K$ מקבלים $\gamma = 1 + K/(mc^2)$, ומ-$\gamma$ את $\beta$.'
+      - 'לפני החישוב, בדקו לכל חלקיק אם $K \ll mc^2$.'
+
+  # ---------------------------------------------------------------- OBJ-10.1-2 E² = (pc)² + (mc²)², the non-relativistic limit
+  - id: Q-10.1-massless-speed
+    type: mc
+    objectives: [OBJ-10.1-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      לכל חלקיק מתקיים $E^2 = (pc)^2 + (mc^2)^2$, והמהירות שלו היא $v = pc^2/E$. מה המהירות של חלקיק חסר מסה,
+      $m = 0$, שיש לו אנרגיה $E$?
+    choices:
+      - text: $c$, בלי קשר לאנרגיה שלו.
+        correct: true
+        feedback: >-
+          נכון. כש-$m = 0$, הקשר נותן $E = pc$, ולכן $v = pc^2/E = c$. חלקיק חסר מסה נע תמיד במהירות האור, ואנרגיה
+          גדולה יותר פירושה תנע גדול יותר, לא מהירות גדולה יותר.
+      - text: מהירות שגדלה עם $E$ ומתקרבת ל-$c$ רק כש-$E$ גדול מאוד.
+        feedback: >-
+          כך מתנהג חלקיק **בעל** מסה: $v/c = pc/E = pc/\sqrt{(pc)^2 + (mc^2)^2}$ מתקרב ל-1 כש-$pc \gg mc^2$. כש-$m = 0$
+          היחס הזה הוא 1 בכל אנרגיה.
+        misconception: MC-10-massless-speed-varies
+      - text: אפס, כי לחלקיק בלי מסה אין תנע.
+        feedback: >-
+          מהקשר $E^2 = (pc)^2 + (mc^2)^2$ עם $m = 0$ מקבלים $p = E/c$, שאינו אפס. לחלקיק חסר מסה יש תנע ויש אנרגיה.
+        misconception: MC-10-massless-no-momentum
+      - text: לשאלה אין משמעות, כי $p = \gamma mv = 0$ כש-$m = 0$.
+        feedback: >-
+          כש-$m = 0$ ו-$v = c$, גם $\gamma$ אינסופי, והמכפלה $\gamma m$ אינה מוגדרת: $p = \gamma mv$ לא עוזר כאן. הקשר
+          $E^2 = (pc)^2 + (mc^2)^2$ תקף גם לחלקיק חסר מסה, ונותן $p = E/c$.
+        misconception: MC-10-massless-no-momentum
+    hints:
+      - 'הציבו $m = 0$ בקשר בין $E$ ל-$p$, ואחר כך ב-$v = pc^2/E$.'
+
+  - id: Q-10.1-same-momentum-rank
+    type: rank
+    objectives: [OBJ-10.1-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      לארבעה חלקיקים יש אותו תנע, $p = 100\,\text{MeV}/c$. אנרגיות המנוחה שלהם: אלקטרון $0.511\,\text{MeV}$,
+      מיואון $106\,\text{MeV}$, פרוטון $938\,\text{MeV}$, ופוטון (חלקיק אור) חסר מסה. סדרו אותם לפי המהירות, מהמהיר
+      ביותר לאיטי ביותר.
+    items:
+      - { id: photon, label: פוטון }
+      - { id: electron, label: אלקטרון }
+      - { id: muon, label: מיואון }
+      - { id: proton, label: פרוטון }
+    order: [photon, electron, muon, proton]
+    correctFeedback: >-
+      נכון. $\beta = \dfrac{pc}{E} = \dfrac{pc}{\sqrt{(pc)^2 + (mc^2)^2}}$: באותו תנע, ככל שהמסה גדולה יותר האנרגיה גדולה
+      יותר והמהירות קטנה יותר. הפוטון ב-$\beta = 1$ בדיוק, האלקטרון ב-$\beta = 0.99999$, המיואון ב-$0.686$
+      והפרוטון ב-$0.106$.
+    wrongFeedback: >-
+      השתמשו ב-$v = pc^2/E$ עם $E = \sqrt{(pc)^2 + (mc^2)^2}$. התנע זהה לכולם, ולכן רק $E$ משתנה בין החלקיקים.
+    hints:
+      - 'באותו $p$, מי מהחלקיקים בעל האנרגיה הגדולה ביותר?'
+
+  - id: Q-10.1-muon-kinetic
+    type: numeric
+    objectives: [OBJ-10.1-2]
+    level: mid
+    prompt: >-
+      מיואון, שאנרגיית המנוחה שלו $mc^2 = 106\,\text{MeV}$, נמדד בגלאי עם תנע $p = 200\,\text{MeV}/c$. מה האנרגיה
+      הקינטית שלו?
+    answer: 120
+    unit: MeV
+    correctFeedback: >-
+      נכון. $E = \sqrt{(pc)^2 + (mc^2)^2} = \sqrt{200^2 + 106^2} = 226\,\text{MeV}$, ו-$K = E - mc^2 = 120\,\text{MeV}$.
+      המהירות שלו $\beta = pc/E = 0.884$.
+    wrongFeedback: >-
+      מהתנע מקבלים קודם את האנרגיה היחסותית, $E^2 = (pc)^2 + (mc^2)^2$. האנרגיה הקינטית היא $E$ פחות אנרגיית המנוחה.
+    commonWrong:
+      - value: 189
+        feedback: >-
+          זה $p^2/(2m) = 200^2/(2\cdot106)$, הביטוי של ניוטון. הוא תקף רק כש-$pc \ll mc^2$, וכאן $pc$ גדול מ-$mc^2$.
+        misconception: MC-10-classical-ke
+      - value: 226
+        feedback: 'זו האנרגיה היחסותית כולה, $E$. האנרגיה הקינטית קטנה ממנה באנרגיית המנוחה, $106\,\text{MeV}$.'
+        misconception: MC-10-total-vs-kinetic
+      - value: 200
+        feedback: >-
+          $K = pc$ נכון רק לחלקיק חסר מסה. למיואון יש מסה, ולכן $E = \sqrt{(pc)^2 + (mc^2)^2}$ ולא $pc + mc^2$.
+    hints:
+      - 'יחידות $\text{MeV}/c$ נוחות: $pc = 200\,\text{MeV}$.'
+
+  - id: Q-10.1-classical-error
+    type: numeric
+    objectives: [OBJ-10.1-2]
+    level: bagrut
+    prompt: >-
+      הביטוי של ניוטון $\tfrac12mv^2$ הוא קירוב לאנרגיה הקינטית היחסותית $K = (\gamma - 1)mc^2$. פתחו את $\gamma$
+      בטור טיילור ב-$\beta^2$, ומצאו בכמה אחוזים $K$ גדול מ-$\tfrac12mv^2$ כש-$\beta = 0.10$.
+    answer: 0.756
+    unit: '%'
+    correctFeedback: >-
+      נכון. $\gamma = (1 - \beta^2)^{-1/2} = 1 + \tfrac12\beta^2 + \tfrac38\beta^4 + \dots$, ולכן
+      $$K = (\gamma - 1)mc^2 = \tfrac12mv^2\left(1 + \tfrac34\beta^2 + \dots\right)$$
+      ב-$\beta = 0.1$ התיקון הוא $\tfrac34\cdot0.01 = 0.75\%$, והחישוב המדויק נותן $0.756\%$.
+      **בדיקת גבולות:** כש-$\beta \to 0$ התיקון מתאפס, ו-$K \to \tfrac12mv^2$. הוא ריבועי ב-$\beta$: ב-$\beta = 0.01$
+      הוא כבר רק $0.0075\%$.
+    wrongFeedback: >-
+      כתבו $(1 - x)^{-1/2} \approx 1 + \tfrac12x + \tfrac38x^2$ עם $x = \beta^2$, הפחיתו 1 וכפלו ב-$mc^2$. השוו את
+      האיבר השני לראשון.
+    commonWrong:
+      - value: 0.504
+        feedback: >-
+          זה $\gamma - 1$ באחוזים, כלומר $K/(mc^2)$. השאלה משווה את $K$ ל-$\tfrac12mv^2$, לא ל-$mc^2$: חלקו את
+          האיבר השני בטור באיבר הראשון.
+      - value: 1
+        feedback: >-
+          זה $\beta^2$ באחוזים. התיקון היחסי הוא $\tfrac34\beta^2$, לא $\beta^2$: האיבר $\tfrac38\beta^4$ חלקי
+          $\tfrac12\beta^2$.
+      - value: 10
+        feedback: 'זה $\beta$ עצמו. התיקון לאנרגיה הקינטית ריבועי ב-$\beta$, ולכן הוא קטן בהרבה מ-$10\%$.'
+    hints:
+      - 'הפיתוח הבינומי: $(1 - x)^{-1/2} = 1 + \tfrac12x + \tfrac38x^2 + \dots$'
+    explanation: >-
+      התיקון $\tfrac34\beta^2$ קטן מאחוז אחד עד $\beta \approx 0.1$, כלומר עד כ-$30{,}000\,\text{km/s}$. לכן המכניקה
+      של ניוטון מספיקה לכל גוף יומיומי, ואפילו ללוויינים.

@@ -1,0 +1,236 @@
+# Lesson 8.8 question bank: the comprehension ladder of "טנזור ההתמד, צירים ראשיים וסביבון".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch8/q.ts with src/physics/constants.ts (G = 9.8):
+#   tilted dumbbell, m = 0.50 kg at r = 0.20 m on each side, θ = 30° to the axle, ω = 10 rad/s:
+#     |L| = 2mωr² sin θ = 0.20, L_z = 0.10, L_⊥ = 2mωr² sin θ cos θ = 0.173 kg·m²/s; bearing torque ωL_⊥ = 1.73 N·m
+#     (no cos 2.0, no angles 4.0, one mass 0.866);
+#   top m = 0.20 kg, r = 0.050 m, I = 1.0e-4 kg·m², ω = 200 rad/s: Ω = mgr/(Iω) = 4.90 rad/s (inverted 0.204, no ω 980);
+#   toy gyroscope, disc rotor 0.15 kg, R = 0.030 m, r = 0.040 m, 3000 rpm (314 rad/s): Ω = 2.77 rad/s,
+#     precession period 2.27 s (ring rotor 4.53, rpm without 2π 0.361), ω/Ω = 113.
+
+chapter: 8
+questions:
+  # ---------------------------------------------------------------- OBJ-8.8-1 L not parallel to ω, principal axes
+  - id: Q-8.8-dumbbell-L
+    type: mc
+    objectives: [OBJ-8.8-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      משקולת: שתי מסות שוות בקצות מוט קל, שמרכזו מחובר לציר אנכי. המוט נטוי בזווית $30^\circ$ לציר, והכול
+      מסתובב סביב הציר במהירות זוויתית קבועה $\vec\omega$, כלפי מעלה. מה כיוון התנע הזוויתי $\vec L$ סביב המרכז?
+    choices:
+      - text: 'ניצב למוט, במישור שמכיל את המוט ואת הציר, ולכן הוא מסתובב יחד עם המשקולת סביב הציר.'
+        correct: true
+        feedback: >-
+          נכון. כל מסה נעה במעגל אופקי, ו-$\vec r\times m\vec v$ שלה ניצב גם ל-$\vec r$ (לאורך המוט) וגם ל-$\vec v$.
+          שתי המסות תורמות אותו וקטור, ניצב למוט. הוא נטוי $60^\circ$ מ-$\vec\omega$, ולכן הוא סורק חרוט סביב הציר.
+      - text: 'לאורך הציר, כמו $\vec\omega$.'
+        feedback: >-
+          $\vec L = I\vec\omega$ כשהסיבוב סביב ציר ראשי, כמו ציר סימטריה. כאן הציר נטוי למוט ואינו ציר ראשי של
+          המשקולת, ולכן $\vec L$ פונה לכיוון אחר.
+        misconception: MC-8-L-parallel-omega
+      - text: 'לאורך המוט.'
+        feedback: 'המסות נמצאות על המוט, ולכן $\vec r$ לאורך המוט, ו-$\vec r\times\vec v$ ניצב לו. לרכיב של $\vec L$ לאורך המוט אין מקור.'
+      - text: 'אפס, כי שתי המסות נעות בכיוונים מנוגדים.'
+        feedback: 'גם $\vec r$ שלהן מנוגד, ולכן $\vec r\times m\vec v$ של שתיהן שווה, לא מנוגד. התרומות מתחברות.'
+    hints:
+      - 'חשבו $\vec r\times m\vec v$ למסה העליונה: $\vec r$ לאורך המוט, ו-$\vec v$ אופקי ומשיק למעגל שלה.'
+
+  - id: Q-8.8-principal-axes
+    type: multi
+    objectives: [OBJ-8.8-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      ציר ראשי של גוף, בנקודה נתונה, הוא ציר שאם הגוף מסתובב סביבו, $\vec L$ מקביל ל-$\vec\omega$. בחרו את **כל**
+      הצירים שהם צירים ראשיים.
+    choices:
+      - text: 'בתיבה אחידה עם צלעות שונות $a \ne b \ne c$: שלושת הצירים שעוברים במרכזה ומקבילים לצלעות.'
+        correct: true
+        feedback: 'נכון. כל אחד מהם הוא ציר של סימטריית שיקוף: לכל מסה יש מסה תאומה שמבטלת את מכפלות ההתמד, למשל $\sum mxy = 0$.'
+      - text: 'באותה תיבה: האלכסון הראשי, מפינה לפינה דרך המרכז.'
+        feedback: >-
+          בתיבה שצלעותיה שונות האלכסון אינו ציר ראשי. בבסיס של הצלעות $\vec L = (I_1\omega_1, I_2\omega_2, I_3\omega_3)$,
+          ולאורך האלכסון שלושת הרכיבים של $\vec\omega$ שונים מאפס, ולכן כש-$I_1 \ne I_2 \ne I_3$, $\vec L$ לא מקביל ל-$\vec\omega$.
+        misconception: MC-8-L-parallel-omega
+      - text: 'בקובייה אחידה: כל ציר שעובר במרכזה.'
+        correct: true
+        feedback: 'נכון. בקובייה $I_1 = I_2 = I_3$, ולכן $\vec L = I\vec\omega$ לכל כיוון של $\vec\omega$, כמו בכדור.'
+      - text: 'בדסקה דקה ואחידה: כל קוטר.'
+        correct: true
+        feedback: 'נכון. בדסקה שני מומנטי ההתמד במישור שווים, $\tfrac14MR^2$, ולכן כל כיוון במישור הוא ציר ראשי, וגם הציר הניצב לה.'
+      - text: 'בתיבה עם צלעות שונות: ציר שעובר בפינה ולאורך אחת הצלעות.'
+        feedback: >-
+          סביב הפינה מכפלות ההתמד אינן אפס. למשל, אם הציר לאורך צלע $c$ (ציר $z$) והפינה בראשית,
+          $\sum mxz = M\dfrac a2\cdot\dfrac c2 \ne 0$, ולכן ל-$\vec L$ יש רכיב $x$, שניצב לציר.
+    hints:
+      - 'ציר ראשי הוא כיוון שבו טנזור ההתמד פועל כמו מספר: $I\vec\omega = \lambda\vec\omega$. סימטריה עוזרת למצוא אותו.'
+
+  - id: Q-8.8-wheel-balance
+    type: twotier
+    objectives: [OBJ-8.8-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גלגל של מכונית מורכב על הסרן כך שמרכז המסה שלו בדיוק על הסרן, אבל מישור הגלגל נטוי מעט: הסרן אינו ניצב לו
+      בדיוק. הגלגל מסתובב במהירות זוויתית קבועה. האם המסבים של הסרן צריכים להפעיל עליו מומנט?
+    choices:
+      - text: 'כן, מומנט שמסתובב יחד עם הגלגל, ולכן הגלגל "מנדנד" את המכונית.'
+        correct: true
+        feedback: 'נכון. זה חוסר איזון **דינמי**. מוסך מאזן אותו בעזרת משקולות קטנות, בשני הצדדים של הגלגל, כדי להפוך את הסרן לציר ראשי.'
+      - text: 'לא. מרכז המסה על הסרן, ולכן אין צורך בכוח, ו-$\omega$ קבועה, ולכן אין צורך במומנט.'
+        feedback: >-
+          מרכז מסה על הציר אכן מבטל את הצורך ב**כוח**. אבל $\omega$ קבועה לא אומרת ש-$\vec L$ קבוע: כשהסרן אינו ציר
+          ראשי, $\vec L$ נטוי ממנו ומסתובב איתו, ו-$\dfrac{d\vec L}{dt} \ne 0$.
+        misconception: MC-8-L-parallel-omega
+      - text: 'רק כשהגלגל מאיץ.'
+        feedback: 'כשהגלגל מאיץ צריך גם מומנט לאורך הסרן. אבל הרכיב הניצב לסרן נחוץ גם במהירות קבועה, כי $\vec L$ משנה כיוון.'
+    reasons:
+      - text: '$\vec L$ אינו מקביל לסרן ומסתובב איתו, ולכן $\vec\tau = \dfrac{d\vec L}{dt} = \vec\omega\times\vec L \ne 0$.'
+        correct: true
+        feedback: 'זה הנימוק. גודל המומנט $\omega L_\perp$, כאשר $L_\perp$ הרכיב של $\vec L$ שניצב לסרן. הוא גדל כמו $\omega^2$, ולכן מורגש במהירות גבוהה.'
+      - text: '$\vec L = I\vec\omega$ תמיד, ולכן $\vec L$ קבוע כש-$\vec\omega$ קבועה.'
+        feedback: '$\vec L = I\vec\omega$ עם $I$ מספר נכון רק לסיבוב סביב ציר ראשי. בכללי $\vec L = \mathbf{I}\vec\omega$, כאשר $\mathbf I$ טנזור, ו-$\vec L$ יכול לפנות לכיוון אחר.'
+        misconception: MC-8-L-parallel-omega
+      - text: 'המשקל של הגלגל יוצר מומנט סביב הסרן.'
+        feedback: 'מרכז המסה על הסרן, ולכן למשקל אין מומנט סביבו. המומנט נדרש בגלל ש-$\vec L$ משנה כיוון, לא בגלל הכובד.'
+    hints:
+      - 'האם $\vec L$ של הגלגל מקביל לסרן? ואם לא, מה קורה לו כשהגלגל מסתובב?'
+
+  - id: Q-8.8-bearing-torque
+    type: numeric
+    objectives: [OBJ-8.8-1]
+    level: bagrut
+    prompt: >-
+      משקולת: שתי מסות של $0.50\,\text{kg}$ בקצות מוט קל באורך $0.40\,\text{m}$, שמרכזו מחובר לציר אנכי. המוט
+      נטוי בזווית $30^\circ$ לציר, והמערכת מסתובבת במהירות זוויתית קבועה $10\,\text{rad/s}$. מה גודל המומנט שהמסבים
+      של הציר מפעילים?
+    answer: 1.73
+    unit: N·m
+    correctFeedback: >-
+      נכון. כל מסה במרחק $r = 0.20\,\text{m}$ מהמרכז. $|\vec L| = 2m\omega r^2\sin\theta = 0.20\,\text{kg}\cdot\text{m}^2/\text{s}$,
+      ניצב למוט, ולכן ב-$90^\circ - 30^\circ = 60^\circ$ מהציר. הרכיב לאורך הציר, $2m\omega r^2\sin^2\theta = 0.10$, קבוע,
+      והרכיב הניצב, $L_\perp = 2m\omega r^2\sin\theta\cos\theta = 0.173$, מסתובב במעגל בקצב $\omega$. לכן
+      $\tau = \omega L_\perp = 2m\omega^2r^2\sin\theta\cos\theta = 1.73\,\text{N}\cdot\text{m}$. **בדיקת גבולות:**
+      ב-$\theta = 0$ (מוט לאורך הציר) וב-$\theta = 90^\circ$ (מוט ניצב לציר) המומנט אפס: אלה צירים ראשיים.
+    wrongFeedback: 'חשבו את $\vec L$ של שתי המסות סביב המרכז, פרקו אותו לרכיב לאורך הציר ולרכיב ניצב, ושימו לב שהרכיב הניצב מסתובב בקצב $\omega$.'
+    commonWrong:
+      - value: 2.0
+        feedback: 'זה $\omega|\vec L| = 2m\omega^2r^2\sin\theta$: לקחתם את כל $\vec L$ כמסתובב. רק הרכיב שניצב לציר משנה כיוון, $|\vec L|\cos\theta$.'
+      - value: 4.0
+        feedback: 'זה $2m\omega^2r^2$, בלי הזוויות. ב-$\theta = 0$ או $90^\circ$ הנוסחה הזו לא הייתה מתאפסת, אבל שם הציר ראשי ואין צורך במומנט.'
+      - value: 0.866
+        feedback: 'זה המומנט של מסה אחת. שתי המסות תורמות ל-$\vec L$ באותו כיוון, ולכן המומנט כפול.'
+    hints:
+      - 'המומנט שווה ל-$\vec\omega\times\vec L$, וגודלו $\omega L_\perp$.'
+
+  # ---------------------------------------------------------------- OBJ-8.8-2 precession rate of a fast top or gyroscope
+  - id: Q-8.8-precession-direction
+    type: vector
+    objectives: [OBJ-8.8-2]
+    qualitative: true
+    level: basic
+    allowOutIn: true
+    prompt: >-
+      מבט מלמעלה על ג׳ירוסקופ: הציר האופקי שלו מונח בקצה אחד על עמוד, במרכז התמונה, ומשתרע ממנו מזרחה. הגלגל
+      בקצה המזרחי מסתובב מהר, עם תנע זוויתי $\vec L$ מזרחה (הרחק מהעמוד). "כלפי מעלה" פירושו מהדף אליכם (out).
+      לאיזה כיוון מתחיל לנוע הגלגל?
+    answer: n
+    correctFeedback: >-
+      נכון. סביב העמוד, מומנט הכובד הוא $\vec\tau = \vec r\times m\vec g$, עם $\vec r$ מזרחה ו-$m\vec g$ כלפי מטה (לתוך
+      הדף). כלל יד ימין נותן צפונה. $d\vec L = \vec\tau\,dt$ צפונה, ולכן $\vec L$, ואיתו הגלגל, פונה צפונה: הג׳ירוסקופ
+      נוקף נגד כיוון השעון במבט מלמעלה, ולא נופל.
+    wrongFeedback: 'חשבו את מומנט הכובד סביב העמוד, $\vec r\times m\vec g$, וזכרו ש-$\vec L$ משתנה בכיוון של $\vec\tau$.'
+    wrong:
+      - dir: in
+        feedback: >-
+          גלגל שלא מסתובב היה נופל. כאן $\vec L$ גדול, והמומנט משנה את **הכיוון** שלו: $d\vec L$ בכיוון של
+          $\vec\tau$, שניצב גם ל-$\vec L$ וגם לכובד. לכן הגלגל זז הצידה, לא למטה.
+        misconception: MC-8-gyroscope-falls
+      - dir: s
+        feedback: 'בדקו את כלל יד ימין: $\hat x\times(-\hat z) = +\hat y$, צפונה, כש-$\hat x$ מזרחה ו-$\hat z$ כלפי מעלה.'
+      - dir: e
+        feedback: 'תנועה מזרחה הייתה מגדילה את $|\vec L|$. המומנט ניצב ל-$\vec L$, ולכן הוא מסובב אותו ולא מאריך אותו.'
+    hints:
+      - '$\dfrac{d\vec L}{dt} = \vec\tau$: הקצה של $\vec L$ זז בכיוון המומנט.'
+
+  - id: Q-8.8-top-rate
+    type: numeric
+    objectives: [OBJ-8.8-2]
+    level: basic
+    prompt: >-
+      סביבון במסה $0.20\,\text{kg}$ מסתובב מהר סביב ציר הסימטריה שלו במהירות זוויתית $200\,\text{rad/s}$, ומומנט
+      ההתמד שלו סביב הציר הזה $1.0\cdot10^{-4}\,\text{kg}\cdot\text{m}^2$. מרכז המסה שלו במרחק $0.050\,\text{m}$
+      מנקודת המגע עם הרצפה. מה קצב הנקיפה שלו?
+    answer: 4.9
+    unit: rad/s
+    correctFeedback: >-
+      נכון. $\Omega = \dfrac{mgr}{I\omega} = \dfrac{0.20\cdot9.8\cdot0.050}{1.0\cdot10^{-4}\cdot200} = 4.90\,\text{rad/s}$.
+      הקצב לא תלוי בזווית הנטייה של הסביבון: גם המומנט וגם הרכיב האופקי של $\vec L$ פרופורציוניים ל-$\sin\theta$.
+      הקירוב טוב כי $\omega = 200 \gg \Omega$.
+    wrongFeedback: 'מומנט הכובד סביב נקודת המגע הוא $mgr\sin\theta$, והוא מסובב את $\vec L$ בקצב $\Omega = \dfrac{\tau}{L\sin\theta}$.'
+    commonWrong:
+      - value: 0.204
+        feedback: 'הפכתם את המנה: $\dfrac{I\omega}{mgr}$ ביחידות שניות. קצב הנקיפה הוא המומנט חלקי התנע הזוויתי.'
+      - value: 980
+        feedback: 'שכחתם את $\omega$: חילקתם במומנט ההתמד, לא בתנע הזוויתי $I\omega$. בדקו יחידות: $\dfrac{\text{N}\cdot\text{m}}{\text{kg}\cdot\text{m}^2}$ הן $\text{s}^{-2}$.'
+    hints:
+      - 'מה גודל התנע הזוויתי של הסביבון, ומה גודל מומנט הכובד עליו?'
+
+  - id: Q-8.8-spin-slows
+    type: twotier
+    objectives: [OBJ-8.8-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      חיכוך קטן בנקודת המגע מאט לאט את הסיבוב של סביבון מהיר. מה קורה לקצב הנקיפה שלו, כל עוד הסביבון עדיין מהיר?
+    choices:
+      - text: 'הוא גדל.'
+        correct: true
+        feedback: 'נכון. $\Omega = \dfrac{mgr}{I\omega}$, ולכן כש-$\omega$ קטנה, $\Omega$ גדלה. בסוף, כש-$\omega$ כבר לא גדולה בהרבה מ-$\Omega$, הקירוב נשבר והסביבון מתנדנד ונופל.'
+      - text: 'הוא קטן, יחד עם הסיבוב.'
+        feedback: 'נדמה שכל תנועה של הסביבון מאטה יחד, אבל הנקיפה נקבעת מהיחס בין המומנט לתנע הזוויתי, ותנע זוויתי קטן יותר מסתובב **מהר** יותר תחת אותו מומנט.'
+        misconception: MC-8-precession-proportional-to-spin
+      - text: 'הוא לא משתנה, כי מומנט הכובד לא משתנה.'
+        feedback: 'המומנט אכן קבוע, אבל קצב הנקיפה הוא המומנט **חלקי** התנע הזוויתי, והתנע הזוויתי קטן.'
+    reasons:
+      - text: 'באותו מומנט, $|d\vec L|$ באותו זמן זהה, ולכן כש-$|\vec L|$ קטן, $\vec L$ מסתובב בזווית גדולה יותר.'
+        correct: true
+        feedback: 'זה הנימוק: $d\varphi = \dfrac{|d\vec L|}{L_\perp}$. אותו "דחף" הצידה מסובב חץ קצר יותר בזווית גדולה יותר.'
+      - text: 'הנקיפה היא חלק מהסיבוב של הסביבון, ולכן היא פרופורציונית אליו.'
+        feedback: 'הנקיפה היא סיבוב של **הציר**, בגלל מומנט הכובד. היא ביחס הפוך לסיבוב העצמי, לא ביחס ישר.'
+        misconception: MC-8-precession-proportional-to-spin
+      - text: 'החיכוך מפעיל מומנט שמאיץ את הנקיפה.'
+        feedback: 'החיכוך מאט את הסיבוב העצמי. הנקיפה מואצת בגלל ש-$L$ קטן, לא בגלל מומנט נוסף שדוחף אותה.'
+    hints:
+      - 'כתבו את $\Omega$ כפונקציה של $\omega$.'
+
+  - id: Q-8.8-toy-gyroscope
+    type: numeric
+    objectives: [OBJ-8.8-2]
+    level: bagrut
+    prompt: >-
+      לג׳ירוסקופ צעצוע יש רוטור שהוא דסקה אחידה במסה $0.15\,\text{kg}$ וברדיוס $0.030\,\text{m}$, שמסתובבת
+      ב-3000 סיבובים לדקה. הציר שלו אופקי, ומונח על עמוד בנקודה שמרחקה ממרכז הרוטור $0.040\,\text{m}$. הזניחו את
+      מסת המסגרת. כמה זמן לוקח לג׳ירוסקופ להשלים סיבוב נקיפה אחד?
+    answer: 2.27
+    unit: s
+    correctFeedback: >-
+      נכון. $\omega = 3000\cdot\dfrac{2\pi}{60} = 314\,\text{rad/s}$, $I = \tfrac12MR^2 = 6.75\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$, ולכן
+      $L = I\omega = 0.0212\,\text{kg}\cdot\text{m}^2/\text{s}$. המומנט $Mgr = 0.0588\,\text{N}\cdot\text{m}$, ו-
+      $\Omega = \dfrac{Mgr}{L} = 2.77\,\text{rad/s}$. זמן הנקיפה $\dfrac{2\pi}{\Omega} = 2.27\,\text{s}$. **בדיקת גבולות:**
+      הנוסחה דורשת $\omega \gg \Omega$, וכאן היחס כ-113. וכש-$\omega \to \infty$, זמן הנקיפה שואף לאינסוף: ג׳ירוסקופ מהיר
+      מאוד כמעט לא נוקף.
+    wrongFeedback: 'המירו סיבובים לדקה ל-$\text{rad/s}$, חשבו $L = I\omega$, ואז $\Omega = \dfrac{Mgr}{L}$ ואת הזמן $\dfrac{2\pi}{\Omega}$.'
+    commonWrong:
+      - value: 4.53
+        feedback: 'השתמשתם ב-$I = MR^2$, של טבעת. הרוטור דסקה אחידה, $I = \tfrac12MR^2$, ולכן התנע הזוויתי חצי והנקיפה מהירה פי 2.'
+      - value: 0.361
+        feedback: 'המרתם $3000$ סיבובים לדקה ל-$50\,\text{rad/s}$, בלי $2\pi$. זה $50$ סיבובים **בשנייה**, כלומר $314\,\text{rad/s}$.'
+      - value: 2.77
+        feedback: 'זה $\Omega$ עצמו, ב-$\text{rad/s}$. השאלה מבקשת את הזמן של סיבוב נקיפה שלם, $2\pi/\Omega$.'
+    hints:
+      - 'כמה רדיאנים לשנייה הם 3000 סיבובים לדקה?'

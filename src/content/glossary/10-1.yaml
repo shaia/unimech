@@ -1,0 +1,26 @@
+# Terms first defined in lesson 10.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: relativistic-momentum
+  term: תנע יחסותי
+  en: relativistic momentum
+  symbol: p
+  unit: kg·m/s
+  definition: התנע של גוף בעל מסה m שנע במהירות v, p = γmv, כאשר γ הוא גורם לורנץ. כש-v ≪ c הוא שווה בקירוב ל-mv, וכש-v מתקרב ל-c הוא גדל בלי גבול. זה התנע שנשמר בהתנגשויות בכל מערכת ייחוס אינרציאלית.
+  lesson: '10.1'
+
+- id: rest-energy
+  term: אנרגיית מנוחה
+  en: rest energy
+  symbol: mc²
+  unit: J
+  definition: האנרגיה של גוף במערכת שבה הוא נח, mc². בפיזיקה של חלקיקים נותנים אותה ב-MeV, למשל 0.511 MeV לאלקטרון ו-938 MeV לפרוטון, ואת המסה ב-MeV/c².
+  lesson: '10.1'
+
+- id: relativistic-energy
+  term: אנרגיה יחסותית
+  en: relativistic energy
+  symbol: E
+  unit: J
+  definition: האנרגיה הכוללת של גוף, E = γmc², כלומר אנרגיית המנוחה ועוד האנרגיה הקינטית K = (γ − 1)mc². היא קשורה לתנע ולמסה בקשר E² = (pc)² + (mc²)², ומהירות הגוף היא v = pc²/E.
+  lesson: '10.1'

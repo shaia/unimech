@@ -1,0 +1,50 @@
+# Terms first defined in lesson 5.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: damping
+  term: ריסון
+  en: damping
+  definition: כוח שמתנגד לתנועה ומפזר את האנרגיה של מתנד, בדרך כלל −bẋ. עם ריסון משוואת המתנד היא mẍ + bẋ + kx = 0, ובצורה המקובלת בקורס ẍ + γẋ + ω₀²x = 0 עם γ = b/m.
+  reject: [שיכוך]
+  lesson: '5.3'
+
+- id: c5-natural-frequency
+  term: תדירות עצמית
+  en: natural frequency
+  symbol: ω₀
+  unit: rad/s
+  definition: התדירות הזוויתית שבה מערכת מתנודדת מעצמה, בלי ריסון ובלי כוח מאלץ. במסה על קפיץ ω₀ = √(k/m).
+  lesson: '5.3'
+
+- id: c5-damping-rate
+  term: קצב הריסון
+  en: damping rate
+  symbol: γ
+  unit: 1/s
+  definition: המקדם γ = b/m בצורה ẍ + γẋ + ω₀²x = 0. האנרגיה של מתנד בריסון חלש דועכת כמו e^(−γt), והאמפליטודה כמו e^(−γt/2).
+  lesson: '5.3'
+
+- id: underdamping
+  term: תת-ריסון
+  en: underdamping
+  definition: ריסון חלש, γ < 2ω₀. השורשים של המשוואה האופיינית מרוכבים, והגוף מתנודד בתדירות ω_d = √(ω₀² − γ²/4) באמפליטודה שדועכת כמו e^(−γt/2).
+  lesson: '5.3'
+
+- id: critical-damping
+  term: ריסון קריטי
+  en: critical damping
+  definition: הריסון שבו γ = 2ω₀, כלומר b = 2√(km). למשוואה האופיינית שורש כפול, הפתרון (C₁ + C₂t)e^(−ω₀t), והגוף חוזר לשיווי המשקל הכי מהר בלי לעבור אותו.
+  lesson: '5.3'
+
+- id: overdamping
+  term: על-ריסון
+  en: overdamping
+  definition: ריסון חזק, γ > 2ω₀. השורשים ממשיים ושליליים, הפתרון סכום של שני אקספוננטים דועכים, ואין תנודה. ככל שהריסון חזק יותר, החזרה לשיווי המשקל איטית יותר.
+  lesson: '5.3'
+
+- id: quality-factor
+  term: מקדם איכות
+  en: quality factor
+  symbol: Q
+  definition: המספר חסר הממדים Q = ω₀/γ, בצורה ẍ + γẋ + ω₀²x = 0. בריסון חלש האנרגיה יורדת פי e^(2π) אחרי Q תנודות, ובמתנד מאולץ רוחב התהודה בערך ω₀/Q.
+  lesson: '5.3'

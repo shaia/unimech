@@ -1,0 +1,335 @@
+# Lesson 5.4 question bank: the comprehension ladder of "מתנד מאולץ ותהודה".
+# Every objective has ≥ 3 questions, one of them qualitative; the lesson climbs basic → mid → bagrut (exam level).
+# Convention throughout (stated in every prompt): ẍ + γẋ + ω0²x = (F0/m) cos ωt, Q = ω0/γ, and the steady state
+# x = A cos(ωt − δ) with A = (F0/m)/√((ω0² − ω²)² + γ²ω²) and tan δ = γω/(ω0² − ω²), 0 ≤ δ ≤ π (the lag behind the force).
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch5/q.ts:
+#   m = 0.20 kg, k = 80 N/m, b = 0.40 kg/s, F0 = 0.50 N: ω0 = 20 rad/s, γ = 2.0 s⁻¹, Q = 10;
+#     at ω = 18 rad/s: A = 2.97 cm (no damping 3.29, ω0 − ω for the squares 6.93, F0 instead of F0/m 0.595),
+#     δ = 25.3° (inverted 64.7°, other branch 154.7°);
+#     at ω = ω0: A = F0/(mγω0) = QF0/k = 6.25 cm (static F0/k = 0.625 cm, with Q = 5: 3.13 cm);
+#   moving support, Y = 1.0 cm, same oscillator, ω = 22 rad/s: A = ω0²Y/√(…) = 4.22 cm, δ = 152°
+#     (no damping 4.76, Y/√(…) = 0.0105);
+#   ω0 = 20 rad/s, Q = 50: Δω ≈ γ = 0.40 rad/s (half width 0.20, Qω0 = 1000, Q/ω0 = 2.5);
+#   ω0 = 20 rad/s, γ = 12 s⁻¹: amplitude peak at √(ω0² − γ²/2) = 18.1 rad/s (ω_d = 19.1, √(ω0² − γ²) = 16.0).
+
+chapter: 5
+questions:
+  # ---------------------------------------------------------------- OBJ-5.4-1 steady state by the complex method
+  - id: Q-5.4-complex-substitution
+    type: mc
+    objectives: [OBJ-5.4-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      משוואת המתנד המאולץ היא $\ddot x + \gamma\dot x + \omega_0^2x = \dfrac{F_0}{m}\cos\omega t$. בשיטה המרוכבת פותרים
+      במקומה את $\ddot z + \gamma\dot z + \omega_0^2z = \dfrac{F_0}{m}e^{i\omega t}$, ולוקחים $x = \operatorname{Re}z$. מה
+      מתקבל כשמציבים $z = \tilde Xe^{i\omega t}$, עם $\tilde X$ מספר מרוכב קבוע?
+    choices:
+      - text: '$\left(\omega_0^2 - \omega^2 + i\gamma\omega\right)\tilde X = \dfrac{F_0}{m}$'
+        correct: true
+        feedback: >-
+          נכון. כל גזירה של $e^{i\omega t}$ כופלת ב-$i\omega$: $\dot z = i\omega z$ ו-$\ddot z = -\omega^2z$. המשוואה
+          הדיפרנציאלית הופכת למשוואה אלגברית, ו-$\tilde X = \dfrac{F_0/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$: הגודל שלו
+          הוא האמפליטודה, והארגומנט שלו מינוס הפאזה.
+      - text: '$\left(\omega_0^2 + \omega^2 + i\gamma\omega\right)\tilde X = \dfrac{F_0}{m}$'
+        feedback: '$\dfrac{d^2}{dt^2}e^{i\omega t} = (i\omega)^2e^{i\omega t} = -\omega^2e^{i\omega t}$: $i^2 = -1$ נותן את הסימן מינוס לפני $\omega^2$.'
+      - text: '$\left(\omega_0^2 - \omega^2 + \gamma\omega\right)\tilde X = \dfrac{F_0}{m}$'
+        feedback: >-
+          הנגזרת הראשונה של $e^{i\omega t}$ היא $i\omega e^{i\omega t}$, עם $i$. בלי ה-$i$ המכנה ממשי, והפיגור בין ההעתק
+          לכוח היה תמיד $0$ או $180^\circ$. האיבר המדומה $i\gamma\omega$, שבא מהריסון, הוא מה שיוצר פיגור ביניים.
+      - text: 'אין פתרון כזה: צריך לנחש $z = \tilde Xe^{i\omega_0t}$, בתדירות העצמית.'
+        feedback: >-
+          במצב היציב המתנד נע בתדירות של **הכוח** המאלץ, $\omega$. תנודות בתדירות קרובה ל-$\omega_0$ שייכות לפתרון
+          ההומוגני, והן דועכות.
+    hints:
+      - 'מה הנגזרת של $e^{i\omega t}$? ומה הנגזרת השנייה?'
+
+  - id: Q-5.4-amplitude-value
+    type: numeric
+    objectives: [OBJ-5.4-1]
+    level: mid
+    prompt: >-
+      גוף בעל מסה $m = 0.20\,\text{kg}$ על קפיץ בעל קבוע קפיץ $k = 80\,\text{N/m}$, עם ריסון $b = 0.40\,\text{kg/s}$,
+      מאולץ בכוח $F_0\cos\omega t$ עם $F_0 = 0.50\,\text{N}$ ו-$\omega = 18\,\text{rad/s}$. בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$, מה האמפליטודה של המצב היציב, בסנטימטרים?
+    answer: 2.97
+    unit: cm
+    correctFeedback: >-
+      נכון. $\omega_0 = \sqrt{k/m} = 20\,\text{rad/s}$, $\gamma = b/m = 2.0\,\text{s}^{-1}$, ו-$F_0/m = 2.5\,\text{N/kg}$. הגודל
+      של $\tilde X$:
+      $$A = \frac{F_0/m}{\sqrt{\left(\omega_0^2 - \omega^2\right)^2 + \gamma^2\omega^2}} = \frac{2.5}{\sqrt{76^2 + 36^2}} = \frac{2.5}{84.1} = 2.97\,\text{cm}$$
+    wrongFeedback: 'חשבו קודם $\omega_0$, $\gamma$ ו-$F_0/m$. ואז הגודל של המרוכב $\omega_0^2 - \omega^2 + i\gamma\omega$ במכנה.'
+    commonWrong:
+      - value: 3.29
+        feedback: 'השמטתם את הריסון, $\gamma\omega$, מהמכנה. הוא קטן מ-$\omega_0^2 - \omega^2$ כאן, אבל לא זניח: הוא משנה את התשובה בכ-10%.'
+      - value: 6.93
+        feedback: 'במכנה הצבתם $\omega_0 - \omega$ במקום $\omega_0^2 - \omega^2$. מ-$\ddot x = -\omega^2x$ מגיע הריבוע.'
+      - value: 0.595
+        feedback: 'הצבתם $F_0$ במקום $F_0/m$. אחרי חלוקת המשוואה ב-$m$, באגף ימין עומד $F_0/m$.'
+    hints:
+      - '$\left|a + ib\right| = \sqrt{a^2 + b^2}$.'
+
+  - id: Q-5.4-phase-value
+    type: numeric
+    objectives: [OBJ-5.4-1]
+    level: mid
+    prompt: >-
+      באותו מתנד ($\omega_0 = 20\,\text{rad/s}$, $\gamma = 2.0\,\text{s}^{-1}$, $\omega = 18\,\text{rad/s}$, בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$) כותבים את המצב היציב $x = A\cos(\omega t - \delta)$. בכמה
+      מעלות ההעתק מפגר אחרי הכוח, כלומר מה $\delta$?
+    answer: 25.3
+    unit: °
+    correctFeedback: >-
+      נכון. $\tilde X = \dfrac{F_0/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$, ולכן הארגומנט של $\tilde X$ הוא מינוס הארגומנט של
+      המכנה: $\tan\delta = \dfrac{\gamma\omega}{\omega_0^2 - \omega^2} = \dfrac{36}{76}$, ו-$\delta = 25.3^\circ$. מתחת
+      לתהודה המכנה ברביע הראשון, ולכן $0 < \delta < 90^\circ$.
+    wrongFeedback: >-
+      מצאו את הארגומנט של המכנה $\omega_0^2 - \omega^2 + i\gamma\omega$: החלק המדומה חלקי הממשי. בדקו באיזה רביע הוא
+      נמצא.
+    commonWrong:
+      - value: 64.7
+        feedback: 'הפכתם את המנה: $\arctan\dfrac{\omega_0^2 - \omega^2}{\gamma\omega}$. הטנגנס הוא החלק המדומה, $\gamma\omega$, חלקי הממשי.'
+      - value: 154.7
+        feedback: >-
+          זה $180^\circ - 25.3^\circ$, הענף של מעל התהודה. כאן $\omega < \omega_0$, החלק הממשי של המכנה חיובי, והפיגור
+          קטן מ-$90^\circ$.
+      - value: 90
+        feedback: 'פיגור של $90^\circ$ יש רק בתהודה, $\omega = \omega_0$, שם החלק הממשי של המכנה מתאפס. כאן $\omega = 18$ ו-$\omega_0 = 20$.'
+        misconception: MC-5-resonance-in-phase
+    hints:
+      - 'הארגומנט של $1/w$ הוא מינוס הארגומנט של $w$.'
+
+  - id: Q-5.4-above-resonance
+    type: twotier
+    objectives: [OBJ-5.4-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גוף על קפיץ, בריסון חלש, מאולץ בתדירות גבוהה בהרבה מהתדירות העצמית, $\omega \gg \omega_0$. מה היחס בין ההעתק
+      $x(t)$ במצב היציב לבין הכוח המאלץ $F(t)$?
+    choices:
+      - text: 'הם בפאזות הפוכות: כשהכוח דוחף ימינה ככל שאפשר, הגוף בנקודה השמאלית ביותר.'
+        correct: true
+        feedback: 'נכון. $\delta \to 180^\circ$, והאמפליטודה קטנה, בערך $F_0/(m\omega^2)$.'
+      - text: 'הם באותה פאזה: הגוף נע לאן שהכוח דוחף.'
+        feedback: >-
+          כך זה בתדירות **נמוכה**, $\omega \ll \omega_0$: אז הקפיץ מאזן את הכוח בכל רגע, והגוף "עוקב" אחריו. בתדירות
+          גבוהה הקפיץ כמעט לא משתתף.
+        misconception: MC-5-always-follows-force
+      - text: 'הפיגור הוא $90^\circ$, כמו בתהודה.'
+        feedback: 'הפיגור $90^\circ$ רק ב-$\omega = \omega_0$. מעליה הוא ממשיך לגדול לכיוון $180^\circ$.'
+    reasons:
+      - text: 'בתדירות גבוהה האיבר $m\ddot x$ גדול בהרבה מ-$kx$ ומ-$b\dot x$, ולכן $m\ddot x \approx F$, ו-$\ddot x = -\omega^2x$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. התאוצה בכיוון הכוח, ובתנועה הרמונית התאוצה הפוכה להעתק. לכן ההעתק הפוך לכוח. זה גוף חופשי שמנערים
+          אותו מהר: הקפיץ כבר לא משנה.
+      - text: 'גוף נע תמיד בכיוון הכוח השקול שפועל עליו.'
+        feedback: 'בכיוון הכוח השקול נמצאת **התאוצה**, לא ההעתק ולא המהירות. בתנודה ההעתק והתאוצה הפוכים זה לזה.'
+        misconception: MC-5-always-follows-force
+      - text: 'הריסון מעכב את הגוף, ולכן הוא מאחר בחצי מחזור.'
+        feedback: 'בריסון חלש $\gamma\omega$ קטן לעומת $\omega^2$, והוא לא מה שקובע את הפאזה הזו. גם בלי ריסון בכלל הפאזה מעל התהודה הייתה $180^\circ$.'
+    hints:
+      - 'איזה איבר במשוואה גדל הכי מהר עם $\omega$: $m\ddot x$, $b\dot x$ או $kx$?'
+
+  - id: Q-5.4-moving-support
+    type: numeric
+    objectives: [OBJ-5.4-1]
+    level: bagrut
+    prompt: >-
+      את הקצה העליון של קפיץ אנכי מזיזים ביד למעלה ולמטה, $y_s(t) = Y\cos\omega t$ עם $Y = 1.0\,\text{cm}$ ו-$\omega = 22\,\text{rad/s}$.
+      בקצה התחתון תלוי גוף בעל מסה $m = 0.20\,\text{kg}$, קבוע הקפיץ $k = 80\,\text{N/m}$, ועל הגוף פועל ריסון
+      $-b\dot x$ עם $b = 0.40\,\text{kg/s}$ ($x$ נמדד מנקודת שיווי המשקל של הגוף כשהיד עומדת). מה האמפליטודה של הגוף
+      במצב היציב, בסנטימטרים?
+    answer: 4.22
+    unit: cm
+    correctFeedback: >-
+      נכון. ההתארכות של הקפיץ היא $x - y_s$, ולכן $m\ddot x = -k(x - Y\cos\omega t) - b\dot x$, או
+      $\ddot x + \gamma\dot x + \omega_0^2x = \omega_0^2Y\cos\omega t$: מתנד מאולץ עם $F_0/m = \omega_0^2Y$. עם $\omega_0 = 20\,\text{rad/s}$ ו-$\gamma = 2.0\,\text{s}^{-1}$:
+      $$A = \frac{\omega_0^2Y}{\sqrt{\left(\omega_0^2 - \omega^2\right)^2 + \gamma^2\omega^2}} = \frac{400\cdot1.0}{\sqrt{84^2 + 44^2}} = 4.22\,\text{cm}$$
+      הגוף נע פי 4 יותר מהיד, ובפאזה כמעט הפוכה לה ($\delta = 152^\circ$). **בדיקת גבולות:** כש-$\omega \to 0$,
+      $A \to Y$: הגוף עולה ויורד עם היד. כש-$\omega \to \infty$, $A \to 0$: הגוף לא מספיק לזוז.
+    wrongFeedback: >-
+      כתבו את החוק השני לגוף: הקפיץ מושך לפי ההתארכות שלו, $x - y_s$, לא לפי $x$ לבד. העבירו את האיבר של היד לאגף ימין,
+      וזהו את $F_0/m$.
+    commonWrong:
+      - value: 4.76
+        feedback: 'השמטתם את הריסון. ליד התהודה הוא חשוב, וכאן הוא מקטין את האמפליטודה בכ-11%.'
+      - value: 1.0
+        feedback: >-
+          הנחתם שהגוף עוקב אחרי היד. זה נכון רק בתדירות נמוכה מאוד. כאן $\omega$ קרובה ל-$\omega_0$, והקפיץ מגביר את
+          התנועה.
+        misconception: MC-5-always-follows-force
+      - value: 0.0105
+        feedback: 'הצבתם $Y$ במונה במקום $\omega_0^2Y$. הכוח המאלץ ליחידת מסה הוא $kY/m = \omega_0^2Y$; בדקו יחידות: $\text{cm}\cdot\text{s}^2$ אינו אורך.'
+    hints:
+      - 'מה הכוח שהקפיץ מפעיל כשהגוף ב-$x$ והקצה העליון ב-$y_s$?'
+
+  # ---------------------------------------------------------------- OBJ-5.4-2 resonance, width, Q, transient vs steady state
+  - id: Q-5.4-phase-at-resonance
+    type: mc
+    objectives: [OBJ-5.4-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      מתנד מרוסן מאולץ בדיוק בתדירות העצמית שלו, $\omega = \omega_0$ (בצורה $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$).
+      מה נכון לגבי הפאזות במצב היציב?
+    choices:
+      - text: 'ההעתק מפגר ב-$90^\circ$ אחרי הכוח, ולכן המהירות באותה פאזה כמו הכוח.'
+        correct: true
+        feedback: >-
+          נכון. ב-$\omega = \omega_0$ החלק הממשי של $\omega_0^2 - \omega^2 + i\gamma\omega$ מתאפס, והמכנה מדומה טהור:
+          $\delta = 90^\circ$. המהירות מקדימה את ההעתק ב-$90^\circ$, ולכן היא בדיוק בפאזה עם הכוח. הכוח דוחף תמיד בכיוון
+          התנועה, וההספק שהוא מעביר מרבי.
+      - text: 'ההעתק באותה פאזה כמו הכוח: הכוח דוחף את הגוף הכי חזק כשהוא הכי רחוק.'
+        feedback: >-
+          כשהגוף בקצה הוא עומד, וכוח שם לא עושה עבודה. כדי להכניס אנרגיה בכל רגע, הכוח צריך להיות בפאזה עם
+          **המהירות**, כמו כשדוחפים נדנדה כשהיא עוברת בתחתית.
+        misconception: MC-5-resonance-in-phase
+      - text: 'ההעתק והכוח בפאזות הפוכות.'
+        feedback: 'פאזות הפוכות יש הרחק מעל התהודה, $\omega \gg \omega_0$. בתהודה הפיגור בדיוק באמצע הדרך, $90^\circ$.'
+      - text: 'בתהודה הפאזה לא מוגדרת, כי האמפליטודה אין-סופית.'
+        feedback: 'עם ריסון האמפליטודה בתהודה סופית, $\dfrac{F_0}{m\gamma\omega_0}$, והפאזה מוגדרת היטב. אין-סוף מתקבל רק כש-$\gamma = 0$.'
+    hints:
+      - 'הציבו $\omega = \omega_0$ במכנה $\omega_0^2 - \omega^2 + i\gamma\omega$. מה הארגומנט שלו?'
+
+  - id: Q-5.4-resonance-amplitude
+    type: numeric
+    objectives: [OBJ-5.4-2]
+    level: basic
+    prompt: >-
+      אותו מתנד ($m = 0.20\,\text{kg}$, $k = 80\,\text{N/m}$, $b = 0.40\,\text{kg/s}$, $F_0 = 0.50\,\text{N}$) מאולץ עכשיו
+      בדיוק בתדירות העצמית, $\omega = \omega_0 = 20\,\text{rad/s}$. מה האמפליטודה של המצב היציב, בסנטימטרים?
+    answer: 6.25
+    unit: cm
+    correctFeedback: >-
+      נכון. ב-$\omega = \omega_0$ נשאר במכנה רק $\gamma\omega_0$: $A = \dfrac{F_0/m}{\gamma\omega_0} = \dfrac{2.5}{2.0\cdot20} = 6.25\,\text{cm}$.
+      אותה תוצאה כתובה גם $A = Q\cdot\dfrac{F_0}{k}$ עם $Q = \omega_0/\gamma = 10$: בתהודה התגובה גדולה פי $Q$
+      מההתארכות הסטטית $F_0/k$.
+    wrongFeedback: 'הציבו $\omega = \omega_0$ בנוסחת האמפליטודה. איזה איבר במכנה מתאפס?'
+    commonWrong:
+      - value: 0.625
+        feedback: 'זו ההתארכות הסטטית, $F_0/k$: כך הגוף היה זז תחת כוח קבוע. בתהודה התגובה גדולה פי $Q = 10$.'
+      - value: 3.13
+        feedback: 'זה חצי מהתשובה, כמו עם $Q = \omega_0/(2\gamma) = 5$. בצורה $\ddot x + \gamma\dot x + \omega_0^2x$ המכנה בתהודה הוא $\gamma\omega_0$, ו-$Q = \omega_0/\gamma = 10$.'
+    hints:
+      - 'במכנה $\sqrt{\left(\omega_0^2 - \omega^2\right)^2 + \gamma^2\omega^2}$, מה נשאר כש-$\omega = \omega_0$?'
+
+  - id: Q-5.4-width
+    type: numeric
+    objectives: [OBJ-5.4-2]
+    level: mid
+    prompt: >-
+      למתנד בריסון חלש $\omega_0 = 20\,\text{rad/s}$ ו-$Q = \omega_0/\gamma = 50$ (בצורה $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$).
+      רוחב התהודה $\Delta\omega$ הוא הרוחב המלא של עקומת $A^2(\omega)$ בגובה חצי מהשיא שלה. מה $\Delta\omega$?
+    answer: 0.40
+    unit: rad/s
+    correctFeedback: >-
+      נכון. ליד התהודה $\omega_0^2 - \omega^2 \approx 2\omega_0(\omega_0 - \omega)$, ו-$\gamma\omega \approx \gamma\omega_0$,
+      ולכן $A^2$ יורד לחצי כש-$2\omega_0\left|\omega_0 - \omega\right| = \gamma\omega_0$, כלומר $\left|\omega - \omega_0\right| = \gamma/2$.
+      הרוחב המלא $\Delta\omega \approx \gamma = \omega_0/Q = 0.40\,\text{rad/s}$. יחסית לתדירות, $\Delta\omega/\omega_0 = 1/Q$: מתנד
+      עם $Q$ גבוה הוא בורר תדירויות חד.
+    wrongFeedback: 'חשבו את $\gamma$ מ-$Q$, ומצאו את התדירויות שבהן $\left(\omega_0^2 - \omega^2\right)^2 = \gamma^2\omega^2$, בקירוב של ליד התהודה.'
+    commonWrong:
+      - value: 0.20
+        feedback: 'זה חצי הרוחב, $\gamma/2$: המרחק מ-$\omega_0$ לכל אחת מהנקודות של חצי הגובה. הרוחב המלא הוא בין שתיהן.'
+      - value: 1000
+        feedback: 'כפלתם $Q\omega_0$. $Q$ גדול פירושו תהודה **צרה**, ולכן הרוחב הוא $\omega_0/Q$.'
+      - value: 2.5
+        feedback: 'חישבתם $Q/\omega_0$, ביחידות $\text{s}$. הרוחב הוא תדירות: $\omega_0/Q$.'
+    hints:
+      - 'בקירוב $Q \gg 1$, הרוחב המלא שווה ל-$\gamma$.'
+
+  - id: Q-5.4-transient-steady
+    type: twotier
+    objectives: [OBJ-5.4-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      שני מתנדים זהים, מרוסנים ($\gamma > 0$), מאולצים באותו כוח $F_0\cos\omega t$ מרגע $t = 0$. הראשון מתחיל במנוחה
+      בנקודת שיווי המשקל, והשני מתחיל ב-$x_0 = 5\,\text{cm}$ ובמהירות גדולה. מה נכון לגבי התנועה שלהם אחרי זמן
+      ארוך, $t \gg 1/\gamma$?
+    choices:
+      - text: 'הם נעים באותה תנועה בדיוק.'
+        correct: true
+        feedback: 'נכון. המצב היציב נקבע רק מהכוח המאלץ ומתכונות המתנד, לא מתנאי ההתחלה.'
+      - text: 'השני נע באמפליטודה גדולה יותר, כי הוא התחיל עם יותר אנרגיה.'
+        feedback: >-
+          האנרגיה העודפת של השני שייכת לתגובה המעברית, והריסון מפזר אותה תוך זמן של כמה $2/\gamma$. אחר כך הכוח המאלץ
+          מספק בכל מחזור בדיוק את מה שהריסון מפזר, וזה זהה לשניהם.
+        misconception: MC-5-initial-conditions-persist
+      - text: 'הם נעים באותה אמפליטודה, אבל בפאזה שונה שנקבעה בהתחלה.'
+        feedback: 'גם הפאזה של המצב היציב, $\delta$, נקבעת מהכוח: $\tan\delta = \dfrac{\gamma\omega}{\omega_0^2 - \omega^2}$. אין בה זיכרון של $t = 0$.'
+        misconception: MC-5-initial-conditions-persist
+    reasons:
+      - text: 'הפתרון הכללי הוא המצב היציב ועוד פתרון של המשוואה ההומוגנית, ותנאי ההתחלה קובעים רק את החלק ההומוגני, שדועך כמו $e^{-\gamma t/2}$.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $x = x_p + x_h$: $x_p = A\cos(\omega t - \delta)$ לא תלוי בתנאי ההתחלה, ו-$x_h$ הוא תנועה חופשית
+          מרוסנת עם שני קבועים שנקבעים מ-$x_0$ ומ-$v_0$. התגובה המעברית נעלמת, והמצב היציב נשאר.
+      - text: 'האנרגיה נשמרת, ולכן המתנד זוכר תמיד את האנרגיה ההתחלתית שלו.'
+        feedback: 'במתנד מרוסן ומאולץ האנרגיה לא נשמרת: הכוח מכניס אנרגיה והריסון מוציא. במצב היציב השניים מתאזנים בממוצע.'
+        misconception: MC-5-initial-conditions-persist
+      - text: 'הכוח המאלץ חזק מכוח הקפיץ, ולכן הוא מכתיב את התנועה מההתחלה.'
+        feedback: 'הכוח המאלץ לא צריך להיות חזק. גם כוח חלש מכתיב את התנועה בסוף, כי כל השאר דועך. בהתחלה, לעומת זאת, שני המתנדים שונים מאוד.'
+    hints:
+      - 'מה קורה ל-$e^{-\gamma t/2}$ כש-$t \gg 1/\gamma$?'
+
+  - id: Q-5.4-peak-frequency
+    type: numeric
+    objectives: [OBJ-5.4-2]
+    level: bagrut
+    prompt: >-
+      במתנד בריסון חזק יחסית, $\omega_0 = 20\,\text{rad/s}$ ו-$\gamma = 12\,\text{s}^{-1}$ (בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$), באיזו תדירות מאלצת $\omega$ האמפליטודה של המצב היציב
+      מרבית?
+    answer: 18.1
+    unit: rad/s
+    correctFeedback: >-
+      נכון. האמפליטודה מרבית כשהמכנה $D(u) = \left(\omega_0^2 - u\right)^2 + \gamma^2u$, עם $u = \omega^2$, מינימלי:
+      $D'(u) = -2\left(\omega_0^2 - u\right) + \gamma^2 = 0$, ולכן
+      $$\omega_{\max} = \sqrt{\omega_0^2 - \frac{\gamma^2}{2}} = \sqrt{400 - 72} = 18.1\,\text{rad/s}$$
+      **בדיקת גבולות:** כש-$\gamma \to 0$, $\omega_{\max} \to \omega_0$; בריסון חלש השיא כמעט בתדירות העצמית. וכש-$\gamma \ge \sqrt2\,\omega_0$
+      אין שיא בכלל: האמפליטודה הכי גדולה ב-$\omega = 0$.
+    wrongFeedback: 'מצאו את המינימום של המכנה. נוח לגזור לפי $u = \omega^2$ במקום לפי $\omega$.'
+    commonWrong:
+      - value: 20
+        feedback: 'זו $\omega_0$. בתדירות העצמית הפאזה בדיוק $90^\circ$, אבל שיא האמפליטודה מעט מתחתיה כשיש ריסון. כאן ההבדל כ-10%.'
+      - value: 19.1
+        feedback: >-
+          זו $\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$, התדירות של התנודות **החופשיות** המרוסנות. שיא האמפליטודה של
+          המצב היציב נמוך ממנה: $\sqrt{\omega_0^2 - \gamma^2/2}$.
+        misconception: MC-5-peak-at-damped-frequency
+      - value: 16.0
+        feedback: 'קיבלתם $\sqrt{\omega_0^2 - \gamma^2}$. בגזירה לפי $u$ האיבר $\gamma^2u$ נותן $\gamma^2$, ו-$2\left(\omega_0^2 - u\right) = \gamma^2$: המקדם $\tfrac12$.'
+    hints:
+      - 'הגדירו $u = \omega^2$ וגזרו את $\left(\omega_0^2 - u\right)^2 + \gamma^2u$ לפי $u$.'
+
+  - id: Q-5.4-double-q
+    type: mc
+    objectives: [OBJ-5.4-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      במתנד מאולץ בריסון חלש מקטינים את הריסון לחצי, כך ש-$Q = \omega_0/\gamma$ גדל פי 2. $\omega_0$ ו-$F_0$ לא משתנים.
+      מה קורה לשיא האמפליטודה בתהודה ולרוחב התהודה?
+    choices:
+      - text: 'השיא גדל פי 2, והרוחב קטן פי 2.'
+        correct: true
+        feedback: >-
+          נכון. $A_{\max} \approx \dfrac{F_0}{m\gamma\omega_0}$ ו-$\Delta\omega \approx \gamma$: שניהם תלויים ב-$\gamma$, בכיוונים
+          הפוכים. התהודה גבוהה וצרה יותר. ועוד דבר משתנה: התגובה המעברית דועכת לאט פי 2, ולכן לוקח פי 2 זמן להגיע
+          לשיא החדש.
+      - text: 'השיא גדל פי 2, והרוחב לא משתנה.'
+        feedback: >-
+          הרוחב נקבע מהריסון: בתהודה האיבר $\gamma\omega$ במכנה הוא מה שעוצר את הגדילה, ורחוק ממנה $\omega_0^2 - \omega^2$
+          שולט. כשהריסון קטן, כבר הרחק קטן מהתהודה $\omega_0^2 - \omega^2$ מנצח, והעקומה נעשית צרה.
+        misconception: MC-5-width-independent-of-damping
+      - text: 'השיא גדל פי 4, והרוחב קטן פי 2.'
+        feedback: 'פי 4 גדל ריבוע האמפליטודה, כלומר האנרגיה של המתנד בשיא. האמפליטודה עצמה גדלה פי 2.'
+      - text: 'שום דבר לא משתנה, כי השיא נקבע רק מ-$F_0$ ומ-$k$.'
+        feedback: '$F_0/k$ הוא ההעתק הסטטי. בתהודה האמפליטודה גדולה ממנו פי $Q$, ולכן היא כן תלויה בריסון.'
+    hints:
+      - 'כתבו את השיא ואת הרוחב בעזרת $\gamma$.'

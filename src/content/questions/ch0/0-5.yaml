@@ -1,0 +1,309 @@
+# Lesson 0.5 question bank: the comprehension ladder of "משוואות דיפרנציאליות רגילות".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/ladder.ts (G = 9.8 from src/physics/constants.ts):
+#   x = e^(−3t) in ẍ + 5ẋ + kx = 0: k = 6 s⁻² (the other root is −2);
+#   m = 80 kg, c = 0.25 kg/m: V = √(mg/c) = 56 m/s, T = V/g = 5.71 s (1/T = 0.175 s⁻¹);
+#   cooling, 90 °C in 20 °C, τ = 10 min, t = 15 min: 35.6 °C (90e^(−1.5) = 20.1; 90 − 70e^(−1.5) = 74.4; 20 + 70e^(−2/3) = 55.9);
+#   boat m = 500 kg, b = 100 kg/s, v₀ = 6 m/s: τ = 5 s, x(5 s) = v₀τ(1 − e^(−1)) = 19.0 m (v₀τ = v₀t = 30; v₀τe^(−1) = 11.0; 15);
+#   m = 1 kg, b = 6 kg/s, k = 25 N/m: r = −3 ± 4i, ω = 4 rad/s (√(k/m) = 5, √|Δ| = 8);
+#   m = 0.5 kg, k = 200 N/m: b_crit = 2√(mk) = 20 kg/s (√(mk) = 10, 4mk = 400, 2√(k/m) = 40).
+
+chapter: 0
+questions:
+  # ---------------------------------------------------------------- OBJ-0.5-1 order, linearity, checking a solution
+  - id: Q-0.5-which-nonlinear
+    type: mc
+    objectives: [OBJ-0.5-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      משוואה דיפרנציאלית ליניארית ב-$x$ היא משוואה שבה $x$ והנגזרות שלו מופיעים רק בחזקה ראשונה, כל אחד כפול
+      מקדם שתלוי לכל היותר ב-$t$, בלי מכפלות ביניהם ובלי פונקציות שלהם. איזו מהמשוואות הבאות **אינה** ליניארית?
+    choices:
+      - text: $\ddot\theta + \dfrac{g}{L}\sin\theta = 0$ (מטוטלת)
+        correct: true
+        feedback: >-
+          נכון. $\sin\theta$ היא פונקציה לא ליניארית של הנעלם. בזוויות קטנות, $\sin\theta \approx \theta$, והמשוואה
+          הופכת לליניארית, $\ddot\theta + \dfrac{g}{L}\theta = 0$: זו הסיבה שמקרבים.
+      - text: $m\dot v = mg - bv$ (נפילה עם גרר ליניארי)
+        feedback: >-
+          היא ליניארית. האיבר הקבוע $mg$ לא מכיל את $v$, ולכן הוא לא הופך את המשוואה ללא ליניארית: הוא רק עושה
+          אותה **לא הומוגנית**.
+        misconception: MC-0-linearity-confusion
+      - text: $\ddot x + t^2x = 0$
+        feedback: >-
+          היא ליניארית. המקדם $t^2$ תלוי בזמן, אבל $x$ עצמו מופיע בחזקה ראשונה. ליניאריות נוגעת לנעלם ולנגזרות
+          שלו, לא למשתנה $t$.
+        misconception: MC-0-linearity-confusion
+      - text: $m\ddot x + b\dot x + kx = F_0\cos\omega t$ (מתנד מאולץ)
+        feedback: 'היא ליניארית. הכוח המאלץ תלוי רק ב-$t$, ולכן הוא איבר לא הומוגני, ולא איבר לא ליניארי.'
+        misconception: MC-0-linearity-confusion
+    hints:
+      - 'חפשו פונקציה של הנעלם עצמו ($x^2$, $\sin x$, $\dot x\,x$), ולא של $t$.'
+
+  - id: Q-0.5-substitute
+    type: numeric
+    objectives: [OBJ-0.5-1]
+    level: mid
+    prompt: >-
+      הציעו לכם את הפתרון $x(t) = e^{-3t}$ (עם $t$ בשניות) למשוואה $\ddot x + 5\dot x + kx = 0$. בדקו בהצבה: בעבור
+      איזה ערך של $k$ הוא באמת פתרון?
+    answer: 6
+    unit: 1/s²
+    correctFeedback: >-
+      נכון. $\dot x = -3e^{-3t}$ ו-$\ddot x = 9e^{-3t}$, ולכן $(9 - 15 + k)e^{-3t} = 0$ לכל $t$, ו-$k = 6\,\text{s}^{-2}$.
+      שימו לב: עם $k = 6$ גם $e^{-2t}$ פתרון, כי $r^2 + 5r + 6 = (r + 2)(r + 3)$.
+    wrongFeedback: 'גזרו את $e^{-3t}$ פעמיים (כלל השרשרת מוריד בכל פעם גורם $-3$), הציבו, ודרשו שהמקדם של $e^{-3t}$ יתאפס.'
+    commonWrong:
+      - value: -24
+        feedback: 'איבדתם את המינוס בנגזרת הראשונה: $\dot x = -3e^{-3t}$, ולכן $5\dot x = -15e^{-3t}$.'
+      - value: 24
+        feedback: 'הנגזרת השנייה חיובית: $\ddot x = (-3)^2e^{-3t} = +9e^{-3t}$. מינוס כפול מינוס.'
+    hints:
+      - 'כל נגזרת של $e^{rt}$ כופלת ב-$r$.'
+
+  - id: Q-0.5-tanh
+    type: numeric
+    objectives: [OBJ-0.5-1]
+    level: bagrut
+    prompt: >-
+      צנחן בעל מסה $m = 80\,\text{kg}$ נופל ממנוחה עם גרר ריבועי, $m\dot v = mg - cv^2$, עם $c = 0.25\,\text{kg/m}$.
+      מציעים לו את הפתרון $v(t) = V\tanh(t/T)$, כאשר $\dfrac{d}{du}\tanh u = 1 - \tanh^2u$. הציבו במשוואה ומצאו
+      בעבור איזה $V$ ואיזה $T$ זה פתרון. מה $T$?
+    answer: 5.71
+    unit: s
+    correctFeedback: >-
+      נכון. אחרי ההצבה, $\dfrac{V}{T}\left(1 - \tanh^2\right) = g - \dfrac{c}{m}V^2\tanh^2$ לכל $t$. משווים בנפרד את
+      האיברים הקבועים ואת המקדמים של $\tanh^2$: $\dfrac{V}{T} = g$ ו-$\dfrac{V}{T} = \dfrac{c}{m}V^2$. לכן
+      $V = \sqrt{mg/c} = 56\,\text{m/s}$, המהירות הסופית, ו-$T = V/g = 5.71\,\text{s}$. **בדיקת גבולות:** כש-$t \ll T$,
+      $\tanh u \approx u$, ו-$v \approx Vt/T = gt$: נפילה חופשית, לפני שהגרר מורגש. כש-$t \gg T$, $v \to V$.
+    wrongFeedback: >-
+      גזרו את $V\tanh(t/T)$ בכלל השרשרת, הציבו בשני האגפים, ודרשו שהשוויון יתקיים לכל $t$: המקדם של
+      $\tanh^2$ והאיבר הקבוע צריכים להיות שווים בנפרד.
+    commonWrong:
+      - value: 56
+        feedback: 'זה $V$, המהירות הסופית, ביחידות $\text{m/s}$. התבקשתם את $T$, הזמן האופייני, $V/g$.'
+      - value: 0.175
+        feedback: 'זה $1/T$, ביחידות $\text{s}^{-1}$. מ-$V/T = g$ מקבלים $T = V/g$.'
+      - value: 320
+        feedback: 'זה $m/c$, ביחידות מטרים: אורך, לא זמן. בדקו יחידות: $T = \sqrt{m/(gc)}$.'
+    hints:
+      - '$\dfrac{dv}{dt} = \dfrac{V}{T}\left(1 - \tanh^2(t/T)\right)$.'
+
+  # ---------------------------------------------------------------- OBJ-0.5-2 separation of variables and initial conditions
+  - id: Q-0.5-separate
+    type: mc
+    objectives: [OBJ-0.5-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      סירה שהמנוע שלה כבה מאטה לפי $\dfrac{dv}{dt} = -kv$, עם $k$ קבוע. בהפרדת משתנים מעבירים לכל אגף רק משתנה
+      אחד. מה הצעד הנכון?
+    choices:
+      - text: '$\dfrac{dv}{v} = -k\,dt$, ואחר כך $\ln\dfrac{v}{v_0} = -kt$.'
+        correct: true
+        feedback: >-
+          נכון. מחלקים ב-$v$ ומכפילים ב-$dt$, ואז מאנטגרלים: מ-$v_0$ עד $v$ באגף שמאל, ומ-0 עד $t$ באגף ימין. לכן
+          $v = v_0e^{-kt}$.
+      - text: '$dv = -kv\,dt$, ולכן $v - v_0 = -kvt$.'
+        feedback: >-
+          אינטגרלתם את $v\,dt$ כאילו $v$ קבוע. אבל $v$ משתנה בזמן: לכן מעבירים אותו לאגף של $dv$ לפני
+          שמאנטגרלים.
+        misconception: MC-0-constant-rate-assumed
+      - text: '$v\,dv = -k\,dt$, ולכן $\tfrac12\left(v^2 - v_0^2\right) = -kt$.'
+        feedback: 'כדי להעביר את $v$ שמאלה **מחלקים** בו, ולא כופלים. בדקו: מ-$v\,dv = -k\,dt$ חוזרים ל-$\dot v = -k/v$, משוואה אחרת.'
+      - text: '$\dfrac{dv}{dt} = -kv$ ולכן $v = -kvt$.'
+        feedback: 'זה לא פתרון: הנעלם $v$ מופיע בשני האגפים, והשוויון נותן רק $v = 0$ או $t = -1/k$. צריך לאנטגרל.'
+        misconception: MC-0-constant-rate-assumed
+    hints:
+      - 'אספו את כל מה שתלוי ב-$v$ עם $dv$, ואת כל מה שתלוי ב-$t$ עם $dt$.'
+
+  - id: Q-0.5-cooling
+    type: numeric
+    objectives: [OBJ-0.5-2]
+    level: mid
+    prompt: >-
+      כוס תה בטמפרטורה $90\,^\circ\text{C}$ מתקררת בחדר של $20\,^\circ\text{C}$ לפי
+      $\dfrac{dT}{dt} = -\dfrac{T - T_\text{env}}{\tau}$, עם $T_\text{env} = 20\,^\circ\text{C}$ ו-$\tau = 10\,\text{min}$.
+      מה הטמפרטורה של התה אחרי $15\,\text{min}$?
+    answer: 35.6
+    unit: '°C'
+    correctFeedback: >-
+      נכון. עם $u = T - T_\text{env}$ המשוואה היא $\dot u = -u/\tau$, ולכן $u = u_0e^{-t/\tau}$ ו-$T(t) = 20 + 70e^{-t/\tau}$.
+      אחרי $15\,\text{min}$: $20 + 70e^{-1.5} = 35.6\,^\circ\text{C}$. **בדיקת גבולות:** ב-$t = 0$ חוזרים ל-$90\,^\circ\text{C}$,
+      וכש-$t \to \infty$ התה מגיע לטמפרטורת החדר, ולא לאפס.
+    wrongFeedback: 'מה שדועך באקספוננט הוא **ההפרש** $T - T_\text{env}$. הפרידו משתנים בעזרתו, וקבעו את הקבוע לפי $T(0) = 90\,^\circ\text{C}$.'
+    commonWrong:
+      - value: 20.1
+        feedback: >-
+          זה $90e^{-1.5}$: פתרתם $\dot T = -T/\tau$, כאילו התה מתקרר לאפס מעלות. הוא מתקרר אל טמפרטורת החדר, ורק
+          ההפרש ממנה דועך.
+        misconception: MC-0-exponential-to-zero
+      - value: 74.4
+        feedback: 'זה $90 - 70e^{-1.5}$: הסימן התהפך. ב-$t = 0$ הביטוי הזה נותן $20\,^\circ\text{C}$, ולא $90$. בדקו את תנאי ההתחלה.'
+      - value: 55.9
+        feedback: 'הפכתם את המעריך: $e^{-\tau/t}$ במקום $e^{-t/\tau}$. בדקו: ב-$t = 0$ הביטוי שלכם לא מוגדר.'
+    hints:
+      - 'הגדירו $u = T - 20\,^\circ\text{C}$. איזו משוואה מקיים $u$?'
+
+  - id: Q-0.5-coasting
+    type: numeric
+    objectives: [OBJ-0.5-2]
+    level: bagrut
+    prompt: >-
+      סירה בעלת מסה $m = 500\,\text{kg}$ שטה במהירות $v_0 = 6.0\,\text{m/s}$ כשהמנוע שלה כבה. המים מפעילים עליה
+      גרר $-bv$, עם $b = 100\,\text{kg/s}$. איזה מרחק היא עוברת בחמש השניות הראשונות אחרי שהמנוע כבה?
+    answer: 19
+    unit: m
+    correctFeedback: >-
+      נכון. $m\dot v = -bv$ נותן $v = v_0e^{-t/\tau}$, עם $\tau = m/b = 5\,\text{s}$. אינטגרל נוסף:
+      $x(t) = v_0\tau\left(1 - e^{-t/\tau}\right)$, וב-$t = 5\,\text{s}$: $30\left(1 - e^{-1}\right) = 19.0\,\text{m}$.
+      **בדיקת גבולות:** כש-$t \ll \tau$, $x \approx v_0t$, כאילו אין גרר. כש-$t \to \infty$, $x \to v_0\tau = 30\,\text{m}$:
+      הסירה אף פעם לא נעצרת לגמרי, אבל עוברת מרחק סופי.
+    wrongFeedback: >-
+      פתרו קודם את $\dot v = -v/\tau$ בהפרדת משתנים עם $v(0) = v_0$, ואחר כך אנטגרלו את $v(t)$ מ-0 עד
+      $5\,\text{s}$ כדי לקבל מרחק.
+    commonWrong:
+      - value: 30
+        feedback: >-
+          זה $v_0t$, כאילו הסירה לא מאטה, וזה גם $v_0\tau$, המרחק עד שהיא כמעט נעצרת אחרי זמן רב מאוד. אחרי
+          קבוע זמן אחד היא עברה רק $1 - e^{-1} \approx 63\%$ ממנו.
+        misconception: MC-0-constant-rate-assumed
+      - value: 11
+        feedback: 'זה $v_0\tau e^{-1}$, ובו רק הגבול העליון. האינטגרל מ-0 עד $t$ נותן $v_0\tau\left(1 - e^{-t/\tau}\right)$.'
+      - value: 15
+        feedback: 'זה $\tfrac12v_0t$, כאילו המהירות יורדת קווית לאפס תוך $5\,\text{s}$. המהירות יורדת באקספוננט, ואחרי $5\,\text{s}$ נשארים $37\%$ ממנה.'
+    hints:
+      - 'קבוע הזמן הוא $\tau = m/b$.'
+      - '$\displaystyle\int_0^tv_0e^{-t''/\tau}dt'' = v_0\tau\left(1 - e^{-t/\tau}\right)$.'
+
+  # ---------------------------------------------------------------- OBJ-0.5-3 second order, constant coefficients
+  - id: Q-0.5-char-eq
+    type: mc
+    objectives: [OBJ-0.5-3]
+    level: basic
+    prompt: >-
+      מסה על קפיץ עם ריסון מקיימת $m\ddot x + b\dot x + kx = 0$. מציבים את הניחוש $x = e^{rt}$. איזו משוואה מקבלים
+      בעבור $r$?
+    choices:
+      - text: $mr^2 + br + k = 0$
+        correct: true
+        feedback: >-
+          נכון. $\dot x = re^{rt}$ ו-$\ddot x = r^2e^{rt}$, ולכן $(mr^2 + br + k)e^{rt} = 0$, ו-$e^{rt}$ אף פעם לא
+          מתאפס. זו המשוואה האופיינית: היא הופכת משוואה דיפרנציאלית למשוואה ריבועית.
+      - text: $mr^2 + k = 0$
+        feedback: 'שכחתם את איבר הריסון: $b\dot x$ נותן $bre^{rt}$. בלי ריסון ($b = 0$) זו אכן המשוואה, והשורשים $\pm i\sqrt{k/m}$.'
+      - text: $mr + b + k = 0$
+        feedback: 'כל נגזרת כופלת ב-$r$ פעם אחת: הנגזרת השנייה ב-$r^2$, הראשונה ב-$r$, ו-$x$ עצמו ב-1.'
+      - text: $mr^2 - br + k = 0$
+        feedback: 'הסימן של $b$ לא משתנה בהצבה: $b\dot x = bre^{rt}$. אם היה מינוס, הריסון היה מגדיל את התנודות.'
+    hints:
+      - 'גזרו את $e^{rt}$ פעם ופעמיים, והציבו.'
+
+  - id: Q-0.5-roots-type
+    type: twotier
+    objectives: [OBJ-0.5-3]
+    qualitative: true
+    level: mid
+    prompt: >-
+      במשוואה $m\ddot x + b\dot x + kx = 0$, עם $m$, $b$ ו-$k$ חיוביים, באיזה מקרה המסה **מתנודדת**, כלומר עוברת
+      שוב ושוב דרך $x = 0$?
+    choices:
+      - text: כש-$b^2 < 4mk$
+        correct: true
+        feedback: 'נכון. אז הדיסקרימיננטה של $mr^2 + br + k = 0$ שלילית, והשורשים מרוכבים.'
+      - text: כש-$b^2 > 4mk$
+        feedback: 'אז שני השורשים ממשיים ושליליים, והפתרון הוא סכום של שני אקספוננטים דועכים: המסה זוחלת חזרה לאפס, ועוברת אותו פעם אחת לכל היותר.'
+      - text: תמיד, כי מסה על קפיץ תמיד מתנודדת.
+        feedback: 'בריסון חזק, למשל מסה על קפיץ בתוך דבש, המסה חוזרת לאט לשיווי משקל בלי לעבור אותו. זה תלוי ביחס בין $b^2$ ל-$4mk$.'
+        misconception: MC-0-spring-always-oscillates
+    reasons:
+      - text: 'השורשים הם $r = -\gamma \pm i\omega$, ולכן $e^{rt} = e^{-\gamma t}e^{\pm i\omega t}$: קוסינוס שהאמפליטודה שלו דועכת.'
+        correct: true
+        feedback: 'זה הנימוק. החלק הממשי של השורש קובע את הדעיכה, והחלק המדומה את התדירות.'
+      - text: כשהדיסקרימיננטה שלילית למשוואה האופיינית אין פתרון, ולכן המסה לא זזה באופן פשוט.
+        feedback: 'יש לה שני פתרונות **מרוכבים**, והם בדיוק התנודות. החלק הממשי של הפתרון המרוכב הוא פתרון ממשי של המשוואה הדיפרנציאלית.'
+        misconception: MC-0-complex-roots-no-solution
+      - text: שורשים ממשיים נותנים תנודה בתדירות $|r|$.
+        feedback: '$e^{rt}$ עם $r$ ממשי ושלילי רק דועך, בלי לשנות סימן. תנודה צריכה $e^{i\omega t}$, כלומר חלק מדומה בשורש.'
+    hints:
+      - 'פתרו את $mr^2 + br + k = 0$ בנוסחת השורשים. מתי יש שורש ריבועי של מספר שלילי?'
+
+  - id: Q-0.5-damped-frequency
+    type: numeric
+    objectives: [OBJ-0.5-3]
+    level: mid
+    prompt: >-
+      מתנד מקיים $m\ddot x + b\dot x + kx = 0$, עם $m = 1.0\,\text{kg}$, $b = 6.0\,\text{kg/s}$ ו-$k = 25\,\text{N/m}$.
+      מצאו את שורשי המשוואה האופיינית. מה התדירות הזוויתית של התנודות?
+    answer: 4
+    unit: rad/s
+    correctFeedback: >-
+      נכון. $r = \dfrac{-6 \pm \sqrt{36 - 100}}{2} = -3 \pm 4i$, ולכן $x(t) = Ae^{-3t}\cos(4t + \varphi)$: התדירות
+      $4\,\text{rad/s}$, וקבוע הדעיכה $3\,\text{s}^{-1}$. בלי ריסון היא הייתה $\sqrt{k/m} = 5\,\text{rad/s}$: הריסון
+      מאט את התנודות.
+    wrongFeedback: 'השורשים מהצורה $-\gamma \pm i\omega$. התדירות היא החלק המדומה, $\omega = \dfrac{\sqrt{4mk - b^2}}{2m}$.'
+    commonWrong:
+      - value: 5
+        feedback: 'זה $\sqrt{k/m}$, התדירות **בלי** ריסון. הריסון מקטין אותה: $\omega = \sqrt{k/m - (b/2m)^2}$.'
+        misconception: MC-0-damping-no-frequency-change
+      - value: 3
+        feedback: 'זה $b/(2m)$, **החלק הממשי** של השורש, שקובע כמה מהר האמפליטודה דועכת, ולא את התדירות.'
+      - value: 8
+        feedback: 'זה $\sqrt{|b^2 - 4mk|}$ בלי החלוקה ב-$2m$ שבנוסחת השורשים.'
+    hints:
+      - 'הדיסקרימיננטה היא $b^2 - 4mk = 36 - 100$.'
+
+  - id: Q-0.5-critical
+    type: numeric
+    objectives: [OBJ-0.5-3]
+    level: bagrut
+    prompt: >-
+      בולם זעזועים הוא מסה $m = 0.50\,\text{kg}$ על קפיץ עם $k = 200\,\text{N/m}$ ובולם עם מקדם ריסון $b$:
+      $m\ddot x + b\dot x + kx = 0$. מתכננים אותו כך שלמשוואה האופיינית יהיה **שורש כפול**, כדי שיחזור לשיווי משקל
+      הכי מהר בלי לעבור אותו. מה צריך להיות $b$?
+    answer: 20
+    unit: kg/s
+    correctFeedback: >-
+      נכון. שורש כפול פירושו דיסקרימיננטה אפס: $b^2 = 4mk$, ולכן $b = 2\sqrt{mk} = 2\sqrt{0.5\cdot200} = 20\,\text{kg/s}$.
+      השורש $r = -b/(2m) = -20\,\text{s}^{-1}$, והפתרון הכללי $x = (A + Bt)e^{-20t}$. **בדיקת יחידות:**
+      $\sqrt{mk} = \sqrt{\text{kg}\cdot\text{kg/s}^2} = \text{kg/s}$, כמו $b$.
+    wrongFeedback: 'בנוסחת השורשים, שורש כפול מתקבל כשהביטוי שמתחת לשורש מתאפס. השוו $b^2 - 4mk = 0$.'
+    commonWrong:
+      - value: 10
+        feedback: 'זה $\sqrt{mk}$. מ-$b^2 = 4mk$ מקבלים $b = \sqrt{4mk} = 2\sqrt{mk}$: לא שכחתם את ה-4 בתוך השורש?'
+      - value: 400
+        feedback: 'זה $b^2 = 4mk$ עצמו, ביחידות $\text{kg}^2/\text{s}^2$. הוציאו שורש.'
+      - value: 40
+        feedback: 'זה $2\sqrt{k/m}$, ביחידות $\text{s}^{-1}$, ולא $\text{kg/s}$. בדיסקרימיננטה מופיעה המכפלה $mk$.'
+    hints:
+      - 'הדיסקרימיננטה של $mr^2 + br + k$ היא $b^2 - 4mk$.'
+
+  - id: Q-0.5-double-root
+    type: mc
+    objectives: [OBJ-0.5-3, OBJ-0.5-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      במתנד בריסון קריטי, למשוואה האופיינית יש שורש כפול $r = -\gamma$. סטודנטית כותבת את הפתרון $x(t) = Ae^{-\gamma t}$,
+      ומנסה לקבוע את $A$ משני תנאי ההתחלה, $x(0) = x_0$ ו-$\dot x(0) = v_0$. מה נכון?
+    choices:
+      - text: 'אי אפשר בדרך כלל: קבוע אחד לא מתאים לשני תנאים. חסר הפתרון השני, $te^{-\gamma t}$, והפתרון הכללי $(A + Bt)e^{-\gamma t}$.'
+        correct: true
+        feedback: >-
+          נכון. $A = x_0$ קובע גם את $\dot x(0) = -\gamma x_0$, ולכן מסה שיוצאת מ-$x_0$ עם מהירות אחרת לא מתוארת.
+          במשוואה מסדר שני יש שני פתרונות בלתי תלויים ושני קבועים. הצבה מראה ש-$te^{-\gamma t}$ פותר את המשוואה
+          כשהשורש כפול: $\ddot x + 2\gamma\dot x + \gamma^2x = 0$.
+      - text: זה בסדר. בריסון קריטי התנועה נקבעת על ידי $x_0$ בלבד, ותנאי אחד מספיק.
+        feedback: >-
+          משוואה מסדר שני צריכה שני תנאי התחלה בכל מקרה. מסה שמשחררים ממנוחה ומסה שבועטים בה מאותו מקום זזות
+          אחרת, גם בריסון קריטי.
+        misconception: MC-0-double-root-one-solution
+      - text: 'חסר הפתרון $e^{+\gamma t}$, והפתרון הכללי $Ae^{-\gamma t} + Be^{\gamma t}$.'
+        feedback: '$r = +\gamma$ אינו שורש של המשוואה האופיינית, ולכן $e^{\gamma t}$ לא פותר אותה. וגם פיזיקלית, מסה מרוסנת לא מתרחקת בלי גבול.'
+      - text: 'צריך להוסיף קבוע: $x = Ae^{-\gamma t} + B$.'
+        feedback: 'קבוע $B$ פותר את המשוואה רק כש-$k = 0$ (אין קפיץ). הציבו $x = B$: נשאר $kB = 0$.'
+    hints:
+      - 'כמה קבועים צריך כדי לקיים שני תנאי התחלה?'

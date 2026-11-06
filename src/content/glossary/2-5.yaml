@@ -1,0 +1,8 @@
+# Terms first defined in lesson 2.5. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: constraint
+  term: אילוץ
+  en: constraint
+  definition: תנאי גיאומטרי שמגביל את התנועה של גוף או קושר בין התנועות של כמה גופים, למשל חוט שאורכו קבוע או משטח שהגוף לא חודר אליו. האילוץ נכתב כמשוואה בין המקומות, ובגזירה פעמיים בין התאוצות. הכוחות שמקיימים אותו, כוח נורמלי ומתיחות, הם נעלמים שמוצאים מהחוק השני.
+  lesson: '2.5'

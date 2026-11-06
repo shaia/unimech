@@ -1,0 +1,278 @@
+# Lesson 3.1 question bank: the comprehension ladder of "עבודה ומשפט עבודה-אנרגיה".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/q.ts:
+#   F = (3, −2) N, Δr = (4, 1) m: W = 10 J; |F||Δr| = 14.9 J; components swapped −5 J; signs dropped 14 J;
+#   F = (cy, 0), c = 2 N/m, (0,0) → (1,1) m: x then y 0 J, the diagonal y = x 1 J, y then x 2 J;
+#   k = 200 N/m, 0.10 → 0.30 m: W_spring = −8.0 J (−4.0 J from (Δx)², −12 J from k·x₂·Δx);
+#   m = 2.0 kg, F = 15 N, μk = 0.30, d = 4.0 m: W_net = 36.5 J, v = 6.04 m/s (7.75 without friction,
+#   9.14 with friction added, 4.27 without the factor 2);
+#   m = 0.50 kg, F = −αx³, α = 8.0 N/m³, v0 = 4.0 m/s: x_max = (2mv0²/α)^(1/4) = 1.19 m (0.841, 1.41);
+#   m = 0.20 kg ball thrown at 10 m/s in a train at 20 m/s: ΔK = 10 J in the train, 50 J on the ground.
+
+chapter: 3
+questions:
+  # ---------------------------------------------------------------- OBJ-3.1-1 work as a line integral
+  - id: Q-3.1-circle-tension
+    type: mc
+    objectives: [OBJ-3.1-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      אבן קשורה לחוט ומסתובבת על שולחן חלק במעגל אופקי ברדיוס $R$, בגודל מהירות קבוע. כוח המתיחות $\vec T$ פונה
+      תמיד אל מרכז המעגל. כמה עבודה עושה המתיחות על האבן בחצי סיבוב?
+    choices:
+      - text: אפס.
+        correct: true
+        feedback: >-
+          נכון. העבודה היא $W = \int \vec T\cdot d\vec r$, ובכל רגע ההעתק הקטן $d\vec r$ משיק למעגל והמתיחות ניצבת לו.
+          לכן $\vec T\cdot d\vec r = 0$ בכל קטע, וגם הסכום אפס. זה מתאים לכך שגודל המהירות לא משתנה.
+      - text: '$2TR$, כי ההעתק בחצי סיבוב הוא קוטר המעגל.'
+        feedback: >-
+          $W = \vec F\cdot\Delta\vec r$ נכון רק לכוח **קבוע**. המתיחות משנה כיוון כל הזמן, ולכן צריך לסכום
+          $\vec T\cdot d\vec r$ לאורך המסלול, ושם כל איבר אפס.
+        misconception: MC-3-work-magnitudes
+      - text: '$\pi R T$, המתיחות כפול אורך המסלול.'
+        feedback: >-
+          כפלתם גודל כוח בגודל דרך, בלי לבדוק את הזווית ביניהם. בעבודה נכנס רק הרכיב של הכוח לאורך ההעתק, והוא כאן
+          אפס.
+        misconception: MC-3-work-magnitudes
+      - text: חיובית, כי בלי המתיחות האבן הייתה עוזבת את המעגל.
+        feedback: >-
+          המתיחות אכן נחוצה כדי לכופף את המסלול, אבל כוח שמשנה רק את **כיוון** המהירות לא עושה עבודה. עבודה משנה את
+          גודל המהירות, וכאן הוא קבוע.
+        misconception: MC-3-force-implies-work
+    hints:
+      - 'מה הזווית בין $\vec T$ לבין ההעתק הקטן $d\vec r$ ברגע כלשהו?'
+
+  - id: Q-3.1-constant-force
+    type: numeric
+    objectives: [OBJ-3.1-1]
+    level: basic
+    prompt: >-
+      על חלקיק פועל כוח קבוע $\vec F = (3,\,-2)\,\text{N}$, והחלקיק עובר במסלול כלשהו מהנקודה $(0,\,0)$ לנקודה
+      $(4,\,1)$, במטרים. כמה עבודה עושה הכוח?
+    answer: 10
+    unit: J
+    correctFeedback: >-
+      נכון. לכוח קבוע האינטגרל הקווי הוא מכפלה סקלרית עם ההעתק הכולל, בכל מסלול:
+      $W = \vec F\cdot\Delta\vec r = 3\cdot4 + (-2)\cdot1 = 10\,\text{J}$.
+    wrongFeedback: 'כתבו את ההעתק $\Delta\vec r$ ברכיבים, וחשבו את המכפלה הסקלרית $F_x\Delta x + F_y\Delta y$.'
+    commonWrong:
+      - value: 14.9
+        feedback: >-
+          זה $|\vec F|\,|\Delta\vec r| = \sqrt{13}\cdot\sqrt{17}$, כאילו הכוח וההעתק באותו כיוון. במכפלה הסקלרית נכנס
+          גם הקוסינוס של הזווית ביניהם, ולכן מחשבים ברכיבים.
+        misconception: MC-3-work-magnitudes
+      - value: 14
+        feedback: 'השמטתם את הסימן של $F_y$. הכוח פונה כלפי מטה והחלקיק עולה, ולכן הרכיב הזה תורם עבודה שלילית.'
+      - value: -5
+        feedback: 'כפלתם את $F_x$ ב-$\Delta y$ ואת $F_y$ ב-$\Delta x$. כל רכיב של הכוח נכפל ברכיב של ההעתק באותו ציר.'
+    hints:
+      - 'כשהכוח קבוע, $\int\vec F\cdot d\vec r = \vec F\cdot\int d\vec r$.'
+
+  - id: Q-3.1-three-paths
+    type: rank
+    objectives: [OBJ-3.1-1]
+    level: mid
+    prompt: >-
+      במישור פועל הכוח $\vec F = (cy,\,0)$, עם $c = 2\,\text{N/m}$ ($x$ ו-$y$ במטרים): רכיב $x$ שגדל עם הגובה, ורכיב
+      $y$ אפס. חלקיק עובר מ-$(0,\,0)$ ל-$(1,\,1)$ בשלושה מסלולים. דרגו את העבודה של $\vec F$ בכל מסלול, מהגדולה
+      לקטנה.
+    items:
+      - id: B
+        label: 'מסלול ב: קודם לאורך $y$ עד $(0,\,1)$, ואז לאורך $x$'
+      - id: D
+        label: 'מסלול ד: לאורך האלכסון $y = x$'
+      - id: A
+        label: 'מסלול א: קודם לאורך $x$ עד $(1,\,0)$, ואז לאורך $y$'
+    order: [B, D, A]
+    correctFeedback: >-
+      נכון. רק תנועה לאורך $x$ תורמת, $dW = cy\,dx$. במסלול א החלקיק נע לאורך $x$ ב-$y = 0$: $W = 0$. במסלול ב הוא נע
+      לאורך $x$ ב-$y = 1\,\text{m}$: $W = c\cdot1\cdot1 = 2\,\text{J}$. על האלכסון $y = x$:
+      $W = \int_0^1 cx\,dx = \dfrac{c}{2} = 1\,\text{J}$. אותן נקודות קצה, שלוש עבודות שונות.
+    wrongFeedback: >-
+      כתבו $dW = F_x\,dx + F_y\,dy = cy\,dx$. בכל קטע של מסלול הציבו את $y$ שלו, ואז אינטגרלו. בקטעים לאורך $y$
+      התרומה אפס, כי $dx = 0$ שם.
+    hints:
+      - 'בקטע שבו $y$ קבוע, $\int cy\,dx = cy\,\Delta x$. ובקטע לאורך $y$?'
+      - 'על האלכסון הציבו $y = x$ ואינטגרלו מ-0 עד 1.'
+
+  - id: Q-3.1-spring-work
+    type: numeric
+    objectives: [OBJ-3.1-1]
+    level: mid
+    prompt: >-
+      קפיץ בעל קבוע $k = 200\,\text{N/m}$ מחובר לקיר, וכוח הקפיץ על הקצה החופשי הוא $F_x = -kx$, כאשר $x$ ההתארכות.
+      מותחים את הקפיץ לאט מהתארכות $0.10\,\text{m}$ להתארכות $0.30\,\text{m}$. כמה עבודה עושה **כוח הקפיץ** בתהליך?
+    answer: -8
+    unit: J
+    correctFeedback: >-
+      נכון. הכוח משתנה עם $x$, ולכן עושים אינטגרל:
+      $W = \int_{x_1}^{x_2}(-kx)\,dx = -\dfrac{k}{2}\left(x_2^2 - x_1^2\right) = -100\cdot(0.09 - 0.01) = -8.0\,\text{J}$.
+      הסימן שלילי כי הכוח פונה נגד ההתארכות.
+    wrongFeedback: 'הכוח לא קבוע, ולכן $W \ne F\,\Delta x$. אינטגרלו את $F_x = -kx$ מ-$x_1$ עד $x_2$.'
+    commonWrong:
+      - value: 8
+        feedback: 'זו העבודה של היד שמותחת. הקפיץ מושך נגד ההתארכות, ולכן העבודה שלו שלילית.'
+      - value: -4
+        feedback: >-
+          חישבתם $W = -\tfrac12k(x_2 - x_1)^2$, כאילו הקפיץ התחיל רפוי. האינטגרל נותן הפרש של ריבועים,
+          $x_2^2 - x_1^2$, ולא ריבוע של הפרש.
+      - value: -12
+        feedback: 'כפלתם את הכוח הסופי $kx_2$ בהעתק. הכוח גדל במהלך המתיחה, ולכן העבודה קטנה מזה: צריך אינטגרל.'
+        misconception: MC-3-work-magnitudes
+    hints:
+      - '$\int x\,dx = \tfrac12x^2$. הציבו את שני הגבולות.'
+
+  # ---------------------------------------------------------------- OBJ-3.1-2 the work-energy theorem
+  - id: Q-3.1-derivation-step
+    type: mc
+    objectives: [OBJ-3.1-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בגזירת משפט עבודה-אנרגיה מהחוק השני כותבים
+      $$\vec F\cdot d\vec r = m\frac{d\vec v}{dt}\cdot\vec v\,dt$$
+      איזו זהות הופכת את אגף ימין לשינוי באנרגיה הקינטית?
+    choices:
+      - text: '$\dfrac{d\vec v}{dt}\cdot\vec v = \dfrac{d}{dt}\left(\tfrac12 v^2\right)$, ולכן $\vec F\cdot d\vec r = d\left(\tfrac12mv^2\right)$.'
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{d}{dt}(\vec v\cdot\vec v) = 2\vec v\cdot\dfrac{d\vec v}{dt}$. סוכמים לאורך המסלול ומקבלים
+          $W_{\text{net}} = \tfrac12mv_2^2 - \tfrac12mv_1^2$. שימו לב שזה תקף לכל כוח שקול, גם לא קבוע.
+      - text: '$d\vec r = \vec v\,dt$ בלבד; הזהות הזו לבדה כבר נותנת את המשפט.'
+        feedback: >-
+          את $d\vec r = \vec v\,dt$ כבר השתמשנו כדי להגיע לאגף ימין. עדיין צריך לזהות ש-$\vec v\cdot d\vec v$ הוא
+          הדיפרנציאל של $\tfrac12v^2$.
+      - text: '$\dfrac{d\vec v}{dt} = \vec a$ קבוע, ולכן $v^2 = v_0^2 + 2a\,\Delta x$.'
+        feedback: >-
+          זו נוסחה של תאוצה קבועה. המשפט נכון גם כשהכוח משתנה, והגזירה הכללית לא מניחה תאוצה קבועה.
+      - text: '$\dfrac{d\vec v}{dt}\cdot\vec v = \dfrac{dv}{dt}\,v$ רק בתנועה בקו ישר, ולכן המשפט תקף רק בממד אחד.'
+        feedback: >-
+          הזהות $\vec v\cdot\dfrac{d\vec v}{dt} = v\dfrac{dv}{dt}$ נכונה תמיד, גם במסלול עקום: הרכיב של התאוצה הניצב
+          למהירות לא משנה את גודלה. לכן המשפט תקף בכל מסלול.
+    hints:
+      - 'גזרו את $v^2 = \vec v\cdot\vec v$ לפי הזמן בכלל המכפלה.'
+
+  - id: Q-3.1-bead-on-wire
+    type: twotier
+    objectives: [OBJ-3.1-2, OBJ-3.1-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      חרוז מחליק בלי חיכוך על תיל מכופף בצורה מסובכת, ויורד בגובה $h$. שני תילים בצורות שונות, עם אותו הפרש גובה,
+      נותנים לחרוז אותו גודל מהירות בתחתית. מה נכון?
+    choices:
+      - text: גודל המהירות בתחתית תלוי רק ב-$h$, כי רק הכובד עושה עבודה.
+        correct: true
+        feedback: 'נכון. לפי משפט עבודה-אנרגיה $\tfrac12mv^2 = W_{\text{net}} = mgh$ (מתחילים ממנוחה), ולכן $v = \sqrt{2gh}$.'
+      - text: המהירות תלויה גם בצורה, כי הכוח הנורמלי שונה בכל תיל.
+        feedback: >-
+          הכוח הנורמלי אכן שונה בגודלו ובכיוונו מתיל לתיל, אבל הוא ניצב לתיל, ולכן גם למהירות, בכל רגע. התרומה שלו
+          לעבודה אפס בכל מסלול.
+        misconception: MC-3-force-implies-work
+      - text: המהירות זהה רק אם שני התילים באותו אורך.
+        feedback: >-
+          אורך המסלול משנה את הזמן, לא את העבודה של הכובד. העבודה של כוח קבוע תלויה רק בהעתק, וכאן רק ברכיב האנכי
+          שלו.
+    reasons:
+      - text: 'הנורמלי ניצב ל-$d\vec r$ בכל רגע, והעבודה של הכובד הקבוע היא $m\vec g\cdot\Delta\vec r = mgh$ בכל מסלול.'
+        correct: true
+        feedback: זה הנימוק. שני החלקים חשובים, כי המשפט מדבר על העבודה של **כל** הכוחות.
+      - text: העבודה של כל כוח תלויה רק בנקודת ההתחלה ובנקודת הסוף.
+        feedback: >-
+          לא כל כוח. לכוח $(cy,\,0)$, למשל, העבודה בין $(0,\,0)$ ל-$(1,\,1)$ שונה בכל מסלול. כאן זה עובד כי הכובד
+          קבוע והנורמלי לא עושה עבודה.
+        misconception: MC-3-work-path-independent-always
+      - text: הכוח הנורמלי והכובד מבטלים זה את זה לאורך כל הדרך.
+        feedback: 'אם הם היו מבטלים זה את זה, החרוז לא היה מאיץ. על תיל משופע הנורמלי מאזן רק את רכיב הכובד הניצב לתיל.'
+    hints:
+      - 'כתבו $W_{\text{net}} = W_g + W_N$. מה הזווית בין הכוח הנורמלי למהירות?'
+
+  - id: Q-3.1-push-box
+    type: numeric
+    objectives: [OBJ-3.1-2]
+    level: mid
+    prompt: >-
+      ארגז בעל מסה $2.0\,\text{kg}$ עומד על רצפה אופקית. דוחפים אותו בכוח אופקי קבוע של $15\,\text{N}$ לאורך
+      $4.0\,\text{m}$. מקדם החיכוך הקינטי בין הארגז לרצפה הוא $0.30$. מה גודל המהירות של הארגז בסוף הדחיפה?
+    answer: 6.04
+    unit: m/s
+    correctFeedback: >-
+      נכון. החיכוך הוא $\mu_k mg = 0.30\cdot2.0\cdot9.8 = 5.88\,\text{N}$, נגד התנועה. העבודה הכוללת
+      $W_{\text{net}} = (15 - 5.88)\cdot4.0 = 36.5\,\text{J}$, והמשפט נותן $v = \sqrt{\dfrac{2W_{\text{net}}}{m}} = 6.04\,\text{m/s}$.
+    wrongFeedback: 'במשפט עבודה-אנרגיה נכנסת עבודת כל הכוחות: הדחיפה חיובית, החיכוך שלילי, והכובד והנורמלי אפס.'
+    commonWrong:
+      - value: 7.75
+        feedback: 'זו המהירות בלי חיכוך. החיכוך הקינטי עושה עבודה שלילית, $W_f = -\mu_kmg\,d$, וגם היא נכנסת לעבודה הכוללת.'
+      - value: 9.14
+        feedback: 'הוספתם את עבודת החיכוך במקום להחסיר אותה. החיכוך פונה נגד התנועה, ולכן העבודה שלו שלילית.'
+      - value: 4.27
+        feedback: 'שכחתם את ה-$\tfrac12$ שבאנרגיה הקינטית: מ-$\tfrac12mv^2 = W$ יוצא $v = \sqrt{2W/m}$.'
+    hints:
+      - 'חשבו קודם את העבודה הכוללת, ורק אז השוו אותה ל-$\tfrac12mv^2$.'
+
+  - id: Q-3.1-quartic-spring
+    type: numeric
+    objectives: [OBJ-3.1-2, OBJ-3.1-1]
+    level: bagrut
+    prompt: >-
+      חלקיק בעל מסה $m = 0.50\,\text{kg}$ נע על ציר $x$ תחת הכוח $F_x = -\alpha x^3$, עם $\alpha = 8.0\,\text{N/m}^3$.
+      ב-$x = 0$ מהירותו $v_0 = 4.0\,\text{m/s}$ בכיוון החיובי. מהו ה-$x$ הגדול ביותר שהוא מגיע אליו?
+    answer: 1.19
+    unit: m
+    correctFeedback: >-
+      נכון. העבודה מ-0 עד $x_{\max}$ היא $\int_0^{x_{\max}}(-\alpha x^3)\,dx = -\dfrac{\alpha x_{\max}^4}{4}$, והיא שווה
+      לשינוי באנרגיה הקינטית, $0 - \tfrac12mv_0^2$. לכן
+      $$x_{\max} = \left(\frac{2mv_0^2}{\alpha}\right)^{1/4} = \left(\frac{2\cdot0.50\cdot16}{8.0}\right)^{1/4} = 2^{1/4} \approx 1.19\,\text{m}$$
+      **בדיקת גבולות:** כש-$\alpha \to 0$ הכוח נעלם ו-$x_{\max} \to \infty$, כמו שצריך; ומהירות התחלתית פי 2 מרחיקה
+      את החלקיק רק פי $\sqrt2$, כי הכוח גדל מהר עם $x$. יחידות:
+      $\left(\dfrac{\text{kg}\cdot\text{m}^2/\text{s}^2}{\text{N/m}^3}\right)^{1/4} = \text{m}$.
+    wrongFeedback: >-
+      כתבו את משפט עבודה-אנרגיה בין $x = 0$ (מהירות $v_0$) לבין נקודת העצירה (מהירות אפס), עם העבודה כאינטגרל של
+      $F_x = -\alpha x^3$.
+    commonWrong:
+      - value: 0.841
+        feedback: >-
+          חישבתם את העבודה כמכפלה $F_x\cdot x = -\alpha x^3\cdot x$, כאילו הכוח בסוף פעל לאורך כל הדרך. האינטגרל של $x^3$ הוא $x^4/4$,
+          ולכן העבודה קטנה פי 4 והחלקיק מגיע רחוק יותר.
+        misconception: MC-3-work-magnitudes
+      - value: 1.41
+        feedback: 'השמטתם את ה-$\tfrac12$ שבאנרגיה הקינטית, והשוויתם את העבודה ל-$mv_0^2$.'
+    hints:
+      - 'בנקודה הרחוקה ביותר המהירות מתאפסת.'
+      - 'השוו את העבודה, $W = -\alpha x_{\max}^4/4$, לשינוי באנרגיה הקינטית, $\Delta K = -\tfrac12mv_0^2$.'
+
+  - id: Q-3.1-two-frames
+    type: mc
+    objectives: [OBJ-3.1-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      נוסעת ברכבת שנוסעת במהירות קבועה $u = 20\,\text{m/s}$ זורקת כדור של $0.20\,\text{kg}$ קדימה, ממנוחה ביחס
+      לרכבת עד $10\,\text{m/s}$ ביחס לרכבת. ברכבת השינוי באנרגיה הקינטית של הכדור הוא $10\,\text{J}$, ועל הקרקע
+      הוא $\tfrac12m(30^2 - 20^2) = 50\,\text{J}$. מה נכון לגבי משפט עבודה-אנרגיה?
+    choices:
+      - text: הוא נכון בשתי המערכות. היד עושה עבודה גדולה יותר במערכת הקרקע, כי שם היא נעה מרחק גדול יותר בזמן הזריקה.
+        correct: true
+        feedback: >-
+          נכון. שתי המערכות אינרציאליות, והחוק השני, שממנו גזרנו את המשפט, נכון בשתיהן. הכוח של היד זהה, אבל ההעתק
+          שלה בזמן הזריקה שונה: על הקרקע מתווסף לו $u\,\Delta t$. לכן גם העבודה וגם האנרגיה הקינטית תלויות במערכת,
+          וההפרש ביניהן, $mu\,\Delta v = 0.20\cdot20\cdot10 = 40\,\text{J}$, זהה בשני האגפים.
+      - text: רק אחת המערכות נכונה, כי העבודה של היד היא גודל אחד, ולכן השינוי באנרגיה הקינטית חייב להיות זהה בשתיהן.
+        feedback: >-
+          העבודה היא $\int\vec F\cdot d\vec r$, וההעתק $d\vec r$ תלוי במערכת. לכן גם העבודה תלויה במערכת, ממש כמו
+          האנרגיה הקינטית.
+        misconception: MC-3-work-frame-independent
+      - text: המשפט נכון רק במערכת הקרקע, כי הרכבת נעה.
+        feedback: >-
+          רכבת במהירות קבועה היא מערכת אינרציאלית לא פחות מהקרקע. החוק השני נכון בה, ולכן גם המשפט.
+      - text: המשפט נכון בשתיהן, כי העבודה של היד זהה, $10\,\text{J}$, וה-$40\,\text{J}$ הנוספים על הקרקע באים מהרכבת.
+        feedback: >-
+          הרכבת לא דוחפת את הכדור: היא נוסעת במהירות קבועה, והכדור לא נוגע בה. העבודה של היד עצמה גדולה יותר במערכת
+          הקרקע.
+        misconception: MC-3-work-frame-independent
+    hints:
+      - 'בזמן הזריקה, כמה זז הכף של היד במערכת הרכבת ובמערכת הקרקע?'

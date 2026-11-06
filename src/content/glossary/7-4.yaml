@@ -1,0 +1,22 @@
+# Terms first defined in lesson 7.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). `c7-` ids are terms the course's
+# term table lacks.
+
+- id: c7-latitude
+  term: קו רוחב
+  en: latitude
+  symbol: λ
+  definition: הזווית בין הקו ממרכז כדור הארץ אל נקודה על פניו לבין מישור קו המשווה. בקו המשווה היא 0, ובקוטב הצפוני 90 מעלות. ירושלים נמצאת בקו רוחב של כ-31.8 מעלות צפון.
+  lesson: '7.4'
+
+- id: c7-plumb-line
+  term: אנך
+  en: plumb line
+  definition: הכיוון שחוט עם משקולת תלויה מראה כשהיא במנוחה. הוא כיוון תאוצת הנפילה האפקטיבית, ועל כדור הארץ המסתובב הוא נוטה מעט מהקו אל המרכז, לכיוון קו המשווה.
+  lesson: '7.4'
+
+- id: foucault-pendulum
+  term: מטוטלת פוקו
+  en: Foucault pendulum
+  definition: מטוטלת ארוכה וכבדה שמתנודדת זמן רב, ומישור התנודה שלה מסתובב לאט ביחס לקרקע בקצב ω sin λ, בגלל כוח קוריוליס. בחצי הכדור הצפוני הסיבוב הוא עם כיוון השעון, במבט מלמעלה.
+  lesson: '7.4'

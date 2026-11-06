@@ -1,0 +1,256 @@
+# Lesson 3.4 question bank: the comprehension ladder of "מערכת חלקיקים ומרכז מסה".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/q.ts:
+#   1 kg (0,0), 2 kg (3,0), 3 kg (0,4) m: y_cm = 12/6 = 2.00 m (1.33 unweighted; 4.00 divided by the count);
+#   semicircular wire R = 0.30 m: 2R/π = 0.191 m (half-disc 4R/3π = 0.127; R/2 = 0.150);
+#   rod L = 2.0 m, λ = λ0(1 + x/L): x_cm = 5L/9 = 1.11 m (uniform L/2 = 1.00; 2L/3 = 1.33);
+#   solid cone h = 0.12 m: h/4 = 0.030 m above the base (h/3 = 0.040; h/2 = 0.060; 3h/4 = 0.090);
+#   person 60 kg walks 4.0 m on a 120 kg boat: boat moves md/(m+M) = 1.33 m (md/M = 2.00; person 2.67);
+#   shell v0 = 40 m/s at 45°: range R = v0²/g = 163 m; the 1/3 fragment drops at R/2 = 81.6 m;
+#   the 2/3 fragment lands at 5R/4 = 204 m (1.5R = 245 for equal halves; 2R = 327).
+
+chapter: 3
+questions:
+  # ---------------------------------------------- OBJ-3.4-1 the centre of mass, discrete and continuous
+  - id: Q-3.4-ring-centre
+    type: mc
+    objectives: [OBJ-3.4-1]
+    qualitative: true
+    level: basic
+    prompt: היכן נמצא מרכז המסה של טבעת דקה ואחידה?
+    choices:
+      - text: במרכז הטבעת, אף שאין שם חומר.
+        correct: true
+        feedback: >-
+          נכון. מכל אלמנט של הטבעת יש אלמנט שווה מולו, ולכן $\int\vec r\,dm = 0$ ביחס למרכז. מרכז המסה הוא ממוצע של
+          מקומות, משוקלל במסה, והממוצע לא חייב ליפול על החומר. כך גם בפרסה, בבומרנג ובצורת L.
+      - text: על הטבעת עצמה, כי מרכז המסה חייב להיות בתוך הגוף.
+        feedback: >-
+          אם מרכז המסה היה על הטבעת, באיזו נקודה? כל הנקודות על הטבעת שקולות, והסימטריה לא בוחרת אף אחת מהן. מרכז
+          המסה הוא ממוצע, ולא חייב להיות בתוך החומר.
+        misconception: MC-3-cm-inside-body
+      - text: אין לטבעת מרכז מסה, כי אין חומר במרכז.
+        feedback: 'לכל מערכת יש מרכז מסה, $\vec R = \dfrac{1}{M}\int\vec r\,dm$. זה מקום גאומטרי, לא חתיכת חומר.'
+        misconception: MC-3-cm-inside-body
+    hints:
+      - 'מרכז המסה הוא $\vec R = \frac1M\int\vec r\,dm$. מה נותנת הסימטריה של הטבעת?'
+
+  - id: Q-3.4-three-masses
+    type: numeric
+    objectives: [OBJ-3.4-1]
+    level: basic
+    prompt: >-
+      שלוש מסות נקודתיות במישור: $1.0\,\text{kg}$ בנקודה $(0,\,0)$, $2.0\,\text{kg}$ בנקודה $(3,\,0)$ ו-$3.0\,\text{kg}$
+      בנקודה $(0,\,4)$, במטרים. מהי קואורדינטת ה-$y$ של מרכז המסה?
+    answer: 2
+    unit: m
+    correctFeedback: >-
+      נכון. $Y = \dfrac{\sum m_iy_i}{\sum m_i} = \dfrac{1\cdot0 + 2\cdot0 + 3\cdot4}{6} = 2.0\,\text{m}$. באותו אופן
+      $X = \dfrac{2\cdot3}{6} = 1.0\,\text{m}$.
+    wrongFeedback: 'מרכז המסה הוא ממוצע משוקלל: $Y = \sum m_iy_i / \sum m_i$.'
+    commonWrong:
+      - value: 1.33
+        feedback: 'זה ממוצע פשוט של שלושת ה-$y$. כל נקודה נספרת לפי המסה שלה: המסה הכבדה, ב-$y = 4$, מושכת את הממוצע אליה.'
+      - value: 4
+        feedback: 'חילקתם את $\sum m_iy_i = 12\,\text{kg·m}$ במספר המסות, 3, במקום במסה הכוללת, $6\,\text{kg}$.'
+    hints:
+      - 'רק מסה אחת נמצאת מחוץ לציר $x$.'
+
+  - id: Q-3.4-rod-density
+    type: numeric
+    objectives: [OBJ-3.4-1]
+    level: mid
+    prompt: >-
+      מוט דק באורך $L = 2.0\,\text{m}$ מונח לאורך ציר $x$ מ-$x = 0$ עד $x = L$. הצפיפות הקווית שלו גדלה לאורכו:
+      $\lambda(x) = \lambda_0\left(1 + \dfrac{x}{L}\right)$. היכן מרכז המסה שלו?
+    answer: 1.11
+    unit: m
+    correctFeedback: >-
+      נכון. $M = \int_0^L\lambda\,dx = \tfrac32\lambda_0L$, ו-$\int_0^Lx\lambda\,dx = \lambda_0\left(\tfrac{L^2}{2} + \tfrac{L^2}{3}\right) = \tfrac56\lambda_0L^2$.
+      לכן $X = \dfrac{5L/6}{3/2} = \dfrac59L = 1.11\,\text{m}$, קצת אחרי האמצע, לכיוון הקצה הכבד.
+      **בדיקת גבולות:** בצפיפות אחידה היינו מקבלים $L/2$, ובצפיפות $\lambda \propto x$ בלבד, $2L/3$; התוצאה ביניהן.
+    wrongFeedback: 'כתבו $X = \dfrac{\int x\,\lambda(x)\,dx}{\int\lambda(x)\,dx}$ ואינטגרלו את שניהם מ-0 עד $L$.'
+    commonWrong:
+      - value: 1
+        feedback: 'זה מרכז המוט, נכון רק לצפיפות אחידה. כאן הקצה ב-$x = L$ כבד פי 2 מהקצה ב-$x = 0$, ומרכז המסה זז אליו.'
+        misconception: MC-3-cm-same-for-any-filling
+      - value: 1.33
+        feedback: 'זה $2L/3$, מרכז המסה כשהצפיפות $\lambda \propto x$, שמתאפסת בקצה אחד. כאן יש גם חלק אחיד, $\lambda_0$.'
+    hints:
+      - 'פרקו את $\lambda(x)$ לחלק אחיד ולחלק שגדל כמו $x$, ואינטגרלו כל אחד בנפרד.'
+
+  - id: Q-3.4-semicircle-wire
+    type: numeric
+    objectives: [OBJ-3.4-1]
+    level: mid
+    prompt: >-
+      תיל דק ואחיד כפוף לחצי מעגל ברדיוס $R = 0.30\,\text{m}$, מעל ציר $x$, ומרכז המעגל בראשית. מהו גובה מרכז המסה
+      שלו מעל ציר $x$?
+    answer: 0.191
+    unit: m
+    correctFeedback: >-
+      נכון. עם הזווית $\theta$ מציר $x$: $dm = \lambda R\,d\theta$, $y = R\sin\theta$, ולכן
+      $Y = \dfrac{\int_0^\pi R\sin\theta\cdot\lambda R\,d\theta}{\lambda\pi R} = \dfrac{2R}{\pi} = 0.191\,\text{m}$.
+    wrongFeedback: 'כתבו את אלמנט המסה במונחי הזווית, $dm = \lambda R\,d\theta$, ואת הגובה שלו, $R\sin\theta$.'
+    commonWrong:
+      - value: 0.127
+        feedback: >-
+          זה $4R/(3\pi)$, מרכז המסה של חצי **דיסקה** מלאה. בדיסקה חלק מהמסה קרוב לציר, ובתיל כל המסה במרחק $R$
+          מהמרכז, ולכן מרכז המסה של התיל גבוה יותר.
+        misconception: MC-3-cm-same-for-any-filling
+      - value: 0.15
+        feedback: 'זה $R/2$, אמצע הגובה. אבל רוב התיל קרוב לראש הקשת: האלמנטים ליד $\theta = \pi/2$ גבוהים יותר מ-$R/2$.'
+    hints:
+      - '$\int_0^\pi\sin\theta\,d\theta = 2$.'
+
+  - id: Q-3.4-solid-cone
+    type: numeric
+    objectives: [OBJ-3.4-1]
+    level: bagrut
+    prompt: >-
+      חרוט מלא ואחיד בגובה $h = 0.12\,\text{m}$ עומד על הבסיס שלו. מהו גובה מרכז המסה שלו מעל הבסיס?
+    answer: 0.03
+    unit: m
+    correctFeedback: >-
+      נכון. חותכים את החרוט לדיסקות. עם $z$ המרחק מהקודקוד, הרדיוס של דיסקה הוא $r = \dfrac{R}{h}z$, והמסה שלה
+      $dm = \rho\pi r^2dz \propto z^2dz$. לכן
+      $\dfrac{\int_0^hz\cdot z^2dz}{\int_0^hz^2dz} = \dfrac{h^4/4}{h^3/3} = \dfrac34h$ מהקודקוד, כלומר $\dfrac h4 = 0.030\,\text{m}$
+      מעל הבסיס. **בדיקת גבולות:** במשולש שטוח (מסה $\propto z\,dz$) יוצא $h/3$ מהבסיס, ובחרוט, שבו יותר מסה ליד
+      הבסיס, מרכז המסה נמוך יותר.
+    wrongFeedback: 'חתכו את החרוט לדיסקות דקות. איך המסה של דיסקה תלויה במרחק שלה מהקודקוד?'
+    commonWrong:
+      - value: 0.04
+        feedback: >-
+          זה $h/3$, מרכז המסה של משולש שטוח (וגם של מעטפת חרוט ריקה). בחרוט מלא המסה של כל פרוסה גדלה כמו $z^2$,
+          ולא כמו $z$, ולכן מרכז המסה קרוב יותר לבסיס.
+        misconception: MC-3-cm-same-for-any-filling
+      - value: 0.06
+        feedback: 'זה אמצע הגובה. החרוט רחב בתחתית וצר למעלה, ולכן רוב המסה קרובה לבסיס.'
+      - value: 0.09
+        feedback: 'חישבתם $\tfrac34h$, המרחק מהקודקוד. השאלה מבקשת את הגובה מעל הבסיס: $h - \tfrac34h$.'
+    hints:
+      - 'השטח של פרוסה פרופורציוני ל-$z^2$, כש-$z$ נמדד מהקודקוד.'
+
+  # ---------------------------------------- OBJ-3.4-2 M·a_cm = F_ext: internal forces do not move the CM
+  - id: Q-3.4-skaters-push
+    type: mc
+    objectives: [OBJ-3.4-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      שני מחליקים עומדים זה מול זה על קרח חלק. המסה של אחד כפולה מזו של השני. הם דוחפים זה את זה ונעים לכיוונים
+      הפוכים. מה עושה מרכז המסה של שניהם?
+    choices:
+      - text: הוא נשאר במקום.
+        correct: true
+        feedback: >-
+          נכון. $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$, והכוחות החיצוניים (כובד ונורמלי) מאזנים זה את זה. כוחות
+          הדחיפה פנימיים: לפי החוק השלישי הם מתבטלים בסכום. מרכז המסה היה במנוחה ונשאר במנוחה.
+      - text: הוא נע לכיוון של המחליק הכבד.
+        feedback: >-
+          המחליק הכבד אכן זז פחות, אבל זה בדיוק מה ששומר את מרכז המסה במקום: $m_1\Delta x_1 + m_2\Delta x_2 = 0$.
+          כוחות פנימיים לא יכולים להזיז את מרכז המסה.
+        misconception: MC-3-internal-forces-move-cm
+      - text: הוא נע לכיוון של המחליק הקל, שנע מהר יותר.
+        feedback: 'הקל נע מהר פי 2, והכבד כבד פי 2: התנע של שניהם שווה בגודלו והפוך בכיוונו. התנע הכולל אפס, ומרכז המסה לא זז.'
+        misconception: MC-3-internal-forces-move-cm
+    hints:
+      - 'אילו כוחות חיצוניים פועלים על מערכת שני המחליקים, ומה השקול שלהם?'
+
+  - id: Q-3.4-boat-walk
+    type: numeric
+    objectives: [OBJ-3.4-2]
+    level: mid
+    prompt: >-
+      אדם בעל מסה $60\,\text{kg}$ עומד בקצה של סירה בעלת מסה $120\,\text{kg}$ שעומדת במים שקטים. הוא הולך $4.0\,\text{m}$
+      לאורך הסירה, ביחס לסירה, אל הקצה השני. הזניחו את החיכוך עם המים. כמה זזה הסירה ביחס לחוף?
+    answer: 1.33
+    unit: m
+    correctFeedback: >-
+      נכון. אין כוח חיצוני אופקי, ולכן מרכז המסה לא זז: $m\Delta x_{\text{p}} + M\Delta x_{\text{b}} = 0$. ההעתק של האדם
+      ביחס לחוף הוא $\Delta x_{\text{p}} = d + \Delta x_{\text{b}}$, ולכן $\Delta x_{\text{b}} = -\dfrac{md}{m + M} = -\dfrac{60\cdot4.0}{180} = -1.33\,\text{m}$:
+      $1.33\,\text{m}$ אחורה. האדם עצמו זז $2.67\,\text{m}$ ביחס לחוף.
+    wrongFeedback: >-
+      מרכז המסה של אדם + סירה לא זז. כתבו את ההעתק של האדם ביחס לחוף כסכום של ההעתק שלו ביחס לסירה ושל ההעתק של
+      הסירה.
+    commonWrong:
+      - value: 2
+        feedback: >-
+          חישבתם $md/M$, כאילו האדם זז $4.0\,\text{m}$ ביחס לחוף. $4.0\,\text{m}$ הם ביחס לסירה, והסירה עצמה זזה אחורה
+          בזמן ההליכה.
+        misconception: MC-3-relative-as-ground-displacement
+      - value: 2.67
+        feedback: 'זה ההעתק של האדם ביחס לחוף, $4.0 - 1.33$. השאלה שואלת על הסירה.'
+      - value: 4
+        feedback: 'הסירה כבדה פי 2 מהאדם, ולכן היא זזה פחות ממנו ביחס לחוף. ההעתקים ביחס לחוף ביחס הפוך למסות.'
+    hints:
+      - 'תנו שם להעתק של הסירה ביחס לחוף, $\Delta x_{\text{b}}$. מה ההעתק של האדם ביחס לחוף?'
+
+  - id: Q-3.4-exploding-shell
+    type: numeric
+    objectives: [OBJ-3.4-2]
+    level: bagrut
+    prompt: >-
+      פגז נורה מהקרקע במהירות $40\,\text{m/s}$ בזווית $45^\circ$. בשיא הגובה הוא מתפוצץ לשני רסיסים: רסיס של שליש
+      מהמסה נשאר לרגע במנוחה ונופל אנכית, ורסיס של שני שלישים ממשיך אופקית. הזניחו את האוויר. כמה רחוק מנקודת הירי,
+      במישור, נוחת הרסיס הכבד?
+    answer: 204
+    unit: m
+    correctFeedback: >-
+      נכון. הפיצוץ פנימי, ולכן מרכז המסה ממשיך בפרבולה המקורית ונוחת בטווח $R = \dfrac{v_0^2}{g} = 163\,\text{m}$. שני
+      הרסיסים מתחילים בשיא עם מהירות אנכית אפס, ולכן נוחתים יחד. הרסיס הקל נוחת ב-$R/2$, ולכן
+      $R = \tfrac13\cdot\dfrac R2 + \tfrac23x_2$, ומכאן $x_2 = \dfrac54R = 204\,\text{m}$.
+      **בדיקת גבולות:** אם הרסיס הקל קטן מאוד, $x_2 \to R$; אם שני הרסיסים שווים, $x_2 = \tfrac32R$.
+    wrongFeedback: >-
+      איפה נוחת מרכז המסה של שני הרסיסים, אם הפיצוץ לא משנה את הכוח החיצוני? בדקו גם ששני הרסיסים נוחתים באותו
+      רגע.
+    commonWrong:
+      - value: 163
+        feedback: >-
+          זה המקום שבו נוחת **מרכז המסה**, לא הרסיס הכבד. הרסיס הכבד קיבל דחיפה קדימה בפיצוץ, ולכן הוא נוחת אחרי
+          הפרבולה המקורית.
+        misconception: MC-3-fragment-keeps-trajectory
+      - value: 245
+        feedback: 'זה $\tfrac32R$, התשובה לשני רסיסים שווים. כאן לרסיס הכבד שני שלישים מהמסה, ולכן הוא צריך להתרחק פחות.'
+      - value: 327
+        feedback: 'זה $2R$. משקללים את המקומות לפי המסות: $R = \tfrac13\cdot\tfrac R2 + \tfrac23x_2$.'
+    hints:
+      - 'הרסיס הקל נופל אנכית משיא הגובה. איפה הוא נוחת?'
+      - 'מרכז המסה נוחת בטווח של הפרבולה המקורית, $v_0^2\sin2\theta/g$.'
+
+  - id: Q-3.4-what-pushes-walker
+    type: twotier
+    objectives: [OBJ-3.4-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      אדם עומד על רצפה ומתחיל ללכת קדימה, ומרכז המסה שלו מאיץ קדימה. על קרח חלק לגמרי, אותן תנועות של הרגליים לא
+      מזיזות את מרכז המסה שלו בכלל. איזה כוח מאיץ את מרכז המסה של ההולך על הרצפה?
+    choices:
+      - text: כוח החיכוך הסטטי שהרצפה מפעילה על כפות הרגליים, קדימה.
+        correct: true
+        feedback: >-
+          נכון. הרגל דוחפת את הרצפה אחורה, והרצפה דוחפת את הרגל קדימה, בחיכוך סטטי. זה הכוח החיצוני האופקי היחיד,
+          והוא שמאיץ את מרכז המסה, $Ma_{\text{cm}} = f_s$.
+      - text: הכוח של שרירי הרגליים.
+        feedback: >-
+          השרירים מפעילים כוחות בין חלקים של הגוף, והם פנימיים: בסכום הם מתבטלים. לכן על קרח חלק השרירים לא מזיזים את
+          מרכז המסה. הם רק גורמים לרגל לדחוף את הרצפה.
+        misconception: MC-3-internal-forces-move-cm
+      - text: אף כוח. ההולך נע במהירות קבועה, ולכן לא צריך כוח.
+        feedback: 'בתחילת ההליכה מרכז המסה מאיץ מאפס למהירות ההליכה. תאוצה של מרכז המסה דורשת כוח חיצוני שקול.'
+    reasons:
+      - text: רק כוח חיצוני משנה את התנע של המערכת, וכאן החיכוך הוא הכוח החיצוני האופקי היחיד.
+        correct: true
+        feedback: 'זה הנימוק: $\dfrac{d\vec P}{dt} = \vec F_{\text{ext}}$, והכוחות הפנימיים מתבטלים בזוגות לפי החוק השלישי.'
+      - text: השרירים הם המקור של האנרגיה, ולכן גם של הכוח.
+        feedback: >-
+          השרירים אכן נותנים את האנרגיה, אבל מקור האנרגיה ומקור התנע הם דברים שונים. את התנע נותנת הרצפה, והחיכוך
+          הסטטי לא עושה עבודה, כי כף הרגל לא מחליקה.
+        misconception: MC-3-internal-forces-move-cm
+      - text: על קרח אין כוח נורמלי, ולכן אין ממה לדחוף.
+        feedback: 'על קרח יש כוח נורמלי, והוא מאזן את הכובד. מה שחסר על קרח חלק הוא כוח **אופקי**, החיכוך.'
+    hints:
+      - 'רשמו את הכוחות **החיצוניים** על ההולך. איזה מהם אופקי?'

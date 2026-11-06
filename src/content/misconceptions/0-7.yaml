@@ -1,0 +1,26 @@
+# Misconceptions first detected in lesson 0.7. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+
+- id: MC-0-unit-vector-constant
+  title: וקטור יחידה הוא קבוע
+  belief: הנגזרת של r̂ או של θ̂ היא אפס, כי הגודל שלהם תמיד 1.
+  truth: r̂ ו-θ̂ משנים כיוון כשהחלקיק זז, ולכן dr̂/dt = θ̇θ̂ ו-dθ̂/dt = −θ̇r̂. רק x̂, ŷ, ẑ קבועים באמת.
+  remedy: { lesson: '0.7', label: 'שיעור 0.7: הנגזרות של וקטורי היחידה הקוטביים' }
+
+- id: MC-0-element-no-jacobian
+  title: אלמנט השטח או הנפח הוא מכפלת ההפרשים
+  belief: בקואורדינטות קוטביות או כדוריות, dA = dr dθ ו-dV = dr dθ dφ, כמו dx dy dz בקרטזיות.
+  truth: צעד בזווית הוא קשת שאורכה r dθ, ולכן dA = r dr dθ ו-dV = r² sin θ dr dθ dφ. בלי הגורמים האלה היחידות לא נכונות.
+  remedy: { lesson: '0.7', label: 'שיעור 0.7: אלמנטי אורך, שטח ונפח' }
+
+- id: MC-0-mean-density-midpoint
+  title: הצפיפות הממוצעת היא ממוצע של המרכז והשפה
+  belief: כשהצפיפות של כדור או של גליל משתנה קווית מהמרכז לשפה, הצפיפות הממוצעת היא הממוצע של שני הערכים.
+  truth: הממוצע על הנפח משוקלל באלמנט הנפח, 4πr²dr בכדור ו-2πs ds בגליל. השכבות החיצוניות תופסות את רוב הנפח, ולכן הן קובעות את הממוצע.
+  remedy: { lesson: '0.7', label: 'שיעור 0.7: מסה של כדור מקליפות כדוריות' }
+
+- id: MC-0-steepest-toward-summit
+  title: העלייה התלולה ביותר מצביעה אל הפסגה
+  belief: על גבעה, הכיוון שבו מטפסים הכי מהר הוא תמיד הכיוון הישר אל הפסגה.
+  truth: הכיוון התלול ביותר הוא הגרדיאנט, והוא ניצב לקו הגובה שעובר בנקודה. רק בגבעה עגולה הוא מצביע אל הפסגה.
+  remedy: { lesson: '0.7', label: 'שיעור 0.7: הגרדיאנט וקווי גובה' }

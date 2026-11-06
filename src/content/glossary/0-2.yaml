@@ -1,0 +1,47 @@
+# Terms first defined in lesson 0.2. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: vector
+  term: וקטור
+  en: vector
+  definition: גודל שיש לו גודל וכיוון, ומתחבר לפי כלל המקבילית (רכיב-רכיב). מקום, מהירות, כוח ותנע הם וקטורים.
+  lesson: '0.2'
+
+- id: scalar
+  term: סקלר
+  en: scalar
+  definition: גודל שמתואר במספר אחד בלי כיוון, ואינו משתנה כשמסובבים את מערכת הצירים. מסה, זמן, אנרגיה וגודל המהירות הם סקלרים.
+  lesson: '0.2'
+
+- id: component
+  term: רכיב
+  en: component
+  definition: ההיטל של וקטור על ציר. וקטור במרחב נקבע על ידי שלושת הרכיבים שלו, A = (Aₓ, A_y, A_z), וחיבור וקטורים הוא חיבור של הרכיבים.
+  lesson: '0.2'
+
+- id: unit-vector
+  term: וקטור יחידה
+  en: unit vector
+  symbol: x̂
+  definition: וקטור שגודלו 1 ותפקידו רק לציין כיוון. כל וקטור הוא גודלו כפול וקטור היחידה בכיוונו, A = A Â. וקטורי היחידה של הצירים הם x̂, ŷ, ẑ.
+  lesson: '0.2'
+
+- id: dot-product
+  term: מכפלה סקלרית
+  en: dot product
+  symbol: A·B
+  definition: המספר A·B = AB cos θ = AₓBₓ + A_yB_y + A_zB_z. הוא מתאפס כשהווקטורים ניצבים, ונותן את הזווית בין וקטורים ואת ההיטל של וקטור על כיוון.
+  lesson: '0.2'
+
+- id: cross-product
+  term: מכפלה וקטורית
+  en: cross product
+  symbol: A×B
+  definition: וקטור שניצב ל-A ול-B, שגודלו AB sin θ (שטח המקבילית ששני הווקטורים פורשים) וכיוונו לפי כלל יד ימין. הוא אנטי-סימטרי, B×A = −A×B.
+  lesson: '0.2'
+
+- id: right-hand-rule
+  term: כלל יד ימין
+  en: right-hand rule
+  definition: הכלל שקובע את הכיוון של A×B. מכוונים את אצבעות יד ימין לאורך A ומקפלים אותן לעבר B, והאגודל מצביע בכיוון המכפלה.
+  lesson: '0.2'

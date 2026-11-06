@@ -1,0 +1,23 @@
+# Terms first defined in lesson 8.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: rigid-body
+  term: גוף צפיד
+  en: rigid body
+  definition: גוף שהמרחק בין כל שתי נקודות בו קבוע. תנועתו נקבעת כולה על ידי תנועת נקודה אחת בו, למשל מרכז המסה, ועל ידי המהירות הזוויתית שלו.
+  reject: [גוף קשיח]
+  lesson: '8.1'
+
+- id: angular-acceleration
+  term: תאוצה זוויתית
+  en: angular acceleration
+  symbol: α
+  unit: rad/s²
+  definition: קצב השינוי של המהירות הזוויתית, α = dω/dt. בסיבוב סביב ציר קבוע, התאוצה המשיקית של נקודה במרחק r מהציר היא αr.
+  lesson: '8.1'
+
+- id: c8-instantaneous-axis
+  term: ציר סיבוב רגעי
+  en: instantaneous axis of rotation
+  definition: הקו של נקודות (בגוף או בהמשכו הצפיד) שמהירותן ברגע מסוים אפס. באותו רגע כל נקודה אחרת נעה כאילו הגוף מסתובב סביבו בלבד. בגלגל שמתגלגל בלי החלקה זו נקודת המגע עם הקרקע.
+  lesson: '8.1'

@@ -1,0 +1,31 @@
+# Terms first defined in lesson 3.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: work
+  term: עבודה
+  en: work
+  symbol: W
+  unit: J
+  definition: העבודה של כוח לאורך מסלול היא הסכום של F·dr על כל הקטעים הקטנים של המסלול, האינטגרל הקווי של הכוח. רק הרכיב של הכוח לאורך ההעתק תורם. לכוח קבוע היא F·Δr.
+  lesson: '3.1'
+
+- id: kinetic-energy
+  term: אנרגיה קינטית
+  en: kinetic energy
+  symbol: K
+  unit: J
+  definition: האנרגיה של גוף בגלל תנועתו, K = ½mv². היא תלויה במערכת הייחוס, כי המהירות תלויה בה.
+  reject: [אנרגית תנועה]
+  lesson: '3.1'
+
+- id: work-energy-theorem
+  term: משפט עבודה-אנרגיה
+  en: work-energy theorem
+  definition: העבודה של הכוח השקול על חלקיק בין שתי נקודות במסלולו שווה לשינוי באנרגיה הקינטית שלו, W = ΔK. הוא נובע מהחוק השני ונכון בכל מערכת אינרציאלית.
+  lesson: '3.1'
+
+- id: c3-line-integral
+  term: אינטגרל קווי
+  en: line integral
+  definition: סכום של גודל לאורך מסלול, בגבול של קטעים קטנים מאוד. העבודה ∫F·dr היא אינטגרל קווי, ובדרך כלל הערך שלו תלוי במסלול ולא רק בנקודות הקצה.
+  lesson: '3.1'

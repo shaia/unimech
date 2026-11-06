@@ -1,0 +1,9 @@
+# Terms first defined in lesson 9.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: lorentz-transformation
+  term: טרנספורמציית לורנץ
+  en: Lorentz transformation
+  definition: הכלל שמעביר את הקואורדינטות של מאורע ממערכת S למערכת S′ שנעה ביחס אליה במהירות v לאורך x, כשהראשיות מתלכדות ב-t = t′ = 0. x′ = γ(x − vt), t′ = γ(t − vx/c²), y′ = y, z′ = z. כש-v ≪ c היא חוזרת לטרנספורמציית גליליי.
+  reject: [טרנספורמציות לורנס, טרנספורמציית לורנס]
+  lesson: '9.3'

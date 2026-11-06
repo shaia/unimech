@@ -1,0 +1,295 @@
+# Lesson 1.4 question bank: the comprehension ladder of "מהירות ותאוצה בקואורדינטות קוטביות".
+# Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
+# (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+# The lesson defines no glossary term of its own: polar coordinates and unit vectors belong to chapter 0.
+#
+# Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts:
+#   r = 1.5 m, ṙ = 2.0 m/s, θ̇ = 4.0 rad/s: |v| = √(ṙ² + (rθ̇)²) = 6.32 m/s (sum 8, θ̇ for rθ̇ 4.47, ṙ alone 2);
+#   r = 0.50 m, ṙ = 2.0 m/s, θ̇ = 2.0 rad/s, r̈ = θ̈ = 0: a_r = −2.0, a_θ = 8.0, |a| = 8.25 m/s² (no 2: 4.47, sum 10);
+#   bug u = 0.50 m/s on a rod at ω = 3.0 rad/s, r = 0.40 m: a_r = −3.6, a_θ = 3.0, |a| = 4.69 m/s² (no 2: 3.90, sum 6.6);
+#   free bead, a_r = 0: r = r₀cosh ωt, cosh ωt = 2 at ωt = 1.317, t = 0.658 s for ω = 2.0 rad/s (r₀e^{ωt}: 0.347,
+#     constant r₀ω²: √2/ω = 0.707, 1/ω = 0.5);
+#   spiral r = bθ, b = 0.10 m, ω = 1.0 rad/s, θ = π: a_r = −0.314, a_θ = 0.20, |a| = 0.372 m/s² (no 2: 0.330).
+
+chapter: 1
+questions:
+  # ---------------------------------------------------------------- OBJ-1.4-1 derive the polar components of v and a
+  - id: Q-1.4-rhat-derivative
+    type: mc
+    objectives: [OBJ-1.4-1]
+    level: basic
+    prompt: >-
+      במישור, וקטורי היחידה הקוטביים הם $\hat r = (\cos\theta,\ \sin\theta)$ ו-$\hat\theta = (-\sin\theta,\ \cos\theta)$.
+      גוף נע, והזווית שלו $\theta(t)$ משתנה בזמן. מהי $\dfrac{d\hat r}{dt}$?
+    choices:
+      - text: '$\dot\theta\,\hat\theta$'
+        correct: true
+        feedback: >-
+          נכון. בכלל השרשרת, $\dfrac{d\hat r}{dt} = \dot\theta\left(-\sin\theta,\ \cos\theta\right) = \dot\theta\,\hat\theta$. באותה דרך
+          $\dfrac{d\hat\theta}{dt} = \dot\theta\left(-\cos\theta,\ -\sin\theta\right) = -\dot\theta\,\hat r$. וקטור יחידה שמסתובב משתנה
+          בכיוון ניצב לעצמו.
+      - text: '$0$, כי $\hat r$ הוא וקטור יחידה'
+        feedback: >-
+          הגודל של $\hat r$ קבוע, אבל הכיוון שלו לא: הוא מצביע תמיד מהראשית אל הגוף, ומסתובב יחד איתו. וקטור שהכיוון
+          שלו משתנה הוא וקטור שמשתנה.
+        misconception: MC-1-polar-unit-vectors-fixed
+      - text: '$\dot\theta\,\hat r$'
+        feedback: 'אם הנגזרת הייתה לאורך $\hat r$, הגודל של $\hat r$ היה משתנה. וקטור שגודלו קבוע משתנה רק בכיוון ניצב לעצמו, $\hat\theta$.'
+      - text: '$-\dot\theta\,\hat\theta$'
+        feedback: 'בדקו את הסימן: $\dfrac{d}{dt}\cos\theta = -\sin\theta\,\dot\theta$ ו-$\dfrac{d}{dt}\sin\theta = \cos\theta\,\dot\theta$, ולכן $\dfrac{d\hat r}{dt} = \dot\theta(-\sin\theta,\ \cos\theta)$, עם סימן חיובי.'
+    hints:
+      - 'גזרו כל רכיב של $\hat r$ בכלל השרשרת: $\dfrac{d}{dt}\cos\theta = -\sin\theta\,\dot\theta$.'
+
+  - id: Q-1.4-why-extra-term
+    type: mc
+    objectives: [OBJ-1.4-1]
+    qualitative: true
+    level: basic
+    prompt: >-
+      בקואורדינטות קוטביות וקטור המקום הוא $\vec r = r\hat r$. סטודנטית גוזרת אותו לפי הזמן ומקבלת $\vec v = \dot r\hat r$.
+      מה הבעיה בתוצאה?
+    choices:
+      - text: 'היא התייחסה ל-$\hat r$ כקבוע. לפי כלל המכפלה $\vec v = \dot r\hat r + r\dfrac{d\hat r}{dt} = \dot r\hat r + r\dot\theta\hat\theta$.'
+        correct: true
+        feedback: >-
+          נכון. האיבר $r\dot\theta\hat\theta$ הוא התנועה הזוויתית. בלעדיו גוף שנע על מעגל סביב הראשית, עם $\dot r = 0$, היה
+          יוצא עומד.
+      - text: 'אין בעיה: המהירות בקואורדינטות קוטביות תמיד בכיוון $\hat r$.'
+        feedback: 'אז גוף שנע על מעגל סביב הראשית, שבו $r$ קבוע, היה עומד. המהירות שלו כולה בכיוון $\hat\theta$.'
+        misconception: MC-1-polar-unit-vectors-fixed
+      - text: 'חסר איבר $r\dot\theta\hat r$, מהנגזרת של $\hat r$.'
+        feedback: 'הנגזרת של $\hat r$ היא $\dot\theta\hat\theta$, בכיוון $\hat\theta$, לא $\hat r$: וקטור יחידה משתנה רק בכיוון ניצב לעצמו.'
+      - text: 'היה צריך לגזור גם את $r$ פעמיים, כי $\vec r$ תלוי ב-$r$ וב-$\theta$.'
+        feedback: 'המהירות היא נגזרת ראשונה. מה שחסר הוא לא נגזרת נוספת של $r$, אלא הנגזרת של $\hat r$ לפי כלל המכפלה.'
+    hints:
+      - 'כלל המכפלה: $\dfrac{d}{dt}(r\hat r) = \dot r\hat r + r\dfrac{d\hat r}{dt}$.'
+
+  - id: Q-1.4-velocity-components
+    type: numeric
+    objectives: [OBJ-1.4-1]
+    level: basic
+    prompt: >-
+      ברגע מסוים גוף נמצא במרחק $r = 1.5\,\text{m}$ מהראשית, מתרחק ממנה בקצב $\dot r = 2.0\,\text{m/s}$, והזווית שלו
+      גדלה בקצב $\dot\theta = 4.0\,\text{rad/s}$. מה גודל המהירות שלו?
+    answer: 6.32
+    unit: m/s
+    correctFeedback: >-
+      נכון. $\vec v = \dot r\hat r + r\dot\theta\hat\theta$, ו-$\hat r \perp \hat\theta$. לכן
+      $|\vec v| = \sqrt{\dot r^2 + (r\dot\theta)^2} = \sqrt{2.0^2 + 6.0^2} = 6.32\,\text{m/s}$.
+    wrongFeedback: 'כתבו את שני הרכיבים, $v_r = \dot r$ ו-$v_\theta = r\dot\theta$. הם ניצבים, ולכן מחברים אותם בפיתגורס.'
+    commonWrong:
+      - value: 8
+        feedback: 'חיברתם $2.0 + 6.0$ כמספרים. הרכיבים בכיוונים $\hat r$ ו-$\hat\theta$ ניצבים זה לזה.'
+      - value: 4.47
+        feedback: 'הצבתם $\dot\theta = 4.0$ כרכיב המהירות. $\dot\theta$ הוא ברדיאנים לשנייה; הרכיב הזוויתי של המהירות הוא $r\dot\theta = 6.0\,\text{m/s}$.'
+      - value: 2
+        feedback: 'זה רק $\dot r$. חסר הרכיב $r\dot\theta\hat\theta$, שבא מכך ש-$\hat r$ מסתובב.'
+        misconception: MC-1-polar-unit-vectors-fixed
+    hints:
+      - 'לרכיב בכיוון $\hat\theta$ צריכות להיות יחידות של מהירות. מה צריך לכפול ב-$\dot\theta$?'
+
+  - id: Q-1.4-coriolis-origin
+    type: mc
+    objectives: [OBJ-1.4-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      כשגוזרים את $\vec v = \dot r\hat r + r\dot\theta\hat\theta$ פעם נוספת, מתקבלת התאוצה
+      $$\vec a = \left(\ddot r - r\dot\theta^2\right)\hat r + \left(r\ddot\theta + 2\dot r\dot\theta\right)\hat\theta$$
+      מאיפה בא ה-2 באיבר $2\dot r\dot\theta$?
+    choices:
+      - text: 'מסכום של שתי תרומות שוות: $\dot r\dot\theta$ מהנגזרת של $r\dot\theta$, ועוד $\dot r\dot\theta$ מ-$\dot r\,\dfrac{d\hat r}{dt}$.'
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{d}{dt}\left(\dot r\hat r\right) = \ddot r\hat r + \dot r\dot\theta\hat\theta$,
+          ו-$\dfrac{d}{dt}\left(r\dot\theta\hat\theta\right) = \left(\dot r\dot\theta + r\ddot\theta\right)\hat\theta - r\dot\theta^2\hat r$. יש שני
+          מקורות: הסיבוב של $\hat r$ מסובב את המהירות הרדיאלית $\dot r\hat r$, ושינוי ה-$r$ משנה את הרכיב הזוויתי של
+          המהירות, $r\dot\theta$.
+      - text: 'מכלל השרשרת על $\dot\theta^2$: הנגזרת של $\dot\theta^2$ היא $2\dot\theta\ddot\theta$.'
+        feedback: 'אין $\dot\theta^2$ במהירות שצריך לגזור. האיבר $r\dot\theta^2$, בסימן מינוס, מופיע רק **אחרי** הגזירה, מ-$d\hat\theta/dt = -\dot\theta\hat r$.'
+      - text: 'מהנגזרת של $\hat\theta$, שתורמת $\dot r\dot\theta$ פעמיים.'
+        feedback: '$\dfrac{d\hat\theta}{dt} = -\dot\theta\hat r$, בכיוון $\hat r$, ולכן היא תורמת לרכיב הרדיאלי (האיבר $r\dot\theta^2$ בסימן מינוס), ולא לרכיב הזוויתי.'
+      - text: 'מהגדרה: כך מסמנים את התאוצה של קוריוליס.'
+        feedback: 'זה לא סימון אלא תוצאה של גזירה. שתי התרומות באות מכלל המכפלה, וכל אחת שווה ל-$\dot r\dot\theta$.'
+    hints:
+      - 'גזרו בנפרד את $\dot r\hat r$ ואת $r\dot\theta\hat\theta$, וחפשו בכל אחד מהם את האיברים עם $\dot r\dot\theta$.'
+
+  - id: Q-1.4-accel-numbers
+    type: numeric
+    objectives: [OBJ-1.4-1]
+    level: mid
+    prompt: >-
+      ברגע מסוים גוף במרחק $r = 0.50\,\text{m}$ מהראשית, מתרחק ממנה בקצב קבוע $\dot r = 2.0\,\text{m/s}$ ($\ddot r = 0$), והזווית
+      שלו גדלה בקצב קבוע $\dot\theta = 2.0\,\text{rad/s}$ ($\ddot\theta = 0$). מה גודל התאוצה שלו?
+    answer: 8.25
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $a_r = \ddot r - r\dot\theta^2 = 0 - 0.50\cdot4.0 = -2.0\,\text{m/s}^2$, ו-$a_\theta = r\ddot\theta + 2\dot r\dot\theta = 0 + 2\cdot2.0\cdot2.0 = 8.0\,\text{m/s}^2$.
+      לכן $|\vec a| = \sqrt{2.0^2 + 8.0^2} = 8.25\,\text{m/s}^2$. כאן דווקא האיבר $2\dot r\dot\theta$ הוא העיקרי.
+    wrongFeedback: 'הציבו בשני הרכיבים של התאוצה הקוטבית, וזכרו שגם כש-$\ddot r = 0$ ו-$\ddot\theta = 0$ נשארים איברים.'
+    commonWrong:
+      - value: 0
+        feedback: >-
+          $\ddot r = 0$ ו-$\ddot\theta = 0$ לא אומרים $\vec a = 0$, כי וקטורי היחידה מסתובבים. נשארים האיברים
+          $a_r = -r\dot\theta^2$ ו-$a_\theta = 2\dot r\dot\theta$.
+        misconception: MC-1-polar-unit-vectors-fixed
+      - value: 4.47
+        feedback: 'שכחתם את ה-2 ב-$2\dot r\dot\theta$: יש שתי תרומות שוות, אחת מהנגזרת של $r\dot\theta$ ואחת מ-$\dot r\,d\hat r/dt$.'
+      - value: 2
+        feedback: 'זה רק $r\dot\theta^2$, הרכיב הרדיאלי. הגוף גם מתרחק בזמן שהוא מסתובב, וזה נותן את $a_\theta = 2\dot r\dot\theta$.'
+      - value: 10
+        feedback: 'חיברתם את גודלי הרכיבים. $\hat r$ ו-$\hat\theta$ ניצבים, ולכן מחברים בפיתגורס.'
+    hints:
+      - '$a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = r\ddot\theta + 2\dot r\dot\theta$.'
+
+  # ---------------------------------------------------------------- OBJ-1.4-2 the meaning of each term; planar motion
+  - id: Q-1.4-straight-line
+    type: twotier
+    objectives: [OBJ-1.4-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גוף נע במהירות קבועה לאורך הקו הישר $y = d$, שלא עובר בראשית. מתארים את התנועה בקואורדינטות קוטביות סביב
+      הראשית. האם $\ddot r = 0$?
+    choices:
+      - text: 'לא: $\ddot r > 0$ כל הזמן.'
+        correct: true
+        feedback: >-
+          נכון. $r = \sqrt{d^2 + v^2t^2}$ (עם $t = 0$ בנקודה הקרובה ביותר) אינו קווי בזמן: $\dot r$ עולה מ-$\dot r = -v$, דרך אפס,
+          ל-$\dot r = v$, ולכן $\ddot r > 0$.
+      - text: 'כן, כי התאוצה של הגוף אפס.'
+        feedback: '$\vec a = 0$ פירושו שהרכיב הרדיאלי אפס, $\ddot r - r\dot\theta^2 = 0$, ולא ש-$\ddot r = 0$.'
+        misconception: MC-1-rddot-is-radial-acceleration
+      - text: 'כן, כי הגוף נע בקו ישר במהירות קבועה, ולכן המרחק שלו מהראשית גדל בקצב קבוע.'
+        feedback: 'המרחק מהראשית, $\sqrt{d^2 + v^2t^2}$, גדל בקצב קבוע רק רחוק מאוד מהראשית. ליד הנקודה הקרובה ביותר $\dot r$ משתנה מהר.'
+      - text: 'לא: $\ddot r < 0$, כי כשהגוף מתקרב אל הראשית הוא מאט ביחס אליה.'
+        feedback: 'בהתקרבות $\dot r$ שלילי והולך ומתאפס, כלומר עולה, ולכן $\ddot r > 0$. אחרי הנקודה הקרובה ביותר $\dot r$ חיובי וממשיך לעלות.'
+    reasons:
+      - text: '$\vec a = 0$, ולכן $\ddot r - r\dot\theta^2 = 0$, כלומר $\ddot r = r\dot\theta^2$, שחיובי כל עוד הזווית משתנה.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $\ddot r$ אינו הרכיב הרדיאלי של התאוצה: הוא שווה לו רק כש-$\dot\theta = 0$. ומאותה סיבה,
+          $r\ddot\theta + 2\dot r\dot\theta = 0$ כאן, אף ש-$\ddot\theta \ne 0$.
+      - text: '$a_r = \ddot r$, ובתנועה בקו ישר במהירות קבועה $a_r = 0$.'
+        feedback: 'הרכיב הרדיאלי הוא $\ddot r - r\dot\theta^2$. האיבר $r\dot\theta^2$, בסימן מינוס, בא מהסיבוב של $\hat\theta$, והוא קיים גם כשהגוף לא מאיץ.'
+        misconception: MC-1-rddot-is-radial-acceleration
+      - text: 'בקו ישר $\dot\theta = 0$, ולכן אין איברים נוספים.'
+        feedback: 'הקו לא עובר בראשית, ולכן הזווית מהראשית אל הגוף משתנה כשהגוף עובר לידה: $\dot\theta \ne 0$.'
+    hints:
+      - 'כתבו את התנאי $\vec a = 0$ ברכיב $\hat r$ של התאוצה הקוטבית.'
+
+  - id: Q-1.4-bug-rod
+    type: numeric
+    objectives: [OBJ-1.4-2]
+    level: mid
+    prompt: >-
+      מוט ישר מסתובב במישור אופקי סביב אחד מקצותיו, במהירות זוויתית קבועה $\omega = 3.0\,\text{rad/s}$. חיפושית הולכת
+      לאורך המוט החוצה, מהציר, במהירות קבועה $0.50\,\text{m/s}$ ביחס למוט. מה גודל התאוצה שלה ברגע שהיא במרחק
+      $0.40\,\text{m}$ מהציר?
+    answer: 4.69
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $\dot r = 0.50\,\text{m/s}$, $\ddot r = 0$, $\dot\theta = \omega$ ו-$\ddot\theta = 0$. לכן
+      $a_r = -r\omega^2 = -3.6\,\text{m/s}^2$ (אל הציר) ו-$a_\theta = 2\dot r\omega = 3.0\,\text{m/s}^2$ (בכיוון הסיבוב),
+      ולכן $|\vec a| = \sqrt{3.6^2 + 3.0^2} = 4.69\,\text{m/s}^2$. את האיבר $2\dot r\omega$ מרגישה החיפושית כדחיפה של המוט לצד:
+      ככל שהיא מתרחקת, הרכיב הזוויתי של המהירות שלה, $r\omega$, גדל, וגם המהירות שלה לאורך המוט מסתובבת יחד איתו.
+      כל אחד מהשניים תורם $\dot r\omega$.
+    wrongFeedback: 'מה $\dot r$, $\ddot r$, $\dot\theta$ ו-$\ddot\theta$ של החיפושית? הציבו אותם בשני הרכיבים של התאוצה הקוטבית.'
+    commonWrong:
+      - value: 3.6
+        feedback: 'זה רק $r\omega^2$, התאוצה של נקודה קבועה על המוט. החיפושית גם הולכת לאורכו, ולכן יש גם $a_\theta = 2\dot r\omega$.'
+      - value: 3.9
+        feedback: 'שכחתם את ה-2: $a_\theta = 2\dot r\omega = 3.0\,\text{m/s}^2$, לא $1.5$.'
+      - value: 6.6
+        feedback: 'חיברתם את גודלי הרכיבים. הם ניצבים, $\hat r$ ו-$\hat\theta$, ולכן מחברים בפיתגורס.'
+    hints:
+      - 'החיפושית הולכת במהירות קבועה **ביחס למוט**: מה זה אומר על $\ddot r$?'
+
+  - id: Q-1.4-bead-free
+    type: numeric
+    objectives: [OBJ-1.4-2]
+    level: bagrut
+    prompt: >-
+      חרוז קטן יכול להחליק בלי חיכוך לאורך מוט ישר, שמסתובב במישור אופקי סביב אחד מקצותיו במהירות זוויתית קבועה
+      $\omega = 2.0\,\text{rad/s}$. המוט דוחף את החרוז רק בכיוון ניצב לעצמו, ולכן הרכיב הרדיאלי של התאוצה של החרוז
+      אפס כל הזמן. ברגע $t = 0$ החרוז במרחק $r_0$ מהציר, במנוחה ביחס למוט. אחרי כמה זמן המרחק שלו מהציר
+      $2r_0$?
+    answer: 0.658
+    unit: s
+    correctFeedback: >-
+      נכון. $a_r = \ddot r - r\omega^2 = 0$, כלומר $\ddot r = \omega^2r$. הפתרון הכללי $r = Ae^{\omega t} + Be^{-\omega t}$, ותנאי
+      ההתחלה $r(0) = r_0$, $\dot r(0) = 0$ נותנים $A = B = r_0/2$, כלומר $r = r_0\cosh\omega t$. הדרישה $\cosh\omega t = 2$
+      נותנת $\omega t = 1.317$, ו-$t = 0.658\,\text{s}$, לכל $r_0$.
+      **בדיקת גבולות:** בזמן קצר $r \approx r_0\left(1 + \tfrac12\omega^2t^2\right)$, כמו תאוצה קבועה $r_0\omega^2$ החוצה; בזמן
+      ארוך $r \approx \tfrac12r_0e^{\omega t}$, והחרוז בורח באקספוננט. וכש-$\omega \to 0$ הזמן שואף לאינסוף, כמו שצריך.
+    wrongFeedback: 'כתבו את התנאי $\ddot r - r\omega^2 = 0$, פתרו אותו עם שני תנאי ההתחלה, ומצאו מתי $r = 2r_0$.'
+    commonWrong:
+      - value: 0.347
+        feedback: >-
+          פתרתם $r = r_0e^{\omega t}$, אבל לפתרון הזה $\dot r(0) = r_0\omega$: החרוז היה יוצא כבר בתנועה. כדי לקיים
+          $\dot r(0) = 0$ צריך את שני האקספוננטים, $r = r_0\cosh\omega t$.
+      - value: 0.707
+        feedback: >-
+          הנחתם תאוצה רדיאלית קבועה, $\ddot r = r_0\omega^2$, ופתרתם $r_0 + \tfrac12r_0\omega^2t^2 = 2r_0$. אבל $\ddot r = r\omega^2$
+          גדל יחד עם $r$, ולכן החרוז מגיע מהר יותר.
+        misconception: MC-1-constant-acceleration-formulas-always
+      - value: 0.5
+        feedback: 'זה $1/\omega$, זמן אופייני של הבעיה, אבל לא התשובה. פתרו את $\cosh\omega t = 2$.'
+    hints:
+      - 'המשוואה $\ddot r = \omega^2r$ היא ליניארית עם מקדמים קבועים: נחשו $r = e^{\lambda t}$.'
+      - '$\cosh x = \dfrac{e^x + e^{-x}}{2}$, ו-$\cosh^{-1}2 = \ln\left(2 + \sqrt3\right)$.'
+
+  - id: Q-1.4-spiral
+    type: numeric
+    objectives: [OBJ-1.4-2]
+    level: bagrut
+    prompt: >-
+      נקודה נעה על הספירלה $r = b\theta$, עם $b = 0.10\,\text{m}$ ($r$ במטרים כש-$\theta$ ברדיאנים). הזווית גדלה בקצב
+      קבוע, $\dot\theta = \omega = 1.0\,\text{rad/s}$, מ-$\theta = 0$. מה גודל התאוצה של הנקודה ברגע ש-$\theta = \pi$?
+    answer: 0.372
+    unit: m/s²
+    correctFeedback: >-
+      נכון. $\dot r = b\omega$, $\ddot r = 0$ ו-$\ddot\theta = 0$. לכן $a_r = -r\omega^2 = -b\theta\omega^2 = -0.314\,\text{m/s}^2$
+      ו-$a_\theta = 2\dot r\dot\theta = 2b\omega^2 = 0.20\,\text{m/s}^2$, ולכן $|\vec a| = b\omega^2\sqrt{\theta^2 + 4} = 0.372\,\text{m/s}^2$.
+      **בדיקת גבולות:** כש-$\theta$ גדול, $|\vec a| \approx b\theta\omega^2 = r\omega^2$: כריכות רחוקות מהמרכז הן כמעט מעגלים.
+      וב-$\theta = 0$, בראשית, נשאר רק $2b\omega^2$, האיבר שבא מהתנועה הרדיאלית.
+    wrongFeedback: 'מצאו את $\dot r$ ואת $\ddot r$ מ-$r = b\theta$ עם $\dot\theta = \omega$, והציבו בשני הרכיבים של התאוצה.'
+    commonWrong:
+      - value: 0.314
+        feedback: 'זה רק $r\omega^2$. הנקודה גם מתרחקת מהמרכז בזמן שהיא מסתובבת, וזה נותן $a_\theta = 2\dot r\omega$.'
+      - value: 0.33
+        feedback: 'שכחתם את ה-2 ב-$2\dot r\dot\theta$: $a_\theta = 0.20\,\text{m/s}^2$, לא $0.10$.'
+      - value: 0.2
+        feedback: 'זה רק $a_\theta$. ב-$\theta = \pi$ הנקודה במרחק $0.314\,\text{m}$ מהמרכז, ויש גם $a_r = -r\omega^2$.'
+    hints:
+      - '$\dot r = b\dot\theta$. מה $\ddot r$ כש-$\dot\theta$ קבוע?'
+
+  - id: Q-1.4-central
+    type: mc
+    objectives: [OBJ-1.4-2]
+    qualitative: true
+    level: bagrut
+    prompt: >-
+      דיסקית מחליקה בלי חיכוך על שולחן אופקי, קשורה לחוט שעובר דרך חור במרכז השולחן. מושכים את החוט מלמטה, לאט,
+      והחוט מושך את הדיסקית רק לכיוון החור, כך שהרכיב $a_\theta$ של התאוצה שלה אפס כל הזמן. כשהמרחק של הדיסקית
+      מהחור קטן פי 2, מה קורה ל-$\dot\theta$?
+    choices:
+      - text: הוא גדל פי 4.
+        correct: true
+        feedback: >-
+          נכון. $a_\theta = r\ddot\theta + 2\dot r\dot\theta = \dfrac1r\cdot\dfrac{d}{dt}\left(r^2\dot\theta\right)$, ולכן $a_\theta = 0$ פירושו
+          $r^2\dot\theta$ קבוע. כש-$r$ קטן פי 2, $\dot\theta$ גדל פי 4, והרכיב הזוויתי של המהירות, $r\dot\theta$, פי 2.
+          **בדיקת גבולות:** כש-$r$ קבוע מתקבל $\dot\theta$ קבוע, תנועה מעגלית אחידה. בפרקים 3 ו-6 תפגשו את $r^2\dot\theta$
+          שוב, כשימור התנע הזוויתי וכחוק השני של קפלר.
+      - text: הוא גדל פי 2, כי גודל המהירות לא משתנה כשהמשיכה רק אל המרכז.
+        feedback: >-
+          כשמושכים את החוט, לדיסקית יש מהירות רדיאלית פנימה, והמשיכה כבר לא ניצבת למהירות: היא מגדילה את גודל
+          המהירות. מה שנשמר הוא $r^2\dot\theta$, לא $r\dot\theta$.
+        misconception: MC-1-radial-pull-keeps-speed
+      - text: 'הוא לא משתנה, כי $a_\theta = 0$ פירושו $\ddot\theta = 0$.'
+        feedback: 'זה היה נכון רק אם $a_\theta = r\ddot\theta$. אבל יש גם האיבר $2\dot r\dot\theta$: כש-$\dot r < 0$, $\ddot\theta$ חיובי.'
+        misconception: MC-1-polar-unit-vectors-fixed
+      - text: הוא קטן פי 2, כי הדיסקית מתקרבת למרכז ומאטה.
+        feedback: 'הדיסקית לא מאטה: החוט מושך אותה פנימה, בכיוון התנועה הרדיאלית שלה, ומגדיל את גודל המהירות.'
+    hints:
+      - 'הראו ש-$r\ddot\theta + 2\dot r\dot\theta = \dfrac1r\dfrac{d}{dt}\left(r^2\dot\theta\right)$.'

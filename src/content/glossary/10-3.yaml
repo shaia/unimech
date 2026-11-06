@@ -1,0 +1,10 @@
+# Terms first defined in lesson 10.3. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: threshold-energy
+  term: אנרגיית סף
+  en: threshold energy
+  symbol: K_th
+  unit: MeV
+  definition: האנרגיה הקינטית המזערית של חלקיק בקרן שמאפשרת תגובה שיוצרת חלקיקים חדשים. בסף, כל התוצרים נחים במערכת מרכז המסה, ולכן √s שווה לסכום אנרגיות המנוחה שלהם. על מטרה נייחת היא גדולה מאנרגיית המנוחה של החלקיקים החדשים, כי התוצרים חייבים לשאת את התנע של הקרן.
+  lesson: '10.3'

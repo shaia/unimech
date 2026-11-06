@@ -1,0 +1,33 @@
+# Terms first defined in lesson 2.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: inertial-frame
+  term: מערכת ייחוס אינרציאלית
+  en: inertial frame of reference
+  definition: מערכת ייחוס שבה גוף שהכוח השקול עליו אפס נע במהירות קבועה (החוק הראשון), ולכן החוק השני מתקיים בה כמו שהוא. כל מערכת שנעה ביחס אליה במהירות קבועה, בלי להסתובב, גם היא אינרציאלית.
+  reject: [מערכת התמד]
+  lesson: '2.1'
+
+- id: force
+  term: כוח
+  en: force
+  symbol: F
+  unit: N
+  definition: פעולה של גוף אחד על גוף אחר שמשנה את המהירות שלו, או שהייתה משנה אותה אילולא כוחות אחרים. כוח הוא וקטור, ולכל כוח יש גוף שמפעיל אותו.
+  lesson: '2.1'
+
+- id: mass
+  term: מסה
+  en: mass
+  symbol: m
+  unit: kg
+  definition: המידה של ההתנגדות של גוף לשינוי המהירות שלו, המקדם בחוק השני, F = ma. המסה זהה בכל מקום, להבדיל מהמשקל mg, שתלוי בכובד המקומי.
+  lesson: '2.1'
+
+- id: net-force
+  term: כוח שקול
+  en: net force
+  symbol: ΣF
+  unit: N
+  definition: הסכום הווקטורי של כל הכוחות שפועלים על גוף. לפי החוק השני הוא שווה למסה כפול התאוצה, ΣF = ma, בכל רכיב בנפרד.
+  lesson: '2.1'

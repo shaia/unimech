@@ -1,0 +1,20 @@
+# Terms first defined in lesson 8.7. Chapter 8 terms outside the course's term table are prefixed c8-.
+
+- id: physical-pendulum
+  term: מטוטלת פיזיקלית
+  en: physical pendulum
+  definition: גוף צפיד שתלוי על ציר אופקי שאינו עובר במרכז המסה שלו, ומתנודד תחת הכובד. בזוויות קטנות זמן המחזור שלו T = 2π√(I/(mgd)), כאשר I סביב הציר ו-d המרחק מהציר למרכז המסה.
+  lesson: '8.7'
+
+- id: c8-equivalent-length
+  term: אורך שקול
+  en: equivalent length
+  unit: m
+  definition: אורכה של מטוטלת פשוטה שזמן המחזור שלה שווה לזה של מטוטלת פיזיקלית נתונה, L = I/(md). הוא שווה למרחק מהציר למרכז ההקשה.
+  lesson: '8.7'
+
+- id: center-of-percussion
+  term: מרכז ההקשה
+  en: center of percussion
+  definition: הנקודה בגוף שתלוי על ציר שבה מכה בניצב לקו מהציר לא גורמת לציר להפעיל מתקף. היא נמצאת במרחק I/(md) מהציר, על הקו שעובר דרך מרכז המסה. במחבט זו הנקודה המתוקה.
+  lesson: '8.7'

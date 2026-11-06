@@ -1,0 +1,462 @@
+# Chapter 0 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each,
+# climbing basic → mid → bagrut (exam level). Each problem joins objectives of at least two lessons, and the four
+# together touch every lesson of the chapter:
+#   1 (fog droplet): 0.1, 0.4, 0.5 · 2 (helical slide): 0.2, 0.3, 0.4, 0.7 · 3 (driven oscillator): 0.5, 0.6
+#   · 4 (planet with a density profile): 0.1, 0.3, 0.4, 0.7.
+# Open parts are solved in the course format: general law (law) → derivation (manipulation) → limit check (limit)
+# → unit check (units) → numbers (substitution) only when asked, ending in a result step.
+# YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
+#
+# Every number was computed in .scratch/ch0/review.ts with src/physics/constants.ts (G = 9.8, G_NEWTON, M_EARTH, R_EARTH):
+#   1: D = 20 μm, ρ_w = 1000 kg/m³, η = 1.8e-5 kg/(m·s): m = 4.19e-12 kg, b = 3πηD = 3.39e-9 kg/s, τ = 1.23 ms,
+#      v_t = 1.21 cm/s (D as a radius in the mass 9.68; without π/6 2.31; without 3π 11.4), Re = 0.016;
+#      1.0 km from rest: T = 8.27e4 s = 23.0 h (H/v_t + τ; free fall 14.3 s = 0.00397 h; 1378 min);
+#   2: R = 3.0 m, ω = 1.0 rad/s, u = 0.80 m/s: speed 3.10 m/s (3.8 adding), slope 14.9° (75.1° from the vertical, 0.261 rad),
+#      a = Rω² = 3.0 m/s², 3 turns: 6π√(R² + (u/ω)²) = 58.5 m (6πR = 56.5, drop 15.1, one turn 19.5, 71.6 adding);
+#   3: m = 0.50 kg, k = 50 N/m, b = 4.0 kg/s: r = −4 ± 9.17i, ω₀ = 10 rad/s; F₀ = 2.0 N, ω = 8.0 rad/s:
+#      k − mω² + ibω = 18 + 32i, |Ã| = 5.45 cm (no damping 11.1; F₀/k = F₀/(18 + 32) = 4.0), δ = 1.06 rad = 60.6° (0.512);
+#   4: ρ = ρ₀(1 − r²/R²): M = 8πρ₀R³/15; with M_EARTH, R_EARTH ρ₀ = 1.38e4 kg/m³, mean 5510 kg/m³ = 2ρ₀/5;
+#      h = 100 km: mgh/ΔU − 1 = h/R = 1.57% (2h/R = 3.14, h/2R = 0.785; 0.157% at 10 km).
+
+chapter: 0
+questions:
+  # ------------------------------------------------------------ 1: a fog droplet: dimensions, an ODE, accumulation
+  - id: Q-0-bagrut-1
+    type: bagrut
+    title: טיפת ערפל נופלת באוויר
+    prompt: >-
+      טיפת ערפל היא כדור מים זעיר בקוטר $D = 20\,\mu\text{m}$, עם צפיפות $\rho_\text{w} = 1000\,\text{kg/m}^3$. על גוף
+      זעיר ואיטי כל כך כוח הגרר ליניארי במהירות, ולפי חוק סטוקס הוא $F = 3\pi\eta Dv$, נגד כיוון התנועה. הצמיגות
+      של האוויר היא $\eta = 1.8\cdot10^{-5}\,\text{kg}/(\text{m}\cdot\text{s})$. הזניחו את כוח הציפה: צפיפות האוויר
+      קטנה פי 800 מזו של המים. הטיפה מתחילה ליפול ממנוחה, באוויר שקט.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-0.1-1]
+        prompt: 'בדקו את חוק סטוקס בניתוח ממדים: מה צריכות להיות היחידות של הצמיגות $\eta$ כדי ש-$3\pi\eta Dv$ יהיה כוח?'
+        choices:
+          - text: $\text{kg}/(\text{m}\cdot\text{s})$
+            correct: true
+            feedback: >-
+              נכון. $\dfrac{\text{kg}}{\text{m}\cdot\text{s}}\cdot\text{m}\cdot\dfrac{\text{m}}{\text{s}} = \dfrac{\text{kg}\cdot\text{m}}{\text{s}^2} = \text{N}$.
+              $3\pi$ חסר ממדים, ולכן לא משפיע על היחידות.
+          - text: $\text{kg/s}$
+            feedback: >-
+              אלה היחידות של כל המקדם של $v$, $b = 3\pi\eta D$. הצמיגות עצמה מוכפלת עוד באורך $D$, ולכן היחידות שלה
+              הן $\text{kg/s}$ חלקי מטר.
+          - text: $\text{kg}\cdot\text{m/s}$
+            feedback: 'אלה יחידות של תנע. עם $Dv$ בנוסף יוצא $\text{kg}\cdot\text{m}^3/\text{s}^2$, ולא ניוטון.'
+          - text: $\text{kg}/(\text{m}^2\cdot\text{s})$
+            feedback: 'עם זה $\eta Dv$ יוצא $\text{kg}/\text{s}^2$, חסר מטר אחד. ניוטון הוא $\text{kg}\cdot\text{m/s}^2$.'
+        hints:
+          - 'כתבו $[\eta] = [F]/([D][v])$.'
+
+      - label: ב
+        type: open
+        points: 8
+        level: mid
+        objectives: [OBJ-0.5-2, OBJ-0.5-1]
+        prompt: >-
+          (1) כתבו את משוואת התנועה למהירות $v(t)$ של הטיפה, עם ציר כלפי מטה ועם $b = 3\pi\eta D$. מה הסדר שלה,
+          והאם היא ליניארית?
+
+          (2) פתרו אותה בהפרדת משתנים, עם התנאי $v(0) = 0$. בטאו את התשובה בעזרת המהירות הסופית $v_t$ וקבוע הזמן
+          $\tau$.
+
+          (3) בדקו את הפתרון בשני גבולות, $t \ll \tau$ ו-$t \to \infty$, ובדקו את היחידות של $v_t$ ושל $\tau$.
+        hints:
+          - 'על הטיפה פועלים שני כוחות: הכובד $mg$ כלפי מטה, והגרר $bv$ כלפי מעלה.'
+          - 'אספו את $v$ לאגף אחד: $\dfrac{dv}{g - (b/m)v} = dt$.'
+        solution:
+          - { kind: law, text: 'החוק השני של ניוטון, עם ציר כלפי מטה: $m\dfrac{dv}{dt} = mg - bv$, עם $b = 3\pi\eta D$. זו משוואה מסדר ראשון, ליניארית ב-$v$, לא הומוגנית (בגלל $mg$).' }
+          - { kind: manipulation, text: 'מפרידים משתנים: $\dfrac{dv}{g - (b/m)v} = dt$. מאנטגרלים מ-$0$ עד $v$ ומ-$0$ עד $t$: $-\dfrac{m}{b}\ln\left(1 - \dfrac{bv}{mg}\right) = t$, ולכן $$v(t) = v_t\left(1 - e^{-t/\tau}\right),\qquad v_t = \frac{mg}{b},\qquad \tau = \frac{m}{b}$$' }
+          - { kind: limit, text: 'כש-$t \ll \tau$: $e^{-t/\tau} \approx 1 - t/\tau$, ולכן $v \approx v_t\,t/\tau = gt$: בהתחלה הגרר אפס, והטיפה בנפילה חופשית. כש-$t \to \infty$: $v \to v_t$, המהירות שבה $bv_t = mg$ והשקול מתאפס.' }
+          - { kind: units, text: '$[b] = \text{N}/(\text{m/s}) = \text{kg/s}$, ולכן $\tau = m/b$ בשניות, ו-$v_t = mg/b = g\tau$ ב-$\text{m/s}^2\cdot\text{s} = \text{m/s}$.' }
+          - { kind: result, text: '$v(t) = v_t\left(1 - e^{-t/\tau}\right)$, עם $v_t = mg/b$ ו-$\tau = m/b$. בהתחלה נפילה חופשית, ובסוף מהירות קבועה.' }
+        rubric:
+          - text: כתבתי את החוק השני עם שני הכוחות, וקבעתי שהמשוואה מסדר ראשון וליניארית.
+          - text: הפרדתי משתנים, אנטגרלתי עם $v(0) = 0$, וקיבלתי $v_t\left(1 - e^{-t/\tau}\right)$.
+          - text: זיהיתי $v_t = mg/b$ ו-$\tau = m/b$.
+          - text: בדקתי שבזמן קצר $v \approx gt$ ושבזמן ארוך $v \to v_t$.
+          - text: בדקתי ש-$\tau$ בשניות ו-$v_t$ ב-$\text{m/s}$.
+
+      - label: ג
+        type: numeric
+        points: 6
+        level: mid
+        standalone: false
+        objectives: [OBJ-0.5-2, OBJ-0.1-2]
+        prompt: 'חשבו את המסה של הטיפה, את קבוע הזמן ואת המהירות הסופית. מה המהירות הסופית, בסנטימטרים לשנייה?'
+        answer: 1.21
+        unit: cm/s
+        correctFeedback: >-
+          נכון. $m = \rho_\text{w}\dfrac{\pi}{6}D^3 = 4.19\cdot10^{-12}\,\text{kg}$ ו-$b = 3\pi\eta D = 3.39\cdot10^{-9}\,\text{kg/s}$,
+          ולכן $\tau = m/b = 1.23\,\text{ms}$ ו-$v_t = g\tau = 1.21\cdot10^{-2}\,\text{m/s}$. בסדר גודל: סנטימטר לשנייה,
+          ולכן ערפל כמעט מרחף. **בדיקה:** המודל הליניארי מתאים כש-$\rho_\text{air}v_tD/\eta$ קטן מ-1, וכאן, עם
+          $\rho_\text{air} = 1.2\,\text{kg/m}^3$, הוא $0.016$.
+        wrongFeedback: 'הנפח של כדור בקוטר $D$ הוא $\dfrac{\pi}{6}D^3$. חשבו $m$ ו-$b$ במטרים ובקילוגרמים, ורק בסוף עברו לסנטימטרים.'
+        commonWrong:
+          - value: 9.68
+            feedback: 'במסה השתמשתם ב-$D$ כאילו הוא הרדיוס, $m = \tfrac43\pi D^3$, והמסה יצאה גדולה פי 8. הרדיוס הוא $D/2$, ולכן $m = \tfrac43\pi(D/2)^3 = \tfrac{\pi}{6}D^3$.'
+          - value: 2.31
+            feedback: 'לקחתם את המסה $\rho_\text{w}D^3$, הנפח של קובייה. נפח הכדור $\dfrac{\pi}{6}D^3$, קטן כמעט פי 2.'
+          - value: 11.4
+            feedback: 'השמטתם את $3\pi$ מחוק סטוקס. קבוע חסר ממדים לא משנה יחידות, אבל הוא משנה את המספר.'
+            misconception: MC-0-dimensions-give-constant
+        hints:
+          - '$D = 2\cdot10^{-5}\,\text{m}$, ולכן $D^3 = 8\cdot10^{-15}\,\text{m}^3$.'
+
+      - label: ד
+        type: numeric
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-0.4-1, OBJ-0.1-2]
+        prompt: >-
+          הטיפה מתחילה ליפול ממנוחה מבסיס של ענן בגובה $1.0\,\text{km}$. כתבו את המרחק שעברה עד הרגע $t$ כאינטגרל
+          של $v(t)$ וחשבו אותו. כמה זמן, בשעות, נמשכת הנפילה עד הקרקע?
+        answer: 23
+        unit: h
+        correctFeedback: >-
+          נכון. $x(t) = \displaystyle\int_0^tv_t\left(1 - e^{-t'/\tau}\right)dt' = v_t\left[t - \tau\left(1 - e^{-t/\tau}\right)\right]$.
+          כש-$t \gg \tau$ האקספוננט זניח, ו-$x \approx v_t(t - \tau)$: הטיפה "מאחרת" רק ב-$\tau = 1.2\,\text{ms}$ לעומת
+          תנועה במהירות $v_t$ מההתחלה. לכן $T \approx \dfrac{H}{v_t} = \dfrac{1000}{0.0121} = 8.3\cdot10^4\,\text{s} \approx 23\,\text{h}$.
+          **בדיקת גבולות:** כש-$\tau \to 0$ הטיפה מגיעה ל-$v_t$ מייד, ו-$T = H/v_t$ בדיוק. בפועל זרמי אוויר ואידוי
+          משפיעים הרבה לפני כן: טיפות ערפל לא מגיעות לקרקע בנפילה.
+        wrongFeedback: >-
+          המרחק הוא האינטגרל של המהירות מ-0 עד $T$. השוו אותו ל-$1000\,\text{m}$. כמה זמן נמשך השלב שבו הטיפה עוד
+          מאיצה, לעומת כל הנפילה?
+        commonWrong:
+          - value: 0.00397
+            feedback: 'זה $\sqrt{2H/g} = 14\,\text{s}$, נפילה חופשית בלי אוויר. הגרר עוצר את ההאצה אחרי כמילישנייה, והטיפה נופלת לאט מאוד.'
+          - value: 1378
+            feedback: 'זה הזמן בדקות. התבקשתם שעות: $1378/60 \approx 23$.'
+        hints:
+          - 'השוו את $\tau$ לזמן הנפילה כולו. אפשר להזניח את השלב שבו הטיפה מאיצה?'
+
+  # ------------------------------------------------------------ 2: a helical slide: vector derivatives, angles, arc length
+  - id: Q-0-bagrut-2
+    type: bagrut
+    title: מגלשה לולינית
+    prompt: >-
+      מגלשה בפארק מים מתפתלת סביב עמוד אנכי. במודל פשוט, המגלש נע על סליל ברדיוס $R = 3.0\,\text{m}$ סביב הציר $z$
+      (כלפי מעלה), במהירות זוויתית קבועה $\omega = 1.0\,\text{rad/s}$, ויורד בקצב קבוע $u = 0.80\,\text{m/s}$:
+      $$\vec r(t) = \left(R\cos\omega t,\ R\sin\omega t,\ H - ut\right)$$
+      המגלשה עושה שלושה סיבובים שלמים.
+    parts:
+      - label: א
+        type: numeric
+        points: 5
+        level: basic
+        objectives: [OBJ-0.3-1, OBJ-0.2-1]
+        prompt: 'גזרו את $\vec r(t)$ רכיב-רכיב. מה גודל המהירות של המגלש?'
+        answer: 3.1
+        unit: m/s
+        correctFeedback: >-
+          נכון. $\vec v = \left(-R\omega\sin\omega t,\ R\omega\cos\omega t,\ -u\right)$, ו-$|\vec v| = \sqrt{R^2\omega^2 + u^2} = \sqrt{9 + 0.64} = 3.10\,\text{m/s}$,
+          קבוע בזמן.
+        wrongFeedback: 'גזרו כל רכיב לפי $t$, בכלל השרשרת לקוסינוס ולסינוס, וחשבו גודל בפיתגורס על שלושת הרכיבים.'
+        commonWrong:
+          - value: 3.8
+            feedback: 'חיברתם את המהירות האופקית $R\omega = 3$ והאנכית $0.8$ כמספרים. הן ניצבות זו לזו, ולכן מתחברות בפיתגורס.'
+            misconception: MC-0-magnitudes-add
+          - value: 3
+            feedback: 'זו רק המהירות האופקית, $R\omega$. המגלש גם יורד, והרכיב $\dot z = -u$ נכנס לגודל.'
+        hints:
+          - '$\dfrac{d}{dt}\left(R\cos\omega t\right) = -R\omega\sin\omega t$.'
+
+      - label: ב
+        type: numeric
+        points: 5
+        level: mid
+        objectives: [OBJ-0.2-2, OBJ-0.3-1]
+        prompt: >-
+          מה הזווית בין וקטור המהירות למישור האופקי, במעלות? חשבו קודם במכפלה סקלרית את הזווית בין $\vec v$ לבין
+          הכיוון כלפי מטה, $-\hat z$.
+        answer: 14.9
+        unit: '°'
+        correctFeedback: >-
+          נכון. $\vec v\cdot(-\hat z) = u = 0.80\,\text{m/s}$, ולכן $\cos\beta = \dfrac{0.80}{3.10}$ ו-$\beta = 75.1^\circ$ מהאנך.
+          הזווית עם האופק היא $90^\circ - \beta = 14.9^\circ$, כלומר $\arctan(u/R\omega)$. זה השיפוע של המגלשה.
+        wrongFeedback: '$\cos\beta = \dfrac{\vec v\cdot(-\hat z)}{|\vec v|}$, והזווית עם האופק משלימה את $\beta$ ל-$90^\circ$.'
+        commonWrong:
+          - value: 75.1
+            feedback: 'זו הזווית עם **האנך**, $-\hat z$. הזווית עם המישור האופקי היא ההשלמה שלה ל-$90^\circ$.'
+          - value: 0.261
+            feedback: 'זו הזווית ברדיאנים. התבקשתם מעלות.'
+        hints:
+          - 'הרכיב של $\vec v$ בכיוון $-\hat z$ הוא $u$.'
+
+      - label: ג
+        type: open
+        points: 7
+        level: mid
+        objectives: [OBJ-0.3-1, OBJ-0.2-2]
+        prompt: >-
+          (1) חשבו את וקטור התאוצה $\vec a(t)$. מה הגודל שלו, ולאן הוא מצביע?
+
+          (2) הראו במכפלה סקלרית ש-$\vec a \perp \vec v$ בכל רגע, והסיקו מכך שגודל המהירות קבוע.
+
+          (3) בדקו את התוצאה בשני גבולות: $u \to 0$ ו-$\omega \to 0$.
+        hints:
+          - 'גזרו את $\vec v$ עוד פעם, רכיב-רכיב. מה קורה לרכיב $z$?'
+          - '$\dfrac{d}{dt}|\vec v|^2 = \dfrac{d}{dt}(\vec v\cdot\vec v) = 2\vec v\cdot\vec a$.'
+        solution:
+          - { kind: law, text: 'התאוצה היא הנגזרת של המהירות, רכיב-רכיב: $\vec a = \dot{\vec v}$, עם $\vec v = \left(-R\omega\sin\omega t,\ R\omega\cos\omega t,\ -u\right)$.' }
+          - { kind: manipulation, text: '$\vec a = \left(-R\omega^2\cos\omega t,\ -R\omega^2\sin\omega t,\ 0\right) = -\omega^2\left(x,\ y,\ 0\right)$: אופקית, אל הציר של הסליל, בגודל $R\omega^2 = 3.0\,\text{m/s}^2$. הרכיב האנכי אפס, כי $z$ קווי בזמן.' }
+          - { kind: manipulation, text: '$\vec v\cdot\vec a = R^2\omega^3\sin\omega t\cos\omega t - R^2\omega^3\cos\omega t\sin\omega t + 0 = 0$. לכן $\dfrac{d}{dt}|\vec v|^2 = 2\vec v\cdot\vec a = 0$, וגודל המהירות קבוע: התאוצה משנה רק את הכיוון של $\vec v$.' }
+          - { kind: limit, text: 'כש-$u \to 0$ המגלש נע במעגל אופקי, והתאוצה $R\omega^2$ אל המרכז היא התאוצה של תנועה מעגלית. כש-$\omega \to 0$ המגלש יורד בקו ישר במהירות קבועה, ואכן $\vec a \to 0$.' }
+          - { kind: units, text: '$[R\omega^2] = \text{m}\cdot\text{s}^{-2}$, יחידות של תאוצה ($\text{rad}$ חסר ממדים).' }
+          - { kind: result, text: '$\vec a = -\omega^2(x, y, 0)$, בגודל $3.0\,\text{m/s}^2$, אופקית ואל ציר הסליל, וניצבת למהירות בכל רגע; לכן גודל המהירות קבוע.' }
+        rubric:
+          - text: גזרתי את $\vec v$ רכיב-רכיב וקיבלתי תאוצה אופקית אל הציר, בגודל $R\omega^2 = 3.0\,\text{m/s}^2$.
+          - text: חישבתי $\vec v\cdot\vec a = 0$ והסקתי מ-$\dfrac{d}{dt}|\vec v|^2 = 2\vec v\cdot\vec a$ שגודל המהירות קבוע.
+          - text: בדקתי שב-$u \to 0$ מתקבלת תאוצה של תנועה מעגלית, וב-$\omega \to 0$ תאוצה אפס.
+
+      - label: ד
+        type: numeric
+        points: 8
+        level: bagrut
+        objectives: [OBJ-0.7-2, OBJ-0.4-1]
+        prompt: >-
+          מה האורך של המגלשה, לאורך שלושת הסיבובים? אפשר לצבור את הדרך באינטגרל $\int|\vec v|\,dt$, או לכתוב את אלמנט
+          האורך בקואורדינטות גליליות, $d\ell^2 = ds^2 + s^2d\varphi^2 + dz^2$.
+        answer: 58.5
+        unit: m
+        correctFeedback: >-
+          נכון. על הסליל $s = R$ קבוע, $ds = 0$, ו-$dz = -(u/\omega)\,d\varphi$, ולכן $d\ell = \sqrt{R^2 + (u/\omega)^2}\,d\varphi$
+          ו-$L = 6\pi\sqrt{9 + 0.64} = 58.5\,\text{m}$. אותו דבר מ-$|\vec v|\cdot T = 3.10\cdot6\pi$, כי הגודל קבוע.
+          **בדיקת גבולות:** כש-$u \to 0$, $L \to 6\pi R$, שלושה היקפים של מעגל. כש-$R \to 0$, $L \to 6\pi u/\omega$,
+          הירידה האנכית בלבד.
+        wrongFeedback: 'בכל סיבוב $\varphi$ גדלה ב-$2\pi$, והמגלש יורד $2\pi u/\omega$. כתבו את $d\ell$ בעזרת $d\varphi$ ואנטגרלו על $6\pi$.'
+        commonWrong:
+          - value: 56.5
+            feedback: 'זה $6\pi R$, ההיקפים האופקיים בלבד. בכל סיבוב המגלש גם יורד $5.0\,\text{m}$, והדרך ארוכה יותר.'
+          - value: 71.6
+            feedback: 'חיברתם את הדרך האופקית ($56.5\,\text{m}$) ואת הירידה ($15.1\,\text{m}$) כמספרים. בכל קטע קטן הם ניצבים זה לזה, ומתחברים בפיתגורס.'
+            misconception: MC-0-magnitudes-add
+          - value: 19.5
+            feedback: 'זה סיבוב אחד. המגלשה עושה שלושה.'
+          - value: 15.1
+            feedback: 'זו רק הירידה האנכית, $6\pi u/\omega$. רוב הדרך היא סביב העמוד.'
+        hints:
+          - 'זמן שלושה סיבובים הוא $T = 6\pi/\omega$.'
+
+  # ------------------------------------------------------------ 3: a driven damped oscillator: roots and complex amplitudes
+  - id: Q-0-bagrut-3
+    type: bagrut
+    title: מתנד מרוסן ומאולץ
+    prompt: >-
+      מסה $m = 0.50\,\text{kg}$ קשורה לקפיץ עם $k = 50\,\text{N/m}$ ולבולם עם מקדם ריסון $b = 4.0\,\text{kg/s}$. התזוזה
+      שלה מקיימת
+      $$m\ddot x + b\dot x + kx = F(t)$$
+      כאשר $F(t)$ כוח חיצוני.
+    parts:
+      - label: א
+        type: numeric
+        points: 5
+        level: basic
+        objectives: [OBJ-0.5-3]
+        prompt: 'בלי כוח חיצוני, $F = 0$, מצאו את שורשי המשוואה האופיינית. מה התדירות הזוויתית של התנודות החופשיות?'
+        answer: 9.17
+        unit: rad/s
+        correctFeedback: >-
+          נכון. $0.5r^2 + 4r + 50 = 0$ נותן $r = \dfrac{-4 \pm \sqrt{16 - 100}}{1} = -4 \pm 9.17i$. התנודות דועכות כמו
+          $e^{-4t}$, כלומר בקבוע זמן $0.25\,\text{s}$, ומתנודדות ב-$9.17\,\text{rad/s}$, קצת מתחת ל-$\sqrt{k/m} = 10\,\text{rad/s}$.
+        wrongFeedback: 'הציבו $x = e^{rt}$ וקבלו $mr^2 + br + k = 0$. התדירות היא החלק המדומה של השורש.'
+        commonWrong:
+          - value: 10
+            feedback: 'זה $\sqrt{k/m}$, התדירות בלי ריסון. הריסון מקטין אותה ל-$\sqrt{k/m - (b/2m)^2} = \sqrt{100 - 16}$.'
+            misconception: MC-0-damping-no-frequency-change
+          - value: 4
+            feedback: 'זה החלק **הממשי** של השורש, בגודלו: קצב הדעיכה, $b/(2m)$. התדירות היא החלק המדומה.'
+        hints:
+          - 'הדיסקרימיננטה: $b^2 - 4mk = 16 - 100$.'
+
+      - label: ב
+        type: open
+        points: 8
+        level: mid
+        objectives: [OBJ-0.6-2, OBJ-0.5-1]
+        prompt: >-
+          עכשיו $F(t) = F_0\cos\omega t$. כותבים $F_0\cos\omega t = \mathrm{Re}\left(F_0e^{i\omega t}\right)$ ומחפשים פתרון
+          יציב מהצורה $x = \mathrm{Re}\left(\tilde Ae^{i\omega t}\right)$.
+
+          (1) הסבירו למה מותר לפתור את המשוואה עם הכוח המרוכב ולקחת חלק ממשי רק בסוף.
+
+          (2) הציבו והראו ש-$\tilde A = \dfrac{F_0}{k - m\omega^2 + ib\omega}$.
+
+          (3) בדקו את הביטוי בגבולות $\omega \to 0$ ו-$b \to 0$, ובדקו את היחידות של המכנה.
+        hints:
+          - 'אילו פעולות מופיעות במשוואה? האם יש בה מכפלה של $x$ בעצמו?'
+          - 'אם $z = \tilde Ae^{i\omega t}$, אז $\dot z = i\omega z$ ו-$\ddot z = -\omega^2z$.'
+        solution:
+          - { kind: law, text: 'המשוואה ליניארית ובעלת מקדמים ממשיים, ו-$\mathrm{Re}$ עובר דרך סכומים, כפל בקבוע ממשי ונגזרות. לכן אם $z(t)$ פותר את $m\ddot z + b\dot z + kz = F_0e^{i\omega t}$, החלק הממשי שלו פותר את המשוואה עם $F_0\cos\omega t$. (במכפלה של שני גדלים זה כבר לא נכון.)' }
+          - { kind: manipulation, text: 'מציבים $z = \tilde Ae^{i\omega t}$: $\left(-m\omega^2 + ib\omega + k\right)\tilde Ae^{i\omega t} = F_0e^{i\omega t}$, ומחלקים ב-$e^{i\omega t} \ne 0$: $$\tilde A = \frac{F_0}{k - m\omega^2 + ib\omega}$$' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $\tilde A \to F_0/k$, המתיחה הסטטית של קפיץ תחת כוח קבוע. כש-$b \to 0$ המכנה ממשי, $k - m\omega^2$, והוא מתאפס ב-$\omega = \sqrt{k/m}$: בלי ריסון האמפליטודה מתבדרת בתדירות הטבעית (תהודה, פרק 5).' }
+          - { kind: units, text: 'כל איבר במכנה ביחידות $\text{N/m} = \text{kg/s}^2$: $k$, $m\omega^2$ ($\text{kg}\cdot\text{s}^{-2}$) ו-$b\omega$ ($\text{kg/s}\cdot\text{s}^{-1}$). לכן $\tilde A$ במטרים.' }
+          - { kind: result, text: '$\tilde A = \dfrac{F_0}{k - m\omega^2 + ib\omega}$, והתנודה היציבה היא $x = |\tilde A|\cos(\omega t + \arg\tilde A)$.' }
+        rubric:
+          - text: נימקתי שהמשוואה ליניארית עם מקדמים ממשיים, ולכן מותר לקחת חלק ממשי בסוף.
+          - text: הצבתי $\dot z = i\omega z$ ו-$\ddot z = -\omega^2z$ וקיבלתי את $\tilde A$.
+          - text: בדקתי שב-$\omega \to 0$ מתקבל $F_0/k$, ושבלי ריסון המכנה מתאפס בתדירות הטבעית.
+          - text: בדקתי שכל איברי המכנה באותן יחידות, $\text{N/m}$.
+
+      - label: ג
+        type: numeric
+        points: 5
+        level: mid
+        standalone: false
+        objectives: [OBJ-0.6-1, OBJ-0.6-2]
+        prompt: 'עם $F_0 = 2.0\,\text{N}$ ו-$\omega = 8.0\,\text{rad/s}$, מה האמפליטודה $|\tilde A|$ של התנודה היציבה, בסנטימטרים?'
+        answer: 5.45
+        unit: cm
+        correctFeedback: >-
+          נכון. $k - m\omega^2 = 50 - 32 = 18$ ו-$b\omega = 32$ (ב-$\text{N/m}$), ולכן $|\tilde A| = \dfrac{2.0}{\sqrt{18^2 + 32^2}} = \dfrac{2.0}{36.7} = 0.0545\,\text{m} = 5.45\,\text{cm}$.
+        wrongFeedback: 'הגודל של מנה הוא מנת הגדלים, ו-$|18 + 32i| = \sqrt{18^2 + 32^2}$.'
+        commonWrong:
+          - value: 11.1
+            feedback: 'זה $F_0/(k - m\omega^2)$, בלי איבר הריסון. כאן $b\omega = 32$ גדול מ-$18$, והריסון קובע את רוב המכנה.'
+          - value: 4
+            feedback: >-
+              זה $F_0/k$, המתיחה הסטטית, וגם $F_0/(18 + 32)$, חיבור של החלק הממשי והמדומה כמספרים. הגודל של
+              מספר מרוכב הוא $\sqrt{a^2 + b^2}$.
+            misconception: MC-0-magnitudes-add
+        hints:
+          - 'חשבו קודם את המכנה $k - m\omega^2 + ib\omega$ כמספר מרוכב.'
+
+      - label: ד
+        type: numeric
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-0.6-1, OBJ-0.6-2]
+        prompt: >-
+          כתבו $\tilde A = |\tilde A|e^{-i\delta}$, כך ש-$x = |\tilde A|\cos(\omega t - \delta)$: התזוזה מפגרת אחרי הכוח
+          בפאזה $\delta$. מה $\delta$, ברדיאנים, ב-$\omega = 8.0\,\text{rad/s}$?
+        answer: 1.06
+        unit: rad
+        correctFeedback: >-
+          נכון. $\arg\tilde A = -\arg(18 + 32i)$, ולכן $\delta = \arctan\dfrac{b\omega}{k - m\omega^2} = \arctan\dfrac{32}{18} = 1.06\,\text{rad}$
+          ($60.6^\circ$). **בדיקת גבולות:** כש-$\omega \to 0$, $\delta \to 0$: המסה זזה יחד עם הכוח. ב-$\omega = \sqrt{k/m} = 10\,\text{rad/s}$
+          המכנה מדומה לגמרי ו-$\delta = \pi/2$. כש-$\omega \to \infty$, $\delta \to \pi$: המסה נעה נגד הכוח. כאן
+          $\omega < 10\,\text{rad/s}$, ולכן $\delta < \pi/2$, כמו שיצא.
+        wrongFeedback: 'הארגומנט של מנה הוא הארגומנט של המונה פחות זה של המכנה. המכנה $18 + 32i$ ברביע הראשון.'
+        commonWrong:
+          - value: 0.512
+            feedback: 'זה $\arctan(18/32)$, המנה הפוכה. הארגומנט של $a + ib$ הוא $\arctan(b/a)$, החלק המדומה חלקי הממשי.'
+          - value: 60.6
+            feedback: 'זו הזווית במעלות. התבקשתם רדיאנים.'
+        hints:
+          - 'אם $\tilde A = F_0/z$, אז $\arg\tilde A = -\arg z$.'
+
+  # ------------------------------------------------------------ 4: a planet with a density profile: shells, gradient, Taylor
+  - id: Q-0-bagrut-4
+    type: bagrut
+    title: כוכב לכת שצפיפותו יורדת כלפי חוץ
+    prompt: >-
+      במודל של כוכב לכת כדורי ברדיוס $R$, הצפיפות תלויה רק במרחק $r$ מהמרכז:
+      $$\rho(r) = \rho_0\left(1 - \frac{r^2}{R^2}\right)$$
+      מחוץ לכוכב הלכת, האנרגיה הפוטנציאלית של גוף בעל מסה $m$ במרחק $r$ מהמרכז היא $U(r) = -\dfrac{GMm}{r}$, כאשר $M$
+      המסה של כוכב הלכת ו-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-0.7-2]
+        prompt: 'איזה ביטוי נותן את המסה $M$ של כוכב הלכת?'
+        choices:
+          - text: $\displaystyle\int_0^R\rho(r)\,4\pi r^2\,dr$
+            correct: true
+            feedback: 'נכון. מחלקים לקליפות כדוריות דקות: בכל קליפה הצפיפות כמעט קבועה, והנפח שלה $4\pi r^2\,dr$.'
+          - text: $\displaystyle\int_0^R\rho(r)\,dr$
+            feedback: 'זה ביחידות $\text{kg/m}^2$, לא מסה. צפיפות נפחית כופלים בנפח, ולא באורך: חסר $4\pi r^2$.'
+            misconception: MC-0-element-no-jacobian
+          - text: $\rho(R/2)\cdot\tfrac43\pi R^3$
+            feedback: >-
+              הצפיפות באמצע הרדיוס אינה הצפיפות הממוצעת. הממוצע על הנפח משוקלל ב-$r^2$, ולכן השכבות החיצוניות קובעות
+              אותו יותר.
+            misconception: MC-0-mean-density-midpoint
+          - text: $\displaystyle\int_0^R\rho(r)\,4\pi r\,dr$
+            feedback: 'בדקו יחידות: $\text{kg/m}^3\cdot\text{m}^2 = \text{kg/m}$. שטח הספרה הוא $4\pi r^2$, ולא $4\pi r$.'
+            misconception: MC-0-element-no-jacobian
+        hints:
+          - 'מה הנפח של קליפה כדורית ברדיוס $r$ ובעובי $dr$?'
+
+      - label: ב
+        type: open
+        points: 9
+        level: mid
+        objectives: [OBJ-0.4-2, OBJ-0.7-2]
+        prompt: >-
+          (1) חשבו את $M$ בעזרת $\rho_0$ ו-$R$.
+
+          (2) בדקו את התוצאה בגבול: לפרופיל הכללי $\rho = \rho_0\left(1 - (r/R)^n\right)$, מה קורה כש-$n \to \infty$?
+          ובדקו יחידות.
+
+          (3) מצאו את $\rho_0$ כך שלכוכב הלכת יהיו המסה והרדיוס של כדור הארץ, $M = 5.97\cdot10^{24}\,\text{kg}$ ו-$R = 6.37\cdot10^6\,\text{m}$.
+        hints:
+          - '$\displaystyle\int_0^R\left(r^2 - \frac{r^4}{R^2}\right)dr = \frac{R^3}{3} - \frac{R^3}{5}$.'
+        solution:
+          - { kind: law, text: 'המסה היא סכום הקליפות: $M = \displaystyle\int_0^R\rho(r)\,4\pi r^2\,dr$.' }
+          - { kind: manipulation, text: '$M = 4\pi\rho_0\displaystyle\int_0^R\left(r^2 - \frac{r^4}{R^2}\right)dr = 4\pi\rho_0\left(\frac{R^3}{3} - \frac{R^3}{5}\right) = \frac{8\pi\rho_0R^3}{15}$. הצפיפות הממוצעת היא $M\big/\tfrac43\pi R^3 = \tfrac25\rho_0$.' }
+          - { kind: limit, text: 'לפרופיל הכללי, $M = 4\pi\rho_0R^3\left(\dfrac13 - \dfrac{1}{n + 3}\right)$. ב-$n = 2$ זה $\dfrac{8\pi\rho_0R^3}{15}$. כש-$n \to \infty$, $(r/R)^n \to 0$ בכל נקודה פנימית, הכוכב אחיד, ו-$M \to \tfrac43\pi\rho_0R^3$, כמו שצריך. כש-$n \to 0$, $\rho \to 0$ ו-$M \to 0$.' }
+          - { kind: units, text: '$[\rho_0R^3] = \text{kg/m}^3\cdot\text{m}^3 = \text{kg}$.' }
+          - { kind: substitution, text: '$\rho_0 = \dfrac{15M}{8\pi R^3} = \dfrac{15\cdot5.97\cdot10^{24}}{8\pi\cdot(6.37\cdot10^6)^3} = 1.38\cdot10^4\,\text{kg/m}^3$, והצפיפות הממוצעת $\tfrac25\rho_0 = 5.51\cdot10^3\,\text{kg/m}^3$.' }
+          - { kind: result, text: '$M = \dfrac{8\pi\rho_0R^3}{15}$, כלומר צפיפות ממוצעת $\tfrac25\rho_0$, ובנתוני כדור הארץ $\rho_0 = 1.38\cdot10^4\,\text{kg/m}^3$.' }
+        rubric:
+          - text: כתבתי את המסה כאינטגרל על קליפות, עם $4\pi r^2\,dr$.
+          - text: חישבתי את האינטגרל וקיבלתי $8\pi\rho_0R^3/15$.
+          - text: בדקתי שבגבול $n \to \infty$ חוזרים לכדור אחיד, $\tfrac43\pi\rho_0R^3$, ושהיחידות קילוגרם.
+          - text: הצבתי את נתוני כדור הארץ וקיבלתי $\rho_0 \approx 1.4\cdot10^4\,\text{kg/m}^3$.
+
+      - label: ג
+        type: vector
+        points: 4
+        level: mid
+        qualitative: true
+        objectives: [OBJ-0.7-3]
+        prompt: >-
+          כוכב הלכת במרכז הדף, ונקודה P נמצאת מחוץ לו, ימינה ממרכזו. מה הכיוון של הגרדיאנט $\nabla U$ בנקודה P?
+        answer: e
+        correctFeedback: >-
+          נכון. $U = -GMm/r$ **עולה** (נעשה פחות שלילי) כשמתרחקים, ולכן $\nabla U = \dfrac{dU}{dr}\hat r = \dfrac{GMm}{r^2}\hat r$:
+          החוצה, ימינה. הכוח $\vec F = -\nabla U$ מצביע הפוך, אל כוכב הלכת.
+        wrong:
+          - dir: w
+            feedback: 'זה הכיוון של הכוח, $-\nabla U$. הגרדיאנט מצביע לכיוון שבו $U$ גדל, ו-$-GMm/r$ גדל כש-$r$ גדל.'
+          - dir: zero
+            feedback: '$U$ משתנה עם $r$, ולכן הגרדיאנט לא אפס. הוא אפס רק בנקודה שבה $U$ לא משתנה באף כיוון.'
+          - dir: n
+            feedback: 'לאורך מעגל סביב כוכב הלכת $U$ לא משתנה, ולכן לגרדיאנט אין רכיב משיקי. הוא רדיאלי.'
+        wrongFeedback: '$U$ תלוי רק ב-$r$. באיזה כיוון $r$ גדל, והאם $-GMm/r$ גדל או קטן איתו?'
+
+      - label: ד
+        type: numeric
+        points: 8
+        level: bagrut
+        objectives: [OBJ-0.3-2, OBJ-0.1-2]
+        prompt: >-
+          ליד פני השטח מקרבים $U(R + h) - U(R) \approx mgh$, עם $g = GM/R^2$. בכמה אחוזים הקירוב $mgh$ גדול מההפרש
+          המדויק $U(R + h) - U(R)$, כשמרימים גוף לגובה $h = 100\,\text{km}$ מעל כוכב לכת ברדיוס $R = 6.37\cdot10^6\,\text{m}$?
+        answer: 1.57
+        unit: '%'
+        correctFeedback: >-
+          נכון. $\Delta U = GMm\left(\dfrac1R - \dfrac{1}{R + h}\right) = \dfrac{GMmh}{R(R + h)}$, ולכן
+          $\dfrac{mgh}{\Delta U} = \dfrac{R + h}{R} = 1 + \dfrac{h}{R}$: הקירוב גדול ב-$h/R = 1.57\%$. בפיתוח טיילור,
+          $\dfrac{1}{R + h} = \dfrac1R\left(1 - \dfrac hR + \dfrac{h^2}{R^2} - \dots\right)$: $mgh$ הוא האיבר הראשון, והאיבר הבא
+          קטן ממנו פי $h/R$. **בדיקת גבולות:** כש-$h \to 0$ השגיאה נעלמת. כש-$h \gg R$, $mgh$ גדל בלי גבול, וההפרש המדויק
+          שואף ל-$GMm/R$. בגובה טיסה, $10\,\text{km}$, השגיאה $0.16\%$ בלבד.
+        wrongFeedback: 'חשבו את ההפרש המדויק, $GMm\left(\dfrac1R - \dfrac1{R + h}\right)$, וחלקו בו את $mgh = \dfrac{GMm}{R^2}h$.'
+        commonWrong:
+          - value: 3.14
+            feedback: 'זה $2h/R$, הירידה היחסית ב-$g$ עצמו בגובה $h$. כאן משווים אנרגיות, ו-$1/r$ יורד לאט יותר מ-$1/r^2$: השגיאה היא $h/R$.'
+          - value: 0.785
+            feedback: 'זה $h/(2R)$, כאילו לוקחים את $g$ באמצע הדרך. המנה המדויקת היא $1 + h/R$.'
+        hints:
+          - '$\dfrac1R - \dfrac{1}{R + h} = \dfrac{h}{R(R + h)}$.'

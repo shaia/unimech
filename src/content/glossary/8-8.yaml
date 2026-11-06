@@ -1,0 +1,31 @@
+# Terms first defined in lesson 8.8. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: inertia-tensor
+  term: טנזור ההתמד
+  en: inertia tensor
+  symbol: I
+  unit: kg·m²
+  definition: מטריצה 3×3 שמקשרת את התנע הזוויתי של גוף צפיד למהירות הזוויתית שלו, L = Iω. על האלכסון מומנטי ההתמד סביב הצירים, ומחוץ לו מכפלות ההתמד, כמו I_xy = −∑mxy.
+  lesson: '8.8'
+
+- id: principal-axes
+  term: צירים ראשיים
+  en: principal axes
+  definition: שלושה צירים ניצבים זה לזה, בנקודה נתונה בגוף, שבהם טנזור ההתמד אלכסוני. בסיבוב סביב ציר ראשי התנע הזוויתי מקביל למהירות הזוויתית, L = Iω עם I מספר. ציר סימטריה הוא תמיד ציר ראשי.
+  lesson: '8.8'
+
+- id: precession
+  term: נקיפה
+  en: precession
+  symbol: Ω
+  unit: rad/s
+  definition: סיבוב איטי של ציר הסיבוב של גוף שמסתובב מהר, כשמומנט חיצוני ניצב לתנע הזוויתי משנה את כיוונו. בסביבון מהיר קצב הנקיפה Ω = mgr/(Iω).
+  reject: [פרצסיה]
+  lesson: '8.8'
+
+- id: gyroscope
+  term: ג׳ירוסקופ
+  en: gyroscope
+  definition: גוף בעל סימטריה סיבובית שמסתובב מהר סביב ציר הסימטריה שלו, כך שהתנע הזוויתי שלו גדול. מומנט חיצוני משנה את כיוון הציר רק לאט, בנקיפה, ולכן הוא משמש לשמירה על כיוון.
+  lesson: '8.8'

@@ -1,0 +1,29 @@
+# Terms first defined in lesson 4.1. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it).
+
+- id: elastic-collision
+  term: התנגשות אלסטית
+  en: elastic collision
+  definition: התנגשות שבה האנרגיה הקינטית הכוללת אחרי ההתנגשות שווה לזו שלפניה. בממד אחד המהירות היחסית של הגופים מתהפכת בה, ומקדם התקומה שווה ל-1.
+  lesson: '4.1'
+
+- id: inelastic-collision
+  term: התנגשות לא אלסטית
+  en: inelastic collision
+  definition: התנגשות שבה חלק מהאנרגיה הקינטית הכוללת הופך לצורות אנרגיה אחרות, כמו חום ועיוות. התנע הכולל עדיין נשמר כשהמתקף החיצוני זניח. מקדם התקומה בה קטן מ-1.
+  lesson: '4.1'
+
+- id: perfectly-inelastic-collision
+  term: התנגשות פלסטית
+  en: perfectly inelastic collision
+  definition: התנגשות שבה הגופים נצמדים וממשיכים לנוע יחד במהירות מרכז המסה. מקדם התקומה בה אפס, ובה אובדת האנרגיה הקינטית הגדולה ביותר שמותרת בשימור התנע.
+  reject: [התנגשות אי-אלסטית לחלוטין]
+  lesson: '4.1'
+
+- id: coefficient-of-restitution
+  term: מקדם תקומה
+  en: coefficient of restitution
+  symbol: e
+  definition: בהתנגשות חזיתית, היחס בין מהירות ההתרחקות של הגופים אחרי ההתנגשות למהירות ההתקרבות שלהם לפניה. e = 1 בהתנגשות אלסטית ו-e = 0 בהתנגשות פלסטית. בכדור שמקפץ על רצפה כבדה, הגובה קטן בכל קפיצה פי e².
+  reject: [מקדם השבה, מקדם הקפיצה]
+  lesson: '4.1'

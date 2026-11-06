@@ -1,0 +1,26 @@
+# Misconceptions first detected in lesson 0.3. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+
+- id: MC-0-constant-speed-no-acceleration
+  title: מהירות בגודל קבוע פירושה תאוצה אפס
+  belief: אם גודל המהירות של גוף לא משתנה, התאוצה שלו אפס, כי הנגזרת של וקטור היא הנגזרת של הגודל שלו.
+  truth: התאוצה היא הנגזרת של וקטור המהירות, רכיב-רכיב. כשהכיוון משתנה, כמו בתנועה מעגלית, התאוצה שונה מאפס גם בגודל מהירות קבוע.
+  remedy: { lesson: '0.3', label: 'שיעור 0.3: נגזרת של וקטור לפי רכיביו' }
+
+- id: MC-0-chain-rule-forgotten
+  title: גוזרים רק את הפונקציה החיצונית
+  belief: הנגזרת של f(u(t)) היא f′(u(t)), בלי לכפול בשום דבר.
+  truth: לפי כלל השרשרת, df/dt = f′(u)·du/dt. שוכחים את הגורם הפנימי, ומקבלים תוצאה ביחידות לא נכונות.
+  remedy: { lesson: '0.3', label: 'שיעור 0.3: כלל השרשרת' }
+
+- id: MC-0-small-angle-degrees
+  title: קירוב הזווית הקטנה עובד גם במעלות
+  belief: sin θ ≈ θ נכון בכל יחידה של זווית.
+  truth: הקירוב נובע מ-d(sin θ)/dθ = cos θ, וזה נכון רק כשהזווית ברדיאנים. במעלות הוא שגוי פי 57.
+  remedy: { lesson: '0.3', label: 'שיעור 0.3: פיתוח טיילור של sin θ' }
+
+- id: MC-0-small-x-enough
+  title: מספיק ש-x קטן כדי ש-(1+x)ⁿ ≈ 1+nx
+  belief: הקירוב (1 + x)ⁿ ≈ 1 + nx טוב תמיד כש-|x| ≪ 1, בלי קשר ל-n.
+  truth: האיבר הבא בפיתוח הוא n(n−1)x²/2, והוא קטן מהאיבר הקווי רק כש-|nx| ≪ 1. במעריך גדול צריך שגם המכפלה nx תהיה קטנה.
+  remedy: { lesson: '0.3', label: 'שיעור 0.3: מתי קירוב קווי טוב' }

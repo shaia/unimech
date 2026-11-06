@@ -1,0 +1,16 @@
+# Terms first defined in lesson 6.5. One spelling per concept, course-wide. The areal velocity is not in
+# the course term table; its id carries the chapter prefix c6-.
+
+- id: keplers-laws
+  term: חוקי קפלר
+  en: Kepler's laws
+  definition: שלושה חוקים של תנועת כוכבי הלכת, שניוטון גזר מחוק הכבידה. הראשון, המסלול אליפסה והשמש באחד המוקדים. השני, הקו מהשמש לכוכב הלכת מכסה שטחים שווים בזמנים שווים, שימור התנע הזוויתי. השלישי, ריבוע זמן המחזור פרופורציוני לחזקה השלישית של חצי הציר הראשי, T² = 4π²a³/(G(M + m)).
+  lesson: '6.5'
+
+- id: c6-areal-velocity
+  term: מהירות שטחית
+  en: areal velocity
+  symbol: dA/dt
+  unit: m²/s
+  definition: קצב כיסוי השטח של הקו שבין מרכז הכוח לגוף, dA/dt = ½r²θ̇ = L/(2μ). בכל כוח מרכזי היא קבועה, וזה החוק השני של קפלר.
+  lesson: '6.5'

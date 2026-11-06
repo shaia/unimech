@@ -1,0 +1,27 @@
+# Misconceptions first detected in lesson 8.1. Each is detected by at least one distractor (its
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 8.1
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+
+- id: MC-8-all-points-move-with-cm
+  title: כל נקודות הגוף נעות במהירות מרכז המסה
+  belief: גוף צפיד שמתקדם נע כולו במהירות אחת, מהירות מרכז המסה, גם כשהוא מסתובב.
+  truth: מהירות כל נקודה היא מהירות מרכז המסה ועוד מהירות הסיבוב סביבו, ω × r. בגלגל מתגלגל הנקודה העליונה נעה ב-2v והתחתונה עומדת.
+  remedy: { lesson: '8.1', label: 'שיעור 8.1: מהירות של נקודה כסכום של הזזה וסיבוב' }
+
+- id: MC-8-forget-translation
+  title: מהירות נקודה בגלגל היא רק ωR
+  belief: מהירות נקודה בשפת גלגל מתגלגל היא ωR בכיוון המשיק, כמו בגלגל שצירו קבוע.
+  truth: ωR היא המהירות ביחס למרכז הגלגל. ביחס לקרקע מוסיפים את מהירות המרכז, ולכן נקודת המגע במנוחה והעליונה נעה ב-2v.
+  remedy: { lesson: '8.1', label: 'שיעור 8.1: חיבור מהירות המרכז ומהירות הסיבוב' }
+
+- id: MC-8-instant-rest-no-acceleration
+  title: נקודה במנוחה רגעית אינה מאיצה
+  belief: נקודת המגע של גלגל מתגלגל נמצאת במנוחה, ולכן גם התאוצה שלה אפס.
+  truth: המנוחה רגעית. תאוצת נקודת המגע היא v²/R כלפי מעלה, אל המרכז, ומיד אחר כך היא עולה מהקרקע.
+  remedy: { lesson: '8.1', label: 'שיעור 8.1: התאוצה של נקודת המגע במערכת של המרכז' }
+
+- id: MC-8-same-speed-at-every-radius
+  title: לכל נקודות גוף מסתובב אותה מהירות
+  belief: כל הנקודות של גוף שמסתובב סביב ציר קבוע נעות באותה מהירות, ולכן נקודה רחוקה מהציר מסתובבת לאט יותר.
+  truth: לכל הגוף הצפיד אותה מהירות זוויתית ω. גודל המהירות של נקודה הוא ωr, והוא גדל עם המרחק מהציר.
+  remedy: { lesson: '8.1', label: 'שיעור 8.1: מהירות זוויתית אחת לכל הגוף' }
