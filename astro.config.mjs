@@ -8,7 +8,7 @@ import rehypeKatex from 'rehype-katex';
 
 // GitHub Pages serves a project site under /<repo>/. CI passes the prefix that
 // actions/configure-pages reports; locally both are unset and the site is served from /.
-const site = process.env.SITE_URL || 'http://localhost:4341';
+const site = process.env.SITE_URL || 'http://localhost:4351';
 const base = process.env.BASE_PATH || '/';
 
 export default defineConfig({

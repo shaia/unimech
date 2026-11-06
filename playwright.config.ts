@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // Local runs and CI both use Playwright's own Chromium. Local Edge hung at browser shutdown, so a run never exited.
 // After upgrading @playwright/test, run `npx playwright install chromium` once, or every test fails at launch.
 // one preview server per checkout: parallel worktrees each set their own E2E_PORT
-const port = Number(process.env.E2E_PORT ?? 4341);
+const port = Number(process.env.E2E_PORT ?? 4351);
 
 export default defineConfig({
   testDir: 'tests/e2e',
