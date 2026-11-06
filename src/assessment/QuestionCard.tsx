@@ -279,7 +279,7 @@ export function AnswerArea({ q, draft, setDraft, locked, verdict }: AreaProps) {
       return (
         <div class={`q-numeric ${verdict ? (verdict.correct ? 'right' : 'wrong') : ''}`}>
           <label>
-            <span class="sr-only">התשובה, ב-{q.unit}</span>
+            <span class="sr-only">{q.unit ? `התשובה, ב-${q.unit}` : 'התשובה, מספר בלי יחידות'}</span>
             <input
               type="text"
               inputMode="decimal"

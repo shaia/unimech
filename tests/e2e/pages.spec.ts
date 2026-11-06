@@ -62,12 +62,13 @@ test.describe('every page', () => {
 
     test(`${path} has no dead internal links`, async ({ page, request }) => {
       await page.goto(path);
-      const hrefs = await page.$$eval('a[href]', (as) =>
-        [...new Set(as.map((a) => (a as HTMLAnchorElement).href))].filter((h) => h.startsWith(location.origin)),
+      // one request per page, not per anchor: My Path links every planned lesson to a section (#pl-…) of the same
+      // few multi-megabyte practice pages, and fetching each anchor separately ran past the test timeout
+      const urls = await page.$$eval('a[href]', (as) =>
+        [...new Set(as.map((a) => (a as HTMLAnchorElement).href.split('#')[0]))].filter((h) => h.startsWith(location.origin)),
       );
-      expect(hrefs.length).toBeGreaterThan(0);
-      for (const h of hrefs) {
-        const url = h.split('#')[0];
+      expect(urls.length).toBeGreaterThan(0);
+      for (const url of urls) {
         const res = await request.get(url);
         expect(res.status(), url).toBe(200);
       }
