@@ -1,0 +1,36 @@
+---
+/**
+ * A curated YouTube clip, from src/content/videos.yaml only (ids there are verified, never
+ * guessed). The slot says, in Hebrew, what to look for while watching.
+ */
+import { getEntry } from 'astro:content';
+import Block from './Block.astro';
+import YouTube from '~/ui/YouTube';
+
+interface Props {
+  id: string;
+  title?: string;
+}
+
+const { id, title } = Astro.props;
+const entry = await getEntry('videos', id);
+if (!entry) throw new Error(`<Watch id="${id}">: no such video in src/content/videos.yaml`);
+const v = entry.data;
+const langNote = v.lang === 'he' ? 'בעברית' : v.captions.includes('he') ? 'באנגלית, יש כתוביות בעברית' : 'באנגלית';
+---
+
+<Block kind="watch" title={title}>
+  <div class="watch">
+    <YouTube client:visible youtubeId={v.youtubeId} start={v.start} end={v.end} title={v.title} />
+    <div class="watch-meta">
+      <p class="watch-title ltr-if-latin">{v.title}</p>
+      <p class="watch-sub">
+        <span>{v.channel}</span> · <span>{v.minutes} דק'</span> · <span class="chip">{langNote}</span>
+      </p>
+      <div class="watch-look">
+        <p class="kicker">מה לחפש בסרטון</p>
+        <slot />
+      </div>
+    </div>
+  </div>
+</Block>

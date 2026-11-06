@@ -1,0 +1,427 @@
+/* Lesson pages: an open book on a desk. Spreads hold text (right) + live figure (left);
+   single pages hold examples, checks and summaries. */
+
+.lesson {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 8px var(--gutter) calc(var(--capsule-h) + 64px);
+}
+
+/* ---------- paper ---------- */
+
+.sheet,
+.spread {
+  position: relative;
+  background: var(--paper);
+  border-radius: 6px;
+  box-shadow: var(--shadow-page);
+  margin: 0 0 32px;
+}
+.sheet {
+  padding: 44px clamp(22px, 6vw, 72px);
+}
+.sheet-narrow {
+  max-width: 880px;
+  margin-inline: auto;
+}
+.sheet > :first-child,
+.page > :first-child {
+  margin-top: 0;
+}
+
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+}
+/* the spine: a soft fold in the middle of the spread */
+.spread::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 48.2%;
+  width: 70px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(40, 30, 20, 0.05) 40%,
+    rgba(40, 30, 20, 0.13) 50%,
+    rgba(40, 30, 20, 0.05) 60%,
+    transparent
+  );
+  pointer-events: none;
+}
+.page {
+  min-width: 0;
+  padding: 44px clamp(22px, 3.4vw, 52px);
+}
+.page-figure {
+  background: linear-gradient(90deg, var(--paper-2), var(--paper) 30%);
+  border-radius: 6px 0 0 6px;
+}
+
+.fig {
+  position: sticky;
+  top: 16px;
+  margin: 0;
+  /* end above the floating capsule (fixed 16px from the bottom), or it hides the tasks and caption */
+  max-height: calc(100vh - 48px - var(--capsule-h));
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.fig figcaption {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.fig-n {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  color: var(--ink);
+  margin-inline-end: 6px;
+}
+
+@media (max-width: 980px) {
+  .spread {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .spread::after {
+    display: none;
+  }
+  .page-figure {
+    order: -1;
+    border-radius: 6px 6px 0 0;
+    background: var(--paper-2);
+    padding-bottom: 20px;
+  }
+  .fig {
+    position: static;
+    max-height: none;
+  }
+  .page {
+    padding: 26px 20px;
+  }
+  .sheet {
+    padding: 28px 20px;
+  }
+}
+
+/* ---------- lesson head ---------- */
+
+.lesson-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.lesson-head h1 {
+  margin: 0.15em 0 0.2em;
+}
+.lesson-sub {
+  font-size: 1.15rem;
+  color: var(--ink-2);
+  margin-bottom: 14px;
+}
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.objectives {
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--ink-3);
+}
+.objectives h2 {
+  font-size: 1rem;
+  font-family: var(--font-ui);
+  margin: 0 0 6px;
+}
+.objectives ul {
+  margin: 0;
+  padding-inline-start: 1.2em;
+}
+.objectives li {
+  margin-bottom: 4px;
+}
+@media (max-width: 760px) {
+  .lesson-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ---------- blocks ---------- */
+
+.block {
+  margin: 0 0 2.4em;
+}
+.block:last-child {
+  margin-bottom: 0;
+}
+.block > .kicker {
+  margin: 0;
+}
+.block > h2 {
+  margin-top: 0.15em;
+}
+
+/* data tables (lab measurements, the prefix table): a wide table scrolls inside itself on a phone
+   instead of widening the page */
+.block table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0.8em 0 1em;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+.block th,
+.block td {
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--rule);
+  text-align: start;
+  white-space: nowrap;
+}
+.block th {
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--ink-3);
+}
+
+/* ---------- steps (scrollytelling) ---------- */
+
+.step {
+  position: relative;
+  margin: 0 -14px 0.6em;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.step > :last-child {
+  margin-bottom: 0;
+}
+.step:hover {
+  background: var(--paper-2);
+}
+.step.is-active {
+  background: var(--accent-soft);
+}
+.step-mark {
+  position: absolute;
+  inset-inline-end: -16px;
+  top: 10px;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.step.is-active .step-mark {
+  opacity: 1;
+}
+
+/* ---------- notes, formulas, terms ---------- */
+
+.note {
+  margin: 1.1em 0;
+  padding: 2px 14px;
+  border-inline-start: 3px solid var(--hand);
+  font-size: 1.02rem;
+}
+.note > :last-child {
+  margin-bottom: 0;
+}
+.note-warn {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.formula-card {
+  margin: 1.1em 0;
+  padding: 8px 18px 4px;
+  border-radius: 12px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+}
+.formula-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.formula-card .katex-display {
+  margin: 0.4em 0;
+}
+
+.term {
+  position: relative;
+  border-bottom: 1.5px dotted var(--accent);
+  cursor: help;
+}
+/* display:none until shown: a hidden card still takes layout space, and near the page edge
+   that space widens the page and makes it scroll sideways on phones */
+.term-card {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  width: max-content;
+  max-width: min(320px, 80vw);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  box-shadow: var(--shadow-card);
+  pointer-events: none;
+  z-index: 20;
+}
+.term:hover .term-card,
+.term:focus .term-card,
+.term:focus-within .term-card {
+  display: block;
+}
+/* on phones the card docks above the navigation capsule, full width */
+@media (max-width: 640px) {
+  .term-card {
+    position: fixed;
+    inset-inline: var(--gutter);
+    bottom: calc(var(--capsule-h) + 28px);
+    translate: none;
+    width: auto;
+    max-width: none;
+  }
+  /* inline math never wraps, so a long formula chain in a worked solution would widen the page; on a phone it
+     scrolls inside its own paragraph instead. Only here: on desktop the term card is absolute and would be clipped. */
+  .block p:has(.katex),
+  .block :is(ul, ol):has(.katex) {
+    /* a list scrolls as a whole: an overflowing <li> would clip its own bullet */
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+.term-en {
+  opacity: 0.7;
+  margin-inline-start: 4px;
+}
+.term-def {
+  display: block;
+  margin-top: 2px;
+}
+
+/* ---------- worked solutions ---------- */
+
+.solution {
+  margin: 1em 0;
+  border: 1px dashed var(--ink-3);
+  border-radius: 12px;
+  background: var(--paper);
+}
+.solution > summary {
+  cursor: pointer;
+  padding: 10px 16px;
+  font-family: var(--font-hand);
+  color: var(--hand);
+  list-style-position: inside;
+}
+.solution[open] > summary {
+  border-bottom: 1px dashed var(--rule);
+}
+.solution-body {
+  padding: 12px 18px 6px;
+}
+.sol-step {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 0.6em;
+}
+.sol-step > .sol-label {
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ---------- video ---------- */
+
+.watch {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .watch {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.yt {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #15120f;
+}
+.yt iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.yt-facade {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  border: 0;
+  background:
+    radial-gradient(60% 70% at 50% 45%, rgba(255, 255, 255, 0.08), transparent),
+    #15120f;
+  color: #f3ecdd;
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+.yt-play {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--accent);
+  font-size: 1.5rem;
+  padding-inline-start: 4px;
+}
+.yt-note {
+  font-size: 0.82rem;
+  opacity: 0.75;
+}
+.watch-title {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.watch-sub {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+
+/* ---------- prediction revisit, lesson end ---------- */
+
+.revisit {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.revisit > :last-child {
+  margin-bottom: 0;
+}

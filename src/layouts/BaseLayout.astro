@@ -1,0 +1,57 @@
+---
+import '@fontsource/frank-ruhl-libre/hebrew-400.css';
+import '@fontsource/frank-ruhl-libre/hebrew-500.css';
+import '@fontsource/frank-ruhl-libre/hebrew-700.css';
+import '@fontsource/frank-ruhl-libre/latin-400.css';
+import '@fontsource/frank-ruhl-libre/latin-700.css';
+import '@fontsource/heebo/hebrew-400.css';
+import '@fontsource/heebo/hebrew-500.css';
+import '@fontsource/heebo/hebrew-700.css';
+import '@fontsource/heebo/latin-400.css';
+import '@fontsource/heebo/latin-500.css';
+import '@fontsource/playpen-sans-hebrew/hebrew-400.css';
+import '@fontsource/playpen-sans-hebrew/hebrew-500.css';
+import 'katex/dist/katex.min.css';
+import '~/styles/global.css';
+import SiteHeader from '~/ui/SiteHeader.astro';
+import { url } from '~/lib/url';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** hide the site header (the cover page draws its own) */
+  bare?: boolean;
+}
+
+const { title, description = 'קורס אינטראקטיבי במכניקה לפיזיקה 5 יח"ל', bare = false } = Astro.props;
+const siteName = 'מכניקה';
+const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <title>{fullTitle}</title>
+    <script is:inline>
+      // Apply the reader's theme and still mode before first paint, so nothing flashes.
+      // Storage can throw (private windows, blocked site data): the defaults then stand.
+      try {
+        var s = JSON.parse(localStorage.getItem('unimech:settings') || '{}');
+        var r = document.documentElement;
+        if (s.theme === 'light' || s.theme === 'dark') r.dataset.theme = s.theme;
+        r.dataset.still = s.still ? '1' : '0';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דלגו לתוכן</a>
+    {!bare && <SiteHeader />}
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

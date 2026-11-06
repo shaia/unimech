@@ -1,0 +1,542 @@
+/* Chapter-level pages: practice sheet, chapter test, "המסלול שלי", formula sheet, glossary. */
+
+.platform {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 8px var(--gutter) 64px;
+}
+.platform .sheet-narrow {
+  max-width: 920px;
+}
+.platform h1 {
+  margin: 0.15em 0 0.25em;
+}
+.platform h2 {
+  margin-top: 0;
+}
+.p-lede {
+  font-size: 1.1rem;
+  color: var(--ink-2);
+  max-width: 40em;
+}
+.p-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- practice sheet ---------- */
+
+.level-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.level-filter button[aria-pressed='true'] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.practice-lesson > h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+}
+.practice-lesson > h2 a {
+  font: 500 0.9rem var(--font-ui);
+}
+.practice-objectives {
+  margin: 0 0 22px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--ink-3);
+  font-size: 0.95rem;
+}
+.practice-objectives p {
+  margin: 0 0 4px;
+  font: 600 0.9rem var(--font-ui);
+}
+.practice-objectives ul {
+  margin: 0;
+  padding-inline-start: 1.2em;
+}
+.level-group + .level-group {
+  margin-top: 26px;
+}
+.level-group > h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+  font: 700 1rem var(--font-ui);
+}
+.level-group > h3 .chip {
+  font-weight: 400;
+}
+
+/* ---------- chapter test ---------- */
+
+.test-intro,
+.test-run,
+.test-report {
+  display: grid;
+  gap: 18px;
+}
+.test-options {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--ink-3);
+  font-family: var(--font-ui);
+}
+.test-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.test-options input[type='number'] {
+  width: 5em;
+  min-height: 38px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ink-3);
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 1rem var(--font-ui);
+}
+.p-note {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+.test-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  font-family: var(--font-ui);
+}
+.test-timer {
+  font: 700 1.2rem var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.test-timer.low {
+  color: var(--bad);
+}
+.test-q {
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  box-shadow: var(--shadow-card);
+}
+.test-q-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.test-sure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.test-sure input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--ink);
+}
+.test-scenario {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.test-diagram {
+  margin: 6px 0 10px;
+  overflow-x: auto;
+}
+.test-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+.test-score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+}
+.test-score strong {
+  font: 700 2.4rem var(--font-ui);
+}
+.table-scroll {
+  overflow-x: auto;
+}
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+.report-table th,
+.report-table td {
+  padding: 8px 10px;
+  text-align: start;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.report-table th {
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+.report-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.report-list li {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.report-review summary {
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+.verdict-mark {
+  font-weight: 700;
+}
+.verdict-mark.ok {
+  color: var(--ok);
+}
+.verdict-mark.bad {
+  color: var(--bad);
+}
+
+/* ---------- mastery level badges (text and glyph, never colour alone) ---------- */
+
+.level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font: 500 0.82rem var(--font-ui);
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.level.mastered {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.level.learning {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.level.none {
+  color: var(--ink-2);
+}
+
+/* ---------- my path ---------- */
+
+.me-grid {
+  display: grid;
+  gap: 28px;
+}
+.mastery-chapter + .mastery-chapter {
+  margin-top: 22px;
+}
+.mastery-lesson {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.mastery-lesson h4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 6px;
+  font: 700 1rem var(--font-ui);
+}
+.mastery-lesson ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.mastery-lesson li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.95rem;
+}
+.passport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px 26px;
+  padding: 8px 0;
+}
+.passport-slot {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font: 0.85rem var(--font-ui);
+  color: var(--ink-2);
+}
+.passport-slot .stamp {
+  width: 96px;
+  height: 96px;
+  animation: none;
+}
+.passport-slot .stamp-top {
+  font-size: 0.8rem;
+}
+.passport-slot .stamp-id {
+  font-size: 1.3rem;
+}
+.passport-empty {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px dashed var(--ink-3);
+  color: var(--ink-3);
+  font: 600 1.2rem var(--font-ui);
+}
+.next-step {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--accent);
+  background: var(--accent-soft);
+}
+.next-step p {
+  margin: 0;
+}
+.local-note {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--ink-3);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+.io-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.io-row input[type='file'] {
+  max-width: 100%;
+  font-family: var(--font-ui);
+}
+.io-msg {
+  margin: 8px 0 0;
+  font-family: var(--font-ui);
+}
+.io-msg.ok {
+  color: var(--ok);
+}
+.io-msg.bad {
+  color: var(--bad);
+}
+
+/* ---------- formula sheet and glossary ---------- */
+
+.toc-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-ui);
+}
+.toc-line a {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+.toc-line a:hover {
+  background: var(--paper-3);
+}
+.formula-lesson + .formula-lesson {
+  margin-top: 26px;
+}
+.formula-lesson > h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 4px;
+}
+.formula-lesson > h3 a {
+  font: 500 0.9rem var(--font-ui);
+}
+.platform .gloss-letter {
+  margin: 28px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-ui);
+  color: var(--accent);
+}
+.gloss-list {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.gloss-entry {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+}
+.gloss-entry dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.gloss-en {
+  font: 400 0.95rem var(--font-ui);
+  color: var(--ink-2);
+}
+.gloss-entry dd {
+  margin: 4px 0 0;
+}
+.gloss-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 8px;
+  font: 0.88rem var(--font-ui);
+  color: var(--ink-2);
+}
+
+/* ---------- lesson workbook ---------- */
+
+.wb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+}
+.wb-item {
+  padding: 16px 18px 6px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+.wb-num {
+  margin: 0 0 6px;
+  font: 700 0.9rem var(--font-ui);
+  color: var(--ink-2);
+}
+/* inline math never wraps: a long formula scrolls inside its box instead of widening the page */
+.wb-text {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.wb-diagram {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule);
+  overflow-x: auto;
+}
+.wb-diagram svg {
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+  height: auto;
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+.wb-stars {
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+.wb-source {
+  margin: 6px 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+.wb-source a {
+  unicode-bidi: isolate;
+}
+.wb-item .solution {
+  margin: 10px 0;
+}
+@media (max-width: 520px) {
+  .wb-item .sol-step {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+
+/* ---------- chapter summary ---------- */
+
+.summary-body {
+  overflow-wrap: break-word;
+}
+.summary-body h2 {
+  margin-top: 1.6em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+.summary-body h2:first-child {
+  margin-top: 0;
+}
+.summary-body li {
+  margin-bottom: 0.35em;
+}
+/* list items keep their markers visible; long formulas there go to display math */
+.summary-body p {
+  overflow-x: auto;
+  overflow-y: hidden;
+}

@@ -1,0 +1,31 @@
+---
+/**
+ * Commit to a prediction before exploring. The flap (the slot) opens only after the student
+ * commits; the prediction is kept for <Revisit> at the end of the lesson.
+ */
+import Block from './Block.astro';
+import PredictIsland from '~/ui/PredictIsland';
+import { tex } from '~/lib/tex';
+
+interface Props {
+  id: string;
+  prompt: string;
+  choices: string[];
+  /** index of the choice the lesson goes on to show is right, for <Revisit> */
+  answer: number;
+  title?: string;
+}
+
+const { id, prompt, choices, answer, title } = Astro.props;
+const where = `<Predict id="${id}">`;
+const promptHtml = tex(prompt, where);
+const choicesHtml = choices.map((c) => tex(c, where));
+if (answer < 0 || answer >= choices.length) throw new Error(`${where}: answer ${answer} is out of range`);
+---
+
+<Block kind="predict" title={title}>
+  <PredictIsland client:visible id={id} prompt={promptHtml} choices={choicesHtml}>
+    <slot />
+  </PredictIsland>
+  <script type="application/json" data-predict={id} set:html={JSON.stringify({ choices: choicesHtml, answer })} />
+</Block>

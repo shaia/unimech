@@ -1,0 +1,9 @@
+---
+/** A handwritten margin note: asides, warnings, "notice that…". */
+interface Props {
+  kind?: 'note' | 'warn';
+}
+const { kind = 'note' } = Astro.props;
+---
+
+<aside class={`note hand note-${kind}`}><slot /></aside>

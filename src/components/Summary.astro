@@ -1,0 +1,9 @@
+---
+import Block from './Block.astro';
+interface Props {
+  title?: string;
+  id?: string;
+}
+---
+
+<Block kind="summary" {...Astro.props}><slot /></Block>

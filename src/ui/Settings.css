@@ -1,0 +1,17 @@
+.settings {
+  display: flex;
+  gap: 2px;
+}
+.settings .icon {
+  min-height: 36px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+}
+.settings [aria-pressed='true'] {
+  background: var(--paper);
+}
+@media (max-width: 720px) {
+  .settings .label {
+    display: none;
+  }
+}

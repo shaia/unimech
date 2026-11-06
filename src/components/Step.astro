@@ -1,0 +1,19 @@
+---
+/**
+ * A paragraph that drives the live figure beside it: when it reaches the middle of the screen
+ * (or is clicked) the figure takes the state in `set`. See src/ui/steps.ts.
+ */
+interface Props {
+  fig: string;
+  set: Record<string, unknown>;
+  id?: string;
+}
+const { fig, set, id } = Astro.props;
+const state = JSON.stringify(set);
+---
+
+<!-- the id is also an HTML id, so a misconception remedy or a LessonLink can point at the step -->
+<div class="step" id={id} data-step={id ?? state} data-fig={fig} data-state={state} tabindex="0">
+  <span class="step-mark" aria-hidden="true">◂</span>
+  <slot />
+</div>

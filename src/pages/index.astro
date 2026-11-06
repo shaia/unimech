@@ -1,0 +1,222 @@
+---
+import { getCollection } from 'astro:content';
+import { chaptersWithQuestions } from '~/assessment/bank';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CoverArt from '~/ui/CoverArt.astro';
+import { chapters, lessonSlug } from '~/course';
+import { pageExists, url } from '~/lib/url';
+import { chaptersWithSummary } from '~/lib/companions';
+import '~/styles/lesson.css';
+
+const written = new Set(
+  (await getCollection('lessons', (e) => !e.data.draft || import.meta.env.DEV)).map((e) => e.data.id),
+);
+const withPractice = new Set(await chaptersWithQuestions());
+const withSummary = await chaptersWithSummary();
+const firstLesson = chapters.flatMap((c) => c.lessons).find((l) => written.has(l.id));
+---
+
+<BaseLayout title="מכניקה ויחסות פרטית">
+  <div class="lesson home">
+    <section class="sheet cover">
+      <div class="cover-text">
+        <p class="kicker">פיזיקה · שנה א׳ · לפי הסילבוס של 77101 באוניברסיטה העברית</p>
+        <h1>מכניקה ויחסות פרטית</h1>
+        <p class="cover-sub">ספר לימוד חי לקורס המכניקה הראשון באוניברסיטה: סימולציות שאפשר לשחק בהן ולהבין מהן, ולכל שיעור סולם של שאלות הבנה, מהבסיס ועד רמת מבחן.</p>
+        <p class="hand cover-note">מתחילים מפיזיקה ומתמטיקה של 5 יחידות. כל כלי של חדו״א נבנה בפרק 0.</p>
+        <div class="cover-actions">
+          {firstLesson && (
+            <a class="btn primary" href={url(`lessons/${lessonSlug(firstLesson.id)}/`)}>
+              פתחו את הספר
+            </a>
+          )}
+          {pageExists('me/') && <a class="btn" href={url('me/')}>המסלול שלי</a>}
+        </div>
+      </div>
+      <div class="cover-figure">
+        <CoverArt />
+      </div>
+    </section>
+
+    <section class="sheet toc" aria-labelledby="toc-h">
+      <h2 id="toc-h">תוכן העניינים</h2>
+      <ol class="chapters">
+        {
+          chapters.map((c) => (
+            <li class="chapter">
+              <div class="chapter-head">
+                <span class="chapter-n">{c.n}</span>
+                <div>
+                  <h3>
+                    {c.title}
+
+                  </h3>
+                  <p>{c.blurb}</p>
+                </div>
+              </div>
+              <ol class="lessons">
+                {c.lessons.map((l) => (
+                  <li data-lesson-id={l.id} class={written.has(l.id) ? 'written' : 'planned'}>
+                    {written.has(l.id) ? (
+                      <a href={url(`lessons/${lessonSlug(l.id)}/`)}>
+                        <span class="l-id ltr">{l.id}</span>
+                        <span class="l-title">{l.title}</span>
+                        <span class="l-mark" aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <span class="soon">
+                        <span class="l-id ltr">{l.id}</span>
+                        <span class="l-title">{l.title}</span>
+                        {l.enrichment && <span class="chip">העשרה</span>}
+                        <span class="chip">{withPractice.has(c.n) ? 'שאלות בלבד' : 'בקרוב'}</span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+              {withPractice.has(c.n) && (
+                <p class="chapter-tools">
+                  <a class="btn" href={url(`practice/ch${c.n}/`)}>שאלות הבנה וחזרה</a>
+                  <a class="btn" href={url(`test/ch${c.n}/`)}>מבחן פרק</a>
+                  {withSummary.has(c.n) && <a class="btn" href={url(`summary/ch${c.n}/`)}>סיכום הפרק</a>}
+                </p>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { progress } from '~/progress/store';
+  // mark visited and completed lessons in the contents
+  const p = progress.value;
+  document.querySelectorAll<HTMLElement>('[data-lesson-id]').forEach((li) => {
+    const rec = p.lessons[li.dataset.lessonId ?? ''];
+    const mark = li.querySelector('.l-mark');
+    if (!rec || !mark) return;
+    li.classList.add(rec.completed ? 'completed' : 'visited');
+    mark.textContent = rec.completed ? '✓' : '•';
+    mark.setAttribute('aria-hidden', 'false');
+    mark.setAttribute('aria-label', rec.completed ? 'הושלם' : 'התחלתם');
+  });
+</script>
+
+<style>
+  .cover {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 24px;
+    align-items: center;
+    min-height: 420px;
+  }
+  .cover h1 {
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    margin: 0.1em 0 0.2em;
+  }
+  .cover-sub {
+    font-size: 1.15rem;
+    color: var(--ink-2);
+    max-width: 34em;
+  }
+  .cover-note {
+    font-size: 1.1rem;
+  }
+  .cover-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  @media (max-width: 860px) {
+    .cover {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .cover-figure {
+      order: -1;
+    }
+  }
+
+  .toc h2 {
+    margin-top: 0;
+  }
+  .chapters {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    gap: 22px 36px;
+  }
+  .chapter-head {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .chapter-head h3 {
+    margin: 0;
+  }
+  .chapter-head p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+  }
+  .chapter-n {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font: 700 1.3rem var(--font-ui);
+  }
+  .chapter-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 0;
+  }
+  .lessons {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+  }
+  .lessons a,
+  .lessons .soon {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 5px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .lessons a:hover {
+    background: var(--paper-2);
+  }
+  .lessons .soon {
+    color: var(--ink-3);
+  }
+  .l-id {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-2);
+    text-align: start;
+  }
+  .l-mark {
+    font-family: var(--font-ui);
+    color: var(--ok);
+    font-weight: 700;
+  }
+  .visited .l-mark {
+    color: var(--accent);
+  }
+</style>

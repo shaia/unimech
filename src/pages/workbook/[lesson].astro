@@ -1,0 +1,178 @@
+---
+/**
+ * A lesson's workbook: ten practice problems by level and two sourced challenge problems.
+ * Each problem hides its final answer and its full solution behind <details>, so the page is
+ * static HTML with no island. TeX is rendered here at build time and fails the build when invalid.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { chapterOf, lessonSlug } from '~/course';
+import { tex } from '~/lib/tex';
+import { chaptersWithSummary } from '~/lib/companions';
+import { url } from '~/lib/url';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+export async function getStaticPaths() {
+  const lessons = new Map((await getCollection('lessons')).map((l) => [l.data.id, l.data]));
+  return (await getCollection('workbook')).map((w) => {
+    const lesson = lessons.get(w.data.lesson);
+    if (!lesson) throw new Error(`workbook ${w.id}: lesson ${w.data.lesson} is not written`);
+    return { params: { lesson: lessonSlug(w.data.lesson) }, props: { w: w.data, title: lesson.title } };
+  });
+}
+
+const { w, title } = Astro.props;
+const id = w.lesson;
+const chapter = chapterOf(id);
+const hasSummary = chapter ? (await chaptersWithSummary()).has(chapter.n) : false;
+
+const STEP_LABEL = {
+  given: 'נתונים',
+  formula: 'נוסחה',
+  law: 'החוק הכללי',
+  manipulation: 'פיתוח',
+  substitution: 'הצבה',
+  reasoning: 'נימוק',
+  limit: 'בדיקת גבולות',
+  units: 'בדיקת יחידות',
+  result: 'תוצאה',
+} as const;
+// the level key `bagrut` is emlab's; here it is the exam level of a university course
+const LEVELS = [
+  { key: 'basic', label: 'בסיס' },
+  { key: 'mid', label: 'בינוני' },
+  { key: 'bagrut', label: 'רמת מבחן' },
+] as const;
+
+type Item = (typeof w.practice)[number] | (typeof w.challenge)[number];
+/** A part marker "(ב)" right after the end of a sentence starts a new line, however the YAML folded it. */
+const parts = (s: string) => s.replace(/([.?!:])[ \t]+(\([א-ח]\)\s)/g, '$1\n$2');
+const render = (item: Item) => ({
+  id: item.id,
+  prompt: tex(parts(item.prompt), `${item.id} prompt`),
+  answer: tex(parts(item.answer), `${item.id} answer`),
+  steps: item.solution.map((s, i) => ({ label: STEP_LABEL[s.kind], html: tex(s.text, `${item.id} solution step ${i + 1}`) })),
+  diagram: item.diagram,
+  diagramAlt: item.diagramAlt,
+});
+let counter = 0;
+const groups = LEVELS.map((l) => ({
+  ...l,
+  items: w.practice.filter((p) => p.level === l.key).map((p) => ({ ...render(p), n: ++counter })),
+})).filter((g) => g.items.length > 0);
+const challenge = w.challenge.map((c, i) => ({
+  ...render(c),
+  n: i + 1,
+  stars: '★'.repeat(c.stars),
+  starsLabel: c.stars === 2 ? 'שני כוכבים: קשה מאוד' : 'כוכב אחד: קשה',
+  source: c.source,
+}));
+---
+
+<BaseLayout title={`תרגול · ${id} ${title}`} description={`עשר שאלות תרגול ושתי שאלות אתגר לשיעור ${id}, עם תשובות ופתרונות מלאים`}>
+  <div class="platform workbook">
+    <header class="sheet sheet-narrow">
+      <p class="kicker">פרק {chapter?.n} · {chapter?.title} · שיעור <span class="ltr">{id}</span></p>
+      <h1>תרגול: {title}</h1>
+      <p class="p-lede">
+        פתרו כל שאלה על דף לפני שאתם פותחים את התשובה. קודם בדקו רק את <strong>התשובה הסופית</strong>; אם לא יצא לכם, פתחו את
+        <strong>הפתרון המלא</strong> ובדקו באיזה שלב הדרך שלכם נפרדה ממנו. בסוף הדף שתי שאלות אתגר ממבחני קבלה ומתחרויות.
+      </p>
+      <div class="p-links">
+        <a class="btn primary" href={url(`lessons/${lessonSlug(id)}/`)}>חזרה לשיעור</a>
+        {chapter && <a class="btn" href={url(`practice/ch${chapter.n}/`)}>דף התרגול של הפרק</a>}
+        {chapter && hasSummary && <a class="btn" href={url(`summary/ch${chapter.n}/`)}>סיכום הפרק</a>}
+      </div>
+    </header>
+
+    <section class="sheet sheet-narrow" aria-labelledby="wb-practice">
+      <h2 id="wb-practice">שאלות תרגול</h2>
+      {
+        groups.map((g) => (
+          <div class="level-group" data-level-group={g.key}>
+            <h3>
+              {g.label} <span class="chip">{g.items.length}</span>
+            </h3>
+            <ol class="wb-list">
+              {g.items.map((it) => (
+                <li class="wb-item" id={it.id} data-workbook-item={it.id}>
+                  <p class="wb-num">שאלה {it.n}</p>
+                  <div class="wb-text" set:html={it.prompt} />
+                  {it.diagram && (
+                    <figure class="wb-diagram">
+                      <div class="ltr-space" role="img" aria-label={it.diagramAlt} set:html={it.diagram} />
+                    </figure>
+                  )}
+                  <details class="solution wb-answer">
+                    <summary>תשובה סופית</summary>
+                    <div class="solution-body wb-text" set:html={it.answer} />
+                  </details>
+                  <details class="solution wb-solution">
+                    <summary>פתרון מלא</summary>
+                    <div class="solution-body">
+                      {it.steps.map((s) => (
+                        <div class="sol-step">
+                          <span class="sol-label">{s.label}</span>
+                          <div class="wb-text" set:html={s.html} />
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </section>
+
+    {
+      challenge.length > 0 && (
+        <section class="sheet sheet-narrow" aria-labelledby="wb-challenge">
+          <h2 id="wb-challenge">שאלות אתגר</h2>
+          <p class="p-lede">
+            שאלות ממבחני קבלה לאוניברסיטאות ומתחרויות פיזיקה, בעיבוד: הנוסח בעברית והקבועים של דף הנוסחאות. כוכב אחד: קשה. שני כוכבים: קשה מאוד.
+          </p>
+          <ol class="wb-list">
+            {challenge.map((it) => (
+              <li class="wb-item wb-challenge" id={it.id} data-workbook-item={it.id}>
+                <p class="wb-num">
+                  אתגר {it.n}{' '}
+                  <span class="chip wb-stars" aria-label={it.starsLabel}>
+                    {it.stars}
+                  </span>
+                </p>
+                <div class="wb-text" set:html={it.prompt} />
+                {it.diagram && (
+                  <figure class="wb-diagram">
+                    <div class="ltr-space" role="img" aria-label={it.diagramAlt} set:html={it.diagram} />
+                  </figure>
+                )}
+                <p class="wb-source">
+                  מקור: <a href={it.source.url} rel="noopener" lang="en" dir="ltr">{it.source.name} {it.source.year}, {it.source.problem}</a>
+                  {it.source.adapted && ' (בעיבוד)'}
+                </p>
+                <details class="solution wb-answer">
+                  <summary>תשובה סופית</summary>
+                  <div class="solution-body wb-text" set:html={it.answer} />
+                </details>
+                <details class="solution wb-solution">
+                  <summary>פתרון מלא</summary>
+                  <div class="solution-body">
+                    {it.steps.map((s) => (
+                      <div class="sol-step">
+                        <span class="sol-label">{s.label}</span>
+                        <div class="wb-text" set:html={s.html} />
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

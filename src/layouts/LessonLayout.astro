@@ -1,0 +1,100 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Capsule from '~/ui/Capsule.astro';
+import LessonEnd from '~/ui/LessonEnd';
+import { chapterOf } from '~/course';
+import '~/styles/lesson.css';
+
+interface Link {
+  href: string;
+  id: string;
+  title: string;
+}
+interface Props {
+  id: string;
+  title: string;
+  subtitle?: string;
+  minutes: number;
+  objectives: { id: string; text: string }[];
+  enrichment: boolean;
+  prev: Link | null;
+  next: Link | null;
+  /** the lesson's workbook page, when it has one */
+  workbook?: string | null;
+}
+
+const { id, title, subtitle, minutes, objectives, enrichment, prev, next, workbook = null } = Astro.props;
+const chapter = chapterOf(id);
+const [ch, n] = id.split('.');
+---
+
+<BaseLayout title={`${id} ${title}`} description={subtitle ?? title}>
+  <article class="lesson" data-lesson={id}>
+    <header class="sheet lesson-head">
+      <div>
+        <p class="kicker">פרק {ch} · {chapter?.title} · שיעור {n}</p>
+        <h1>{title}</h1>
+        {subtitle && <p class="lesson-sub">{subtitle}</p>}
+        <p class="lesson-meta">
+          <span class="chip">כ-{minutes} דקות</span>
+          {enrichment && <span class="chip">העשרה</span>}
+        </p>
+      </div>
+      <section class="objectives" aria-labelledby="obj-h">
+        <h2 id="obj-h">בסוף השיעור תוכלו:</h2>
+        <ul>
+          {objectives.map((o) => <li data-objective={o.id}>{o.text}</li>)}
+        </ul>
+      </section>
+    </header>
+
+    <slot />
+
+    <footer class="sheet sheet-narrow">
+      <LessonEnd client:visible id={id} title={title} />
+      {
+        workbook && (
+          <p class="lesson-workbook">
+            <a class="btn primary" href={workbook}>תרגול נוסף ושאלות אתגר</a>
+            <span>עשר שאלות עם תשובות ופתרונות מלאים, ושתי שאלות ממבחני קבלה ומתחרויות.</span>
+          </p>
+        )
+      }
+      <p class="lesson-nav">
+        {prev && <a href={prev.href}>→ {prev.id} {prev.title}</a>}
+        {next && <a href={next.href}>{next.id} {next.title} ←</a>}
+      </p>
+    </footer>
+  </article>
+  <Capsule id={id} title={title} prev={prev} next={next} />
+</BaseLayout>
+
+<script>
+  import { initStepObserver } from '~/ui/steps';
+  import { markLesson } from '~/progress/store';
+  const id = document.querySelector<HTMLElement>('[data-lesson]')?.dataset.lesson;
+  if (id) markLesson(id, 'visited');
+  initStepObserver();
+</script>
+
+<style>
+  .lesson-workbook {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin: 18px 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+  .lesson-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 18px 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+  }
+</style>

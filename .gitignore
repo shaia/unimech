@@ -1,0 +1,41 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# test artefacts
+test-results/
+playwright-report/
+screens/
+
+# rendered tour videos (not built yet), generated from the figures and src/physics
+public/media/
+
+# project-local Claude tooling: a junction to ../claude/unimech, never committed
+.claude/
+
+# build mutex used by parallel lesson agents
+.build-lock/
+
+# scratch scripts of question authors (recomputations), never committed
+.scratch/

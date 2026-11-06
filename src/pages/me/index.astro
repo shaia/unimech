@@ -1,0 +1,62 @@
+---
+/** המסלול שלי: mastery map, misconceptions, stamp passport, what next, export / import. */
+import { getCollection } from 'astro:content';
+import { chaptersWithQuestions } from '~/assessment/bank';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { chapters } from '~/course';
+import { lessonHref, writtenLessons } from '~/lib/companions';
+import { url } from '~/lib/url';
+import MyPath from '~/ui/MyPath';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+// A chapter appears once it has a lesson or a question bank; its lessons and objectives come from the course map,
+// because the comprehension ladder of a lesson can be practised before the lesson is written.
+const written = await writtenLessons();
+const withQuestions = new Set(await chaptersWithQuestions());
+const href = await lessonHref();
+const course = chapters
+  .filter((c) => withQuestions.has(c.n) || c.lessons.some((l) => written.has(l.id)))
+  .map((c) => ({
+    n: c.n,
+    title: c.title,
+    lessons: c.lessons.map((l) => ({ id: l.id, title: l.title, href: href(l.id), objectives: l.objectives })),
+  }));
+
+const misconceptions = Object.fromEntries(
+  (await getCollection('misconceptions')).map((m) => [
+    m.data.id,
+    {
+      title: m.data.title,
+      truth: m.data.truth,
+      label: m.data.remedy.label,
+      href: href(m.data.remedy.lesson, m.data.remedy.anchor),
+    },
+  ]),
+);
+
+const practice = (await chaptersWithQuestions())
+  .filter((n) => course.some((c) => c.n === n))
+  .map((n) => ({
+    n,
+    title: chapters.find((c) => c.n === n)?.title ?? '',
+    practiceHref: url(`practice/ch${n}/`),
+    testHref: url(`test/ch${n}/`),
+  }));
+---
+
+<BaseLayout title="המסלול שלי" description="מפת השליטה, החותמות והצעד הבא שלכם בקורס">
+  <div class="platform">
+    <section class="sheet sheet-narrow">
+      <p class="kicker">המסלול שלי</p>
+      <h1>איפה אתם עומדים</h1>
+      <p class="p-lede">כל מה שעשיתם בקורס מתועד כאן: מה כבר שלטתם בו, אילו טעויות חוזרות, ומה כדאי לעשות עכשיו.</p>
+      <p class="local-note" role="note">
+        ההתקדמות נשמרת רק בדפדפן הזה. אפשר לייצא אותה לקובץ ולייבא אותה במכשיר אחר, בהמשך הדף.
+      </p>
+    </section>
+    <section class="sheet sheet-narrow">
+      <MyPath client:load chapters={course} misconceptions={misconceptions} practice={practice} />
+    </section>
+  </div>
+</BaseLayout>

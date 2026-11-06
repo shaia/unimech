@@ -1,0 +1,44 @@
+---
+/**
+ * A book spread: text on the right page, a live figure on the left page that stays in view
+ * while the text scrolls. Steps in the text drive the figure (src/ui/steps.ts).
+ * On narrow screens the figure comes first and the text follows.
+ *
+ * The figure is an .astro wrapper the lesson imports (it hydrates its own island), e.g.
+ *   import LinearizeLab from '~/sims/LinearizeLab.astro';
+ *   <Spread fig="fig-0-4a" n="0.4א" caption="…" figure={LinearizeLab} figureProps={{ dataset: 'fall' }}>
+ * Spread passes `id={fig}` to it. Without `figure`, the named slot "figure" is used.
+ */
+import { tex } from '~/lib/tex';
+
+interface Props {
+  /** figure id: the step bus key, also the anchor */
+  fig: string;
+  /** figure number as printed, e.g. "1.5א" */
+  n: string;
+  caption: string;
+  // an Astro component; typed loosely because each figure has its own props
+  figure?: (props: any) => any;
+  figureProps?: Record<string, unknown>;
+}
+
+const { fig, n, caption, figure: Figure, figureProps = {} } = Astro.props;
+const captionHtml = tex(caption, `figure ${n} caption`);
+---
+
+<div class="spread">
+  <div class="page page-text">
+    <slot />
+  </div>
+  <div class="page page-figure">
+    <figure class="fig" id={fig}>
+      <div class="fig-body">
+        {Figure ? <Figure {...figureProps} id={fig} /> : <slot name="figure" />}
+      </div>
+      <figcaption>
+        <span class="fig-n">איור {n}</span>
+        <span set:html={captionHtml} />
+      </figcaption>
+    </figure>
+  </div>
+</div>

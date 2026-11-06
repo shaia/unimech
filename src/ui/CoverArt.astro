@@ -1,0 +1,107 @@
+---
+/**
+ * Cover illustration: a ball launched horizontally off a table, drawn at build time from the
+ * physics engine as a track diagram (the ball's position every 0.06 s) with velocity arrows at
+ * four instants. The horizontal component of the arrows stays the same while the vertical one
+ * grows, which is the whole of projectile motion in one picture. Dots ink themselves in once
+ * (CSS), unless the reader asked for stillness.
+ */
+import { G } from '~/physics/constants';
+import { gravity, rk4Step, type Body } from '~/physics/motion';
+
+const W = 640;
+const H = 420;
+const ppm = 190; // px per metre
+const h = 1.8; // table height [m]
+const v0 = 2.4; // launch speed [m/s]
+const m = 0.2;
+const dt = 0.06;
+const tLand = Math.sqrt((2 * h) / G); // ≈ 0.61 s
+const ox = 110; // launch point on screen
+const oy = 40;
+const toS = (x: number, y: number) => [ox + x * ppm, oy + (h - y) * ppm] as const;
+
+// the track: positions every dt until the ball reaches the floor
+const dots: { x: number; y: number; vx: number; vy: number }[] = [];
+let b: Body = { pos: [0, h, 0], vel: [v0, 0, 0], m };
+for (let i = 0; i * dt <= tLand + 1e-9; i++) {
+  dots.push({ x: b.pos[0], y: b.pos[1], vx: b.vel[0], vy: b.vel[1] });
+  b = rk4Step(b, gravity(m, G), i * dt, dt);
+}
+const arrowAt = [0, 3, 6, 8];
+const vScale = 20; // px per m/s
+const r = 9; // ball radius on screen: the ball rests on the table and lands on the floor
+const floorY = toS(0, 0)[1] + r;
+const arrows = arrowAt.map((i) => {
+  const d = dots[i];
+  const [x, y] = toS(d.x, d.y);
+  const ex = x + d.vx * vScale;
+  const ey = y - d.vy * vScale;
+  const a = Math.atan2(ey - y, ex - x);
+  const head = (s: number) => `${ex - 10 * Math.cos(a + s)} ${ey - 10 * Math.sin(a + s)}`;
+  return { d: `M${x} ${y}L${ex} ${ey}`, head: `M${head(0.45)}L${ex} ${ey}L${head(-0.45)}` };
+});
+---
+
+<svg class="cover-art" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="כדור שנזרק אופקית מקצה שולחן: מקומו כל 0.06 שניות, וחיצי המהירות שלו. הרכיב האופקי של המהירות נשאר קבוע והרכיב האנכי גדל.">
+  <g class="table">
+    <path d={`M${ox - 90} ${oy + r}H${ox}V${floorY}`} />
+    <path d={`M${ox - 70} ${oy + r}V${floorY}`} />
+  </g>
+  <path class="floor" d={`M${ox - 100} ${floorY}H${W - 20}`} />
+  <g class="dots">
+    {
+      dots.map((d, i) => {
+        const [x, y] = toS(d.x, d.y);
+        return <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r={r} style={`--i:${i}`} />;
+      })
+    }
+  </g>
+  <g class="arrows">
+    {
+      arrows.map((a, i) => (
+        <g style={`--i:${arrowAt[i]}`}>
+          <path d={a.d} />
+          <path d={a.head} />
+        </g>
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  .cover-art {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .table path,
+  .floor {
+    fill: none;
+    stroke: var(--ink-2);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+  .dots circle {
+    fill: var(--ink);
+    fill-opacity: 0.85;
+    animation: ink 0.5s ease-out both;
+    animation-delay: calc(var(--i) * 140ms);
+  }
+  .arrows path {
+    fill: none;
+    stroke: var(--velocity);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .arrows g {
+    animation: ink 0.5s ease-out both;
+    animation-delay: calc(var(--i) * 140ms + 200ms);
+  }
+  @keyframes ink {
+    from {
+      opacity: 0;
+    }
+  }
+</style>

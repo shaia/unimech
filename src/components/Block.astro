@@ -1,0 +1,32 @@
+---
+/**
+ * A lesson section. The kind is the lesson template's vocabulary (enforced by lint-content):
+ * hook → predict → explore → explain → example → check → watch → summary.
+ */
+export type BlockKind = 'hook' | 'predict' | 'explore' | 'explain' | 'example' | 'check' | 'watch' | 'summary';
+
+interface Props {
+  kind: BlockKind;
+  title?: string;
+  id?: string;
+}
+
+const KICKER: Record<BlockKind, string> = {
+  hook: 'תופעה',
+  predict: 'חזו',
+  explore: 'חקרו',
+  explain: 'הסבר',
+  example: 'דוגמה פתורה',
+  check: 'בדקו את עצמכם',
+  watch: 'צפו',
+  summary: 'לסיכום',
+};
+
+const { kind, title, id } = Astro.props;
+---
+
+<section class={`block block-${kind}`} data-block={kind} id={id}>
+  <p class="kicker">{KICKER[kind]}</p>
+  {title && <h2>{title}</h2>}
+  <slot />
+</section>

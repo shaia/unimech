@@ -1,0 +1,168 @@
+---
+/**
+ * The floating navigation capsule: contents · previous · lesson · section dots · next.
+ * In a Hebrew book "next" is to the left (←). Section dots are built from [data-block].
+ */
+import { url } from '~/lib/url';
+
+interface Link {
+  href: string;
+  id: string;
+  title: string;
+}
+interface Props {
+  id: string;
+  title: string;
+  prev?: Link | null;
+  next?: Link | null;
+}
+const { id, title, prev, next } = Astro.props;
+---
+
+<nav class="capsule glass" aria-label="ניווט בשיעור">
+  <a class="cap-btn" href={url('')} title="תוכן העניינים" aria-label="תוכן העניינים">☰</a>
+  {
+    prev ? (
+      <a class="cap-btn" href={prev.href} title={`הקודם: ${prev.id} ${prev.title}`} aria-label={`השיעור הקודם: ${prev.title}`}>
+        →
+      </a>
+    ) : (
+      <span class="cap-btn off" aria-hidden="true">→</span>
+    )
+  }
+  <span class="cap-title">
+    <b class="ltr">{id}</b>
+    <span>{title}</span>
+  </span>
+  <ol class="cap-dots" aria-label="חלקי השיעור"></ol>
+  {
+    next ? (
+      <a class="cap-btn" href={next.href} title={`הבא: ${next.id} ${next.title}`} aria-label={`השיעור הבא: ${next.title}`}>
+        ←
+      </a>
+    ) : (
+      <span class="cap-btn off" aria-hidden="true">←</span>
+    )
+  }
+</nav>
+
+<script>
+  const KICK: Record<string, string> = {
+    hook: 'תופעה',
+    predict: 'חזו',
+    explore: 'חקרו',
+    explain: 'הסבר',
+    example: 'דוגמה',
+    check: 'בדקו',
+    watch: 'צפו',
+    summary: 'סיכום',
+  };
+  const dots = document.querySelector<HTMLOListElement>('.cap-dots');
+  const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-block]'));
+  if (dots && blocks.length) {
+    const items = blocks.map((b, i) => {
+      b.id ||= `sec-${i + 1}`;
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${b.id}`;
+      a.title = KICK[b.dataset.block ?? ''] ?? '';
+      a.setAttribute('aria-label', a.title);
+      li.append(a);
+      dots.append(li);
+      return a;
+    });
+    const io = new IntersectionObserver(
+      (es) => {
+        for (const e of es) {
+          if (!e.isIntersecting) continue;
+          const i = blocks.indexOf(e.target as HTMLElement);
+          items.forEach((a, k) => a.classList.toggle('on', k === i));
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px' },
+    );
+    blocks.forEach((b) => io.observe(b));
+  }
+</script>
+
+<style>
+  .capsule {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: var(--capsule-h);
+    max-width: calc(100vw - 2 * var(--gutter));
+    padding: 0 8px;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+  }
+  .cap-btn {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border-radius: 50%;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.15rem;
+  }
+  a.cap-btn:hover {
+    background: var(--paper);
+  }
+  .cap-btn.off {
+    opacity: 0.3;
+  }
+  .cap-title {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    padding: 0 8px;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cap-title span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cap-dots {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0 6px;
+  }
+  .cap-dots :global(a) {
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    position: relative;
+  }
+  .cap-dots :global(a)::after {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    background: var(--ink-3);
+    transition: background 0.2s, inset 0.2s;
+  }
+  .cap-dots :global(a.on)::after {
+    background: var(--accent);
+    inset: 5px;
+  }
+  @media (max-width: 640px) {
+    .cap-title span,
+    .cap-dots {
+      display: none;
+    }
+  }
+</style>

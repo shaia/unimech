@@ -1,0 +1,12 @@
+---
+/** A link to a lesson, or to an anchor inside it (a worked example's id), that respects the base path. */
+import { lessonSlug } from '~/course';
+import { url } from '~/lib/url';
+interface Props {
+  id: string;
+  anchor?: string;
+}
+const { id, anchor } = Astro.props;
+---
+
+<a href={url(`lessons/${lessonSlug(id)}/${anchor ? `#${anchor}` : ''}`)}><slot /></a>

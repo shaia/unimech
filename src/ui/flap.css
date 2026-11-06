@@ -1,0 +1,56 @@
+.predict-prompt > :last-child {
+  margin-bottom: 10px;
+}
+.predict-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.predict-why {
+  font-size: 0.92rem;
+}
+
+/* the flap: a paper cover over the reveal, folding up once the student has committed */
+.flap {
+  position: relative;
+  border-radius: var(--radius-sm);
+  perspective: 900px;
+}
+.flap-inner {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  min-height: 72px;
+}
+.flap-inner > :last-child {
+  margin-bottom: 0;
+}
+.predict:not(.is-open) .flap-inner {
+  visibility: hidden;
+  max-height: 72px;
+  overflow: hidden;
+}
+.flap-cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background:
+    repeating-linear-gradient(-45deg, transparent 0 9px, var(--rule) 9px 10px),
+    var(--paper-3);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.35);
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.5s 0.2s;
+  z-index: 1;
+}
+.predict.is-open .flap-cover {
+  transform: rotateX(100deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.flap-yours {
+  margin-bottom: 8px;
+}

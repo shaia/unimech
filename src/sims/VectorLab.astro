@@ -1,0 +1,7 @@
+---
+/** Vector lab figure for lesson MDX: <Spread figure={VectorLab} figureProps={{ mode: 'two', … }}>. */
+import VectorLab, { type VectorLabProps } from './VectorLab';
+type Props = VectorLabProps;
+---
+
+<VectorLab client:visible {...Astro.props} />

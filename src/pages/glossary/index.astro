@@ -1,0 +1,73 @@
+---
+/** Glossary: every term, alphabetical in Hebrew, with English, symbol, unit and the lesson that introduces it. */
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { lessonOrder, lessonSlug } from '~/course';
+import { tex } from '~/lib/tex';
+import { url } from '~/lib/url';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+const written = new Set((await getCollection('lessons', (e) => !e.data.draft || import.meta.env.DEV)).map((l) => l.data.id));
+const terms = (await getCollection('glossary')).map((e) => e.data).sort((a, b) => a.term.localeCompare(b.term, 'he'));
+const planned = (id: string) => lessonOrder.find((l) => l.id === id)?.title;
+
+const letters: { letter: string; terms: typeof terms }[] = [];
+for (const t of terms) {
+  const letter = t.term.trim()[0] ?? '?';
+  const last = letters[letters.length - 1];
+  if (last?.letter === letter) last.terms.push(t);
+  else letters.push({ letter, terms: [t] });
+}
+---
+
+<BaseLayout title="מילון מונחים" description="מונחי הקורס בעברית ובאנגלית, עם סמל, יחידה והשיעור שבו הם מוגדרים">
+  <div class="platform">
+    <header class="sheet sheet-narrow">
+      <p class="kicker">מילון</p>
+      <h1>מילון מונחים</h1>
+      <p class="p-lede">
+        <span class="ltr">{terms.length}</span> מונחים בסדר אלפביתי, עם המונח באנגלית, הסמל והיחידה, וקישור אל השיעור שמגדיר אותם.
+        הקורס כותב כל מונח באיות אחד, בכל השיעורים ובכל השאלות.
+      </p>
+      <ul class="toc-line" aria-label="קפיצה לאות">
+        {letters.map((l) => <li><a href={`#letter-${l.letter}`}>{l.letter}</a></li>)}
+      </ul>
+    </header>
+
+    <section class="sheet sheet-narrow" aria-label="המונחים">
+      {
+        letters.map((l) => (
+          <>
+            <h2 class="gloss-letter" id={`letter-${l.letter}`}>{l.letter}</h2>
+            <dl class="gloss-list">
+              {l.terms.map((t) => (
+                <div class="gloss-entry" id={`term-${t.id}`} data-term={t.id}>
+                  <dt>
+                    <span>{t.term}</span>
+                    <span class="gloss-en ltr" lang="en">{t.en}</span>
+                  </dt>
+                  <dd set:html={tex(t.definition, `glossary ${t.id}`)} />
+                  <dd class="gloss-meta">
+                    {t.symbol && <span>סמל: <span class="q"><Fragment set:html={tex(`$${t.symbol}$`, `glossary ${t.id}.symbol`)} /></span></span>}
+                    {t.unit && <span>יחידה: <span class="q">{t.unit}</span></span>}
+                    {t.lesson && written.has(t.lesson) && (
+                      <a href={url(`lessons/${lessonSlug(t.lesson)}/`)}>
+                        מוגדר בשיעור <span class="ltr">{t.lesson}</span>
+                      </a>
+                    )}
+                    {t.lesson && !written.has(t.lesson) && (
+                      <span>
+                        יוגדר בשיעור <span class="ltr">{t.lesson}</span> {planned(t.lesson)}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>

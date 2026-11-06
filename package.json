@@ -1,0 +1,46 @@
+{
+  "name": "unimech",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint:content": "tsx scripts/lint-content.ts",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.5",
+    "@astrojs/markdown-satteri": "^0.4.6",
+    "@astrojs/mdx": "^8.1.2",
+    "@astrojs/preact": "^6.1.1",
+    "@fontsource/frank-ruhl-libre": "^5.3.0",
+    "@fontsource/heebo": "^5.3.0",
+    "@fontsource/playpen-sans-hebrew": "^5.3.0",
+    "@preact/signals": "^2.11.4",
+    "astro": "^7.4.4",
+    "katex": "^0.19.1",
+    "preact": "^11.1.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "roughjs": "^4.6.6",
+    "three": "^0.187.0",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6",
+    "@types/three": "^0.187.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
+  }
+}

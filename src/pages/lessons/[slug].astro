@@ -1,0 +1,80 @@
+---
+import { getCollection, render } from 'astro:content';
+import LessonLayout from '~/layouts/LessonLayout.astro';
+import { lessonOrder, lessonSlug } from '~/course';
+import { url } from '~/lib/url';
+import { lessonsWithWorkbook } from '~/lib/companions';
+import Block from '~/components/Block.astro';
+import Check from '~/components/Check.astro';
+import Example from '~/components/Example.astro';
+import Explain from '~/components/Explain.astro';
+import Explore from '~/components/Explore.astro';
+import Formula from '~/components/Formula.astro';
+import Hook from '~/components/Hook.astro';
+import Note from '~/components/Note.astro';
+import Page from '~/components/Page.astro';
+import Predict from '~/components/Predict.astro';
+import Revisit from '~/components/Revisit.astro';
+import Solution from '~/components/Solution.astro';
+import Spread from '~/components/Spread.astro';
+import Step from '~/components/Step.astro';
+import Summary from '~/components/Summary.astro';
+import Term from '~/components/Term.astro';
+import Watch from '~/components/Watch.astro';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('lessons', (e) => !e.data.draft || import.meta.env.DEV);
+  const written = new Map(lessons.map((e) => [e.data.id, e]));
+  const linkTo = (id: string) => {
+    const e = written.get(id);
+    return e ? { href: url(`lessons/${lessonSlug(id)}/`), id, title: e.data.title } : null;
+  };
+  return lessons.map((entry) => {
+    const id = entry.data.id;
+    const i = lessonOrder.findIndex((l) => l.id === id);
+    if (i < 0) throw new Error(`lesson ${id} (${entry.id}) is not in the course map, src/course.ts`);
+    // neighbours: the nearest written lesson on each side
+    const prev = lessonOrder.slice(0, i).reverse().map((l) => linkTo(l.id)).find(Boolean) ?? null;
+    const next = lessonOrder.slice(i + 1).map((l) => linkTo(l.id)).find(Boolean) ?? null;
+    return { params: { slug: lessonSlug(id) }, props: { entry, prev, next } };
+  });
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const workbook = (await lessonsWithWorkbook()).has(d.id) ? url(`workbook/${lessonSlug(d.id)}/`) : null;
+const components = {
+  Block,
+  Check,
+  Example,
+  Explain,
+  Explore,
+  Formula,
+  Hook,
+  Note,
+  Page,
+  Predict,
+  Revisit,
+  Solution,
+  Spread,
+  Step,
+  Summary,
+  Term,
+  Watch,
+};
+---
+
+<LessonLayout
+  id={d.id}
+  title={d.title}
+  subtitle={d.subtitle}
+  minutes={d.minutes}
+  objectives={d.objectives}
+  enrichment={d.enrichment}
+  prev={prev}
+  next={next}
+  workbook={workbook}
+>
+  <Content components={components} />
+</LessonLayout>

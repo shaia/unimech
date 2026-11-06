@@ -1,0 +1,103 @@
+# Test, build and publish the course to GitHub Pages.
+#
+# Pull requests run the full test job but do not deploy. Pushes to master test, build and deploy:
+# a red test job means nothing is published.
+#
+# The site is a project Pages site (https://<user>.github.io/<repo>/), so the deploy build is told
+# its path prefix: actions/configure-pages reports it and astro.config.mjs reads it from BASE_PATH.
+# The test job builds at "/" instead, because the end-to-end suite addresses pages from the root.
+
+name: Publish site
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deployment finish rather than publishing a half-uploaded site.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # The end-to-end suite is split across shards: in one job, chapter 4 took it past Playwright's 25-minute
+  # globalTimeout, and chapter 6 added a quarter more pages, so four shards. `build` needs every shard, so any red
+  # shard still publishes nothing.
+  test:
+    name: test (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+
+      # the checks that do not depend on the shard run once
+      - name: Physics and unit tests
+        if: matrix.shard == 1
+        run: npx vitest run
+      - name: Content lint
+        if: matrix.shard == 1
+        run: npm run lint:content
+      - name: Type check
+        if: matrix.shard == 1
+        run: npx astro check
+      # fails on any KaTeX error and any content-schema violation
+      - name: Build (root base, for the end-to-end suite)
+        run: npx astro build
+
+      - run: npx playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: npx playwright test --shard=${{ matrix.shard }}/4
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results-${{ matrix.shard }}
+          path: test-results
+          retention-days: 7
+
+  build:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Build site
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+        run: npx astro build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

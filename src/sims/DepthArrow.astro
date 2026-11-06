@@ -1,0 +1,7 @@
+---
+/** Out-of / into-the-page figure for lesson MDX: <Spread figure={DepthArrow} figureProps={{ tasks: […] }}>. */
+import DepthArrow, { type DepthArrowProps } from './DepthArrow';
+type Props = DepthArrowProps;
+---
+
+<DepthArrow client:visible {...Astro.props} />

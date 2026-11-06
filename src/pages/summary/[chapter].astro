@@ -1,0 +1,39 @@
+---
+/** End-of-chapter summary: what to remember, the common mistakes, and how to solve the chapter's problems. */
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Formula from '~/components/Formula.astro';
+import LessonLink from '~/components/LessonLink.astro';
+import Note from '~/components/Note.astro';
+import { chapters } from '~/course';
+import { url } from '~/lib/url';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+export async function getStaticPaths() {
+  return (await getCollection('summaries')).map((entry) => ({ params: { chapter: `ch${entry.data.chapter}` }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const n = entry.data.chapter;
+const chapter = chapters.find((c) => c.n === n);
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`סיכום פרק ${n} · ${chapter?.title ?? ''}`} description={entry.data.title}>
+  <div class="platform chapter-summary">
+    <header class="sheet sheet-narrow">
+      <p class="kicker">פרק {n} · {chapter?.title}</p>
+      <h1>{entry.data.title}</h1>
+      <div class="p-links">
+        <a class="btn primary" href={url(`practice/ch${n}/`)}>דף התרגול של הפרק</a>
+        <a class="btn" href={url(`test/ch${n}/`)}>מבחן הפרק</a>
+        <a class="btn" href={url('formulas/')}>דף הנוסחאות</a>
+        <a class="btn" href={url('')}>לתוכן העניינים</a>
+      </div>
+    </header>
+    <article class="sheet sheet-narrow summary-body">
+      <Content components={{ Formula, LessonLink, Note }} />
+    </article>
+  </div>
+</BaseLayout>

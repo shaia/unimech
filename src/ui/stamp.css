@@ -1,0 +1,56 @@
+.lesson-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 8px;
+}
+.lesson-end .hand {
+  flex: 1;
+  min-width: 220px;
+  margin: 0;
+}
+.stamp {
+  display: inline-grid;
+  justify-items: center;
+  width: 118px;
+  height: 118px;
+  align-content: center;
+  border-radius: 50%;
+  border: 3px double var(--accent);
+  color: var(--accent);
+  font-family: var(--font-ui);
+  transform: rotate(-12deg);
+  animation: stamp-in 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+  mix-blend-mode: multiply;
+}
+:root[data-theme='dark'] .stamp {
+  mix-blend-mode: normal;
+}
+.stamp.gold {
+  border-color: #b8860b;
+  color: #b8860b;
+}
+.stamp-top {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+.stamp-id {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.stamp-date {
+  font-size: 0.72rem;
+}
+@keyframes stamp-in {
+  0% {
+    transform: rotate(-12deg) scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-12deg) scale(1);
+    opacity: 1;
+  }
+}

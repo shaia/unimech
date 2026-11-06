@@ -1,0 +1,18 @@
+---
+/** A glossary term: one spelling course-wide, with its definition on hover or focus. */
+import { getEntry } from 'astro:content';
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const entry = await getEntry('glossary', id);
+if (!entry) throw new Error(`<Term id="${id}">: no such entry in src/content/glossary.yaml`);
+const g = entry.data;
+---
+
+<span class="term" tabindex="0"
+  ><slot /><span class="term-card" role="tooltip"
+    ><b>{g.term}</b> <span class="term-en ltr">{g.en}</span>
+    <span class="term-def">{g.definition}</span></span
+  ></span
+>

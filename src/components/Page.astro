@@ -1,0 +1,9 @@
+---
+/** A single book page, for content without a live figure: examples, checks, videos, summary. */
+interface Props {
+  narrow?: boolean;
+}
+const { narrow = true } = Astro.props;
+---
+
+<div class:list={['sheet', { 'sheet-narrow': narrow }]}><slot /></div>

@@ -1,0 +1,20 @@
+---
+/** Lesson self-check: questions from the YAML banks, by id, rendered at build time. */
+import Block from './Block.astro';
+import AnyQuestion from '~/assessment/AnyQuestion';
+import { getQuestion, lessonFromPath } from '~/assessment/bank';
+import { renderQuestion } from '~/assessment/render';
+
+interface Props {
+  ids: string[];
+  title?: string;
+}
+
+const { ids, title } = Astro.props;
+const lesson = lessonFromPath(Astro.url.pathname);
+const questions = await Promise.all(ids.map(async (id) => renderQuestion(await getQuestion(id, '<Check>'))));
+---
+
+<Block kind="check" title={title}>
+  {questions.map((q, i) => <AnyQuestion client:visible q={q} lesson={lesson} kind="check" label={`שאלה ${i + 1}`} />)}
+</Block>

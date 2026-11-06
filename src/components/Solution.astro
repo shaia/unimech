@@ -1,0 +1,12 @@
+---
+/** The worked solution under an <Example>: closed until the student has tried on their own. */
+interface Props {
+  label?: string;
+}
+const { label = 'ניסיתם לבד? פתחו את הפתרון' } = Astro.props;
+---
+
+<details class="solution">
+  <summary>{label}</summary>
+  <div class="solution-body"><slot /></div>
+</details>

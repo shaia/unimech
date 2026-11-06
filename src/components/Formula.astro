@@ -1,0 +1,20 @@
+---
+/** A formula card. Cards are collected into the course formula sheet by lint-content's index. */
+import { tex } from '~/lib/tex';
+interface Props {
+  tex: string;
+  label: string;
+  /** the formula is on the official Bagrut formula sheet */
+  sheet?: boolean;
+}
+const { tex: src, label, sheet = false } = Astro.props;
+const html = tex(`$$${src}$$`, `<Formula label="${label}">`);
+---
+
+<div class="formula-card" data-formula={label}>
+  <p class="formula-label">
+    {label}
+    {sheet && <span class="chip">בדף הנוסחאות</span>}
+  </p>
+  <Fragment set:html={html} />
+</div>

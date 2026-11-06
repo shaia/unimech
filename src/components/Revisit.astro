@@ -1,0 +1,9 @@
+---
+import RevisitIsland from '~/ui/Revisit';
+interface Props {
+  /** the id of this lesson's <Predict> */
+  id: string;
+}
+---
+
+<RevisitIsland client:visible id={Astro.props.id} />

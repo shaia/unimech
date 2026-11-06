@@ -1,0 +1,60 @@
+---
+/**
+ * A PhET HTML5 simulation, loaded only when the student asks for it (click-to-load, like the
+ * YouTube facade). The Hebrew build of every PhET sim is `<sim>_iw.html` ("iw" is PhET's code
+ * for Hebrew; `_he.html` does not exist). The slot says what to try.
+ */
+interface Props {
+  /** the sim's slug on phet.colorado.edu, e.g. "balloons-and-static-electricity" */
+  sim: string;
+  /** the sim's Hebrew name, shown on the facade and used as the iframe title */
+  title: string;
+}
+
+const { sim, title } = Astro.props;
+const src = `https://phet.colorado.edu/sims/html/${sim}/latest/${sim}_iw.html`;
+---
+
+<div class="phet" data-phet-src={src} data-phet-title={title}>
+  <button type="button" class="phet-facade yt-facade" aria-label={`הפעלת הסימולציה: ${title}`}>
+    <span class="yt-play" aria-hidden="true">▶</span>
+    <span class="yt-note">לחיצה טוענת את הסימולציה מ-PhET של אוניברסיטת קולורדו</span>
+  </button>
+  <div class="phet-look"><slot /></div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.phet').forEach((box) => {
+    const btn = box.querySelector<HTMLButtonElement>('.phet-facade');
+    btn?.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = box.dataset.phetSrc ?? '';
+      frame.title = box.dataset.phetTitle ?? '';
+      frame.allowFullscreen = true;
+      frame.loading = 'lazy';
+      btn.replaceWith(frame);
+    });
+  });
+</script>
+
+<style>
+  .phet {
+    display: grid;
+    gap: 10px;
+  }
+  .phet :global(.phet-facade) {
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    width: 100%;
+  }
+  .phet :global(iframe) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .phet-look {
+    color: var(--ink-2);
+  }
+</style>

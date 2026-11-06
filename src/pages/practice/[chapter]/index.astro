@@ -1,0 +1,131 @@
+---
+/**
+ * Chapter practice sheet. Each lesson gets its comprehension ladder (שאלות הבנה), its objectives on top and its
+ * questions from basic to exam level; the chapter's multi-part review problems (שאלות חזרה) come last.
+ */
+import { getCollection } from 'astro:content';
+import AnyQuestion from '~/assessment/AnyQuestion';
+import { chapterQuestions, chaptersWithQuestions } from '~/assessment/bank';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { chapters, lessonSlug } from '~/course';
+import { url } from '~/lib/url';
+import { chaptersWithSummary, lessonsWithWorkbook } from '~/lib/companions';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+export async function getStaticPaths() {
+  return (await chaptersWithQuestions()).map((n) => ({ params: { chapter: `ch${n}` }, props: { n } }));
+}
+
+const { n } = Astro.props;
+const chapter = chapters.find((c) => c.n === n);
+const { byLesson, bagrut } = await chapterQuestions(n);
+const written = new Set((await getCollection('lessons')).map((l) => l.data.id));
+const workbooks = await lessonsWithWorkbook();
+const hasSummary = (await chaptersWithSummary()).has(n);
+const lessonTitle = (id: string) => chapter?.lessons.find((l) => l.id === id)?.title ?? '';
+
+// the level key `bagrut` is emlab's; here it is the exam level of a university course
+const LEVELS = [
+  { key: 'basic', label: 'בסיס' },
+  { key: 'mid', label: 'בינוני' },
+  { key: 'bagrut', label: 'רמת מבחן' },
+] as const;
+const fullLabel = 'שאלות חזרה';
+const objectivesOf = (id: string) => chapter?.lessons.find((l) => l.id === id)?.objectives ?? [];
+const countOf = (key: string) => byLesson.flatMap((g) => g.questions).filter((q) => q.level === key).length;
+const total = byLesson.reduce((s, g) => s + g.questions.length, 0);
+let counter = 0;
+---
+
+<BaseLayout title={`דף תרגול · פרק ${n}`} description={`שאלות תרגול לפרק ${n}, מחולקות לפי שיעור ורמה`}>
+  <div class="platform">
+    <header class="sheet sheet-narrow">
+      <p class="kicker">פרק {n} · {chapter?.title}</p>
+      <h1>דף תרגול</h1>
+      <p class="p-lede">
+        לכל שיעור יש <strong>שאלות הבנה</strong> בשלוש מדרגות: <strong>בסיס</strong> לבדיקה שהבנתם את ההגדרות והרעיון,
+        <strong>בינוני</strong> לחישוב ולנימוק בשני צעדים, <strong>רמת מבחן</strong> לשאלות כמו במבחן של הקורס. עלו במדרגות לפי הסדר,
+        ואל תעברו מדרגה לפני שהקודמת יושבת. בסוף הדף <strong>שאלות חזרה</strong> על כל הפרק: בעיה אחת עם כמה סעיפים, מהקל אל הקשה.
+      </p>
+      <div class="level-filter" role="group" aria-label="סינון לפי רמה">
+        <button type="button" class="btn" data-filter="all" aria-pressed="true">הכול ({total + bagrut.length})</button>
+        {LEVELS.map((l) => <button type="button" class="btn" data-filter={l.key} aria-pressed="false">{l.label} ({countOf(l.key)})</button>)}
+        {bagrut.length > 0 && <button type="button" class="btn" data-filter="bagrut-full" aria-pressed="false">{fullLabel} ({bagrut.length})</button>}
+      </div>
+      <div class="p-links">
+        <a class="btn primary" href={url(`test/ch${n}/`)}>למבחן הפרק</a>
+        {hasSummary && <a class="btn" href={url(`summary/ch${n}/`)}>סיכום הפרק</a>}
+        <a class="btn" href={url('')}>לתוכן העניינים</a>
+      </div>
+    </header>
+
+    {
+      byLesson.map((g) => (
+        <section class="sheet sheet-narrow practice-lesson" data-lesson-group={g.lesson} aria-labelledby={`pl-${lessonSlug(g.lesson || 'x')}`}>
+          <h2 id={`pl-${lessonSlug(g.lesson || 'x')}`}>
+            <span class="ltr">{g.lesson}</span> {lessonTitle(g.lesson)}
+            {written.has(g.lesson) && <a href={url(`lessons/${lessonSlug(g.lesson)}/`)}>לשיעור</a>}
+            {workbooks.has(g.lesson) && <a href={url(`workbook/${lessonSlug(g.lesson)}/`)}>תרגול כתוב</a>}
+          </h2>
+          {objectivesOf(g.lesson).length > 0 && (
+            <div class="practice-objectives">
+              <p>שאלות ההבנה של השיעור בודקות שאתם יודעים:</p>
+              <ul>
+                {objectivesOf(g.lesson).map((o) => <li data-objective={o.id}>{o.text}</li>)}
+              </ul>
+            </div>
+          )}
+          {LEVELS.map((l) => {
+            const qs = g.questions.filter((q) => q.level === l.key);
+            return (
+              qs.length > 0 && (
+                <div class="level-group" data-level-group={l.key}>
+                  <h3>
+                    {l.label} <span class="chip">{qs.length}</span>
+                  </h3>
+                  {qs.map((q) => {
+                    counter += 1;
+                    return <AnyQuestion client:visible q={q} lesson={g.lesson} kind="practice" label={`שאלה ${counter}`} />;
+                  })}
+                </div>
+              )
+            );
+          })}
+        </section>
+      ))
+    }
+
+    {
+      bagrut.length > 0 && (
+        <section class="sheet sheet-narrow practice-bagrut" data-bagrut-group aria-labelledby="pl-bagrut">
+          <h2 id="pl-bagrut">{fullLabel}</h2>
+          <p class="p-lede">
+            כל שאלת חזרה היא תרחיש אחד עם כמה סעיפים, מהקל אל הקשה, ומחברת כמה שיעורים של הפרק. בסעיפי הפתרון המלא כותבים פתרון
+            על דף, משווים לפתרון לדוגמה ומסמנים במחוון את מה שעשיתם נכון.
+          </p>
+          {bagrut.map((q, i) => (
+            <AnyQuestion client:visible q={q} kind="practice" label={`שאלה ${i + 1}`} />
+          ))}
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  // level filter: show only the groups of one level (or the full Bagrut questions)
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.level-filter button');
+  const apply = (key: string) => {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === key)));
+    document.querySelectorAll<HTMLElement>('[data-level-group]').forEach((g) => {
+      g.hidden = !(key === 'all' || g.dataset.levelGroup === key);
+    });
+    document.querySelectorAll<HTMLElement>('[data-lesson-group]').forEach((s) => {
+      s.hidden = key === 'bagrut-full' || !s.querySelector('[data-level-group]:not([hidden])');
+    });
+    const full = document.querySelector<HTMLElement>('[data-bagrut-group]');
+    if (full) full.hidden = !(key === 'all' || key === 'bagrut-full');
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'all')));
+</script>

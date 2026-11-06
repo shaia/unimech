@@ -1,0 +1,60 @@
+---
+/** Formula sheet: every <Formula> card of every lesson, by chapter and lesson, collected from the MDX sources. */
+import { getCollection } from 'astro:content';
+import Formula from '~/components/Formula.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { chapters, lessonOrder, lessonSlug } from '~/course';
+import { formulasIn } from '~/lib/formulas';
+import { url } from '~/lib/url';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+const entries = (await getCollection('lessons', (e) => !e.data.draft || import.meta.env.DEV)).sort(
+  (a, b) => lessonOrder.findIndex((l) => l.id === a.data.id) - lessonOrder.findIndex((l) => l.id === b.data.id),
+);
+const groups = chapters
+  .map((c) => ({
+    chapter: c,
+    lessons: entries
+      .filter((e) => e.data.chapter === c.n)
+      .map((e) => ({ id: e.data.id, title: e.data.title, formulas: formulasIn(e.body ?? '', e.id) }))
+      .filter((l) => l.formulas.length > 0),
+  }))
+  .filter((g) => g.lessons.length > 0);
+const total = groups.reduce((s, g) => s + g.lessons.reduce((t, l) => t + l.formulas.length, 0), 0);
+---
+
+<BaseLayout title="דף נוסחאות" description="כל הנוסחאות של הקורס, לפי פרק ושיעור">
+  <div class="platform">
+    <header class="sheet sheet-narrow">
+      <p class="kicker">דף נוסחאות</p>
+      <h1>כל הנוסחאות במקום אחד</h1>
+      <p class="p-lede">
+        הנוסחאות שמופיעות בשיעורים, לפי פרק ולפי שיעור, ועם קישור אל השיעור שמסביר מאיפה הן באות. הדף מתעדכן לבד כשנוספים שיעורים.
+        עד עכשיו <span class="ltr">{total}</span> נוסחאות.
+      </p>
+      <ul class="toc-line" aria-label="קפיצה לפרק">
+        {groups.map((g) => <li><a href={`#ch-${g.chapter.n}`}>פרק {g.chapter.n}</a></li>)}
+      </ul>
+    </header>
+
+    {
+      groups.map((g) => (
+        <section class="sheet sheet-narrow" aria-labelledby={`ch-${g.chapter.n}`}>
+          <h2 id={`ch-${g.chapter.n}`}>
+            פרק <span class="ltr">{g.chapter.n}</span>: {g.chapter.title}
+          </h2>
+          {g.lessons.map((l) => (
+            <div class="formula-lesson" data-lesson={l.id}>
+              <h3>
+                <span class="ltr">{l.id}</span> {l.title}
+                <a href={url(`lessons/${lessonSlug(l.id)}/`)}>לשיעור</a>
+              </h3>
+              {l.formulas.map((f) => <Formula tex={f.tex} label={f.label} sheet={f.sheet} />)}
+            </div>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>

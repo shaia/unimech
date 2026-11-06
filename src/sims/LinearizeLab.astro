@@ -1,0 +1,7 @@
+---
+/** Linearization lab figure for lesson MDX: <Spread figure={LinearizeLab} figureProps={{ dataset: 'fall', … }}>. */
+import LinearizeLab, { type LinearizeLabProps } from './LinearizeLab';
+type Props = LinearizeLabProps;
+---
+
+<LinearizeLab client:visible {...Astro.props} />
