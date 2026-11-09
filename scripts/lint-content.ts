@@ -313,10 +313,11 @@ for (const n of chaptersWithBanks) {
 
 /**
  * Whether a lesson renders an element with this HTML id. <Term id> and <Watch id> name a glossary entry or a
- * video and render no id, so they don't count.
+ * video and render no id, so they don't count. <Spread fig="…"> renders its figure with that id.
  */
 const hasAnchor = (body: string, id: string) =>
-  [...body.matchAll(/<(\w+)\b[^>]*?\sid="([^"]+)"/g)].some((m) => m[2] === id && m[1] !== 'Term' && m[1] !== 'Watch');
+  [...body.matchAll(/<(\w+)\b[^>]*?\sid="([^"]+)"/g)].some((m) => m[2] === id && m[1] !== 'Term' && m[1] !== 'Watch') ||
+  [...body.matchAll(/<Spread\b[^>]*?\sfig="([^"]+)"/g)].some((m) => m[1] === id);
 
 for (const m of misconceptions) {
   if (!detected.has(m.id)) fail(m.file, `${m.id} is not detected by any distractor`, true);
@@ -503,6 +504,34 @@ for (const g of glossary) {
   for (const bad of g.reject ?? []) {
     const re = rejectPattern(bad);
     for (const t of texts) if (re.test(t.text)) fail(t.where, `"${bad}": the course spells this "${g.term}"`);
+  }
+}
+
+/* -------------------------------------------------- KaTeX in MDX and in glossary symbols */
+// The build renders these too, but parallel authors only lint: a bad formula must fail here, not at build time.
+// Chapter 1's five lessons were written in parallel, and a glossary symbol in Unicode (2ṙθ̇) failed only the build.
+const DD = '$$';
+const mdxFormulas = (body: string): string[] => {
+  const display = [...body.matchAll(/\$\$([\s\S]+?)\$\$/g)].map((m) => DD + m[1] + DD);
+  const inline = [...body.replace(/\$\$[\s\S]+?\$\$/g, '').matchAll(/\$([^$\n]+)\$/g)].map((m) => '$' + m[1] + '$');
+  const props = [...body.matchAll(/\btex="([^"]+)"/g)].map((m) => DD + m[1] + DD);
+  return [...display, ...inline, ...props];
+};
+for (const doc of [...lessons, ...summaries]) {
+  for (const f of mdxFormulas(doc.body)) {
+    try {
+      tex(f, doc.file);
+    } catch (e) {
+      fail(doc.file, (e as Error).message);
+    }
+  }
+}
+for (const g of glossary as (typeof glossary[number] & { symbol?: string })[]) {
+  if (!g.symbol) continue;
+  try {
+    tex('$' + g.symbol + '$', `glossary ${g.id}.symbol`);
+  } catch (e) {
+    fail(g.file, (e as Error).message);
   }
 }
 

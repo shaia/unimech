@@ -1,0 +1,565 @@
+---
+id: '1.4'
+chapter: 1
+order: 4
+title: מהירות ותאוצה בקואורדינטות קוטביות
+subtitle: למה גוף שהולך החוצה על מוט מסתובב, במהירות קבועה, דוחף את המוט הצידה
+minutes: 55
+objectives:
+  - id: OBJ-1.4-1
+    text: לגזור את רכיבי המהירות והתאוצה בקואורדינטות קוטביות
+  - id: OBJ-1.4-2
+    text: לזהות את משמעות כל איבר בתאוצה הקוטבית ולהשתמש בהם כדי לפתור תנועה במישור
+prerequisites: ['0.5', '0.7', '1.1', '1.3']
+videos: [v-1-4-polar-unit-vectors, v-1-4-ball-in-tube]
+figures: [fig-1-4a, fig-1-4b, fig-1-4c]
+---
+
+import PolarFrame from '~/sims/PolarFrame.astro';
+import LessonLink from '~/components/LessonLink.astro';
+
+<Spread
+  fig="fig-1-4a"
+  n="1.4א"
+  caption="חיפושית הולכת החוצה לאורך מוט שמסתובב במישור אופקי סביב הקצה שלו, O, במהירות זוויתית קבועה $\omega = 3.0\,\text{rad/s}$. ביחס למוט היא הולכת במהירות קבועה $0.50\,\text{m/s}$, מ-$r = 0.20\,\text{m}$ עד $r = 1.0\,\text{m}$. הקו המקווקו הוא המסלול שלה, כפי שהוא נראה מלמעלה. שני החצים הקצרים בצבע החום-אדמדם הם וקטורי היחידה $\hat r$ ו-$\hat\theta$ במקום של החיפושית. החץ הכחול, עם התווית v, הוא המהירות, והחץ הכתום העבה, עם התווית a, הוא התאוצה. כפתורי האיברים מוסיפים את ארבעת האיברים של התאוצה כחצים כתומים דקים, ראש לזנב, כל אחד עם התווית שלו. מתחת לאיור: הפעלה, פס גרירה לזמן, ומה להציג."
+  figure={PolarFrame}
+  figureProps={{ preset: 'bug', showBasis: true, showV: true, showVParts: false, showA: false, terms: [], tasks: ['bug-terms', 'bug-sideways', 'bug-far'] }}
+>
+
+<Hook title="ההליכה החוצה על קרוסלה">
+
+עמדו על קרוסלה שמסתובבת לאט, במהירות זוויתית קבועה, ולכו מהמרכז החוצה לאורך קו רדיאלי שמסומן על הרצפה, בצעדים שווים. כל מי שניסה מספר אותו דבר: הרגליים צריכות "להיאחז" ברצפה הצידה, בכיוון הסיבוב, וככל שהולכים מהר יותר החוצה, האחיזה הזו חזקה יותר.
+
+אבל מה בעצם משתנה כאן? הקצב שבו אתם מתרחקים מהמרכז קבוע, והקצב שבו הקרוסלה מסתובבת קבוע. בתיאור במרחק ובזווית, $r$ ו-$\theta$, שום קצב לא משתנה. ובכל זאת, כמו שנראה, יש לכם תאוצה, והיא לא פונה רק אל המרכז.
+
+ב<LessonLink id="1.3">שיעור 1.3</LessonLink> תיארנו תנועה מעגלית, שבה $r$ קבוע. בשיעור הזה נכתוב מהירות ותאוצה בשפה של <Term id="polar-coordinates">קואורדינטות קוטביות</Term> לכל תנועה במישור, גם כשהמרחק מהראשית משתנה, ונגלה מאיפה בא הדחף הצידה.
+
+</Hook>
+
+<Predict
+  id="pred-1-4"
+  prompt="חיפושית הולכת החוצה לאורך מוט שמסתובב במישור אופקי סביב הקצה שלו. המהירות שלה ביחס למוט קבועה, וגם המהירות הזוויתית של המוט קבועה. מה נכון לגבי התאוצה של החיפושית, כפי שהיא נמדדת מהרצפה שמתחת למוט?"
+  choices={[
+    'היא פונה רק אל הציר, בגודל של מרחק כפול ריבוע המהירות הזוויתית, כי הקצבים של המרחק ושל הזווית קבועים.',
+    'היא אפס, כי שום קצב בתנועה לא משתנה.',
+    'יש לה רכיב אל הציר, ועוד רכיב ניצב למוט, בכיוון הסיבוב.',
+    'יש לה רכיב החוצה לאורך המוט, כי החיפושית מתרחקת מהציר.',
+  ]}
+  answer={2}
+>
+
+בדקו באיור 1.4א: הדליקו את התאוצה, והשוו את הכיוון שלה לכיוון המוט, הקו המקווקו הדק שמחבר את O לחיפושית.
+
+</Predict>
+
+<Explore title="מה החיפושית מרגישה">
+
+<Step fig="fig-1-4a" set={{ preset: 'bug', t: 0, showBasis: true, showV: true, showVParts: false, showA: false, terms: [] }}>
+
+באיור 1.4א החיפושית בתחילת הדרך, $0.20\,\text{m}$ מהציר. הפעילו את התנועה. שימו לב לשני החצים הקצרים שיוצאים מהחיפושית, המסומנים $\hat r$ ו-$\hat\theta$: $\hat r$ מצביע תמיד מ-O אל החיפושית, ו-$\hat\theta$ ניצב לו, בכיוון שבו הזווית גדלה. הם **נוסעים עם החיפושית ומסתובבים איתה**. האורך שלהם קבוע, אבל הכיוון שלהם משתנה כל הזמן.
+
+</Step>
+
+<Step fig="fig-1-4a" set={{ preset: 'bug', t: 0, showBasis: true, showV: true, showVParts: true, showA: false, terms: [] }}>
+
+עכשיו המהירות (החץ המסומן $\vec v$) מפורקת לשני רכיבים, המסומנים $\dot r\,\hat r$ ו-$r\dot\theta\,\hat\theta$. הרכיב לאורך המוט, בכיוון $\hat r$, הוא הקצב שבו החיפושית מתרחקת מהציר, $0.50\,\text{m/s}$, והוא לא משתנה. הרכיב הניצב למוט, בכיוון $\hat\theta$, בא מהסיבוב: נקודה במרחק $r$ על מוט מסתובב נעה במהירות $r\omega$. הזיזו את הזמן וקראו את $v_\theta$ מתחת לאיור: הוא גדל מ-$0.60$ ל-$3.0\,\text{m/s}$, כי החיפושית מתרחקת.
+
+</Step>
+
+<Step fig="fig-1-4a" set={{ preset: 'bug', t: 0, showBasis: true, showV: true, showVParts: false, showA: true, terms: [] }} id="bug-total">
+
+הדליקו את התאוצה (החץ הכתום העבה, המסומן $\vec a$). היא **לא** פונה אל הציר: היא נוטה מהכיוון של $(-\hat r)$ אל כיוון הסיבוב. בתחילת הדרך הזווית בין התאוצה לבין הכיוון אל הציר היא כ-$59^\circ$, ובסוף הדרך, ב-$r = 1.0\,\text{m}$, כ-$18^\circ$. החלק הניצב למוט הוא מה שהרגליים שלכם הרגישו על הקרוסלה: כדי שהתאוצה של גופכם תהיה כזו, משהו צריך לדחוף אתכם הצידה. מה הוא בדיוק, נלמד בפרק 2. בינתיים נבין מאיפה הוא בא.
+
+</Step>
+
+<Step fig="fig-1-4a" set={{ preset: 'bug', t: 0, showBasis: true, showV: false, showVParts: false, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }}>
+
+כפתורי האיברים מפרקים את התאוצה לארבעה חלקים, שנגזור בהמשך: $\ddot r$ ו-$(-r\dot\theta^2)$ בכיוון $\hat r$, ו-$r\ddot\theta$ ו-$2\dot r\dot\theta$ בכיוון $\hat\theta$. החצים שלהם מצוירים ראש לזנב, ולכן השרשרת נגמרת בקצה של התאוצה. בצעו את המשימות שמתחת לאיור, ושימו לב במיוחד לאיבר $2\dot r\dot\theta$: מה קורה לו כשהחיפושית מתרחקת?
+
+</Step>
+
+</Explore>
+
+</Spread>
+
+<Spread
+  fig="fig-1-4b"
+  n="1.4ב"
+  caption="נקודה נעה על מעגל סביב O. במצב הבנייה מצוירים מהנקודה וקטור היחידה בזווית $\theta$ (חץ חום-אדמדם מלא, עם התווית $\hat r(\theta)$), אותו וקטור יחידה בזווית $\theta + \Delta\theta$ (חץ בהיר, עם התווית $\hat r(\theta+\Delta\theta)$), וההפרש ביניהם (חץ שחור, עם התווית $\Delta\hat r$). כשעוברים ל-$\hat\theta$ התוויות מתחלפות בהתאם. את $\Delta\theta$ משנים בפס הגרירה שמתחת לאיור. בשורה שמתחת לאיור: היחס בין אורך ההפרש ל-$\Delta\theta$, והזווית בין ההפרש לבין וקטור היחידה המקורי."
+  figure={PolarFrame}
+  figureProps={{ preset: 'circle', t: 0.6, showBasis: true, showV: false, showVParts: false, showA: false, terms: [], showDelta: true, deltaOf: 'r', dTheta: 0.8, tasks: ['shrink-delta'] }}
+>
+
+<Explain title="וקטורי יחידה שמסתובבים" id="unit-vectors">
+
+<Step fig="fig-1-4b" set={{ preset: 'circle', t: 0.6, showDelta: false, showBasis: true, showV: false, showA: false, terms: [] }}>
+
+**מה כבר יודעים.** את וקטורי היחידה הקוטביים הגדרנו בשיעור 0.7, ואת הנגזרות שלהם כבר גזרנו בשיעור 1.3, על מעגל. כאן נראה את התמונה שמאחורי הנגזרות, והן נכונות לכל תנועה במישור, גם כש-$r$ משתנה, כי הן תלויות רק ב-$\theta(t)$. בנקודה שהמרחק שלה מ-O הוא $r$ והזווית שלה מהציר $x$ היא $\theta$, וקטורי היחידה הם
+
+$$
+\hat r = (\cos\theta,\ \sin\theta) \qquad \hat\theta = (-\sin\theta,\ \cos\theta)
+$$
+
+$\hat r$ מצביע מ-O אל הנקודה, ו-$\hat\theta$ הוא $\hat r$ מסובב ב-$90^\circ$ נגד כיוון השעון, בכיוון שבו $\theta$ גדלה. וקטור המקום הוא $\vec r = r\hat r$. שני הווקטורים תלויים ב-$\theta$, וכשהגוף זז $\theta$ תלויה בזמן. בקואורדינטות קרטזיות $\hat x$ ו-$\hat y$ זהים בכל מקום; כאן לא.
+
+</Step>
+
+<Step fig="fig-1-4b" set={{ preset: 'circle', t: 0.6, showDelta: true, deltaOf: 'r', dTheta: 0.8, showV: false, showA: false, terms: [] }} id="unit-vector-derivatives">
+
+**הנגזרת של $\hat r$, בציור.** בשיעור 1.3 גזרנו אותה על מעגל; הנה התמונה, והיא נכונה לכל תנועה, גם כש-$r$ משתנה. באיור 1.4ב מצוירים $\hat r$ בזווית $\theta$ (החץ המסומן $\hat r(\theta)$) ובזווית $\theta + \Delta\theta$, וההפרש $\Delta\hat r$ ביניהם (החץ השחור המסומן $\Delta\hat r$). שני החצים באורך 1, והזווית ביניהם $\Delta\theta$, ולכן ההפרש הוא הבסיס של משולש שווה שוקיים: האורך שלו $2\sin(\Delta\theta/2)$. הקטינו את $\Delta\theta$ בפס הגרירה וקראו את השורה שמתחת לאיור. כש-$\Delta\theta$ קטן, $2\sin(\Delta\theta/2) \approx \Delta\theta$, והזווית בין $\Delta\hat r$ לבין $\hat r$ מתקרבת ל-$90^\circ$: ההפרש פונה בכיוון $\hat\theta$. לכן $\Delta\hat r \approx \Delta\theta\,\hat\theta$, ואחרי חלוקה ב-$\Delta t$ ומעבר לגבול:
+
+<Formula tex="\frac{d\hat r}{dt} = \dot\theta\,\hat\theta" label="הנגזרת של וקטור היחידה הרדיאלי" />
+
+**ובחשבון.** בכלל השרשרת, $\dfrac{d}{dt}\cos\theta = -\sin\theta\,\dot\theta$ ו-$\dfrac{d}{dt}\sin\theta = \cos\theta\,\dot\theta$. לכן $\dfrac{d\hat r}{dt} = \dot\theta\,(-\sin\theta,\ \cos\theta) = \dot\theta\,\hat\theta$. אותה תוצאה.
+
+</Step>
+
+<Step fig="fig-1-4b" set={{ preset: 'circle', t: 0.6, showDelta: true, deltaOf: 'th', dTheta: 0.8, showV: false, showA: false, terms: [] }}>
+
+**הנגזרת של $\hat\theta$.** אותו ציור, עכשיו ל-$\hat\theta$: ההפרש שלו פונה, כש-$\Delta\theta$ קטן, בכיוון $(-\hat r)$, אל O. בחשבון: $\dfrac{d\hat\theta}{dt} = \dot\theta\,(-\cos\theta,\ -\sin\theta)$, כלומר
+
+<Formula tex="\frac{d\hat\theta}{dt} = -\dot\theta\,\hat r" label="הנגזרת של וקטור היחידה הזוויתי" />
+
+שני הכללים הם מקרה של עובדה אחת: **וקטור שהאורך שלו קבוע יכול להשתנות רק בכיוון שניצב לו**. אילו היה לנגזרת רכיב לאורך הווקטור, האורך היה משתנה. הקצב של השינוי הוא קצב הסיבוב, $\dot\theta$. ומכאן הטעות שצריך להיזהר ממנה כל השיעור: לגזור את $r\hat r$ כאילו $\hat r$ קבוע.
+
+</Step>
+
+<Step fig="fig-1-4b" set={{ preset: 'spiral', t: 4, showDelta: false, showBasis: true, showV: true, showVParts: true, showA: false, terms: [] }} id="velocity-polar">
+
+**המהירות.** גוזרים את $\vec r = r\hat r$ לפי כלל המכפלה, ומציבים את $d\hat r/dt$:
+
+$$
+\vec v = \frac{d}{dt}\left(r\hat r\right) = \dot r\,\hat r + r\,\frac{d\hat r}{dt} = \dot r\,\hat r + r\dot\theta\,\hat\theta
+$$
+
+<Formula tex="\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta \qquad |\vec v|^2 = \dot r^2 + r^2\dot\theta^2" label="המהירות בקואורדינטות קוטביות" />
+
+באיור הנקודה נעה עכשיו על ספירלה, $r = b\theta$, כך ששני הרכיבים שונים מאפס. $v_r = \dot r$ הוא קצב ההתרחקות מ-O. $v_\theta = r\dot\theta$ הוא החלק שבא מהסיבוב. הרכיבים ניצבים, ולכן הגודל בפיתגורס.
+
+**בדיקת גבולות:** כש-$r$ קבוע נשאר $\vec v = r\dot\theta\,\hat\theta$, המהירות של תנועה מעגלית משיעור 1.3, $v = \omega r$, משיקה למעגל. כש-$\theta$ קבועה נשאר $\vec v = \dot r\,\hat r$: תנועה לאורך קרן שיוצאת מ-O.
+
+</Step>
+
+<Step fig="fig-1-4b" set={{ preset: 'spiral', t: 4, showDelta: false, showBasis: true, showV: false, showVParts: false, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }} id="accel-polar">
+
+**התאוצה.** גוזרים כל אחד משני האיברים של $\vec v$ לפי כלל המכפלה. האיבר הראשון:
+
+$$
+\frac{d}{dt}\left(\dot r\,\hat r\right) = \ddot r\,\hat r + \dot r\,\frac{d\hat r}{dt} = \ddot r\,\hat r + \dot r\dot\theta\,\hat\theta
+$$
+
+באיבר השני יש שלושה גורמים שתלויים בזמן, $r$, $\dot\theta$ ו-$\hat\theta$, ולכל אחד מהם איבר משלו:
+
+$$
+\frac{d}{dt}\left(r\dot\theta\,\hat\theta\right) = \dot r\dot\theta\,\hat\theta + r\ddot\theta\,\hat\theta + r\dot\theta\,\frac{d\hat\theta}{dt} = \dot r\dot\theta\,\hat\theta + r\ddot\theta\,\hat\theta - r\dot\theta^2\,\hat r
+$$
+
+מחברים, ואוספים את האיברים לפי וקטור היחידה. האיבר $\dot r\dot\theta\,\hat\theta$ מופיע **פעמיים**, פעם מכל שורה:
+
+<Formula tex="\vec a = \left(\ddot r - r\dot\theta^2\right)\hat r + \left(r\ddot\theta + 2\dot r\dot\theta\right)\hat\theta" label="התאוצה בקואורדינטות קוטביות" />
+
+באיור ארבעת האיברים מצוירים ראש לזנב, כל אחד עם התווית שלו, והשרשרת נגמרת בדיוק בקצה של החץ העבה המסומן $\vec a$. **בדיקת גבולות:** כש-$r$ קבוע, $\dot r = \ddot r = 0$, ונשאר $\vec a = -r\dot\theta^2\,\hat r + r\ddot\theta\,\hat\theta$: על מעגל סביב O אלה בדיוק התאוצה הצנטריפטלית $\omega^2 r$ והתאוצה המשיקית $\alpha r$ של שיעור 1.3. **בדיקת יחידות:** בכל איבר יש מטר אחד ושתי חלוקות בשנייה, כי רדיאן חסר ממדים: $\text{m/s}^2$.
+
+</Step>
+
+</Explain>
+
+</Spread>
+
+<Spread
+  fig="fig-1-4c"
+  n="1.4ג"
+  caption="אותו איור, עם שבע תנועות לבחירה. בכל אחת מצוירים וקטורי היחידה ($\hat r$, $\hat\theta$), המהירות ($\vec v$), התאוצה (החץ הכתום העבה, עם התווית $\vec a$) וארבעת האיברים שלה, ראש לזנב, כל אחד עם התווית שלו: $\ddot r$ ו-$(-r\dot\theta^2)$ לאורך $\hat r$, $r\ddot\theta$ ו-$2\dot r\dot\theta$ לאורך $\hat\theta$. איבר שערכו אפס מסומן בטבעת קטנה ובכיתוב שהוא אפס. הערכים של כל האיברים מופיעים בשורה שמתחת לאיור."
+  figure={PolarFrame}
+  figureProps={{ preset: 'circle', presets: ['circle', 'spin-up', 'bug', 'bead', 'line', 'pull', 'spiral'], showBasis: true, showV: true, showVParts: false, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'], tasks: ['line-zero', 'bead-double', 'pull-half'] }}
+>
+
+<Explain title="מה אומר כל איבר" id="term-meanings">
+
+<Step fig="fig-1-4c" set={{ preset: 'circle', t: 0, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }}>
+
+**$(-r\dot\theta^2)$: האיבר הצנטריפטלי הקוטבי.** במעגל אחיד סביב O, $r$ ו-$\dot\theta$ קבועים, ושלושה איברים אפס. נשאר $(-r\dot\theta^2\,\hat r)$, תמיד אל O. הוא קיים בכל רגע שבו $\dot\theta \ne 0$, גם כשאף קצב לא משתנה: הוא בא מכך שהרכיב $r\dot\theta\,\hat\theta$ של המהירות מסתובב יחד עם $\hat\theta$. הוא שווה ל<Term id="centripetal-acceleration">תאוצה הצנטריפטלית</Term> של שיעור 1.3, הרכיב שניצב למהירות, כש-$\dot r = \ddot r = 0$, כמו על מעגל סביב O, ובדרך כלל לא: אצל החיפושית, למשל, המהירות לא ניצבת ל-$\hat r$, ולכן האיבר הזה אינו הרכיב הניצב למהירות.
+
+</Step>
+
+<Step fig="fig-1-4c" set={{ preset: 'spin-up', t: 2, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }}>
+
+**$r\ddot\theta$: שינוי קצב הסיבוב.** בחרו "מעגל שמאיץ": $r$ קבוע ו-$\dot\theta$ גדל בקצב קבוע. על מעגל סביב O, האיבר $r\ddot\theta\,\hat\theta$ הוא ה<Term id="tangential-acceleration">תאוצה המשיקית</Term> של שיעור 1.3, $\alpha r$. אבל רק שם: $\hat\theta$ משיק למסלול רק כש-$\dot r = 0$. באופן כללי האיבר הזה משנה את הרכיב הזוויתי של המהירות, $r\dot\theta$, דרך $\dot\theta$.
+
+</Step>
+
+<Step fig="fig-1-4c" set={{ preset: 'bug', t: 0.4, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }} id="coriolis-term">
+
+**$2\dot r\dot\theta$: <Term id="c1-coriolis-acceleration">איבר קוריוליס</Term>.** זה האיבר של החיפושית מאיור 1.4א. הוא שונה מאפס רק כשהגוף גם מתרחק מ-O (או מתקרב אליו) וגם מסתובב סביבו, ושתי תרומות שוות בונות אותו:
+
+- **המהירות הרדיאלית מסתובבת.** החלק $\dot r\,\hat r$ של המהירות מסתובב יחד עם $\hat r$, וזה משנה אותו בקצב $\dot r\dot\theta$ בכיוון $\hat\theta$.
+- **הרכיב הזוויתי גדל עם $r$.** $v_\theta = r\dot\theta$, וכש-$r$ גדל ב-$\dot r$ לשנייה, $v_\theta$ גדל ב-$\dot r\dot\theta$ לשנייה, גם כש-$\dot\theta$ קבוע.
+
+החיפושית שהולכת החוצה צריכה, לכן, תאוצה צידית $2\dot r\omega = 3.0\,\text{m/s}^2$, בכל מרחק מהציר. זה מה שהרגליים הרגישו על הקרוסלה.
+
+**החיזוי שלכם מקבל כאן תשובה.** התשובה הנכונה היא השלישית: לתאוצה של החיפושית יש רכיב אל הציר, $(-r\omega^2)$, ועוד רכיב ניצב למוט, $2\dot r\omega$, בכיוון הסיבוב. האפשרות הראשונה, "רק אל הציר, כי הקצבים קבועים", מתייחסת ל-$\hat r$ ול-$\hat\theta$ כאל וקטורים קבועים. אבל הם מסתובבים עם המוט, ולכן גם כש-$\dot r$ ו-$\omega$ קבועים, המהירות הרדיאלית מסתובבת והרכיב הזוויתי $r\omega$ גדל. האפשרות השנייה, "אפס", שוכחת גם את האיבר הצנטריפטלי, והרביעית מבלבלת בין $\dot r$, קצב ההתרחקות, לבין תאוצה.
+
+</Step>
+
+<Note kind="warn">
+איבר קוריוליס הוא **חלק מהתאוצה**, כפי שהיא נמדדת מהרצפה הקבועה. הוא לא כוח. בפרק 7 נתאר את אותה תנועה מתוך הקרוסלה עצמה, מערכת ייחוס מסתובבת, ושם יופיע כוח מדומה בשם "כוח קוריוליס". כאן אין שום מערכת מסתובבת: רק נקודה, ראשית קבועה, וגזירה.
+</Note>
+
+<Step fig="fig-1-4c" set={{ preset: 'bead', t: 0, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }} id="rddot-not-radial">
+
+**$\ddot r$ הוא לא הרכיב הרדיאלי של התאוצה.** בחרו "חרוז חופשי על מוט": חרוז מחליק בלי חיכוך על מוט שמסתובב במהירות זוויתית קבועה. המוט יכול לדחוף אותו רק בכיוון ניצב לעצמו, ולכן הרכיב הרדיאלי של התאוצה של החרוז אפס כל הזמן: $a_r = \ddot r - r\dot\theta^2 = 0$. אבל $\ddot r$ עצמו **לא** אפס: $\ddot r = r\omega^2$. הפעילו את התנועה: החרוז בורח החוצה מהר יותר ויותר, והחצים של $\ddot r$ ושל $(-r\dot\theta^2)$ שווים ומנוגדים.
+
+הרכיב הרדיאלי הוא $\ddot r - r\dot\theta^2$, ולא $\ddot r$. השניים שווים רק כש-$\dot\theta = 0$, כשהגוף נע לאורך קרן קבועה.
+
+**מה בדיוק החרוז עושה.** התנאי $a_r = 0$ עם $\dot\theta = \omega$ הוא משוואה דיפרנציאלית ל-$r(t)$:
+
+$$
+\ddot r = \omega^2 r
+$$
+
+זו משוואה ליניארית מסדר שני עם מקדמים קבועים (שיעור 0.5). מנחשים $r = e^{\lambda t}$ ומציבים: $\lambda^2 e^{\lambda t} = \omega^2 e^{\lambda t}$, ולכן $\lambda = \pm\omega$, והפתרון הכללי הוא $r = Ae^{\omega t} + Be^{-\omega t}$. החרוז מתחיל במרחק $r_0$ ובמנוחה ביחס למוט: $r(0) = A + B = r_0$ ו-$\dot r(0) = \omega(A - B) = 0$, כלומר $A = B = r_0/2$:
+
+$$
+r(t) = r_0\,\frac{e^{\omega t} + e^{-\omega t}}{2} = r_0\cosh\omega t
+$$
+
+הפונקציה $\cosh x = \tfrac12\left(e^x + e^{-x}\right)$ נקראת "קוסינוס היפרבולי". בזמן קצר $r \approx r_0\left(1 + \tfrac12\omega^2t^2\right)$, כמו תאוצה קבועה $r_0\omega^2$ החוצה; בזמן ארוך $r \approx \tfrac12 r_0 e^{\omega t}$, והחרוז בורח באקספוננט. הפתרון $r_0e^{\omega t}$ לבדו היה נותן $\dot r(0) = r_0\omega \ne 0$: הוא מתאים לחרוז שכבר נזרק החוצה.
+
+</Step>
+
+<Step fig="fig-1-4c" set={{ preset: 'line', t: 0.5, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }}>
+
+והמקרה הקיצוני: בחרו "קו ישר". הנקודה נעה במהירות קבועה לאורך קו שלא עובר ב-O, ולכן התאוצה שלה אפס. אבל כל ארבעת האיברים שונים מאפס: המרחק מ-O לא משתנה בקצב קבוע, והזווית מסתובבת מהר ליד הנקודה הקרובה ביותר ולאט רחוק ממנה. האיברים מבטלים זה את זה בזוגות, והשרשרת חוזרת לנקודה. **איבר בתאוצה הקוטבית הוא לא תאוצה בפני עצמו**: רק הסכום שלהם הוא התאוצה.
+
+</Step>
+
+<Step fig="fig-1-4c" set={{ preset: 'pull', t: 0, showA: true, terms: ['radial', 'centripetal', 'angular', 'coriolis'] }} id="angular-component">
+
+**הרכיב הזוויתי כנגזרת.** שני האיברים של $a_\theta$ מצטרפים לנגזרת אחת. לפי כלל המכפלה, $\dfrac{d}{dt}\left(r^2\dot\theta\right) = 2r\dot r\dot\theta + r^2\ddot\theta$, ולכן
+
+<Formula tex="a_\theta = r\ddot\theta + 2\dot r\dot\theta = \frac{1}{r}\,\frac{d}{dt}\left(r^2\dot\theta\right)" label="הרכיב הזוויתי של התאוצה" />
+
+בחרו "משיכה דרך חור": דיסקית על שולחן חלק קשורה לחוט שעובר דרך חור ב-O, ומושכים את החוט מלמטה. החוט מושך את הדיסקית רק אל החור, ולכן $a_\theta = 0$, ולכן $r^2\dot\theta$ **קבוע**. כש-$r$ קטן פי 2, $\dot\theta$ גדל פי 4. ושימו לב לחצים: $r\ddot\theta$ ו-$2\dot r\dot\theta$ שווים ומנוגדים, אבל אף אחד מהם לא אפס. בפרקים 3 ו-6 הגודל $r^2\dot\theta$ יחזור, כתנע זוויתי ליחידת מסה.
+
+</Step>
+
+<Step fig="fig-1-4c" set={{ preset: 'pull', t: 1.2, showV: true, showA: true, terms: [] }} id="polar-vs-path">
+
+**רכיבים קוטביים מול רכיבים לאורך המסלול.** ב<LessonLink id="1.3">שיעור 1.3</LessonLink> פירקנו את התאוצה לרכיב משיקי למסלול ולרכיב ניצב לו. אלה **לא** הרכיבים הקוטביים. $\hat\theta$ משיק למעגל סביב O, ולא בהכרח למסלול: הוא משיק למסלול רק כש-$\dot r = 0$. בדיסקית הנמשכת $a_\theta = 0$, ובכל זאת גודל המהירות שלה גדל (קראו את $|\vec v|$ מתחת לאיור), כי המשיכה פנימה לא ניצבת למהירות, שיש לה רכיב פנימה. התאוצה המשיקית היא תמיד
+
+$$
+a_t = \frac{\vec a\cdot\vec v}{|\vec v|} = \frac{a_r\,\dot r + a_\theta\,r\dot\theta}{|\vec v|}
+$$
+
+והיא מערבת את שני הרכיבים הקוטביים.
+
+</Step>
+
+<Note>
+**איך משתמשים בזה כדי לפתור תנועה במישור.** (1) בוחרים ראשית ש"מתאימה" לבעיה: ציר הסיבוב, החור, המכ"ם. (2) כותבים מה ידוע על $r(t)$ ועל $\theta(t)$: אילוץ ($\dot\theta = \omega$, $r = b\theta$), או תנאי על רכיב של התאוצה ($a_r = 0$ לחרוז חופשי, $a_\theta = 0$ למשיכה אל מרכז). (3) מציבים בנוסחאות של $\vec v$ ושל $\vec a$. תנאי על רכיב של התאוצה נותן משוואה דיפרנציאלית (שיעור 0.5) ל-$r$ או ל-$\theta$. (4) בודקים גבולות: $r$ קבוע צריך לתת את התנועה המעגלית של שיעור 1.3.
+</Note>
+
+</Explain>
+
+</Spread>
+
+<Page>
+
+<Note>
+**בפתרונות של השיעור הזה** החוק הכללי הוא כמעט תמיד שתי הנוסחאות של $\vec v$ ושל $\vec a$ בקואורדינטות קוטביות, הראשית O והכיוון החיובי של $\theta$ נקבעים לפני כל סימן, ובדיקת הגבולות הטבעית היא $r$ קבוע (התנועה המעגלית של שיעור 1.3) או $\dot\theta = 0$.
+</Note>
+
+<Example id="ex-1-4-1" title="אילו איברים אפס?">
+
+לכל אחת מארבע התנועות, קבעו ונמקו אילו מהגדלים $\dot r$, $r\dot\theta$, $\ddot r$, $(-r\dot\theta^2)$, $r\ddot\theta$, $2\dot r\dot\theta$ שווים לאפס. הראשית O בכל המקרים היא הנקודה שמצוינת.
+
+(א) קצה של מחוג שניות, O במרכז השעון.
+
+(ב) מכונית שנוסעת במהירות קבועה ישר החוצה מכיכר עגולה, לאורך כביש שעובר במרכז הכיכר O.
+
+(ג) קצה של להב מאוורר שמואט עד עצירה, O בציר.
+
+(ד) כדור באולינג שמתגלגל בקו ישר במהירות קבועה, ו-O היא נקודה בצד המסלול.
+
+<Solution>
+
+**נתונים:** ארבע תנועות. בכל אחת יודעים אם $r$ קבוע, אם $\theta$ קבועה, ואם הקצבים שלהן קבועים.
+
+**החוק הכללי:** $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$ ו-$\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$. איבר אפס כשאחד הגורמים שלו אפס.
+
+**פיתוח (א):** $r$ קבוע (אורך המחוג), ולכן $\dot r = \ddot r = 0$, וגם $2\dot r\dot\theta = 0$. המחוג מסתובב בקצב קבוע, $\dot\theta \ne 0$ ו-$\ddot\theta = 0$. נשארים $r\dot\theta$ (המהירות) ו-$(-r\dot\theta^2)$ (התאוצה הצנטריפטלית).
+
+**פיתוח (ב):** הכביש עובר ב-O, ולכן $\theta$ קבועה: $\dot\theta = \ddot\theta = 0$, ואיתם $r\dot\theta$, $(-r\dot\theta^2)$, $r\ddot\theta$ ו-$2\dot r\dot\theta$. המהירות קבועה, ולכן $\ddot r = 0$. נשאר רק $\dot r \ne 0$, והתאוצה אפס.
+
+**פיתוח (ג):** $r$ קבוע, ולכן $\dot r$, $\ddot r$ ו-$2\dot r\dot\theta$ אפס. הלהב מאט, ולכן $\ddot\theta \ne 0$ (סימנו הפוך לסימן של $\dot\theta$). עד העצירה $r\dot\theta$, $(-r\dot\theta^2)$ ו-$r\ddot\theta$ שונים מאפס.
+
+**פיתוח (ד):** הקו לא עובר ב-O. הכדור מתקרב ל-O ואחר כך מתרחק, ולכן $\dot r \ne 0$, חוץ מברגע אחד, כשהוא בנקודה הקרובה ביותר. הזווית שלו מ-O משתנה, ולכן $\dot\theta \ne 0$. אף אחד מארבעת איברי התאוצה אינו אפס בדרך כלל. ובכל זאת התאוצה אפס, כי הכדור נע בקו ישר במהירות קבועה: האיברים מבטלים זה את זה, $\ddot r = r\dot\theta^2$ ו-$r\ddot\theta = -2\dot r\dot\theta$.
+
+**בדיקת גבולות:** (א) הוא המקרה הידוע של שיעור 1.3: מהירות משיקה ותאוצה אל המרכז. ב-(ב) התיאור הקוטבי מצטמצם לתנועה בממד אחד לאורך הקרן, כמו בשיעור 1.1. ב-(ד), אם O על הקו עצמו, חוזרים ל-(ב), וכל האיברים חוץ מ-$\dot r$ מתאפסים.
+
+**בדיקת יחידות:** $\dot r$ ו-$r\dot\theta$ ב-$\text{m/s}$; ארבעת איברי התאוצה ב-$\text{m/s}^2$.
+
+**תוצאה:** (א) רק $r\dot\theta$ ו-$(-r\dot\theta^2)$ שונים מאפס. (ב) רק $\dot r$. (ג) $r\dot\theta$, $(-r\dot\theta^2)$ ו-$r\ddot\theta$. (ד) כולם שונים מאפס בדרך כלל, אבל הסכום של איברי התאוצה אפס.
+
+<Note>
+סעיף (ד) הוא השיעור כולו בקטן: איבר בתאוצה הקוטבית אינו תאוצה. אפשר ש-$\ddot r \ne 0$ כשהתאוצה אפס.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Example id="ex-1-4-2" title="מה המכ״ם רואה">
+
+מכ"ם על פסגת הר, בנקודה O, עוקב אחרי מטוס שטס במישור אופקי בגובה של הפסגה, כך שהמכ"ם והמטוס באותו מישור. ברגע מסוים המטוס במרחק $5.0\,\text{km}$ מהמכ"ם, מתקרב אליו בקצב $120\,\text{m/s}$, והזווית שלו (נגד כיוון השעון במבט מלמעלה) גדלה בקצב $0.020\,\text{rad/s}$.
+
+(א) מה רכיבי המהירות $v_r$ ו-$v_\theta$, ומה גודל המהירות?
+
+(ב) מה הזווית בין המהירות של המטוס לבין הקו מהמטוס אל המכ"ם?
+
+(ג) אם המטוס ממשיך בקו ישר ובמהירות קבועה, מה המרחק הקטן ביותר שלו מהמכ"ם?
+
+<Solution>
+
+**נתונים:** הראשית O במכ"ם, $\theta$ גדלה נגד כיוון השעון. $r = 5.0\cdot10^{3}\,\text{m}$, $\dot r = -120\,\text{m/s}$ (מתקרב: $r$ קטן), $\dot\theta = 0.020\,\text{rad/s}$.
+
+**החוק הכללי:** $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$, ו-$|\vec v| = \sqrt{\dot r^2 + r^2\dot\theta^2}$.
+
+**פיתוח:** $v_r = \dot r$, ו-$v_\theta = r\dot\theta$. הקו מהמטוס אל המכ"ם הוא בכיוון $(-\hat r)$, ולכן הזווית $\psi$ בין המהירות לבין $(-\hat r)$ מקיימת $\tan\psi = \dfrac{v_\theta}{-v_r}$. בקו ישר, המרחק הקטן ביותר מ-O הוא המרחק של O מהקו: $r\sin\psi$.
+
+**תוצאה סימבולית:** $|\vec v| = \sqrt{\dot r^2 + r^2\dot\theta^2}$, $\tan\psi = \dfrac{r\dot\theta}{|\dot r|}$, $r_{\min} = r\sin\psi = \dfrac{r^2\dot\theta}{|\vec v|}$.
+
+**בדיקת גבולות:** כש-$\dot\theta = 0$ המטוס טס ישר אל המכ"ם: $\psi = 0$ ו-$r_{\min} = 0$, הוא יעבור מעליו. כש-$\dot r = 0$ המטוס בנקודה הקרובה ביותר ברגע הזה: $\psi = 90^\circ$ ו-$r_{\min} = r$.
+
+**בדיקת יחידות:** $r\dot\theta$ הוא $\text{m}\cdot\text{rad/s} = \text{m/s}$. $r^2\dot\theta/|\vec v|$ הוא $\text{m}^2\text{/s}$ חלקי $\text{m/s}$: מטר.
+
+**הצבה:** $v_r = -120\,\text{m/s}$, $v_\theta = 5.0\cdot10^{3}\cdot0.020 = 100\,\text{m/s}$, ולכן $|\vec v| = \sqrt{120^2 + 100^2} = 156\,\text{m/s}$. $\tan\psi = 100/120$, ולכן $\psi = 39.8^\circ$. $r_{\min} = 5.0\cdot10^{3}\cdot\sin 39.8^\circ = 3.20\cdot10^{3}\,\text{m}$.
+
+**תוצאה:** (א) $v_r = -120\,\text{m/s}$, $v_\theta = 100\,\text{m/s}$, $|\vec v| = 156\,\text{m/s}$. (ב) $39.8^\circ$. (ג) $3.20\,\text{km}$.
+
+<Note>
+מכ"ם דופלר מודד ישירות רק את $\dot r$, את קצב ההתקרבות. מטוס יכול להיות מהיר מאוד ועדיין להראות $\dot r$ קטן, אם הוא טס בעיקר בכיוון $\hat\theta$.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Example id="ex-1-4-3" title="כתם האור של זרקור על קיר">
+
+זרקור בנקודה O מסתובב במישור אופקי במהירות זוויתית קבועה $\omega = 0.20\,\text{rad/s}$. האלומה פוגעת בקיר ישר וארוך, במרחק $d = 50\,\text{m}$ מ-O. הזווית $\theta$ נמדדת מהניצב מ-O אל הקיר, וב-$t = 0$ היא אפס.
+
+(א) כתבו את המרחק $r(\theta)$ של הכתם מ-O, ומצאו בעזרת הנוסחאות הקוטביות את גודל המהירות של הכתם כפונקציה של $\theta$.
+
+(ב) מצאו את רכיבי התאוצה של הכתם, $a_r$ ו-$a_\theta$, כש-$\theta = 30^\circ$, והראו שהתאוצה כולה לאורך הקיר.
+
+<Solution>
+
+**נתונים:** O בזרקור. הציר $x$ ניצב לקיר, והקיר הוא הקו $x = d$. $\theta = \omega t$, ולכן $\dot\theta = \omega$ ו-$\ddot\theta = 0$.
+
+**החוק הכללי:** $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$ ו-$\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$.
+
+**פיתוח:** על הקיר $x = r\cos\theta = d$, ולכן $r = \dfrac{d}{\cos\theta}$. גוזרים בכלל השרשרת:
+
+$$
+\dot r = \frac{d\sin\theta}{\cos^2\theta}\,\omega \qquad r\dot\theta = \frac{d\,\omega}{\cos\theta}
+$$
+
+$$
+|\vec v|^2 = \frac{d^2\omega^2}{\cos^4\theta}\left(\sin^2\theta + \cos^2\theta\right) = \frac{d^2\omega^2}{\cos^4\theta}
+$$
+
+גוזרים שוב: $\ddot r = d\,\omega^2\,\dfrac{1 + \sin^2\theta}{\cos^3\theta}$. לכן
+
+$$
+a_r = \ddot r - r\omega^2 = d\,\omega^2\,\frac{1 + \sin^2\theta - \cos^2\theta}{\cos^3\theta} = \frac{2d\,\omega^2\sin^2\theta}{\cos^3\theta}
+\qquad
+a_\theta = 2\dot r\omega = \frac{2d\,\omega^2\sin\theta}{\cos^2\theta}
+$$
+
+**תוצאה סימבולית:** $|\vec v| = \dfrac{d\,\omega}{\cos^2\theta}$. היחס בין רכיבי התאוצה הוא $a_r/a_\theta = \tan\theta$, ולכן אפשר לכתוב
+
+$$
+\vec a = a_\theta\left(\tan\theta\,\hat r + \hat\theta\right)
+$$
+
+ברכיבים קרטזיים:
+
+$$
+\tan\theta\,(\cos\theta,\ \sin\theta) + (-\sin\theta,\ \cos\theta) = \left(0,\ \frac{\sin^2\theta}{\cos\theta} + \cos\theta\right) = \left(0,\ \frac{1}{\cos\theta}\right)
+$$
+
+הרכיב $x$ מתאפס: התאוצה כולה בכיוון $y$, לאורך הקיר, כמו שצריך לכתם שנע רק על הקיר. והגודל: $|\vec a| = \dfrac{a_\theta}{\cos\theta} = \dfrac{2d\,\omega^2\sin\theta}{\cos^3\theta}$.
+
+**בדיקת גבולות:** ב-$\theta = 0$, $|\vec v| = d\omega$, כמו נקודה על מעגל ברדיוס $d$. אבל התאוצה של הכתם ברגע הזה אפס, לא $d\omega^2$: $a_r = \ddot r - r\omega^2 = d\omega^2 - d\omega^2 = 0$, כי $\ddot r$ מבטל בדיוק את האיבר הצנטריפטלי, כמו בקו הישר של השלב "$\ddot r$ הוא לא הרכיב הרדיאלי", ו-$a_\theta = 2\dot r\omega = 0$ כי $\dot r = 0$. בקרטזיות: $y = d\tan\omega t$ היא פונקציה אי-זוגית של $t$, ולכן $\ddot y(0) = 0$. כש-$\theta \to 90^\circ$ המהירות שואפת לאינסוף: האלומה כמעט מקבילה לקיר, והכתם בורח לאורכו. הכתם הוא לא גוף, ולכן אין סתירה.
+
+**בדיקת יחידות:** $d\omega$ הוא $\text{m/s}$; $d\omega^2$ הוא $\text{m/s}^2$.
+
+**הצבה:** ב-$\theta = 30^\circ$: $|\vec v| = 50\cdot0.20/0.75 = 13.3\,\text{m/s}$. $r = 57.7\,\text{m}$, $\dot r = 6.67\,\text{m/s}$, $\ddot r = 3.85\,\text{m/s}^2$. לכן $a_r = 3.85 - 57.7\cdot0.040 = 1.54\,\text{m/s}^2$ ו-$a_\theta = 2\cdot6.67\cdot0.20 = 2.67\,\text{m/s}^2$, ו-$|\vec a| = 3.08\,\text{m/s}^2$.
+
+**תוצאה:** (א) $r = d/\cos\theta$, $|\vec v| = d\omega/\cos^2\theta$. (ב) $a_r = 1.54\,\text{m/s}^2$, $a_\theta = 2.67\,\text{m/s}^2$, ו-$|\vec a| = 3.08\,\text{m/s}^2$, לאורך הקיר.
+
+<Note>
+הבדיקה בקרטזיות: $y = d\tan\omega t$ נותן $\ddot y = 2d\omega^2\tan\theta/\cos^2\theta = 3.08\,\text{m/s}^2$, אותו מספר. כאן הקרטזיות פשוטות יותר. הקוטביות מנצחות כשהבעיה נותנת $r$ ו-$\theta$, כמו מכ"ם או זרקור.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Example id="ex-1-4-4" title="התאוצה של ההולך על הקרוסלה, בלי לגזור וקטורי יחידה">
+
+אדם הולך החוצה לאורך קו רדיאלי על קרוסלה, במהירות קבועה $u$ ביחס לקרוסלה, והקרוסלה מסתובבת במהירות זוויתית קבועה $\omega$. מצאו את התאוצה שלו, כפי שהיא נמדדת מהקרקע, מתוך שינוי המהירות בזמן קצר $\Delta t$, בציור, בלי הנוסחה של $\vec a$. השוו לנוסחה. אחר כך הציבו $u = 1.0\,\text{m/s}$, $\omega = 0.50\,\text{rad/s}$ ו-$r = 2.0\,\text{m}$.
+
+<Solution>
+
+**נתונים:** O במרכז הקרוסלה, $\theta$ גדלה בכיוון הסיבוב. $\dot r = u$ קבוע, $\dot\theta = \omega$ קבוע.
+
+**החוק הכללי:** $\vec a = \lim\limits_{\Delta t\to0}\Delta\vec v/\Delta t$, ו-$\vec v = u\,\hat r + r\omega\,\hat\theta$.
+
+**פיתוח:** בזמן $\Delta t$ קורים שלושה דברים:
+
+1. **הרכיב $u\,\hat r$ מסתובב** בזווית $\omega\Delta t$. האורך שלו קבוע, ולכן הוא משתנה בכיוון ניצב לו, $\hat\theta$, בשיעור $u\,\omega\Delta t$.
+2. **הרכיב $r\omega\,\hat\theta$ גדל**, כי $r$ גדל ב-$u\Delta t$: השינוי הוא $u\,\Delta t\cdot\omega$, בכיוון $\hat\theta$.
+3. **הרכיב $r\omega\,\hat\theta$ מסתובב** בזווית $\omega\Delta t$, ומשתנה בכיוון ניצב לו, אל המרכז: $r\omega\cdot\omega\Delta t$, בכיוון $(-\hat r)$.
+
+מחלקים ב-$\Delta t$.
+
+**תוצאה סימבולית:** $\vec a = -r\omega^2\,\hat r + 2u\omega\,\hat\theta$. שתי התרומות השוות בכיוון $\hat\theta$ הן שני החצאים של איבר קוריוליס, וזו בדיוק הנוסחה הקוטבית עם $\ddot r = 0$ ו-$\ddot\theta = 0$.
+
+**בדיקת גבולות:** כש-$u = 0$ האדם עומד על הקרוסלה ונע במעגל: נשאר $(-r\omega^2\,\hat r)$, התאוצה הצנטריפטלית. כש-$\omega = 0$ הקרוסלה עומדת, והוא הולך בקו ישר במהירות קבועה: $\vec a = 0$.
+
+**בדיקת יחידות:** $u\omega$ הוא $\text{m/s}\cdot\text{1/s} = \text{m/s}^2$; $r\omega^2$ גם.
+
+**הצבה:** $a_r = -2.0\cdot0.25 = -0.50\,\text{m/s}^2$, $a_\theta = 2\cdot1.0\cdot0.50 = 1.0\,\text{m/s}^2$, ולכן $|\vec a| = \sqrt{0.50^2 + 1.0^2} = 1.12\,\text{m/s}^2$.
+
+**תוצאה:** $\vec a = -r\omega^2\,\hat r + 2u\omega\,\hat\theta$; כאן $a_r = -0.50\,\text{m/s}^2$, $a_\theta = 1.0\,\text{m/s}^2$, $|\vec a| = 1.12\,\text{m/s}^2$. הרכיב הצידי גדול כאן פי 2 מהרכיב אל המרכז.
+
+<Note>
+הטעות הנפוצה היא לספור רק את אחד משני החצאים, ולקבל $u\omega$. בציור אי אפשר לפספס: שני דברים שונים קורים לרכיב בכיוון $\hat\theta$, והוא גם מתווסף מהסיבוב של $u\,\hat r$ וגם גדל עם $r$.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Example id="ex-1-4-5" title="מעגל שעובר דרך הראשית">
+
+נקודה נעה במהירות קבועה על מעגל ברדיוס $R$, במהירות זוויתית $\omega$ סביב **המרכז** שלו. מתארים את התנועה בקואורדינטות קוטביות סביב נקודה O **על** המעגל: במשוואת המעגל $r = 2R\cos\theta$, והזווית מ-O גדלה בקצב קבוע $\dot\theta = \omega/2$ (משפט הזווית ההיקפית).
+
+(א) מצאו את $|\vec v|$ ואת $a_r$ ו-$a_\theta$ כפונקציה של $\theta$.
+
+(ב) הראו ש-$|\vec a| = R\omega^2$, וקבעו ונמקו: גודל המהירות קבוע, ובכל זאת $a_\theta \ne 0$. האם זו סתירה?
+
+<Solution>
+
+**נתונים:** O על המעגל, הציר $x$ עובר דרך המרכז, ולכן הקוטר מ-O, באורך $2R$, מונח על הציר $x$. למה $r = 2R\cos\theta$: המיתר מ-O אל הנקודה P, הקוטר מ-O, והקטע מ-P אל הקצה השני של הקוטר יוצרים משולש שהזווית שלו ב-P ישרה (משפט תאלס: זווית היקפית שנשענת על קוטר). במשולש ישר הזווית הזה המיתר OP הוא הניצב שליד הזווית $\theta$, והיתר הוא הקוטר, ולכן $r = 2R\cos\theta$. $\dot\theta = \omega/2$ קבוע, $\ddot\theta = 0$.
+
+**החוק הכללי:** $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$ ו-$\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$.
+
+**פיתוח:** $\dot r = -2R\sin\theta\,\dot\theta$ ו-$\ddot r = -2R\cos\theta\,\dot\theta^2$. לכן
+
+$$
+|\vec v|^2 = 4R^2\dot\theta^2\left(\sin^2\theta + \cos^2\theta\right) = 4R^2\dot\theta^2 = R^2\omega^2
+$$
+
+$$
+a_r = -2R\cos\theta\,\dot\theta^2 - 2R\cos\theta\,\dot\theta^2 = -R\omega^2\cos\theta
+\qquad
+a_\theta = 2\dot r\dot\theta = -R\omega^2\sin\theta
+$$
+
+**תוצאה סימבולית:** $|\vec v| = R\omega$, $a_r = -R\omega^2\cos\theta$, $a_\theta = -R\omega^2\sin\theta$, ולכן $|\vec a| = R\omega^2\sqrt{\cos^2\theta + \sin^2\theta} = R\omega^2$.
+
+**פיתוח (ב):** אין סתירה. $a_\theta$ הוא הרכיב לאורך $\hat\theta$, המשיק למעגל **סביב O**. המסלול הוא מעגל אחר, סביב המרכז שלו. $\hat\theta$ משיק למסלול רק כש-$\dot r = 0$, כלומר ב-$\theta = 0$, בנקודה הרחוקה מ-O. בכל נקודה אחרת למהירות יש רכיב רדיאלי, והתאוצה, שפונה אל מרכז המעגל, ניצבת למהירות אבל לא ל-$\hat\theta$. התאוצה המשיקית (לאורך המסלול) היא $\dfrac{a_r\dot r + a_\theta r\dot\theta}{|\vec v|}$, ובהצבה היא יוצאת אפס, כמו שצריך במהירות קבועה.
+
+**בדיקת גבולות:** ב-$\theta = 0$, בנקודה הרחוקה מ-O: $a_\theta = 0$ ו-$a_r = -R\omega^2$, תאוצה צנטריפטלית אל מרכז המעגל, שנמצא בדיוק בכיוון של O. ו-$|\vec a| = R\omega^2$, $|\vec v| = R\omega$ הם הערכים של תנועה מעגלית אחידה משיעור 1.3, שלא תלויים באיזו ראשית בחרנו.
+
+**בדיקת יחידות:** $R\omega$ ב-$\text{m/s}$, $R\omega^2$ ב-$\text{m/s}^2$.
+
+**תוצאה:** (א) $|\vec v| = R\omega$, $a_r = -R\omega^2\cos\theta$, $a_\theta = -R\omega^2\sin\theta$. (ב) $|\vec a| = R\omega^2$. אין סתירה: הרכיב הזוויתי הוא לא הרכיב המשיקי למסלול.
+
+<Note>
+הרכיבים הקוטביים תלויים בבחירת הראשית; הווקטור $\vec a$ לא. אותה תנועה בדיוק נותנת $a_\theta = 0$ סביב המרכז ו-$a_\theta \ne 0$ סביב O.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Example id="ex-1-4-6" title="מושכים את החוט בקצב קבוע">
+
+דיסקית מחליקה בלי חיכוך על שולחן אופקי, קשורה לחוט שעובר דרך חור קטן במרכז השולחן. בהתחלה היא נעה במעגל ברדיוס $r_0 = 0.60\,\text{m}$ סביב החור, במהירות זוויתית $\omega_0 = 2.0\,\text{rad/s}$. מרגע $t = 0$ מושכים את החוט מלמטה בקצב קבוע, $u = 0.10\,\text{m/s}$. החוט מושך את הדיסקית רק לכיוון החור.
+
+(א) מצאו את $\dot\theta$ כפונקציה של $r$.
+
+(ב) מה רכיבי המהירות וגודלה, ומה רכיבי התאוצה, ברגע ש-$r = 0.30\,\text{m}$?
+
+(ג) כמה סיבובים עשתה הדיסקית עד אז?
+
+<Solution>
+
+**נתונים:** O בחור. $r = r_0 - ut$, ולכן $\dot r = -u$ ו-$\ddot r = 0$. החוט מושך רק לאורך $\hat r$, ולכן $a_\theta = 0$.
+
+**החוק הכללי:** $a_\theta = \dfrac1r\,\dfrac{d}{dt}\left(r^2\dot\theta\right)$, ו-$a_r = \ddot r - r\dot\theta^2$.
+
+**פיתוח (א):** $a_\theta = 0$, ולכן $r^2\dot\theta$ קבוע ושווה לערך ההתחלתי: $r^2\dot\theta = r_0^2\omega_0$.
+
+**פיתוח (ג):** $\dot\theta = \dfrac{r_0^2\omega_0}{(r_0 - ut)^2}$. מבצעים אינטגרל מ-0 עד $t$:
+
+$$
+\theta(t) = r_0^2\omega_0\int_0^t\frac{dt'}{(r_0 - ut')^2} = \frac{r_0^2\omega_0}{u}\left(\frac1r - \frac1{r_0}\right)
+$$
+
+**תוצאה סימבולית:** $\dot\theta = \omega_0\,\dfrac{r_0^2}{r^2}$. $v_r = -u$, $v_\theta = r\dot\theta = \dfrac{r_0^2\omega_0}{r}$. $a_r = -r\dot\theta^2 = -\dfrac{r_0^4\omega_0^2}{r^3}$ ו-$a_\theta = 0$. בנוסף $\ddot\theta = -\dfrac{2\dot r\dot\theta}{r} = \dfrac{2u\dot\theta}{r}$: הדיסקית מסתובבת מהר יותר ויותר.
+
+**בדיקת גבולות:** כש-$u \to 0$, $r = r_0$ כל הזמן, $\dot\theta = \omega_0$ ו-$a_r = -r_0\omega_0^2$: התנועה המעגלית ההתחלתית. ב-(ג), כש-$r \to r_0$ הזווית שואפת לאפס, וכש-$u \to 0$ היא שואפת לאינסוף: לוקח זמן אינסופי להגיע.
+
+**בדיקת יחידות:** $r_0^2\omega_0/r$ הוא $\text{m}^2\cdot\text{s}^{-1}/\text{m} = \text{m/s}$; $r_0^4\omega_0^2/r^3$ הוא $\text{m/s}^2$; $\dfrac{r_0^2\omega_0}{u}\cdot\dfrac1r$ חסר ממדים, רדיאנים.
+
+**הצבה:** ב-$r = 0.30\,\text{m}$: $\dot\theta = 2.0\cdot(0.60/0.30)^2 = 8.0\,\text{rad/s}$. $v_r = -0.10\,\text{m/s}$, $v_\theta = 0.30\cdot8.0 = 2.4\,\text{m/s}$, $|\vec v| = 2.40\,\text{m/s}$. $a_r = -0.30\cdot64 = -19.2\,\text{m/s}^2$ ו-$a_\theta = 0$. הזמן הוא $t = (0.60 - 0.30)/0.10 = 3.0\,\text{s}$, והזווית $\theta = \dfrac{0.36\cdot2.0}{0.10}\left(\dfrac1{0.30} - \dfrac1{0.60}\right) = 12.0\,\text{rad}$, כלומר $1.91$ סיבובים.
+
+**תוצאה:** (א) $\dot\theta = \omega_0 r_0^2/r^2$. (ב) $v_r = -0.10\,\text{m/s}$, $v_\theta = 2.4\,\text{m/s}$, $|\vec v| = 2.40\,\text{m/s}$; $a_r = -19.2\,\text{m/s}^2$, $a_\theta = 0$. (ג) $1.91$ סיבובים.
+
+<Note>
+גודל המהירות גדל מ-$1.20$ ל-$2.40\,\text{m/s}$, אף שהחוט מושך רק אל המרכז. משיכה אל המרכז שומרת על גודל המהירות רק כשהיא ניצבת למהירות, וכאן למהירות יש רכיב פנימה. מה שנשמר הוא $r^2\dot\theta$, לא $r\dot\theta$.
+</Note>
+
+</Solution>
+
+</Example>
+
+<Check
+  title="ארבע שאלות על השיעור"
+  ids={['Q-1.4-why-extra-term', 'Q-1.4-accel-numbers', 'Q-1.4-straight-line', 'Q-1.4-bead-free']}
+/>
+
+<Watch id="v-1-4-polar-unit-vectors" title="וקטורי היחידה תלויים במקום (רשות)">
+
+ארבע דקות מ-MIT: המרצה בונה את $\hat r$ ואת $\hat\theta$ בשתי נקודות על מעגל, ומראה שהם שונים מנקודה לנקודה. זה הצעד הראשון של איור 1.4ב. בזמן הצפייה, חשבו: מה ההפרש בין שני וקטורי ה-$\hat r$ כשהנקודות קרובות מאוד?
+
+</Watch>
+
+<Watch id="v-1-4-ball-in-tube" title="כדור בצינור מסתובב (רשות, הרצאה מלאה)">
+
+הרצאה מלאה מהקורס להנדסת דינמיקה של MIT. המרצה מציב את התאוצה הקוטבית בכדור על חוט, בכדור שזז החוצה בקצב קבוע לאורך צינור מסתובב (החיפושית שלנו), ובכדור חופשי בצינור (החרוז שלנו). שימו לב: הוא קורא לכוח שהצינור מפעיל כדי לספק את האיבר $2\dot r\dot\theta$ "כוח קוריוליס". אצלנו זה איבר קוריוליס בתאוצה, והכוח הוא הכוח של הצינור; השם "כוח קוריוליס" שמור בקורס לכוח המדומה של פרק 7.
+
+</Watch>
+
+<Summary title="מה למדנו">
+
+- בקואורדינטות קוטביות וקטורי היחידה $\hat r$ ו-$\hat\theta$ נוסעים עם הגוף ומסתובבים איתו: $\dfrac{d\hat r}{dt} = \dot\theta\,\hat\theta$ ו-$\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$. וקטור שהאורך שלו קבוע משתנה רק בכיוון שניצב לו.
+- מכלל המכפלה: $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$, ו-$|\vec v|^2 = \dot r^2 + r^2\dot\theta^2$.
+- $\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$. ארבעה איברים: $\ddot r$, שינוי הקצב הרדיאלי; $(-r\dot\theta^2)$, האיבר הצנטריפטלי הקוטבי, תמיד אל O (הוא התאוצה הצנטריפטלית של שיעור 1.3 כש-$\dot r = \ddot r = 0$, כמו על מעגל סביב O); $r\ddot\theta$, שינוי קצב הסיבוב (התאוצה המשיקית רק על מעגל סביב O); $2\dot r\dot\theta$, איבר קוריוליס, משתי תרומות שוות. איבר קוריוליס הוא חלק מהתאוצה, לא כוח.
+- הרכיב הרדיאלי הוא $\ddot r - r\dot\theta^2$, לא $\ddot r$: לגוף שנע בקו ישר במהירות קבועה, בקו שלא עובר ב-O, יש $\ddot r \ne 0$, אבל $\vec a = 0$.
+- $a_\theta = \dfrac1r\,\dfrac{d}{dt}(r^2\dot\theta)$: כשהתאוצה כולה לאורך $\hat r$, $r^2\dot\theta$ קבוע.
+- הרכיבים הקוטביים תלויים בראשית, והם לא הרכיבים לאורך המסלול ולרוחבו של שיעור 1.3: $\hat\theta$ משיק למסלול רק כש-$\dot r = 0$.
+- מתי משתמשים: כשהבעיה נותנת או כופה את $r$ ואת $\theta$ (ציר סיבוב, חור, מכ"ם, כוח שפונה אל נקודה). כש-$r$ קבוע הנוסחאות חוזרות לתנועה המעגלית.
+
+<Formula tex="\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta \qquad \vec a = \left(\ddot r - r\dot\theta^2\right)\hat r + \left(r\ddot\theta + 2\dot r\dot\theta\right)\hat\theta" label="מהירות ותאוצה בקואורדינטות קוטביות (סיכום)" />
+
+<Revisit id="pred-1-4" />
+
+</Summary>
+
+</Page>

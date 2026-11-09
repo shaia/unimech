@@ -1,0 +1,23 @@
+# Videos of lesson 1.2. Every id was checked against YouTube oEmbed on the `verified` date (exists,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds).
+# `why` claims only what the title and the description support; no caption track was confirmed.
+
+- id: v-1-2-bullet-scales
+  youtubeId: Y4jgJK35Gf0
+  title: 'The Classic Bullet Projectile Motion Experiment with X & Y Axis Scales'
+  channel: Flipping Physics
+  lang: en
+  start: 0
+  minutes: 2
+  why: 'צילום ב-60 תמונות לשנייה, עם סרגלים על שני הצירים: כדור אחד נורה אופקית ושני נופל ממנוחה באותו רגע, ומוצג במהירויות 50%, 25%, 10% ו-1%. עצרו את הסרטון בכמה רגעים והשוו את הגובה של שני הכדורים: זה הרכיב y של r(t) = r₀ + v₀t + ½gt², שלא תלוי ברכיב x של v₀.'
+  verified: '2026-11-08'
+
+- id: v-1-2-incline-max
+  youtubeId: zRQ8RiUnvEc
+  title: 'Projectile on an inclined plane: maximising the range'
+  channel: Dr Ben Yelverton
+  lang: en
+  start: 0
+  minutes: 13
+  why: 'לפי התיאור, הסרטון יוצא ממשוואת המסלול, מוצא את המרחק שהגוף עובר במעלה מדרון, ואז את הזווית שנותנת את הטווח הגדול ביותר. זו הדרך השנייה שבשיעור (משוואת המסלול וחיתוך עם קו המדרון). השוו את התוצאה שלו ל-45° + α/2, וזכרו לבדוק מאיזה קו הוא מודד את זווית השיגור.'
+  verified: '2026-11-08'

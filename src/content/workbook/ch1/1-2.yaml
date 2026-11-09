@@ -1,0 +1,458 @@
+# Workbook, lesson 1.2 (constant acceleration and projectiles). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch1/1-2/numbers.ts against src/physics/projectile.ts with G = 9.8:
+#   W02 v(1.5) = (12, −9.7) m/s, r(1.5) = (18, 6.475) m;  W03 T = 2.59 s, H = 8.20 m, R = 70.4 m (Moon ×6: 15.5 s,
+#   49.2 m, 422 m);  W05 y_max = 4.0 m at t = 2.0 s, x = 6.0 m, speed 3.0 m/s;  W06 t = 0.606 s, v₀ = 9.90 m/s;
+#   W07 all three land at 25.2 m/s, after 1.60 s (down), 2.26 s (level), 3.18 s (up);  W08 θ = 32.1° and 69.2°,
+#   at 1.48 s and 3.53 s, envelope at 25 m = 12.8 m;  W09 θ − β = 61.8°, θ = 76.8°, T = 3.35 s, L = 14.3 m,
+#   impact speed 15.9 m/s (velocity along the slope at impact = 0 to rounding);  W10 D = 36.1 m, t = 1.44 s,
+#   hit at 9.81 m, target falls in 2.02 s, v₀ min = 17.8 m/s;
+#   c1 t₁ = 7.14 s, t₂ = 1.00 s, Δt = 2v₀ sin37°/g = 6.14 s, Δx = 245 m;  c2 θ_min = arctan 4 = 76.0°, at 20 m/s H = R = 19.2 m.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '1.2'
+practice:
+  - id: W-1.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-1.2-1]
+    prompt: >-
+      מראש צוק, באותו רגע, משחררים אבן A ממנוחה וזורקים אבן B אופקית במהירות $10\,\text{m/s}$. אין התנגדות אוויר.
+
+      א. איזו אבן פוגעת ראשונה בים שמתחת?
+
+      ב. בכל רגע במהלך הנפילה, מה זהה לשתי האבנים: הגובה, הרכיב האנכי של המהירות, גודל המהירות?
+    answer: >-
+      א. שתיהן פוגעות באותו רגע.
+
+      ב. הגובה והרכיב האנכי של המהירות זהים; גודל המהירות של B גדול יותר.
+    solution:
+      - kind: law
+        text: >-
+          תאוצה קבועה בצורה וקטורית: $\vec r(t) = \vec r_0 + \vec v_0t + \tfrac12\vec gt^2$, עם $\vec g = (0,\ -g)$ וציר $y$ כלפי מעלה.
+      - kind: reasoning
+        text: >-
+          ברכיב $y$ לשתי האבנים אותו $y_0$, אותו $v_{0y} = 0$ ואותו $g_y = -g$, ולכן אותו $y(t) = y_0 - \tfrac12gt^2$ ואותו $v_y = -gt$.
+          הרכיב $x$ של $\vec v_0$ נכנס רק למשוואת $x(t)$, ואינו משפיע על הנפילה. לכן הן מגיעות לים יחד.
+          גודל המהירות הוא $\sqrt{v_x^2 + v_y^2}$, ול-B יש גם $v_x = 10\,\text{m/s}$.
+      - kind: limit
+        text: >-
+          כשמהירות הזריקה של B שואפת לאפס, B הופכת ל-A, וכל ההבדלים נעלמים, כמו שצריך.
+      - kind: units
+        text: >-
+          $y_0 - \tfrac12gt^2$ במטרים, ו-$gt$ ב-$\text{m/s}$.
+      - kind: result
+        text: >-
+          א. יחד. ב. הגובה ו-$v_y$ זהים בכל רגע; $|\vec v_B| > |\vec v_A|$.
+
+  - id: W-1.2-02
+    level: basic
+    objectives: [OBJ-1.2-1]
+    prompt: >-
+      גוף נמצא ברגע $t = 0$ בנקודה $\vec r_0 = (0,\ 10)\,\text{m}$, ומהירותו $\vec v_0 = (12,\ 5.0)\,\text{m/s}$. התאוצה קבועה,
+      $\vec a = (0,\ -9.8)\,\text{m/s}^2$. מצאו את $\vec v$ ואת $\vec r$ ברגע $t = 1.5\,\text{s}$.
+    answer: >-
+      $\vec v = (12,\ -9.7)\,\text{m/s}$, $\vec r = (18,\ 6.475)\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec r_0 = (0,\ 10)\,\text{m}$, $\vec v_0 = (12,\ 5.0)\,\text{m/s}$, $\vec a = (0,\ -9.8)\,\text{m/s}^2$, $t = 1.5\,\text{s}$.
+      - kind: law
+        text: >-
+          אינטגרציה של $\vec a$ קבוע: $\vec v = \vec v_0 + \vec at$, ושוב: $\vec r = \vec r_0 + \vec v_0t + \tfrac12\vec at^2$.
+      - kind: manipulation
+        text: >-
+          ברכיבים: $v_x = 12$, $v_y = 5.0 - 9.8t$; $x = 12t$, $y = 10 + 5.0t - 4.9t^2$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$ הביטויים נותנים $\vec v_0$ ו-$\vec r_0$, כלומר תנאי ההתחלה מתקיימים.
+      - kind: units
+        text: >-
+          $\vec at$ ב-$\text{m/s}$ ו-$\tfrac12\vec at^2$ במטרים.
+      - kind: substitution
+        text: >-
+          $v_y = 5.0 - 14.7 = -9.7\,\text{m/s}$; $x = 18\,\text{m}$; $y = 10 + 7.5 - 11.025 = 6.475\,\text{m}$.
+      - kind: result
+        text: >-
+          $\vec v = (12,\ -9.7)\,\text{m/s}$ (כבר בירידה), $\vec r = (18,\ 6.475)\,\text{m}$.
+
+  - id: W-1.2-03
+    level: basic
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      כדור נבעט מהקרקע במהירות $30\,\text{m/s}$ בזווית $25^\circ$ מעל האופק, על קרקע מישורית ובלי התנגדות אוויר. מצאו את
+      זמן התנועה, את הגובה המרבי ואת הטווח.
+    answer: >-
+      $T = 2.59\,\text{s}$, $H = 8.20\,\text{m}$, $R = 70.4\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $v_0 = 30\,\text{m/s}$, $\theta = 25^\circ$; ראשית בנקודת הבעיטה, $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          $x = v_0\cos\theta\,t$, $y = v_0\sin\theta\,t - \tfrac12gt^2$, $v_y = v_0\sin\theta - gt$.
+      - kind: manipulation
+        text: >-
+          נחיתה: $y = 0$, $T = 2v_0\sin\theta/g$. שיא: $v_y = 0$, ומשם $H = v_0^2\sin^2\theta/(2g)$. טווח: $R = v_0\cos\theta\,T = v_0^2\sin2\theta/g$.
+      - kind: limit
+        text: >-
+          ב-$\theta = 90^\circ$ הטווח אפס והגובה $v_0^2/(2g)$, הגובה בזריקה אנכית.
+      - kind: units
+        text: >-
+          $v_0/g$ בשניות ו-$v_0^2/g$ במטרים.
+      - kind: substitution
+        text: >-
+          $T = 2\cdot30\cdot0.423/9.8 = 2.59\,\text{s}$; $H = 900\cdot0.179/19.6 = 8.20\,\text{m}$; $R = 900\cdot0.766/9.8 = 70.4\,\text{m}$.
+      - kind: result
+        text: >-
+          $T = 2.59\,\text{s}$, $H = 8.20\,\text{m}$, $R = 70.4\,\text{m}$.
+
+  - id: W-1.2-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      את אותה בעיטה, באותה מהירות ובאותה זווית, מבצעים על הירח, שבו תאוצת הנפילה קטנה פי 6 מאשר על כדור הארץ. בלי
+      לחשב מחדש מההתחלה: פי כמה משתנים זמן התנועה, הגובה המרבי והטווח? והאם הזווית שנותנת את הטווח הגדול ביותר משתנה?
+    answer: >-
+      שלושתם גדלים פי 6; הזווית הטובה ביותר נשארת $45^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          $T = 2v_0\sin\theta/g$, $H = v_0^2\sin^2\theta/(2g)$, $R = v_0^2\sin2\theta/g$.
+      - kind: reasoning
+        text: >-
+          כל אחד מהם הוא ביטוי ב-$v_0$ וב-$\theta$ חלקי $g$ בחזקה ראשונה. כש-$g$ קטן פי 6, כל אחד גדל פי 6. הזווית שמביאה את
+          $\sin2\theta$ למקסימום לא תלויה ב-$g$, ולכן היא נשארת $45^\circ$. (גם צורת המסלול, $y/H$ כפונקציה של $x/R$, זהה: הכול נמתח פי 6.)
+      - kind: limit
+        text: >-
+          כש-$g \to 0$ הזמן והטווח שואפים לאינסוף: בלי כובד הגוף לא חוזר לקרקע, כמו שצריך.
+      - kind: units
+        text: >-
+          היחס בין שני ערכים של אותו גודל חסר יחידות, ולכן "פי 6" נכון לשלושתם.
+      - kind: substitution
+        text: >-
+          עם המספרים של התרגיל הקודם: $T = 15.5\,\text{s}$, $H = 49.2\,\text{m}$, $R = 422\,\text{m}$.
+      - kind: result
+        text: >-
+          זמן, גובה וטווח: פי 6. הזווית הטובה ביותר: עדיין $45^\circ$.
+
+  - id: W-1.2-05
+    level: mid
+    objectives: [OBJ-1.2-1]
+    prompt: >-
+      דיסקית מחליקה בלי חיכוך על שולחן אוויר משופע. בצירים של השולחן ($y$ במעלה השיפוע) התאוצה שלה קבועה,
+      $\vec a = (0,\ -2.0)\,\text{m/s}^2$. ברגע $t = 0$ היא בראשית, ומהירותה $\vec v_0 = (3.0,\ 4.0)\,\text{m/s}$.
+
+      א. מה ה-$y$ הגדול ביותר שהיא מגיעה אליו? פתרו בלי לחשב זמן, בעזרת $v^2 = v_0^2 + 2\,\vec a\cdot\Delta\vec r$.
+
+      ב. מתי היא שם, ומה ה-$x$ שלה אז?
+    answer: >-
+      א. $y_{\max} = 4.0\,\text{m}$ (גודל המהירות שם $3.0\,\text{m/s}$).
+
+      ב. ב-$t = 2.0\,\text{s}$, ב-$x = 6.0\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec a = (0,\ -2.0)\,\text{m/s}^2$, $\vec v_0 = (3.0,\ 4.0)\,\text{m/s}$, $\vec r_0 = 0$.
+      - kind: law
+        text: >-
+          $v^2 = v_0^2 + 2\,\vec a\cdot\left(\vec r - \vec r_0\right)$, ו-$\vec v = \vec v_0 + \vec at$.
+      - kind: manipulation
+        text: >-
+          א. ב-$y$ המרבי $v_y = 0$, ולכן $v = v_x = 3.0\,\text{m/s}$ (אין תאוצה ב-$x$). $\vec a\cdot\Delta\vec r = -2.0\,y$, ולכן
+          $v_x^2 = v_0^2 - 2\cdot2.0\,y_{\max}$, כלומר $y_{\max} = \left(v_0^2 - v_x^2\right)/(2a) = v_{0y}^2/(2a)$.
+
+          ב. $v_y = 4.0 - 2.0t = 0$ ב-$t = v_{0y}/a$, ו-$x = v_{0x}t$.
+      - kind: limit
+        text: >-
+          כשהשולחן אופקי, $a \to 0$, $y_{\max} \to \infty$: הדיסקית ממשיכה בקו ישר לנצח. וכש-$v_{0y} = 0$, $y_{\max} = 0$.
+      - kind: units
+        text: >-
+          $v^2/a$ הוא $\left(\text{m}^2/\text{s}^2\right)/\left(\text{m/s}^2\right) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $y_{\max} = (25 - 9)/4.0 = 4.0\,\text{m}$; $t = 2.0\,\text{s}$; $x = 3.0\cdot2.0 = 6.0\,\text{m}$.
+      - kind: result
+        text: >-
+          $y_{\max} = 4.0\,\text{m}$, ב-$t = 2.0\,\text{s}$ וב-$x = 6.0\,\text{m}$, בגודל מהירות $3.0\,\text{m/s}$.
+
+  - id: W-1.2-06
+    level: mid
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      כדור נזרק אופקית מגובה $1.8\,\text{m}$, ואמור לפגוע בנקודה על הרצפה במרחק אופקי $6.0\,\text{m}$. באיזו מהירות צריך
+      לזרוק אותו? אין התנגדות אוויר.
+    answer: >-
+      $v_0 = 9.90\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $h = 1.8\,\text{m}$, $d = 6.0\,\text{m}$, זריקה אופקית: $v_{0y} = 0$. ראשית על הרצפה מתחת לנקודת הזריקה, $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          $y = h - \tfrac12gt^2$ ו-$x = v_0t$.
+      - kind: manipulation
+        text: >-
+          זמן הנפילה מ-$y = 0$: $t = \sqrt{2h/g}$, ואז $v_0 = d/t = d\sqrt{g/(2h)}$.
+      - kind: limit
+        text: >-
+          כש-$d \to 0$ צריך $v_0 \to 0$: שחרור ממנוחה. וכש-$h$ גדל, המהירות הנדרשת קטנה, כי לכדור יותר זמן באוויר.
+      - kind: units
+        text: >-
+          $d\sqrt{g/h}$ הוא $\text{m}\cdot\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $t = \sqrt{3.6/9.8} = 0.606\,\text{s}$, ולכן $v_0 = 6.0/0.606 = 9.90\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $v_0 = 9.90\,\text{m/s}$.
+
+  - id: W-1.2-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.2-1]
+    prompt: >-
+      מראש צוק בגובה $25\,\text{m}$ זורקים שלוש אבנים, כל אחת במהירות $12\,\text{m/s}$: אחת בזווית $40^\circ$ מעל האופק, אחת
+      אופקית ואחת בזווית $40^\circ$ מתחת לאופק. אין התנגדות אוויר.
+
+      א. איזו אבן פוגעת במים במהירות הגדולה ביותר? קבעו ונמקו, בלי לחשב זמנים.
+
+      ב. סדרו את האבנים לפי זמן התנועה.
+    answer: >-
+      א. כולן באותו גודל מהירות, $25.2\,\text{m/s}$.
+
+      ב. למטה ($1.60\,\text{s}$), אופקית ($2.26\,\text{s}$), למעלה ($3.18\,\text{s}$).
+    solution:
+      - kind: law
+        text: >-
+          $v^2 = v_0^2 + 2\,\vec a\cdot\left(\vec r - \vec r_0\right)$, ובזריקה $\vec a\cdot\Delta\vec r = -g\,\Delta y$.
+      - kind: reasoning
+        text: >-
+          א. לשלוש האבנים אותו $v_0$ ואותו שינוי גובה, $\Delta y = -h$. לכן לכולן $v^2 = v_0^2 + 2gh$ ברגע הפגיעה. הכיוון שונה, הגודל לא.
+
+          ב. הזמן נקבע רק בתנועה האנכית: $v_{0y}$ של האבן העליונה חיובי, היא עולה קודם ומבזבזת זמן, ושל התחתונה שלילי, והיא
+          כבר יורדת. לכן זמן התנועה גדל עם $v_{0y}$.
+      - kind: limit
+        text: >-
+          כש-$h \to 0$ (זריקה ונחיתה באותו גובה) כל אבן חוזרת במהירות $v_0$, כמו בנחיתה על קרקע מישורית.
+      - kind: units
+        text: >-
+          $2gh$ הוא $\text{m/s}^2\cdot\text{m} = \text{m}^2/\text{s}^2$, כמו $v_0^2$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{144 + 2\cdot9.8\cdot25} = 25.2\,\text{m/s}$. הזמנים מהשורש החיובי של $25 + v_{0y}t - 4.9t^2 = 0$:
+          $1.60\,\text{s}$, $2.26\,\text{s}$ ו-$3.18\,\text{s}$.
+      - kind: result
+        text: >-
+          א. אותו גודל מהירות לשלושתן, $25.2\,\text{m/s}$. ב. למטה, אופקית, למעלה.
+
+  - id: W-1.2-08
+    level: bagrut
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      זורקים כדור מהקרקע במהירות $20\,\text{m/s}$, ורוצים שיעבור דרך טבעת שנמצאת במרחק אופקי $25\,\text{m}$ ובגובה $5.0\,\text{m}$.
+      אין התנגדות אוויר.
+
+      א. באילו זוויות מעל האופק אפשר לזרוק?
+
+      ב. כמה זמן לוקח לכדור להגיע לטבעת בכל אחת מהזוויות?
+
+      ג. בלי לחשב: מה היה קורה אילו הטבעת הייתה בגובה $15\,\text{m}$?
+    answer: >-
+      א. $32.1^\circ$ או $69.2^\circ$.
+
+      ב. $1.48\,\text{s}$ ו-$3.53\,\text{s}$.
+
+      ג. אי אפשר: $15\,\text{m}$ מעל המעטפת, שבמרחק $25\,\text{m}$ נמצאת בגובה $12.8\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $v_0 = 20\,\text{m/s}$, הטבעת ב-$(x, y) = (25,\ 5.0)\,\text{m}$; ראשית בנקודת הזריקה.
+      - kind: law
+        text: >-
+          משוואת המסלול עם $u = \tan\theta$: $y = xu - \dfrac{gx^2}{2v_0^2}\left(1 + u^2\right)$.
+      - kind: manipulation
+        text: >-
+          זו משוואה ריבועית ב-$u$: $\dfrac{gx^2}{2v_0^2}u^2 - xu + \left(y + \dfrac{gx^2}{2v_0^2}\right) = 0$, ולכן
+          $$u = \frac{v_0^2 \pm \sqrt{v_0^4 - g\left(gx^2 + 2yv_0^2\right)}}{gx}$$
+          הזמן עד הטבעת: $t = x/\left(v_0\cos\theta\right)$.
+      - kind: limit
+        text: >-
+          כשהדיסקרימיננטה מתאפסת שני השורשים מתלכדים: הטבעת על המעטפת, $y = v_0^2/(2g) - gx^2/(2v_0^2)$. וכש-$y = 0$ מתקבלות
+          הזוויות המשלימות של זריקה על קרקע מישורית, שסכומן $90^\circ$.
+      - kind: units
+        text: >-
+          $v_0^2/(gx)$ חסר יחידות, כמו $\tan\theta$.
+      - kind: substitution
+        text: >-
+          $u = 0.627$ או $u = 2.64$, כלומר $\theta = 32.1^\circ$ או $69.2^\circ$. הזמנים: $25/(20\cos32.1^\circ) = 1.48\,\text{s}$ ו-$25/(20\cos69.2^\circ) = 3.53\,\text{s}$.
+          המעטפת ב-$x = 25\,\text{m}$: $20.4 - 7.66 = 12.8\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $32.1^\circ$ או $69.2^\circ$. ב. $1.48\,\text{s}$ או $3.53\,\text{s}$. ג. אין זווית כזו: הנקודה מעל המעטפת.
+
+  - id: W-1.2-09
+    level: bagrut
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      מרגלות מדרון שעולה בזווית $\beta = 15^\circ$ זורקים כדור במהירות $18\,\text{m/s}$ במעלה המדרון. באיזו זווית $\theta$
+      מעל האופק צריך לזרוק כדי שהכדור יפגע במדרון **בניצב** לו? מה המרחק לאורך המדרון עד נקודת הפגיעה?
+    answer: >-
+      $\theta = 76.8^\circ$ (כלומר $61.8^\circ$ מעל המדרון), $L = 14.3\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          צירים נטויים: ציר $\xi$ במעלה המדרון, ציר $\eta$ ניצב לו. $g_\xi = -g\sin\beta$, $g_\eta = -g\cos\beta$,
+          $v_{0\xi} = v_0\cos\varphi$, $v_{0\eta} = v_0\sin\varphi$, כאשר $\varphi = \theta - \beta$ היא זווית השיגור מעל המדרון.
+      - kind: law
+        text: >-
+          תאוצה קבועה בכל ציר: $v_\xi = v_{0\xi} + g_\xi t$, ו-$\eta = v_{0\eta}t + \tfrac12g_\eta t^2$.
+      - kind: manipulation
+        text: >-
+          הפגיעה ($\eta = 0$) ב-$T = 2v_0\sin\varphi/(g\cos\beta)$. פגיעה בניצב פירושה שברגע הזה אין למהירות רכיב לאורך המדרון:
+          $v_0\cos\varphi - g\sin\beta\,T = 0$, כלומר $\cos\varphi = 2\sin\varphi\tan\beta$:
+          $$\tan\left(\theta - \beta\right) = \frac{1}{2\tan\beta}$$
+          ואז $L = 2v_0^2\cos\theta\sin(\theta - \beta)/\left(g\cos^2\beta\right)$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\tan\varphi \to \infty$ ו-$\theta \to 90^\circ$: על קרקע מישורית רק זריקה אנכית חוזרת בניצב לקרקע. נכון.
+      - kind: units
+        text: >-
+          התנאי הוא יחס בין שני גדלים חסרי יחידות; $v_0^2/g$ במטרים.
+      - kind: substitution
+        text: >-
+          $\tan\varphi = 1/(2\cdot0.268) = 1.87$, $\varphi = 61.8^\circ$, $\theta = 76.8^\circ$. $T = 3.35\,\text{s}$, $L = 14.3\,\text{m}$, וגודל המהירות בפגיעה $15.9\,\text{m/s}$, כולה בניצב למדרון.
+      - kind: result
+        text: >-
+          $\theta = 76.8^\circ$ מעל האופק, $L = 14.3\,\text{m}$.
+
+  - id: W-1.2-10
+    level: bagrut
+    objectives: [OBJ-1.2-1, OBJ-1.2-2]
+    prompt: >-
+      מטרה תלויה בנקודה $(30,\ 20)\,\text{m}$ ביחס לתותח קטן שעל הקרקע. התותח מכוון **ישר אל המטרה** ויורה כדור במהירות
+      $25\,\text{m/s}$, ובאותו רגע בדיוק המטרה משתחררת ונופלת ממנוחה. אין התנגדות אוויר.
+
+      א. הראו בצורה הווקטורית שהכדור פוגע במטרה, כל עוד שניהם באוויר.
+
+      ב. מתי, ובאיזה גובה, מתרחשת הפגיעה?
+
+      ג. מה מהירות הירי הקטנה ביותר שבה הפגיעה עוד קורה לפני שהמטרה מגיעה לקרקע?
+    answer: >-
+      א. $\vec r_{\text{target}} - \vec r_{\text{ball}} = \vec D - \vec v_0t$, וזה מתאפס ב-$t = D/v_0$.
+
+      ב. ב-$t = 1.44\,\text{s}$, בגובה $9.81\,\text{m}$.
+
+      ג. $17.8\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ראשית בתותח, $y$ כלפי מעלה. $\vec D = (30,\ 20)\,\text{m}$, $D = 36.1\,\text{m}$. $\vec v_0 = v_0\hat D$ (מכוון אל המטרה), $v_0 = 25\,\text{m/s}$.
+      - kind: law
+        text: >-
+          לכל גוף, $\vec r = \vec r_0 + \vec v_0t + \tfrac12\vec gt^2$.
+      - kind: manipulation
+        text: >-
+          $\vec r_{\text{ball}} = v_0\hat Dt + \tfrac12\vec gt^2$ ו-$\vec r_{\text{target}} = \vec D + \tfrac12\vec gt^2$. ההפרש:
+          $\vec D - v_0\hat Dt = \hat D\left(D - v_0t\right)$, והוא מתאפס ב-$t^* = D/v_0$. אז שניהם בגובה $D_y - \tfrac12gt^{*2}$.
+          המטרה נוחתת ב-$\sqrt{2D_y/g}$, ולכן הפגיעה באוויר מחייבת $D/v_0 \le \sqrt{2D_y/g}$.
+      - kind: limit
+        text: >-
+          כש-$g \to 0$ שני הגופים נעים בקו ישר, והכדור פוגע במטרה הנייחת, כמובן. עם $g$ שני הגופים "נופלים" באותו $\tfrac12\vec gt^2$, ולכן הפגיעה נשמרת.
+      - kind: units
+        text: >-
+          $D/v_0$ בשניות; $\sqrt{D_y/g}$ בשניות.
+      - kind: substitution
+        text: >-
+          $t^* = 36.1/25 = 1.44\,\text{s}$; גובה $20 - 4.9\cdot1.442^2 = 9.81\,\text{m}$. המטרה נוחתת ב-$2.02\,\text{s}$, ולכן $v_{0,\min} = 36.1/2.02 = 17.8\,\text{m/s}$.
+      - kind: result
+        text: >-
+          ב. $1.44\,\text{s}$, בגובה $9.81\,\text{m}$. ג. $17.8\,\text{m/s}$.
+
+challenge:
+  - id: W-1.2-c1
+    stars: 1
+    objectives: [OBJ-1.2-1, OBJ-1.2-2]
+    prompt: >-
+      מקצה מדף בגובה $35\,\text{m}$ מעל קרקע מישורית יורים שני גופים באותה מהירות, $v_0 = 50\,\text{m/s}$: גוף 1 בזווית
+      $37^\circ$ מעל האופק, וגוף 2 בזווית $37^\circ$ מתחת לאופק, באותו כיוון. אין התנגדות אוויר.
+
+      א. מצאו את ההפרש בין זמני התנועה, $t_1 - t_2$. הראו שהוא לא תלוי בגובה המדף.
+
+      ב. מה המרחק האופקי בין נקודות הנחיתה?
+    answer: >-
+      א. $t_1 - t_2 = 2v_0\sin37^\circ/g = 6.14\,\text{s}$.
+
+      ב. $245\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ראשית בקצה המדף, $y$ כלפי מעלה, הקרקע ב-$y = -h$ עם $h = 35\,\text{m}$. $\vec v_{01} = v_0(\cos\theta,\ \sin\theta)$, $\vec v_{02} = v_0(\cos\theta,\ -\sin\theta)$, $\theta = 37^\circ$.
+      - kind: law
+        text: >-
+          $\vec v(t) = \vec v_0 + \vec gt$ ו-$\vec r(t) = \vec v_0t + \tfrac12\vec gt^2$.
+      - kind: reasoning
+        text: >-
+          גוף 1 חוזר לגובה המדף ($y = 0$) אחרי $2v_0\sin\theta/g$, ואז מהירותו $v_0(\cos\theta,\ -\sin\theta)$: בדיוק המהירות ההתחלתית
+          של גוף 2, מאותה נקודה בגובה (במרחק אופקי $v_0^2\sin2\theta/g$ ממנה). מכאן התנועה של שניהם זהה, ולכן
+          $t_1 - t_2 = 2v_0\sin\theta/g$, בלי קשר ל-$h$. (בדיקה ישירה: השורש החיובי של $\pm v_0\sin\theta\,t - \tfrac12gt^2 = -h$ לכל אחד.)
+      - kind: manipulation
+        text: >-
+          שני הגופים נעים אופקית ב-$v_0\cos\theta$, ולכן $\Delta x = v_0\cos\theta\left(t_1 - t_2\right) = v_0^2\sin2\theta/g$, הטווח של
+          זריקה על קרקע מישורית.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$ שתי היריות זהות, ו-$\Delta t \to 0$ ו-$\Delta x \to 0$. כש-$h \to 0$ גוף 2 נוחת מיד, ו-$t_1$ הוא זמן התנועה על
+          קרקע מישורית, $2v_0\sin\theta/g$.
+      - kind: units
+        text: >-
+          $v_0/g$ בשניות, $v_0^2/g$ במטרים.
+      - kind: substitution
+        text: >-
+          $t_1 = 7.14\,\text{s}$, $t_2 = 1.00\,\text{s}$, וההפרש $6.14\,\text{s} = 2\cdot50\cdot0.602/9.8$. $\Delta x = 50\cdot0.799\cdot6.14 = 245\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $6.14\,\text{s}$, בלי תלות בגובה. ב. $245\,\text{m}$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2010
+      problem: Question 5
+      url: https://www.aapt.org/physicsteam/2010/upload/2010_FmaSolutions.pdf
+      verified: '2026-11-08'
+      adapted: true
+
+  - id: W-1.2-c2
+    stars: 1
+    objectives: [OBJ-1.2-2]
+    prompt: >-
+      תותח יורה כדור מעל קרקע מישורית, בלי התנגדות אוויר. מה הזווית הקטנה ביותר מעל האופק שבה הגובה המרבי של הכדור, $H$,
+      **גדול** מהמרחק האופקי $R$ שהוא עובר עד שהוא חוזר לקרקע? האם התשובה תלויה במהירות הירי?
+    answer: >-
+      $\tan\theta > 4$, כלומר $\theta > 76.0^\circ$, בלי תלות במהירות.
+    solution:
+      - kind: law
+        text: >-
+          $H = v_0^2\sin^2\theta/(2g)$ ו-$R = v_0^2\sin2\theta/g = 2v_0^2\sin\theta\cos\theta/g$.
+      - kind: manipulation
+        text: >-
+          $$\frac{H}{R} = \frac{\sin^2\theta}{4\sin\theta\cos\theta} = \frac{\tan\theta}{4}$$
+          ולכן $H > R$ כש-$\tan\theta > 4$.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 90^\circ$ היחס שואף לאינסוף (זריקה אנכית: $R = 0$). ב-$45^\circ$ היחס $1/4$: בטווח המרבי הגובה רבע מהטווח.
+      - kind: units
+        text: >-
+          $H/R$ חסר יחידות, ו-$v_0$ ו-$g$ מצטמצמים: התשובה לא תלויה במהירות ולא בכוכב.
+      - kind: substitution
+        text: >-
+          $\arctan4 = 76.0^\circ$. בדיקה במהירות $20\,\text{m/s}$ בזווית הזו: $H = R = 19.2\,\text{m}$.
+      - kind: result
+        text: >-
+          $\theta_{\min} = \arctan4 = 76.0^\circ$, לכל מהירות.
+    source:
+      name: AAPT F=ma Exam
+      year: 2012
+      problem: Question 2
+      url: https://www.aapt.org/physicsteam/2013/upload/exam1-2012-unlocked-solutions.pdf
+      verified: '2026-11-08'
+      adapted: true

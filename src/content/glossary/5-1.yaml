@@ -32,14 +32,6 @@
   reject: [תדירות מעגלית]
   lesson: '5.1'
 
-- id: period
-  term: זמן מחזור
-  en: period
-  symbol: T
-  unit: s
-  definition: הזמן שבו תנודה חוזרת על עצמה, T = 2π/ω. במתנד הרמוני הוא לא תלוי באמפליטודה.
-  lesson: '5.1'
-
 - id: c5-equivalent-spring-constant
   term: קבוע קפיץ שקול
   en: equivalent spring constant

@@ -1,0 +1,17 @@
+# Curated YouTube clips for lesson 1.5. Every id was checked against YouTube oEmbed (HTTP 200, embeddable;
+# title and channel exactly as returned) on the `verified` date. The length (1646 s) and the caption tracks
+# (English, auto-generated only) were read from the watch page; `why` rests on the film's YouTube description
+# and its Wikipedia article (1960, PSSC, Patterson Hume and Donald Ivey, inertial and non-inertial frames).
+
+- id: v-1-5-frames-of-reference
+  youtubeId: W47wXR1lgUU
+  title: 'Frames of Reference (1960)'
+  channel: A/V Geeks 16mm Films
+  lang: en
+  captions: []
+  start: 0
+  minutes: 27
+  why: >-
+    סרט לימוד קלאסי (PSSC, 1960) על מערכות ייחוס: לפי תיאורו, הוא מראה איך אותה תנועה נראית אחרת ממערכות שנעות במהירות
+    קבועה וממערכות שמאיצות. חפשו את החלקים במהירות קבועה והשוו לטרנספורמציית גליליי; החלקים על מערכות מאיצות שייכים לפרק 7.
+  verified: '2026-11-08'

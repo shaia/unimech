@@ -1,0 +1,7 @@
+---
+/** Position, velocity and acceleration vectors on a path (lesson 1.1): <Spread figure={TrajectoryVectors} figureProps={{ mode: 'derive', … }}>. */
+import TrajectoryVectors, { type TrajectoryVectorsProps } from './TrajectoryVectors';
+type Props = TrajectoryVectorsProps;
+---
+
+<TrajectoryVectors client:visible {...Astro.props} />

@@ -7,15 +7,16 @@
 #
 # Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts (G = 9.8):
 #   1: v₀ = (15, 20) m/s: t_top = 2.04 s, H = 20.4 m (v₀²/2g 31.9, v_y²/g 40.8, v_x²/2g 11.5), x_top = 30.6 m,
-#      ρ_top = v_x²/g = 23.0 m (v₀²/g 63.8); r = 36.8 m, ṙ = 12.5 m/s, φ̇ = −0.226 rad/s, a_r = −gy/r = −5.44 m/s²,
-#      r̈ = a_r + rφ̇² = −3.55 m/s² (sign error −7.32); ṙ, φ̇ and r̈ also checked by finite differences of r(t), φ(t);
+#      ρ_top = v_x²/g = 23.0 m (v₀²/g 63.8); r = 36.8 m, ṙ = 12.5 m/s, θ̇ = −0.226 rad/s, a_r = −gy/r = −5.44 m/s²,
+#      r̈ = a_r + rθ̇² = −3.55 m/s² (sign error −7.32); ṙ, θ̇ and r̈ also checked by finite differences of r(t), θ(t);
 #   2: u = (−9.0, 12) m/s on a car at 12 m/s: ground speed 12.4 m/s (15, 24.2, 27); T = 2.45 s, lands 22.0 m behind
 #      the launcher (ground 7.35, VT 29.4); braking A = 2.0 m/s²: ½AT² = 6.00 m, lands 16.0 m behind, car at 7.10 m/s;
 #   3: r₀ = 0.10 m, u = 0.60 m/s, ω = 2.0 rad/s, t = 0.50 s: r = 0.40 m, v = (0.60, 0.80), |v| = 1.00 m/s;
 #      a = (−1.6, 2.4), |a| = 2.88 m/s²; a_t = 0.96 m/s² (= rṙω²/|v|); a⊥ = 2.72 m/s², ρ = 0.368 m (v²/|a| 0.347,
 #      v²/|a_r| 0.625); ρ by finite differences of the lab path agrees;
-#   4: d = 60 m, u₀ = 1.5 m/s, w = 2.0 m/s: T = 30 s (24, 120); speed at mid-river 2.5 m/s; drift 2u₀d/(3w) = 30 m
-#      (a midpoint sum agrees; uniform current 45 m); ρ at the bank = wd/(4u₀) = 20 m (no chain rule 40).
+#   4: d = 60 m, current c₀ = 1.5 m/s, boat u = 2.0 m/s relative to the water: T = 30 s (24, 120); speed at
+#      mid-river 2.5 m/s; drift 2c₀d/(3u) = 30 m (a midpoint sum agrees; uniform current 45 m); ρ at the bank
+#      = ud/(4c₀) = 20 m (no chain rule 40). Recomputed in .scratch/ch1/1-5/bagrut.ts after the renaming.
 
 chapter: 1
 questions:
@@ -26,8 +27,8 @@ questions:
     prompt: >-
       כדור נזרק מהקרקע מהנקודה O במהירות $v_0 = 25\,\text{m/s}$, ברכיבים $v_{0x} = 15\,\text{m/s}$ אופקית ו-$v_{0y} = 20\,\text{m/s}$
       כלפי מעלה. אין התנגדות אוויר. מכ״ם שעומד בנקודה O עוקב אחרי הכדור ומודד בכל רגע שני גדלים: המרחק $r$ מ-O אל
-      הכדור, וזווית ההגבהה $\varphi$ של הכדור מעל האופק. כלומר, המכ״ם מתאר את התנועה בקואורדינטות קוטביות סביב O,
-      עם $\hat r = (\cos\varphi,\ \sin\varphi)$ ו-$\hat\varphi = (-\sin\varphi,\ \cos\varphi)$. ציר $x$ אופקי בכיוון הזריקה, וציר
+      הכדור, וזווית ההגבהה $\theta$ של הכדור מעל האופק. כלומר, המכ״ם מתאר את התנועה בקואורדינטות קוטביות סביב O,
+      עם $\hat r = (\cos\theta,\ \sin\theta)$ ו-$\hat\theta = (-\sin\theta,\ \cos\theta)$. ציר $x$ אופקי בכיוון הזריקה, וציר
       $y$ כלפי מעלה.
     parts:
       - label: א
@@ -77,27 +78,27 @@ questions:
         standalone: false
         objectives: [OBJ-1.4-1, OBJ-1.4-2]
         prompt: >-
-          (1) מ-$\vec v = \dot r\hat r + r\dot\varphi\hat\varphi$ הראו ש-$\dot r = \vec v\cdot\hat r$ ו-$r\dot\varphi = \vec v\cdot\hat\varphi$, וכתבו
-          את $\dot r$ ואת $\dot\varphi$ בעזרת $x$, $y$, $v_x$ ו-$v_y$.
+          (1) מ-$\vec v = \dot r\hat r + r\dot\theta\hat\theta$ הראו ש-$\dot r = \vec v\cdot\hat r$ ו-$r\dot\theta = \vec v\cdot\hat\theta$, וכתבו
+          את $\dot r$ ואת $\dot\theta$ בעזרת $x$, $y$, $v_x$ ו-$v_y$.
 
           (2) בדקו את שני הביטויים בשני מקרים פשוטים: גוף שנע ישר הרחק מ-O, וגוף שנע על מעגל סביב O.
 
-          (3) חשבו את $\dot r$ ואת $\dot\varphi$ שהמכ״ם מודד ברגע שהכדור בנקודה הגבוהה ביותר.
+          (3) חשבו את $\dot r$ ואת $\dot\theta$ שהמכ״ם מודד ברגע שהכדור בנקודה הגבוהה ביותר.
         hints:
-          - '$\hat r$ ו-$\hat\varphi$ הם וקטורי יחידה ניצבים: $\hat r\cdot\hat r = 1$ ו-$\hat r\cdot\hat\varphi = 0$.'
-          - '$\hat r = (x,\ y)/r$ ו-$\hat\varphi = (-y,\ x)/r$.'
+          - '$\hat r$ ו-$\hat\theta$ הם וקטורי יחידה ניצבים: $\hat r\cdot\hat r = 1$ ו-$\hat r\cdot\hat\theta = 0$.'
+          - '$\hat r = (x,\ y)/r$ ו-$\hat\theta = (-y,\ x)/r$.'
         solution:
-          - { kind: law, text: 'המהירות בקואורדינטות קוטביות: $\vec v = \dot r\hat r + r\dot\varphi\hat\varphi$, עם $\hat r = \dfrac{(x,\ y)}{r}$ ו-$\hat\varphi = \dfrac{(-y,\ x)}{r}$.' }
-          - { kind: manipulation, text: 'מכפילים סקלרית ב-$\hat r$: מכיוון ש-$\hat r\cdot\hat r = 1$ ו-$\hat\varphi\cdot\hat r = 0$, נשאר $\dot r = \vec v\cdot\hat r = \dfrac{xv_x + yv_y}{r}$. מכפילים ב-$\hat\varphi$: $r\dot\varphi = \vec v\cdot\hat\varphi = \dfrac{xv_y - yv_x}{r}$, ולכן $\dot\varphi = \dfrac{xv_y - yv_x}{r^2}$.' }
-          - { kind: limit, text: 'גוף שנע ישר הרחק מ-O: $\vec v \parallel \vec r$, ולכן $xv_y - yv_x = 0$ ו-$\dot\varphi = 0$, ו-$\dot r = |\vec v|$. גוף על מעגל סביב O: $\vec v \perp \vec r$, ולכן $xv_x + yv_y = 0$ ו-$\dot r = 0$, ו-$|\dot\varphi| = |\vec v|/r$. שני המקרים יוצאים נכון.' }
-          - { kind: units, text: '$\dfrac{\text{m}\cdot\text{m/s}}{\text{m}} = \text{m/s}$ ל-$\dot r$, ו-$\dfrac{\text{m}\cdot\text{m/s}}{\text{m}^2} = \text{s}^{-1}$, רדיאנים לשנייה, ל-$\dot\varphi$.' }
-          - { kind: substitution, text: 'בשיא, $t = 2.04\,\text{s}$: $x = 15\cdot2.04 = 30.6\,\text{m}$, $y = 20.4\,\text{m}$, $r = \sqrt{30.6^2 + 20.4^2} = 36.8\,\text{m}$, ו-$\vec v = (15,\ 0)\,\text{m/s}$. לכן $\dot r = \dfrac{30.6\cdot15}{36.8} = 12.5\,\text{m/s}$ ו-$\dot\varphi = -\dfrac{20.4\cdot15}{36.8^2} = -0.226\,\text{rad/s}$.' }
-          - { kind: result, text: '$\dot r = \dfrac{xv_x + yv_y}{r}$ ו-$\dot\varphi = \dfrac{xv_y - yv_x}{r^2}$. בשיא $\dot r = 12.5\,\text{m/s}$, פחות מגודל המהירות, $15\,\text{m/s}$, כי רק חלק ממנה לאורך $\hat r$; ו-$\dot\varphi = -0.226\,\text{rad/s}$: זווית ההגבהה כבר יורדת, והמכ״ם מנמיך את האנטנה.' }
+          - { kind: law, text: 'המהירות בקואורדינטות קוטביות: $\vec v = \dot r\hat r + r\dot\theta\hat\theta$, עם $\hat r = \dfrac{(x,\ y)}{r}$ ו-$\hat\theta = \dfrac{(-y,\ x)}{r}$.' }
+          - { kind: manipulation, text: 'מכפילים סקלרית ב-$\hat r$: מכיוון ש-$\hat r\cdot\hat r = 1$ ו-$\hat\theta\cdot\hat r = 0$, נשאר $\dot r = \vec v\cdot\hat r = \dfrac{xv_x + yv_y}{r}$. מכפילים ב-$\hat\theta$: $r\dot\theta = \vec v\cdot\hat\theta = \dfrac{xv_y - yv_x}{r}$, ולכן $\dot\theta = \dfrac{xv_y - yv_x}{r^2}$.' }
+          - { kind: limit, text: 'גוף שנע ישר הרחק מ-O: $\vec v \parallel \vec r$, ולכן $xv_y - yv_x = 0$ ו-$\dot\theta = 0$, ו-$\dot r = |\vec v|$. גוף על מעגל סביב O: $\vec v \perp \vec r$, ולכן $xv_x + yv_y = 0$ ו-$\dot r = 0$, ו-$|\dot\theta| = |\vec v|/r$. שני המקרים יוצאים נכון.' }
+          - { kind: units, text: '$\dfrac{\text{m}\cdot\text{m/s}}{\text{m}} = \text{m/s}$ ל-$\dot r$, ו-$\dfrac{\text{m}\cdot\text{m/s}}{\text{m}^2} = \text{s}^{-1}$, רדיאנים לשנייה, ל-$\dot\theta$.' }
+          - { kind: substitution, text: 'בשיא, $t = 2.04\,\text{s}$: $x = 15\cdot2.04 = 30.6\,\text{m}$, $y = 20.4\,\text{m}$, $r = \sqrt{30.6^2 + 20.4^2} = 36.8\,\text{m}$, ו-$\vec v = (15,\ 0)\,\text{m/s}$. לכן $\dot r = \dfrac{30.6\cdot15}{36.8} = 12.5\,\text{m/s}$ ו-$\dot\theta = -\dfrac{20.4\cdot15}{36.8^2} = -0.226\,\text{rad/s}$.' }
+          - { kind: result, text: '$\dot r = \dfrac{xv_x + yv_y}{r}$ ו-$\dot\theta = \dfrac{xv_y - yv_x}{r^2}$. בשיא $\dot r = 12.5\,\text{m/s}$, פחות מגודל המהירות, $15\,\text{m/s}$, כי רק חלק ממנה לאורך $\hat r$; ו-$\dot\theta = -0.226\,\text{rad/s}$: זווית ההגבהה כבר יורדת, והמכ״ם מנמיך את האנטנה.' }
         rubric:
-          - text: כתבתי $\vec v = \dot r\hat r + r\dot\varphi\hat\varphi$ והכפלתי סקלרית ב-$\hat r$ וב-$\hat\varphi$ כדי לבודד כל רכיב.
-          - text: 'ביטאתי את $\hat r$ ואת $\hat\varphi$ בעזרת $x$, $y$ ו-$r$, וקיבלתי $\dot r = (xv_x + yv_y)/r$ ו-$\dot\varphi = (xv_y - yv_x)/r^2$.'
-          - text: בדקתי שבתנועה ישר הרחק מ-O יוצא $\dot\varphi = 0$, ושבתנועה על מעגל סביב O יוצא $\dot r = 0$.
-          - text: 'מצאתי את המקום בשיא, $(30.6,\ 20.4)\,\text{m}$, וקיבלתי $\dot r \approx 12.5\,\text{m/s}$ ו-$\dot\varphi \approx -0.226\,\text{rad/s}$, עם הסימן.'
+          - text: כתבתי $\vec v = \dot r\hat r + r\dot\theta\hat\theta$ והכפלתי סקלרית ב-$\hat r$ וב-$\hat\theta$ כדי לבודד כל רכיב.
+          - text: 'ביטאתי את $\hat r$ ואת $\hat\theta$ בעזרת $x$, $y$ ו-$r$, וקיבלתי $\dot r = (xv_x + yv_y)/r$ ו-$\dot\theta = (xv_y - yv_x)/r^2$.'
+          - text: בדקתי שבתנועה ישר הרחק מ-O יוצא $\dot\theta = 0$, ושבתנועה על מעגל סביב O יוצא $\dot r = 0$.
+          - text: 'מצאתי את המקום בשיא, $(30.6,\ 20.4)\,\text{m}$, וקיבלתי $\dot r \approx 12.5\,\text{m/s}$ ו-$\dot\theta \approx -0.226\,\text{rad/s}$, עם הסימן.'
 
       - label: ד
         type: numeric
@@ -112,18 +113,18 @@ questions:
         unit: m/s²
         correctFeedback: >-
           נכון. התאוצה היא $\vec g = (0,\ -g)$, והרכיב הרדיאלי שלה $a_r = \vec g\cdot\hat r = -\dfrac{gy}{r} = -\dfrac{9.8\cdot20.4}{36.8} = -5.44\,\text{m/s}^2$.
-          בתאוצה הקוטבית $a_r = \ddot r - r\dot\varphi^2$, ולכן
-          $\ddot r = a_r + r\dot\varphi^2 = -5.44 + 36.8\cdot0.226^2 = -5.44 + 1.88 = -3.55\,\text{m/s}^2$. הכדור עדיין מתרחק מהמכ״ם,
+          בתאוצה הקוטבית $a_r = \ddot r - r\dot\theta^2$, ולכן
+          $\ddot r = a_r + r\dot\theta^2 = -5.44 + 36.8\cdot0.226^2 = -5.44 + 1.88 = -3.55\,\text{m/s}^2$. הכדור עדיין מתרחק מהמכ״ם,
           $\dot r > 0$, אבל ההתרחקות מאטה.
-        wrongFeedback: 'חשבו קודם את $a_r = \vec g\cdot\hat r$, ואז בודדו את $\ddot r$ מ-$a_r = \ddot r - r\dot\varphi^2$.'
+        wrongFeedback: 'חשבו קודם את $a_r = \vec g\cdot\hat r$, ואז בודדו את $\ddot r$ מ-$a_r = \ddot r - r\dot\theta^2$.'
         commonWrong:
           - value: -5.44
-            feedback: 'זה $a_r$, הרכיב הרדיאלי של התאוצה. $\ddot r$ שונה ממנו ב-$r\dot\varphi^2$: גם כש-$\vec a = 0$, $\ddot r$ לא חייב להיות אפס.'
+            feedback: 'זה $a_r$, הרכיב הרדיאלי של התאוצה. $\ddot r$ שונה ממנו ב-$r\dot\theta^2$: גם כש-$\vec a = 0$, $\ddot r$ לא חייב להיות אפס.'
             misconception: MC-1-rddot-is-radial-acceleration
           - value: -9.8
             feedback: 'זו כל התאוצה, $\vec g$, שפונה מטה. רק הרכיב שלה לאורך $\hat r$ נכנס ל-$a_r$, והוא $a_r = -gy/r$.'
           - value: -7.32
-            feedback: 'חיסרתם $r\dot\varphi^2$ במקום להוסיף: מ-$a_r = \ddot r - r\dot\varphi^2$ יוצא $\ddot r = a_r + r\dot\varphi^2$.'
+            feedback: 'חיסרתם $r\dot\theta^2$ במקום להוסיף: מ-$a_r = \ddot r - r\dot\theta^2$ יוצא $\ddot r = a_r + r\dot\theta^2$.'
         hints:
           - 'מה הרכיב של $\vec g$ בכיוון $\hat r$, כש-$\hat r = (x,\ y)/r$?'
 
@@ -302,14 +303,14 @@ questions:
           - 'מה $\dot r$, $\ddot r$, $\dot\theta$ ו-$\ddot\theta$ כאן?'
         solution:
           - { kind: law, text: 'התאוצה בקואורדינטות קוטביות: $\vec a = \left(\ddot r - r\dot\theta^2\right)\hat r + \left(r\ddot\theta + 2\dot r\dot\theta\right)\hat\theta$.' }
-          - { kind: manipulation, text: 'כאן $\dot r = u$, $\ddot r = 0$, $\dot\theta = \omega$ ו-$\ddot\theta = 0$, ולכן $a_r = -\left(r_0 + ut\right)\omega^2$ ו-$a_\theta = 2u\omega$. האיבר $a_r = -r\omega^2$ הוא תאוצה אל O, שמסובבת את המהירות כמו בתנועה מעגלית. האיבר $2u\omega$ בא משני מקורות שווים: הרכיב הזוויתי של המהירות, $r\omega$, גדל כשהטבעת מתרחקת ($u\omega$), והמהירות $u$ לאורך המוט מסתובבת יחד איתו ($u\omega$).' }
+          - { kind: manipulation, text: 'כאן $\dot r = u$, $\ddot r = 0$, $\dot\theta = \omega$ ו-$\ddot\theta = 0$, ולכן $a_r = -\left(r_0 + ut\right)\omega^2$ ו-$a_\theta = 2u\omega$. האיבר $a_r = -r\omega^2$ הוא רכיב התאוצה אל O, האיבר הצנטריפטלי הקוטבי. הוא לא מה שמסובב את המהירות: כשהטבעת מתרחקת $\hat r$ לא ניצב ל-$\vec v$ (חלק ד), והאיבר שווה לתאוצה הצנטריפטלית רק כש-$\dot r = 0$. האיבר $2u\omega$ בא משני מקורות שווים: הרכיב הזוויתי של המהירות, $r\omega$, גדל כשהטבעת מתרחקת ($u\omega$), והמהירות $u$ לאורך המוט מסתובבת יחד איתו ($u\omega$).' }
           - { kind: limit, text: 'כש-$u = 0$: $a_\theta = 0$ ו-$|\vec a| = r_0\omega^2$, תנועה מעגלית אחידה. כש-$\omega = 0$: $\vec a = 0$, הטבעת נעה במהירות קבועה לאורך מוט שעומד. שני הגבולות יוצאים נכון.' }
           - { kind: units, text: '$r\omega^2$ ביחידות $\text{m}\cdot\text{s}^{-2}$, ו-$u\omega$ ביחידות $\text{m/s}\cdot\text{s}^{-1}$: שניהם $\text{m/s}^2$.' }
           - { kind: substitution, text: '$a_r = -0.40\cdot2.0^2 = -1.6\,\text{m/s}^2$ ו-$a_\theta = 2\cdot0.60\cdot2.0 = 2.4\,\text{m/s}^2$, ולכן $|\vec a| = \sqrt{1.6^2 + 2.4^2} = 2.88\,\text{m/s}^2$.' }
           - { kind: result, text: '$a_r = -\left(r_0 + ut\right)\omega^2$ ו-$a_\theta = 2u\omega$. ב-$t = 0.50\,\text{s}$: $1.6\,\text{m/s}^2$ אל O ו-$2.4\,\text{m/s}^2$ בכיוון הסיבוב, $|\vec a| = 2.88\,\text{m/s}^2$.' }
         rubric:
           - text: הצבתי $\dot r = u$, $\ddot r = 0$, $\dot\theta = \omega$ ו-$\ddot\theta = 0$ בשני הרכיבים של התאוצה הקוטבית.
-          - text: הסברתי ש-$a_r = -r\omega^2$ היא התאוצה אל O שמסובבת את המהירות, ושה-$2u\omega$ בא מהגידול של $r\omega$ ומהסיבוב של המהירות לאורך המוט.
+          - text: הסברתי ש-$a_r = -r\omega^2$ הוא רכיב התאוצה אל O, ושה-$2u\omega$ בא מהגידול של $r\omega$ ומהסיבוב של המהירות לאורך המוט.
           - text: בדקתי שב-$u = 0$ מתקבלת תנועה מעגלית אחידה, ושב-$\omega = 0$ התאוצה אפס.
           - text: 'קיבלתי $a_r = -1.6\,\text{m/s}^2$, $a_\theta = 2.4\,\text{m/s}^2$ ו-$|\vec a| \approx 2.88\,\text{m/s}^2$.'
 
@@ -324,8 +325,10 @@ questions:
         answer: 0.96
         unit: m/s²
         correctFeedback: >-
-          נכון. $a_t = \dfrac{\vec a\cdot\vec v}{|\vec v|} = \dfrac{a_rv_r + a_\theta v_\theta}{|\vec v|} = \dfrac{-1.6\cdot0.60 + 2.4\cdot0.80}{1.00} = 0.96\,\text{m/s}^2$.
-          ובדרך אחרת: $|\vec v|^2 = u^2 + r^2\omega^2$, ולכן $\dfrac{d|\vec v|}{dt} = \dfrac{r\dot r\omega^2}{|\vec v|} = \dfrac{0.40\cdot0.60\cdot4.0}{1.00} = 0.96\,\text{m/s}^2$.
+          נכון. הרכיב המשיקי הוא ההיטל של התאוצה על כיוון המהירות:
+          $$a_t = \frac{\vec a\cdot\vec v}{|\vec v|} = \frac{a_rv_r + a_\theta v_\theta}{|\vec v|} = \frac{-1.6\cdot0.60 + 2.4\cdot0.80}{1.00} = 0.96\,\text{m/s}^2$$
+          ובדרך אחרת: $|\vec v|^2 = u^2 + r^2\omega^2$, ולכן
+          $$\frac{d|\vec v|}{dt} = \frac{r\dot r\omega^2}{|\vec v|} = \frac{0.40\cdot0.60\cdot4.0}{1.00} = 0.96\,\text{m/s}^2$$
         wrongFeedback: 'הרכיב המשיקי הוא ההיטל של $\vec a$ על כיוון המהירות, $\vec a\cdot\vec v/|\vec v|$. המהירות כאן לא בכיוון $\hat\theta$.'
         commonWrong:
           - value: 2.4
@@ -374,9 +377,9 @@ questions:
     title: סירה בנהר שזורם מהר באמצע
     prompt: >-
       נהר ברוחב $d = 60\,\text{m}$ זורם במקביל לגדות, בכיוון ציר $x$. מהירות הזרם תלויה במרחק $y$ מהגדה שממנה יוצאים:
-      $$u(y) = 4u_0\,\frac{y\left(d - y\right)}{d^2}$$
-      עם $u_0 = 1.5\,\text{m/s}$, כלומר אפס ליד הגדות ו-$u_0$ באמצע. סירה יוצאת ברגע $t = 0$ מהנקודה $x = 0$ על הגדה
-      $y = 0$, ומכוונת כל הזמן ישר לרוחב הנהר, במהירות $w = 2.0\,\text{m/s}$ **ביחס למים** שסביבה.
+      $$c(y) = 4c_0\,\frac{y\left(d - y\right)}{d^2}$$
+      עם $c_0 = 1.5\,\text{m/s}$, כלומר אפס ליד הגדות ו-$c_0$ באמצע. סירה יוצאת ברגע $t = 0$ מהנקודה $x = 0$ על הגדה
+      $y = 0$, ומכוונת כל הזמן ישר לרוחב הנהר, במהירות $u = 2.0\,\text{m/s}$ **ביחס למים** שסביבה.
     parts:
       - label: א
         type: numeric
@@ -387,14 +390,14 @@ questions:
         answer: 30
         unit: s
         correctFeedback: >-
-          נכון. ביחס לקרקע $\vec v = \left(u(y),\ w\right)$: הזרם מוסיף רכיב במקביל לגדות בלבד, והרכיב לרוחב הנהר הוא $w$
-          כל הזמן. לכן $T = \dfrac{d}{w} = \dfrac{60}{2.0} = 30\,\text{s}$, כמו בנהר עומד.
+          נכון. ביחס לקרקע $\vec v = \left(c(y),\ u\right)$: הזרם מוסיף רכיב במקביל לגדות בלבד, והרכיב לרוחב הנהר הוא $u$
+          כל הזמן. לכן $T = \dfrac{d}{u} = \dfrac{60}{2.0} = 30\,\text{s}$, כמו בנהר עומד.
         wrongFeedback: 'מה הרכיב של מהירות הסירה ביחס לקרקע בכיוון $y$? האם הזרם משנה אותו?'
         commonWrong:
           - value: 24
-            feedback: 'חילקתם את הרוחב בגודל המהירות באמצע הנהר, $2.5\,\text{m/s}$. אבל רק הרכיב לרוחב, $w$, מקרב את הסירה לגדה השנייה.'
+            feedback: 'חילקתם את הרוחב בגודל המהירות באמצע הנהר, $2.5\,\text{m/s}$. אבל רק הרכיב לרוחב, $u$, מקרב את הסירה לגדה השנייה.'
           - value: 120
-            feedback: 'חיסרתם את הזרם ממהירות הסירה, $d/(w - u_0)$. הזרם ניצב לכיוון החצייה, ולכן הוא לא מאט אותה, רק סוחף אותה הצידה.'
+            feedback: 'חיסרתם את הזרם ממהירות הסירה, $d/(u - c_0)$. הזרם ניצב לכיוון החצייה, ולכן הוא לא מאט אותה, רק סוחף אותה הצידה.'
             misconception: MC-1-current-delays-crossing
 
       - label: ב
@@ -405,8 +408,8 @@ questions:
         prompt: מה גודל המהירות של הסירה ביחס לקרקע כשהיא באמצע הנהר?
         answer: 2.5
         unit: m/s
-        correctFeedback: 'נכון. באמצע, $y = d/2$, הזרם $u = u_0 = 1.5\,\text{m/s}$, והוא ניצב ל-$w$: $|\vec v| = \sqrt{1.5^2 + 2.0^2} = 2.5\,\text{m/s}$.'
-        wrongFeedback: 'מצאו את $u(d/2)$, וחברו אותו כווקטור למהירות הסירה ביחס למים.'
+        correctFeedback: 'נכון. באמצע, $y = d/2$, הזרם $c = c_0 = 1.5\,\text{m/s}$, והוא ניצב ל-$u$: $|\vec v| = \sqrt{1.5^2 + 2.0^2} = 2.5\,\text{m/s}$.'
+        wrongFeedback: 'מצאו את $c(d/2)$, וחברו אותו כווקטור למהירות הסירה ביחס למים.'
         commonWrong:
           - value: 3.5
             feedback: 'חיברתם $1.5 + 2.0$ כמספרים. הזרם ניצב לכיוון שאליו הסירה מכוונת, ולכן מחברים בפיתגורס.'
@@ -427,21 +430,21 @@ questions:
 
           (2) כמה נסחפה הסירה כשהיא מגיעה לגדה השנייה?
 
-          (3) השוו לנהר שזורם בכל רוחבו במהירות $u_0$, והסבירו את היחס בין התשובות.
+          (3) השוו לנהר שזורם בכל רוחבו במהירות $c_0$, והסבירו את היחס בין התשובות.
         hints:
-          - 'קודם $y(t)$. אחר כך $\dot x = u\left(y(t)\right)$, ואינטגרציה עם $x(0) = 0$.'
+          - 'קודם $y(t)$. אחר כך $\dot x = c\left(y(t)\right)$, ואינטגרציה עם $x(0) = 0$.'
         solution:
-          - { kind: law, text: 'מהירות יחסית: $\vec v_{\text{boat,ground}} = \vec v_{\text{boat,water}} + \vec v_{\text{water,ground}} = \left(u(y),\ w\right)$.' }
-          - { kind: manipulation, text: 'ברכיב $y$: $\dot y = w$, ועם $y(0) = 0$, $y = wt$. ברכיב $x$: $\dot x = u(wt) = \dfrac{4u_0}{d^2}\left(dwt - w^2t^2\right)$, ועם $x(0) = 0$: $$x(t) = \int_0^t\frac{4u_0}{d^2}\left(dwt'' - w^2t''^2\right)dt'' = \frac{4u_0}{d^2}\left(\frac{dwt^2}{2} - \frac{w^2t^3}{3}\right)$$ בגדה השנייה $t = T = d/w$, ושני האיברים בסוגריים הם $\dfrac{d^3}{2w}$ ו-$\dfrac{d^3}{3w}$: $x(T) = \dfrac{4u_0}{d^2}\cdot\dfrac{d^3}{6w} = \dfrac{2u_0d}{3w}$.' }
-          - { kind: limit, text: 'בזרם אחיד $u_0$ הסחיפה היא $u_0T = \dfrac{u_0d}{w}$. כאן יוצא $\tfrac23$ ממנה, כי $\tfrac23u_0$ הוא הממוצע של $u(y)$ על רוחב הנהר: $\dfrac1d\int_0^d u\,dy = \dfrac{4u_0}{d^3}\left(\dfrac{d^3}{2} - \dfrac{d^3}{3}\right) = \tfrac23u_0$. וכש-$u_0 \to 0$ הסחיפה אפס.' }
-          - { kind: units, text: '$\dfrac{u_0d}{w}$ ביחידות $\dfrac{\text{m/s}\cdot\text{m}}{\text{m/s}} = \text{m}$.' }
+          - { kind: law, text: 'מהירות יחסית: $\vec v_{\text{boat,ground}} = \vec v_{\text{boat,water}} + \vec v_{\text{water,ground}} = \left(c(y),\ u\right)$.' }
+          - { kind: manipulation, text: 'ברכיב $y$: $\dot y = u$, ועם $y(0) = 0$, $y = ut$. ברכיב $x$: $\dot x = c(ut) = \dfrac{4c_0}{d^2}\left(dut - u^2t^2\right)$, ועם $x(0) = 0$: $$x(t) = \int_0^t\frac{4c_0}{d^2}\left(dut'' - u^2t''^2\right)dt'' = \frac{4c_0}{d^2}\left(\frac{dut^2}{2} - \frac{u^2t^3}{3}\right)$$ בגדה השנייה $t = T = d/u$, ושני האיברים בסוגריים הם $\dfrac{d^3}{2u}$ ו-$\dfrac{d^3}{3u}$: $x(T) = \dfrac{4c_0}{d^2}\cdot\dfrac{d^3}{6u} = \dfrac{2c_0d}{3u}$.' }
+          - { kind: limit, text: 'בזרם אחיד $c_0$ הסחיפה היא $c_0T = \dfrac{c_0d}{u}$. כאן יוצא $\tfrac23$ ממנה, כי $\tfrac23c_0$ הוא הממוצע של $c(y)$ על רוחב הנהר: $\dfrac1d\int_0^d c\,dy = \dfrac{4c_0}{d^3}\left(\dfrac{d^3}{2} - \dfrac{d^3}{3}\right) = \tfrac23c_0$. וכש-$c_0 \to 0$ הסחיפה אפס.' }
+          - { kind: units, text: '$\dfrac{c_0d}{u}$ ביחידות $\dfrac{\text{m/s}\cdot\text{m}}{\text{m/s}} = \text{m}$.' }
           - { kind: substitution, text: '$x(T) = \dfrac{2\cdot1.5\cdot60}{3\cdot2.0} = 30\,\text{m}$, לעומת $\dfrac{1.5\cdot60}{2.0} = 45\,\text{m}$ בזרם אחיד.' }
-          - { kind: result, text: '$x(t) = \dfrac{4u_0}{d^2}\left(\dfrac{dwt^2}{2} - \dfrac{w^2t^3}{3}\right)$, והסחיפה הכוללת $\dfrac{2u_0d}{3w} = 30\,\text{m}$ במורד הזרם: מהירות הזרם הממוצעת שהסירה עוברת בה, $\tfrac23u_0$, כפול זמן החצייה.' }
+          - { kind: result, text: '$x(t) = \dfrac{4c_0}{d^2}\left(\dfrac{dut^2}{2} - \dfrac{u^2t^3}{3}\right)$, והסחיפה הכוללת $\dfrac{2c_0d}{3u} = 30\,\text{m}$ במורד הזרם: מהירות הזרם הממוצעת שהסירה עוברת בה, $\tfrac23c_0$, כפול זמן החצייה.' }
         rubric:
-          - text: 'כתבתי את המהירות ביחס לקרקע כסכום, $\left(u(y),\ w\right)$, וקיבלתי $y = wt$.'
-          - text: הצבתי $y = wt$ ב-$u(y)$ ואינטגרלתי מ-0 עד $t$, עם $x(0) = 0$.
-          - text: 'קיבלתי $x(T) = \dfrac{2u_0d}{3w} = 30\,\text{m}$.'
-          - text: 'בדקתי שזרם אחיד היה נותן $45\,\text{m}$, והסברתי שהפרופיל נותן את הממוצע שלו, $\tfrac23u_0$.'
+          - text: 'כתבתי את המהירות ביחס לקרקע כסכום, $\left(c(y),\ u\right)$, וקיבלתי $y = ut$.'
+          - text: הצבתי $y = ut$ ב-$c(y)$ ואינטגרלתי מ-0 עד $t$, עם $x(0) = 0$.
+          - text: 'קיבלתי $x(T) = \dfrac{2c_0d}{3u} = 30\,\text{m}$.'
+          - text: 'בדקתי שזרם אחיד היה נותן $45\,\text{m}$, והסברתי שהפרופיל נותן את הממוצע שלו, $\tfrac23c_0$.'
 
       - label: ד
         type: numeric
@@ -453,17 +456,17 @@ questions:
         answer: 20
         unit: m
         correctFeedback: >-
-          נכון. ליד הגדה $u = 0$, ולכן $\vec v = (0,\ w)$. התאוצה היא $\vec a = \left(\dfrac{d}{dt}u(y(t)),\ 0\right)$, ובכלל השרשרת
-          $\dfrac{du}{dt} = \dfrac{du}{dy}\cdot\dot y = \dfrac{4u_0}{d}\left(1 - \dfrac{2y}{d}\right)w$, ובגדה, $y = 0$,
-          היא $\dfrac{4u_0w}{d} = 0.20\,\text{m/s}^2$. היא ניצבת למהירות כולה, ולכן
-          $\rho = \dfrac{w^2}{4u_0w/d} = \dfrac{wd}{4u_0} = \dfrac{2.0\cdot60}{6.0} = 20\,\text{m}$.
-          **בדיקת גבולות:** כש-$u_0 \to 0$, $\rho \to \infty$, קו ישר. ובאמצע הנהר $du/dy = 0$, התאוצה אפס, והמסלול שם
+          נכון. ליד הגדה $c = 0$, ולכן $\vec v = (0,\ u)$. התאוצה היא $\vec a = \left(\dfrac{d}{dt}c(y(t)),\ 0\right)$, ובכלל השרשרת
+          $\dfrac{dc}{dt} = \dfrac{dc}{dy}\cdot\dot y = \dfrac{4c_0}{d}\left(1 - \dfrac{2y}{d}\right)u$, ובגדה, $y = 0$,
+          היא $\dfrac{4c_0u}{d} = 0.20\,\text{m/s}^2$. היא ניצבת למהירות כולה, ולכן
+          $\rho = \dfrac{u^2}{4c_0u/d} = \dfrac{ud}{4c_0} = \dfrac{2.0\cdot60}{6.0} = 20\,\text{m}$.
+          **בדיקת גבולות:** כש-$c_0 \to 0$, $\rho \to \infty$, קו ישר. ובאמצע הנהר $dc/dy = 0$, התאוצה אפס, והמסלול שם
           ישר לרגע: זו נקודת פיתול. עד האמצע המסלול מתעקם במורד הזרם, ומשם הוא מתעקם לצד השני, עד שבגדה השנייה הסירה
           שוב נעה ישר לרוחב הנהר.
-        wrongFeedback: 'מצאו את $\vec v$ ואת $\vec a$ ברגע היציאה. את $du/dt$ מקבלים מ-$du/dy$ בכלל השרשרת.'
+        wrongFeedback: 'מצאו את $\vec v$ ואת $\vec a$ ברגע היציאה. את $dc/dt$ מקבלים מ-$dc/dy$ בכלל השרשרת.'
         commonWrong:
           - value: 40
-            feedback: 'השתמשתם ב-$du/dy = 4u_0/d = 0.10\,\text{s}^{-1}$ כאילו הוא התאוצה. התאוצה היא $du/dt = \dfrac{du}{dy}\cdot\dot y$, ובה גם $\dot y = w$.'
+            feedback: 'השתמשתם ב-$dc/dy = 4c_0/d = 0.10\,\text{s}^{-1}$ כאילו הוא התאוצה. התאוצה היא $dc/dt = \dfrac{dc}{dy}\cdot\dot y$, ובה גם $\dot y = u$.'
           - value: 30
             feedback: 'זה חצי מרוחב הנהר, המרחק אל המקום שבו הזרם מרבי. רדיוס העקמומיות נקבע מהמהירות ומהתאוצה בנקודה עצמה.'
             misconception: MC-1-curvature-radius-is-a-distance

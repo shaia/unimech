@@ -1,7 +1,16 @@
 # Lesson 1.4 question bank: the comprehension ladder of "מהירות ותאוצה בקואורדינטות קוטביות".
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
 # (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
-# The lesson defines no glossary term of its own: polar coordinates and unit vectors belong to chapter 0.
+# Polar coordinates and their unit vectors belong to chapter 0 (glossary 0-7); the lesson defines one term,
+# `c1-coriolis-acceleration` (איבר קוריוליס), the 2ṙθ̇ term of the acceleration, never a force.
+# Q-1.4-theta-not-tangential was added with the lesson text (2026-11-08): the lesson refutes
+# MC-1-theta-component-is-tangential (step polar-vs-path), and the ladder had no question detecting it.
+# After the chapter reviews (2026-11-08): Q-1.4-bead-solution (mid) is a new rung below Q-1.4-bead-free, whose
+# prompt now defines cosh (the lesson's step rddot-not-radial derives r = r₀cosh ωt); three questions changed so
+# no worked example answers them: straight-line (an accelerating car at the closest point), theta-not-tangential
+# (the spiral's d|v|/dt), central (v_θ when r shrinks ×3).
+#   spiral r = bθ, θ̇ = ω: d|v|/dt = bω²θ/√(1 + θ²) (→ bω², half of a_θ = 2bω², far out; 0.988·bω² at θ = 2π);
+#   x + 1/x = 4 → x = 2 + √3, ωt = ln(2 + √3) = 1.317 (.scratch/ch1/1-4/review.ts; the accelerating car: r̈ = rθ̇² = v²/d, |rθ̈| = a).
 #
 # Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts:
 #   r = 1.5 m, ṙ = 2.0 m/s, θ̇ = 4.0 rad/s: |v| = √(ṙ² + (rθ̇)²) = 6.32 m/s (sum 8, θ̇ for rθ̇ 4.47, ṙ alone 2);
@@ -109,7 +118,7 @@ questions:
         feedback: 'אין $\dot\theta^2$ במהירות שצריך לגזור. האיבר $r\dot\theta^2$, בסימן מינוס, מופיע רק **אחרי** הגזירה, מ-$d\hat\theta/dt = -\dot\theta\hat r$.'
       - text: 'מהנגזרת של $\hat\theta$, שתורמת $\dot r\dot\theta$ פעמיים.'
         feedback: '$\dfrac{d\hat\theta}{dt} = -\dot\theta\hat r$, בכיוון $\hat r$, ולכן היא תורמת לרכיב הרדיאלי (האיבר $r\dot\theta^2$ בסימן מינוס), ולא לרכיב הזוויתי.'
-      - text: 'מהגדרה: כך מסמנים את התאוצה של קוריוליס.'
+      - text: 'מהגדרה: כך מסמנים את איבר קוריוליס.'
         feedback: 'זה לא סימון אלא תוצאה של גזירה. שתי התרומות באות מכלל המכפלה, וכל אחת שווה ל-$\dot r\dot\theta$.'
     hints:
       - 'גזרו בנפרד את $\dot r\hat r$ ואת $r\dot\theta\hat\theta$, וחפשו בכל אחד מהם את האיברים עם $\dot r\dot\theta$.'
@@ -149,34 +158,39 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      גוף נע במהירות קבועה לאורך הקו הישר $y = d$, שלא עובר בראשית. מתארים את התנועה בקואורדינטות קוטביות סביב
-      הראשית. האם $\ddot r = 0$?
+      מכונית נוסעת לאורך כביש ישר, הקו $y = d$, שלא עובר בראשית O, ו**מאיצה** לאורך הכביש בתאוצה קבועה. מתארים את
+      התנועה בקואורדינטות קוטביות סביב O. ברגע שבו המכונית עוברת בנקודה הקרובה ביותר ל-O (שם $\dot r = 0$), האם
+      $\ddot r = 0$?
     choices:
-      - text: 'לא: $\ddot r > 0$ כל הזמן.'
+      - text: 'לא: $\ddot r = r\dot\theta^2 \gt 0$, גם כשהמכונית מאיצה.'
         correct: true
         feedback: >-
-          נכון. $r = \sqrt{d^2 + v^2t^2}$ (עם $t = 0$ בנקודה הקרובה ביותר) אינו קווי בזמן: $\dot r$ עולה מ-$\dot r = -v$, דרך אפס,
-          ל-$\dot r = v$, ולכן $\ddot r > 0$.
-      - text: 'כן, כי התאוצה של הגוף אפס.'
-        feedback: '$\vec a = 0$ פירושו שהרכיב הרדיאלי אפס, $\ddot r - r\dot\theta^2 = 0$, ולא ש-$\ddot r = 0$.'
+          נכון. בנקודה הקרובה ביותר $\hat r$ ניצב לכביש, והתאוצה של המכונית לאורך הכביש, כלומר לאורך $\hat\theta$.
+          לכן $a_r = \ddot r - r\dot\theta^2 = 0$, ו-$\ddot r = r\dot\theta^2 = v^2/d$. התאוצה לאורך הכביש מופיעה כולה ב-$a_\theta = r\ddot\theta$.
+      - text: 'כן, כי ברגע הזה $\dot r = 0$: המרחק מ-O לא משתנה.'
+        feedback: >-
+          $\dot r = 0$ אומר שהמרחק מינימלי ברגע הזה, לא שהוא קבוע. במינימום הנגזרת הראשונה אפס והשנייה חיובית:
+          רגע לפני ורגע אחרי המכונית רחוקה יותר.
+      - text: 'לא: $\ddot r$ שווה לתאוצה של המכונית, כי היא מאיצה.'
+        feedback: >-
+          התאוצה של המכונית לאורך הכביש, וברגע הזה הכביש ניצב ל-$\hat r$. היא תורמת ל-$a_\theta$, לא ל-$a_r$. ו-$\ddot r$ עצמו
+          אינו הרכיב הרדיאלי של התאוצה, אלא $\ddot r - r\dot\theta^2$.
         misconception: MC-1-rddot-is-radial-acceleration
-      - text: 'כן, כי הגוף נע בקו ישר במהירות קבועה, ולכן המרחק שלו מהראשית גדל בקצב קבוע.'
-        feedback: 'המרחק מהראשית, $\sqrt{d^2 + v^2t^2}$, גדל בקצב קבוע רק רחוק מאוד מהראשית. ליד הנקודה הקרובה ביותר $\dot r$ משתנה מהר.'
-      - text: 'לא: $\ddot r < 0$, כי כשהגוף מתקרב אל הראשית הוא מאט ביחס אליה.'
-        feedback: 'בהתקרבות $\dot r$ שלילי והולך ומתאפס, כלומר עולה, ולכן $\ddot r > 0$. אחרי הנקודה הקרובה ביותר $\dot r$ חיובי וממשיך לעלות.'
+      - text: 'לא: $\ddot r \lt 0$, כי המכונית "נמשכת" אל הכביש ולא בורחת ממנו.'
+        feedback: 'בנקודה הקרובה ביותר המרחק מינימלי, ולכן $\ddot r \gt 0$: מכאן המרחק רק גדל.'
     reasons:
-      - text: '$\vec a = 0$, ולכן $\ddot r - r\dot\theta^2 = 0$, כלומר $\ddot r = r\dot\theta^2$, שחיובי כל עוד הזווית משתנה.'
+      - text: 'ברגע הזה $\vec a$ לאורך הכביש, ניצב ל-$\hat r$, ולכן $a_r = \ddot r - r\dot\theta^2 = 0$, כלומר $\ddot r = r\dot\theta^2$.'
         correct: true
         feedback: >-
-          זה הנימוק. $\ddot r$ אינו הרכיב הרדיאלי של התאוצה: הוא שווה לו רק כש-$\dot\theta = 0$. ומאותה סיבה,
-          $r\ddot\theta + 2\dot r\dot\theta = 0$ כאן, אף ש-$\ddot\theta \ne 0$.
-      - text: '$a_r = \ddot r$, ובתנועה בקו ישר במהירות קבועה $a_r = 0$.'
-        feedback: 'הרכיב הרדיאלי הוא $\ddot r - r\dot\theta^2$. האיבר $r\dot\theta^2$, בסימן מינוס, בא מהסיבוב של $\hat\theta$, והוא קיים גם כשהגוף לא מאיץ.'
+          זה הנימוק. $\ddot r$ מבטל את האיבר הצנטריפטלי הקוטבי, גם כשהמכונית מאיצה. מה שהתאוצה שלה משנה הוא $\ddot\theta$:
+          $|r\ddot\theta| = a$ בנקודה הקרובה ביותר, כי שם $\dot r = 0$ ואיבר קוריוליס אפס.
+      - text: '$a_r = \ddot r$, והתאוצה של המכונית קובעת אותו.'
+        feedback: 'הרכיב הרדיאלי הוא $\ddot r - r\dot\theta^2$. והתאוצה של המכונית ברגע הזה ניצבת ל-$\hat r$, ולכן היא לא תורמת לו בכלל.'
         misconception: MC-1-rddot-is-radial-acceleration
-      - text: 'בקו ישר $\dot\theta = 0$, ולכן אין איברים נוספים.'
-        feedback: 'הקו לא עובר בראשית, ולכן הזווית מהראשית אל הגוף משתנה כשהגוף עובר לידה: $\dot\theta \ne 0$.'
+      - text: 'כש-$\dot r = 0$ גם $\ddot r = 0$, כי הנגזרת של אפס היא אפס.'
+        feedback: '$\dot r$ מתאפס רק ברגע אחד, לא לאורך זמן. הנגזרת של פונקציה שעוברת דרך אפס יכולה להיות שונה מאפס, כמו המהירות של כדור בשיא הזריקה, שאפס בזמן שהתאוצה $g$.'
     hints:
-      - 'כתבו את התנאי $\vec a = 0$ ברכיב $\hat r$ של התאוצה הקוטבית.'
+      - 'לאיזה כיוון פונה התאוצה של המכונית ברגע הזה, ביחס ל-$\hat r$? כתבו את הרכיב $\hat r$ של התאוצה הקוטבית.'
 
   - id: Q-1.4-bug-rod
     type: numeric
@@ -205,6 +219,61 @@ questions:
     hints:
       - 'החיפושית הולכת במהירות קבועה **ביחס למוט**: מה זה אומר על $\ddot r$?'
 
+  - id: Q-1.4-theta-not-tangential
+    type: mc
+    objectives: [OBJ-1.4-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      נקודה נעה על הספירלה $r = b\theta$, והזווית שלה גדלה בקצב קבוע $\dot\theta = \omega$. לכן $a_\theta = 2\dot r\dot\theta = 2b\omega^2$,
+      קבוע ושונה מאפס. סטודנט מסיק: "גודל המהירות של הנקודה גדל בקצב $d|\vec v|/dt = a_\theta = 2b\omega^2$". מה נכון?
+    choices:
+      - text: >-
+          הקצב קטן מ-$a_\theta$: למהירות יש רכיב רדיאלי, $\dot r = b\omega$, ולכן $\hat\theta$ אינו כיוון המסלול. הקצב הוא
+          $\vec a\cdot\vec v/|\vec v|$, ובו גם $a_r = -r\omega^2$ תורם, נגד הכיוון של $\dot r$.
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{d|\vec v|}{dt} = \dfrac{a_r\dot r + a_\theta r\dot\theta}{|\vec v|} = \dfrac{-b^2\theta\omega^3 + 2b^2\theta\omega^3}{b\omega\sqrt{1 + \theta^2}} = \dfrac{b\omega^2\theta}{\sqrt{1 + \theta^2}}$.
+          בכריכות רחוקות, $\theta \gg 1$, זה כמעט $b\omega^2$: חצי מ-$a_\theta$. **בדיקת גבולות:** ב-$\theta = 0$ הקצב אפס, כי שם
+          $|\vec v|^2 = b^2\omega^2(1 + \theta^2)$ מינימלי.
+      - text: 'הסטודנט צודק: $a_\theta$ הוא הרכיב של התאוצה לאורך המסלול.'
+        feedback: >-
+          $a_\theta$ הוא הרכיב לאורך $\hat\theta$, המשיק למעגל סביב הראשית. הוא כיוון המסלול רק כש-$\dot r = 0$, וכאן
+          $\dot r = b\omega \ne 0$ כל הזמן.
+        misconception: MC-1-theta-component-is-tangential
+      - text: 'גודל המהירות קבוע, כי $\dot\theta$ קבוע.'
+        feedback: '$|\vec v|^2 = \dot r^2 + r^2\dot\theta^2 = b^2\omega^2\left(1 + \theta^2\right)$, וזה גדל עם $\theta$: הנקודה מתרחקת, ו-$r\dot\theta$ גדל.'
+      - text: 'הקצב גדול מ-$a_\theta$, כי צריך להוסיף לו את $|a_r| = r\omega^2$.'
+        feedback: '$a_r$ שלילי, אל הראשית, והמהירות פונה מעט החוצה ($\dot r \gt 0$). לכן התרומה שלו לקצב שלילית: הוא מקטין את הקצב, לא מגדיל.'
+    hints:
+      - 'הקצב שבו גודל המהירות משתנה הוא הרכיב של $\vec a$ לאורך $\vec v$: $\vec a\cdot\vec v/|\vec v|$. כתבו אותו ברכיבים קוטביים.'
+
+  - id: Q-1.4-bead-solution
+    type: mc
+    objectives: [OBJ-1.4-2]
+    level: mid
+    prompt: >-
+      חרוז מחליק בלי חיכוך על מוט שמסתובב במישור אופקי במהירות זוויתית קבועה $\omega$, והרכיב הרדיאלי של התאוצה שלו
+      אפס, ולכן $\ddot r = \omega^2 r$. ב-$t = 0$ הוא במרחק $r_0$ מהציר, במנוחה ביחס למוט: $r(0) = r_0$, $\dot r(0) = 0$.
+      איזו פונקציה מקיימת את המשוואה **ואת** שני תנאי ההתחלה? ($\cosh x = \tfrac12\left(e^x + e^{-x}\right)$.)
+    choices:
+      - text: '$r = r_0\cosh\omega t$'
+        correct: true
+        feedback: >-
+          נכון. $\dfrac{d^2}{dt^2}\cosh\omega t = \omega^2\cosh\omega t$, ולכן המשוואה מתקיימת; $\cosh 0 = 1$ נותן $r(0) = r_0$, ו-$\dfrac{d}{dt}\cosh\omega t = \omega\sinh\omega t$
+          מתאפס ב-$t = 0$. זה הצירוף $\tfrac12 r_0\left(e^{\omega t} + e^{-\omega t}\right)$ של שני הפתרונות $e^{\pm\omega t}$.
+      - text: '$r = r_0 e^{\omega t}$'
+        feedback: 'היא מקיימת את המשוואה ואת $r(0) = r_0$, אבל $\dot r(0) = r_0\omega \ne 0$: זה חרוז שכבר נזרק החוצה. צריך גם את $e^{-\omega t}$.'
+      - text: '$r = r_0\cos\omega t$'
+        feedback: 'גזרו פעמיים: $\dfrac{d^2}{dt^2}\cos\omega t = -\omega^2\cos\omega t$. זה פותר את $\ddot r = -\omega^2 r$, תנודה, ולא את $\ddot r = +\omega^2 r$, בריחה.'
+      - text: '$r = r_0\left(1 + \tfrac12\omega^2 t^2\right)$'
+        feedback: >-
+          זו תנועה בתאוצה רדיאלית קבועה $r_0\omega^2$. היא נכונה רק בזמן קצר: $\ddot r = \omega^2 r$ גדל יחד עם $r$, ולכן
+          התאוצה לא קבועה.
+        misconception: MC-1-constant-acceleration-formulas-always
+    hints:
+      - 'הציבו כל אפשרות במשוואה, ואז בדקו את $r(0)$ ואת $\dot r(0)$.'
+
   - id: Q-1.4-bead-free
     type: numeric
     objectives: [OBJ-1.4-2]
@@ -213,7 +282,7 @@ questions:
       חרוז קטן יכול להחליק בלי חיכוך לאורך מוט ישר, שמסתובב במישור אופקי סביב אחד מקצותיו במהירות זוויתית קבועה
       $\omega = 2.0\,\text{rad/s}$. המוט דוחף את החרוז רק בכיוון ניצב לעצמו, ולכן הרכיב הרדיאלי של התאוצה של החרוז
       אפס כל הזמן. ברגע $t = 0$ החרוז במרחק $r_0$ מהציר, במנוחה ביחס למוט. אחרי כמה זמן המרחק שלו מהציר
-      $2r_0$?
+      $2r_0$? (אפשר לכתוב את הפתרון כצירוף של $e^{\omega t}$ ו-$e^{-\omega t}$, או בעזרת $\cosh x = \tfrac12\left(e^x + e^{-x}\right)$.)
     answer: 0.658
     unit: s
     correctFeedback: >-
@@ -237,7 +306,7 @@ questions:
         feedback: 'זה $1/\omega$, זמן אופייני של הבעיה, אבל לא התשובה. פתרו את $\cosh\omega t = 2$.'
     hints:
       - 'המשוואה $\ddot r = \omega^2r$ היא ליניארית עם מקדמים קבועים: נחשו $r = e^{\lambda t}$.'
-      - '$\cosh x = \dfrac{e^x + e^{-x}}{2}$, ו-$\cosh^{-1}2 = \ln\left(2 + \sqrt3\right)$.'
+      - 'עם $r = \tfrac12 r_0\left(e^{\omega t} + e^{-\omega t}\right)$ והצבה $x = e^{\omega t}$, התנאי $r = 2r_0$ הוא $x + 1/x = 4$, משוואה ריבועית ב-$x$.'
 
   - id: Q-1.4-spiral
     type: numeric
@@ -271,25 +340,24 @@ questions:
     level: bagrut
     prompt: >-
       דיסקית מחליקה בלי חיכוך על שולחן אופקי, קשורה לחוט שעובר דרך חור במרכז השולחן. מושכים את החוט מלמטה, לאט,
-      והחוט מושך את הדיסקית רק לכיוון החור, כך שהרכיב $a_\theta$ של התאוצה שלה אפס כל הזמן. כשהמרחק של הדיסקית
-      מהחור קטן פי 2, מה קורה ל-$\dot\theta$?
+      והחוט מושך את הדיסקית רק לכיוון החור, כך שהרכיב $a_\theta$ של התאוצה שלה אפס כל הזמן. מה קורה לרכיב הזוויתי
+      של המהירות, $v_\theta = r\dot\theta$, כשהמרחק של הדיסקית מהחור קטן פי 3?
     choices:
-      - text: הוא גדל פי 4.
+      - text: הוא גדל פי 3.
         correct: true
         feedback: >-
-          נכון. $a_\theta = r\ddot\theta + 2\dot r\dot\theta = \dfrac1r\cdot\dfrac{d}{dt}\left(r^2\dot\theta\right)$, ולכן $a_\theta = 0$ פירושו
-          $r^2\dot\theta$ קבוע. כש-$r$ קטן פי 2, $\dot\theta$ גדל פי 4, והרכיב הזוויתי של המהירות, $r\dot\theta$, פי 2.
-          **בדיקת גבולות:** כש-$r$ קבוע מתקבל $\dot\theta$ קבוע, תנועה מעגלית אחידה. בפרקים 3 ו-6 תפגשו את $r^2\dot\theta$
-          שוב, כשימור התנע הזוויתי וכחוק השני של קפלר.
-      - text: הוא גדל פי 2, כי גודל המהירות לא משתנה כשהמשיכה רק אל המרכז.
+          נכון. $a_\theta = \dfrac1r\cdot\dfrac{d}{dt}\left(r^2\dot\theta\right) = 0$, ולכן $r^2\dot\theta$ קבוע, ו-$v_\theta = r\dot\theta = \dfrac{r^2\dot\theta}{r}$
+          גדל כש-$r$ קטן: פי 3. $\dot\theta$ עצמו גדל פי 9. **בדיקת גבולות:** כש-$r$ קבוע, $v_\theta$ קבוע, תנועה מעגלית אחידה.
+          בפרקים 3 ו-6 תפגשו את $r^2\dot\theta$ שוב, כשימור התנע הזוויתי וכחוק השני של קפלר.
+      - text: הוא לא משתנה, כי משיכה אל המרכז לא משנה את גודל המהירות.
         feedback: >-
           כשמושכים את החוט, לדיסקית יש מהירות רדיאלית פנימה, והמשיכה כבר לא ניצבת למהירות: היא מגדילה את גודל
           המהירות. מה שנשמר הוא $r^2\dot\theta$, לא $r\dot\theta$.
         misconception: MC-1-radial-pull-keeps-speed
-      - text: 'הוא לא משתנה, כי $a_\theta = 0$ פירושו $\ddot\theta = 0$.'
-        feedback: 'זה היה נכון רק אם $a_\theta = r\ddot\theta$. אבל יש גם האיבר $2\dot r\dot\theta$: כש-$\dot r < 0$, $\ddot\theta$ חיובי.'
+      - text: 'הוא קטן פי 3, כי $a_\theta = 0$ פירושו $\ddot\theta = 0$, כלומר $\dot\theta$ קבוע.'
+        feedback: 'זה היה נכון רק אם $a_\theta = r\ddot\theta$. אבל יש גם האיבר $2\dot r\dot\theta$: כש-$\dot r \lt 0$, $\ddot\theta$ חיובי, ו-$\dot\theta$ גדל.'
         misconception: MC-1-polar-unit-vectors-fixed
-      - text: הוא קטן פי 2, כי הדיסקית מתקרבת למרכז ומאטה.
-        feedback: 'הדיסקית לא מאטה: החוט מושך אותה פנימה, בכיוון התנועה הרדיאלית שלה, ומגדיל את גודל המהירות.'
+      - text: הוא גדל פי 9.
+        feedback: '$\dot\theta$ גדל פי 9, כי $r^2\dot\theta$ קבוע. אבל $v_\theta = r\dot\theta$, ו-$r$ עצמו קטן פי 3: $9/3 = 3$.'
     hints:
-      - 'הראו ש-$r\ddot\theta + 2\dot r\dot\theta = \dfrac1r\dfrac{d}{dt}\left(r^2\dot\theta\right)$.'
+      - 'הראו ש-$r\ddot\theta + 2\dot r\dot\theta = \dfrac1r\dfrac{d}{dt}\left(r^2\dot\theta\right)$, וכתבו את $v_\theta$ בעזרת $r^2\dot\theta$.'

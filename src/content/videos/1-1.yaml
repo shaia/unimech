@@ -1,0 +1,24 @@
+# Videos of lesson 1.1. Every id was checked against YouTube oEmbed on the `verified` date (HTTP 200, embeddable,
+# title and channel as below). Lengths come from the watch page (lengthSeconds: 288 and 274); caption tracks were
+# read from the watch page's captionTracks (ITA1rW5UraU lists Hebrew, iw; HFdeHX_wA4k lists English). `why` claims
+# only what the title and the description support.
+
+- id: v-1-1-constant-speed
+  youtubeId: ITA1rW5UraU
+  title: 'Race cars with constant speed around curve | Physics | Khan Academy'
+  channel: Khan Academy
+  lang: en
+  captions: [he, en]
+  minutes: 5
+  why: 'לפי התיאור, הסרטון עוסק בתאוצה שמשנה רק את הכיוון של המהירות ולא את גודלה: מכונית מירוץ שנוסעת בסיבוב במהירות קבועה. חפשו את המקום שבו הוא משרטט את וקטורי המהירות בשתי נקודות על הסיבוב ומחסר אותם, והשוו לאיור 1.1א במעגל.'
+  verified: '2026-11-08'
+
+- id: v-1-1-planar-accel
+  youtubeId: HFdeHX_wA4k
+  title: 'Planar motion example: acceleration vector | Advanced derivatives | AP Calculus BC | Khan Academy'
+  channel: Khan Academy
+  lang: en
+  captions: [en]
+  minutes: 5
+  why: 'לפי התיאור, נתון וקטור המקום של חלקיק במישור, (−3t³ + 4t², t³ + 2), ומוצאים ממנו את וקטור התאוצה ברגע t = 3: גזירה רכיב-רכיב, פעמיים, כמו בדוגמה הראשונה של השיעור.'
+  verified: '2026-11-08'

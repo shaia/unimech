@@ -1,27 +1,33 @@
 # Misconceptions first detected in lesson 1.2. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 1.2
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 1.2 that refutes it (`anchor` is a step
+# or block id in src/content/lessons/ch1/1-2-projectile-motion.mdx).
 
 - id: MC-1-zero-acceleration-at-top
   title: בנקודה הגבוהה ביותר התאוצה מתאפסת
   belief: בשיא הגובה של זריקה הגוף "עוצר לרגע", ולכן התאוצה שלו שם אפס.
   truth: רק הרכיב האנכי של המהירות מתאפס בשיא. התאוצה היא g כלפי מטה לאורך כל התנועה, גם בשיא, ובלעדיה הגוף לא היה מתחיל לרדת.
-  remedy: { lesson: '1.2', label: 'שיעור 1.2: הצורה הווקטורית של התנועה בתאוצה קבועה' }
+  remedy: { lesson: '1.2', anchor: 'apex', label: 'שיעור 1.2: החצים של v ושל g בנקודה הגבוהה ביותר' }
 
 - id: MC-1-gravity-bends-relative-motion
   title: הכבידה מעקמת גם את התנועה של גוף אחד ביחס לאחר
   belief: מכיוון ששני גופים שנזרקים נעים כל אחד על פרבולה, גם ההפרש בין המקומות שלהם משתנה כמו פרבולה.
   truth: לשני הגופים אותה תאוצה g, ולכן האיבר ½gt² מצטמצם בהפרש. המקום של אחד ביחס לאחר משתנה קווית בזמן, כמו של גוף שנע במהירות קבועה.
-  remedy: { lesson: '1.2', label: 'שיעור 1.2: שני גופים שנזרקים באותו רגע' }
+  remedy: { lesson: '1.2', anchor: 'two-bodies', label: 'שיעור 1.2: שני גופים שנזרקים באותו רגע' }
 
 - id: MC-1-longer-flight-longer-range
   title: זמן תנועה ארוך יותר פירושו טווח גדול יותר
   belief: מכיוון שבזווית גבוהה הגוף נמצא באוויר זמן רב יותר, הוא גם מגיע רחוק יותר.
   truth: הטווח הוא מכפלה של המהירות האופקית בזמן התנועה. כשהזווית עולה הזמן גדל, אבל המהירות האופקית קטנה, ומעל 45° על קרקע מישורית הטווח קטן.
-  remedy: { lesson: '1.2', label: 'שיעור 1.2: הטווח כפונקציה של זווית הזריקה' }
+  remedy: { lesson: '1.2', anchor: 'complementary', label: 'שיעור 1.2: שתי זריקות, 30° ו-60°' }
 
 - id: MC-1-forty-five-always-best
   title: זריקה ב-45° תמיד הכי רחוקה
   belief: הזווית שנותנת את הטווח הגדול ביותר היא תמיד 45°, גם על מדרון וגם כשמכוונים למטרה בגובה.
-  truth: 45° היא התשובה רק על קרקע מישורית, כשהזריקה והנחיתה באותו גובה. במעלה מדרון בזווית α הזווית הטובה ביותר היא 45° + α/2, ולמטרה על קיר רחוק היא תלויה במרחק.
-  remedy: { lesson: '1.2', label: 'שיעור 1.2: זריקה אל מדרון' }
+  truth: 45° היא התשובה רק על קרקע מישורית, כשהזריקה והנחיתה באותו גובה. על מדרון בזווית β הזווית הטובה ביותר היא 45° + β/2 (גבוהה מ-45° במעלה המדרון ונמוכה ממנה במורד), ולמטרה על קיר רחוק היא תלויה במרחק.
+  remedy: { lesson: '1.2', anchor: 'incline-best', label: 'שיעור 1.2: הזווית הטובה ביותר על מדרון' }
+
+- id: MC-1-farthest-from-incline-at-top
+  title: הגוף הכי רחוק מהמדרון בנקודה הגבוהה ביותר של המסלול
+  belief: בזריקה אל מדרון, הרגע שבו הגוף הכי רחוק מפני המדרון הוא הרגע שבו הוא בשיא הגובה, כשהמהירות שלו אופקית.
+  truth: המרחק מהמדרון הוא הקואורדינטה η בצירים נטויים (ציר ξ לאורך המדרון וציר η ניצב לו), והוא מרבי כשהרכיב של המהירות שניצב למדרון מתאפס, כלומר כשהמהירות מקבילה למדרון. זה קורה בדיוק באמצע זמן התנועה, לפני השיא כשזורקים במעלה המדרון.
+  remedy: { lesson: '1.2', anchor: 'incline-clearance', label: 'שיעור 1.2: המרחק מהמדרון בצירים נטויים' }

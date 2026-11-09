@@ -12,6 +12,9 @@
 #     (no wind 4.00, wind added 3.71, head/tail wind 4.76);
 #   train 15 m/s, ball up at 6.0 m/s: T = 2u/g = 1.22 s, D = VT = 18.4 m (half time 9.18, H = 1.84 m); in the
 #     ground frame v = 16.2 m/s at 21.8°, v²sin2θ/g = 18.4 m as well.
+# Q-1.5-closest-approach (added with the lesson) in .scratch/ch1/1-5/lesson.ts with closestApproach from
+# src/physics/galilean.ts: A at (−400, 0) m with (6.0, 0) m/s, B at (0, −300) m with (0, 8.0) m/s: t* = 48 s,
+#   d_min = 140 m (distance now 500; when B reaches the crossing 175; when A does 233).
 
 chapter: 1
 questions:
@@ -139,6 +142,36 @@ questions:
         feedback: 'זה הזמן ברוח שנושבת **לאורך** הקו, $500/350 + 500/150$. כאן הרוח ניצבת לקו, ולכן המהירות ביחס לקרקע זהה בשני הכיוונים.'
     hints:
       - 'ציירו משולש: היתר הוא מהירות המטוס ביחס לאוויר, ניצב אחד מבטל את הרוח, והניצב השני הוא המהירות ביחס לקרקע.'
+
+  - id: Q-1.5-closest-approach
+    type: numeric
+    objectives: [OBJ-1.5-1]
+    level: bagrut
+    prompt: >-
+      שני רוכבי אופניים מתקרבים לצומת של שתי דרכים ניצבות. ברגע מסוים רוכבת A נמצאת $400\,\text{m}$ מערבית לצומת ורוכבת
+      מזרחה ב-$6.0\,\text{m/s}$, ורוכב B נמצא $300\,\text{m}$ דרומית לצומת ורוכב צפונה ב-$8.0\,\text{m/s}$. שניהם שומרים על
+      מהירות קבועה. מה המרחק הקטן ביותר ביניהם?
+    answer: 140
+    unit: m
+    correctFeedback: >-
+      נכון. במערכת של A, הרוכב B יוצא מ-$\vec r_0 = \vec r_B - \vec r_A = (400,\ -300)\,\text{m}$ ונע בקו ישר במהירות
+      $\vec w = \vec v_B - \vec v_A = (-6.0,\ 8.0)\,\text{m/s}$, שגודלה $10\,\text{m/s}$. המרחק הקטן ביותר מ-A לקו הזה הוא האנך:
+      $d_{\min} = \dfrac{|x_0w_y - y_0w_x|}{|\vec w|} = \dfrac{|400\cdot8.0 - (-300)(-6.0)|}{10} = 140\,\text{m}$, אחרי
+      $t^* = -\dfrac{\vec r_0\cdot\vec w}{|\vec w|^2} = 48\,\text{s}$.
+      **בדיקת גבולות:** אם $\vec w$ היה מכוון בדיוק אל A, המכפלה הווקטורית הייתה אפס, והם היו נפגשים בצומת.
+    wrongFeedback: 'עברו למערכת של A. מאיפה B יוצא בה, ובאיזו מהירות הוא נע? המרחק הקטן ביותר מנקודה לקו ישר הוא האנך.'
+    commonWrong:
+      - value: 500
+        feedback: >-
+          זה המרחק עכשיו, $\sqrt{400^2 + 300^2}$. אותו מספר יוצא גם אם מחברים את המהירויות, $\vec v_A + \vec v_B$, במקום לחסר:
+          המהירות של B ביחס ל-A היא $\vec v_B - \vec v_A$.
+        misconception: MC-1-relative-velocity-added
+      - value: 175
+        feedback: 'זה המרחק ברגע ש-B מגיע לצומת, אחרי $37.5\,\text{s}$. אבל אז A עדיין מתקרבת; הם הכי קרובים מאוחר יותר, אחרי $48\,\text{s}$.'
+      - value: 233
+        feedback: 'זה המרחק ברגע ש-A מגיעה לצומת. אז B כבר עבר אותו ומתרחק. חפשו את הרגע שבו המקום היחסי ניצב למהירות היחסית.'
+    hints:
+      - 'כתבו את המקום ואת המהירות של B ביחס ל-A כווקטורים, עם ציר $x$ מזרחה וציר $y$ צפונה.'
 
   # ---------------------------------------------------------------- OBJ-1.5-2 the same acceleration in every such frame
   - id: Q-1.5-train-ball

@@ -6,6 +6,9 @@ interface PredictData {
   answer: number;
 }
 
+/** A choice is quoted mid-paragraph: close it with a period unless it already ends a sentence. */
+const endSentence = (html: string) => (/[.?!]\s*$/.test(html) ? html : `${html}.`);
+
 /**
  * "Your prediction vs what you found": closes the loop the lesson's <Predict> opened.
  * Reads the choices from the JSON the matching <Predict> left on the page.
@@ -34,7 +37,7 @@ export default function Revisit({ id }: { id: string }) {
         <p>והאינטואיציה צדקה. עכשיו יש לכם גם את ההסבר.</p>
       ) : (
         <p>
-          מה שגיליתם: <span dangerouslySetInnerHTML={{ __html: data.choices[data.answer] }} />. חיזוי שגוי הוא חלק מהלמידה:
+          מה שגיליתם: <span dangerouslySetInnerHTML={{ __html: endSentence(data.choices[data.answer]) }} /> חיזוי שגוי הוא חלק מהלמידה:
           טעות שמתגלה בניסוי נזכרת הרבה יותר טוב מכלל שנאמר בהרצאה.
         </p>
       )}

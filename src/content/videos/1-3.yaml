@@ -1,0 +1,32 @@
+# Videos for lesson 1.3. Every id was checked against YouTube oEmbed on the `verified` date (200: exists and
+# embeddable; title and channel as below). Lengths come from the watch page (lengthSeconds: 3051 s and 468 s);
+# caption tracks were read from the watch page's captionTracks (an English track for the first, none listed
+# for the second). `why` claims only what the title and the description support.
+
+- id: v-1-3-lewin-circular
+  youtubeId: mWj1ZEQTI8I
+  title: '8.01x - Lect 5 - Circular Motion, Centripetal Forces, Perceived Gravity'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 51
+  why: >-
+    הרצאה של וולטר לוין בקורס 8.01 של MIT, לפי הכותרת והתיאור על תנועה מעגלית, צנטריפוגות ומערכות ייחוס נעות. החלק
+    הראשון שלה (לפי התמליל באתר המראה של MIT OCW) הוא הקינמטיקה של השיעור: זמן מחזור, תדירות, מהירות זוויתית,
+    והתאוצה v²/R, שאותה הוא מציג בלי גזירה. החלקים על כוחות ועל "כובד מורגש"
+    שייכים לשיעור 2.6 ולפרק 7, ושם כדאי לחזור אליהם.
+  verified: '2026-11-08'
+
+- id: v-1-3-curvature
+  youtubeId: si6ka6HeUdY
+  title: 'How curvy is a curve? Intro to Curvature & Circles of Curvature | Multi-variable Calculus'
+  channel: Dr. Trefor Bazett
+  lang: en
+  start: 0
+  minutes: 8
+  why: >-
+    סרטון מתמטי קצר: לפי התיאור הוא מגדיר עקמומיות, מוצא לה נוסחה, מקשר אותה לווקטור היחידה המשיק ולווקטור היחידה
+    הניצב, ומתאר את מעגל העקמומיות. זה הצד הגאומטרי של מה שבשיעור מחשבים מהמהירות ומהתאוצה: השוו את הנוסחה שבסרטון
+    לנוסחה ρ = |v|³/|v × a|.
+  verified: '2026-11-08'

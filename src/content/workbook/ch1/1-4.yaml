@@ -1,0 +1,470 @@
+# Workbook, lesson 1.4 (velocity and acceleration in polar coordinates). Format and rules: .claude/CLAUDE.md,
+# "The solution format" (law … limit, units, result). In a >- block, consecutive lines fold into one
+# paragraph: every part (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch1/1-4/wb.ts with src/physics/polar.ts (polarVelocity,
+# polarAcceleration, accelTerms, numericState, polarMotion) and G from constants.ts:
+#   W-02: r = 2.0 + 0.5t², θ = 0.8t at t = 2.0 s: r = 4.0, ṙ = 2.0, θ̇ = 0.8: v_r = 2.0, v_θ = 3.2, |v| = 3.77 m/s;
+#   W-04: same, r̈ = 1.0: a_r = −1.56, a_θ = 3.2, |a| = 3.56 m/s²;
+#   W-05: u = 0.5 m/s, ω = 1.0 rad/s: |v| = 3.04 m/s at r = 3 m, 1.12 m/s at r = 1 m; a_θ = −1.0 m/s²;
+#   W-06: θ = ½αt² (α = 2.0), r = ut (u = 0.30), t = 1.0 s: −rθ̇² = −1.2, rθ̈ = 0.6, 2ṙθ̇ = 1.2; |a| = 2.16 m/s²;
+#   W-08: r = Ae^{kθ}: |a| = ω²r(1 + k²) and the angle of v from r̂ = arctan(1/k) (checked at k = 0.20: 78.7°);
+#   W-09: R = 0.50, ω = 2.0, u = 0.20: bug A |a| = 2.15 m/s² (a_r = −2.0, a_θ = 0.80), bug B |a| = 2.88 m/s²;
+#   W-10: r = 8.0 km, θ̇ = 0.025 rad/s, r̈ = 5.0 m/s²: rθ̇² = 5.0, a = 0, v = 200 m/s; r after 10 s = 8.25 km;
+#   c1: r = 2.0 m, α = 0.50 rad/s², a_max = 0.50·g = 4.90 m/s²: t* = 3.10 s, θ = 2.40 rad (137°), a_r = −4.80;
+#   c2: r₀ = 0.10 m, ω = 5.0 rad/s: holding 2.5 m/s²; a_θ = r₀ω² at ωt = 0.481 (t = 0.0962 s, r = 0.112 m);
+#       at t = 0.50 s r = 0.613 m, a_θ = 30.3 m/s², v_r/v_θ = 0.987.
+
+lesson: '1.4'
+practice:
+  - id: W-1.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-1.4-1]
+    prompt: >-
+      נקודה נעה על מעגל סביב הראשית O **עם כיוון השעון**, כך ש-$\dot\theta \lt 0$ (הזווית $\theta$ נמדדת מהציר $x$, נגד כיוון השעון). ברגע מסוים הנקודה בדיוק מעל O, ב-$\theta = 90^\circ$.
+
+      א. לאן מצביעים $\hat r$ ו-$\hat\theta$ ברגע הזה (ימינה, שמאלה, למעלה או למטה)?
+
+      ב. לאן מצביעות $\dfrac{d\hat r}{dt}$ ו-$\dfrac{d\hat\theta}{dt}$? בדקו את התשובה בציור: לאן "נוטים" שני הווקטורים כשהנקודה ממשיכה לנוע?
+    answer: >-
+      א. $\hat r$ למעלה, $\hat\theta$ שמאלה.
+
+      ב. $d\hat r/dt$ ימינה, $d\hat\theta/dt$ למעלה.
+    solution:
+      - kind: law
+        text: >-
+          $\hat r = (\cos\theta,\ \sin\theta)$ ו-$\hat\theta = (-\sin\theta,\ \cos\theta)$; $\dfrac{d\hat r}{dt} = \dot\theta\,\hat\theta$ ו-$\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$.
+      - kind: manipulation
+        text: >-
+          א. ב-$\theta = 90^\circ$: $\hat r = (0,\ 1)$, למעלה, ו-$\hat\theta = (-1,\ 0)$, שמאלה.
+
+          ב. $\dot\theta \lt 0$, ולכן $\dot\theta\,\hat\theta$ הפוך ל-$\hat\theta$: ימינה. ו-$(-\dot\theta) \gt 0$, ולכן $(-\dot\theta)\,\hat r$ בכיוון $\hat r$: למעלה.
+      - kind: reasoning
+        text: >-
+          בציור: הנקודה זזה ימינה, עם כיוון השעון. $\hat r$, שמצביע אליה מ-O, נוטה ימינה. $\hat\theta$, שתמיד מסובב ב-$90^\circ$ נגד כיוון השעון מ-$\hat r$, נוטה מ"שמאלה" אל "למעלה".
+      - kind: limit
+        text: >-
+          כש-$\dot\theta = 0$ הנקודה לא מסתובבת סביב O, ושתי הנגזרות אפס: וקטורי היחידה לא משתנים. ושתי הנגזרות ניצבות לווקטורים שלהן, כמו שצריך לווקטורים שהאורך שלהם קבוע.
+      - kind: units
+        text: >-
+          וקטורי היחידה חסרי ממדים, ולכן הנגזרות שלהם ביחידות של $\dot\theta$: $\text{1/s}$.
+      - kind: result
+        text: >-
+          א. $\hat r$ למעלה, $\hat\theta$ שמאלה. ב. $d\hat r/dt$ ימינה, $d\hat\theta/dt$ למעלה.
+
+  - id: W-1.4-02
+    level: basic
+    objectives: [OBJ-1.4-1]
+    prompt: >-
+      גוף נע במישור כך ש-$r(t) = 2.0 + 0.5\,t^2$ (במטרים, כש-$t$ בשניות) ו-$\theta(t) = 0.8\,t$ (ברדיאנים). מצאו את רכיבי המהירות $v_r$ ו-$v_\theta$ ואת גודל המהירות ברגע $t = 2.0\,\text{s}$.
+    answer: >-
+      $v_r = 2.0\,\text{m/s}$, $v_\theta = 3.2\,\text{m/s}$, $|\vec v| = 3.77\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r = 2.0 + 0.5t^2$, ולכן $\dot r = t$. $\theta = 0.8t$, ולכן $\dot\theta = 0.8\,\text{rad/s}$.
+      - kind: law
+        text: >-
+          $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$, ו-$|\vec v| = \sqrt{\dot r^2 + r^2\dot\theta^2}$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$, $\dot r = 0$ ונשאר $v_\theta = r\dot\theta = 1.6\,\text{m/s}$: ברגע הזה הגוף נע כמו על מעגל ברדיוס $2.0\,\text{m}$, $v = \omega r$.
+      - kind: units
+        text: >-
+          $r\dot\theta$ הוא $\text{m}\cdot\text{rad/s} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          ב-$t = 2.0\,\text{s}$: $r = 4.0\,\text{m}$, $\dot r = 2.0\,\text{m/s}$, ולכן $v_r = 2.0\,\text{m/s}$, $v_\theta = 4.0\cdot0.8 = 3.2\,\text{m/s}$ ו-$|\vec v| = \sqrt{2.0^2 + 3.2^2} = 3.77\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $v_r = 2.0\,\text{m/s}$, $v_\theta = 3.2\,\text{m/s}$, $|\vec v| = 3.77\,\text{m/s}$.
+
+  - id: W-1.4-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-1.4-2]
+    prompt: >-
+      מכונית נוסעת על מסלול מעגלי סביב הנקודה O, נגד כיוון השעון, והנהג בולם, כך שגודל המהירות קטן. O היא הראשית.
+
+      א. אילו מארבעת האיברים של התאוצה הקוטבית, $\ddot r$, $(-r\dot\theta^2)$, $r\ddot\theta$ ו-$2\dot r\dot\theta$, שונים מאפס?
+
+      ב. מה הסימן של כל אחד מהם, ומה כל אחד עושה למהירות?
+    answer: >-
+      א. רק $(-r\dot\theta^2)$ ו-$r\ddot\theta$.
+
+      ב. $(-r\dot\theta^2) \lt 0$: אל O, מסובב את המהירות. $r\ddot\theta \lt 0$: נגד התנועה, מקטין את גודל המהירות.
+    solution:
+      - kind: law
+        text: >-
+          $\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$.
+      - kind: reasoning
+        text: >-
+          א. $r$ קבוע, ולכן $\dot r = \ddot r = 0$, ואיתם $2\dot r\dot\theta = 0$. המכונית מסתובבת, $\dot\theta \gt 0$, ולכן $(-r\dot\theta^2) \ne 0$. היא מאטה, ולכן $\dot\theta$ קטן: $\ddot\theta \lt 0$, ו-$r\ddot\theta \ne 0$.
+
+          ב. $(-r\dot\theta^2)$ שלילי: לאורך $(-\hat r)$, אל O. הוא ניצב למהירות ומשנה רק את הכיוון שלה. $r\ddot\theta$ שלילי: לאורך $(-\hat\theta)$, נגד כיוון התנועה. במעגל $\hat\theta$ משיק למסלול, ולכן זה הרכיב שמקטין את גודל המהירות.
+      - kind: limit
+        text: >-
+          כשהנהג מפסיק לבלום, $\ddot\theta = 0$, ונשארת רק התאוצה הצנטריפטלית של תנועה מעגלית אחידה (שיעור 1.3).
+      - kind: units
+        text: >-
+          $r\dot\theta^2$ ו-$r\ddot\theta$ שניהם $\text{m}\cdot\text{1/s}^2 = \text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $(-r\dot\theta^2)$ ו-$r\ddot\theta$. ב. הראשון אל O ומסובב את המהירות; השני נגד התנועה ומקטין את גודלה.
+
+  - id: W-1.4-04
+    level: mid
+    objectives: [OBJ-1.4-1]
+    prompt: >-
+      גוף נע במישור כך ש-$r(t) = 2.0 + 0.5\,t^2$ (במטרים, כש-$t$ בשניות) ו-$\theta(t) = 0.8\,t$ (ברדיאנים). מצאו את רכיבי התאוצה $a_r$ ו-$a_\theta$ ואת גודל התאוצה ברגע $t = 2.0\,\text{s}$. איזה מהאיברים תורם הכי הרבה לכל רכיב?
+    answer: >-
+      $a_r = -1.56\,\text{m/s}^2$, $a_\theta = 3.2\,\text{m/s}^2$, $|\vec a| = 3.56\,\text{m/s}^2$. ב-$a_r$ שולט $(-r\dot\theta^2) = -2.56$; כל $a_\theta$ הוא איבר קוריוליס.
+    solution:
+      - kind: given
+        text: >-
+          $\dot r = t$, $\ddot r = 1.0\,\text{m/s}^2$, $\dot\theta = 0.8\,\text{rad/s}$, $\ddot\theta = 0$.
+      - kind: law
+        text: >-
+          $a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = r\ddot\theta + 2\dot r\dot\theta$.
+      - kind: manipulation
+        text: >-
+          בסימנים: $a_r = 1 - (2 + 0.5t^2)\cdot0.64$ ו-$a_\theta = 2\cdot t\cdot0.8 = 1.6\,t$ (ביחידות SI).
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $\dot r = 0$, ולכן $a_\theta = 0$, ו-$a_r = 1.0 - 2.0\cdot0.64 = -0.28\,\text{m/s}^2$: מה שנשאר הוא המאבק בין $\ddot r$, שדוחף החוצה, לבין האיבר הצנטריפטלי.
+      - kind: units
+        text: >-
+          כל ארבעת האיברים ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          ב-$t = 2.0\,\text{s}$, $r = 4.0\,\text{m}$, $\dot r = 2.0\,\text{m/s}$: $a_r = 1.0 - 4.0\cdot0.64 = -1.56\,\text{m/s}^2$, $a_\theta = 2\cdot2.0\cdot0.8 = 3.2\,\text{m/s}^2$, ולכן $|\vec a| = \sqrt{1.56^2 + 3.2^2} = 3.56\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $a_r = -1.56\,\text{m/s}^2$, $a_\theta = 3.2\,\text{m/s}^2$, $|\vec a| = 3.56\,\text{m/s}^2$.
+
+  - id: W-1.4-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.4-2]
+    prompt: >-
+      ילדה הולכת **פנימה**, מהשפה אל המרכז, לאורך קו רדיאלי על קרוסלה, במהירות קבועה ביחס לקרוסלה. הקרוסלה מסתובבת נגד כיוון השעון (במבט מלמעלה) במהירות זוויתית קבועה. קבעו ונמקו:
+
+      א. האם הרכיב הזוויתי של התאוצה שלה, כפי שהיא נמדדת מהקרקע, פונה בכיוון הסיבוב או נגדו?
+
+      ב. האם גודל המהירות שלה, כפי שהוא נמדד מהקרקע, גדל, קטן או נשאר קבוע?
+    answer: >-
+      א. נגד כיוון הסיבוב.
+
+      ב. קטן.
+    solution:
+      - kind: law
+        text: >-
+          $a_\theta = r\ddot\theta + 2\dot r\dot\theta$ ו-$|\vec v|^2 = \dot r^2 + r^2\dot\theta^2$.
+      - kind: reasoning
+        text: >-
+          א. $\dot\theta = \omega \gt 0$ קבוע, ולכן $r\ddot\theta = 0$. היא הולכת פנימה, ולכן $\dot r \lt 0$, ו-$a_\theta = 2\dot r\omega \lt 0$: לאורך $(-\hat\theta)$, נגד הסיבוב. שתי התרומות של איבר קוריוליס מתהפכות: המהירות הרדיאלית שלה פונה עכשיו פנימה, והרכיב הזוויתי $r\omega$ קטן כש-$r$ קטן.
+
+          ב. $\dot r$ קבוע, ו-$r^2\omega^2$ קטן כש-$r$ קטן, ולכן $|\vec v|$ קטן. למשל, עם $0.5\,\text{m/s}$ ו-$1.0\,\text{rad/s}$: מ-$3.04\,\text{m/s}$ ב-$r = 3\,\text{m}$ ל-$1.12\,\text{m/s}$ ב-$r = 1\,\text{m}$.
+      - kind: limit
+        text: >-
+          כשהיא עומדת במקום על הקרוסלה, $\dot r = 0$, ו-$a_\theta = 0$: נשארת רק התאוצה הצנטריפטלית. וכשהיא מגיעה למרכז, $r = 0$, וגודל המהירות שלה הוא רק $|\dot r|$.
+      - kind: units
+        text: >-
+          $\dot r\omega$ הוא $\text{m/s}\cdot\text{1/s} = \text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. נגד הסיבוב: $a_\theta = 2\dot r\omega \lt 0$. ב. גודל המהירות קטן.
+
+  - id: W-1.4-06
+    level: mid
+    objectives: [OBJ-1.4-2]
+    prompt: >-
+      מוט מתחיל להסתובב ממנוחה במישור אופקי סביב אחד מקצותיו, בתאוצה זוויתית קבועה $\alpha = 2.0\,\text{rad/s}^2$, כך ש-$\theta = \tfrac12\alpha t^2$. ברגע $t = 0$ טבעת קטנה יוצאת מהציר ומחליקה לאורך המוט החוצה במהירות קבועה $u = 0.30\,\text{m/s}$ ביחס למוט. מצאו את ארבעת האיברים של התאוצה של הטבעת, את $a_r$ ואת $a_\theta$, ואת גודל התאוצה ברגע $t = 1.0\,\text{s}$.
+    answer: >-
+      $\ddot r = 0$, $(-r\dot\theta^2) = -1.2$, $r\ddot\theta = 0.60$, $2\dot r\dot\theta = 1.2$ (ב-$\text{m/s}^2$); $a_r = -1.2\,\text{m/s}^2$, $a_\theta = 1.8\,\text{m/s}^2$, $|\vec a| = 2.16\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $r = ut$, $\dot r = u$, $\ddot r = 0$; $\dot\theta = \alpha t$, $\ddot\theta = \alpha$. הראשית בציר, $\theta$ בכיוון הסיבוב.
+      - kind: law
+        text: >-
+          $a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = r\ddot\theta + 2\dot r\dot\theta$.
+      - kind: manipulation
+        text: >-
+          $a_r = -ut\cdot\alpha^2t^2 = -u\alpha^2t^3$ ו-$a_\theta = ut\alpha + 2u\alpha t = 3u\alpha t$.
+      - kind: limit
+        text: >-
+          כש-$u = 0$ הטבעת נשארת בציר, ושני הרכיבים אפס, כמו שצריך. ב-$a_\theta$ איבר קוריוליס גדול פי 2 מהאיבר $r\ddot\theta$ בכל רגע, כי $2u\cdot\alpha t$ לעומת $ut\cdot\alpha$.
+      - kind: units
+        text: >-
+          $u\alpha t$ הוא $\text{m/s}\cdot\text{rad/s}^2\cdot\text{s} = \text{m/s}^2$; $u\alpha^2t^3$ הוא $\text{m/s}\cdot\text{1/s}^4\cdot\text{s}^3 = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          ב-$t = 1.0\,\text{s}$: $r = 0.30\,\text{m}$, $\dot\theta = 2.0\,\text{rad/s}$. $(-r\dot\theta^2) = -0.30\cdot4.0 = -1.2\,\text{m/s}^2$, $r\ddot\theta = 0.30\cdot2.0 = 0.60\,\text{m/s}^2$, $2\dot r\dot\theta = 2\cdot0.30\cdot2.0 = 1.2\,\text{m/s}^2$. לכן $a_r = -1.2\,\text{m/s}^2$, $a_\theta = 1.8\,\text{m/s}^2$ ו-$|\vec a| = \sqrt{1.2^2 + 1.8^2} = 2.16\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $a_r = -1.2\,\text{m/s}^2$, $a_\theta = 1.8\,\text{m/s}^2$, $|\vec a| = 2.16\,\text{m/s}^2$.
+
+  - id: W-1.4-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.4-1]
+    prompt: >-
+      בלי לגזור רכיבים, הסבירו בציור למה $\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$:
+
+      א. ציירו את $\hat\theta$ בזווית $\theta$ ובזווית $\theta + \Delta\theta$, מאותה נקודה. מה האורך של ההפרש $\Delta\hat\theta$, ומה הכיוון שלו כש-$\Delta\theta$ קטן?
+
+      ב. מה משתנה בתשובה כש-$\Delta\theta \lt 0$?
+    answer: >-
+      א. $|\Delta\hat\theta| = 2\sin(\Delta\theta/2) \approx \Delta\theta$, בכיוון $(-\hat r)$.
+
+      ב. ההפרש מתהפך, בכיוון $\hat r$; והנוסחה $(-\dot\theta)\hat r$ נותנת בדיוק את זה.
+    solution:
+      - kind: law
+        text: >-
+          הנגזרת היא הגבול של $\Delta\hat\theta/\Delta t$. לווקטור שהאורך שלו קבוע, ההפרש בין שני מצבים קרובים ניצב לו.
+      - kind: reasoning
+        text: >-
+          א. שני הווקטורים באורך 1, והזווית ביניהם $\Delta\theta$, ולכן ההפרש הוא הבסיס של משולש שווה שוקיים, באורך $2\sin(\Delta\theta/2)$. כש-$\Delta\theta$ קטן הבסיס כמעט ניצב לשוקיים. $\hat\theta$ הוא $\hat r$ מסובב ב-$90^\circ$; כש-$\theta$ גדלה, $\hat\theta$ מסתובב יחד עם $\hat r$, והקצה שלו נע לכיוון ההפוך ל-$\hat r$, אל הראשית. לכן $\Delta\hat\theta \approx \Delta\theta\,(-\hat r)$.
+
+          ב. כש-$\Delta\theta \lt 0$ הסיבוב הפוך, וההפרש בכיוון $\hat r$. אחרי חלוקה ב-$\Delta t$: $\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$ בכל מקרה, עם הסימן של $\dot\theta$.
+      - kind: limit
+        text: >-
+          $2\sin(\Delta\theta/2)/\Delta\theta \to 1$ כש-$\Delta\theta \to 0$; למשל ב-$\Delta\theta = 0.1$ היחס הוא $0.9996$. ובחשבון: $\dfrac{d}{dt}(-\sin\theta,\ \cos\theta) = -\dot\theta(\cos\theta,\ \sin\theta) = -\dot\theta\,\hat r$, אותה תוצאה.
+      - kind: units
+        text: >-
+          $\hat\theta$ חסר ממדים, ולכן הנגזרת שלו ב-$\text{1/s}$, כמו $\dot\theta$.
+      - kind: result
+        text: >-
+          א. $|\Delta\hat\theta| \approx \Delta\theta$, בכיוון $(-\hat r)$. ב. ההפרש מתהפך, ו-$d\hat\theta/dt = -\dot\theta\,\hat r$ נשאר נכון.
+
+  - id: W-1.4-08
+    level: bagrut
+    objectives: [OBJ-1.4-1]
+    prompt: >-
+      נקודה נעה על הספירלה הלוגריתמית $r = A\,e^{k\theta}$ ($A$ ו-$k$ קבועים חיוביים), והזווית שלה גדלה בקצב קבוע, $\dot\theta = \omega$.
+
+      א. מצאו את $v_r$ ואת $v_\theta$, והראו שהזווית בין המהירות לבין $\hat r$ זהה בכל נקודה של המסלול.
+
+      ב. מצאו את $a_r$ ואת $a_\theta$, והראו ש-$|\vec a| = \omega^2 r\left(1 + k^2\right)$.
+
+      ג. בדקו את התוצאות בגבול $k \to 0$.
+    answer: >-
+      א. $v_r = k\omega r$, $v_\theta = \omega r$; $\tan\beta = 1/k$, קבוע.
+
+      ב. $a_r = \omega^2 r\left(k^2 - 1\right)$, $a_\theta = 2k\omega^2 r$, $|\vec a| = \omega^2 r(1 + k^2)$.
+
+      ג. מעגל: $v = \omega r$ לאורך $\hat\theta$, $|\vec a| = \omega^2 r$ אל המרכז.
+    solution:
+      - kind: law
+        text: >-
+          $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$, $\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$, וכלל השרשרת.
+      - kind: manipulation
+        text: >-
+          א. $\dot r = Ak e^{k\theta}\dot\theta = k\omega r$, ולכן $v_r = k\omega r$ ו-$v_\theta = \omega r$. הזווית $\beta$ בין $\vec v$ לבין $\hat r$ מקיימת $\tan\beta = v_\theta/v_r = 1/k$, שלא תלוי ב-$r$ או ב-$\theta$.
+
+          ב. $\ddot r = k\omega\dot r = k^2\omega^2 r$ ו-$\ddot\theta = 0$. לכן $a_r = k^2\omega^2 r - \omega^2 r = \omega^2 r(k^2 - 1)$ ו-$a_\theta = 2\cdot k\omega r\cdot\omega = 2k\omega^2 r$. ואז $|\vec a|^2 = \omega^4r^2\left[(k^2 - 1)^2 + 4k^2\right] = \omega^4 r^2(k^2 + 1)^2$.
+      - kind: limit
+        text: >-
+          ג. כש-$k \to 0$: $r = A$ קבוע, $v_r = 0$, $v_\theta = \omega A$ ($\beta = 90^\circ$, המהירות משיקה למעגל), $a_r = -\omega^2 A$, $a_\theta = 0$: תנועה מעגלית אחידה. ובדיקה מספרית ב-$k = 0.20$: $\beta = \arctan 5 = 78.7^\circ$.
+      - kind: units
+        text: >-
+          $k$ חסר ממדים (כי $k\theta$ במעריך), ולכן $\omega r$ ב-$\text{m/s}$ ו-$\omega^2 r$ ב-$\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $v_r = k\omega r$, $v_\theta = \omega r$, $\tan\beta = 1/k$. ב. $a_r = \omega^2r(k^2 - 1)$, $a_\theta = 2k\omega^2 r$, $|\vec a| = \omega^2 r(1 + k^2)$. ג. מעגל אחיד.
+
+  - id: W-1.4-09
+    level: bagrut
+    objectives: [OBJ-1.4-2]
+    prompt: >-
+      דיסקה מסתובבת נגד כיוון השעון במהירות זוויתית קבועה $\omega = 2.0\,\text{rad/s}$. שתי חיפושיות נמצאות במרחק $R = 0.50\,\text{m}$ מהמרכז, וכל אחת הולכת במהירות $u = 0.20\,\text{m/s}$ ביחס לדיסקה. חיפושית A הולכת החוצה לאורך רדיוס. חיפושית B הולכת לאורך מעגל ברדיוס $R$ סביב המרכז, בכיוון הסיבוב.
+
+      א. מצאו בסימנים את $a_r$ ואת $a_\theta$ של כל אחת, ברגע שהיא במרחק $R$, כפי שהן נמדדות מהקרקע.
+
+      ב. מה גודל התאוצה של כל אחת? לאיזו תאוצה גדולה יותר?
+
+      ג. בדקו את שתי התוצאות בגבול $u \to 0$.
+    answer: >-
+      א. A: $a_r = -R\omega^2$, $a_\theta = 2u\omega$. B: $a_r = -\dfrac{(R\omega + u)^2}{R}$, $a_\theta = 0$.
+
+      ב. A: $2.15\,\text{m/s}^2$; B: $2.88\,\text{m/s}^2$. ל-B.
+
+      ג. שתיהן $R\omega^2 = 2.0\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          A: $\dot r = u$, $\ddot r = 0$, $\dot\theta = \omega$, $\ddot\theta = 0$. B: $r = R$ קבוע, ו-$\dot\theta = \omega + u/R$ קבוע, כי ביחס לקרקע הזווית שלה גדלה גם בגלל הדיסקה וגם בגלל ההליכה.
+      - kind: law
+        text: >-
+          $a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = r\ddot\theta + 2\dot r\dot\theta$.
+      - kind: manipulation
+        text: >-
+          A: $a_r = -R\omega^2$, $a_\theta = 2u\omega$, ולכן $|\vec a_A| = \omega\sqrt{R^2\omega^2 + 4u^2}$. B: $a_r = -R\left(\omega + \dfrac uR\right)^2 = -\dfrac{(R\omega + u)^2}{R} = -\left(R\omega^2 + 2u\omega + \dfrac{u^2}{R}\right)$, $a_\theta = 0$.
+      - kind: limit
+        text: >-
+          ג. כש-$u \to 0$ שתי החיפושיות עומדות על הדיסקה, ושתי התאוצות שואפות ל-$R\omega^2 = 2.0\,\text{m/s}^2$, אל המרכז. ושימו לב: גם אצל B מופיע האיבר $2u\omega$, אבל בכיוון $\hat r$, כי שם התנועה ביחס לדיסקה היא בכיוון $\hat\theta$.
+      - kind: units
+        text: >-
+          $R\omega^2$, $u\omega$ ו-$u^2/R$ כולם ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          A: $a_r = -0.50\cdot4.0 = -2.0\,\text{m/s}^2$, $a_\theta = 2\cdot0.20\cdot2.0 = 0.80\,\text{m/s}^2$, $|\vec a_A| = 2.15\,\text{m/s}^2$. B: $(0.50\cdot2.0 + 0.20)^2/0.50 = 2.88\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          A: $2.15\,\text{m/s}^2$ (רכיב צידי $2u\omega$); B: $2.88\,\text{m/s}^2$, כולו אל המרכז. התאוצה של B גדולה יותר.
+
+  - id: W-1.4-10
+    level: bagrut
+    objectives: [OBJ-1.4-2]
+    prompt: >-
+      מכ"ם על פסגת הר, בנקודה O, עוקב אחרי מטוס שטס במישור אופקי בגובה של הפסגה, כך ש-$r$ ו-$\theta$ מתארים את התנועה במישור הזה. ברגע מסוים הוא מודד: $r = 8.0\,\text{km}$, $\dot r = 0$, $\dot\theta = 0.025\,\text{rad/s}$, $\ddot r = 5.0\,\text{m/s}^2$ ו-$\ddot\theta = 0$.
+
+      א. מה המהירות של המטוס (גודל וכיוון ביחס לקו אל המכ"ם)?
+
+      ב. מה התאוצה של המטוס? מה אפשר להסיק על המסלול שלו?
+
+      ג. מתמחה טוען: "$\ddot r \ne 0$, ולכן המטוס מאיץ". מה הטעות שלו? מה היה $\ddot r$ אילו המטוס היה מקיף את המכ"ם במעגל, באותה מהירות?
+    answer: >-
+      א. $200\,\text{m/s}$, ניצב לקו אל המכ"ם.
+
+      ב. $\vec a = 0$: ברגע הזה זה תואם טיסה בקו ישר במהירות קבועה, והמטוס בנקודה הקרובה ביותר למכ"ם.
+
+      ג. $\ddot r$ אינו הרכיב הרדיאלי של התאוצה, שהוא $\ddot r - r\dot\theta^2 = 0$. במעגל היה $\ddot r = 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$ ו-$\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$.
+      - kind: manipulation
+        text: >-
+          א. $v_r = 0$ ו-$v_\theta = r\dot\theta$: המהירות כולה בכיוון $\hat\theta$, ניצבת לקו אל המכ"ם.
+
+          ב. $a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = 0 + 2\cdot0\cdot\dot\theta = 0$. בהצבה $r\dot\theta^2 = 8.0\cdot10^3\cdot(0.025)^2 = 5.0\,\text{m/s}^2$, בדיוק $\ddot r$, ולכן $a_r = 0$. $\dot r = 0$ אומר שהמרחק מינימלי (או מקסימלי) ברגע הזה, ו-$\ddot r \gt 0$ אומר שהוא מינימום.
+      - kind: reasoning
+        text: >-
+          ג. $\ddot r$ מתאר איך המרחק מהמכ"ם משתנה, לא את התאוצה. במטוס שעובר ליד המכ"ם בקו ישר המרחק $\sqrt{d^2 + v^2t^2}$ אינו קווי בזמן, ולכן $\ddot r \gt 0$ גם בלי שום תאוצה. במעגל סביב המכ"ם $r$ קבוע, ולכן $\ddot r = 0$, והתאוצה דווקא $r\dot\theta^2 = 5.0\,\text{m/s}^2$ אל המכ"ם.
+      - kind: limit
+        text: >-
+          בדיקה: אחרי $10\,\text{s}$ בקו ישר, המטוס $2.0\,\text{km}$ מהנקודה הקרובה, והמרחק $\sqrt{8.0^2 + 2.0^2} = 8.25\,\text{km}$. הקירוב $r \approx r_0 + \tfrac12\ddot r\,t^2 = 8.0 + 0.25 = 8.25\,\text{km}$ נותן אותו מספר, כמו שצריך לקירוב מסדר שני.
+      - kind: units
+        text: >-
+          $r\dot\theta$ ב-$\text{m/s}$, $r\dot\theta^2$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $|\vec v| = 8.0\cdot10^3\cdot0.025 = 200\,\text{m/s}$; $a_r = 5.0 - 5.0 = 0$, $a_\theta = 0$.
+      - kind: result
+        text: >-
+          א. $200\,\text{m/s}$, ניצב לקו אל המכ"ם. ב. $\vec a = 0$, בהתאם לקו ישר במהירות קבועה. ג. הוא בילבל בין $\ddot r$ לבין $a_r$; במעגל $\ddot r = 0$.
+
+challenge:
+  - id: W-1.4-c1
+    stars: 1
+    objectives: [OBJ-1.4-1, OBJ-1.4-2]
+    prompt: >-
+      סטודנטית עומדת על דיסקה אופקית גדולה, במרחק $r = 2.0\,\text{m}$ מהציר. ברגע $t = 0$ הדיסקה מתחילה להסתובב ממנוחה, בתאוצה זוויתית קבועה $\alpha = 0.50\,\text{rad/s}^2$. הנעליים שלה מחזיקות אותה במקום על הדיסקה כל עוד גודל התאוצה שלה (כפי שהוא נמדד מהקרקע) לא עולה על $a_{\max} = 0.50\,g$.
+
+      א. כתבו את התאוצה שלה כווקטור בקואורדינטות קוטביות, כפונקציה של הזמן.
+
+      ב. מה הערך הגדול ביותר של $\alpha$ שבו היא לא מחליקה כבר ברגע הראשון?
+
+      ג. מתי היא תתחיל להחליק? בכמה מעלות הסתובבה הדיסקה עד אז?
+
+      ד. לאיזה כיוון פונה התאוצה ברגע הזה, ביחס לכיוון אל הציר?
+    answer: >-
+      א. $\vec a = -r\alpha^2t^2\,\hat r + r\alpha\,\hat\theta$.
+
+      ב. $\alpha_{\max} = a_{\max}/r = 2.45\,\text{rad/s}^2$.
+
+      ג. $t^* = \dfrac{1}{\alpha}\left(\dfrac{a_{\max}^2}{r^2} - \alpha^2\right)^{1/4} = 3.10\,\text{s}$; $\theta = 2.40\,\text{rad} = 137^\circ$.
+
+      ד. $11.8^\circ$ מהכיוון אל הציר, לכיוון הסיבוב.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בציר, $\theta$ בכיוון הסיבוב. $r$ קבוע, ולכן $\dot r = \ddot r = 0$. $\dot\theta = \alpha t$, $\ddot\theta = \alpha$, $\theta = \tfrac12\alpha t^2$. $a_{\max} = 0.50\cdot9.8 = 4.9\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$.
+      - kind: manipulation
+        text: >-
+          א. $\vec a = -r\alpha^2t^2\,\hat r + r\alpha\,\hat\theta$, ולכן $|\vec a|^2 = r^2\alpha^2\left(1 + \alpha^2t^4\right)$.
+
+          ב. ב-$t = 0$ נשאר רק $|\vec a| = r\alpha$, ולכן התנאי הוא $r\alpha \le a_{\max}$, כלומר $\alpha \le a_{\max}/r$.
+
+          ג. $|\vec a| = a_{\max}$ כש-$r^2\alpha^2 + r^2\alpha^4t^4 = a_{\max}^2$, כלומר $t^{*4} = \dfrac{a_{\max}^2/r^2 - \alpha^2}{\alpha^4}$.
+
+          ד. $\tan\delta = \dfrac{a_\theta}{|a_r|} = \dfrac{1}{\alpha t^{*2}}$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to \alpha_{\max}$ מתקבל $t^* \to 0$: היא מחליקה מיד, כמו בסעיף ב. כש-$\alpha$ קטן מאוד $t^*$ גדל, אבל הזווית שבה היא מחליקה, $\theta^* = \tfrac12\alpha t^{*2} = \tfrac12\sqrt{a_{\max}^2/(r^2\alpha^2) - 1}$, גדלה ללא גבול: המהירות הזוויתית כשהיא מחליקה שואפת ל-$\sqrt{a_{\max}/r}$, הערך שבו התאוצה הצנטריפטלית לבדה מגיעה ל-$a_{\max}$.
+      - kind: units
+        text: >-
+          $\dfrac{a_{\max}^2}{r^2}$ ו-$\alpha^2$ שניהם ב-$\text{1/s}^4$. השורש הרביעי של ההפרש ב-$\text{1/s}$, וחלוקה ב-$\alpha$, שיחידותיו $\text{1/s}^2$, נותנת שניות.
+      - kind: substitution
+        text: >-
+          ב. $4.9/2.0 = 2.45\,\text{rad/s}^2$. ג. $t^* = \dfrac{(2.45^2 - 0.50^2)^{1/4}}{0.50} = 3.10\,\text{s}$, ו-$\theta = \tfrac12\cdot0.50\cdot3.10^2 = 2.40\,\text{rad} = 137^\circ$. ד. $a_r = -2.0\cdot0.25\cdot3.10^2 = -4.80\,\text{m/s}^2$ ו-$a_\theta = 1.0\,\text{m/s}^2$, ולכן $\delta = 11.8^\circ$.
+      - kind: result
+        text: >-
+          א. $\vec a = -r\alpha^2t^2\,\hat r + r\alpha\,\hat\theta$. ב. $2.45\,\text{rad/s}^2$. ג. $3.10\,\text{s}$, אחרי $137^\circ$. ד. $11.8^\circ$ מהכיוון אל הציר, לכיוון הסיבוב.
+    source:
+      name: MIT OpenCourseWare, 8.012 Physics I (Classical Mechanics)
+      year: 2008
+      problem: 'Exam 1, Problem 4: Don''t Slip! (student on a disk spun up from rest; the friction force in polar coordinates)'
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/9f43769bfcbf2be1a6e706aa240ef486_exam1.pdf
+      verified: '2026-11-08'
+      adapted: true
+
+  - id: W-1.4-c2
+    stars: 1
+    objectives: [OBJ-1.4-1, OBJ-1.4-2]
+    prompt: >-
+      חרוז קטן מושחל על מוט ישר וחלק, שמסתובב במישור אופקי סביב אחד מקצותיו O, במהירות זוויתית קבועה $\omega = 5.0\,\text{rad/s}$. בהתחלה מחזיקים את החרוז במרחק $r_0 = 0.10\,\text{m}$ מ-O.
+
+      א. מה התאוצה (גודל וכיוון) שצריך לתת לחרוז כדי שיישאר במרחק $r_0$?
+
+      ב. ברגע $t = 0$ משחררים את החרוז. מעכשיו המוט דוחף אותו רק בכיוון ניצב לעצמו, ולכן $a_r = 0$. מצאו את $r(t)$ ואת $\theta(t)$.
+
+      ג. מצאו את הרכיב $a_\theta(t)$, התאוצה הצידית שהמוט צריך לספק. מתי היא שווה לתאוצה של סעיף א, ומה $a_\theta$ ב-$t = 0.50\,\text{s}$?
+
+      ד. מה קורה לזווית בין המהירות של החרוז לבין המוט אחרי זמן רב?
+    answer: >-
+      א. $r_0\omega^2 = 2.5\,\text{m/s}^2$, אל O.
+
+      ב. $r = r_0\cosh\omega t$, $\theta = \omega t$.
+
+      ג. $a_\theta = 2r_0\omega^2\sinh\omega t$; שווה ל-$r_0\omega^2$ ב-$t = 0.0962\,\text{s}$; ב-$t = 0.50\,\text{s}$, $a_\theta = 30.3\,\text{m/s}^2$.
+
+      ד. היא שואפת ל-$45^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          $\vec a = (\ddot r - r\dot\theta^2)\hat r + (r\ddot\theta + 2\dot r\dot\theta)\hat\theta$, עם $\dot\theta = \omega$, $\ddot\theta = 0$. הראשית ב-O, $\theta$ בכיוון הסיבוב.
+      - kind: manipulation
+        text: >-
+          א. $r = r_0$ קבוע: $\vec a = -r_0\omega^2\,\hat r$, תאוצה צנטריפטלית אל O.
+
+          ב. $a_r = 0$ נותן $\ddot r = \omega^2 r$, המשוואה שפתרנו בשיעור, בשלב של החרוז החופשי (שיעור 0.5: מנחשים $e^{\lambda t}$ ומקבלים $\lambda = \pm\omega$). הפתרון הכללי $r = Ae^{\omega t} + Be^{-\omega t}$; $r(0) = r_0$ ו-$\dot r(0) = 0$ (החרוז במנוחה ביחס למוט) נותנים $A = B = r_0/2$, כלומר $r = r_0\cosh\omega t$, ו-$\theta = \omega t$.
+
+          ג. $a_\theta = 2\dot r\omega = 2r_0\omega^2\sinh\omega t$. היא שווה ל-$r_0\omega^2$ כש-$\sinh\omega t = \tfrac12$, כלומר $\omega t = 0.481$.
+
+          ד. $\dfrac{v_r}{v_\theta} = \dfrac{r_0\omega\sinh\omega t}{r_0\omega\cosh\omega t} = \tanh\omega t \to 1$, ולכן הזווית בין המהירות למוט שואפת ל-$45^\circ$.
+      - kind: limit
+        text: >-
+          בזמן קצר $r \approx r_0\left(1 + \tfrac12\omega^2t^2\right)$: תאוצה רדיאלית התחלתית $r_0\omega^2$ החוצה, כלומר $\ddot r$ מתחיל בדיוק מהערך שהיה צריך כדי להחזיק את החרוז. וכש-$\omega \to 0$ החרוז לא זז, ו-$a_\theta \to 0$.
+      - kind: units
+        text: >-
+          $r_0\omega^2$ ב-$\text{m}\cdot\text{1/s}^2 = \text{m/s}^2$; $\omega t$ חסר ממדים, כמו שצריך בארגומנט של $\cosh$.
+      - kind: substitution
+        text: >-
+          א. $0.10\cdot25 = 2.5\,\text{m/s}^2$. ג. $t = 0.481/5.0 = 0.0962\,\text{s}$, וב-$t = 0.50\,\text{s}$: $\omega t = 2.5$, $r = 0.10\cosh 2.5 = 0.613\,\text{m}$, $a_\theta = 2\cdot0.10\cdot25\cdot\sinh 2.5 = 30.3\,\text{m/s}^2$. ד. ב-$t = 0.50\,\text{s}$ היחס $v_r/v_\theta = \tanh 2.5 = 0.987$ כבר קרוב ל-1.
+      - kind: result
+        text: >-
+          א. $2.5\,\text{m/s}^2$ אל O. ב. $r = r_0\cosh\omega t$, $\theta = \omega t$. ג. $a_\theta = 2r_0\omega^2\sinh\omega t$; $0.0962\,\text{s}$; $30.3\,\text{m/s}^2$. ד. $45^\circ$.
+    source:
+      name: MIT OpenCourseWare, 8.012 Physics I (Classical Mechanics)
+      year: 2008
+      problem: 'Final Exam, Problem 6: Bead on a Spinning Rod (parts a and b; part c, on fictitious forces, belongs to chapter 7 and is left out)'
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/15cdb14e63ed07c47115ce18c73917bf_final.pdf
+      verified: '2026-11-08'
+      adapted: true

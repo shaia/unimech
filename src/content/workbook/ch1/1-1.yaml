@@ -1,0 +1,475 @@
+# Workbook, lesson 1.1 (position, velocity and acceleration as vectors). Format and rules: .claude/CLAUDE.md,
+# "The solution format". Every number was recomputed in .scratch/ch1/1-1/numbers.ts with src/physics/kinematics.ts
+# (integrateAccel, integrateVelocityDependent, speedRate, distanceRate, turningAccel) and G from constants.ts:
+#   W01 |v| at t = 0, 1, 2, 3 s: 4.47, 2.83, 2.00, 2.83 m/s, v·a = 0 at t = 2 s;
+#   W03 x(2) = −15 m, x(3) = −8 m, displacement −9 m, distance 23 m;  W04 |v(3)| = 19 m/s, path 21.0 m, |r(3)| = 20.3 m;
+#   W06 T = 2v₀/g = 1.02 s, x(T) = bT³/6 = 0.212 m, vx(T) = 0.625 m/s, |v(T)| = 5.04 m/s (RK4 agrees);
+#   W07 x_stop = 12 m, t½ = 1.39 s, x½ = 6.0 m (RK4 agrees);  W08 |a|max = 24.7 m/s² = 2.52 g, |v|max = 20.1 m/s,
+#   b for |a|max = g: 12.6 m/s;  W09 v_T = 19.6 m/s, t₉₀ = 4.61 s, x = 55.0 m (free fall would give 104 m);
+#   W10 v·a = 0, |a| = 10 m/s², d|r|/dt = 4.92 m/s;
+#   c1 (A = 30 m/s², B = 10 m/s³) t* = 6.0 s, rocket at 180 m, stone fell 176.4 m, h = 356 m (RK4 agrees);
+#   c2 t₂ = 3.0 s, x(t₂) = 28 m, v_b = 15 m/s (RK4 agrees).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '1.1'
+practice:
+  - id: W-1.1-01
+    level: basic
+    objectives: [OBJ-1.1-1]
+    prompt: >-
+      וקטור המקום של גוף במישור הוא $\vec r(t) = (4t - t^2,\ 2t)$, כאשר $t$ בשניות ו-$\vec r$ במטרים (למקדמים יש היחידות המתאימות).
+
+      א. מצאו את $\vec v(t)$ ואת $\vec a(t)$.
+
+      ב. חשבו את גודל המהירות ברגעים $t = 0$, $1$, $2$ ו-$3\,\text{s}$.
+
+      ג. באיזה רגע גודל המהירות הקטן ביותר? הראו שבאותו רגע $\vec v\cdot\vec a = 0$.
+    answer: >-
+      א. $\vec v = (4 - 2t,\ 2)\,\text{m/s}$, $\vec a = (-2,\ 0)\,\text{m/s}^2$.
+
+      ב. $4.47$, $2.83$, $2.00$ ו-$2.83\,\text{m/s}$.
+
+      ג. ב-$t = 2\,\text{s}$, שם $\vec v = (0,\ 2)$ ו-$\vec v\cdot\vec a = 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\vec v = d\vec r/dt$ ו-$\vec a = d\vec v/dt$, רכיב-רכיב; $|\vec v| = \sqrt{v_x^2 + v_y^2}$; ו-$\dfrac{d|\vec v|}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|}$.
+      - kind: manipulation
+        text: >-
+          א. $\vec v = (4 - 2t,\ 2)$ ו-$\vec a = (-2,\ 0)$, תאוצה קבועה.
+
+          ב. $|\vec v| = \sqrt{(4 - 2t)^2 + 4}$. ב-$t = 0$: $\sqrt{20} = 4.47$; ב-$t = 1$: $\sqrt8 = 2.83$; ב-$t = 2$: $2.00$; ב-$t = 3$: $\sqrt8 = 2.83$.
+
+          ג. $|\vec v|^2 = (4 - 2t)^2 + 4$ קטן ביותר כש-$4 - 2t = 0$, כלומר ב-$t = 2\,\text{s}$. שם $\vec v\cdot\vec a = (0)(-2) + (2)(0) = 0$.
+      - kind: limit
+        text: >-
+          בדיקה: $\dfrac{d|\vec v|}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|} = \dfrac{-2(4 - 2t)}{|\vec v|}$: שלילי לפני $t = 2\,\text{s}$ (הגוף מאט), אפס ב-$t = 2\,\text{s}$, וחיובי אחריו (הגוף מאיץ). הסימטריה בין $t = 1$ ל-$t = 3$ מתאימה.
+      - kind: units
+        text: >-
+          $4t$ במטרים, ולכן ל-4 יחידות $\text{m/s}$; ל-$t^2$ מקדם ב-$\text{m/s}^2$. הנגזרות: $\text{m/s}$ ו-$\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $\vec v = (4 - 2t,\ 2)\,\text{m/s}$, $\vec a = (-2,\ 0)\,\text{m/s}^2$; גודל המהירות $4.47$, $2.83$, $2.00$, $2.83\,\text{m/s}$, והקטן ביותר ב-$t = 2\,\text{s}$, כשהתאוצה ניצבת למהירות.
+
+  - id: W-1.1-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-1.1-1]
+    prompt: >-
+      קבעו לגבי כל טענה אם היא נכונה או לא, ונמקו במשפט.
+
+      א. אם גודל המהירות של גוף קבוע, התאוצה שלו אפס.
+
+      ב. אם המרחק של גוף מהראשית קבוע, הגוף עומד.
+
+      ג. אם ברגע מסוים המהירות של גוף אפס, גם התאוצה שלו באותו רגע אפס.
+
+      ד. אם ברגע מסוים התאוצה ניצבת למהירות, גודל המהירות לא משתנה באותו רגע.
+    answer: >-
+      א. לא נכון. ב. לא נכון. ג. לא נכון. ד. נכון.
+    solution:
+      - kind: law
+        text: >-
+          $\vec a = d\vec v/dt$; $\dfrac{d|\vec r|}{dt} = \dfrac{\vec r\cdot\vec v}{|\vec r|}$; $\dfrac{d|\vec v|}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|}$.
+      - kind: reasoning
+        text: >-
+          א. וקטור שגודלו קבוע משתנה כשהכיוון שלו מסתובב. בתנועה מעגלית אחידה גודל המהירות קבוע והתאוצה פונה אל המרכז.
+
+          ב. המרחק קבוע כש-$\vec r\cdot\vec v = 0$, כלומר כשהמהירות ניצבת לווקטור המקום, ולא רק כש-$\vec v = 0$. גוף שנע במעגל סביב הראשית נע, והמרחק שלו קבוע.
+
+          ג. אבן שנזרקת ישר למעלה עומדת לרגע בשיא, והתאוצה שלה שם $9.8\,\text{m/s}^2$ כלפי מטה. גם נקודה על גלגל מתגלגל עומדת לרגע כשהיא נוגעת בקרקע, והתאוצה שלה שונה מאפס.
+
+          ד. $d|\vec v|/dt$ הוא ההיטל של $\vec a$ על כיוון $\vec v$, וכשהם ניצבים ההיטל אפס.
+      - kind: limit
+        text: >-
+          בדיקה בקו ישר: שם המהירות והתאוצה מקבילות, ו-$|d|\vec v|/dt| = |\vec a|$. רק בקו ישר "גודל מהירות קבוע" אומר "תאוצה אפס", ולכן הטענה א נכשלת בדיוק כשהמסלול מתעקם.
+      - kind: units
+        text: >-
+          $\vec r\cdot\vec v/|\vec r|$ ב-$\text{m/s}$, כמו מהירות; $\vec v\cdot\vec a/|\vec v|$ ב-$\text{m/s}^2$, כמו תאוצה.
+      - kind: result
+        text: >-
+          א, ב, ג לא נכונות; ד נכונה.
+
+  - id: W-1.1-03
+    level: basic
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      גוף נע לאורך ציר $x$, והמהירות שלו היא $v(t) = 3t^2 - 12$ (ב-$\text{m/s}$, כש-$t$ בשניות). ברגע $t = 0$ הוא בנקודה $x = 1\,\text{m}$.
+
+      א. מצאו את $x(t)$.
+
+      ב. מה ההעתק בין $t = 0$ ל-$t = 3\,\text{s}$?
+
+      ג. מה הדרך שהגוף עבר באותו זמן?
+    answer: >-
+      א. $x(t) = t^3 - 12t + 1$ (מטרים). ב. $\Delta x = -9\,\text{m}$, כלומר $9\,\text{m}$ שמאלה. ג. $23\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $v(t) = 3t^2 - 12$, $x(0) = 1\,\text{m}$.
+      - kind: law
+        text: >-
+          $x(t) = x(0) + \int_0^t v\,dt'$. הדרך היא האינטגרל של $|v|$, ולכן צריך לחלק את הזמן לקטעים לפי הסימן של $v$.
+      - kind: manipulation
+        text: >-
+          א. $x(t) = 1 + \int_0^t\left(3t'^2 - 12\right)dt' = t^3 - 12t + 1$.
+
+          ב. $x(3) = 27 - 36 + 1 = -8\,\text{m}$, ולכן ההעתק הוא $x(3) - x(0) = -9\,\text{m}$.
+
+          ג. $v = 0$ כש-$3t^2 = 12$, כלומר ב-$t = 2\,\text{s}$: עד אז הגוף נע שמאלה, ואחר כך ימינה. $x(2) = 8 - 24 + 1 = -15\,\text{m}$. הדרך: $|{-15} - 1| + |{-8} - (-15)| = 16 + 7 = 23\,\text{m}$.
+      - kind: limit
+        text: >-
+          בדיקה: גזירה של $x(t)$ מחזירה $3t^2 - 12$, ו-$x(0) = 1$. והדרך, $23\,\text{m}$, גדולה מהגודל של ההעתק, $9\,\text{m}$, כמו שצריך כשהגוף מסתובב בדרך.
+      - kind: units
+        text: >-
+          אינטגרל של $\text{m/s}$ לפי שניות נותן מטרים.
+      - kind: result
+        text: >-
+          $x(t) = t^3 - 12t + 1\,\text{m}$; העתק $\Delta x = -9\,\text{m}$ (שמאלה); דרך $23\,\text{m}$.
+
+  - id: W-1.1-04
+    level: mid
+    objectives: [OBJ-1.1-1]
+    prompt: >-
+      חלקיק נע במרחב, ווקטור המקום שלו הוא $\vec r(t) = \left(t,\ t^2,\ \tfrac23t^3\right)$, כאשר $t$ בשניות ו-$\vec r$ במטרים (למקדמים יש היחידות המתאימות).
+
+      א. הראו שגודל המהירות הוא $|\vec v| = 1 + 2t^2$.
+
+      ב. מה הדרך שהחלקיק עובר בין $t = 0$ ל-$t = 3\,\text{s}$?
+
+      ג. מה המרחק בקו ישר בין נקודת ההתחלה לנקודת הסוף? למה הוא קטן מהתשובה של ב?
+    answer: >-
+      א. $|\vec v|^2 = (1 + 2t^2)^2$. ב. $21\,\text{m}$. ג. $20.3\,\text{m}$: המסלול מתעקם.
+    solution:
+      - kind: law
+        text: >-
+          $\vec v = d\vec r/dt$; גודל המהירות $|\vec v|$; הדרך היא $\int|\vec v|\,dt$; ההעתק הוא $\vec r(t_2) - \vec r(t_1)$.
+      - kind: manipulation
+        text: >-
+          א. $\vec v = (1,\ 2t,\ 2t^2)$, ולכן $|\vec v|^2 = 1 + 4t^2 + 4t^4 = (1 + 2t^2)^2$.
+
+          ב. $\int_0^3\left(1 + 2t^2\right)dt = 3 + \tfrac23\cdot27 = 3 + 18 = 21\,\text{m}$.
+
+          ג. $\vec r(3) = (3,\ 9,\ 18)\,\text{m}$ ו-$\vec r(0) = 0$, ולכן $|\Delta\vec r| = \sqrt{9 + 81 + 324} = \sqrt{414} = 20.3\,\text{m}$.
+      - kind: limit
+        text: >-
+          בדיקה: בזמן קצר, $t \to 0$, המסלול כמעט ישר לאורך $x$, והדרך $t + \tfrac23t^3 \approx t$ שווה בקירוב להעתק, $\sqrt{t^2 + t^4 + \dots} \approx t$. ההבדל מופיע רק כשהמסלול מתעקם.
+      - kind: units
+        text: >-
+          $|\vec v|$ ב-$\text{m/s}$, ואינטגרל שלו לפי הזמן במטרים.
+      - kind: result
+        text: >-
+          דרך $21\,\text{m}$; העתק בגודל $20.3\,\text{m}$, קטן יותר כי הקו הישר הוא הדרך הקצרה ביותר בין שתי נקודות.
+
+  - id: W-1.1-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.1-1]
+    prompt: >-
+      מכונית נוסעת על מסלול סגור שיש בו קטעים ישרים וסיבובים. בכל אחד מהמצבים הבאים קבעו אם הזווית בין $\vec a$ ל-$\vec v$ היא $0°$ (אותו כיוון), חדה, ישרה, קהה או $180°$ (כיוונים מנוגדים), או שהתאוצה אפס, ונמקו.
+
+      א. בקטע ישר, הנהגת לוחצת על דוושת הגז.
+
+      ב. בסיבוב, מד המהירות מראה מספר קבוע.
+
+      ג. בסיבוב, הנהגת בולמת.
+
+      ד. בקטע ישר, מד המהירות מראה מספר קבוע.
+    answer: >-
+      א. $0°$: $\vec a$ בכיוון $\vec v$. ב. ישרה. ג. קהה. ד. $\vec a = 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{d|\vec v|}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|}$: הסימן של $\vec v\cdot\vec a$ אומר אם גודל המהירות גדל (חדה), קבוע (ישרה) או קטן (קהה). החלק של $\vec a$ שניצב ל-$\vec v$ קיים רק כשהכיוון של המהירות משתנה.
+      - kind: reasoning
+        text: >-
+          א. בקו ישר הכיוון לא משתנה, ולכן אין חלק ניצב; גודל המהירות גדל, ולכן $\vec a$ בכיוון $\vec v$: זווית אפס.
+
+          ב. גודל המהירות קבוע, ולכן $\vec v\cdot\vec a = 0$; הכיוון משתנה, ולכן $\vec a \ne 0$: זווית ישרה.
+
+          ג. יש חלק ניצב (סיבוב) ויש חלק נגד המהירות (בלימה): הסכום יוצר זווית קהה.
+
+          ד. לא הגודל ולא הכיוון משתנים, ולכן $\vec v$ קבוע ו-$\vec a = 0$.
+      - kind: limit
+        text: >-
+          בדיקה: אם בסיבוב של ג מקטינים את הבלימה לאפס, הזווית הקהה נסגרת לזווית ישרה, המצב של ב. ואם מיישרים את הסיבוב, החלק הניצב נעלם, והזווית נפתחת ל-$180°$: בלימה בקו ישר.
+      - kind: units
+        text: >-
+          $\vec v\cdot\vec a/|\vec v|$ ב-$\text{m/s}^2$: קצב שינוי של גודל מהירות.
+      - kind: result
+        text: >-
+          א. $0°$. ב. $90°$. ג. בין $90°$ ל-$180°$. ד. אין תאוצה.
+
+  - id: W-1.1-06
+    level: mid
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      כדור נזרק ישר למעלה מהראשית ב-$\vec v(0) = (0,\ 5.0)\,\text{m/s}$, ורוח שמתחזקת עם הזמן נותנת לו תאוצה אופקית שגדלה: $\vec a(t) = (bt,\ -g)$, עם $b = 1.2\,\text{m/s}^3$ ו-$g = 9.8\,\text{m/s}^2$ (ציר $y$ כלפי מעלה).
+
+      א. מצאו את $\vec v(t)$ ואת $\vec r(t)$.
+
+      ב. מתי הכדור חוזר לגובה ההתחלתי, וכמה הוא זז הצידה עד אז?
+
+      ג. מה גודל המהירות שלו ברגע הזה?
+    answer: >-
+      א. $\vec v = (\tfrac12bt^2,\ v_0 - gt)$, $\vec r = (\tfrac16bt^3,\ v_0t - \tfrac12gt^2)$. ב. אחרי $1.02\,\text{s}$, $0.212\,\text{m}$ הצידה. ג. $5.04\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec a(t) = (bt,\ -g)$, $\vec v(0) = (0,\ v_0)$ עם $v_0 = 5.0\,\text{m/s}$, $\vec r(0) = 0$.
+      - kind: law
+        text: >-
+          $\vec v(t) = \vec v(0) + \int_0^t\vec a\,dt'$ ו-$\vec r(t) = \vec r(0) + \int_0^t\vec v\,dt'$, רכיב-רכיב.
+      - kind: manipulation
+        text: >-
+          א. $v_x = \tfrac12bt^2$, $v_y = v_0 - gt$; $x = \tfrac16bt^3$, $y = v_0t - \tfrac12gt^2$.
+
+          ב. $y = 0$ כש-$t = 2v_0/g$. אז $x = \dfrac{b}{6}\left(\dfrac{2v_0}{g}\right)^3$.
+
+          ג. ברגע הזה $v_y = -v_0$ ו-$v_x = \dfrac{b}{2}\left(\dfrac{2v_0}{g}\right)^2$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: כש-$b \to 0$ אין רוח: $x = 0$, והכדור חוזר ליד במהירות $v_y = -v_0$, כמו בזריקה אנכית. הרכיב האנכי לא תלוי ב-$b$ בכלל, כי כל רכיב מאונטגרל לחוד.
+      - kind: units
+        text: >-
+          $bt^3$ ב-$\text{m/s}^3\cdot\text{s}^3 = \text{m}$; $bt^2$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $t = 2\cdot5.0/9.8 = 1.02\,\text{s}$; $x = \tfrac16\cdot1.2\cdot1.02^3 = 0.212\,\text{m}$; $v_x = \tfrac12\cdot1.2\cdot1.02^2 = 0.625\,\text{m/s}$; $|\vec v| = \sqrt{0.625^2 + 5.0^2} = 5.04\,\text{m/s}$.
+      - kind: result
+        text: >-
+          הכדור חוזר לגובה ההתחלתי אחרי $1.02\,\text{s}$, $0.212\,\text{m}$ הצידה, בגודל מהירות $5.04\,\text{m/s}$.
+
+  - id: W-1.1-07
+    level: mid
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      סירה מכבה מנוע כשמהירותה $v_0 = 6.0\,\text{m/s}$, ומאותו רגע היא מאטה לפי $a = -kv$, עם $k = 0.50\,\text{s}^{-1}$.
+
+      א. מצאו את $v(t)$.
+
+      ב. מצאו בעזרת $a = v\,dv/dx$ את $v(x)$. איזה מרחק עוברת הסירה עד שמהירותה יורדת לחצי, ואיזה מרחק היא עוברת בסך הכול?
+
+      ג. כמה זמן עובר עד שהמהירות יורדת לחצי? האם הסירה נעצרת בזמן סופי?
+    answer: >-
+      א. $v = v_0e^{-kt}$. ב. $v = v_0 - kx$; $6.0\,\text{m}$ עד חצי מהירות, $12\,\text{m}$ בסך הכול. ג. $1.39\,\text{s}$; היא לא נעצרת בזמן סופי.
+    solution:
+      - kind: law
+        text: >-
+          $a = dv/dt$ להפרדת משתנים בזמן, ו-$a = v\,dv/dx$ (כלל השרשרת) להפרדת משתנים במקום.
+      - kind: manipulation
+        text: >-
+          א. $\dfrac{dv}{v} = -k\,dt$, ולכן $\ln\dfrac{v}{v_0} = -kt$ ו-$v = v_0e^{-kt}$.
+
+          ב. $v\,\dfrac{dv}{dx} = -kv$, כלומר $dv = -k\,dx$, ולכן $v = v_0 - kx$: המהירות יורדת קווית עם המרחק. חצי מהירות ב-$x = \dfrac{v_0}{2k}$, ועצירה ב-$x = \dfrac{v_0}{k}$.
+
+          ג. $e^{-kt} = \tfrac12$ כש-$t = \dfrac{\ln2}{k}$. ו-$v_0e^{-kt}$ לא מתאפס באף $t$ סופי.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: כש-$k \to 0$ אין האטה, והמרחק הכולל $v_0/k \to \infty$. ובזמן קצר $v \approx v_0(1 - kt)$ ו-$x \approx v_0t$, ואז $v \approx v_0 - kx$: שתי התשובות מסכימות.
+      - kind: units
+        text: >-
+          $v_0/k$ ב-$(\text{m/s})/(\text{s}^{-1}) = \text{m}$; $\ln2/k$ בשניות.
+      - kind: substitution
+        text: >-
+          $x_{1/2} = \dfrac{6.0}{2\cdot0.50} = 6.0\,\text{m}$; $x_{\text{total}} = \dfrac{6.0}{0.50} = 12\,\text{m}$; $t_{1/2} = \dfrac{0.693}{0.50} = 1.39\,\text{s}$.
+      - kind: result
+        text: >-
+          חצי מהירות אחרי $6.0\,\text{m}$ ו-$1.39\,\text{s}$; המרחק הכולל $12\,\text{m}$, אבל הזמן עד עצירה אינסופי.
+
+  - id: W-1.1-08
+    level: bagrut
+    objectives: [OBJ-1.1-1]
+    prompt: >-
+      מכונית נוסעת על כביש משובש שהפרופיל שלו גלי. המקום של הגלגל הוא $\vec r(t) = \left(bt,\ A\sin(kbt)\right)$: התנועה האופקית במהירות קבועה $b$, והגובה עולה ויורד לפי הכביש, שאורך הגל שלו $\lambda = 2\pi/k$.
+
+      א. מצאו את $\vec v(t)$ ואת $\vec a(t)$. איפה על הכביש גודל התאוצה מרבי, ומה הוא?
+
+      ב. מה גודל המהירות המרבי, ואיפה?
+
+      ג. הציבו $b = 20\,\text{m/s}$, $A = 0.10\,\text{m}$ ו-$\lambda = 8.0\,\text{m}$, והשוו את התאוצה המרבית ל-$g = 9.8\,\text{m/s}^2$. באיזו מהירות אופקית התאוצה המרבית שווה ל-$g$?
+    answer: >-
+      א. $|\vec a|_{\max} = Ak^2b^2$, בשיאים ובשקעים. ב. $b\sqrt{1 + A^2k^2}$, בנקודות האמצע. ג. $24.7\,\text{m/s}^2$, פי $2.52$ מ-$g$; ב-$12.6\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          $\vec v = d\vec r/dt$ ו-$\vec a = d\vec v/dt$, רכיב-רכיב, עם כלל השרשרת.
+      - kind: manipulation
+        text: >-
+          א. $\vec v = \left(b,\ Akb\cos(kbt)\right)$ ו-$\vec a = \left(0,\ -Ak^2b^2\sin(kbt)\right)$. התאוצה אנכית, וגודלה מרבי כש-$|\sin(kbt)| = 1$: בשיאים ובשקעים של הכביש.
+
+          ב. $|\vec v| = b\sqrt{1 + A^2k^2\cos^2(kbt)}$, מרבי כש-$|\cos(kbt)| = 1$: בנקודות האמצע, שם הכביש הכי תלול.
+
+          ג. $|\vec a|_{\max} = g$ כש-$b = \sqrt{g/(Ak^2)}$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: כש-$A \to 0$ הכביש ישר, $\vec a = 0$ ו-$|\vec v| = b$. כשאורך הגל גדל, $k \to 0$, התאוצה קטנה כמו $k^2$: כביש עם גלים ארוכים כמעט לא מטלטל.
+      - kind: units
+        text: >-
+          $Ak^2b^2$ ב-$\text{m}\cdot\text{m}^{-2}\cdot(\text{m/s})^2 = \text{m/s}^2$; $Ak$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $k = 2\pi/8.0 = 0.785\,\text{m}^{-1}$. $|\vec a|_{\max} = 0.10\cdot0.785^2\cdot20^2 = 24.7\,\text{m/s}^2 = 2.52\,g$. $|\vec v|_{\max} = 20\sqrt{1 + 0.0785^2} = 20.1\,\text{m/s}$. $b = \sqrt{9.8/(0.10\cdot0.785^2)} = 12.6\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $|\vec a|_{\max} = Ak^2b^2 = 24.7\,\text{m/s}^2$ בשיאים ובשקעים, פי $2.52$ מ-$g$; התאוצה המרבית שווה ל-$g$ ב-$b = 12.6\,\text{m/s}$.
+
+  - id: W-1.1-09
+    level: bagrut
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      גרגר נופל ממנוחה באוויר, והתאוצה שלו כלפי מטה היא $a = g - kv$, כאשר $v$ המהירות כלפי מטה, $g = 9.8\,\text{m/s}^2$ ו-$k = 0.50\,\text{s}^{-1}$ (ציר כלפי מטה, הראשית בנקודת השחרור).
+
+      א. מצאו את $v(t)$ ואת המהירות שהגרגר מתקרב אליה.
+
+      ב. מתי הוא מגיע ל-$90\%$ מהמהירות הזו, וכמה הוא נפל עד אז?
+
+      ג. כמה היה נופל באותו זמן בלי התנגדות אוויר?
+    answer: >-
+      א. $v = \dfrac{g}{k}\left(1 - e^{-kt}\right)$, שואפת ל-$19.6\,\text{m/s}$. ב. אחרי $4.61\,\text{s}$, $55.0\,\text{m}$. ג. $104\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $a = g - kv$, $v(0) = 0$, $x(0) = 0$, ציר כלפי מטה.
+      - kind: law
+        text: >-
+          $a = dv/dt$; הפרדת משתנים; $x(t) = \int_0^t v\,dt'$.
+      - kind: manipulation
+        text: >-
+          א. $\dfrac{dv}{g - kv} = dt$, ולכן $t = -\dfrac1k\ln\dfrac{g - kv}{g}$, כלומר $v = \dfrac{g}{k}\left(1 - e^{-kt}\right)$. המהירות שואפת ל-$v_T = g/k$.
+
+          ב. $1 - e^{-kt} = 0.9$ כש-$t = \dfrac{\ln10}{k}$. אינטגרציה: $x(t) = v_T\left[t - \dfrac{1 - e^{-kt}}{k}\right]$.
+
+          ג. בלי התנגדות $x = \tfrac12gt^2$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: בזמן קצר, $e^{-kt} \approx 1 - kt + \tfrac12k^2t^2$, ולכן $v \approx gt$ ו-$x \approx \tfrac12gt^2$: נפילה חופשית, כי בהתחלה $v$ קטן והגרר זניח. כש-$k \to 0$ אותו קירוב נכון בכל זמן.
+      - kind: units
+        text: >-
+          $g/k$ ב-$(\text{m/s}^2)/(\text{s}^{-1}) = \text{m/s}$; $v_T\cdot t$ במטרים.
+      - kind: substitution
+        text: >-
+          $v_T = 9.8/0.50 = 19.6\,\text{m/s}$; $t = 2.303/0.50 = 4.61\,\text{s}$; $x = 19.6\left[4.605 - 0.9/0.50\right] = 19.6\cdot2.805 = 55.0\,\text{m}$; בלי התנגדות $\tfrac12\cdot9.8\cdot4.61^2 = 104\,\text{m}$.
+      - kind: result
+        text: >-
+          $v_T = 19.6\,\text{m/s}$; $90\%$ ממנה אחרי $4.61\,\text{s}$ ו-$55.0\,\text{m}$, כמחצית מ-$104\,\text{m}$ של נפילה חופשית.
+
+  - id: W-1.1-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-1.1-1, OBJ-1.1-2]
+    prompt: >-
+      א. הוכיחו שאם גודל המהירות של גוף קבוע לאורך זמן, אז $\vec a\cdot\vec v = 0$ בכל רגע, ושאם $|\vec r|$ קבוע, אז $\vec r\cdot\vec v = 0$ בכל רגע.
+
+      ב. ברגע מסוים $\vec r = (1,\ 2)\,\text{m}$, $\vec v = (3,\ 4)\,\text{m/s}$ ו-$\vec a = (-8,\ 6)\,\text{m/s}^2$. האם גודל המהירות גדל, קטן או לא משתנה באותו רגע? האם המרחק מהראשית גדל? מה החלק של התאוצה שמסובב את המהירות?
+
+      ג. שני גופים מקבלים בדיוק את אותה פונקציית תאוצה $\vec a(t)$, אבל ב-$t = 0$ הם במקומות שונים ובמהירויות שונות. הראו שההפרש בין המקומות שלהם הוא פונקציה קווית של הזמן, ותארו אותה.
+    answer: >-
+      א. גוזרים את $\vec v\cdot\vec v$ ואת $\vec r\cdot\vec r$. ב. לא משתנה; המרחק גדל, ב-$4.92\,\text{m/s}$; כל התאוצה, $10\,\text{m/s}^2$. ג. $\Delta\vec r(t) = \Delta\vec r_0 + \Delta\vec v_0\,t$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{d}{dt}(\vec v\cdot\vec v) = 2\vec v\cdot\vec a$ ו-$\dfrac{d}{dt}(\vec r\cdot\vec r) = 2\vec r\cdot\vec v$; $\vec r(t) = \vec r_0 + \vec v_0t + \int_0^t\int_0^{t'}\vec a\,dt''\,dt'$.
+      - kind: manipulation
+        text: >-
+          א. אם $|\vec v|^2 = \vec v\cdot\vec v$ קבוע, הנגזרת שלו, $2\vec v\cdot\vec a$, אפס. באותו אופן, אם $\vec r\cdot\vec r$ קבוע, $\vec r\cdot\vec v = 0$.
+
+          ב. $\vec v\cdot\vec a = -24 + 24 = 0$, ולכן $d|\vec v|/dt = 0$. $\vec r\cdot\vec v = 3 + 8 = 11\,\text{m}^2/\text{s}$, ו-$d|\vec r|/dt = 11/\sqrt5 = 4.92\,\text{m/s} \gt 0$. התאוצה ניצבת למהירות, ולכן כולה, $|\vec a| = 10\,\text{m/s}^2$, מסובבת את המהירות.
+
+          ג. מחסרים את שני הביטויים: האינטגרל הכפול של אותה $\vec a(t)$ מצטמצם, ונשאר $\Delta\vec r(t) = \Delta\vec r_0 + \Delta\vec v_0\,t$. ההפרש נע בקו ישר במהירות קבועה $\Delta\vec v_0$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: בג, אם גם תנאי ההתחלה זהים, $\Delta\vec r = 0$ בכל רגע: אותה תאוצה ואותם תנאי התחלה נותנים אותה תנועה. ובב, תנועה מעגלית סביב הראשית היא המקרה ש-$\vec r\cdot\vec v = 0$ ו-$\vec v\cdot\vec a = 0$ יחד; כאן רק השני מתקיים.
+      - kind: units
+        text: >-
+          $\vec r\cdot\vec v/|\vec r|$ ב-$\text{m}^2/\text{s}\,/\,\text{m} = \text{m/s}$; $\Delta\vec v_0t$ במטרים.
+      - kind: result
+        text: >-
+          ב. גודל המהירות לא משתנה באותו רגע, המרחק מהראשית גדל ב-$4.92\,\text{m/s}$, וכל $10\,\text{m/s}^2$ של התאוצה מסובבים את המהירות. ג. $\Delta\vec r(t) = \Delta\vec r_0 + \Delta\vec v_0t$, תנועה קווית.
+
+challenge:
+  - id: W-1.1-c1
+    stars: 1
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      בתחתית צוק אנכי משגרים טיל דגם ממנוחה ב-$t = 0$, כלפי מעלה, והתאוצה שלו (כולל הכובד) היא $a_y(t) = A - Bt$, כאשר $A$ ו-$B$ קבועים חיוביים. באותו רגע משחררים ממנוחה אבן קטנה מראש הצוק, בגובה $h$ ישר מעל הטיל ($h$ גבוה מהגובה המרבי שהטיל מגיע אליו). האבן נופלת בתאוצה $g$ כלפי מטה, בלי התנגדות אוויר, ופוגעת בטיל בדיוק כשהטיל מגיע לגובה המרבי שלו.
+
+      א. מצאו את $h$ כפונקציה של $A$, $B$ ו-$g$.
+
+      ב. חשבו את $h$ כש-$A = 30\,\text{m/s}^2$, $B = 10\,\text{m/s}^3$ ו-$g = 9.8\,\text{m/s}^2$.
+    answer: >-
+      א. $h = \dfrac{2A^2}{B^2}\left(\dfrac{A}{3} + g\right)$. ב. $356\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          טיל: $a_y = A - Bt$, $y(0) = 0$, $v(0) = 0$. אבן: $a_y = -g$, $y(0) = h$, $v(0) = 0$. ציר $y$ כלפי מעלה, הראשית בבסיס הצוק.
+      - kind: law
+        text: >-
+          $v(t) = v(0) + \int_0^t a\,dt'$ ו-$y(t) = y(0) + \int_0^t v\,dt'$, לכל גוף עם תנאי ההתחלה שלו. בגובה המרבי של הטיל $v = 0$.
+      - kind: manipulation
+        text: >-
+          טיל: $v = At - \tfrac12Bt^2$ ו-$y = \tfrac12At^2 - \tfrac16Bt^3$. $v = 0$ (חוץ מ-$t = 0$) ב-$t^* = 2A/B$, ושם $y^* = \dfrac{2A^3}{B^2} - \dfrac{4A^3}{3B^2} = \dfrac{2A^3}{3B^2}$.
+
+          אבן: $y = h - \tfrac12gt^2$. בפגישה $y_{\text{stone}}(t^*) = y^*$, ולכן $h = y^* + \tfrac12g\,t^{*2} = \dfrac{2A^3}{3B^2} + \dfrac{2gA^2}{B^2}$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: כש-$B \to 0$ התאוצה של הטיל לא דועכת, הוא לא מגיע לשיא, ו-$h \to \infty$, כמו שצריך. וכש-$g \to 0$ האבן מרחפת, והיא צריכה להיות בדיוק בגובה המרבי של הטיל: $h = 2A^3/(3B^2)$.
+      - kind: units
+        text: >-
+          $A^3/B^2$ ב-$(\text{m/s}^2)^3/(\text{m/s}^3)^2 = \text{m}$; $gA^2/B^2$ ב-$\text{m/s}^2\cdot(\text{m/s}^2)^2/(\text{m/s}^3)^2 = \text{m}$.
+      - kind: substitution
+        text: >-
+          $t^* = 6.0\,\text{s}$, $y^* = \dfrac{2\cdot27000}{3\cdot100} = 180\,\text{m}$, האבן נפלה $\tfrac12\cdot9.8\cdot36 = 176.4\,\text{m}$, ולכן $h = 356\,\text{m}$.
+      - kind: result
+        text: >-
+          $h = \dfrac{2A^2}{B^2}\left(\dfrac{A}{3} + g\right) = 356\,\text{m}$.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics (Fall 2016), Problem Set 1
+      year: 2016
+      problem: 'Problem 3 (Rocket Launch)'
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/96231b21bccffc0c17c7d98629a52eb2_MIT8_01F16_pset1_new.pdf
+      verified: '2026-11-08'
+      adapted: true
+
+  - id: W-1.1-c2
+    stars: 1
+    objectives: [OBJ-1.1-2]
+    prompt: >-
+      מכונית נוסעת בקו ישר במהירות $v_0$, וב-$t = 0$ היא בראשית. ברגע $t_1$ הנהג מתחיל לבלום, והתאוצה של המכונית היא $a = 0$ כש-$0 \lt t \lt t_1$ ו-$a = -c\,(t - t_1)$ כש-$t_1 \lt t \lt t_2$, כאשר $c$ קבוע חיובי. ב-$t_2$ המכונית עוצרת.
+
+      א. מצאו את $v(t)$ ואת $x(t)$ בשני הקטעים, ואת $t_2$.
+
+      ב. רוכב אופניים נוסע במהירות קבועה $v_b$, וב-$t = 0$ הוא $17\,\text{m}$ מאחורי המכונית. הוא משיג אותה בדיוק ברגע שהיא נעצרת. מה $v_b$, כש-$v_0 = 12\,\text{m/s}$, $t_1 = 1.0\,\text{s}$ ו-$c = 6.0\,\text{m/s}^3$? תנו שתי ספרות משמעותיות.
+    answer: >-
+      א. $t_2 = t_1 + \sqrt{2v_0/c}$. ב. $v_b = 15\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $a(t) = 0$ עד $t_1$, ואחר כך $a = -c(t - t_1)$; $x(0) = 0$, $v(0) = v_0$. הרוכב: $x_b(t) = -17\,\text{m} + v_bt$.
+      - kind: law
+        text: >-
+          $v(t) = v(t_1) + \int_{t_1}^t a\,dt'$ ו-$x(t) = x(t_1) + \int_{t_1}^t v\,dt'$: תנאי ההתחלה של הקטע השני הם הערכים בסוף הקטע הראשון.
+      - kind: manipulation
+        text: >-
+          א. עד $t_1$: $v = v_0$, $x = v_0t$. אחר כך: $v = v_0 - \tfrac12c(t - t_1)^2$ ו-$x = v_0t - \tfrac16c(t - t_1)^3$. עצירה: $\tfrac12c(t_2 - t_1)^2 = v_0$, כלומר $t_2 = t_1 + \sqrt{2v_0/c}$.
+
+          ב. בפגישה $x(t_2) = v_bt_2 - 17\,\text{m}$, ולכן $v_b = \dfrac{x(t_2) + 17\,\text{m}}{t_2}$.
+      - kind: limit
+        text: >-
+          בדיקת גבולות: כש-$c \to \infty$ הבלימה מיידית, $t_2 \to t_1$ ו-$x(t_2) \to v_0t_1$. וב-$t = t_1$ שני הביטויים של $x$ ושל $v$ מסכימים: $x = v_0t_1$, $v = v_0$, כמו שצריך כשהקבועים נקבעים מהקטע הקודם.
+      - kind: units
+        text: >-
+          $\sqrt{v_0/c}$ ב-$\sqrt{(\text{m/s})/(\text{m/s}^3)} = \text{s}$; $c\,t^3$ במטרים.
+      - kind: substitution
+        text: >-
+          $t_2 = 1.0 + \sqrt{24/6.0} = 3.0\,\text{s}$; $x(t_2) = 12\cdot3.0 - \tfrac16\cdot6.0\cdot2.0^3 = 36 - 8 = 28\,\text{m}$; $v_b = \dfrac{28 + 17}{3.0} = 15\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $t_2 = 3.0\,\text{s}$, המכונית עוצרת אחרי $28\,\text{m}$, ו-$v_b = 15\,\text{m/s}$.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics (Fall 2016), Problem Set 1
+      year: 2016
+      problem: 'Problem 1 (Car and Bicycle Rider)'
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/96231b21bccffc0c17c7d98629a52eb2_MIT8_01F16_pset1_new.pdf
+      verified: '2026-11-08'
+      adapted: true

@@ -1,8 +1,35 @@
 # Terms first defined in lesson 1.2. One spelling per concept, course-wide; `reject` lists spellings
-# that must not appear in course text (lint-content enforces it).
+# that must not appear in course text (lint-content enforces it). Terms the course-wide table does not
+# assign carry the chapter prefix c1- so parallel authors never collide.
 
 - id: projectile
   term: זריקה
   en: projectile motion
   definition: התנועה של גוף שנזרק ומכאן ואילך נע רק בהשפעת הכובד, בלי התנגדות אוויר. התאוצה שלו קבועה, g כלפי מטה, ולכן r(t) = r₀ + v₀t + ½gt², והמסלול פרבולה במישור שבו נמצאים v₀ ו-g.
+  lesson: '1.2'
+
+- id: c1-trajectory-equation
+  term: משוואת המסלול
+  en: trajectory equation
+  definition: הגובה של גוף שנזרק כפונקציה של המרחק האופקי, y(x), שמתקבלת כשמבודדים את הזמן מ-x(t) ומציבים ב-y(t). בזריקה מהראשית בזווית θ, y = x tan θ − g x² / (2v₀² cos²θ). היא מתארת את צורת המסלול, בלי לומר מתי הגוף נמצא בכל נקודה.
+  lesson: '1.2'
+
+- id: c1-range
+  term: טווח
+  en: range
+  symbol: R
+  unit: m
+  definition: המרחק מנקודת השיגור עד הנקודה שבה הגוף פוגע שוב בקרקע. על קרקע מישורית, כשהשיגור והנחיתה באותו גובה, R = v₀² sin 2θ / g, והוא מרבי ב-45°. על מדרון מודדים את הטווח לאורך המדרון.
+  lesson: '1.2'
+
+- id: c1-tilted-axes
+  term: צירים נטויים
+  en: tilted axes
+  definition: מערכת צירים שבה ציר ξ (קסי) מונח לאורך מדרון וציר η (אטה) ניצב לו. בזריקה אל מדרון בזווית β, לתאוצה יש בה שני רכיבים, g_ξ = −g sin β לאורך המדרון ו-g_η = −g cos β ניצב לו, והגוף חוזר למדרון כש-η = 0.
+  lesson: '1.2'
+
+- id: c1-envelope
+  term: מעטפת המסלולים
+  en: envelope of trajectories
+  definition: העקומה שכל המסלולים שנזרקים מאותה נקודה באותה מהירות v₀, בכל הזוויות, משיקים לה. לזריקה מהראשית זו הפרבולה y = v₀²/(2g) − g x²/(2v₀²). נקודה מתחתיה אפשר לפגוע בה בשתי זוויות, נקודה עליה באחת, ונקודה מעליה אי אפשר לפגוע בה בכלל.
   lesson: '1.2'

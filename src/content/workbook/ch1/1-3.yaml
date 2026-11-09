@@ -1,0 +1,583 @@
+# Workbook, lesson 1.3 (circular motion and curved paths). Format and rules: .claude/CLAUDE.md, "The solution
+# format": given → law → manipulation (symbolic result) → limit → units → substitution → result.
+# Every number was recomputed in .scratch/ch1/1-3/numbers.ts with src/physics/curvilinear.ts (circlePath,
+# projectilePath, tangentNormal, curvatureRadius, omegaFromRpm, periodOf) and the constants of
+# src/physics/constants.ts (G = 9.8, OMEGA_EARTH = 7.29e-5, R_EARTH = 6.37e6):
+#   W-02 7200 rpm, r = 4.5 cm: ω = 754 rad/s, v = 33.9 m/s, a = 2.56·10⁴ m/s² (2610 g), T = 8.33 ms;
+#   W-03 R = 80 m, v = 20 m/s, a_t = −3.0: a⊥ = 5.0, |a| = 5.83 m/s², 31.0° back from the centre direction;
+#   W-04 equator a = 0.0339 m/s², v = 464 m/s; 31.8° N: 5.41·10⁶ m from the axis, a = 0.0288 m/s², v = 395 m/s;
+#   W-05 v = 10 m/s on R = 30 m: 3.33 m/s²;
+#   W-06 900 rpm in 3.0 s: ω = 94.2, α = 31.4 rad/s²; t = 1 s, r = 0.20 m: a_t = 6.28, a_c = 197, |a| = 197 m/s²
+#     (1.8° off the centre direction); 22.5 turns;
+#   W-07 v₀ = 15 m/s horizontal: ρ₀ = 23.0 m; t = 2 s: |v| = 24.7, a_t = 7.78, a⊥ = 5.96 m/s², ρ = 102 m
+#     (v²/g = 62.2 m would be the wrong one);
+#   W-08 helix R = 0.5 m, ω = 4 rad/s, u = 3 m/s: |v| = 3.61 m/s, |a| = 8 m/s², ρ = 1.63 m, pitch 4.71 m;
+#   W-10 R = 50 m, a_t = 2.0 m/s²: after one lap v = 35.4 m/s, a_c = 4πa_t = 25.1, |a| = 25.2 m/s², 85.5°, 17.7 s;
+#   c1 (F=ma 2014, Problem 10) L = 3.00 m, ω₀ = 1.00 rad/s, α = 4.00 rad/s², a_max = 243 m/s²: ω = 9.00 rad/s at
+#     t = 2.00 s (2.25 s from rest), a_t = 12.0, |a| = 243 m/s² (2.8°), 10.0 rad = 1.59 turns, v = 27.0 m/s;
+#   c2 (F=ma 2021, Problem 13 adapted) R = 50 m, v_in = 10 m/s, a_t = 2.0 m/s²: v_mid = 20.4, v_out = 27.0 m/s;
+#     a_c = 2.0 / 8.28 / 14.6 m/s², |a| = 2.83 / 8.52 / 14.7 m/s², tilt from the centre 45° / 13.6° / 7.8°; 8.49 s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '1.3'
+practice:
+  - id: W-1.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-1.3-1]
+    prompt: >-
+      שני ילדים יושבים על קרוסלה שמסתובבת בקצב קבוע: דנה במרחק $r$ מהציר, ויואב במרחק $2r$. קבעו ונמקו:
+
+      א. למי מהם מהירות זוויתית גדולה יותר?
+
+      ב. למי מהם גודל מהירות גדול יותר, ופי כמה?
+
+      ג. למי מהם תאוצה גדולה יותר, ופי כמה? לאן היא מצביעה?
+    answer: >-
+      א. שווה.
+
+      ב. ליואב, פי 2.
+
+      ג. ליואב, פי 2; אל הציר.
+    solution:
+      - kind: law
+        text: >-
+          כל נקודות הקרוסלה מסתובבות באותה זווית באותו זמן, ולכן לכולן אותה $\omega$. $v = \omega r$, ובתנועה אחידה
+          $a_c = \omega^2r$ אל הציר.
+      - kind: reasoning
+        text: >-
+          א. אותה $\omega$ לשניהם.
+
+          ב. $v \propto r$ באותה $\omega$, ולכן ליואב $v$ גדול פי 2: הוא עובר מעגל באורך כפול באותו זמן מחזור.
+
+          ג. $a_c = \omega^2 r$ באותה $\omega$, ולכן פי 2 ליואב. מי שכותבים $a = v^2/r$ ומסיקים "פי 4, כי $v$ פי 2"
+          שוכחים שגם $r$ פי 2: $\dfrac{(2v)^2}{2r} = 2\,\dfrac{v^2}{r}$.
+      - kind: limit
+        text: >-
+          ילד שיושב בדיוק על הציר, $r = 0$: לא זז, ו-$v = a_c = 0$, כמו שהנוסחאות נותנות.
+      - kind: units
+        text: >-
+          $\text{rad/s}\cdot\text{m} = \text{m/s}$ ו-$(\text{rad/s})^2\cdot\text{m} = \text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. אותה מהירות זוויתית. ב. ליואב, פי 2. ג. ליואב, פי 2, ולשניהם אל ציר הקרוסלה.
+
+  - id: W-1.3-02
+    level: basic
+    objectives: [OBJ-1.3-1]
+    prompt: >-
+      הדיסק של כונן קשיח מסתובב ב-7200 סיבובים לדקה. נקודה על הדיסק נמצאת במרחק $4.5\,\text{cm}$ מהציר.
+
+      א. מה המהירות הזוויתית ומה זמן המחזור?
+
+      ב. מה גודל המהירות ומה גודל התאוצה של הנקודה? השוו את התאוצה ל-$g$.
+    answer: >-
+      א. $\omega = 754\,\text{rad/s}$, $T = 8.33\,\text{ms}$.
+
+      ב. $v = 33.9\,\text{m/s}$, $a = 2.56\cdot10^{4}\,\text{m/s}^2$, כ-2600 פעמים $g$.
+    solution:
+      - kind: given
+        text: >-
+          $f = 7200/60 = 120$ סיבובים בשנייה, $r = 0.045\,\text{m}$.
+      - kind: law
+        text: >-
+          $\omega = 2\pi f$, $T = 1/f = 2\pi/\omega$, $v = \omega r$, $a_c = \omega^2r$.
+      - kind: limit
+        text: >-
+          $a_c = \omega^2 r = 4\pi^2f^2r$: גדל כמו ריבוע קצב הסיבוב. דיסק שמסתובב לאט פי 10 היה נותן תאוצה קטנה פי 100.
+      - kind: units
+        text: >-
+          $(\text{rad/s})^2\cdot\text{m} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. $\omega = 2\pi\cdot120 = 754\,\text{rad/s}$, $T = 1/120\,\text{s} = 8.33\,\text{ms}$.
+
+          ב. $v = 754\cdot0.045 = 33.9\,\text{m/s}$, $a = 754^2\cdot0.045 = 2.56\cdot10^{4}\,\text{m/s}^2$, ו-$a/g = 2.61\cdot10^{3}$.
+      - kind: result
+        text: >-
+          א. $754\,\text{rad/s}$, $8.33\,\text{ms}$. ב. $33.9\,\text{m/s}$; $2.56\cdot10^{4}\,\text{m/s}^2$, כ-2600 פעמים $g$, אל הציר.
+
+  - id: W-1.3-03
+    level: basic
+    objectives: [OBJ-1.3-2]
+    prompt: >-
+      מכונית נוסעת בעיקול שרדיוסו $80\,\text{m}$. ברגע מסוים גודל המהירות שלה $20\,\text{m/s}$, והנהג בולם כך שגודל
+      המהירות קטן בקצב של $3.0\,\text{m/s}^2$.
+
+      א. מה הרכיב המשיקי ומה הרכיב הניצב של התאוצה?
+
+      ב. מה גודל התאוצה, ובכמה מעלות היא נוטה מהכיוון אל מרכז העיקול? לאיזה צד?
+    answer: >-
+      א. $a_t = -3.0\,\text{m/s}^2$ (נגד התנועה), $a_\perp = 5.0\,\text{m/s}^2$ (אל מרכז העיקול).
+
+      ב. $5.83\,\text{m/s}^2$, נוטה $31^\circ$ אחורה.
+    solution:
+      - kind: given
+        text: >-
+          $\rho = 80\,\text{m}$, $v = 20\,\text{m/s}$. **הכיוון החיובי** של הרכיב המשיקי הוא כיוון הנסיעה, ולכן
+          $dv/dt = -3.0\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $\vec a = \dfrac{dv}{dt}\hat T + \dfrac{v^2}{\rho}\hat N$; שני הרכיבים ניצבים.
+      - kind: manipulation
+        text: >-
+          $|\vec a| = \sqrt{a_t^2 + a_\perp^2}$, והזווית $\psi$ מהכיוון אל המרכז: $\tan\psi = |a_t|/a_\perp$, לצד שאליו
+          מצביע $a_t$, כלומר אחורה.
+      - kind: limit
+        text: >-
+          בלי בלימה, $a_t = 0$: $\psi = 0$ והתאוצה בדיוק אל המרכז. על כביש ישר, $\rho \to \infty$: $a_\perp \to 0$
+          ו-$\psi = 90^\circ$, בלימה רגילה.
+      - kind: units
+        text: >-
+          $\text{(m/s)}^2/\text{m} = \text{m/s}^2$, כמו $a_t$.
+      - kind: substitution
+        text: >-
+          א. $a_\perp = 20^2/80 = 5.0\,\text{m/s}^2$.
+
+          ב. $|\vec a| = \sqrt{3.0^2 + 5.0^2} = 5.83\,\text{m/s}^2$, $\psi = \arctan(3/5) = 31.0^\circ$.
+      - kind: result
+        text: >-
+          א. $a_t = -3.0\,\text{m/s}^2$, $a_\perp = 5.0\,\text{m/s}^2$. ב. $5.83\,\text{m/s}^2$, נוטה $31^\circ$ מהכיוון אל
+          המרכז, אחורה.
+
+  - id: W-1.3-04
+    level: mid
+    objectives: [OBJ-1.3-1]
+    prompt: >-
+      כדור הארץ מסתובב סביב הציר שלו במהירות זוויתית $\omega_E = 7.29\cdot10^{-5}\,\text{rad/s}$, ורדיוסו
+      $R_E = 6.37\cdot10^{6}\,\text{m}$.
+
+      א. מה גודל המהירות ומה גודל התאוצה של אדם שעומד על קו המשווה? השוו את התאוצה ל-$g$.
+
+      ב. אותן שאלות לאדם בירושלים, בקו רוחב $31.8^\circ$ צפון.
+
+      ג. לאן מצביעה התאוצה של האדם בירושלים: אל מרכז כדור הארץ, או לכיוון אחר?
+    answer: >-
+      א. $464\,\text{m/s}$, $0.0339\,\text{m/s}^2$, כ-0.35% מ-$g$.
+
+      ב. $395\,\text{m/s}$, $0.0288\,\text{m/s}^2$.
+
+      ג. אל ציר הסיבוב, ניצב לציר, בזווית $31.8^\circ$ מהכיוון אל מרכז כדור הארץ.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_E = 7.29\cdot10^{-5}\,\text{rad/s}$, $R_E = 6.37\cdot10^{6}\,\text{m}$, קו רוחב $\lambda = 31.8^\circ$.
+      - kind: law
+        text: >-
+          כל נקודה על כדור הארץ נעה במעגל אופקי סביב הציר, ברדיוס המרחק שלה מהציר, ב-$\omega_E$. לכן $v = \omega_E r$ ו-$a_c = \omega_E^2 r$
+          אל מרכז **המעגל שלה**, שנמצא על הציר.
+      - kind: manipulation
+        text: >-
+          בקו רוחב $\lambda$ המרחק מהציר הוא $r = R_E\cos\lambda$. לכן $v = \omega_ER_E\cos\lambda$ ו-$a_c = \omega_E^2R_E\cos\lambda$,
+          בכיוון ניצב לציר, אל הציר.
+      - kind: limit
+        text: >-
+          בקו המשווה $\cos\lambda = 1$ ומקבלים את (א). בקוטב, $\lambda = 90^\circ$: $r = 0$, האדם מסתובב במקום, ו-$v = a_c = 0$.
+      - kind: units
+        text: >-
+          $\text{rad/s}\cdot\text{m} = \text{m/s}$, $(\text{rad/s})^2\cdot\text{m} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. $v = 7.29\cdot10^{-5}\cdot6.37\cdot10^{6} = 464\,\text{m/s}$, $a_c = (7.29\cdot10^{-5})^2\cdot6.37\cdot10^{6} = 0.0339\,\text{m/s}^2$,
+          ו-$a_c/g = 3.45\cdot10^{-3}$.
+
+          ב. $r = 6.37\cdot10^{6}\cos31.8^\circ = 5.41\cdot10^{6}\,\text{m}$, $v = 395\,\text{m/s}$, $a_c = 0.0288\,\text{m/s}^2$.
+      - kind: reasoning
+        text: >-
+          ג. מרכז המעגל של האדם בירושלים הוא נקודה על הציר, מתחת לו ומעט צפונה, ולא מרכז כדור הארץ. הזווית בין
+          הכיוון אל הציר לבין הכיוון אל מרכז כדור הארץ היא קו הרוחב.
+      - kind: result
+        text: >-
+          א. $464\,\text{m/s}$, $0.0339\,\text{m/s}^2$ (כ-0.35% מ-$g$). ב. $395\,\text{m/s}$, $0.0288\,\text{m/s}^2$.
+          ג. אל ציר כדור הארץ, ניצב לו, $31.8^\circ$ מהכיוון אל המרכז.
+
+  - id: W-1.3-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-1.3-2]
+    prompt: >-
+      מסלול ריצה בנוי משני קטעים ישרים ושני חצאי מעגל שרדיוסם $30\,\text{m}$, והם מחוברים ישירות זה לזה. רץ מקיף
+      אותו בגודל מהירות קבוע, $10\,\text{m/s}$.
+
+      א. שרטטו בקירוב את גודל התאוצה שלו כפונקציה של הזמן לאורך הקפה אחת.
+
+      ב. מה קורה לתאוצה ברגע שבו הוא עובר מקטע ישר לחצי מעגל?
+
+      ג. מהנדסי כבישים לא מחברים קטע ישר ישירות לקשת של מעגל. הסבירו, בעזרת רדיוס העקמומיות, מה הם עושים במקום
+      זה ולמה.
+    answer: >-
+      א. אפס בקטעים הישרים, $3.33\,\text{m/s}^2$ בחצאי המעגל: פונקציית מדרגות.
+
+      ב. היא קופצת מאפס ל-$3.33\,\text{m/s}^2$ ברגע אחד.
+
+      ג. הם מכניסים קטע מעבר שבו $\rho$ קטן בהדרגה מאינסוף ל-$R$, כך שהתאוצה הניצבת $v^2/\rho$ גדלה בהדרגה.
+    solution:
+      - kind: law
+        text: >-
+          $\vec a = \dfrac{dv}{dt}\hat T + \dfrac{v^2}{\rho}\hat N$. גודל המהירות קבוע, ולכן $a_t = 0$ ו-$|\vec a| = v^2/\rho$.
+      - kind: reasoning
+        text: >-
+          א. בקטע ישר $\rho = \infty$, ולכן $a = 0$. בחצי מעגל $\rho = 30\,\text{m}$, ו-$a = 10^2/30 = 3.33\,\text{m/s}^2$, אל
+          מרכז חצי המעגל. הגרף: אפס, מדרגה ל-$3.33$, חזרה לאפס, וחוזר חלילה.
+
+          ב. בנקודת החיבור המסלול חלק (אין בו שבירה, והמשיק רציף), אבל רדיוס העקמומיות קופץ מאינסוף ל-$30\,\text{m}$,
+          ולכן גם התאוצה קופצת.
+
+          ג. כדי שהתאוצה תשתנה בהדרגה צריך ש-$1/\rho$ ישתנה בהדרגה לאורך הדרך. לכן בין הישר לקשת יש עקומת מעבר
+          שבה העקמומיות גדלה בהדרגה מאפס, כמו שתואר בפתיחת השיעור.
+      - kind: limit
+        text: >-
+          אם הרדיוס של חצאי המעגל גדל מאוד, $v^2/\rho \to 0$, המדרגה נעלמת: מסלול ישר כמעט.
+      - kind: units
+        text: >-
+          $\text{(m/s)}^2/\text{m} = \text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. אפס בקטעים הישרים ו-$3.33\,\text{m/s}^2$ בחצאי המעגל. ב. קפיצה חדה. ג. עקומת מעבר שבה $\rho$ קטן
+          בהדרגה, כדי ש-$v^2/\rho$ יגדל בהדרגה.
+
+  - id: W-1.3-06
+    level: mid
+    objectives: [OBJ-1.3-1]
+    prompt: >-
+      מאוורר מתחיל להסתובב ממנוחה, ומגיע ל-900 סיבובים לדקה אחרי $3.0\,\text{s}$, בתאוצה זוויתית קבועה. קצה הלהב
+      נמצא במרחק $0.20\,\text{m}$ מהציר.
+
+      א. מה התאוצה הזוויתית?
+
+      ב. מה הרכיב המשיקי, מה הרכיב הצנטריפטלי ומה גודל התאוצה של קצה הלהב ברגע $t = 1.0\,\text{s}$?
+
+      ג. כמה סיבובים עשה הלהב ב-$3.0\,\text{s}$ הראשונות?
+    answer: >-
+      א. $\alpha = 10\pi = 31.4\,\text{rad/s}^2$.
+
+      ב. $a_t = 6.28\,\text{m/s}^2$, $a_c = 197\,\text{m/s}^2$, $|\vec a| = 197\,\text{m/s}^2$.
+
+      ג. 22.5 סיבובים.
+    solution:
+      - kind: given
+        text: >-
+          900 סיבובים לדקה הם 15 סיבובים בשנייה, כלומר $\omega_f = 30\pi\,\text{rad/s}$, ב-$t_f = 3.0\,\text{s}$; $r = 0.20\,\text{m}$; $\omega(0) = 0$.
+      - kind: law
+        text: >-
+          בתאוצה זוויתית קבועה ממנוחה: $\omega = \alpha t$, $\theta = \tfrac12\alpha t^2$. $a_t = \alpha r$, $a_c = \omega^2 r$.
+      - kind: manipulation
+        text: >-
+          $\alpha = \omega_f/t_f$. ברגע $t$: $a_t = \alpha r$ (קבוע), $a_c = \alpha^2t^2 r$, ו-$|\vec a| = \alpha r\sqrt{1 + \alpha^2t^4}$.
+          הזווית עד $t_f$: $\theta_f = \tfrac12\omega_f t_f$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $a_c = 0$ ו-$|\vec a| = \alpha r$, כל התאוצה משיקית. כש-$t$ גדל $a_c$ גדל כמו $t^2$ ושולט.
+      - kind: units
+        text: >-
+          $\text{rad/s}^2\cdot\text{m} = \text{m/s}^2$; $(\text{rad/s}^2)^2\cdot\text{s}^2\cdot\text{m} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. $\alpha = 30\pi/3.0 = 10\pi = 31.4\,\text{rad/s}^2$.
+
+          ב. ב-$t = 1.0\,\text{s}$: $\omega = 31.4\,\text{rad/s}$, $a_t = 31.4\cdot0.20 = 6.28\,\text{m/s}^2$, $a_c = 31.4^2\cdot0.20 = 197\,\text{m/s}^2$,
+          $|\vec a| = \sqrt{6.28^2 + 197^2} = 197\,\text{m/s}^2$, רק $1.8^\circ$ מהכיוון אל הציר.
+
+          ג. $\theta_f = \tfrac12\cdot30\pi\cdot3.0 = 45\pi\,\text{rad}$, כלומר $45\pi/2\pi = 22.5$ סיבובים.
+      - kind: result
+        text: >-
+          א. $31.4\,\text{rad/s}^2$. ב. $6.28\,\text{m/s}^2$, $197\,\text{m/s}^2$, $197\,\text{m/s}^2$. ג. 22.5 סיבובים.
+
+  - id: W-1.3-07
+    level: mid
+    objectives: [OBJ-1.3-2]
+    prompt: >-
+      אבן נזרקת אופקית מצוק במהירות $15\,\text{m/s}$, בלי התנגדות אוויר.
+
+      א. מה רדיוס העקמומיות של המסלול ברגע הזריקה?
+
+      ב. מה הרכיב המשיקי, מה הרכיב הניצב של התאוצה, ומה רדיוס העקמומיות, $2.0\,\text{s}$ אחרי הזריקה?
+
+      ג. סטודנט חישב ב-(ב) $|\vec v|^2/g = 62.2\,\text{m}$. מה הטעות?
+    answer: >-
+      א. $23.0\,\text{m}$.
+
+      ב. $a_t = 7.78\,\text{m/s}^2$, $a_\perp = 5.96\,\text{m/s}^2$, $\rho = 102\,\text{m}$.
+
+      ג. הוא חילק בכל $g$, ולא ברכיב הניצב של $\vec g$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הזריקה, ציר $y$ כלפי מעלה. $\vec v = (15,\ -9.8t)\,\text{m/s}$, $\vec a = (0,\ -9.8)\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $a_t = \dfrac{\vec v\cdot\vec a}{|\vec v|}$, $a_\perp = \dfrac{|v_xa_y - v_ya_x|}{|\vec v|}$, $\rho = \dfrac{|\vec v|^3}{|v_xa_y - v_ya_x|}$.
+      - kind: manipulation
+        text: >-
+          $|v_xa_y - v_ya_x| = v_0g$ בכל רגע, ולכן $\rho(t) = \dfrac{\left(v_0^2 + g^2t^2\right)^{3/2}}{v_0g}$ ו-$a_\perp = \dfrac{v_0g}{|\vec v|}$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $\rho = v_0^2/g$ (המהירות אופקית ו-$\vec g$ ניצב לה כולו), הערך הקטן ביותר: זה השיא של הפרבולה. כש-$t$ גדל
+          המהירות נעשית כמעט אנכית, $a_\perp \to 0$ ו-$\rho \to \infty$: המסלול מתיישר.
+      - kind: units
+        text: >-
+          $\text{(m/s)}^3/(\text{m/s}\cdot\text{m/s}^2) = \text{m}$.
+      - kind: substitution
+        text: >-
+          א. $\rho_0 = 15^2/9.8 = 23.0\,\text{m}$.
+
+          ב. $\vec v = (15,\ -19.6)\,\text{m/s}$, $|\vec v| = 24.7\,\text{m/s}$. $a_t = 19.6\cdot9.8/24.7 = 7.78\,\text{m/s}^2$,
+          $a_\perp = 15\cdot9.8/24.7 = 5.96\,\text{m/s}^2$, $\rho = 24.7^3/(15\cdot9.8) = 102\,\text{m}$.
+      - kind: reasoning
+        text: >-
+          ג. $|\vec v|^2/g$ מניח שכל $\vec g$ ניצב למהירות. אבל אחרי $2.0\,\text{s}$ חלק גדול מ-$\vec g$ פועל לאורך המהירות
+          ומגדיל אותה ($7.78\,\text{m/s}^2$), ורק $5.96\,\text{m/s}^2$ מעקמים את המסלול.
+      - kind: result
+        text: >-
+          א. $23.0\,\text{m}$. ב. $7.78\,\text{m/s}^2$, $5.96\,\text{m/s}^2$, $102\,\text{m}$. ג. רק הרכיב הניצב של
+          $\vec g$ קובע את $\rho$.
+
+  - id: W-1.3-08
+    level: bagrut
+    objectives: [OBJ-1.3-2]
+    prompt: >-
+      חלקיק נע על סליל (הליקס):
+      $$\vec r(t) = \left(R\cos\omega t,\ R\sin\omega t,\ ut\right)$$
+      עם $R = 0.50\,\text{m}$, $\omega = 4.0\,\text{rad/s}$ ו-$u = 3.0\,\text{m/s}$.
+
+      א. הראו שגודל המהירות קבוע, ומצאו אותו.
+
+      ב. מצאו את רדיוס העקמומיות של המסלול כביטוי ב-$R$, $\omega$ ו-$u$, וחשבו אותו.
+
+      ג. האם רדיוס העקמומיות שווה ל-$R$? בדקו את התוצאה בשני מקרי קצה.
+    answer: >-
+      א. $|\vec v| = \sqrt{R^2\omega^2 + u^2} = 3.61\,\text{m/s}$.
+
+      ב. $\rho = R\left(1 + \dfrac{u^2}{R^2\omega^2}\right) = 1.63\,\text{m}$.
+
+      ג. לא, גדול מ-$R$. $u \to 0$ נותן $\rho = R$; $\omega \to 0$ נותן $\rho \to \infty$.
+    solution:
+      - kind: law
+        text: >-
+          $\rho = \dfrac{|\vec v|^3}{|\vec v\times\vec a|}$, גם בשלושה ממדים.
+      - kind: manipulation
+        text: >-
+          $\vec v = \left(-R\omega\sin\omega t,\ R\omega\cos\omega t,\ u\right)$, $|\vec v| = \sqrt{R^2\omega^2 + u^2}$, קבוע.
+          $\vec a = \left(-R\omega^2\cos\omega t,\ -R\omega^2\sin\omega t,\ 0\right)$, $|\vec a| = R\omega^2$.
+          $\vec v\cdot\vec a = 0$ (כמו שצריך כשגודל המהירות קבוע), ולכן $|\vec v\times\vec a| = |\vec v|\,|\vec a|$ ו:
+          $$\rho = \frac{|\vec v|^2}{|\vec a|} = \frac{R^2\omega^2 + u^2}{R\omega^2} = R\left(1 + \frac{u^2}{R^2\omega^2}\right)$$
+      - kind: limit
+        text: >-
+          $u \to 0$: הסליל נעשה מעגל ברדיוס $R$, ו-$\rho \to R$. $\omega \to 0$ (ב-$u$ קבוע): תנועה בקו ישר לאורך $z$,
+          ו-$\rho \to \infty$. בין שני הקצוות $\rho \gt R$: הסליל "מתוח" ולכן עקום פחות מהמעגל שהוא מטיל על המישור.
+      - kind: units
+        text: >-
+          $\text{(m/s)}^2/(\text{m}\cdot\text{s}^{-2}) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $|\vec v| = \sqrt{2.0^2 + 3.0^2} = 3.61\,\text{m/s}$, $|\vec a| = 0.50\cdot16 = 8.0\,\text{m/s}^2$, $\rho = 13/8.0 = 1.63\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $3.61\,\text{m/s}$. ב. $\rho = R\left(1 + u^2/(R\omega)^2\right) = 1.63\,\text{m}$. ג. לא: $\rho \gt R$; $u \to 0$
+          נותן $R$, ו-$\omega \to 0$ נותן אינסוף.
+
+  - id: W-1.3-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-1.3-1, OBJ-1.3-2]
+    prompt: >-
+      קבעו לגבי כל טענה אם היא נכונה, ונמקו.
+
+      א. גוף נע במישור, וגודל התאוצה שלו קבוע והיא ניצבת תמיד למהירות. לכן הוא נע בתנועה מעגלית אחידה.
+
+      ב. תאוצה קבועה (בגודל ובכיוון) יכולה להיות ניצבת למהירות לאורך כל התנועה.
+
+      ג. גוף שגודל המהירות שלו גדל כל הזמן יכול, ברגע מסוים, להאיץ בזווית של יותר מ-$90^\circ$ מהמהירות.
+    answer: >-
+      א. נכונה.
+
+      ב. לא נכונה: רק ברגע אחד (למשל בשיא של זריקה).
+
+      ג. לא נכונה.
+    solution:
+      - kind: law
+        text: >-
+          $\vec a = \dfrac{dv}{dt}\hat T + \dfrac{v^2}{\rho}\hat N$, ובפרט $\dfrac{dv}{dt} = \dfrac{\vec v\cdot\vec a}{|\vec v|}$.
+      - kind: reasoning
+        text: >-
+          א. $\vec a\perp\vec v$ תמיד, ולכן $dv/dt = 0$: גודל המהירות קבוע. אז $|\vec a| = v^2/\rho$ קבוע, ולכן גם $\rho$ קבוע.
+          עקומה במישור שרדיוס העקמומיות שלה קבוע ושמתעקמת תמיד לאותו צד היא מעגל. (בשלושה ממדים זה לא נכון: גם
+          סליל מקיים את התנאים.)
+
+          ב. כש-$\vec a$ קבוע, $\vec v = \vec v_0 + \vec a t$ ו-$\vec v\cdot\vec a = \vec v_0\cdot\vec a + a^2t$. זו פונקציה
+          עולה של $t$, ולכן היא מתאפסת לכל היותר ברגע אחד: בזריקה, בשיא בלבד.
+
+          ג. זווית של יותר מ-$90^\circ$ פירושה $\vec v\cdot\vec a \lt 0$, כלומר $dv/dt \lt 0$: גודל המהירות קטן באותו רגע.
+          זה סותר את הנתון.
+      - kind: limit
+        text: >-
+          בדיקה בזריקה: בעלייה הזווית בין $\vec g$ ל-$\vec v$ גדולה מ-$90^\circ$ וגודל המהירות קטן; בשיא היא $90^\circ$;
+          בירידה קטנה מ-$90^\circ$ וגודל המהירות גדל. שלושת הסעיפים מתאימים לתמונה הזו.
+      - kind: units
+        text: >-
+          $\vec v\cdot\vec a/|\vec v|$ ביחידות $\text{m/s}^2$, כמו $dv/dt$.
+      - kind: result
+        text: >-
+          א. נכונה (במישור). ב. לא נכונה: ניצבת לכל היותר ברגע אחד. ג. לא נכונה: אז גודל המהירות היה קטן.
+
+  - id: W-1.3-10
+    level: bagrut
+    objectives: [OBJ-1.3-1, OBJ-1.3-2]
+    prompt: >-
+      מכונית מתחילה לנסוע ממנוחה על מסלול מעגלי שרדיוסו $R$, וגודל המהירות שלה גדל בקצב קבוע $a_t$.
+
+      א. מצאו את גודל המהירות ואת התאוצה הצנטריפטלית שלה כשהיא משלימה הקפה אחת, כביטויים ב-$R$ וב-$a_t$.
+
+      ב. הראו שבאותו רגע הזווית בין התאוצה למהירות לא תלויה ב-$R$ ולא ב-$a_t$, ומצאו אותה.
+
+      ג. חשבו את גודל המהירות, את גודל התאוצה ואת זמן ההקפה עבור $R = 50\,\text{m}$ ו-$a_t = 2.0\,\text{m/s}^2$.
+    answer: >-
+      א. $v = \sqrt{4\pi Ra_t}$, $a_c = 4\pi a_t$.
+
+      ב. $\arctan(4\pi) = 85.5^\circ$.
+
+      ג. $35.4\,\text{m/s}$, $25.2\,\text{m/s}^2$, $17.7\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          מסלול מעגלי ברדיוס $R$, $v(0) = 0$, $dv/dt = a_t$ קבוע. הדרך לאורך המסלול בהקפה אחת: $s = 2\pi R$.
+      - kind: law
+        text: >-
+          לאורך המסלול, בקצב קבוע של גודל המהירות, $v^2 = 2a_ts$ (כמו בתאוצה קבועה על קו, שיעור 1.2). $a_c = v^2/R$, ניצב ל-$a_t$.
+      - kind: manipulation
+        text: >-
+          א. $v^2 = 2a_t\cdot2\pi R = 4\pi Ra_t$, ולכן $a_c = v^2/R = 4\pi a_t$.
+
+          ב. $\tan\psi = a_c/a_t = 4\pi$, בלי $R$ ובלי $a_t$. $|\vec a| = a_t\sqrt{1 + 16\pi^2}$. זמן ההקפה: $t = v/a_t = \sqrt{4\pi R/a_t}$.
+      - kind: limit
+        text: >-
+          אחרי $n$ הקפות $a_c = 4\pi n\,a_t$, ולכן ב-$n \to 0$ (ההתחלה) $a_c \to 0$ והתאוצה כולה משיקית, וככל שעוברות
+          הקפות הזווית שואפת ל-$90^\circ$. בדיקת ממדים: $a_c/a_t$ חסר ממדים, ומ-$R$ ו-$a_t$ לבד אי אפשר לבנות מספר חסר
+          ממדים, ולכן היחס חייב להיות מספר טהור.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}\cdot\text{m/s}^2} = \text{m/s}$; $\sqrt{\text{m}/(\text{m/s}^2)} = \text{s}$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{4\pi\cdot50\cdot2.0} = 35.4\,\text{m/s}$, $a_c = 4\pi\cdot2.0 = 25.1\,\text{m/s}^2$, $|\vec a| = \sqrt{2.0^2 + 25.1^2} = 25.2\,\text{m/s}^2$,
+          $t = 35.4/2.0 = 17.7\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $v = \sqrt{4\pi Ra_t}$, $a_c = 4\pi a_t$. ב. $\arctan 4\pi = 85.5^\circ$, לכל $R$ ו-$a_t$. ג. $35.4\,\text{m/s}$,
+          $25.2\,\text{m/s}^2$, $17.7\,\text{s}$.
+
+challenge:
+  - id: W-1.3-c1
+    stars: 1
+    objectives: [OBJ-1.3-1]
+    prompt: >-
+      מכונית צעצוע על שלט רחוק קשורה ביתד באדמה בחוט שאורכו $3.00\,\text{m}$, ונעה על מעגל סביב היתד. ברגע $t = 0$
+      המהירות הזוויתית שלה $1.00\,\text{rad/s}$, ומאז היא מאיצה בתאוצה זוויתית קבועה $4.00\,\text{rad/s}^2$. החוט נקרע
+      כשהתאוצה הצנטריפטלית של המכונית עולה על $243\,\text{m/s}^2$.
+
+      א. כמה זמן אחרי $t = 0$ החוט נקרע?
+
+      ב. מה גודל המהירות ומה גודל התאוצה של המכונית רגע לפני שהחוט נקרע? בכמה מעלות התאוצה נוטה מהחוט?
+
+      ג. כמה סיבובים עשתה המכונית מ-$t = 0$ עד הקריעה?
+    answer: >-
+      א. $2.00\,\text{s}$.
+
+      ב. $27.0\,\text{m/s}$, $243\,\text{m/s}^2$, נוטה $2.8^\circ$ מהחוט קדימה.
+
+      ג. 1.59 סיבובים.
+    solution:
+      - kind: given
+        text: >-
+          $R = 3.00\,\text{m}$, $\omega_0 = 1.00\,\text{rad/s}$, $\alpha = 4.00\,\text{rad/s}^2$, $a_{c,\max} = 243\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $\omega = \omega_0 + \alpha t$, $\theta = \omega_0t + \tfrac12\alpha t^2$, $a_c = \omega^2R$, $a_t = \alpha R$.
+      - kind: manipulation
+        text: >-
+          החוט נקרע כש-$\omega^2R = a_{c,\max}$, כלומר $\omega_b = \sqrt{a_{c,\max}/R}$, ברגע $t_b = \dfrac{\omega_b - \omega_0}{\alpha}$.
+          אז $v = \omega_bR$, $|\vec a| = R\sqrt{\omega_b^4 + \alpha^2}$, והנטייה מהחוט $\arctan(\alpha/\omega_b^2)$.
+      - kind: limit
+        text: >-
+          אם $\omega_0 = \omega_b$ החוט נקרע מיד, $t_b = 0$. אם המכונית הייתה מתחילה ממנוחה, $t_b = \omega_b/\alpha = 2.25\,\text{s}$:
+          קצת יותר, כמו שצריך.
+      - kind: units
+        text: >-
+          $\sqrt{(\text{m/s}^2)/\text{m}} = \text{s}^{-1}$, ו-$\text{s}^{-1}/\text{s}^{-2} = \text{s}$.
+      - kind: substitution
+        text: >-
+          א. $\omega_b = \sqrt{243/3.00} = 9.00\,\text{rad/s}$, $t_b = (9.00 - 1.00)/4.00 = 2.00\,\text{s}$.
+
+          ב. $v = 9.00\cdot3.00 = 27.0\,\text{m/s}$, $a_t = 4.00\cdot3.00 = 12.0\,\text{m/s}^2$, $|\vec a| = \sqrt{243^2 + 12^2} = 243\,\text{m/s}^2$,
+          ונטייה $\arctan(12/243) = 2.8^\circ$.
+
+          ג. $\theta = 1.00\cdot2.00 + \tfrac12\cdot4.00\cdot2.00^2 = 10.0\,\text{rad}$, כלומר $10.0/2\pi = 1.59$ סיבובים.
+      - kind: result
+        text: >-
+          א. $2.00\,\text{s}$. ב. $27.0\,\text{m/s}$; $243\,\text{m/s}^2$, $2.8^\circ$ קדימה מהחוט. ג. 1.59 סיבובים.
+    source:
+      name: AAPT F = ma Exam
+      year: 2014
+      problem: 'Problem 10: radio-controlled car on a 3.00 m string, angular acceleration, string breaks at a given centripetal acceleration'
+      url: https://www.aapt.org/physicsteam/2015/upload/exam1-2014-2-2.pdf
+      verified: '2026-11-08'
+      adapted: true
+
+  - id: W-1.3-c2
+    stars: 1
+    objectives: [OBJ-1.3-2]
+    prompt: >-
+      מכונית נוסעת על מסלול מרוצים בצורת חצי מעגל שרדיוסו $50\,\text{m}$. היא נכנסת לחצי המעגל ב-$10\,\text{m/s}$, וגודל
+      המהירות שלה גדל בקצב קבוע של $2.0\,\text{m/s}^2$ לאורך כל העיקול.
+
+      א. מה גודל המהירות שלה באמצע העיקול וביציאה ממנו?
+
+      ב. מצאו את גודל התאוצה ואת הזווית שבין התאוצה לבין הכיוון אל מרכז העיקול, בכניסה, באמצע וביציאה.
+
+      ג. שרטטו את חצי המעגל ואת וקטורי התאוצה בשלוש הנקודות. תארו במילים איך משתנים האורך והכיוון שלהם.
+    answer: >-
+      א. $20.4\,\text{m/s}$ באמצע, $27.0\,\text{m/s}$ ביציאה.
+
+      ב. בכניסה $2.83\,\text{m/s}^2$ ב-$45^\circ$; באמצע $8.52\,\text{m/s}^2$ ב-$13.6^\circ$; ביציאה $14.7\,\text{m/s}^2$ ב-$7.8^\circ$,
+      תמיד נוטה קדימה.
+
+      ג. החצים מתארכים ומסתובבים לכיוון המרכז.
+    solution:
+      - kind: given
+        text: >-
+          $R = 50\,\text{m}$, $v_1 = 10\,\text{m/s}$, $a_t = 2.0\,\text{m/s}^2$ (חיובי: בכיוון הנסיעה). הדרך לאמצע $\pi R/2$, ליציאה $\pi R$.
+      - kind: law
+        text: >-
+          $v^2 = v_1^2 + 2a_ts$ לאורך המסלול; $\vec a = a_t\hat T + \dfrac{v^2}{R}\hat N$, והזווית מהכיוון אל המרכז $\psi$ מקיימת
+          $\tan\psi = a_tR/v^2$.
+      - kind: manipulation
+        text: >-
+          $v^2(s) = v_1^2 + 2a_ts$, ולכן $a_c(s) = \dfrac{v_1^2 + 2a_ts}{R}$ גדל לאורך העיקול, $a_t$ קבוע, ו-$\psi$ קטנה.
+      - kind: limit
+        text: >-
+          אם $a_t = 0$: $\psi = 0$ בכל מקום, תנועה מעגלית אחידה. בכניסה $v_1^2/R = 2.0\,\text{m/s}^2 = a_t$ במקרה, ולכן
+          $\psi = 45^\circ$ בדיוק.
+      - kind: units
+        text: >-
+          $\text{m/s}^2\cdot\text{m}/\text{(m/s)}^2$ חסר ממדים, כמו $\tan\psi$.
+      - kind: substitution
+        text: >-
+          א. $v_{\text{mid}} = \sqrt{100 + 2\cdot2.0\cdot25\pi} = 20.4\,\text{m/s}$, $v_{\text{out}} = \sqrt{100 + 2\cdot2.0\cdot50\pi} = 27.0\,\text{m/s}$.
+
+          ב. בכניסה $a_c = 2.0$, $|\vec a| = 2.83\,\text{m/s}^2$, $\psi = 45^\circ$. באמצע $a_c = 8.28$, $|\vec a| = 8.52\,\text{m/s}^2$,
+          $\psi = 13.6^\circ$. ביציאה $a_c = 14.6$, $|\vec a| = 14.7\,\text{m/s}^2$, $\psi = 7.8^\circ$.
+      - kind: reasoning
+        text: >-
+          ג. בשלוש הנקודות התאוצה פונה פנימה ונוטה קדימה, לכיוון הנסיעה. לאורך העיקול החץ מתארך (פי 5 בערך) ומסתובב
+          לכיוון המרכז, כי הרכיב הצנטריפטלי גדל והמשיקי קבוע.
+      - kind: result
+        text: >-
+          א. $20.4\,\text{m/s}$ ו-$27.0\,\text{m/s}$. ב. $2.83$, $8.52$ ו-$14.7\,\text{m/s}^2$, בזוויות $45^\circ$, $13.6^\circ$
+          ו-$7.8^\circ$ קדימה מהכיוון אל המרכז. ג. החצים מתארכים ומתקרבים לכיוון המרכז.
+    source:
+      name: AAPT F = ma Exam
+      year: 2021
+      problem: 'Problem 13: car speeding up on a semicircular racetrack, which picture shows its acceleration'
+      url: https://www.aapt.org/Common2022/upload/2021_Fma_exam.pdf
+      verified: '2026-11-08'
+      adapted: true

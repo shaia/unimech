@@ -8,14 +8,6 @@
   reject: [גוף קשיח]
   lesson: '8.1'
 
-- id: angular-acceleration
-  term: תאוצה זוויתית
-  en: angular acceleration
-  symbol: α
-  unit: rad/s²
-  definition: קצב השינוי של המהירות הזוויתית, α = dω/dt. בסיבוב סביב ציר קבוע, התאוצה המשיקית של נקודה במרחק r מהציר היא αr.
-  lesson: '8.1'
-
 - id: c8-instantaneous-axis
   term: ציר סיבוב רגעי
   en: instantaneous axis of rotation

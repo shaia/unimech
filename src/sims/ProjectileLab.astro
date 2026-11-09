@@ -1,0 +1,7 @@
+---
+/** Projectile figure for lesson MDX: <Spread figure={ProjectileLab} figureProps={{ scene: 'incline', alpha: 20, tasks: […] }}>. */
+import ProjectileLab, { type ProjectileLabProps } from './ProjectileLab';
+type Props = ProjectileLabProps;
+---
+
+<ProjectileLab client:visible {...Astro.props} />

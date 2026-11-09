@@ -1,0 +1,7 @@
+---
+/** Two-frames figure for lesson MDX: <Spread fig="fig-1-5a" figure={GalileanFrames} figureProps={{ mode: 'toss', tasks: [...] }}>. */
+import GalileanFrames, { type GalileanFramesProps } from './GalileanFrames';
+type Props = GalileanFramesProps;
+---
+
+<GalileanFrames client:visible {...Astro.props} />

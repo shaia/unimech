@@ -1,0 +1,25 @@
+# Videos of lesson 1.4. Every id was checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds) and
+# the caption tracks from its captionTracks list ("English - CC" in both). `why` claims only what the MIT
+# OpenCourseWare transcripts of the two videos (opened the same day) support. No public Hebrew video on
+# the polar components of the acceleration was found.
+
+- id: v-1-4-polar-unit-vectors
+  youtubeId: uo86ir31pn0
+  title: 8.1 Polar Coordinates
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  minutes: 4
+  why: 'קטע קצר מהקורס MIT 8.01 (פיטר דורמשקין). לפי התמליל, הוא בונה את r̂ ואת θ̂ בשתי נקודות שונות על מעגל ומראה ש-r̂ בנקודה אחת שונה מ-r̂ בנקודה השנייה, אף ששניהם וקטורי יחידה. זה בדיוק הצעד הראשון של השיעור: וקטורי היחידה הקוטביים תלויים במקום, ולכן משתנים כשהגוף זז.'
+  verified: '2026-11-08'
+
+- id: v-1-4-ball-in-tube
+  youtubeId: iMz0LiqjFmE
+  title: 4. Movement of a Particle in Circular Motion w/ Polar Coordinates
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  minutes: 56
+  why: 'הרצאה מלאה של ג׳ים ונדיבר מהקורס MIT 2.003. לפי התמליל, הוא מציב את התאוצה הקוטבית בכמה מקרים: כדור על חוט שמסתובב, כדור שזז החוצה בקצב קבוע לאורך צינור מסתובב (כמו החיפושית של השיעור), וכדור חופשי בצינור, שבו r̈ שונה מאפס אף שהרכיב הרדיאלי של התאוצה אפס. הוא מתעכב על האיבר 2ṙθ̇ ומקשר אותו לשינוי של התנע הזוויתי.'
+  verified: '2026-11-08'

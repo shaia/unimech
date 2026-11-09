@@ -1,0 +1,12 @@
+# Terms first defined in lesson 1.4. One spelling per concept, course-wide; `reject` lists spellings
+# that must not appear in course text (lint-content enforces it). The polar coordinates and their unit
+# vectors are lesson 0.7's (`polar-coordinates`); the fictitious Coriolis force is chapter 7's
+# (`coriolis-force`): this entry is the acceleration term, measured in an inertial frame.
+
+- id: c1-coriolis-acceleration
+  term: איבר קוריוליס
+  en: Coriolis term of the acceleration
+  symbol: '2\dot{r}\dot{\theta}\,\hat{\theta}'
+  unit: m/s²
+  definition: האיבר 2ṙθ̇ ברכיב הזוויתי של התאוצה בקואורדינטות קוטביות, a_θ = rθ̈ + 2ṙθ̇. הוא קיים כשהגוף מתרחק מהראשית או מתקרב אליה בזמן שהזווית שלו משתנה, ושתי תרומות שוות בונות אותו, הסיבוב של המהירות הרדיאלית ṙr̂ והשינוי של הרכיב הזוויתי rθ̇ כש-r משתנה. זה חלק מהתאוצה עצמה, כפי שהיא נמדדת מהמישור הקבוע, ולא כוח. כוח קוריוליס של פרק 7 הוא כוח מדומה, שקיים רק במערכת ייחוס מסתובבת.
+  lesson: '1.4'

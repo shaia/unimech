@@ -1,0 +1,7 @@
+---
+/** Curved-path lab for lesson 1.3: <Spread figure={CurvedPathLab} figureProps={{ preset: 'uniform', tasks: [...] }}>. */
+import CurvedPathLab, { type CurvedPathLabProps } from './CurvedPathLab';
+type Props = CurvedPathLabProps;
+---
+
+<CurvedPathLab client:visible {...Astro.props} />

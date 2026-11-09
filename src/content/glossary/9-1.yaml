@@ -2,12 +2,6 @@
 # that must not appear in course text (lint-content enforces it). Ids without a prefix are fixed by
 # the course's term table; `c9-` ids are terms chapter 9 added.
 
-- id: event
-  term: מאורע
-  en: event
-  definition: משהו שקורה בנקודה אחת במרחב וברגע אחד בזמן, כמו הבזק של מנורה או פגיעה של ברק. במערכת ייחוס נתונה מאורע מתואר בארבעה מספרים, t, x, y, z. מאורע אחד מתואר בכל מערכת במספרים אחרים, אבל הוא אותו מאורע.
-  lesson: '9.1'
-
 - id: postulates
   term: הנחות היסוד
   en: postulates of special relativity
