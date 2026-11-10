@@ -1,0 +1,7 @@
+---
+/** Forces on a body moving on a circle, for lesson 2.6: <Spread figure={CircleForces} figureProps={{ preset: 'banked', tasks: [...] }}>. */
+import CircleForces, { type CircleForcesProps } from './CircleForces';
+type Props = CircleForcesProps;
+---
+
+<CircleForces client:visible {...Astro.props} />

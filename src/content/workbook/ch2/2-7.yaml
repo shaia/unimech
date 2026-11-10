@@ -1,0 +1,505 @@
+# Workbook, lesson 2.7 (drag and terminal velocity). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch2/2-7/numbers.ts against src/physics/drag.ts with G = 9.8:
+#   W02 b = 0.0118 kg/s, τ = 0.255 s;  W03 v_t = 20.9 m/s (double mass 29.5 m/s), v_t/g = 2.13 s;
+#   W04 a(0) = g upward, t = τ ln 10 = 1.15 s, distance 7.85 m;  W05 t90 = 2.30 τ (linear), 1.47 v_t/g (quadratic);
+#   W06 v_t = 2.45 m/s, τ = 0.25 s, t90 = 0.576 s, y90 = 0.859 m (free fall 1.62 m);
+#   W07 m = 6.54·10⁻¹¹ kg, b = 8.0·10⁻⁹ kg/s, v_t = 0.0802 m/s, τ = 8.18 ms, ratio 6.3·10⁻³, 1 km in 1.25·10⁴ s = 3.46 h,
+#       both drags 0.0797 m/s;
+#   W08 v_t = 6.70 m/s, τ = 2.0 s, v(4 s) = 5.80 m/s, x(4 s) = 15.2 m (26.8 m without drag), a(0) = 3.35 m/s²;
+#   W09 v_t = 5.60 m/s, T = 0.571 s, a(0) = −970 m/s² = −99 g, t to 1.1 v_t = 0.813 s, distance 9.85 m;
+#   W10 c = 8.1·10⁻³ kg/m, v_t(4) = 2.2 m/s, v_t(9) = 3.3 m/s, v_t/g = 0.112 s;
+#   c1 baseball (c = 1.37·10⁻³ kg/m, v_t = 32.2 m/s) from 20 m: dropped 2.084 s (closed form T arcosh e^(gh/v_t²) agrees),
+#      thrown at 30 m/s 2.1956 s (RK4, dragFlight; printed 2.196), 111 ms later; no drag 2.02 s; range 50.7 m (60.6 m without drag);
+#   c2 linear t_top = τ ln 3 = 1.10 τ, quadratic t_top = (v_t/g) arctan 2 = 1.11 v_t/g; baseball at u₀ = 2v_t = 64.4 m/s:
+#      a(0) = −49 m/s², t_top = 3.64 s, H = 85.2 m, return speed 28.8 m/s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '2.7'
+practice:
+  - id: W-2.7-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-2.7-1]
+    prompt: >-
+      גוף משוחרר ממנוחה ונופל באוויר עם גרר ליניארי. לכל משפט, קבעו אם הוא נכון ונמקו.
+
+      א. ברגע השחרור התאוצה שלו $g$.
+
+      ב. התאוצה שלו קטנה כל הזמן, עד שהיא מתאפסת ברגע מסוים.
+
+      ג. כוח הגרר עליו גדל כל הזמן, אבל לא עובר את הכובד.
+
+      ד. אחרי קבוע זמן אחד הוא נע במהירות הסופית.
+    answer: >-
+      א. נכון. ב. לא נכון: היא קטנה באקספוננט ולא מתאפסת אף פעם. ג. נכון. ד. לא נכון: אחרי $\tau$ יש לו $63\%$ מהמהירות הסופית.
+    solution:
+      - kind: law
+        text: >-
+          ציר כלפי מטה: $m\,dv/dt = mg - bv$, והפתרון ממנוחה $v = v_t\left(1 - e^{-t/\tau}\right)$, עם $v_t = mg/b$ ו-$\tau = m/b$.
+      - kind: manipulation
+        text: >-
+          הגרר הוא $bv = mg\left(1 - e^{-t/\tau}\right)$, והשקול $mg - bv = mg\,e^{-t/\tau}$, ולכן $a = g\,e^{-t/\tau}$.
+      - kind: reasoning
+        text: >-
+          א: ב-$t = 0$, $a = g$, כי $v = 0$ ואין גרר. ב: $g\,e^{-t/\tau}$ חיובי בכל זמן סופי, ולכן התאוצה קטנה אבל לא מתאפסת.
+          ג: הגרר גדל עם $v$, ו-$v \lt v_t$ תמיד, ולכן $bv \lt mg$. ד: ב-$t = \tau$, $v = \left(1 - e^{-1}\right)v_t = 0.632\,v_t$.
+      - kind: limit
+        text: >-
+          כש-$t \to \infty$, $a \to 0$ והגרר שואף ל-$mg$: זו המהירות הסופית, כגבול ולא כרגע.
+      - kind: units
+        text: >-
+          $g\,e^{-t/\tau}$ ב-$\text{m/s}^2$, כי האקספוננט חסר ממדים.
+      - kind: result
+        text: >-
+          א ו-ג נכונים; ב ו-ד לא נכונים.
+
+  - id: W-2.7-02
+    level: basic
+    objectives: [OBJ-2.7-1]
+    prompt: >-
+      גוף במסה $3.0\,\text{g}$ נופל באוויר, והגרר עליו ליניארי. מדדו שהמהירות הסופית שלו $2.5\,\text{m/s}$. מה מקדם הגרר $b$,
+      ומה קבוע הזמן?
+    answer: >-
+      $b = 0.0118\,\text{kg/s}$, $\tau = 0.255\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 3.0\cdot10^{-3}\,\text{kg}$, $v_t = 2.5\,\text{m/s}$, גרר ליניארי.
+      - kind: law
+        text: >-
+          במהירות הסופית השקול אפס: $bv_t = mg$. קבוע הזמן $\tau = m/b$.
+      - kind: manipulation
+        text: >-
+          $b = mg/v_t$, ולכן $\tau = m/b = v_t/g$. אין צורך ב-$b$ כדי למצוא את $\tau$.
+      - kind: limit
+        text: >-
+          גוף עם $v_t$ גדולה מאוד (גרר חלש) מגיע אליה אחרי זמן רב: $\tau = v_t/g$ גדל עם $v_t$.
+      - kind: units
+        text: >-
+          $mg/v_t$ ב-$\text{N}/(\text{m/s}) = \text{kg/s}$, ו-$v_t/g$ בשניות.
+      - kind: substitution
+        text: >-
+          $b = 3.0\cdot10^{-3}\cdot9.8/2.5 = 0.0118\,\text{kg/s}$; $\tau = 2.5/9.8 = 0.255\,\text{s}$.
+      - kind: result
+        text: >-
+          $b = 0.0118\,\text{kg/s}$, $\tau = 0.255\,\text{s}$.
+
+  - id: W-2.7-03
+    level: basic
+    objectives: [OBJ-2.7-2]
+    prompt: >-
+      אבן ברד במסה $4.0\,\text{g}$ נופלת, והגרר עליה ריבועי, עם $c = 9.0\cdot10^{-5}\,\text{kg/m}$.
+
+      א. מה המהירות הסופית שלה?
+
+      ב. אבן ברד באותו גודל ובאותה צורה (ולכן עם אותו $c$), אבל במסה כפולה, נופלת לידה. מה המהירות הסופית שלה?
+    answer: >-
+      א. $20.9\,\text{m/s}$.
+
+      ב. $29.5\,\text{m/s}$, פי $\sqrt2$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 4.0\cdot10^{-3}\,\text{kg}$, $c = 9.0\cdot10^{-5}\,\text{kg/m}$, ציר כלפי מטה.
+      - kind: law
+        text: >-
+          במהירות הסופית $cv_t^2 = mg$, ולכן $v_t = \sqrt{mg/c}$.
+      - kind: reasoning
+        text: >-
+          $v_t \propto \sqrt m$ כש-$c$ קבוע: מסה כפולה נותנת מהירות סופית גדולה פי $\sqrt2$, לא פי 2.
+      - kind: limit
+        text: >-
+          כש-$c \to 0$, $v_t \to \infty$: בלי אוויר אין מהירות סופית.
+      - kind: units
+        text: >-
+          $mg/c$ ב-$\text{N}/(\text{kg/m}) = \text{m}^2/\text{s}^2$, ושורש שלו $\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v_t = \sqrt{4.0\cdot10^{-3}\cdot9.8/9.0\cdot10^{-5}} = 20.9\,\text{m/s}$; במסה כפולה $20.9\cdot\sqrt2 = 29.5\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $20.9\,\text{m/s}$. ב. $29.5\,\text{m/s}$.
+
+  - id: W-2.7-04
+    level: mid
+    objectives: [OBJ-2.7-1]
+    prompt: >-
+      גוף במסה $0.050\,\text{kg}$, עם גרר ליניארי $b = 0.10\,\text{kg/s}$, נזרק כלפי מטה במהירות $9.8\,\text{m/s}$.
+
+      א. מה התאוצה שלו ברגע הזריקה (גודל וכיוון)?
+
+      ב. אחרי כמה זמן מהירותו יורדת ל-$1.1$ פעמים המהירות הסופית, ואיזה מרחק עבר עד אז?
+    answer: >-
+      א. $9.8\,\text{m/s}^2$ כלפי מעלה.
+
+      ב. $\tau\ln10 = 1.15\,\text{s}$, אחרי $7.85\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מטה, הראשית בנקודת הזריקה. $v_t = mg/b = 4.9\,\text{m/s}$, $\tau = m/b = 0.50\,\text{s}$, $v_0 = 9.8\,\text{m/s} = 2v_t$.
+      - kind: law
+        text: >-
+          $m\,dv/dt = mg - bv$, ופתרונו $v = v_t + \left(v_0 - v_t\right)e^{-t/\tau}$, ו-$y = v_tt + \left(v_0 - v_t\right)\tau\left(1 - e^{-t/\tau}\right)$.
+      - kind: manipulation
+        text: >-
+          א: $a(0) = g - (b/m)v_0 = g - 2g = -g$. ב: $v - v_t = v_t\,e^{-t/\tau} = 0.1\,v_t$ כש-$e^{-t/\tau} = 0.1$, כלומר $t = \tau\ln10$.
+          אז $1 - e^{-t/\tau} = 0.9$, ו-$y = v_t\tau\ln10 + 0.9\,v_t\tau$.
+      - kind: limit
+        text: >-
+          אם $v_0 = v_t$, ההפרש אפס כבר בהתחלה, והגוף לא מאט כלל. ההפרש מ-$v_t$ דועך באותו $\tau$ מכל מהירות התחלתית.
+      - kind: units
+        text: >-
+          $v_t\tau$ ב-$\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $t = 0.50\cdot2.303 = 1.15\,\text{s}$; $y = 4.9\cdot1.15 + 0.9\cdot4.9\cdot0.50 = 7.85\,\text{m}$, והמהירות אז $5.39\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $g = 9.8\,\text{m/s}^2$ כלפי מעלה: הגוף מאט. ב. $1.15\,\text{s}$, $7.85\,\text{m}$.
+
+  - id: W-2.7-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.7-2]
+    prompt: >-
+      שני גופים באותה מסה נופלים ממנוחה ומגיעים לאותה מהירות סופית $v_t$: על אחד גרר ליניארי ועל השני גרר ריבועי.
+      איזה מהם מגיע ראשון ל-$90\%$ מהמהירות הסופית? בטאו את שני הזמנים ביחידות של $v_t/g$, והסבירו את ההבדל בלי
+      נוסחאות.
+    answer: >-
+      הריבועי: אחרי $1.47\,v_t/g$, לעומת $2.30\,v_t/g$ בליניארי.
+    solution:
+      - kind: law
+        text: >-
+          ליניארי: $v = v_t\left(1 - e^{-t/\tau}\right)$ עם $\tau = v_t/g$. ריבועי: $v = v_t\tanh\left(gt/v_t\right)$.
+      - kind: manipulation
+        text: >-
+          ליניארי: $e^{-t/\tau} = 0.1$, כלומר $t = \tau\ln10 = 2.30\,v_t/g$. ריבועי: $\tanh x = 0.9$, כלומר $x = \operatorname{artanh}0.9 = 1.47$.
+      - kind: reasoning
+        text: >-
+          באותה $v_t$ שני הגררים שווים ל-$mg$ ב-$v = v_t$. מתחת ל-$v_t$, הגרר הליניארי הוא $mg\left(v/v_t\right)$ והריבועי
+          $mg\left(v/v_t\right)^2$, קטן יותר. הגוף עם הגרר הריבועי נבלם פחות במהירויות הנמוכות, ממשיך להאיץ כמעט כמו
+          בנפילה חופשית, ומגיע מהר יותר.
+      - kind: limit
+        text: >-
+          בהתחלה, כש-$v \ll v_t$, שני הגופים נופלים כמעט חופשית, $v \approx gt$; ההבדל נוצר רק כשהגרר כבר מורגש.
+      - kind: units
+        text: >-
+          $v_t/g$ בשניות; $\ln10$ ו-$\operatorname{artanh}0.9$ חסרי ממדים.
+      - kind: result
+        text: >-
+          הגוף עם הגרר הריבועי: $1.47\,v_t/g$ לעומת $2.30\,v_t/g$.
+
+  - id: W-2.7-06
+    level: mid
+    objectives: [OBJ-2.7-1]
+    prompt: >-
+      גוף במסה $0.030\,\text{kg}$ עם גרר ליניארי $b = 0.12\,\text{kg/s}$ משוחרר ממנוחה. כמה זמן עובר עד שמהירותו
+      $90\%$ מהמהירות הסופית, ואיזה מרחק הוא נופל עד אז? השוו למרחק שהיה נופל באותו זמן בלי אוויר.
+    answer: >-
+      $0.576\,\text{s}$, $0.859\,\text{m}$ (בלי אוויר $1.62\,\text{m}$).
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מטה, הראשית בנקודת השחרור. $v_t = mg/b = 2.45\,\text{m/s}$, $\tau = m/b = 0.25\,\text{s}$.
+      - kind: law
+        text: >-
+          ממנוחה: $v = v_t\left(1 - e^{-t/\tau}\right)$ ו-$y = v_tt - v_t\tau\left(1 - e^{-t/\tau}\right)$.
+      - kind: manipulation
+        text: >-
+          $1 - e^{-t/\tau} = 0.9$ נותן $t_{90} = \tau\ln10$, ומציבים: $y_{90} = v_t\tau\left(\ln10 - 0.9\right)$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ שני הביטויים שואפים לאינסוף, כמו שצריך: בלי גרר אין מהירות סופית שמתקרבים אליה.
+      - kind: units
+        text: >-
+          $v_t\tau$ במטרים.
+      - kind: substitution
+        text: >-
+          $t_{90} = 0.25\cdot2.303 = 0.576\,\text{s}$; $y_{90} = 2.45\cdot0.25\cdot1.403 = 0.859\,\text{m}$; בלי אוויר $\tfrac12\cdot9.8\cdot0.576^2 = 1.62\,\text{m}$.
+      - kind: result
+        text: >-
+          $0.576\,\text{s}$ ו-$0.859\,\text{m}$, כמחצית מהמרחק בלי אוויר.
+
+  - id: W-2.7-07
+    level: mid
+    objectives: [OBJ-2.7-2, OBJ-2.7-1]
+    prompt: >-
+      טיפת ענן היא כדור מים בקוטר $50\,\mu\text{m}$ (צפיפות המים $1000\,\text{kg/m}^3$). לכדור באוויר, הגרר הליניארי
+      $C_1Dv$ עם $C_1 = 1.6\cdot10^{-4}\,\text{N}\cdot\text{s/m}^2$, והריבועי $C_2D^2v^2$ עם $C_2 = 0.25\,\text{N}\cdot\text{s}^2/\text{m}^4$.
+
+      א. הניחו גרר ליניארי בלבד, ומצאו את המהירות הסופית ואת קבוע הזמן.
+
+      ב. בדקו את ההנחה: מה היחס בין הגרר הריבועי לליניארי במהירות הזו?
+
+      ג. כמה זמן לוקח לטיפה לשקוע קילומטר?
+    answer: >-
+      א. $0.0802\,\text{m/s}$, $\tau = 8.18\,\text{ms}$.
+
+      ב. $6.3\cdot10^{-3}$: ההנחה טובה.
+
+      ג. כ-$1.25\cdot10^4\,\text{s}$, שלוש וחצי שעות.
+    solution:
+      - kind: given
+        text: >-
+          $D = 5.0\cdot10^{-5}\,\text{m}$, $m = \rho\pi D^3/6 = 6.54\cdot10^{-11}\,\text{kg}$, $b = C_1D = 8.0\cdot10^{-9}\,\text{kg/s}$.
+      - kind: law
+        text: >-
+          $v_t = mg/b$, $\tau = m/b$, ו-$F_2/F_1 = \left(C_2/C_1\right)Dv$.
+      - kind: manipulation
+        text: >-
+          מציבים את $v_t$ של המודל הליניארי ביחס, ובודקים שהוא קטן מאוד. בזמן ארוך לעומת $\tau$ הטיפה נעה כל הדרך ב-$v_t$, והזמן $L/v_t$.
+      - kind: limit
+        text: >-
+          היחס פרופורציוני ל-$Dv$. בטיפה זעירה ואיטית הוא שואף לאפס, ולכן המודל הליניארי נעשה מדויק יותר ככל שהטיפה קטנה.
+      - kind: units
+        text: >-
+          $\left(C_2/C_1\right)Dv$: $\text{s/m}^2\cdot\text{m}\cdot\text{m/s}$, חסר ממדים.
+      - kind: substitution
+        text: >-
+          $v_t = 6.54\cdot10^{-11}\cdot9.8/8.0\cdot10^{-9} = 0.0802\,\text{m/s}$; $\tau = 8.18\cdot10^{-3}\,\text{s}$;
+          היחס $1562\cdot5.0\cdot10^{-5}\cdot0.0802 = 6.3\cdot10^{-3}$ (עם שני הגררים יחד $v_t = 0.0797\,\text{m/s}$); $1000/0.0802 = 1.25\cdot10^4\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $0.0802\,\text{m/s}$ ו-$8.18\,\text{ms}$. ב. $6.3\cdot10^{-3}$, הגרר ליניארי. ג. $3.46$ שעות.
+
+  - id: W-2.7-08
+    level: bagrut
+    objectives: [OBJ-2.7-1]
+    prompt: >-
+      עגלה במסה $0.50\,\text{kg}$ משוחררת ממנוחה על מסילה חלקה שנטויה בזווית $20^\circ$ לאופק. האוויר מפעיל עליה גרר
+      ליניארי, עם $b = 0.25\,\text{kg/s}$.
+
+      א. כתבו את משוואת התנועה לאורך המסילה ומצאו את המהירות הסופית ואת קבוע הזמן. האם קבוע הזמן תלוי בזווית?
+
+      ב. מה המהירות שלה ואיזה מרחק עברה אחרי $4.0\,\text{s}$? השוו למרחק בלי אוויר.
+    answer: >-
+      א. $v_t = mg\sin\theta/b = 6.70\,\text{m/s}$; $\tau = m/b = 2.0\,\text{s}$, בלי תלות בזווית.
+
+      ב. $5.80\,\text{m/s}$, $15.2\,\text{m}$ (בלי אוויר $26.8\,\text{m}$).
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ במורד המסילה, הראשית בנקודת השחרור. $m = 0.50\,\text{kg}$, $\theta = 20^\circ$, $b = 0.25\,\text{kg/s}$.
+      - kind: law
+        text: >-
+          לאורך המסילה פועלים הרכיב של הכובד, $mg\sin\theta$, והגרר, $-bv$. הכוח הנורמלי ניצב למסילה ואין לו רכיב לאורכה:
+          $m\,dv/dt = mg\sin\theta - bv$.
+      - kind: manipulation
+        text: >-
+          זו בדיוק המשוואה של נפילה עם גרר ליניארי, עם $g\sin\theta$ במקום $g$. לכן $v_t = mg\sin\theta/b$, $\tau = m/b$,
+          $v = v_t\left(1 - e^{-t/\tau}\right)$ ו-$x = v_tt - v_t\tau\left(1 - e^{-t/\tau}\right)$. $\tau$ תלוי רק ב-$m$ וב-$b$: הכוח
+          המניע קובע **לאן** מתקרבים, והגרר והמסה קובעים **כמה מהר**.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$, $v_t \to 0$: על מסילה אופקית העגלה לא זזה. כש-$\theta = 90^\circ$ חוזרים לנפילה עם גרר.
+      - kind: units
+        text: >-
+          $mg\sin\theta/b$ ב-$\text{m/s}$, ו-$m/b$ בשניות.
+      - kind: substitution
+        text: >-
+          $v_t = 0.50\cdot9.8\cdot0.342/0.25 = 6.70\,\text{m/s}$, $\tau = 2.0\,\text{s}$. ב-$t = 4.0\,\text{s} = 2\tau$:
+          $v = 6.70\left(1 - e^{-2}\right) = 5.80\,\text{m/s}$ ו-$x = 6.70\left(4.0 - 2.0\cdot0.865\right) = 15.2\,\text{m}$. בלי אוויר
+          $\tfrac12g\sin\theta\,t^2 = 26.8\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $6.70\,\text{m/s}$ ו-$2.0\,\text{s}$, בלי תלות בזווית. ב. $5.80\,\text{m/s}$ ו-$15.2\,\text{m}$.
+
+  - id: W-2.7-09
+    level: bagrut
+    objectives: [OBJ-2.7-2]
+    prompt: >-
+      צנחן במסה כוללת $80\,\text{kg}$ נופל במהירות $56\,\text{m/s}$ ופותח מצנח. נניח שהמצנח נפתח מיד, ומכאן הגרר ריבועי
+      עם $c = 25\,\text{kg/m}$.
+
+      א. מה המהירות הסופית החדשה?
+
+      ב. לפי המודל, מה התאוצה מיד אחרי הפתיחה, ביחידות של $g$? מה זה אומר על ההנחה שהמצנח נפתח מיד?
+
+      ג. אחרי כמה זמן המהירות יורדת ל-$1.1$ פעמים המהירות הסופית החדשה?
+    answer: >-
+      א. $5.60\,\text{m/s}$.
+
+      ב. $99\,g$ כלפי מעלה; ההנחה לא סבירה, ומצנח אמיתי נפתח בהדרגה.
+
+      ג. $0.813\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מטה, $t = 0$ ברגע הפתיחה. $m = 80\,\text{kg}$, $c = 25\,\text{kg/m}$, $v_0 = 56\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $m\,dv/dt = mg - cv^2 = mg\left(1 - v^2/v_t^2\right)$ עם $v_t = \sqrt{mg/c}$. כש-$v_0 > v_t$ הפתרון הוא
+          $v = v_t\coth\left(gt/v_t + \operatorname{arcoth}\left(v_0/v_t\right)\right)$, כאשר $\operatorname{arcoth}x = \tfrac12\ln\dfrac{x + 1}{x - 1}$.
+      - kind: manipulation
+        text: >-
+          ב: $a(0) = g\left(1 - v_0^2/v_t^2\right)$. ג: $v = 1.1\,v_t$ כש-$gt/v_t + \operatorname{arcoth}\left(v_0/v_t\right) = \operatorname{arcoth}1.1$, ולכן
+          $t = \left(v_t/g\right)\left[\operatorname{arcoth}1.1 - \operatorname{arcoth}\left(v_0/v_t\right)\right]$.
+      - kind: reasoning
+        text: >-
+          תאוצה של כמאה $g$ היא מכה, לא בלימה. מצנח אמיתי מתמלא אוויר במשך זמן מה, ו-$c$ גדל בהדרגה, ולכן הבלימה מתפרסת
+          והתאוצה קטנה בהרבה. המודל של קפיצה ב-$c$ נותן נכון את המהירות הסופית, אבל לא את הרגעים הראשונים.
+      - kind: limit
+        text: >-
+          אם $v_0 = v_t$, $\operatorname{arcoth}$ מתבדר ו-$v = v_t$ בכל רגע. כש-$v_0 \to \infty$, $\operatorname{arcoth}\left(v_0/v_t\right) \to 0$, והזמן לא תלוי
+          עוד ב-$v_0$: גרר ריבועי בולם מהירות גדולה מאוד מהר מאוד.
+      - kind: units
+        text: >-
+          $v_t/g$ בשניות, ו-$v_0^2/v_t^2$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $v_t = \sqrt{80\cdot9.8/25} = 5.60\,\text{m/s}$, $v_t/g = 0.571\,\text{s}$, $v_0/v_t = 10$. $a(0) = 9.8\left(1 - 100\right) = -970\,\text{m/s}^2$.
+          $t = 0.571\left(1.522 - 0.100\right) = 0.813\,\text{s}$, אחרי $9.85\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $5.60\,\text{m/s}$. ב. $99\,g$ כלפי מעלה, ולכן הפתיחה לא יכולה להיות מיידית. ג. $0.813\,\text{s}$.
+
+  - id: W-2.7-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-2.7-2]
+    prompt: >-
+      בניסוי מפילים פילטרים לקפה ומודדים את המהירות הסופית. פילטר אחד, במסה $1.0\,\text{g}$, מגיע ל-$1.1\,\text{m/s}$.
+      ארבעה פילטרים שהוכנסו זה לתוך זה, כך שהצורה לא השתנתה, מגיעים ל-$2.2\,\text{m/s}$.
+
+      א. איזה חוק גרר מתאים למדידות? נמקו.
+
+      ב. מה מקדם הגרר, ולאיזו מהירות סופית יגיעו תשעה פילטרים?
+
+      ג. האם סביר למדוד את המהירות הסופית אחרי נפילה של מטר או שניים? הסבירו בעזרת הזמן האופייני.
+    answer: >-
+      א. ריבועי: מסה פי 4 נתנה מהירות פי 2.
+
+      ב. $c = 8.1\cdot10^{-3}\,\text{kg/m}$; $3.3\,\text{m/s}$.
+
+      ג. כן: $v_t/g = 0.112\,\text{s}$, והפילטר מגיע כמעט למהירות הסופית אחרי כמה עשיריות שנייה.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 1.0\cdot10^{-3}\,\text{kg}$, $v_1 = 1.1\,\text{m/s}$; במסה $4m_1$ ובאותה צורה, $2.2\,\text{m/s}$.
+      - kind: law
+        text: >-
+          ליניארי: $v_t = mg/b \propto m$. ריבועי: $v_t = \sqrt{mg/c} \propto \sqrt m$. אותה צורה פירושה אותו $b$ או אותו $c$.
+      - kind: reasoning
+        text: >-
+          המסה גדלה פי 4 והמהירות פי 2 בדיוק, $\sqrt4$. בגרר ליניארי היא הייתה גדלה פי 4, ל-$4.4\,\text{m/s}$. לכן הגרר ריבועי.
+          תשעה פילטרים: מסה פי 9, מהירות פי $\sqrt9 = 3$.
+      - kind: limit
+        text: >-
+          הבדיקה פועלת רק אם הצורה זהה. פילטר מקומט, עם אותה מסה, היה מקבל $c$ אחר, וההשוואה הייתה נשברת.
+      - kind: units
+        text: >-
+          $c = mg/v_t^2$ ב-$\text{N}/\left(\text{m}^2/\text{s}^2\right) = \text{kg/m}$.
+      - kind: substitution
+        text: >-
+          $c = 1.0\cdot10^{-3}\cdot9.8/1.1^2 = 8.1\cdot10^{-3}\,\text{kg/m}$; תשעה פילטרים: $3\cdot1.1 = 3.3\,\text{m/s}$; $v_t/g = 1.1/9.8 = 0.112\,\text{s}$.
+      - kind: result
+        text: >-
+          א. ריבועי. ב. $8.1\cdot10^{-3}\,\text{kg/m}$ ו-$3.3\,\text{m/s}$. ג. כן: הזמן האופייני כעשירית שנייה, קצר בהרבה מזמן הנפילה.
+
+challenge:
+  - id: W-2.7-c1
+    stars: 2
+    objectives: [OBJ-2.7-2, OBJ-2.7-1]
+    prompt: >-
+      שני כדורים זהים משוחררים באותו רגע מאותו גובה $h$ מעל קרקע מישורית: A ממנוחה, ו-B עם מהירות אופקית $u$.
+
+      א. הוכיחו שאם הגרר ליניארי, שני הכדורים נוחתים באותו רגע, לכל $u$.
+
+      ב. הסבירו מדוע בגרר ריבועי B נוחת אחרי A.
+
+      ג. כדורי בייסבול ($m = 0.145\,\text{kg}$, $c = 1.37\cdot10^{-3}\,\text{kg/m}$), $h = 20\,\text{m}$, $u = 30\,\text{m/s}$, גרר ריבועי.
+      מצאו את זמן הנפילה של A בנוסחה סגורה. זמן הנפילה של B, שחושב בשיטה מספרית, הוא $2.196\,\text{s}$. בכמה הוא מאחר?
+    answer: >-
+      א. בגרר ליניארי משוואת הרכיב האנכי לא תלויה ב-$v_x$.
+
+      ב. בגרר ריבועי הרכיב האנכי של הגרר הוא $-c|\vec v|v_y$, ו-$|\vec v|$ של B גדול יותר.
+
+      ג. $t_A = 2.084\,\text{s}$; B מאחר ב-$0.111\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ אופקי, ציר $y$ כלפי מעלה, הראשית על הקרקע מתחת לנקודת השחרור. $\vec v_A(0) = 0$, $\vec v_B(0) = (u,\ 0)$.
+      - kind: law
+        text: >-
+          ליניארי: $m\dot{\vec v} = m\vec g - b\vec v$. ריבועי: $m\dot{\vec v} = m\vec g - c|\vec v|\vec v$.
+      - kind: reasoning
+        text: >-
+          א: ברכיבים, $m\dot v_y = -mg - bv_y$ ו-$m\dot v_x = -bv_x$. המשוואה של $v_y$ לא מכילה את $v_x$, ותנאי ההתחלה
+          של $v_y$ ו-$y$ זהים לשני הכדורים. לכן $y(t)$ זהה, והם נוחתים יחד. ב: $m\dot v_y = -mg - c\sqrt{v_x^2 + v_y^2}\,v_y$.
+          כש-$v_y \lt 0$ הרכיב האנכי של הגרר כלפי מעלה, וגודלו גדל עם $v_x$. ל-B יש $v_x \neq 0$, ולכן הוא נבלם
+          אנכית חזק יותר, נופל לאט יותר ונוחת אחריו. הגרר הריבועי **מצמיד** את הרכיבים.
+      - kind: manipulation
+        text: >-
+          ג: ל-A, תנועה אנכית בלבד עם ציר כלפי מטה: $v = v_t\tanh\left(gt/v_t\right)$, $y = \left(v_t^2/g\right)\ln\cosh\left(gt/v_t\right)$.
+          $y = h$ נותן $t_A = \left(v_t/g\right)\operatorname{arcosh}\left(e^{gh/v_t^2}\right)$.
+      - kind: limit
+        text: >-
+          כש-$c \to 0$, $v_t \to \infty$: $\operatorname{arcosh}\left(e^{\varepsilon}\right) \approx \sqrt{2\varepsilon}$ עם $\varepsilon = gh/v_t^2$, ולכן
+          $t_A \to \sqrt{2h/g}$. וכש-$u \to 0$, B הופך ל-A, וההפרש מתאפס.
+      - kind: units
+        text: >-
+          $gh/v_t^2$ חסר ממדים, ו-$v_t/g$ בשניות.
+      - kind: substitution
+        text: >-
+          $v_t = \sqrt{0.145\cdot9.8/1.37\cdot10^{-3}} = 32.2\,\text{m/s}$, $gh/v_t^2 = 0.189$, $t_A = 3.29\cdot\operatorname{arcosh}\left(1.208\right) = 2.084\,\text{s}$
+          (בלי אוויר $2.02\,\text{s}$). $t_B - t_A = 2.1956 - 2.0845 = 0.111\,\text{s}$.
+      - kind: result
+        text: >-
+          א. בגרר ליניארי יחד. ב. בגרר ריבועי B מאחר. ג. $t_A = 2.084\,\text{s}$, ו-B נוחת $0.111\,\text{s}$ אחריו.
+    source:
+      name: AAPT F=ma Exam
+      year: 2022
+      problem: Exam A, Question 23
+      url: https://www.aapt.org/physicsteam/upload/2022_Fma_Exam_A_Solutions.pdf
+      verified: '2026-11-09'
+      adapted: true
+
+  - id: W-2.7-c2
+    stars: 1
+    objectives: [OBJ-2.7-1, OBJ-2.7-2]
+    prompt: >-
+      גוף נזרק אנכית כלפי מעלה במהירות $u_0 = 2v_t$, עולה וחוזר למטה. ציר $y$ כלפי מעלה.
+
+      א. שרטטו את התאוצה $a_y(t)$ מהזריקה ועד זמן רב אחרי השיא, בגרר ליניארי ובגרר ריבועי. מה $a_y$ ברגע הזריקה,
+      בשיא, ואחרי זמן רב? הראו ש-$a_y$ עולה כל הזמן (מתקרב לאפס מלמטה).
+
+      ב. כמה זמן נמשכת העלייה בכל אחד מהמקרים, ביחידות של $v_t/g$?
+    answer: >-
+      א. ליניארי: $-3g$, $-g$, $0$. ריבועי: $-5g$, $-g$, $0$. בשני המקרים $a_y$ עולה כל הזמן.
+
+      ב. ליניארי $\ln3 = 1.10$; ריבועי $\arctan2 = 1.11$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה, $v(0) = u_0 = 2v_t$. ליניארי: $v_t = mg/b$. ריבועי: $v_t = \sqrt{mg/c}$.
+      - kind: law
+        text: >-
+          ליניארי: $a_y = -g - (b/m)v = -g\left(1 + v/v_t\right)$. ריבועי: $a_y = -g - (c/m)|v|v = -g\left(1 + |v|v/v_t^2\right)$.
+      - kind: reasoning
+        text: >-
+          $a_y$ היא פונקציה עולה של $-v$ בשני המקרים: גם $v$ וגם $|v|v$ עולים עם $v$. מכיוון ש-$a_y \lt 0$ כל עוד $v > -v_t$, המהירות
+          יורדת כל הזמן, ולכן $a_y$ עולה כל הזמן, מערך שלילי גדול ועד אפס. בשיא $v = 0$ והגרר אפס: $a_y = -g$ בדיוק.
+      - kind: manipulation
+        text: >-
+          ב-$t = 0$: ליניארי $-g(1 + 2) = -3g$, ריבועי $-g(1 + 4) = -5g$. זמן העלייה: ליניארי $\tau\ln\left(1 + u_0/v_t\right) = \left(v_t/g\right)\ln3$,
+          ריבועי $\left(v_t/g\right)\arctan\left(u_0/v_t\right) = \left(v_t/g\right)\arctan2$.
+      - kind: limit
+        text: >-
+          כש-$u_0 \ll v_t$, $\ln(1 + x) \approx x$ ו-$\arctan x \approx x$, ושני הזמנים שואפים ל-$u_0/g$, וגם $a_y \to -g$ לכל אורך העלייה: בלי גרר.
+      - kind: units
+        text: >-
+          $v/v_t$ ו-$|v|v/v_t^2$ חסרי ממדים, ו-$g$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $\ln3 = 1.10$, $\arctan2 = 1.11$. לדוגמה, לכדור בייסבול עם $v_t = 32.2\,\text{m/s}$, נזרק ב-$64.4\,\text{m/s}$ (גרר ריבועי):
+          $a_y(0) = -49\,\text{m/s}^2$, השיא אחרי $3.64\,\text{s}$ בגובה $85.2\,\text{m}$, וחזרה ב-$28.8\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $a_y$: ליניארי $-3g \to -g \to 0$, ריבועי $-5g \to -g \to 0$, עולה כל הזמן. ב. $1.10\,v_t/g$ ו-$1.11\,v_t/g$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2018
+      problem: Exam A, Question 10
+      url: https://www.aapt.org/physicsteam/2018/upload/exam1A-2018-solutions.pdf
+      verified: '2026-11-09'
+      adapted: true

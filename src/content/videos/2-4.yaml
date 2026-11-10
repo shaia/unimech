@@ -1,0 +1,24 @@
+# Videos of lesson 2.4. Every id was checked against YouTube oEmbed (fetched through WebFetch) on the `verified`
+# date: it exists and is embeddable, with the title and channel exactly as returned. Lengths come from the watch
+# page (lengthSeconds: 26 and 456). `why` claims only what the title and the description support; no caption
+# track was confirmed.
+
+- id: v-2-4-tablecloth
+  youtubeId: 1E6Zp5dptQ4
+  title: 'Dinner Table'
+  channel: Harvard Natural Sciences Lecture Demonstrations
+  lang: en
+  start: 0
+  minutes: 0.5
+  why: 'לפי התיאור: מפת כותנה נמשכת בבת אחת מתחת לשולחן ערוך, בצילום של 300 תמונות לשנייה. עצרו את הסרטון בכמה רגעים ובדקו כמה הכלים זזו בזמן שהמפה החליקה מתחתם. לפי דוגמה 6 בשיעור, החיכוך הקינטי מושך אותם קדימה, אבל רק לזמן קצר, ולכן התזוזה קטנה.'
+  verified: '2026-11-09'
+
+- id: v-2-4-static-kinetic
+  youtubeId: 3EbUa5ZDybg
+  title: 'Frictional Forces: Static and Kinetic'
+  channel: Professor Dave Explains
+  lang: en
+  start: 0
+  minutes: 8
+  why: 'לפי התיאור, הסרטון שואל למה כדור שנזרק או דיסקית שנדחפה עוצרים בסוף, אף שהחוק הראשון אומר שגוף בתנועה ממשיך לנוע, ועונה בעזרת החיכוך הסטטי והחיכוך הקינטי. ברמה בסיסית יותר מהשיעור; מתאים כחזרה אחרי החלק הראשון.'
+  verified: '2026-11-09'

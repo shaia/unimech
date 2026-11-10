@@ -1,0 +1,7 @@
+---
+/** Inertial-frames figure for lesson MDX: <Spread fig="fig-2-1a" figure={InertialCart} figureProps={{ mode: 'cart', … }}>. */
+import InertialCart, { type InertialCartProps } from './InertialCart';
+type Props = InertialCartProps;
+---
+
+<InertialCart client:visible {...Astro.props} />

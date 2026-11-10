@@ -1,45 +1,45 @@
 # Misconceptions first detected in lesson 2.2. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.2
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 2.2 that refutes it (`anchor` is the id
+# of a text step there).
 
 - id: MC-2-normal-is-reaction
   title: הכוח הנורמלי הוא הזוג של הכובד
   belief: הכוח הנורמלי שהשולחן מפעיל על ספר הוא "התגובה" של הכובד של הספר, לפי החוק השלישי.
   truth: שני הכוחות פועלים על אותו גוף, וזוג של החוק השלישי לעולם לא פועל על אותו גוף. הזוג של הכובד הוא המשיכה של הספר את כדור הארץ. הנורמלי שווה לכובד רק כשהספר לא מאיץ אנכית.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: ספר על שולחן, ארבעה כוחות ושני זוגות' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: ספר על שולחן, ארבעה כוחות ושני זוגות', anchor: book-pairs }
 
 - id: MC-2-third-law-cancel
   title: שני הכוחות של זוג מבטלים זה את זה
   belief: מכיוון שלכל כוח יש כוח שווה והפוך, הכוחות מתבטלים ושום דבר לא יכול להאיץ.
   truth: שני הכוחות של זוג פועלים על גופים שונים, ולכן הם לא מופיעים באותו תרשים כוחות ולא מתבטלים. כל גוף מאיץ לפי השקול של הכוחות שפועלים עליו.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: הסוס והעגלה' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: הסוס והעגלה', anchor: horse-cart }
 
 - id: MC-2-third-law-only-static
   title: החוק השלישי מתקיים רק במנוחה
   belief: כשגוף מושך גוף אחר ושניהם מאיצים, הגוף המושך מפעיל כוח גדול יותר.
   truth: החוק השלישי מתקיים בכל רגע ובכל תנועה, גם בזינוק ובהתנגשות. מה שקובע את התנועה הם הכוחות האחרים שפועלים על כל גוף.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: הסוס והעגלה' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: הסוס והעגלה', anchor: horse-cart }
 
 - id: MC-2-bigger-pushes-harder
   title: הגוף הכבד, או המהיר, מפעיל כוח גדול יותר
   belief: בהתנגשות בין משאית למכונית המשאית מפעילה על המכונית כוח גדול מזה שהמכונית מפעילה עליה.
   truth: שני הכוחות שווים בגודלם בכל רגע. המסה הגדולה של המשאית קובעת רק שהתאוצה שלה קטנה יותר.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: החוק השלישי בהתנגשות' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: החוק השלישי בהתנגשות', anchor: collision }
 
 - id: MC-2-weight-transmits
   title: הכובד של גוף עליון פועל על הגוף שמתחתיו
   belief: כשגוש A מונח על גוש B, הכובד של A הוא אחד הכוחות שפועלים על B.
   truth: את הכובד של A מפעיל כדור הארץ על A. על B פועל כוח המגע של A, הנורמלי, ששווה לכובד של A רק כשאין תאוצה אנכית.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: תרשים כוחות לכל גוף בנפרד' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: תרשים כוחות לכל גוף בנפרד', anchor: fbd-each-body }
 
 - id: MC-2-push-transmits-fully
   title: כוח שדוחפים בו גוף אחד עובר כמו שהוא לגוף הבא
   belief: כשדוחפים שני גופים צמודים, הגוף הראשון מעביר לשני את כל הכוח.
   truth: הגוף השני מקבל בדיוק את הכוח שדרוש כדי להאיץ אותו יחד עם הראשון, מסה כפול תאוצה. שאר הכוח מאיץ את הגוף הראשון.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: שני גושים צמודים' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: שני גושים צמודים', anchor: contact-blocks }
 
 - id: MC-2-tension-equals-hanging-weight
   title: המתיחות בחוט שווה לכובד של המשקולת שתלויה בו
   belief: חוט שמחזיק משקולת מתוח תמיד בכוח mg, גם כשהמשקולת מאיצה.
   truth: המתיחות שווה ל-mg רק כשהמשקולת לא מאיצה. כשהיא מאיצה כלפי מטה המתיחות קטנה מ-mg, וכשהיא מאיצה כלפי מעלה גדולה ממנו. מוצאים אותה מהחוק השני.
-  remedy: { lesson: '2.2', label: 'שיעור 2.2: גוש על שולחן ומשקולת תלויה' }
+  remedy: { lesson: '2.2', label: 'שיעור 2.2: גוש על שולחן ומשקולת תלויה', anchor: table-pulley }

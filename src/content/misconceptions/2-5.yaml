@@ -1,15 +1,15 @@
 # Misconceptions first detected in lesson 2.5. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.5
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 2.5 that refutes it (`anchor`: the
+# Explain section that derives the string constraint, and the step that draws the block's ground path).
 
 - id: MC-2-constraint-equal-accel
   title: גופים שקשורים בחוט מאיצים תמיד באותו גודל
   belief: כל שני גופים שמחוברים באותו חוט נעים באותה מהירות ובאותה תאוצה, בגודל.
   truth: זה נכון רק כשכל גוף תלוי על קטע אחד של החוט. משוואת האילוץ באה מאורך החוט, וגוש על גלגלת נעה שתלויה על שני קטעים נע בחצי מהמהירות של הקצה החופשי.
-  remedy: { lesson: '2.5', label: 'שיעור 2.5: משוואת אילוץ מאורך החוט' }
+  remedy: { lesson: '2.5', anchor: 'string-constraint', label: 'שיעור 2.5: משוואת אילוץ מאורך החוט' }
 
 - id: MC-2-wedge-fixed-constraint
   title: על טריז שזז, הגוש נע לאורך הפאה גם ביחס לרצפה
   belief: גוש שמחליק על טריז נע תמיד בכיוון של הפאה, גם כשהטריז עצמו זז.
   truth: הגוש נע לאורך הפאה רק ביחס לטריז. האילוץ הוא על התאוצה היחסית, a − A, וביחס לרצפה המסלול של הגוש תלול יותר מהפאה.
-  remedy: { lesson: '2.5', label: 'שיעור 2.5: טריז שזז על משטח חלק' }
+  remedy: { lesson: '2.5', anchor: 'wedge-path', label: 'שיעור 2.5: המסלול של גוש על טריז שזז' }

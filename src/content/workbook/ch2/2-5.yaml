@@ -1,0 +1,469 @@
+# Workbook, lesson 2.5 (constraints: pulleys and moving wedges). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch2/2-5/numbers.ts against src/physics/constraints.ts with G = 9.8:
+#   W02 a = 1.96 m/s², T = 14.1 N, v after 1.0 m = 1.98 m/s;  W03 hold 122.5 N, raise at 0.50 m/s²: 128.75 N, free end
+#   1.0 m/s²;  W04 a = 1.96 m/s², T = 5.88 N (half the Atwood tension 11.76 N);  W05 a2 = 3.27 down, a1 = 6.53 up,
+#   T = 16.3 N, 0.40 m in 0.495 s;  W06 A = 1.09 m/s² left, N = 3.40 N (fixed 3.75 N), a_rel = 7.14, a = (4.37, −4.59),
+#   φ = 46.4°;  W07 N_f = 46.1 N < 49 N;  W08 a2 = 0.891 up, a1 = 2.67 down, T = 7.13 N;  W09 t = 0.515 s,
+#   ΔX = −0.173 m, block 2.55 m/s, wedge 0.673 m/s, K = mgh = 3.92 J, fixed wedge 2.80 m/s;  W10 |A| → g cotθ = 17.0 m/s²;
+#   c1 m2min = 3.39 kg, m2max = 0.614 kg, a1 = 4.15 m/s², a2 = 2.07 m/s², T = 23.2 N;
+#   c2 a0 = g tanθ = 7.35 m/s², amin = 0.182g = 1.78 m/s², amax = 2g = 19.6 m/s².
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '2.5'
+practice:
+  - id: W-2.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-2.5-1, OBJ-2.5-2]
+    prompt: >-
+      מרימים משא בעל מסה $m$ לאט, במהירות קבועה, בשלוש דרכים, עם חבל וגלגלות חסרי מסה וחסרי חיכוך:
+
+      א. החבל עובר מעל גלגלת קבועה אחת, והמשא תלוי בקצה שלו.
+
+      ב. המשא תלוי על גלגלת נעה ששני קטעים של החבל מחזיקים.
+
+      ג. המשא תלוי על מערכת גלגלות שבה ארבעה קטעים של החבל מחזיקים את הגלגלות התחתונות.
+
+      סדרו את שלוש הדרכים לפי הכוח שצריך למשוך בו את הקצה החופשי, ולפי אורך החבל שצריך למשוך כדי להרים את המשא
+      $1.0\,\text{m}$. נמקו.
+    answer: >-
+      הכוח: $mg$, $mg/2$, $mg/4$. אורך החבל: $1.0\,\text{m}$, $2.0\,\text{m}$, $4.0\,\text{m}$. המכפלה של שניהם זהה.
+    solution:
+      - kind: law
+        text: >-
+          במהירות קבועה הכוח השקול על המשא (עם הגלגלות שלו) אפס. והאורך של החבל קבוע: אם המשא תלוי על $n$ קטעים,
+          $\ell_{\text{free}} + n\,y = \text{const}$, כאשר $y$ העומק של המשא ו-$\ell_{\text{free}}$ האורך של הקצה החופשי.
+      - kind: reasoning
+        text: >-
+          המתיחות זהה לכל אורך חבל חסר מסה. $n$ קטעים מושכים את המשא כלפי מעלה, כל אחד ב-$T$: $nT = mg$, ולכן $T = mg/n$.
+          מהאילוץ, כשהמשא עולה $1.0\,\text{m}$, כל אחד מ-$n$ הקטעים מתקצר $1.0\,\text{m}$, והקצה החופשי מתארך ב-$n\cdot1.0\,\text{m}$.
+      - kind: limit
+        text: >-
+          ב-$n = 1$ (גלגלת קבועה בלבד) הכוח הוא $mg$ והחבל נע כמו המשא: הגלגלת רק משנה כיוון.
+      - kind: units
+        text: >-
+          $mg/n$ בניוטון, ו-$n\cdot1.0\,\text{m}$ במטרים.
+      - kind: result
+        text: >-
+          הכוח: א $mg$, ב $mg/2$, ג $mg/4$. החבל: א $1.0\,\text{m}$, ב $2.0\,\text{m}$, ג $4.0\,\text{m}$. כוח כפול מרחק זהה בשלושתן, $mg\cdot1.0\,\text{m}$.
+
+  - id: W-2.5-02
+    level: basic
+    objectives: [OBJ-2.5-1]
+    prompt: >-
+      במכונת אטווד תלויים $m_1 = 1.2\,\text{kg}$ ו-$m_2 = 1.8\,\text{kg}$ על חוט חסר מסה מעל גלגלת חסרת מסה וחסרת חיכוך.
+      משחררים ממנוחה. מצאו את התאוצה, את המתיחות ואת המהירות של המשקולות אחרי שכל אחת זזה $1.0\,\text{m}$.
+    answer: >-
+      $a = 1.96\,\text{m/s}^2$, $T = 14.1\,\text{N}$, $v = 1.98\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          עומקים מתחת לגלגלת, חיובי כלפי מטה; $m_1 = 1.2\,\text{kg}$, $m_2 = 1.8\,\text{kg}$, $d = 1.0\,\text{m}$.
+      - kind: law
+        text: >-
+          האילוץ $y_1 + y_2 = \text{const}$ נותן $a_1 = -a_2$. החוק השני: $m_2a = m_2g - T$ ו-$m_1(-a) = m_1g - T$, כאשר $a = a_2$.
+      - kind: manipulation
+        text: >-
+          מחסירים: $(m_1 + m_2)a = (m_2 - m_1)g$. מציבים חזרה: $T = m_2(g - a) = \dfrac{2m_1m_2}{m_1 + m_2}\,g$. ממנוחה בתאוצה קבועה,
+          $v^2 = 2ad$.
+      - kind: limit
+        text: >-
+          כש-$m_1 = m_2$, $a = 0$ ו-$T = m_1g$. כש-$m_1 \to 0$, $a \to g$ ו-$T \to 0$.
+      - kind: units
+        text: >-
+          $\sqrt{ad}$ ב-$\sqrt{\text{m/s}^2\cdot\text{m}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $a = \dfrac{0.6}{3.0}\cdot9.8 = 1.96\,\text{m/s}^2$, $T = \dfrac{2\cdot1.2\cdot1.8}{3.0}\cdot9.8 = 14.1\,\text{N}$, $v = \sqrt{2\cdot1.96\cdot1.0} = 1.98\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $a = 1.96\,\text{m/s}^2$ ($m_2$ יורדת), $T = 14.1\,\text{N}$, ואחרי $1.0\,\text{m}$ המהירות $1.98\,\text{m/s}$.
+
+  - id: W-2.5-03
+    level: basic
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      משא של $25\,\text{kg}$ תלוי על גלגלת נעה חסרת מסה. החבל קשור לתקרה, יורד אל הגלגלת, עוקף אותה ועולה אל היד שלכם,
+      ושני הקטעים אנכיים.
+
+      א. באיזה כוח צריך למשוך כדי להחזיק את המשא במנוחה?
+
+      ב. באיזה כוח צריך למשוך כדי שהמשא יעלה בתאוצה של $0.50\,\text{m/s}^2$? ובאיזו תאוצה עולה אז היד?
+    answer: >-
+      א. $122.5\,\text{N}$. ב. $129\,\text{N}$; היד עולה ב-$1.0\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 25\,\text{kg}$, ציר כלפי מעלה חיובי למשא, $a = 0.50\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          החוק השני למשא עם הגלגלת: $2T - mg = ma$. האילוץ: $\ell_{\text{hand}} + 2y = \text{const}$, ולכן היד נעה מהר פי 2 מהמשא.
+      - kind: manipulation
+        text: >-
+          $T = \tfrac12m(g + a)$; במנוחה $T = \tfrac12mg$. היד: $a_{\text{hand}} = 2a$.
+      - kind: limit
+        text: >-
+          כש-$a \to 0$ חוזרים לכוח ההחזקה; כש-$a = -g$ (המשא נופל חופשית) $T = 0$: החבל רפוי.
+      - kind: units
+        text: >-
+          $m(g + a)$ ב-$\text{kg}\cdot\text{m/s}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          במנוחה $T = 25\cdot9.8/2 = 122.5\,\text{N}$. בתאוצה $T = 25\cdot10.3/2 = 128.75\,\text{N}$, כ-$129\,\text{N}$. היד: $2\cdot0.50 = 1.0\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $122.5\,\text{N}$. ב. $129\,\text{N}$, והיד עולה ב-$1.0\,\text{m/s}^2$.
+
+  - id: W-2.5-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.5-1, OBJ-2.5-2]
+    prompt: >-
+      חוט קשור לתקרה, יורד אל גלגלת נעה A שגוש $m_A$ תלוי עליה, עוקף אותה, עולה מעל גלגלת קבועה, יורד אל גלגלת נעה B
+      שגוש $m_B$ תלוי עליה, עוקף אותה ועולה אל התקרה. כל הקטעים אנכיים, והחוט והגלגלות חסרי מסה וחסרי חיכוך.
+
+      א. כתבו את משוואת האילוץ. באיזה יחס נעות שתי הגלגלות, ובאילו כיוונים?
+
+      ב. הראו שהמערכת מתנהגת כמו מכונת אטווד עם $m_A$ ו-$m_B$: אותה תאוצה. במה היא שונה ממנה?
+    answer: >-
+      א. $2y_A + 2y_B = \text{const}$, ולכן $a_A = -a_B$: באותו גודל ובכיוונים הפוכים.
+
+      ב. $a = \dfrac{m_B - m_A}{m_A + m_B}\,g$, כמו באטווד, אבל המתיחות $\dfrac{m_Am_B}{m_A + m_B}\,g$, חצי מזו של אטווד.
+    solution:
+      - kind: given
+        text: >-
+          $y_A$, $y_B$: העומקים של מרכזי הגלגלות הנעות מתחת לתקרה, חיובי כלפי מטה.
+      - kind: law
+        text: >-
+          אורך החוט: שני קטעים מחזיקים כל גלגלת נעה, והקטעים סביב הגלגלות הם קבועים: $2y_A + 2y_B = \text{const}$.
+      - kind: manipulation
+        text: >-
+          גזירה פעמיים: $a_A = -a_B$. החוק השני לכל גוש עם הגלגלת שלו: $m_Aa_A = m_Ag - 2T$ ו-$m_Ba_B = m_Bg - 2T$. מחסירים
+          ומציבים $a_A = -a_B$: $(m_A + m_B)a_B = (m_B - m_A)g$, ו-$2T = m_B(g - a_B) = \dfrac{2m_Am_B}{m_A + m_B}\,g$.
+      - kind: reasoning
+        text: >-
+          המשוואות זהות למשוואות של אטווד אם מחליפים $T$ ב-$2T$: כל גוש נמשך בשני קטעים במקום אחד. לכן התאוצה זהה, והמתיחות
+          בכל קטע חצי. גם שיווי המשקל זהה: $m_A = m_B$.
+      - kind: limit
+        text: >-
+          כש-$m_A \to 0$, $a_B \to g$: גלגלת B נופלת חופשית, ו-$T \to 0$.
+      - kind: units
+        text: >-
+          $\dfrac{m_Am_B}{m_A + m_B}\,g$ ב-$\text{N}$.
+      - kind: substitution
+        text: >-
+          לדוגמה, עם $m_A = 1.0\,\text{kg}$ ו-$m_B = 1.5\,\text{kg}$: $a = 1.96\,\text{m/s}^2$, ו-$T = 5.88\,\text{N}$ לעומת $11.76\,\text{N}$ באטווד.
+      - kind: result
+        text: >-
+          א. $a_A = -a_B$. ב. אותה תאוצה כמו באטווד, $\dfrac{m_B - m_A}{m_A + m_B}\,g$, ומתיחות קטנה פי 2.
+
+  - id: W-2.5-05
+    level: mid
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      במערכת הגלגלת הנעה של השיעור, גוש $m_1 = 1.0\,\text{kg}$ תלוי בקצה החופשי, וגוש $m_2 = 5.0\,\text{kg}$ על הגלגלת הנעה.
+      משחררים ממנוחה. מצאו את שתי התאוצות (גודל וכיוון), את המתיחות, ואת הזמן שבו גוש 2 עובר $0.40\,\text{m}$.
+    answer: >-
+      $a_2 = 3.27\,\text{m/s}^2$ כלפי מטה, $a_1 = 6.53\,\text{m/s}^2$ כלפי מעלה, $T = 16.3\,\text{N}$, $t = 0.495\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          עומקים מהתקרה, חיובי כלפי מטה; $m_1 = 1.0\,\text{kg}$, $m_2 = 5.0\,\text{kg}$.
+      - kind: law
+        text: >-
+          $y_1 + 2y_2 = \text{const}$, ולכן $a_1 = -2a_2$. $m_1a_1 = m_1g - T$, $m_2a_2 = m_2g - 2T$.
+      - kind: manipulation
+        text: >-
+          $a_2 = \dfrac{m_2 - 2m_1}{m_2 + 4m_1}\,g$, $T = \dfrac{3m_1m_2}{m_2 + 4m_1}\,g$, ו-$t = \sqrt{2d/a_2}$.
+      - kind: limit
+        text: >-
+          כש-$m_2 = 2m_1$ הכול עומד. כאן $m_2 > 2m_1$, ולכן $a_2 > 0$: גוש 2 יורד.
+      - kind: units
+        text: >-
+          השבר חסר יחידות; $\sqrt{d/a}$ בשניות.
+      - kind: substitution
+        text: >-
+          $a_2 = \dfrac{3.0}{9.0}\cdot9.8 = 3.27\,\text{m/s}^2$, $a_1 = -6.53\,\text{m/s}^2$, $T = \dfrac{15}{9.0}\cdot9.8 = 16.3\,\text{N}$,
+          $t = \sqrt{0.80/3.27} = 0.495\,\text{s}$.
+      - kind: result
+        text: >-
+          גוש 2 יורד ב-$3.27\,\text{m/s}^2$, גוש 1 עולה ב-$6.53\,\text{m/s}^2$, $T = 16.3\,\text{N}$, ו-$0.40\,\text{m}$ אחרי $0.495\,\text{s}$.
+
+  - id: W-2.5-06
+    level: mid
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      גוש של $0.50\,\text{kg}$ מחליק על פאה חלקה של טריז בעל מסה $2.0\,\text{kg}$ וזווית $40^\circ$, והטריז על רצפה חלקה.
+      מצאו את התאוצה של הטריז, את הכוח הנורמלי, את התאוצה של הגוש ביחס לטריז ואת הזווית של המסלול של הגוש ביחס
+      לרצפה.
+    answer: >-
+      $A = 1.09\,\text{m/s}^2$ (הטריז נסוג), $N = 3.40\,\text{N}$, $a_{\text{rel}} = 7.14\,\text{m/s}^2$, $\varphi = 46.4^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $x$ ימינה, $y$ כלפי מעלה, במערכת הרצפה; הפאה יורדת ימינה. $m = 0.50\,\text{kg}$, $M = 2.0\,\text{kg}$, $\theta = 40^\circ$.
+      - kind: law
+        text: >-
+          $ma_x = N\sin\theta$, $ma_y = N\cos\theta - mg$, $MA = -N\sin\theta$, והאילוץ $a_y = -(a_x - A)\tan\theta$.
+      - kind: manipulation
+        text: >-
+          הפתרון של השיעור: $N = \dfrac{mMg\cos\theta}{M + m\sin^2\theta}$, $A = -\dfrac{N\sin\theta}{M}$,
+          $a_{\text{rel}} = \dfrac{(M + m)g\sin\theta}{M + m\sin^2\theta}$, $\tan\varphi = (1 + m/M)\tan\theta$.
+      - kind: limit
+        text: >-
+          כש-$M \to \infty$ חוזרים לטריז מקובע: $N = mg\cos\theta = 3.75\,\text{N}$ ו-$\varphi = \theta$.
+      - kind: units
+        text: >-
+          $N$ בניוטון; $A$ ו-$a_{\text{rel}}$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $\sin^240^\circ = 0.413$, המכנה $2.21\,\text{kg}$. $N = 3.40\,\text{N}$, $A = -1.09\,\text{m/s}^2$, $\vec a = (4.37,\ -4.59)\,\text{m/s}^2$,
+          $a_{\text{rel}} = 7.14\,\text{m/s}^2$, $\tan\varphi = 1.25\cdot0.839$, $\varphi = 46.4^\circ$. בדיקה: $0.50\cdot4.37 + 2.0\cdot(-1.09) \approx 0$.
+      - kind: result
+        text: >-
+          הטריז מאיץ ב-$1.09\,\text{m/s}^2$ שמאלה; $N = 3.40\,\text{N}$; $a_{\text{rel}} = 7.14\,\text{m/s}^2$; המסלול $46.4^\circ$ מתחת לאופק.
+
+  - id: W-2.5-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      גוש מחליק על פאה חלקה של טריז, והטריז חופשי על רצפה חלקה. קבעו ונמקו: האם הרצפה דוחפת את הטריז כלפי מעלה בכוח
+      גדול מ-$(M + m)g$, שווה לו או קטן ממנו?
+    answer: >-
+      קטן ממנו: $N_f = (M + m)g + ma_y$, ו-$a_y \lt 0$ כי הגוש מאיץ כלפי מטה.
+    solution:
+      - kind: law
+        text: >-
+          החוק השני למערכת גוש וטריז, ברכיב $y$ (כלפי מעלה). הכוחות החיצוניים האנכיים: $N_f$ מהרצפה, והכובד $(M + m)g$.
+          הכוח הנורמלי בין הגוש לטריז הוא פנימי, והוא ובן הזוג שלו מתבטלים.
+      - kind: reasoning
+        text: >-
+          הטריז לא נע באנך, והגוש מאיץ ב-$a_y \lt 0$ (הוא יורד בתאוצה). לכן $N_f - (M + m)g = m a_y \lt 0$. בעברית: כשחלק מהמערכת
+          מאיץ כלפי מטה, הרצפה מחזיקה פחות מהמשקל הכולל, כמו מאזניים שקוראים פחות כשמישהו עליהם מתחיל לרדת.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$ הגוש לא מאיץ באנך, ו-$N_f = (M + m)g$. כש-$\theta \to 90^\circ$ הגוש נופל חופשית, $a_y = -g$, ו-$N_f = Mg$.
+      - kind: units
+        text: >-
+          $ma_y$ ו-$(M + m)g$ שניהם בניוטון.
+      - kind: substitution
+        text: >-
+          לדוגמה, $m = 1.0\,\text{kg}$, $M = 4.0\,\text{kg}$, $\theta = 30^\circ$: $a_y = -2.88\,\text{m/s}^2$, ו-$N_f = 46.1\,\text{N}$ לעומת $49\,\text{N}$.
+      - kind: result
+        text: >-
+          קטן מ-$(M + m)g$, בדיוק ב-$m|a_y|$.
+
+  - id: W-2.5-08
+    level: bagrut
+    objectives: [OBJ-2.5-1, OBJ-2.5-2]
+    prompt: >-
+      במערכת גלגלות, הגלגלת התחתונה (הנעה), שגוש $m_2 = 2.0\,\text{kg}$ תלוי עליה, נתמכת בשלושה קטעים אנכיים של אותו חוט,
+      והקצה החופשי יוצא מהגלגלות העליונות הקבועות ויורד אל גוש $m_1 = 1.0\,\text{kg}$. הכול חסר מסה וחסר חיכוך.
+
+      א. כתבו את משוואת האילוץ ומצאו את התאוצה של כל גוש ואת המתיחות.
+
+      ב. באיזה $m_2$ המערכת נשארת במנוחה?
+    answer: >-
+      א. $a_1 = 2.67\,\text{m/s}^2$ כלפי מטה, $a_2 = 0.891\,\text{m/s}^2$ כלפי מעלה, $T = 7.13\,\text{N}$.
+
+      ב. $m_2 = 3m_1 = 3.0\,\text{kg}$.
+    solution:
+      - kind: given
+        text: >-
+          עומקים מהתקרה, חיובי כלפי מטה: $y_1$ לגוש 1, $y_2$ לגלגלת התחתונה. $m_1 = 1.0\,\text{kg}$, $m_2 = 2.0\,\text{kg}$, $n = 3$.
+      - kind: law
+        text: >-
+          אורך החוט: $y_1 + 3y_2 = \text{const}$, ולכן $a_1 = -3a_2$. החוק השני: $m_1a_1 = m_1g - T$, $m_2a_2 = m_2g - 3T$.
+      - kind: manipulation
+        text: >-
+          מגוש 1, $T = m_1g + 3m_1a_2$. מציבים: $m_2a_2 = m_2g - 3m_1g - 9m_1a_2$, ולכן
+          $a_2 = \dfrac{m_2 - 3m_1}{m_2 + 9m_1}\,g$ ו-$T = \dfrac{4m_1m_2}{m_2 + 9m_1}\,g$.
+      - kind: limit
+        text: >-
+          כש-$m_2 = 3m_1$, $a_2 = 0$ ו-$T = m_1g$. כש-$m_2 \to 0$, $a_1 \to g$. ועם $n = 1$ במקום 3 הנוסחה הכללית
+          $\dfrac{m_2 - n\,m_1}{m_2 + n^2m_1}\,g$ חוזרת לאטווד.
+      - kind: units
+        text: >-
+          השברים חסרי יחידות; $T$ בניוטון.
+      - kind: substitution
+        text: >-
+          $a_2 = \dfrac{2.0 - 3.0}{2.0 + 9.0}\cdot9.8 = -0.891\,\text{m/s}^2$, $a_1 = 2.67\,\text{m/s}^2$, $T = \dfrac{8.0}{11}\cdot9.8 = 7.13\,\text{N}$.
+      - kind: result
+        text: >-
+          א. גוש 1 יורד ב-$2.67\,\text{m/s}^2$, גוש 2 עולה ב-$0.891\,\text{m/s}^2$, $T = 7.13\,\text{N}$. ב. $m_2 = 3.0\,\text{kg}$.
+
+  - id: W-2.5-09
+    level: bagrut
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      גוש של $1.0\,\text{kg}$ משתחרר ממנוחה בראש פאה חלקה באורך $0.80\,\text{m}$ של טריז בעל מסה $3.0\,\text{kg}$ וזווית $30^\circ$,
+      על רצפה חלקה.
+
+      א. אחרי כמה זמן הגוש מגיע לתחתית הפאה, וכמה זז הטריז עד אז?
+
+      ב. מה גודל המהירות של הגוש ושל הטריז באותו רגע? השוו את המהירות של הגוש למהירות שהייתה לו על טריז מקובע.
+    answer: >-
+      א. $0.515\,\text{s}$; הטריז זז $0.173\,\text{m}$ לאחור.
+
+      ב. הגוש $2.55\,\text{m/s}$, הטריז $0.673\,\text{m/s}$; על טריז מקובע $2.80\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $x$ ימינה, $y$ כלפי מעלה, במערכת הרצפה; הפאה יורדת ימינה. $m = 1.0\,\text{kg}$, $M = 3.0\,\text{kg}$, $\theta = 30^\circ$, $L = 0.80\,\text{m}$.
+      - kind: law
+        text: >-
+          התאוצות של השיעור: $A = -\dfrac{mg\sin\theta\cos\theta}{M + m\sin^2\theta}$, $a_{\text{rel}} = \dfrac{(M + m)g\sin\theta}{M + m\sin^2\theta}$,
+          $a_x = -MA/m$, $a_y = -(a_x - A)\tan\theta$. כולן קבועות.
+      - kind: manipulation
+        text: >-
+          $L = \tfrac12a_{\text{rel}}t^2$, ולכן $t = \sqrt{2L/a_{\text{rel}}}$. תזוזת הטריז: $\Delta X = -\dfrac{mL\cos\theta}{m + M}$. המהירויות: $\vec v = \vec a\,t$, $V = At$.
+      - kind: limit
+        text: >-
+          כש-$M \to \infty$: $\Delta X \to 0$ ו-$v \to \sqrt{2gL\sin\theta}$, המהירות על טריז מקובע.
+      - kind: units
+        text: >-
+          $\sqrt{L/a}$ בשניות; $at$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $a_{\text{rel}} = 6.03\,\text{m/s}^2$, $t = 0.515\,\text{s}$, $\Delta X = -0.173\,\text{m}$. $\vec a = (3.92,\ -3.02)\,\text{m/s}^2$, $A = -1.31\,\text{m/s}^2$,
+          ולכן $\vec v = (2.02,\ -1.55)\,\text{m/s}$, $|\vec v| = 2.55\,\text{m/s}$, $V = -0.673\,\text{m/s}$. על טריז מקובע $\sqrt{2\cdot9.8\cdot0.40} = 2.80\,\text{m/s}$.
+      - kind: reasoning
+        text: >-
+          בדיקה (לקראת פרק 3): האנרגיה הקינטית של שניהם, $\tfrac12\cdot1.0\cdot2.55^2 + \tfrac12\cdot3.0\cdot0.673^2 = 3.92\,\text{J}$, שווה ל-$mgh = 1.0\cdot9.8\cdot0.40$.
+          חלק מהאנרגיה עובר לטריז, ולכן הגוש איטי יותר מאשר על טריז מקובע.
+      - kind: result
+        text: >-
+          א. $0.515\,\text{s}$; הטריז זז $0.173\,\text{m}$ לאחור. ב. $2.55\,\text{m/s}$ לגוש ו-$0.673\,\text{m/s}$ לטריז, לעומת $2.80\,\text{m/s}$ על טריז מקובע.
+
+  - id: W-2.5-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      גוש מונח על פאה חלקה של טריז **קל מאוד**, $M \ll m$, על רצפה חלקה. קבעו ונמקו, מהנוסחאות של השיעור ומהאילוץ: איך
+      נע הגוש, מה הכוח הנורמלי ביניהם, ואיך נע הטריז?
+    answer: >-
+      הגוש נופל חופשית ($N \to 0$, $\vec a \to (0,\ -g)$), והטריז נשלף מתחתיו בתאוצה $g\cot\theta$.
+    solution:
+      - kind: law
+        text: >-
+          $N = \dfrac{mMg\cos\theta}{M + m\sin^2\theta}$ ו-$A = -\dfrac{mg\sin\theta\cos\theta}{M + m\sin^2\theta}$, והאילוץ $a_y = -(a_x - A)\tan\theta$.
+      - kind: limit
+        text: >-
+          כש-$M \to 0$: $N \to 0$ (המונה מכיל $M$), ו-$A \to -\dfrac{g\cos\theta}{\sin\theta} = -g\cot\theta$.
+      - kind: reasoning
+        text: >-
+          בלי כוח נורמלי, הכוח היחיד על הגוש הוא הכובד: $\vec a = (0,\ -g)$, נפילה חופשית. טריז חסר מסה לא יכול להפעיל כוח
+          (כל כוח היה נותן לו תאוצה אינסופית), אבל הוא עדיין חייב לקיים את האילוץ: מ-$a_x = 0$ ו-$a_y = -g$,
+          $-g = A\tan\theta$, כלומר $A = -g\cot\theta$. הטריז בורח מתחת לגוש בדיוק בקצב שהפאה נשארת צמודה אליו.
+      - kind: units
+        text: >-
+          $g\cot\theta$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          לדוגמה ב-$30^\circ$: $|A| \to 9.8\cdot1.73 = 17.0\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          הגוש נופל אנכית בתאוצה $g$, הכוח הנורמלי שואף לאפס, והטריז נשלף לאחור בתאוצה $g\cot\theta$.
+
+challenge:
+  - id: W-2.5-c1
+    stars: 2
+    objectives: [OBJ-2.5-1, OBJ-2.5-2]
+    prompt: >-
+      גוש 1, $m_1 = 2.0\,\text{kg}$, על מדרון מקובע בזווית $30^\circ$, עם מקדם חיכוך סטטי $0.40$ וקינטי $0.30$. חוט חסר מסה
+      קשור אליו, מקביל למדרון, עולה מעל גלגלת קבועה בראש המדרון, יורד אל גלגלת נעה שגוש 2 ($m_2$) תלוי עליה, עוקף אותה
+      ועולה אל נקודה קבועה. הקטעים שמחזיקים את הגלגלת הנעה אנכיים, והגלגלות חסרות מסה וחסרות חיכוך.
+
+      א. מה ה-$m_2$ הקטן ביותר שבו גוש 1 מתחיל לעלות במעלה המדרון?
+
+      ב. מה ה-$m_2$ הגדול ביותר שבו גוש 1 מתחיל לרדת במורד המדרון?
+
+      ג. עם $m_2 = 6.0\,\text{kg}$ גוש 1 עולה. מצאו את התאוצה שלו, את התאוצה של גוש 2 ואת המתיחות.
+    answer: >-
+      א. $3.39\,\text{kg}$. ב. $0.614\,\text{kg}$. ג. $a_1 = 4.15\,\text{m/s}^2$ במעלה המדרון, $a_2 = 2.07\,\text{m/s}^2$ כלפי מטה, $T = 23.2\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          לגוש 1: ציר $s$ במעלה המדרון. לגוש 2: עומק $y_2$, חיובי כלפי מטה. $\theta = 30^\circ$, $\mu_s = 0.40$, $\mu_k = 0.30$.
+      - kind: law
+        text: >-
+          אורך החוט: מגוש 1 אל הגלגלת הקבועה $\ell_0 - s$, ועוד שני הקטעים של הגלגלת הנעה, $2y_2$: $-s + 2y_2 = \text{const}$, ולכן
+          $a_2 = \tfrac12a_1$ (גוש 1 עולה כשגוש 2 יורד). החוק השני לגוש 1 לאורך המדרון ולגוש 2 עם הגלגלת: $m_2a_2 = m_2g - 2T$.
+      - kind: manipulation
+        text: >-
+          א. על סף עלייה, בלי תאוצה: החיכוך הסטטי המרבי פונה במורד, $T = m_1g(\sin\theta + \mu_s\cos\theta)$, ו-$2T = m_2g$:
+          $m_{2,\min} = 2m_1(\sin\theta + \mu_s\cos\theta)$. ב. על סף ירידה החיכוך פונה במעלה: $m_{2,\max} = 2m_1(\sin\theta - \mu_s\cos\theta)$.
+          ג. בעלייה: $m_1a_1 = T - m_1g\sin\theta - \mu_km_1g\cos\theta$ ו-$m_2\tfrac{a_1}{2} = m_2g - 2T$. מבטלים את $T$:
+          $a_1 = \dfrac{2m_2 - 4m_1(\sin\theta + \mu_k\cos\theta)}{4m_1 + m_2}\,g$.
+      - kind: limit
+        text: >-
+          בלי חיכוך ($\mu = 0$) שני הספים מתלכדים ב-$m_2 = 2m_1\sin\theta$, שיווי המשקל של גלגלת נעה. וכש-$m_1 \to 0$ בסעיף ג,
+          $a_1 \to 2g$: גוש 2 נופל חופשית, והקצה החופשי נע פי 2 ממנו.
+      - kind: units
+        text: >-
+          $m_1(\sin\theta + \mu\cos\theta)$ בקילוגרמים; השבר ב-ג חסר יחידות.
+      - kind: substitution
+        text: >-
+          א. $2\cdot2.0\cdot(0.500 + 0.346) = 3.39\,\text{kg}$. ב. $2\cdot2.0\cdot(0.500 - 0.346) = 0.614\,\text{kg}$.
+          ג. $a_1 = \dfrac{12 - 8.0\cdot0.760}{14}\cdot9.8 = 4.15\,\text{m/s}^2$, $a_2 = 2.07\,\text{m/s}^2$, $T = \tfrac12\cdot6.0\cdot(9.8 - 2.07) = 23.2\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $3.39\,\text{kg}$. ב. $0.614\,\text{kg}$. ג. $a_1 = 4.15\,\text{m/s}^2$, $a_2 = 2.07\,\text{m/s}^2$, $T = 23.2\,\text{N}$.
+    source:
+      name: MIT 8.01 Classical Mechanics (Fall 2016), Problem Set 4
+      year: 2016
+      problem: Problem 1, Block and Pulley System
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/ff43aae2332b3882ac4a4727301cec56_MIT8_01F16_pset4.pdf
+      verified: '2026-11-09'
+      adapted: true
+
+  - id: W-2.5-c2
+    stars: 1
+    objectives: [OBJ-2.5-2]
+    prompt: >-
+      גוש מונח על הפאה של טריז שצורתו משולש 3-4-5, כך ש-$\sin\theta = 3/5$ ו-$\cos\theta = 4/5$. הפאה יורדת ימינה, ומקדם החיכוך
+      הסטטי בין הגוש לפאה $0.50$. דוחפים את הצד האנכי של הטריז ימינה, כך שהטריז והגוש מאיצים יחד בתאוצה אופקית $a$.
+
+      א. האם הגוש נשאר במנוחה על טריז שעומד?
+
+      ב. בלי חיכוך: באיזו תאוצה $a_0$ הגוש לא מחליק?
+
+      ג. עם החיכוך: מה התחום של $a$ שבו הגוש לא מחליק? בטאו כמכפלה של $g$.
+    answer: >-
+      א. לא: $\tan\theta = 0.75 > 0.50$. ב. $a_0 = g\tan\theta = 0.75g = 7.35\,\text{m/s}^2$. ג. $0.182g \le a \le 2g$, כלומר $1.78\,\text{m/s}^2$ עד $19.6\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $x$ ימינה, $y$ כלפי מעלה, במערכת הרצפה. הנורמלי על הגוש בכיוון $(\sin\theta,\ \cos\theta)$; כיוון "במעלה הפאה" הוא $(-\cos\theta,\ \sin\theta)$.
+          $\mu_s = 0.50$.
+      - kind: law
+        text: >-
+          הגוש לא מחליק, ולכן התאוצה שלו ביחס לטריז אפס: $\vec a = (a,\ 0)$. החוק השני לגוש, בשני רכיבים, עם חיכוך סטטי $f \le \mu_sN$.
+      - kind: manipulation
+        text: >-
+          ב. בלי חיכוך: $N\cos\theta = mg$ ו-$N\sin\theta = ma$, ולכן $a_0 = g\tan\theta$. ג. בתאוצה קטנה הגוש נוטה להחליק במורד, והחיכוך
+          במעלה: $N\sin\theta - f\cos\theta = ma$, $N\cos\theta + f\sin\theta = mg$; עם $f = \mu_sN$:
+          $a_{\min} = g\,\dfrac{\sin\theta - \mu_s\cos\theta}{\cos\theta + \mu_s\sin\theta}$. בתאוצה גדולה החיכוך במורד, והסימנים של $f$ מתהפכים:
+          $a_{\max} = g\,\dfrac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}$.
+      - kind: limit
+        text: >-
+          כש-$\mu_s \to 0$ שני הקצוות מתלכדים ב-$g\tan\theta = a_0$. ואם $\mu_s \ge \tan\theta$, $a_{\min} \le 0$: הגוש עומד גם בלי דחיפה.
+      - kind: units
+        text: >-
+          השברים חסרי יחידות, ולכן התאוצות ביחידות של $g$.
+      - kind: substitution
+        text: >-
+          א. $\tan\theta = 0.75 > 0.50$. ב. $0.75\cdot9.8 = 7.35\,\text{m/s}^2$. ג. $a_{\min} = \dfrac{0.60 - 0.40}{0.80 + 0.30}\,g = 0.182g = 1.78\,\text{m/s}^2$,
+          $a_{\max} = \dfrac{0.60 + 0.40}{0.80 - 0.30}\,g = 2.0g = 19.6\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. הגוש מחליק. ב. $0.75g$. ג. מ-$0.182g$ עד $2g$.
+    source:
+      name: Georgia Tech PHYS 2211 (Introductory Physics I), Recitation 04 solution
+      year: 2017
+      problem: Recitation 04, block on an accelerated 3-4-5 wedge, parts A, D, G and I
+      url: https://introphys.gatech.edu/2017/Summer/2211/Recitation/sol04.pdf
+      verified: '2026-11-09'
+      adapted: true

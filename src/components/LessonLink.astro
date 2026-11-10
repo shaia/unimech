@@ -1,12 +1,16 @@
 ---
-/** A link to a lesson, or to an anchor inside it (a worked example's id), that respects the base path. */
-import { lessonSlug } from '~/course';
-import { url } from '~/lib/url';
+/**
+ * A link to a lesson, or to an anchor inside it (a worked example's id), that respects the base path.
+ * A lesson not yet written links to its comprehension ladder on the practice page (`lessonHref`), so a
+ * lesson may name any lesson of the map without leaving a dead link while the course is being written.
+ */
+import { lessonHref } from '~/lib/companions';
 interface Props {
   id: string;
   anchor?: string;
 }
 const { id, anchor } = Astro.props;
+const href = (await lessonHref())(id, anchor);
 ---
 
-<a href={url(`lessons/${lessonSlug(id)}/${anchor ? `#${anchor}` : ''}`)}><slot /></a>
+<a href={href}><slot /></a>

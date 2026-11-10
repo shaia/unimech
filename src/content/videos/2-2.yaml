@@ -1,0 +1,25 @@
+# Videos of lesson 2.2. Every id was checked against YouTube oEmbed on the `verified` date (exists,
+# embeddable; title and channel exactly as returned). Neither watch page returned its length or caption
+# list to the fetcher: the Veritasium length (4:38) comes from a transcript page of the video
+# (rosetta.to), the MIT length (4:12) from the last cue of the OCW transcript (.vtt). `why` claims only
+# what those transcripts support. No public Hebrew video on the third law at university level was found.
+
+- id: v-2-2-moon-earth
+  youtubeId: 8bTdMmNZm2M
+  title: "Best Film on Newton's Third Law. Ever."
+  channel: Veritasium
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'דרק מולר שואל אנשים מה מחזיק את הירח במסלול, ורובם עונים שכדור הארץ מושך את הירח חזק יותר משהירח מושך אותו. רבים מהם מצטטים את החוק השלישי ובכל זאת לא מפעילים אותו כאן. השוו לספר ולכדור הארץ של איור 2.2א: הכוחות שווים, ומה ששונה הוא התאוצה, כי המסות שונות.'
+  verified: '2026-11-09'
+
+- id: v-2-2-rope-tension
+  youtubeId: RBaBEjzMr4E
+  title: 7.1 Pushing Pulling and Tension
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'קטע מהקורס MIT 8.01. לפי התמליל, המרצה לוקח גוש שקשור בחוט שעובר על גלגלת אל משקולת תלויה, חותך את החוט בדמיון, ומשרטט את שני החלקים כשני גופים: כל חלק מושך את השני, והכוחות הם זוג של החוק השלישי. המתיחות מוגדרת כגודל של הזוג הזה. זה הנימוק שמאחורי "אותו T בשני קצות החוט" של איור 2.2ג.'
+  verified: '2026-11-09'

@@ -1,0 +1,25 @@
+# Videos of lesson 2.8. Every id was checked against YouTube oEmbed on the `verified` date (HTTP 200, embeddable,
+# title and channel as below). Both are short segments of MIT OpenCourseWare 8.01SC (Fall 2016); `why` rests on the
+# segments' own transcripts on OCW, which were read in the session (MIT8_01F16_L20v04 and MIT8_01F16_L15v01).
+# Lengths are estimated from the transcripts (about 680 and 910 words), not read from YouTube: unconfirmed.
+# Caption tracks could not be read from the watch page, so none are listed.
+
+- id: v-2-8-integrate-adt-adx
+  youtubeId: m8_3VwHy7tE
+  title: '20.4 Integrate adt and adx'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'לפי התמליל, המרצה מבצע אינטגרציה של אותה תאוצה פעמיים: לפי הזמן, ומקבל את השינוי במהירות, ולפי המקום, ובעזרת dx/dt = v מקבל חצי מהשינוי בריבוע המהירות. זה בדיוק ההבדל בין שני חלקי השיעור, ועקבו אחרי הרגע שבו הוא מחליף את משתנה האינטגרציה.'
+  verified: '2026-11-09'
+
+- id: v-2-8-impulse
+  youtubeId: 1GvCIlHihEA
+  title: '15.1 Momentum and Impulse'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי התמליל, המרצה מבצע אינטגרציה של החוק השני לפי הזמן עבור כוח שמשתנה בזמן, ומראה שהשינוי ב-mv הוא השטח מתחת לגרף של F(t), ולא תלוי בצורה המפורטת של הגרף. זה הצעד הראשון של איור 2.8א, והשם שהוא נותן לשטח הזה יחזור בפרק 3.'
+  verified: '2026-11-09'

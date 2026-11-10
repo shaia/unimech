@@ -1,0 +1,29 @@
+# Videos of lesson 2.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Neither watch page gave its length to the fetch tool, so both lengths
+# are unconfirmed: the lecture's 49 minutes come from search-result listings of the lecture series, the SciShow
+# clip's 2.5 minutes from a third-party index page (rosetta.to) that also summarised it. No caption track was confirmed.
+# `why` claims only what those descriptions and summaries support; both are flagged for a spot-check.
+
+- id: v-2-1-weigh-in-space
+  youtubeId: Zzi4EQKBbOY
+  title: 'How Do You Weigh Things in Space?'
+  channel: SciShow
+  lang: en
+  start: 0
+  minutes: 3
+  why: >-
+    לפי תיאור הסרטון, הוא מסביר שמאזניים מודדים משקל, כוח, ולכן בתחנת חלל, שנופלת יחד עם האסטרונאוטים, הם לא עוזרים;
+    את המסה מודדים מהחוק השני: קפיץ מפעיל כוח ידוע ומודדים את התאוצה. השוו לדוגמה 3 בשיעור.
+  verified: '2026-11-09'
+
+- id: v-2-1-lewin-newton
+  youtubeId: oduZsA0Tk58
+  title: "8.01x - Lect 6 - Newton's Laws"
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  start: 0
+  minutes: 49
+  why: >-
+    הרצאה מלאה של וולטר לוין ב-MIT על שלושת חוקי ניוטון, עם הדגמות בכיתה. לפי תקצירים של ההרצאה, היא עוברת על החוק
+    הראשון (אינרציה), השני והשלישי, ומיישמת אותם על גופים תלויים ועל מתיחות בחוטים. צפייה ארוכה, רשות.
+  verified: '2026-11-09'

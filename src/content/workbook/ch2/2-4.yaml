@@ -1,0 +1,543 @@
+# Workbook, lesson 2.4 (friction). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch2/2-4/numbers.ts against src/physics/friction.ts with G = 9.8:
+#   W01 mg = 11.76 N, push min mg/μs = 23.5 N;  W02 μsN = 15.68, μkN = 9.408, a(20 N) = 1.324 m/s²;
+#   W03 tan 22° = 0.404, a = g(sin22° − 0.30 cos22°) = 0.945 m/s²;  W04 t = 0.510 s, box 0.510 m, belt 1.02 m,
+#   slip 0.510 m;  W05 F(25°) = 48.8 N, N = 126 N, F(0°) = 51.5 N, best 19.3° → 48.6 N;
+#   W06 a_up = 7.02, d = 2.56 m, t_up = 0.854 s, a_down = 2.78, t_down = 1.36 s, v back = 3.77 m/s;
+#   W07 μs g = 3.92, μk g = 2.94, f(3.0) = 150 N, relative 2.06 m/s²;  W08 F_max = 35.3 N, a_A = 3.92,
+#   a_B = 9.07 m/s²;  W09 m₂ from 0.961 to 3.04 kg, f(2.5 kg) = 4.90 N;  W10 θ_max = 38.7°, a(10°) = 6.02, level 7.84;
+#   c1 θ = 36.9°, a_up = g, a_down = 0.2g, t_d/t_u = √5 = 2.24, v₀ = 4: t_u = 0.408 s, d = 0.816 m, t_d = 0.913 s,
+#   v back = 1.79 m/s;  c2 F_min = 11.8 N (12 N with g = 10), F = 15 N: a₁ = 6.03, a₂ = 2.94 m/s².
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '2.4'
+practice:
+  - id: W-2.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-2.4-1]
+    prompt: >-
+      ספר בעל מסה $1.2\,\text{kg}$ נלחץ אל קיר אנכי בכוח אופקי של יד, ולא זז. בין הספר לקיר $\mu_s = 0.50$.
+
+      א. לאן פונה החיכוך של הקיר על הספר, ומה גודלו?
+
+      ב. מה הכוח הקטן ביותר שבו היד מחזיקה את הספר?
+
+      ג. מכפילים את כוח היד מ-$30\,\text{N}$ ל-$60\,\text{N}$. מה קורה לחיכוך?
+    answer: >-
+      א. כלפי מעלה, $11.8\,\text{N}$.
+
+      ב. $23.5\,\text{N}$.
+
+      ג. הוא לא משתנה: נשאר $11.8\,\text{N}$. רק החיכוך הסטטי המרבי גדל.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מהקיר החוצה, ציר $y$ כלפי מעלה. על הספר: הכובד $mg$ (כדור הארץ), הכוח הנורמלי $N$ (הקיר, לכיוון $+x$),
+          כוח היד $F$ (נגד ציר $x$) והחיכוך $f$ (הקיר, לאורך $y$).
+      - kind: law
+        text: >-
+          החוק השני במנוחה, בשני הצירים, ו-$|f_s| \le \mu_s N$.
+      - kind: manipulation
+        text: >-
+          ב-$x$: $N - F = 0$, כלומר $N = F$. ב-$y$: $f - mg = 0$, כלומר $f = mg$, כלפי מעלה. התנאי $mg \le \mu_s F$
+          נותן $F \ge mg/\mu_s$.
+      - kind: reasoning
+        text: >-
+          החיכוך הסטטי הוא מה שהחוק השני דורש. הוא מאזן את הכובד, ולכן הוא $mg$ בכל כוח יד שמחזיק את הספר. כוח היד
+          קובע רק את החיכוך הסטטי המרבי, $\mu_s F$.
+      - kind: limit
+        text: >-
+          כש-$\mu_s \to 0$ צריך כוח אינסופי: קיר חלק לא מחזיק ספר בשום לחיצה.
+      - kind: units
+        text: >-
+          $mg/\mu_s$ בניוטון, כי $\mu_s$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $mg = 1.2\cdot9.8 = 11.8\,\text{N}$, ו-$F_{\min} = 11.76/0.50 = 23.5\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $11.8\,\text{N}$ כלפי מעלה. ב. $23.5\,\text{N}$. ג. החיכוך נשאר $11.8\,\text{N}$; החיכוך הסטטי המרבי גדל מ-$15\,\text{N}$ ל-$30\,\text{N}$.
+
+  - id: W-2.4-02
+    level: basic
+    objectives: [OBJ-2.4-1]
+    prompt: >-
+      מזחלת בעלת מסה $8.0\,\text{kg}$ על שלג אופקי נמשכת בחבל אופקי. $\mu_s = 0.20$ ו-$\mu_k = 0.12$. המזחלת מתחילה במנוחה.
+
+      א. מה החיכוך כשמושכים ב-$10\,\text{N}$?
+
+      ב. מה החיכוך ומה התאוצה כשמושכים ב-$20\,\text{N}$?
+    answer: >-
+      א. $10\,\text{N}$, סטטי, נגד המשיכה.
+
+      ב. $9.41\,\text{N}$, קינטי, ו-$a = 1.32\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון המשיכה, ציר $y$ כלפי מעלה. $m = 8.0\,\text{kg}$, $\mu_s = 0.20$, $\mu_k = 0.12$.
+      - kind: law
+        text: >-
+          מניחים שאין החלקה ובודקים מול $\mu_s N$. אם ההנחה נכשלת, $f_k = \mu_k N$ נגד המהירות.
+      - kind: manipulation
+        text: >-
+          ב-$y$: $N = mg = 78.4\,\text{N}$, ולכן $\mu_s N = 15.7\,\text{N}$ ו-$\mu_k N = 9.41\,\text{N}$. בלי החלקה $f = -F$.
+      - kind: limit
+        text: >-
+          אם $\mu_k = \mu_s$, החיכוך לא נופל ברגע ההחלקה, והמזחלת מתחילה לנוע בתאוצה אפס בדיוק בסף, כמו שמצופה.
+      - kind: units
+        text: >-
+          $(F - \mu_k mg)/m$ הוא $\text{N}/\text{kg} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. $10 < 15.7$: אין החלקה, $f = 10\,\text{N}$. ב. $20 > 15.7$: יש החלקה, $a = (20 - 9.41)/8.0 = 1.32\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $10\,\text{N}$ אחורה (סטטי). ב. $9.41\,\text{N}$ אחורה (קינטי), $a = 1.32\,\text{m/s}^2$.
+
+  - id: W-2.4-03
+    level: basic
+    objectives: [OBJ-2.4-2]
+    prompt: >-
+      מטים לוח עץ, וקופסת עץ שעליו מתחילה להחליק כשהשיפוע $22^\circ$.
+
+      א. מה מקדם החיכוך הסטטי?
+
+      ב. ממלאים את הקופסה בחול, והיא כבדה פי 3. באיזו זווית תתחיל להחליק?
+
+      ג. אם $\mu_k = 0.30$, מה התאוצה של הקופסה מיד אחרי שהתחילה להחליק ב-$22^\circ$?
+    answer: >-
+      א. $\mu_s = 0.404$.
+
+      ב. באותה זווית, $22^\circ$.
+
+      ג. $0.945\,\text{m/s}^2$ במורד.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך הלוח, חיובי במורד, ציר $y$ ניצב לו, חיובי החוצה. $\theta_s = 22^\circ$, $\mu_k = 0.30$.
+      - kind: law
+        text: >-
+          $N = mg\cos\theta$; בסף $mg\sin\theta_s = \mu_s mg\cos\theta_s$; בהחלקה $ma = mg\sin\theta - \mu_k mg\cos\theta$.
+      - kind: manipulation
+        text: >-
+          $\mu_s = \tan\theta_s$, ו-$a = g\left(\sin\theta - \mu_k\cos\theta\right)$. בשני הביטויים המסה מצטמצמת.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to \tan\theta$ התאוצה שואפת לאפס: הקופסה מחליקה במהירות קבועה.
+      - kind: units
+        text: >-
+          $\tan\theta$ חסר ממדים, כמו $\mu_s$; $a$ ביחידות של $g$.
+      - kind: substitution
+        text: >-
+          $\tan22^\circ = 0.404$; $a = 9.8\left(0.375 - 0.30\cdot0.927\right) = 0.945\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $0.404$. ב. $22^\circ$, בלי תלות במסה. ג. $0.945\,\text{m/s}^2$.
+
+  - id: W-2.4-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.4-1]
+    prompt: >-
+      מסוע אופקי נע במהירות קבועה $2.0\,\text{m/s}$. מניחים עליו ארגז במנוחה (ביחס לקרקע). בין הארגז לחגורה $\mu_s = 0.50$
+      ו-$\mu_k = 0.40$.
+
+      א. איזה חיכוך פועל על הארגז מיד אחרי שהונח, ולאן? והאם החיכוך הזה מתנגד לתנועה של הארגז?
+
+      ב. כמה זמן עובר עד שהארגז נע עם החגורה, וכמה הוא מחליק עליה בזמן הזה?
+
+      ג. מה החיכוך על הארגז אחר כך?
+    answer: >-
+      א. קינטי, בכיוון התנועה של החגורה: הוא מאיץ את הארגז.
+
+      ב. $0.510\,\text{s}$; הארגז מחליק $0.510\,\text{m}$ אחורה ביחס לחגורה.
+
+      ג. אפס.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון החגורה, מערכת הייחוס של הקרקע. $u = 2.0\,\text{m/s}$, $\mu_k = 0.40$.
+      - kind: reasoning
+        text: >-
+          ברגע ההנחה הארגז במנוחה והחגורה נעה קדימה, כלומר הארגז מחליק **אחורה** ביחס לחגורה. החיכוך הקינטי מתנגד
+          להחלקה היחסית הזו, ולכן הוא **קדימה**: $f = \mu_k mg$. הוא בכיוון התנועה של הארגז, לא נגדה.
+      - kind: law
+        text: >-
+          החוק השני לארגז: $ma = \mu_k mg$, כל עוד $v < u$.
+      - kind: manipulation
+        text: >-
+          $v = \mu_k g\,t$, ו-$v = u$ ב-$t^* = u/(\mu_k g)$. הארגז עובר $u^2/(2\mu_k g)$, והחגורה $u\,t^* = u^2/(\mu_k g)$: פי 2.
+          אחר כך הארגז נע במהירות קבועה עם החגורה, בלי תאוצה, ולכן החיכוך אפס.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to \infty$ הזמן וההחלקה שואפים לאפס: הארגז "נתפס" מיד. כש-$\mu_k \to 0$ הארגז נשאר במקום, והחגורה
+          מחליקה מתחתיו לנצח.
+      - kind: units
+        text: >-
+          $u/(\mu_k g)$ בשניות, $u^2/(\mu_k g)$ במטרים.
+      - kind: substitution
+        text: >-
+          $t^* = 2.0/3.92 = 0.510\,\text{s}$; הארגז $0.510\,\text{m}$, החגורה $1.02\,\text{m}$, וההחלקה $0.510\,\text{m}$.
+      - kind: result
+        text: >-
+          א. קינטי, קדימה. ב. $0.510\,\text{s}$, החלקה של $0.510\,\text{m}$. ג. אפס: אין החלקה ואין תאוצה.
+
+  - id: W-2.4-05
+    level: mid
+    objectives: [OBJ-2.4-2]
+    prompt: >-
+      גוררים ארגז בעל מסה $15\,\text{kg}$ במהירות קבועה על רצפה, בחבל בזווית $25^\circ$ מעל האופק. $\mu_k = 0.35$.
+
+      א. מה הכוח בחבל, ומה הכוח הנורמלי?
+
+      ב. מה הכוח הדרוש אם החבל אופקי?
+
+      ג. באיזו זווית החבל דורש את הכוח הקטן ביותר, ומה הכוח הזה?
+    answer: >-
+      א. $48.8\,\text{N}$; $N = 126\,\text{N}$.
+
+      ב. $51.5\,\text{N}$.
+
+      ג. $\tan\varphi = \mu_k$, $\varphi = 19.3^\circ$, $48.6\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הגרירה, ציר $y$ כלפי מעלה. $m = 15\,\text{kg}$, $\varphi = 25^\circ$, $\mu_k = 0.35$, $a = 0$.
+      - kind: law
+        text: >-
+          $y$: $N + F\sin\varphi - mg = 0$. $x$: $F\cos\varphi - \mu_k N = 0$.
+      - kind: manipulation
+        text: >-
+          מציבים את $N$: $F\cos\varphi = \mu_k\left(mg - F\sin\varphi\right)$, ולכן $F = \mu_k mg/\left(\cos\varphi + \mu_k\sin\varphi\right)$.
+          המכנה מרבי כשהנגזרת שלו מתאפסת: $\mu_k\cos\varphi - \sin\varphi = 0$, כלומר $\tan\varphi = \mu_k$, ושם
+          המכנה $\sqrt{1 + \mu_k^2}$.
+      - kind: limit
+        text: >-
+          ב-$\varphi = 0$ חוזרים ל-$F = \mu_k mg$. כש-$\mu_k \to 0$ הזווית הטובה שואפת לאפס: בלי חיכוך אין טעם להרים.
+      - kind: units
+        text: >-
+          $\mu_k mg$ בניוטון, והמכנה חסר ממדים.
+      - kind: substitution
+        text: >-
+          $F = 0.35\cdot147/(0.906 + 0.35\cdot0.423) = 48.8\,\text{N}$; $N = 147 - 48.8\cdot0.423 = 126\,\text{N}$. אופקי: $51.5\,\text{N}$.
+          $\arctan0.35 = 19.3^\circ$, ו-$51.45/\sqrt{1.1225} = 48.6\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $48.8\,\text{N}$, $N = 126\,\text{N}$. ב. $51.5\,\text{N}$. ג. $19.3^\circ$, $48.6\,\text{N}$.
+
+  - id: W-2.4-06
+    level: mid
+    objectives: [OBJ-2.4-2]
+    prompt: >-
+      גוש נדחף במעלה מדרון בזווית $30^\circ$ ועוזב את היד במהירות $6.0\,\text{m/s}$. $\mu_s = 0.40$ ו-$\mu_k = 0.25$.
+
+      א. כמה הגוש עולה לאורך המדרון, ובכמה זמן?
+
+      ב. האם הוא נשאר למעלה או חוזר? נמקו.
+
+      ג. אם הוא חוזר, באיזו מהירות הוא מגיע לנקודה שבה עזב את היד, ואחרי כמה זמן מהשיא?
+    answer: >-
+      א. $2.56\,\text{m}$, ב-$0.854\,\text{s}$.
+
+      ב. חוזר, כי $\tan30^\circ = 0.577 > \mu_s$.
+
+      ג. $3.77\,\text{m/s}$, אחרי $1.36\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך המדרון, חיובי במעלה, ראשית בנקודת השחרור. $v_0 = 6.0\,\text{m/s}$, $\theta = 30^\circ$, $N = mg\cos\theta$.
+      - kind: law
+        text: >-
+          בעלייה הגוש נע במעלה, והחיכוך הקינטי במורד: $a_{\uparrow} = -g\left(\sin\theta + \mu_k\cos\theta\right)$. בירידה החיכוך
+          במעלה: $a_{\downarrow} = -g\left(\sin\theta - \mu_k\cos\theta\right)$.
+      - kind: manipulation
+        text: >-
+          העלייה: $d = v_0^2/\left(2|a_\uparrow|\right)$ ו-$t_u = v_0/|a_\uparrow|$. בשיא הגוש עוצר, והחיכוך סטטי: הוא מחזיק אם
+          $mg\sin\theta \le \mu_s mg\cos\theta$, כלומר $\tan\theta \le \mu_s$. הירידה מנוחה: $t_d = \sqrt{2d/|a_\downarrow|}$, $v = |a_\downarrow|\,t_d$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to 0$ שתי התאוצות שוות, $g\sin\theta$, והגוש חוזר במהירות $v_0$, אחרי אותו זמן: התנועה סימטרית.
+      - kind: units
+        text: >-
+          $v_0^2/g$ במטרים, $v_0/g$ בשניות.
+      - kind: substitution
+        text: >-
+          $|a_\uparrow| = 9.8(0.500 + 0.217) = 7.02\,\text{m/s}^2$, $d = 2.56\,\text{m}$, $t_u = 0.854\,\text{s}$. $0.577 > 0.40$: חוזר.
+          $|a_\downarrow| = 2.78\,\text{m/s}^2$, $t_d = 1.36\,\text{s}$, $v = 3.77\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $2.56\,\text{m}$, $0.854\,\text{s}$. ב. חוזר. ג. $3.77\,\text{m/s}$, אחרי $1.36\,\text{s}$: לאט יותר ויותר זמן מבעלייה.
+
+  - id: W-2.4-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.4-1]
+    prompt: >-
+      ארגז בעל מסה $50\,\text{kg}$ על משטח המטען של משאית שנוסעת קדימה. $\mu_s = 0.40$ ו-$\mu_k = 0.30$. המשאית בולמת.
+
+      א. הבלימה היא בתאוטה $3.0\,\text{m/s}^2$. האם הארגז מחליק? איזה חיכוך פועל עליו, לאן, ומה גודלו?
+
+      ב. הבלימה היא בתאוטה $5.0\,\text{m/s}^2$. לאן מחליק הארגז ביחס למשטח, לאן פונה החיכוך, ומה התאוצה של הארגז ביחס למשאית?
+    answer: >-
+      א. לא מחליק; חיכוך סטטי של $150\,\text{N}$, אחורה.
+
+      ב. קדימה ביחס למשטח; החיכוך קינטי ואחורה; $2.06\,\text{m/s}^2$ קדימה ביחס למשאית.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הנסיעה, מערכת הייחוס של הקרקע. תאוצת המשאית $a_T = -3.0\,\text{m/s}^2$ או $a_T = -5.0\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          החוק השני לארגז: הכוח האופקי היחיד עליו הוא החיכוך של המשטח. בלי החלקה $|f| \le \mu_s mg$.
+      - kind: manipulation
+        text: >-
+          כדי לבלום עם המשאית הארגז צריך $f = ma$, ולכן התאוטה המרבית בלי החלקה היא $\mu_s g = 3.92\,\text{m/s}^2$. ב-$3.0$ זה
+          מספיק. ב-$5.0$ לא: המשאית מאטה מהר יותר מהארגז, והארגז מחליק קדימה ביחס למשטח. החיכוך הקינטי מתנגד להחלקה הזו,
+          ולכן הוא אחורה: תאוצת הארגז $a = -\mu_k g$.
+      - kind: reasoning
+        text: >-
+          בשני המקרים החיכוך אחורה, נגד התנועה של הארגז ביחס לקרקע. אבל הסיבה שונה: בסעיף א הוא אחורה כי הארגז מאט עם
+          המשאית; בסעיף ב כי הארגז מחליק קדימה על המשטח.
+      - kind: limit
+        text: >-
+          כשתאוטת המשאית שואפת לאפס גם החיכוך שואף לאפס: על משאית במהירות קבועה אין חיכוך על הארגז.
+      - kind: units
+        text: >-
+          $ma$ בניוטון; $\mu g$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. $f = 50\cdot3.0 = 150\,\text{N}$ ($\mu_s mg = 196\,\text{N}$). ב. $a = -2.94\,\text{m/s}^2$ לארגז ו-$a_T = -5.0\,\text{m/s}^2$ למשאית;
+          ביחס למשאית $a - a_T = -2.94 - (-5.0) = 2.06\,\text{m/s}^2$, קדימה.
+      - kind: result
+        text: >-
+          א. סטטי, $150\,\text{N}$ אחורה. ב. קינטי, אחורה; הארגז מחליק קדימה ביחס למשאית ב-$2.06\,\text{m/s}^2$.
+
+  - id: W-2.4-08
+    level: bagrut
+    objectives: [OBJ-2.4-2]
+    prompt: >-
+      גוש A ($2.0\,\text{kg}$) מונח על גוש B ($4.0\,\text{kg}$). בין הגושים $\mu_s = 0.50$ ו-$\mu_k = 0.40$, ובין B לרצפה
+      $\mu_k' = 0.10$. מושכים את B בכוח אופקי $F$, והוא כבר נע על הרצפה.
+
+      א. מה הכוח המרבי שבו A עוד לא מחליק על B?
+
+      ב. מושכים ב-$F = 50\,\text{N}$. מה התאוצה של כל גוש?
+    answer: >-
+      א. $35.3\,\text{N}$.
+
+      ב. $a_A = 3.92\,\text{m/s}^2$, $a_B = 9.07\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון $F$. הכוח הנורמלי בין הגושים $m_Ag$, ובין B לרצפה $(m_A + m_B)g$. B מחליק קדימה על הרצפה, ולכן
+          חיכוך הרצפה עליו $\mu_k'(m_A + m_B)g$ אחורה.
+      - kind: law
+        text: >-
+          החוק השני לכל גוש. על A הכוח האופקי היחיד הוא החיכוך מ-B, ובלי החלקה $f \le \mu_s m_Ag$.
+      - kind: manipulation
+        text: >-
+          יחד: $F - \mu_k'(m_A + m_B)g = (m_A + m_B)a$, ו-$a \le \mu_s g$, ולכן $F_{\max} = (m_A + m_B)g\left(\mu_s + \mu_k'\right)$.
+          בהחלקה: $a_A = \mu_k g$ (החיכוך על A קדימה), $a_B = \left[F - \mu_k m_Ag - \mu_k'(m_A + m_B)g\right]/m_B$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k' = 0$ חוזרים לרצפה חלקה, $F_{\max} = (m_A + m_B)\mu_s g$. וכש-$m_A \to 0$ החיכוך בין הגושים נעלם, ו-$a_B$
+          הוא התאוצה של B לבדו עם חיכוך הרצפה.
+      - kind: units
+        text: >-
+          $(m_A + m_B)g\mu$ בניוטון.
+      - kind: substitution
+        text: >-
+          $F_{\max} = 6.0\cdot9.8\cdot0.60 = 35.3\,\text{N}$. $50 > 35.3$: מחליקים. $a_A = 3.92\,\text{m/s}^2$,
+          $a_B = (50 - 7.84 - 5.88)/4.0 = 9.07\,\text{m/s}^2$. $a_B > a_A$: A מחליק אחורה ביחס ל-B, כמו שהנחנו.
+      - kind: result
+        text: >-
+          א. $35.3\,\text{N}$. ב. $a_A = 3.92\,\text{m/s}^2$, $a_B = 9.07\,\text{m/s}^2$.
+
+  - id: W-2.4-09
+    level: bagrut
+    objectives: [OBJ-2.4-1, OBJ-2.4-2]
+    prompt: >-
+      גוש בעל מסה $m_1 = 4.0\,\text{kg}$ על מדרון בזווית $30^\circ$, עם $\mu_s = 0.30$. חוט במקביל למדרון עובר מהגוש
+      דרך גלגלת חלקה בראש המדרון, ומחזיק משקולת תלויה בעלת מסה $m_2$.
+
+      א. לאילו ערכים של $m_2$ המערכת נשארת במנוחה?
+
+      ב. לאן פונה החיכוך על הגוש בכל חלק של הטווח, ומה הוא כש-$m_2 = 2.5\,\text{kg}$?
+    answer: >-
+      א. $0.961\,\text{kg} \le m_2 \le 3.04\,\text{kg}$.
+
+      ב. מתחת ל-$2.0\,\text{kg}$ במעלה המדרון, מעליו במורד, וב-$2.0\,\text{kg}$ אפס. ב-$2.5\,\text{kg}$: $4.90\,\text{N}$ במורד.
+    solution:
+      - kind: given
+        text: >-
+          לגוש: ציר $x$ לאורך המדרון, חיובי במעלה, $N = m_1g\cos\theta$. למשקולת: ציר כלפי מעלה. במנוחה המתיחות $T = m_2g$.
+      - kind: law
+        text: >-
+          החוק השני לגוש לאורך $x$: $T + f - m_1g\sin\theta = 0$, עם $|f| \le \mu_s m_1g\cos\theta$ ($f$ חיובי במעלה).
+      - kind: manipulation
+        text: >-
+          $f = m_1g\sin\theta - m_2g$. התנאי נותן $m_1\left(\sin\theta - \mu_s\cos\theta\right) \le m_2 \le m_1\left(\sin\theta + \mu_s\cos\theta\right)$.
+          $f > 0$ (במעלה) כש-$m_2 < m_1\sin\theta$, ו-$f < 0$ (במורד) כשהמשקולת כבדה יותר.
+      - kind: limit
+        text: >-
+          כש-$\mu_s \to 0$ הטווח מתכווץ ל-$m_2 = m_1\sin\theta$, שיווי משקל יחיד. כש-$\theta \to 0$ הטווח הוא $m_2 \le \mu_s m_1$.
+      - kind: units
+        text: >-
+          שני הקצוות הם $m_1$ כפול מספר חסר ממדים: קילוגרם.
+      - kind: substitution
+        text: >-
+          $4.0\left(0.500 - 0.260\right) = 0.961\,\text{kg}$ ו-$4.0\left(0.500 + 0.260\right) = 3.04\,\text{kg}$. $m_1\sin\theta = 2.0\,\text{kg}$.
+          ב-$2.5\,\text{kg}$: $f = (2.0 - 2.5)\cdot9.8 = -4.90\,\text{N}$.
+      - kind: result
+        text: >-
+          א. מ-$0.961$ עד $3.04\,\text{kg}$. ב. במעלה מתחת ל-$2.0\,\text{kg}$, במורד מעליו; ב-$2.5\,\text{kg}$ הוא $4.90\,\text{N}$ במורד.
+
+  - id: W-2.4-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-2.4-2]
+    prompt: >-
+      מכונית עם הנעה לכל הגלגלים עולה במעלה גבעה. בין הצמיגים לכביש $\mu_s = 0.80$, והצמיגים לא מחליקים.
+
+      א. לאן פונה החיכוך של הכביש על הגלגלים? נמקו בעזרת החוק השני.
+
+      ב. מה השיפוע התלול ביותר שהמכונית יכולה לעלות בו במהירות קבועה?
+
+      ג. מה התאוצה המרבית שלה במעלה גבעה של $10^\circ$, ובכביש אופקי?
+    answer: >-
+      א. במעלה הגבעה, בכיוון התנועה.
+
+      ב. $38.7^\circ$.
+
+      ג. $6.02\,\text{m/s}^2$; באופק $7.84\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך הגבעה, חיובי במעלה, ציר $y$ ניצב לה. על המכונית: הכובד, הכוח הנורמלי $N = mg\cos\theta$ והחיכוך $f$ של הכביש.
+          התנגדות האוויר נזנחת.
+      - kind: reasoning
+        text: >-
+          הכוחות של המנוע פנימיים למכונית. לאורך $x$ הכוחות החיצוניים הם רק רכיב הכובד, $mg\sin\theta$ במורד, והחיכוך. כדי לעלות במהירות
+          קבועה, ובוודאי כדי להאיץ במעלה, החיכוך חייב להיות במעלה הגבעה. הצמיגים לא מחליקים, ולכן הוא סטטי, וגודלו עד $\mu_s N$.
+      - kind: law
+        text: >-
+          $ma = f - mg\sin\theta$, $f \le \mu_s mg\cos\theta$.
+      - kind: manipulation
+        text: >-
+          $a_{\max} = g\left(\mu_s\cos\theta - \sin\theta\right)$. במהירות קבועה $a = 0$, ולכן השיפוע המרבי מקיים $\tan\theta = \mu_s$, כמו זווית הסף של גוש.
+      - kind: limit
+        text: >-
+          ב-$\theta = 0$ התאוצה המרבית היא $\mu_s g$. כש-$\mu_s \to 0$ (קרח), המכונית לא עולה אפילו בשיפוע קטן.
+      - kind: units
+        text: >-
+          $g\left(\mu_s\cos\theta - \sin\theta\right)$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $\arctan0.80 = 38.7^\circ$. $a_{\max}(10^\circ) = 9.8\left(0.80\cdot0.985 - 0.174\right) = 6.02\,\text{m/s}^2$, ובאופק $7.84\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. במעלה, סטטי. ב. $38.7^\circ$. ג. $6.02\,\text{m/s}^2$, ובאופק $7.84\,\text{m/s}^2$.
+
+challenge:
+  - id: W-2.4-c1
+    stars: 2
+    objectives: [OBJ-2.4-1, OBJ-2.4-2]
+    prompt: >-
+      גובה של מדרון הוא $0.6$ מאורכו (כלומר $\sin\theta = 0.6$), ומקדם החיכוך הקינטי בין גוש למדרון $0.5$. נותנים לגוש
+      מהירות $v_0$ במעלה המדרון. הוא עולה במשך זמן $t_u$, עוצר, ומחליק חזרה לנקודת ההתחלה במשך זמן $t_d$.
+
+      א. מצאו את היחס $t_d/t_u$. הראו שהוא לא תלוי ב-$v_0$, ב-$m$ ובאורך הדרך.
+
+      ב. מה התנאי על $\mu_s$ כדי שהגוש אכן יחזור?
+
+      ג. כש-$v_0 = 4.0\,\text{m/s}$: מה $t_u$, מה $t_d$, ובאיזו מהירות הגוש חוזר?
+    answer: >-
+      א. $t_d/t_u = \sqrt{5} = 2.24$.
+
+      ב. $\mu_s < \tan\theta = 0.75$.
+
+      ג. $t_u = 0.408\,\text{s}$, $t_d = 0.913\,\text{s}$, $1.79\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\sin\theta = 0.6$, $\cos\theta = 0.8$, $\mu_k = 0.5$. ציר $x$ לאורך המדרון, חיובי במעלה.
+      - kind: law
+        text: >-
+          החוק השני לאורך המדרון. בעלייה החיכוך הקינטי במורד (נגד המהירות): $|a_u| = g\left(\sin\theta + \mu_k\cos\theta\right)$. בירידה
+          הוא במעלה: $|a_d| = g\left(\sin\theta - \mu_k\cos\theta\right)$.
+      - kind: manipulation
+        text: >-
+          שני הקטעים הם אותו מרחק $d$, האחד עד עצירה והשני ממנוחה, ובשניהם $d = \tfrac12|a|t^2$. לכן
+          $$\frac{t_d}{t_u} = \sqrt{\frac{|a_u|}{|a_d|}} = \sqrt{\frac{\sin\theta + \mu_k\cos\theta}{\sin\theta - \mu_k\cos\theta}}$$
+          בלי $v_0$, בלי $m$ ובלי $d$.
+      - kind: reasoning
+        text: >-
+          בשיא הגוש עוצר, והחיכוך הופך לסטטי. הוא יחזור רק אם $mg\sin\theta > \mu_s mg\cos\theta$, כלומר $\mu_s < \tan\theta$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to 0$ היחס שואף ל-1: עלייה וירידה סימטריות. כש-$\mu_k \to \tan\theta$, $|a_d| \to 0$ והירידה נמשכת אינסוף זמן.
+      - kind: units
+        text: >-
+          היחס חסר ממדים; $v_0/|a_u|$ בשניות.
+      - kind: substitution
+        text: >-
+          $|a_u| = g(0.6 + 0.4) = 9.8\,\text{m/s}^2$, $|a_d| = g(0.6 - 0.4) = 1.96\,\text{m/s}^2$, והיחס $\sqrt5 = 2.24$.
+          $\tan\theta = 0.75$. $t_u = 4.0/9.8 = 0.408\,\text{s}$, $d = 0.816\,\text{m}$, $t_d = 0.913\,\text{s}$, $v = 1.96\cdot0.913 = 1.79\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $\sqrt5 = 2.24$. ב. $\mu_s < 0.75$. ג. $0.408\,\text{s}$, $0.913\,\text{s}$, $1.79\,\text{m/s}$.
+    source:
+      name: AAPT F=ma Exam B
+      year: 2019
+      problem: Question 20
+      url: https://www.aapt.org/physicsteam/2019/upload/2019_Fma_B_solution.pdf
+      verified: '2026-11-09'
+      adapted: true
+
+  - id: W-2.4-c2
+    stars: 1
+    objectives: [OBJ-2.4-1, OBJ-2.4-2]
+    prompt: >-
+      שני גושים מונחים זה על זה על שולחן חלק: העליון בעל מסה $m_1 = 2.0\,\text{kg}$, והתחתון $m_2 = 1.0\,\text{kg}$. בין
+      הגושים $\mu_s = 0.20$ ו-$\mu_k = 0.15$. מפעילים כוח אופקי על הגוש **העליון**.
+
+      א. מה הכוח הקטן ביותר שגורם לגוש העליון להחליק על התחתון?
+
+      ב. מפעילים $15\,\text{N}$. מה התאוצה של כל גוש, ולאן פונה החיכוך על כל אחד?
+    answer: >-
+      א. $11.8\,\text{N}$.
+
+      ב. $a_1 = 6.03\,\text{m/s}^2$ (חיכוך אחורה), $a_2 = 2.94\,\text{m/s}^2$ (חיכוך קדימה).
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הכוח. הכוח הנורמלי בין הגושים $m_1g$. השולחן חלק.
+      - kind: law
+        text: >-
+          החוק השני לכל גוש. על הגוש התחתון הכוח האופקי היחיד הוא החיכוך מהעליון, ובלי החלקה הוא עד $\mu_s m_1g$.
+      - kind: manipulation
+        text: >-
+          יחד: $a = F/(m_1 + m_2)$, ו-$m_2a \le \mu_s m_1g$. לכן $F_{\min} = \mu_s m_1g\,(m_1 + m_2)/m_2$. בהחלקה העליון מקדים
+          את התחתון, החיכוך עליו אחורה ועל התחתון קדימה: $a_1 = (F - \mu_k m_1g)/m_1$, $a_2 = \mu_k m_1g/m_2$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$, $F_{\min} \to \mu_s m_1g$: התחתון כמו רצפה קבועה. כאן התחתון **קל**, ולכן הכוח הדרוש גדול
+          פי 3 מהחיכוך המרבי עצמו.
+      - kind: units
+        text: >-
+          $\mu_s m_1g$ בניוטון, ויחס המסות חסר ממדים.
+      - kind: substitution
+        text: >-
+          $F_{\min} = 0.20\cdot2.0\cdot9.8\cdot3.0/1.0 = 11.8\,\text{N}$ (במקור, עם $g = 10\,\text{m/s}^2$: $12\,\text{N}$).
+          $15 > 11.8$: $\mu_k m_1g = 2.94\,\text{N}$, $a_1 = 12.06/2.0 = 6.03\,\text{m/s}^2$, $a_2 = 2.94\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $11.8\,\text{N}$. ב. $a_1 = 6.03\,\text{m/s}^2$, $a_2 = 2.94\,\text{m/s}^2$; החיכוך על העליון אחורה ועל התחתון קדימה.
+    source:
+      name: AAPT F=ma Exam B
+      year: 2018
+      problem: Question 13
+      url: https://aapt.org/physicsteam/2019/upload/Fma-2018-B.pdf
+      verified: '2026-11-09'
+      adapted: true

@@ -1,0 +1,7 @@
+---
+/** Friction figure for lesson MDX: <Spread figure={FrictionRamp} figureProps={{ mode: 'incline', … }}>. */
+import FrictionRamp, { type FrictionRampProps } from './FrictionRamp';
+type Props = FrictionRampProps;
+---
+
+<FrictionRamp client:visible {...Astro.props} />

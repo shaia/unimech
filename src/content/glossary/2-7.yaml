@@ -26,3 +26,39 @@
   unit: s
   definition: הזמן האופייני של תהליך אקספוננציאלי. אחרי קבוע זמן אחד, מה שנשאר מההפרש עד ערך הסוף הוא e⁻¹, כ-37% ממה שהיה בהתחלה. בגרר ליניארי, τ = m/b.
   lesson: '2.7'
+
+- id: linear-drag
+  term: גרר ליניארי
+  en: linear drag
+  symbol: '-b\vec v'
+  definition: כוח גרר שגודלו פרופורציוני למהירות, F = bv, בכיוון הפוך למהירות. מתאר גופים זעירים ואיטיים, שבהם הצמיגות של האוויר קובעת את הגרר. בכדור בקוטר D באוויר, b ≈ 1.6·10⁻⁴ D (ביחידות SI).
+  lesson: '2.7'
+
+- id: quadratic-drag
+  term: גרר ריבועי
+  en: quadratic drag
+  symbol: '-c|\vec v|\vec v'
+  definition: כוח גרר שגודלו פרופורציוני לריבוע המהירות, F = cv², בכיוון הפוך למהירות. מתאר גופים גדולים ומהירים, שבהם האוויר נדחף הצידה והצפיפות שלו קובעת את הגרר. בכדור בקוטר D באוויר, c ≈ 0.25 D² (ביחידות SI).
+  lesson: '2.7'
+
+- id: reynolds-number
+  term: מספר ריינולדס
+  en: Reynolds number
+  symbol: '\mathrm{Re} = \rho vD/\eta'
+  definition: המספר חסר הממדים ρvD/η, שבו ρ הצפיפות של הזורם, η הצמיגות שלו, v המהירות ו-D גודל הגוף. כשהוא קטן הגרר ליניארי, וכשהוא גדול הגרר ריבועי.
+  lesson: '2.7'
+
+- id: viscosity
+  term: צמיגות
+  en: viscosity
+  symbol: '\eta'
+  unit: Pa·s
+  definition: מידת החיכוך הפנימי של נוזל או גז, ההתנגדות שלו לכך ששכבות סמוכות בו זזות זו ביחס לזו. היא קובעת את הגרר הליניארי על גוף זעיר ואיטי; הצמיגות של האוויר בתנאים רגילים כ-1.7·10⁻⁵ Pa·s.
+  lesson: '2.7'
+
+- id: c2-hyperbolic-tangent
+  term: טנגנס היפרבולי
+  en: hyperbolic tangent
+  symbol: '\tanh x = \sinh x/\cosh x'
+  definition: המנה tanh x = sinh x / cosh x, כאשר sinh x = (eˣ − e⁻ˣ)/2 ו-cosh x = (eˣ + e⁻ˣ)/2. היא עולה מ-0 ב-x = 0 ומתקרבת ל-1 כש-x גדל, ולכל x קטן tanh x ≈ x. הנגזרת שלה 1 − tanh²x, והפונקציה ההפוכה artanh u = ½ ln((1 + u)/(1 − u)). המהירות בנפילה ממנוחה עם גרר ריבועי היא vₜ tanh(gt/vₜ).
+  lesson: '2.7'

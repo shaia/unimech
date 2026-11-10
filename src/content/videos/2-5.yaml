@@ -1,0 +1,26 @@
+# Videos of lesson 2.5. Every id was checked against YouTube oEmbed on the `verified` date (200, embeddable; title
+# and channel exactly as returned). Lengths come from the watch page (lengthSeconds: 426 and 991). `why` claims only
+# what the titles, the descriptions and the MIT OCW course page (Lesson 12: Pulleys and Constraints, 12.2 "Pulley
+# Problem - Part II, Constraint Condition") support; the content itself was not watched.
+
+- id: v-2-5-constraint-condition
+  youtubeId: gWLC3r6EHl0
+  title: '12.2 Constraint Condition'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 7
+  why: 'החלק השני מתוך ארבעה בפתרון בעיית גלגלות אחת בקורס 8.01 של MIT (סתיו 2016), לפי דף הקורס: כתיבת תנאי האילוץ מאורך החוט. בדקו איזו ראשית ואיזה כיוון חיובי המרצה בוחר, והשוו את הקשר שהוא מקבל בין התאוצות לקשר שקיבלנו בשיעור.'
+  verified: '2026-11-09'
+
+- id: v-2-5-snatch-blocks
+  youtubeId: M2w3NZzPwOM
+  title: 'Why Snatch Blocks are AWESOME (How Pulleys Work)  - Smarter Every Day 228'
+  channel: SmarterEveryDay
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 17
+  why: 'לפי הכותרת והתיאור, הסרטון מסביר איך גלגלות עובדות, עם גלגלות אמיתיות ומערכות של חבל וגלגלות. ספרו כמה קטעים של חבל מחזיקים את הגלגלת שהמשא תלוי עליה, והשוו לכלל של השיעור: כוח קטן פי n וחבל ארוך פי n.'
+  verified: '2026-11-09'

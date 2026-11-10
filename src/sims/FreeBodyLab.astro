@@ -1,0 +1,7 @@
+---
+/** Free-body diagram figure for lesson MDX: <Spread figure={FreeBodyLab} figureProps={{ scene: 'contact', … }}>. */
+import FreeBodyLab, { type FreeBodyLabProps } from './FreeBodyLab';
+type Props = FreeBodyLabProps;
+---
+
+<FreeBodyLab client:visible {...Astro.props} />

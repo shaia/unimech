@@ -1,0 +1,31 @@
+# Videos of lesson 2.7. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths, chapter times and caption tracks come from the watch page
+# (lengthSeconds, the description, captionTracks). `why` claims only what the title and the description support.
+#   GVFi5Pvhq9g: 958 s; chapters 4:13 "Motion graphs of Coffee Filters", 8:35 "Determining Drag Coefficient",
+#     10:24 "Baseball terminal velocity", 11:44 "Does an object ever reach terminal velocity?", 15:00 "Numerical
+#     Modeling Preview": the clip runs from 4:13 (253 s) to 15:00 (900 s).
+#   djCCno4Cbcw: 2982 s; no chapters; the description lists the demonstrations (steel ball bearings dropped in Karo
+#     corn syrup, a falling balloon and a falling pebble with and without air drag).
+
+- id: v-2-7-coffee-filters
+  youtubeId: GVFi5Pvhq9g
+  title: 'What is Terminal Velocity? How Do We Find It?'
+  channel: Flipping Physics
+  lang: en
+  captions: [en]
+  start: 253
+  end: 900
+  minutes: 11
+  why: 'לפי פרקי הסרטון: גרפי תנועה של פילטרים לקפה שנופלים, מציאת מקדם הגרר, המהירות הסופית של כדור בייסבול, והשאלה אם גוף מגיע אי פעם למהירות הסופית. השוו את גרף המהירות של הפילטרים לעקומות של איור 2.7א, ואת התשובה לשאלה האחרונה ל-63% אחרי קבוע זמן אחד.'
+  verified: '2026-11-09'
+
+- id: v-2-7-lewin-drag
+  youtubeId: djCCno4Cbcw
+  title: '8.01x - Lect 12 - Air Drag, Resistive Forces, Conservative Forces, Terminal Velocity'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 50
+  why: 'הרצאה שלמה של קורס 8.01 של MIT על כוחות התנגדות וגרר. לפי התיאור יש בה הדגמות: כדורי פלדה ששוקעים בסירופ תירס, ובלון ואבן שנופלים עם גרר ובלי גרר. בסירופ הצמיג מאוד חפשו את התחום של הגרר הליניארי, ובבלון את הגרר הריבועי.'
+  verified: '2026-11-09'

@@ -1,33 +1,40 @@
 # Misconceptions first detected in lesson 2.6. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.6
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. Each remedy
+# now anchors the place in lesson 2.6 that refutes it.
 
 - id: MC-2-centripetal-is-extra-force
   title: הכוח הצנטריפטלי הוא כוח נוסף
   belief: על גוף שנע במעגל פועל "כוח צנטריפטלי", בנוסף לכוחות האחרים, ויש לשרטט אותו בתרשים הכוחות.
   truth: כוח צנטריפטלי הוא שם לרכיב הרדיאלי של הכוח השקול. בתרשים מופיעים רק כוחות אמיתיים, מתיחות, חיכוך, נורמלי וכובד, והשקול שלהם ברכיב הרדיאלי שווה ל-mv²/R.
-  remedy: { lesson: '2.6', label: 'שיעור 2.6: החוק השני ברכיב הרדיאלי' }
+  remedy: { lesson: '2.6', anchor: 'radial-law', label: 'שיעור 2.6: החוק השני ברכיב הרדיאלי' }
 
 - id: MC-2-centrifugal-in-inertial
   title: על גוף במעגל פועל כוח צנטריפוגלי החוצה
   belief: גוף שנע במעגל נמצא בשיווי משקל בין כוח פנימה לכוח צנטריפוגלי החוצה.
   truth: במערכת ייחוס אינרציאלית אין כוח צנטריפוגלי, כי אין גוף שמפעיל אותו. השקול על גוף במעגל איננו אפס, והוא פונה למרכז. כוח צנטריפוגלי מופיע רק במערכת המסתובבת (פרק 7).
-  remedy: { lesson: '2.6', label: 'שיעור 2.6: תנועה מעגלית מהקרקע' }
+  remedy: { lesson: '2.6', anchor: 'from-ground', label: 'שיעור 2.6: תנועה מעגלית מהקרקע' }
 
 - id: MC-2-flies-outward
   title: כשהחוט נקרע הגוף עף החוצה מהמרכז
   belief: כשהחוט של גוף שמסתובב נקרע, הגוף נזרק בכיוון רדיאלי, החוצה.
   truth: כשהחוט נקרע הכוח נעלם, והגוף ממשיך בקו ישר במהירות שהייתה לו ברגע הקריעה, כלומר במשיק למעגל.
-  remedy: { lesson: '2.6', label: 'שיעור 2.6: מה קורה כשהחוט נקרע' }
+  remedy: { lesson: '2.6', anchor: 'string-cut', label: 'שיעור 2.6: מה קורה כשהחוט מתרופף או נקרע' }
 
 - id: MC-2-string-like-rod
   title: חוט ומוט מתנהגים אותו דבר במעגל אנכי
   belief: למעלה במעגל אנכי, לחוט ולמוט יש אותה מהירות מינימלית.
   truth: חוט יכול רק למשוך, ולכן למעלה צריך v ≥ √(gR). מוט יכול גם לדחוף, ולכן גוף על מוט עובר את הנקודה העליונה בכל מהירות חיובית.
-  remedy: { lesson: '2.6', label: 'שיעור 2.6: מעגל אנכי, חוט מול מוט' }
+  remedy: { lesson: '2.6', anchor: 'string-vs-rod', label: 'שיעור 2.6: מעגל אנכי, חוט מול מוט' }
 
 - id: MC-2-banked-friction-down
   title: על כביש משופע החיכוך תמיד פונה פנימה
   belief: על כביש משופע בעקומה החיכוך פונה תמיד במורד, לעבר מרכז העקומה, כי הוא עוזר לסובב את המכונית.
   truth: הכיוון תלוי במהירות. מעל מהירות התכנון החיכוך פונה במורד, ומתחתיה במעלה. החיכוך הסטטי משלים את מה שהנורמלי לא נותן.
-  remedy: { lesson: '2.6', label: 'שיעור 2.6: טווח המהירויות בכביש משופע' }
+  remedy: { lesson: '2.6', anchor: 'banked-range', label: 'שיעור 2.6: טווח המהירויות בכביש משופע' }
+
+- id: MC-2-vertical-speed-constant
+  title: במעגל אנכי גודל המהירות קבוע
+  belief: גוף שנע במעגל אנכי שומר על גודל המהירות שהייתה לו בנקודה התחתונה, ולכן mv²/R זהה בכל נקודה של המעגל.
+  truth: לכובד יש רכיב משיקי, −mg sin φ, שמאט את הגוף בדרך למעלה ומאיץ אותו בדרך למטה. מהחוק השני ברכיב המשיקי וכלל השרשרת, v² = v_b² − 2gR(1 − cos φ), ורק אחר כך כותבים את הרכיב הרדיאלי.
+  remedy: { lesson: '2.6', anchor: 'tangential', label: 'שיעור 2.6: המהירות לאורך המעגל' }

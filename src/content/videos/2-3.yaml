@@ -1,0 +1,25 @@
+# Videos of lesson 2.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). YouTube's watch page did not give the length or the description to the
+# fetcher: the length and contents of v-2-3-slinky come from a transcript summary (rosetta.to, 3:30); the length
+# of v-2-3-elevator is not confirmed (TED-Ed lessons run about 4–5 minutes), and its `why` rests on the TED-Ed
+# lesson page's description. No caption track was confirmed.
+
+- id: v-2-3-elevator
+  youtubeId: 2k-2IlJcaHg
+  title: 'Would you weigh less in an elevator? - Carol Hedden'
+  channel: TED-Ed
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'שיעור קצר של TED-Ed על השאלה "האם אנחנו שוקלים יותר כשעולים ופחות כשיורדים?", בעזרת מעלית בתנועה. בזמן הצפייה בדקו כל טענה מול איור 2.3א: המאזניים מראים את הכוח הנורמלי, N = m(g + a), והוא תלוי בתאוצה של המעלית, לא בכיוון התנועה שלה.'
+  verified: '2026-11-09'
+
+- id: v-2-3-slinky
+  youtubeId: eCMmmEEyOO0
+  title: 'Slinky Drop Answer'
+  channel: Veritasium
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'קפיץ רך וארוך תלוי מהיד ומשוחרר, בצילום של 300 תמונות בשנייה: הקצה התחתון נשאר במקום עד שהקפיץ מתקפל עליו. ההסבר בסרטון הוא בדיוק המתיחות של קפיץ בעל מסה: על הקצה התחתון פועלים הכובד כלפי מטה והמתיחות כלפי מעלה, והם מתאזנים עד שהשינוי במתיחות מגיע אליו. השוו לחבל התלוי של איור 2.3ג.'
+  verified: '2026-11-09'

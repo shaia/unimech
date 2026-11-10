@@ -1,0 +1,38 @@
+# Videos for lesson 2.6. Every id was checked against YouTube oEmbed on the `verified` date (200: exists and
+# embeddable; title and channel as below).
+# v-2-6-banked-turn: its transcript (MIT OCW, MIT8_01F16_L11v02, the PDF linked from the OCW page "11.2 Worked
+#   Example - Car on a Banked Turn") was read in full: a frictionless banked turn, radial and vertical axes,
+#   tan φ = v²/(rg), and what happens faster or slower than that speed. Its length is not confirmed: the
+#   transcript is about four pages, so `minutes` is an estimate. No caption track was confirmed.
+# v-2-6-lewin-forces: the same lecture as v-1-3-lewin-circular (length 3051 s from the watch page, English
+#   captions, as recorded in videos/1-3.yaml). Only its title supports what `why` says about the part on
+#   centripetal forces; no chapter list was found, so start is 0. Spot-check.
+
+- id: v-2-6-banked-turn
+  youtubeId: ofgusnhQ07Q
+  title: '11.2 Worked Example - Car on a Banked Turn'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 5
+  why: >-
+    פתרון קצר מקורס 8.01 של MIT, לכביש משופע בלי חיכוך. שימו לב לבחירת הצירים: רדיאלי ואנכי, ולא לאורך הכביש
+    ובניצב לו, כי התאוצה אופקית, אל מרכז העקומה. המרצה מחלק את שתי המשוואות ומקבל את מהירות התכנון, ואז שואל מה
+    קורה מהר או לאט ממנה כשאין חיכוך: המכונית גולשת במעלה או במורד. זה בדיוק המקום שבו החיכוך הסטטי של השיעור
+    נכנס. הסרטון באנגלית.
+  verified: '2026-11-09'
+
+- id: v-2-6-lewin-forces
+  youtubeId: mWj1ZEQTI8I
+  title: '8.01x - Lect 5 - Circular Motion, Centripetal Forces, Perceived Gravity'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 51
+  why: >-
+    אותה הרצאה של וולטר לוין משיעור 1.3. לפי הכותרת, אחרי הקינמטיקה היא עוברת לכוחות צנטריפטליים ול"כובד מורגש".
+    כשאתם צופים בחלק הזה, שאלו על כל כוח שהוא מזכיר: איזה גוף מפעיל אותו? הכוח הצנטריפטלי הוא תמיד כוח אמיתי
+    (מתיחות, נורמלי, חיכוך או כובד) שממלא תפקיד של כוח רדיאלי, והתיאור מתוך מערכת מסתובבת שייך לפרק 7. ההרצאה
+    באנגלית, עם כתוביות באנגלית.
+  verified: '2026-11-09'

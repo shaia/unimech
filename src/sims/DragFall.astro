@@ -1,0 +1,7 @@
+---
+/** Drag figure for lesson MDX: <Spread figure={DragFall} figureProps={{ scene: 'fall', law: 'linear', … }}>. */
+import DragFall, { type DragFallProps } from './DragFall';
+type Props = DragFallProps;
+---
+
+<DragFall client:visible {...Astro.props} />

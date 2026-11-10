@@ -1,45 +1,46 @@
 # Misconceptions first detected in lesson 2.1. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.1
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. Now each
+# remedy has an `anchor`: a step id in src/content/lessons/ch2/2-1-inertial-frames-second-law.mdx.
 
 - id: MC-2-noninertial-force-real
   title: בקרון שבולם כוח אמיתי דוחף את הגופים קדימה
   belief: כשרכב בולם, כוח שהבלימה יוצרת דוחף את הגופים שבתוכו קדימה.
   truth: אין גוף שמפעיל כוח כזה. במערכת הקרקע הגופים ממשיכים במהירות שלהם, והרכב מאט מתחתם. הרכב הבולם איננו מערכת ייחוס אינרציאלית.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: אותה תנועה מהקרקע ומהקרון' }
+  remedy: { lesson: '2.1', anchor: 'car-frame', label: 'שיעור 2.1: אותה תנועה מהקרקע ומהקרון' }
 
 - id: MC-2-inertia-is-force
   title: האינרציה היא כוח
   belief: האינרציה של גוף היא כוח שדוחף אותו להמשיך לנוע.
   truth: אינרציה היא הנטייה של גוף לשמור על המהירות שלו כשהכוח השקול עליו אפס. היא לא מופיעה בתרשים הכוחות, ואין גוף שמפעיל אותה.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: החוק הראשון' }
+  remedy: { lesson: '2.1', anchor: 'first-law', label: 'שיעור 2.1: החוק הראשון' }
 
 - id: MC-2-uniform-motion-inertial
   title: מערכת שנעה בקו ישר, או מסתובבת בקצב קבוע, היא אינרציאלית
   belief: מספיק שמערכת נעה בקו ישר, או שגודל המהירות שלה קבוע, כדי שתהיה אינרציאלית.
   truth: מערכת אינרציאלית נעה ביחס למערכת אינרציאלית אחרת במהירות קבועה בגודל ובכיוון, ובלי להסתובב. רכב שבולם, קרוסלה ותחנה במסלול מאיצים.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: ההגדרה של מערכת ייחוס אינרציאלית' }
+  remedy: { lesson: '2.1', anchor: 'definition', label: 'שיעור 2.1: ההגדרה של מערכת ייחוס אינרציאלית' }
 
 - id: MC-2-weightless-no-gravity
   title: בתחנת חלל אין כובד
   belief: אסטרונאוטים צפים בתחנת חלל כי שם אין כובד.
   truth: בגובה של תחנת חלל הכובד הוא כ-90% מהכובד על פני הקרקע. האסטרונאוטים והתחנה נופלים יחד באותה תאוצה, ולכן אין ביניהם תאוצה יחסית.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: האם תחנת חלל היא מערכת אינרציאלית' }
+  remedy: { lesson: '2.1', anchor: 'station', label: 'שיעור 2.1: האם תחנת חלל היא מערכת אינרציאלית' }
 
 - id: MC-2-mass-is-weight
   title: מסה ומשקל הם אותו דבר
   belief: גוף שהמשקל שלו קטן, למשל על הירח, קל יותר גם להאיץ.
   truth: המשקל הוא הכוח mg, והוא תלוי במקום. המסה קובעת כמה קשה לשנות את המהירות של הגוף, והיא זהה בכל מקום.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: מסה וכוח' }
+  remedy: { lesson: '2.1', anchor: 'mass-weight', label: 'שיעור 2.1: מסה וכוח' }
 
 - id: MC-2-acceleration-along-velocity
   title: התאוצה, והכוח השקול, בכיוון המהירות
   belief: הכוח השקול על גוף, ולכן גם התאוצה שלו, פונים לכיוון שבו הגוף נע.
   truth: החוק השני קושר את הכוח השקול לתאוצה, לשינוי של המהירות. גוף יכול לנוע מזרחה כשהכוח עליו מערבה (הוא מאט), או למעלה כשהכוח כלפי מטה.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: החוק השני כמשוואה וקטורית' }
+  remedy: { lesson: '2.1', anchor: 'not-velocity', label: 'שיעור 2.1: הכוח קובע את התאוצה, לא את המהירות' }
 
 - id: MC-2-add-magnitudes
   title: כוחות מתחברים לפי הגדלים שלהם
   belief: הכוח השקול הוא סכום הגדלים של הכוחות.
   truth: כוחות הם וקטורים ומתחברים ברכיבים. סכום הגדלים שווה לגודל השקול רק כשכל הכוחות באותו כיוון.
-  remedy: { lesson: '2.1', label: 'שיעור 2.1: החוק השני ברכיבים' }
+  remedy: { lesson: '2.1', anchor: 'components', label: 'שיעור 2.1: החוק השני ברכיבים' }

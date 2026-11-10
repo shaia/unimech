@@ -1,9 +1,13 @@
 ---
-/** A handwritten margin note: asides, warnings, "notice that…". */
+/**
+ * A handwritten margin note: asides, warnings, "notice that…". The optional id is rendered, because lint
+ * accepts an id on any tag as a misconception-remedy or summary anchor.
+ */
 interface Props {
   kind?: 'note' | 'warn';
+  id?: string;
 }
-const { kind = 'note' } = Astro.props;
+const { kind = 'note', id } = Astro.props;
 ---
 
-<aside class={`note hand note-${kind}`}><slot /></aside>
+<aside id={id} class={`note hand note-${kind}`}><slot /></aside>

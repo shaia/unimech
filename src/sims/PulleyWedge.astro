@@ -1,0 +1,7 @@
+---
+/** Constraint figure for lesson MDX: <Spread figure={PulleyWedge} figureProps={{ preset: 'movable', … }}>. */
+import PulleyWedge, { type PulleyWedgeProps } from './PulleyWedge';
+type Props = PulleyWedgeProps;
+---
+
+<PulleyWedge client:visible {...Astro.props} />

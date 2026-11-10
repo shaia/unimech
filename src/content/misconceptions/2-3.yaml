@@ -1,27 +1,26 @@
 # Misconceptions first detected in lesson 2.3. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.3
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the step of lesson 2.3 that refutes it (`anchor`: the step's id).
 
 - id: MC-2-normal-equals-weight
   title: הכוח הנורמלי שווה למשקל, או לרכיב הניצב שלו
   belief: הכוח הנורמלי הוא תמיד mg, או mg cos θ על מדרון.
   truth: לכוח הנורמלי אין נוסחה. הוא נעלם שהאילוץ קובע, ומוצאים אותו מהחוק השני בכיוון הניצב למשטח. במעלית, בפסגה של גבעה, כשדוחפים אל המשטח או כשהמשטח זז, הוא שונה מ-mg ומ-mg cos θ.
-  remedy: { lesson: '2.3', label: 'שיעור 2.3: הכוח הנורמלי כנעלם של האילוץ' }
+  remedy: { lesson: '2.3', anchor: normal-unknown, label: 'שיעור 2.3: הכוח הנורמלי כנעלם של האילוץ (מעלית, גבעה, מדרון)' }
 
 - id: MC-2-series-springs-add
   title: קבועים של קפיצים בטור מתחברים
   belief: שני קפיצים בטור קשיחים יותר מקפיץ אחד, וקבוע הקפיץ שלהם הוא סכום הקבועים.
   truth: בטור כל קפיץ נושא את כל הכוח, וההתארכויות מתחברות, ולכן הזוג רך יותר. במקביל הכוח מתחלק, והקבועים מתחברים.
-  remedy: { lesson: '2.3', label: 'שיעור 2.3: קפיצים בטור ובמקביל' }
+  remedy: { lesson: '2.3', anchor: springs-series, label: 'שיעור 2.3: קפיצים בטור ובמקביל (איור 2.3ב)' }
 
 - id: MC-2-tension-differs-massless
   title: בחוט חסר מסה המתיחות שונה בשני צדי הגלגלת
   belief: כשהמשקולות על גלגלת מאיצות, המתיחות גדולה יותר בצד של המשקולת הכבדה.
   truth: לחוט חסר מסה, החוק השני לכל קטע נותן הפרש מתיחויות אפס. גלגלת חסרת מסה וחסרת חיכוך רק משנה את כיוון החוט, והמתיחות זהה בשני הצדדים.
-  remedy: { lesson: '2.3', label: 'שיעור 2.3: למה חוט חסר מסה מעביר את המתיחות' }
+  remedy: { lesson: '2.3', anchor: massless-string, label: 'שיעור 2.3: למה חוט חסר מסה מעביר את המתיחות (איור 2.3ג)' }
 
 - id: MC-2-tension-uniform-heavy-rope
   title: המתיחות זהה לאורך כל חבל
   belief: גם בחבל בעל מסה המתיחות זהה בכל נקודה.
   truth: בחבל בעל מסה כל נקודה מושכת, או מחזיקה, את מה שמאחוריה, ולכן המתיחות משתנה לאורכו. היא אחידה רק בחבל חסר מסה, או כשהמסה שלו זניחה.
-  remedy: { lesson: '2.3', label: 'שיעור 2.3: מתיחות לאורך חבל בעל מסה' }
+  remedy: { lesson: '2.3', anchor: heavy-rope, label: 'שיעור 2.3: מתיחות לאורך חבל בעל מסה (איור 2.3ג)' }

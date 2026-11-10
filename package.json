@@ -34,6 +34,11 @@
     "three": "^0.187.0",
     "yaml": "^2.9.1"
   },
+  "overrides": {
+    "rehype-katex": {
+      "katex": "$katex"
+    }
+  },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@playwright/test": "^1.64.1",

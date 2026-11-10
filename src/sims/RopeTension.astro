@@ -1,0 +1,7 @@
+---
+/** Forces figure for lesson 2.3: <Spread figure={RopeTension} figureProps={{ preset: 'elevator', … }}>. */
+import RopeTension, { type RopeTensionProps } from './RopeTension';
+type Props = RopeTensionProps;
+---
+
+<RopeTension client:visible {...Astro.props} />

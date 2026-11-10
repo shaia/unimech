@@ -1,0 +1,553 @@
+# Workbook, lesson 2.6 (dynamics of circular motion). Format and rules: .claude/CLAUDE.md, "The solution
+# format": given → law → manipulation (symbolic result) → limit → units → substitution → result.
+# Every number was recomputed in .scratch/ch2/2-6/workbook.ts with src/physics/circulardynamics.ts
+# (bankedDesignSpeed, bankedSpeedRange, conicalPendulum, humpNormal, supportForceFromBottom) and curvilinear.ts
+# (omegaFromFrequency, centripetalFromOmega), G = 9.8 from src/physics/constants.ts:
+#   W-02 m = 0.50 kg, r = 0.80 m, 2.0 rev/s: ω = 12.6 rad/s, v = 10.1 m/s, T = 63.2 N (mg = 4.90 N);
+#   W-03 hump R = 30 m, v = 12 m/s, m = 1200 kg: v²/R = 4.80, N = 6000 N (0.510 mg, mg = 11800 N); leaves at 17.1 m/s;
+#   W-04 R = 250 m, v = 25 m/s: tanθ = 0.255, θ = 14.3°;
+#   W-05 h = 0.50 m, L = 0.80 m and 1.20 m: both 1.42 s; θ = 51.3° and 65.4°; T = 1.60 mg and 2.40 mg;
+#   W-06 m = 0.20 kg, M = 0.50 kg, r = 0.40 m: v = 3.13 m/s, ω = 7.83 rad/s, a turn in 0.803 s;
+#   W-07 loop R = 10 m, v = 12 m/s, 60 kg: v²/R = 14.4, N = 276 N (0.469 mg), v_min = 9.90 m/s;
+#   W-08 v = 100 m/s, 30°: R = 1770 m, the seat pushes 1.15 mg (792 N on 70 kg, mg = 686 N);
+#   W-09 R = 60 m, θ = 30°: v₀ = 18.4 m/s; μs = 0.10: 16.3 to 20.6 m/s (gR = 588, ratios 0.451 and 0.719);
+#     tan 30° = 0.577, cot 30° = 1.73;
+#   W-10 L = 0.90 m, m = 0.30 kg from rest at the horizontal: v_b = 4.20 m/s, T = 3mg cosφ, bottom 8.82 N
+#     (mg = 2.94 N), T = mg at φ = 70.5°, at 45° 2.12 mg = 6.24 N;
+#   c1 (MIT 8.01 Fall 2016, PS 3 #3) l = 1.2 m, β = 35°, h = 1.8 m: ω = 3.16 rad/s, r = 0.688 m, v = 2.17 m/s,
+#     fall 0.606 s, d = 1.32 m (= sinβ √(2lh/cosβ)); T = 1.22 mg, a turn in 1.99 s;
+#   c2 (MIT 8.01 Fall 2016, PS 3 #6) d = 0.15 m, μs = 0.50, α = 20 rad/s²: μs g/d = 32.7 s⁻², slips at
+#     ω = 5.08 rad/s (√(μs g/d) = 5.72 without the tangential part), at t = 0.254 s; a_t = 3.00, a_c = 3.87 m/s²,
+#     the friction 37.8° from the radius.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '2.6'
+practice:
+  - id: W-2.6-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-2.6-1]
+    prompt: >-
+      ילדה עומדת על קרוסלה שמסתובבת בקצב קבוע, במרחק $r$ מהציר, ולא אוחזת בשום דבר.
+
+      א. שרטטו את תרשים הכוחות של הילדה, ולכל כוח כתבו איזה גוף מפעיל אותו. איזה מהם הוא הכוח הרדיאלי?
+
+      ב. ביום גשום הרצפה של הקרוסלה חלקה מאוד. במבט מלמעלה, מהקרקע, באיזה מסלול הילדה נעה אם היא מחליקה?
+    answer: >-
+      א. כובד (כדור הארץ), נורמלי (רצפת הקרוסלה), חיכוך סטטי (רצפת הקרוסלה) אל הציר; החיכוך הוא הכוח הרדיאלי.
+
+      ב. בקו ישר, במשיק למעגל שלה ברגע שהיא מחליקה, ולא החוצה בכיוון רדיאלי.
+    solution:
+      - kind: law
+        text: >-
+          החוק השני ברכיב הרדיאלי: $\sum F_r = m\omega^2r$, חיובי אל הציר. בתרשים רק כוחות שיש גוף שמפעיל אותם.
+      - kind: reasoning
+        text: >-
+          א. באנך: הכובד, שכדור הארץ מפעיל, והנורמלי, שהרצפה מפעילה, מבטלים זה את זה. באופק יש כוח אחד: החיכוך
+          הסטטי של הרצפה, אל הציר, בגודל $m\omega^2r$. הוא הכוח הצנטריפטלי, ואין חץ נוסף בשם הזה. הוא סטטי, כי
+          הנעליים לא מחליקות על הרצפה.
+
+          ב. בלי חיכוך אין כוח אופקי, ולפי החוק הראשון הילדה ממשיכה במהירות שהייתה לה, $\omega r$, משיקה למעגל.
+          מהקרוסלה, שמסתובבת מתחתיה, זה נראה כאילו היא "נזרקת החוצה"; מהקרקע היא פשוט לא פונה יותר.
+      - kind: limit
+        text: >-
+          ילדה בדיוק על הציר, $r = 0$, לא צריכה שום חיכוך: $m\omega^2\cdot0 = 0$, והיא נשארת במקום גם על רצפה חלקה.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot(\text{rad/s})^2\cdot\text{m} = \text{N}$.
+      - kind: result
+        text: >-
+          א. החיכוך הסטטי של הרצפה, אל הציר, הוא הכוח הרדיאלי. ב. בקו ישר, במשיק למעגל.
+
+  - id: W-2.6-02
+    level: basic
+    objectives: [OBJ-2.6-1]
+    prompt: >-
+      אבן של $0.50\,\text{kg}$ קשורה בחוט של $0.80\,\text{m}$ ומסתובבת במעגל אופקי על שולחן חלק, סביב יתד שבמרכז,
+      2.0 סיבובים בשנייה.
+
+      א. מה גודל המהירות של האבן?
+
+      ב. מה המתיחות בחוט? השוו אותה למשקל של האבן.
+    answer: >-
+      א. $10.1\,\text{m/s}$.
+
+      ב. $63.2\,\text{N}$, פי 13 בערך מהמשקל ($4.90\,\text{N}$).
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.50\,\text{kg}$, $r = 0.80\,\text{m}$, $f = 2.0\,\text{s}^{-1}$. **הכיוון החיובי** ברדיאלי: אל היתד.
+      - kind: law
+        text: >-
+          $\omega = 2\pi f$, $v = \omega r$, $\sum F_r = m\omega^2r$. באנך הכובד והנורמלי של השולחן מתבטלים, ובאופק
+          פועלת רק המתיחות.
+      - kind: manipulation
+        text: >-
+          $T = m\omega^2r = 4\pi^2f^2mr$.
+      - kind: limit
+        text: >-
+          $f \to 0$: $T \to 0$, אבן שמונחת ליד היתד עם חוט רפוי. $T$ גדל כמו $f^2$: פי 2 בקצב, פי 4 במתיחות.
+      - kind: units
+        text: >-
+          $\text{s}^{-2}\cdot\text{kg}\cdot\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $\omega = 2\pi\cdot2.0 = 12.6\,\text{rad/s}$, $v = 12.6\cdot0.80 = 10.1\,\text{m/s}$,
+          $T = 0.50\cdot12.6^2\cdot0.80 = 63.2\,\text{N}$, והמשקל $0.50\cdot9.8 = 4.90\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $10.1\,\text{m/s}$. ב. $63.2\,\text{N}$, כ-13 פעמים המשקל.
+
+  - id: W-2.6-03
+    level: basic
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      מכונית של $1200\,\text{kg}$ עוברת ב-$12\,\text{m/s}$ את הפסגה של גבעה, שבחתך היא קשת של מעגל ברדיוס $30\,\text{m}$.
+
+      א. מה הכוח הנורמלי של הכביש על המכונית בפסגה?
+
+      ב. מאיזו מהירות המכונית מתנתקת מהכביש בפסגה?
+    answer: >-
+      א. $6000\,\text{N}$, כחצי מהמשקל.
+
+      ב. $17.1\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 1200\,\text{kg}$, $v = 12\,\text{m/s}$, $R = 30\,\text{m}$. מרכז הקשת מתחת למכונית. **הכיוון החיובי**: כלפי
+          מטה, אל המרכז.
+      - kind: law
+        text: >-
+          $\sum F_r = mv^2/R$. הכוחות: הכובד, אל המרכז, והנורמלי, הרחק ממנו. כביש רק דוחף: $N \ge 0$.
+      - kind: manipulation
+        text: >-
+          $mg - N = mv^2/R$, ולכן $N = m(g - v^2/R)$. $N = 0$ כש-$v = \sqrt{gR}$.
+      - kind: limit
+        text: >-
+          $v \to 0$: $N \to mg$, מכונית שעומדת בפסגה. $R \to \infty$: כביש שטוח, $N = mg$ בכל מהירות.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}^2 = \text{N}$; $\sqrt{\text{m/s}^2\cdot\text{m}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          א. $v^2/R = 144/30 = 4.80\,\text{m/s}^2$, ו-$N = 1200(9.8 - 4.80) = 6000\,\text{N}$, כשהמשקל $11{,}800\,\text{N}$.
+
+          ב. $\sqrt{9.8\cdot30} = 17.1\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $6000\,\text{N}$ ($0.510\,mg$). ב. $17.1\,\text{m/s}$, כ-62 קילומטר לשעה.
+
+  - id: W-2.6-04
+    level: mid
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      מתכננים עקומה של מחלף, קשת של מעגל ברדיוס $250\,\text{m}$, כך שמכונית שנוסעת ב-$25\,\text{m/s}$ (90 קילומטר
+      לשעה) לא תצטרך שום חיכוך. באיזו זווית צריך להטות את הכביש? האם התשובה תלויה במסה של המכונית?
+    answer: >-
+      $14.3^\circ$, בלי תלות במסה.
+    solution:
+      - kind: given
+        text: >-
+          $R = 250\,\text{m}$, $v_0 = 25\,\text{m/s}$, בלי חיכוך. **צירים**: אנכי, ורדיאלי אופקי אל מרכז העקומה.
+      - kind: law
+        text: >-
+          באנך $N\cos\theta = mg$; ברדיאלי $N\sin\theta = mv_0^2/R$.
+      - kind: manipulation
+        text: >-
+          מחלקים: $\tan\theta = \dfrac{v_0^2}{gR}$. $N$ ו-$m$ מצטמצמים.
+      - kind: limit
+        text: >-
+          $v_0 \to 0$: $\theta \to 0$, כביש אופקי. $R \to \infty$: שוב $\theta \to 0$, כביש ישר לא צריך שיפוע.
+      - kind: units
+        text: >-
+          $(\text{m/s})^2/(\text{m/s}^2\cdot\text{m})$ חסר ממדים, כמו טנגנס.
+      - kind: substitution
+        text: >-
+          $\tan\theta = 625/(9.8\cdot250) = 0.255$, $\theta = 14.3^\circ$.
+      - kind: result
+        text: >-
+          $14.3^\circ$. המסה מצטמצמת, ולכן משאית ואופנוע עוברים את העקומה בלי חיכוך באותה מהירות.
+
+  - id: W-2.6-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      שתי משקולות זהות תלויות מאותה נקודה בתקרה, בחוטים באורך $0.80\,\text{m}$ ו-$1.20\,\text{m}$, וכל אחת נעה כמטוטלת
+      קונית. שתיהן מסתובבות באותו מישור אופקי, $0.50\,\text{m}$ מתחת לנקודת התלייה.
+
+      א. למי מהן זמן סיבוב קצר יותר? נמקו בלי לחשב.
+
+      ב. באיזה חוט המתיחות גדולה יותר, ופי כמה?
+    answer: >-
+      א. לאף אחת: לשתיהן אותו זמן, $1.42\,\text{s}$.
+
+      ב. בחוט הארוך, פי 1.5 ($2.40\,mg$ לעומת $1.60\,mg$).
+    solution:
+      - kind: law
+        text: >-
+          מטוטלת קונית: $\cos\theta = g/(\omega^2L)$ ו-$T = mg/\cos\theta$.
+      - kind: manipulation
+        text: >-
+          $L\cos\theta = h$ הוא הגובה של נקודת התלייה מעל מישור הסיבוב. לכן $\omega^2 = g/h$: זמן הסיבוב
+          $2\pi\sqrt{h/g}$ תלוי רק ב-$h$. והמתיחות: $T = mg/\cos\theta = mgL/h$.
+      - kind: reasoning
+        text: >-
+          א. אותו $h$, ולכן אותו $\omega$: המשקולות מסתובבות יחד, והחוטים נשארים באותו מישור אנכי. החוט הארוך נטוי
+          יותר ($65.4^\circ$ לעומת $51.3^\circ$), והמשקולת שלו עוברת מעגל גדול יותר באותו זמן.
+
+          ב. באותו $h$, $T \propto L$: היחס $1.20/0.80 = 1.5$.
+      - kind: limit
+        text: >-
+          $L \to h$: החוט כמעט אנכי, $\theta \to 0$, ו-$T \to mg$. הזמן נשאר $2\pi\sqrt{h/g}$, הזמן של מטוטלת רגילה
+          באורך $h$ בתנודות קטנות.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}/(\text{m/s}^2)} = \text{s}$.
+      - kind: substitution
+        text: >-
+          $2\pi\sqrt{0.50/9.8} = 1.42\,\text{s}$; $T_1 = 0.80/0.50 = 1.60\,mg$, $T_2 = 1.20/0.50 = 2.40\,mg$.
+      - kind: result
+        text: >-
+          א. לשתיהן $1.42\,\text{s}$. ב. בחוט הארוך, פי 1.5.
+
+  - id: W-2.6-06
+    level: mid
+    objectives: [OBJ-2.6-1]
+    prompt: >-
+      דסקית של $0.20\,\text{kg}$ נעה במעגל על שולחן אוויר חלק. היא קשורה בחוט שעובר דרך חור קטן במרכז השולחן, ובקצה
+      השני שלו, מתחת לשולחן, תלויה משקולת של $0.50\,\text{kg}$ שנמצאת במנוחה. רדיוס המעגל $0.40\,\text{m}$.
+
+      א. מה גודל המהירות של הדסקית?
+
+      ב. כמה זמן לוקח לה סיבוב?
+    answer: >-
+      א. $3.13\,\text{m/s}$.
+
+      ב. $0.803\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.20\,\text{kg}$ (הדסקית), $M = 0.50\,\text{kg}$ (המשקולת), $r = 0.40\,\text{m}$, חוט חסר מסה, חור חלק.
+      - kind: law
+        text: >-
+          לכל גוף תרשים כוחות משלו. המשקולת במנוחה: $T - Mg = 0$. הדסקית ברדיאלי (חיובי: אל החור): $T = mv^2/r$. המתיחות
+          זהה לכל אורך החוט (שיעור 2.3).
+      - kind: manipulation
+        text: >-
+          $mv^2/r = Mg$, ולכן $v = \sqrt{Mgr/m}$, וזמן הסיבוב $2\pi r/v$.
+      - kind: limit
+        text: >-
+          $M \to 0$: $v \to 0$, אין כוח רדיאלי, ואין סיבוב. $m$ גדולה: צריך מהירות קטנה יותר באותה מתיחות, כי
+          $mv^2/r$ קבוע.
+      - kind: units
+        text: >-
+          $\sqrt{\text{kg}\cdot\text{m/s}^2\cdot\text{m}/\text{kg}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{0.50\cdot9.8\cdot0.40/0.20} = 3.13\,\text{m/s}$, $2\pi\cdot0.40/3.13 = 0.803\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $3.13\,\text{m/s}$. ב. $0.803\,\text{s}$.
+
+  - id: W-2.6-07
+    level: mid
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      קרונית של רכבת הרים עוברת בראש לולאה אנכית ברדיוס $10\,\text{m}$, הפוכה, ב-$12\,\text{m/s}$. נוסע של $60\,\text{kg}$
+      יושב בה.
+
+      א. מה הכוח שהמושב מפעיל על הנוסע בנקודה העליונה, ולאן הוא פונה?
+
+      ב. מה המהירות המינימלית בנקודה העליונה שבה הנוסע עוד צמוד למושב בלי חגורה?
+    answer: >-
+      א. $276\,\text{N}$, כלפי מטה (אל המרכז).
+
+      ב. $9.90\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $R = 10\,\text{m}$, $v = 12\,\text{m/s}$, $m = 60\,\text{kg}$. בנקודה העליונה המרכז מתחת לנוסע, והמושב מעליו.
+          **הכיוון החיובי**: כלפי מטה, אל המרכז.
+      - kind: law
+        text: >-
+          $\sum F_r = mv^2/R$. הכוחות: הכובד, והנורמלי של המושב, שפונה מהמושב אל הנוסע, כלומר כלפי מטה. מושב רק דוחף: $N \ge 0$.
+      - kind: manipulation
+        text: >-
+          $N + mg = mv^2/R$, ולכן $N = m(v^2/R - g)$. $N \ge 0$ דורש $v \ge \sqrt{gR}$.
+      - kind: limit
+        text: >-
+          ב-$v = \sqrt{gR}$ הנורמלי מתאפס, והכובד לבד הוא הכוח הצנטריפטלי, כמו בחוט שבקושי מתוח. $R \to 0$: כל מהירות
+          מספיקה.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          א. $v^2/R = 14.4\,\text{m/s}^2$, ו-$N = 60(14.4 - 9.8) = 276\,\text{N}$, כ-$0.469\,mg$.
+
+          ב. $\sqrt{9.8\cdot10} = 9.90\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $276\,\text{N}$ כלפי מטה. ב. $9.90\,\text{m/s}$.
+
+  - id: W-2.6-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-2.6-1, OBJ-2.6-2]
+    prompt: >-
+      מטוס פונה במעגל אופקי במהירות קבועה בגודלה בכך שהוא מטה את הכנפיים בזווית $\theta$. כוח העילוי שהאוויר מפעיל
+      על המטוס ניצב לכנפיים.
+
+      א. שרטטו את הכוחות על המטוס במבט מאחור, וקבעו מה הכוח הרדיאלי. מה הקשר בין $\theta$, $v$ ורדיוס הפנייה? השוו
+      לכביש משופע.
+
+      ב. הסבירו למה הנוסעים מרגישים "כבדים" בפנייה, ופי כמה.
+
+      ג. מה רדיוס הפנייה ב-$100\,\text{m/s}$ ובהטיה של $30^\circ$, ובכמה המושב דוחף נוסע של $70\,\text{kg}$?
+    answer: >-
+      א. הרכיב האופקי של העילוי; $\tan\theta = v^2/(gR)$, כמו כביש משופע בלי חיכוך.
+
+      ב. המושב דוחף אותם ב-$mg/\cos\theta$, יותר מהמשקל.
+
+      ג. $R = 1770\,\text{m}$; $792\,\text{N}$, פי $1.15$ מהמשקל.
+    solution:
+      - kind: law
+        text: >-
+          $\sum F_r = mv^2/R$ (חיובי: אל מרכז הפנייה), ובאנך $\sum F_y = 0$, כי המטוס שומר על גובה.
+      - kind: reasoning
+        text: >-
+          א. שני כוחות על המטוס (מזניחים את הדחף והגרר, שפועלים לאורך התנועה): הכובד, והעילוי $L$, נטוי ב-$\theta$
+          מהאנך. באנך $L\cos\theta = mg$, ברדיאלי $L\sin\theta = mv^2/R$. הכוח הרדיאלי הוא הרכיב האופקי של העילוי, בדיוק
+          כמו הרכיב האופקי של הנורמלי בכביש משופע, ולכן $\tan\theta = v^2/(gR)$, אותה נוסחה.
+
+          ב. על הנוסע פועלים הכובד והכוח של המושב. גם הוא נע באותו מעגל, ולכן המושב צריך לתת לו את אותו יחס:
+          $F\cos\theta = mg$, כלומר $F = mg/\cos\theta \gt mg$. הנוסע "מרגיש" את הכוח של המושב, ולא את הכובד, ולכן
+          מרגיש כבד פי $1/\cos\theta$.
+      - kind: limit
+        text: >-
+          $\theta \to 0$: אין רכיב אופקי, $R \to \infty$ (טיסה ישרה), והנוסע מרגיש בדיוק את משקלו. $\theta \to 90^\circ$:
+          העילוי הדרוש שואף לאינסוף, ואין דרך לשמור על גובה.
+      - kind: units
+        text: >-
+          $v^2/(g\tan\theta)$: $(\text{m/s})^2/(\text{m/s}^2) = \text{m}$.
+      - kind: substitution
+        text: >-
+          ג. $R = 100^2/(9.8\tan30^\circ) = 1770\,\text{m}$. $F = 70\cdot9.8/\cos30^\circ = 792\,\text{N}$, כשהמשקל $686\,\text{N}$.
+      - kind: result
+        text: >-
+          א. הרכיב האופקי של העילוי; $\tan\theta = v^2/(gR)$. ב. המושב דוחף פי $1/\cos\theta$ מהמשקל. ג. $1770\,\text{m}$
+          ו-$792\,\text{N}$ ($1.15\,mg$).
+
+  - id: W-2.6-09
+    level: bagrut
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      עקומה של כביש, ברדיוס $60\,\text{m}$, משופעת ב-$30^\circ$ לעבר המרכז.
+
+      א. מה מהירות התכנון שלה?
+
+      ב. בחורף הכביש קפוא ומקדם החיכוך הסטטי רק $0.10$. באיזה טווח מהירויות מכונית עוברת בו בלי להחליק?
+
+      ג. מה מקדם החיכוך הסטטי המינימלי שבו מכונית יכולה לחנות על העקומה בלי להחליק? ומה המינימלי שבו אין שום מהירות
+      מרבית?
+    answer: >-
+      א. $18.4\,\text{m/s}$.
+
+      ב. $16.3$ עד $20.6\,\text{m/s}$.
+
+      ג. $0.577$ לחנייה; $1.73$ כדי שלא תהיה מהירות מרבית.
+    solution:
+      - kind: given
+        text: >-
+          $R = 60\,\text{m}$, $\theta = 30^\circ$, ב-(ב) $\mu_s = 0.10$. **צירים**: אנכי, ורדיאלי אופקי אל המרכז; $f$ חיובי
+          במורד השיפוע.
+      - kind: law
+        text: >-
+          באנך $N\cos\theta - f\sin\theta = mg$, ברדיאלי $N\sin\theta + f\cos\theta = mv^2/R$, ו-$|f| \le \mu_sN$.
+      - kind: manipulation
+        text: >-
+          בלי חיכוך $v_0^2 = gR\tan\theta$. בקצוות $f = \pm\mu_sN$:
+          $v_{\max}^2 = gR\,\dfrac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}$,
+          $v_{\min}^2 = gR\,\dfrac{\sin\theta - \mu_s\cos\theta}{\cos\theta + \mu_s\sin\theta}$.
+          חנייה ($v = 0$) אפשרית אם המונה של $v_{\min}^2$ לא חיובי: $\mu_s \ge \tan\theta$. אין מהירות מרבית אם המכנה
+          של $v_{\max}^2$ לא חיובי: $\mu_s \ge \cot\theta$.
+      - kind: limit
+        text: >-
+          $\mu_s \to 0$: $v_{\min} = v_{\max} = v_0$. ב-$\theta \to 0$ התנאי לחנייה הוא $\mu_s \ge 0$: על כביש אופקי כל מכונית
+          חונה.
+      - kind: units
+        text: >-
+          היחסים חסרי ממדים, ו-$\sqrt{gR}$ במטרים לשנייה.
+      - kind: substitution
+        text: >-
+          א. $gR = 588\,\text{m}^2/\text{s}^2$, $v_0 = \sqrt{588\cdot0.577} = 18.4\,\text{m/s}$.
+
+          ב. היחסים הם $0.451$ ו-$0.719$, ולכן $v_{\min} = \sqrt{588\cdot0.451} = 16.3\,\text{m/s}$ ו-$v_{\max} = \sqrt{588\cdot0.719} = 20.6\,\text{m/s}$.
+
+          ג. $\tan30^\circ = 0.577$ ו-$\cot30^\circ = 1.73$.
+      - kind: result
+        text: >-
+          א. $18.4\,\text{m/s}$. ב. $16.3$ עד $20.6\,\text{m/s}$: על קרח הטווח צר. ג. $\mu_s \ge 0.577$ לחנייה, ו-$\mu_s \ge 1.73$
+          (לא מציאותי לצמיג) כדי שלא תהיה מהירות מרבית.
+
+  - id: W-2.6-10
+    level: bagrut
+    objectives: [OBJ-2.6-1, OBJ-2.6-2]
+    prompt: >-
+      כדור של $0.30\,\text{kg}$ קשור בחוט באורך $0.90\,\text{m}$. מחזיקים אותו כשהחוט מתוח ואופקי, ומשחררים ממנוחה.
+      נסמן ב-$\varphi$ את הזווית של החוט מהאנך, מתחת לנקודת התלייה.
+
+      א. בעזרת הרכיב המשיקי של החוק השני וכלל השרשרת, מצאו את גודל המהירות כפונקציה של $\varphi$.
+
+      ב. מצאו את המתיחות כפונקציה של $\varphi$. מה היא בנקודה התחתונה, והאם היא תלויה באורך החוט?
+
+      ג. באיזו זווית המתיחות שווה למשקל?
+    answer: >-
+      א. $v^2 = 2gL\cos\varphi$.
+
+      ב. $T = 3mg\cos\varphi$; בתחתית $3mg = 8.82\,\text{N}$, בלי תלות ב-$L$.
+
+      ג. $\cos\varphi = 1/3$, כלומר $70.5^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.30\,\text{kg}$, $L = 0.90\,\text{m}$, שחרור ממנוחה ב-$\varphi = 90^\circ$. **הכיוון החיובי**: ברדיאלי אל נקודת
+          התלייה; במשיקי, לכיוון שבו $\varphi$ גדלה.
+      - kind: law
+        text: >-
+          משיקי: $m\,dv/dt = -mg\sin\varphi$. רדיאלי: $T - mg\cos\varphi = mv^2/L$. ($v$ כאן הוא $L\,d\varphi/dt$, עם סימן.)
+      - kind: manipulation
+        text: >-
+          כלל השרשרת: $dv/dt = (v/L)\,dv/d\varphi$, ולכן $v\,dv = -gL\sin\varphi\,d\varphi$. מבצעים אינטגרציה מ-$90^\circ$, שם
+          $v = 0$: $\tfrac12v^2 = gL\cos\varphi$, כלומר $v^2 = 2gL\cos\varphi$. מציבים ברדיאלי:
+          $T = mg\cos\varphi + 2mg\cos\varphi = 3mg\cos\varphi$.
+      - kind: limit
+        text: >-
+          ב-$\varphi = 90^\circ$: $T = 0$, נכון לרגע השחרור, שבו הכובד ניצב לחוט. בתחתית $T = 3mg$: הכדור "כבד" פי 3.
+          $L$ לא מופיע: חוט ארוך נותן מהירות גדולה יותר, אבל גם מעגל גדול יותר, ו-$v^2/L$ זהה.
+      - kind: units
+        text: >-
+          $v^2 = 2gL\cos\varphi$ ביחידות $\text{m}^2/\text{s}^2$.
+      - kind: substitution
+        text: >-
+          ב. $mg = 0.30\cdot9.8 = 2.94\,\text{N}$, ובתחתית $T = 8.82\,\text{N}$, וגודל המהירות שם $\sqrt{2\cdot9.8\cdot0.90} = 4.20\,\text{m/s}$.
+
+          ג. $3\cos\varphi = 1$, $\varphi = 70.5^\circ$.
+      - kind: result
+        text: >-
+          א. $v^2 = 2gL\cos\varphi$. ב. $T = 3mg\cos\varphi$; $8.82\,\text{N}$ בתחתית, בלי תלות באורך. ג. $70.5^\circ$.
+
+challenge:
+  - id: W-2.6-c1
+    stars: 1
+    objectives: [OBJ-2.6-2]
+    prompt: >-
+      כדור קטן תלוי בחוט באורך $l = 1.2\,\text{m}$ ונע כמטוטלת קונית: החוט נטוי $\beta = 35^\circ$ מהאנך, והמעגל של
+      הכדור נמצא בגובה $h = 1.8\,\text{m}$ מעל הקרקע.
+
+      א. מה המהירות הזוויתית של הכדור?
+
+      ב. ברגע מסוים הכדור ניתק מהחוט. באיזה מרחק אופקי מנקודת הניתוק הוא פוגע בקרקע? מצאו ביטוי כללי ב-$l$, $\beta$
+      ו-$h$, ואחר כך מספר.
+
+      ג. לאיזה כיוון הכדור יוצא ביחס למעגל, במבט מלמעלה?
+    answer: >-
+      א. $3.16\,\text{rad/s}$.
+
+      ב. $d = \sin\beta\sqrt{2lh/\cos\beta} = 1.32\,\text{m}$.
+
+      ג. במשיק למעגל, לא רדיאלית.
+    solution:
+      - kind: given
+        text: >-
+          $l = 1.2\,\text{m}$, $\beta = 35^\circ$, $h = 1.8\,\text{m}$. רדיוס המעגל $r = l\sin\beta$. **צירים** בחלק (א):
+          אנכי, ורדיאלי אופקי אל הציר; בחלק (ב): $x$ במשיק, בכיוון המהירות ברגע הניתוק, ו-$y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          מטוטלת קונית: $T\cos\beta = mg$, $T\sin\beta = m\omega^2l\sin\beta$. אחרי הניתוק: זריקה אופקית (שיעור 1.2).
+      - kind: manipulation
+        text: >-
+          א. $\omega = \sqrt{g/(l\cos\beta)}$.
+
+          ב. ברגע הניתוק המהירות אופקית ומשיקה למעגל, $v = \omega l\sin\beta$. זמן הנפילה מגובה $h$ הוא $\sqrt{2h/g}$,
+          ולכן $d = v\sqrt{2h/g} = l\sin\beta\sqrt{\dfrac{g}{l\cos\beta}}\sqrt{\dfrac{2h}{g}} = \sin\beta\sqrt{\dfrac{2lh}{\cos\beta}}$.
+      - kind: limit
+        text: >-
+          $\beta \to 0$: $d \to 0$, הכדור תלוי ונופל ישר למטה. $g$ מצטמצם: על הירח הכדור היה מסתובב לאט יותר ונופל
+          לאט יותר, ופוגע באותו מקום. $h \to 0$: $d \to 0$.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}\cdot\text{m}} = \text{m}$.
+      - kind: substitution
+        text: >-
+          א. $\omega = \sqrt{9.8/(1.2\cos35^\circ)} = 3.16\,\text{rad/s}$ (סיבוב בכל $1.99\,\text{s}$).
+
+          ב. $r = 0.688\,\text{m}$, $v = 3.16\cdot0.688 = 2.17\,\text{m/s}$, זמן הנפילה $0.606\,\text{s}$, ו-$d = 1.32\,\text{m}$.
+      - kind: reasoning
+        text: >-
+          ג. ברגע הניתוק המתיחות נעלמת, ונשאר רק הכובד, שהוא אנכי. ברכיב האופקי אין כוח, ולכן הכדור ממשיך במהירות
+          האופקית שהייתה לו: משיקה למעגל. הוא לא "נזרק החוצה" מהמרכז.
+      - kind: result
+        text: >-
+          א. $3.16\,\text{rad/s}$. ב. $d = \sin\beta\sqrt{2lh/\cos\beta} = 1.32\,\text{m}$. ג. במשיק למעגל.
+    source:
+      name: MIT OpenCourseWare 8.01 Classical Mechanics (Fall 2016), Problem Set 3
+      year: 2016
+      problem: 'Problem 3: Tetherball Breaking Off (conical pendulum, then the ball detaches and flies to the ground)'
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4b332aab1695e67fdcbc0f4c3924134e_MIT8_01F16_pset3.pdf
+      verified: '2026-11-09'
+      adapted: true
+
+  - id: W-2.6-c2
+    stars: 2
+    objectives: [OBJ-2.6-1]
+    prompt: >-
+      מטבע מונח על דיסקה אופקית, במרחק $d = 0.15\,\text{m}$ מהמרכז. מקדם החיכוך הסטטי בין המטבע לדיסקה $\mu_s = 0.50$.
+      ברגע $t = 0$ הדיסקה מתחילה להסתובב ממנוחה בתאוצה זוויתית קבועה $\alpha = 20\,\text{rad/s}^2$.
+
+      א. כל עוד המטבע לא מחליק, מה גודל החיכוך הסטטי על המטבע כפונקציה של $t$? לאן הוא פונה ב-$t = 0$?
+
+      ב. באיזו מהירות זוויתית, ובאיזה רגע, המטבע מתחיל להחליק? השוו לתשובה שמתקבלת אם שוכחים את התאוצה המשיקית.
+    answer: >-
+      א. $f = md\sqrt{\alpha^2 + \alpha^4t^4}$; ב-$t = 0$ במשיק, בכיוון הסיבוב.
+
+      ב. $\omega = \left[(\mu_sg/d)^2 - \alpha^2\right]^{1/4} = 5.08\,\text{rad/s}$, ב-$t = 0.254\,\text{s}$; בלי הרכיב המשיקי
+      יוצא $5.72\,\text{rad/s}$, מאוחר מדי.
+    solution:
+      - kind: given
+        text: >-
+          $d = 0.15\,\text{m}$, $\mu_s = 0.50$, $\alpha = 20\,\text{rad/s}^2$, $\omega(0) = 0$. המטבע נע עם הדיסקה במעגל
+          ברדיוס $d$. **צירים**: רדיאלי אל המרכז, ומשיקי בכיוון הסיבוב.
+      - kind: law
+        text: >-
+          $\sum F_r = m\omega^2d$, $\sum F_t = m\,dv/dt = m\alpha d$ (שיעור 1.3: $a_t = \alpha R$). הכוח האופקי היחיד הוא
+          החיכוך הסטטי, ולכן יש לו **שני** רכיבים, ו-$|\vec f| \le \mu_sN = \mu_smg$.
+      - kind: manipulation
+        text: >-
+          $\omega = \alpha t$, ולכן $f_r = m\alpha^2t^2d$, $f_t = m\alpha d$, ו-$|\vec f| = md\sqrt{\alpha^2 + \omega^4}$. החלקה
+          מתחילה כש-$d^2(\alpha^2 + \omega^4) = (\mu_sg)^2$, כלומר $\omega_s = \left[(\mu_sg/d)^2 - \alpha^2\right]^{1/4}$, ב-$t_s = \omega_s/\alpha$.
+          אם $\alpha \ge \mu_sg/d$ המטבע מחליק מיד.
+      - kind: limit
+        text: >-
+          $\alpha \to 0$ (הדיסקה מאיצה לאט מאוד): $\omega_s \to \sqrt{\mu_sg/d}$, התשובה של המטבע על פטיפון בקצב קבוע.
+          $\alpha \to \mu_sg/d$: $\omega_s \to 0$, החיכוך מספיק בקושי רק לתאוצה המשיקית.
+      - kind: units
+        text: >-
+          $\mu_sg/d$ ביחידות $\text{s}^{-2}$, כמו $\alpha$, ו-$[(\text{s}^{-2})^2]^{1/4} = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\mu_sg/d = 0.50\cdot9.8/0.15 = 32.7\,\text{s}^{-2}$. $\omega_s = (32.7^2 - 20^2)^{1/4} = 5.08\,\text{rad/s}$,
+          $t_s = 5.08/20 = 0.254\,\text{s}$. ברגע הזה $a_t = 3.00\,\text{m/s}^2$ ו-$a_c = 3.87\,\text{m/s}^2$, והחיכוך נוטה
+          $37.8^\circ$ מהכיוון אל המרכז. בלי הרכיב המשיקי: $\sqrt{32.7} = 5.72\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          א. $f = md\sqrt{\alpha^2 + \alpha^4t^4}$, ב-$t = 0$ במשיק. ב. $5.08\,\text{rad/s}$ ב-$0.254\,\text{s}$; מי
+          ששוכחים את $a_t$ מקבלים $5.72\,\text{rad/s}$.
+    source:
+      name: MIT OpenCourseWare 8.01 Classical Mechanics (Fall 2016), Problem Set 3
+      year: 2016
+      problem: 'Problem 6: A coin on a rotating disk (constant angular acceleration from rest; when does the coin slip)'
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4b332aab1695e67fdcbc0f4c3924134e_MIT8_01F16_pset3.pdf
+      verified: '2026-11-09'
+      adapted: true

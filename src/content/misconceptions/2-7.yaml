@@ -1,12 +1,12 @@
 # Misconceptions first detected in lesson 2.7. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 2.7
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. The anchors point at
+# the steps and sections of lesson 2.7 that refute each one.
 
 - id: MC-2-terminal-still-accelerates
   title: במהירות הסופית הגוף עדיין מאיץ
   belief: כל עוד כוח הכובד פועל על גוף נופל, התאוצה שלו היא g, גם במהירות הסופית.
   truth: התאוצה נקבעת על ידי הכוח השקול. במהירות הסופית הגרר מאזן את הכובד, השקול אפס והתאוצה אפס.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: גרף המהירות מתקרב לקו אופקי' }
+  remedy: { lesson: '2.7', anchor: terminal, label: 'שיעור 2.7: הכוח השקול כשהעקומה מתיישרת' }
 
 - id: MC-2-zero-acceleration-means-rest
   title: תאוצה אפס פירושה מנוחה
@@ -18,28 +18,34 @@
   title: גוף כבד וגוף קל מגיעים לאותה מהירות סופית
   belief: מכיוון שבלי אוויר כל הגופים נופלים יחד, גם עם אוויר הם מגיעים לאותה מהירות.
   truth: הכובד גדל עם המסה, והגרר תלוי רק במהירות ובצורה. גוף כבד יותר באותה צורה צריך מהירות גדולה יותר כדי שהגרר יאזן אותו.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: שני כדורים באותו גודל ובמסות שונות' }
+  remedy: { lesson: '2.7', anchor: double-mass, label: 'שיעור 2.7: שני שחרורים, במסה אחת ובמסה כפולה' }
 
 - id: MC-2-drag-always-linear
   title: הגרר תמיד ליניארי במהירות
   belief: כוח הגרר תמיד פרופורציוני למהירות.
   truth: בגופים גדולים ומהירים, מכדור ועד צנחן, הגרר כמעט ריבועי במהירות. גרר ליניארי מתאר גופים זעירים ואיטיים.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: היחס בין הגרר הריבועי לליניארי' }
+  remedy: { lesson: '2.7', anchor: regime, label: 'שיעור 2.7: איזה גרר שולט?' }
 
 - id: MC-2-drag-always-quadratic
   title: הגרר תמיד ריבועי במהירות
   belief: כוח הגרר תמיד פרופורציוני לריבוע המהירות.
   truth: בגופים זעירים ואיטיים, כמו טיפות ערפל, הגרר ליניארי במהירות. איזה גרר שולט נקבע על ידי היחס בין שני הכוחות.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: היחס בין הגרר הריבועי לליניארי' }
+  remedy: { lesson: '2.7', anchor: regime, label: 'שיעור 2.7: איזה גרר שולט?' }
 
 - id: MC-2-time-constant-is-full-time
   title: אחרי קבוע זמן אחד מגיעים לסוף
   belief: אחרי זמן τ הגוף כבר נע במהירות הסופית.
   truth: אחרי זמן τ המהירות היא רק 63% מהסופית. הגוף מתקרב אליה באקספוננט, ולעולם לא מגיע אליה בדיוק.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: פתרון משוואת התנועה עם גרר ליניארי' }
+  remedy: { lesson: '2.7', anchor: tau, label: 'שיעור 2.7: המשיק וקבוע הזמן' }
 
 - id: MC-2-drag-negligible
   title: הגרר משנה את התנועה רק מעט
   belief: האוויר משנה רק במעט את זמני התנועה ואת הגובה של גוף שנזרק.
   truth: כשמהירות הזריקה גדולה מהמהירות הסופית, הגרר משנה את התנועה מאוד. משווים את v₀ ל-vₜ כדי להעריך אם מותר להזניח אותו.
-  remedy: { lesson: '2.7', label: 'שיעור 2.7: זריקה כלפי מעלה עם גרר' }
+  remedy: { lesson: '2.7', anchor: throw-up, label: 'שיעור 2.7: זריקה כלפי מעלה עם גרר' }
+
+- id: MC-2-quadratic-drag-sign
+  title: הגרר הריבועי הוא תמיד מינוס cv²
+  belief: את הגרר הריבועי כותבים −cv² בכל כיוון תנועה, כמו שגרר ליניארי כותבים −bv.
+  truth: הביטוי −cv² לא מחליף סימן כשהמהירות מתהפכת, ולכן הוא היה פונה באותו כיוון גם כשהגוף עולה. הגרר הריבועי הוא −c|v|v, ובעלייה הוא פונה כלפי מטה, יחד עם הכובד.
+  remedy: { lesson: '2.7', anchor: quadratic, label: 'שיעור 2.7: גרר ריבועי' }

@@ -127,14 +127,14 @@
 
 .slider {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  /* the input keeps a usable track at 390 px: a long label wraps instead of squeezing it to its thumb */
+  grid-template-columns: auto minmax(6em, 1fr) auto;
   align-items: center;
   gap: 10px;
   width: 100%;
 }
 .slider-label {
   color: var(--ink-2);
-  white-space: nowrap;
 }
 .slider input {
   width: 100%;
