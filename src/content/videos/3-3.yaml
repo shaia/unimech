@@ -1,0 +1,26 @@
+# Videos of lesson 3.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). The watch pages did not give length, chapters or caption tracks to the
+# fetch tool, so `minutes` are estimates (UNCONFIRMED) and `captions` lists nothing. `why` claims only what the
+# title supports.
+#   9gUdDM6LZGo: Lewin's own channel, 8.01x lecture 11; a search listing gave "about 49 minutes" (unconfirmed).
+#   4rG9u478X1Q: Flipping Physics; the page heading reads "AP Physics C: Mechanics"; length unconfirmed.
+
+- id: v-3-3-lewin-energy
+  youtubeId: 9gUdDM6LZGo
+  title: '8.01x - Lect 11 - Work, Kinetic & Potential Energy, Gravitation, Conservative Forces'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  start: 0
+  minutes: 49
+  why: 'הרצאה שלמה של קורס 8.01 של MIT. לפי הכותרת: עבודה, אנרגיה קינטית ופוטנציאלית, כבידה וכוחות משמרים, כלומר שיעורים 3.1 עד 3.3 ברצף. חפשו את המעבר מהעבודה של כוח משמר אל שימור האנרגיה המכנית.'
+  verified: '2026-11-10'
+
+- id: v-3-3-equilibrium
+  youtubeId: 4rG9u478X1Q
+  title: 'Stable, Unstable, and Neutral Equilibrium'
+  channel: Flipping Physics
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי הכותרת: שלושת סוגי שיווי המשקל. תרגמו כל אחד לצורה של U(x) ליד נקודת שיווי המשקל: מינימום, מקסימום, או קטע שטוח.'
+  verified: '2026-11-10'

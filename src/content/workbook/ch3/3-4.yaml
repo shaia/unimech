@@ -1,0 +1,507 @@
+# Workbook, lesson 3.4 (systems of particles and the centre of mass). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-4/workbook.ts against src/physics/centerofmass.ts with G = 9.8:
+#   W02 1, 2, 3, 4 kg on the corners of a 2.0 m square: (1.00, 1.40) m (plain average (1.00, 1.00));
+#   W03 skaters 50 and 75 kg, 10 m apart: meet 6.0 m from the 50 kg skater;
+#   W04 L plate (0.40 × 0.10 m and 0.10 × 0.30 m): (0.136, 0.136) m, outside the plate;
+#   W05 λ = λ0(1 + x²/L²), L = 0.80 m: X = 9L/16 = 0.450 m (uniform 0.400, λ ∝ x² 0.600);
+#   W06 a 0.50 kg ball thrown by a 60 kg person on ice: a_cm = g·m/M = 0.0810 m/s² while the ball flies;
+#   W07 dog 10 kg walks 3.0 m on a 40 kg raft: raft 0.60 m back, dog 2.4 m toward the shore, 5.6 m from it (not 5.0);
+#   W08 D-shaped wire, R = 0.25 m: Y = 2R/(π + 2) = 0.0972 m (the arc alone 0.159 m);
+#   W09 firework up at 30 m/s, apex 45.9 m, splits into equal halves at ±10 m/s vertically: the lower lands 2.21 s
+#       after the burst, the upper is then at 44.1 m and the centre of mass at 22.1 m, on the unexploded fall;
+#       after that a_cm = −g/2 = −4.9 m/s² until the upper lands at 4.25 s (the whole shell would land at 3.06 s);
+#   W10 Atwood 3.0 and 1.0 kg: a = g/2 = 4.9 m/s², a_cm = g/4 = 2.45 m/s² down, T = 14.7 N, axle 2T = 29.4 N
+#       (weight 39.2 N);
+#   c1 (MIT 8.01 Fall 2016, Problem Set 5, problem 5; .scratch/ch3/3-4/review-fix.ts): m1 = 2.0, m2 = 3.0 kg,
+#       d = 1.0 m, v0 = 0.50 m/s, collision 0.80 s later: X_cm(t0) = 0.60 m, V_cm = 0.20 m/s, L = 0.76 m, m2 moves 0.24 m
+#       (replaces a falling chain from Hamilton College PHYS 350, not a first-year course, and lesson 3.6's own example);
+#   c2 MIT 8.01 (Fall 2016) Example 10.5 (ocw.mit.edu, chapter 10 of the online textbook): the quarter returns to the launch point, x3 = 8x_i/3 = 80 m for x_i = 30 m;
+#       for a share f, 2x_i/(1 − f); x3 = 4x_i needs f = 1/2.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.4'
+practice:
+  - id: W-3.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.4-1]
+    prompt: >-
+      לכל משפט, קבעו אם הוא נכון ונמקו.
+
+      א. מרכז המסה של גוף נמצא תמיד בתוך החומר של הגוף.
+
+      ב. אם מזיזים את ראשית הצירים, מרכז המסה עובר לנקודה אחרת של הגוף.
+
+      ג. אם כל המסות במערכת שוות, מרכז המסה הוא הממוצע הפשוט של המקומות.
+
+      ד. אם לגוף יש ציר סימטריה, מרכז המסה שלו על הציר.
+    answer: >-
+      א. לא נכון. ב. לא נכון. ג. נכון. ד. נכון.
+    solution:
+      - kind: law
+        text: >-
+          $\vec R_{\text{cm}} = \dfrac{1}{M}\sum_i m_i\vec r_i$, ובגוף רציף $\vec R_{\text{cm}} = \dfrac1M\int\vec r\,dm$.
+      - kind: reasoning
+        text: >-
+          א: מרכז המסה הוא ממוצע של מקומות, והממוצע לא חייב ליפול על החומר: בחצי טבעת של תיל הוא בגובה $0.637\,R$,
+          וכל התיל במרחק $R$ מהמרכז. ב: הזזת הראשית ב-$\vec d$ משנה כל $\vec r_i$ וגם את $\vec R_{\text{cm}}$ באותו
+          $\vec d$, ולכן הווקטור מצביע על אותה נקודה. ג: כש-$m_i = m$, $\vec R_{\text{cm}} = \dfrac{m\sum\vec r_i}{Nm} = \dfrac1N\sum\vec r_i$.
+          ד: לכל $dm$ ב-$x$ יש $dm$ שווה ב-$(-x)$, ותרומתם לרכיב הניצב לציר אפס.
+      - kind: limit
+        text: >-
+          במסה נקודתית אחת, מרכז המסה הוא המסה עצמה, בכל ראשית.
+      - kind: units
+        text: >-
+          $\sum m_i\vec r_i/M$ במטרים, כמו מקום.
+      - kind: result
+        text: >-
+          ג ו-ד נכונים; א ו-ב לא נכונים.
+
+  - id: W-3.4-02
+    level: basic
+    objectives: [OBJ-3.4-1]
+    prompt: >-
+      ארבע מסות נקודתיות בפינות של ריבוע שצלעו $2.0\,\text{m}$: $1.0\,\text{kg}$ ב-$(0,\,0)$, $2.0\,\text{kg}$ ב-$(2,\,0)$,
+      $3.0\,\text{kg}$ ב-$(2,\,2)$ ו-$4.0\,\text{kg}$ ב-$(0,\,2)$, במטרים. היכן מרכז המסה?
+    answer: >-
+      $(1.00,\ 1.40)\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 10\,\text{kg}$; הראשית בפינה שבה $1.0\,\text{kg}$.
+      - kind: law
+        text: >-
+          $X_{\text{cm}} = \sum m_ix_i/M$, $Y_{\text{cm}} = \sum m_iy_i/M$.
+      - kind: manipulation
+        text: >-
+          רק המסות בצלע $x = 2$ תורמות ל-$X_{\text{cm}}$: $(2.0 + 3.0)\cdot2/10$. רק המסות בצלע $y = 2$ תורמות ל-$Y_{\text{cm}}$:
+          $(3.0 + 4.0)\cdot2/10$.
+      - kind: limit
+        text: >-
+          אם כל המסות היו שוות, מרכז המסה היה במרכז הריבוע, $(1,\,1)$. כאן הצלע העליונה כבדה מהתחתונה, ולכן $Y_{\text{cm}} > 1$,
+          ושתי הצלעות האנכיות שוות במסה ($5.0\,\text{kg}$ כל אחת), ולכן $X_{\text{cm}} = 1$.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}/\text{kg} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $X_{\text{cm}} = 10/10 = 1.00\,\text{m}$, $Y_{\text{cm}} = 14/10 = 1.40\,\text{m}$.
+      - kind: result
+        text: >-
+          $\vec R_{\text{cm}} = (1.00,\ 1.40)\,\text{m}$.
+
+  - id: W-3.4-03
+    level: basic
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      שני מחליקים, $50\,\text{kg}$ ו-$75\,\text{kg}$, עומדים במנוחה על קרח חלק, $10\,\text{m}$ זה מזה, ומחזיקים בקצוות של
+      חבל. הם מושכים את החבל עד שהם נפגשים. כמה מטרים עבר המחליק הקל?
+    answer: >-
+      $6.0\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 50\,\text{kg}$ בראשית, $m_2 = 75\,\text{kg}$ ב-$x = 10\,\text{m}$, במנוחה. ציר $x$ מהקל לכבד.
+      - kind: law
+        text: >-
+          $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$. הכוחות החיצוניים (כובד ונורמלי) אנכיים ומתאזנים, ומתיחות החבל פנימית.
+      - kind: reasoning
+        text: >-
+          מרכז המסה התחיל במנוחה ולכן לא זז. הם נפגשים בנקודה אחת, והיא חייבת להיות מרכז המסה.
+      - kind: manipulation
+        text: >-
+          $X_{\text{cm}} = \dfrac{m_2d}{m_1 + m_2}$.
+      - kind: limit
+        text: >-
+          אם $m_2 \gg m_1$, הנקודה בכבד: הקל עובר את כל המרחק. אם המסות שוות, באמצע.
+      - kind: units
+        text: >-
+          יחס מסות כפול מרחק, במטרים.
+      - kind: substitution
+        text: >-
+          $X_{\text{cm}} = 75\cdot10/125 = 6.0\,\text{m}$.
+      - kind: result
+        text: >-
+          המחליק הקל עובר $6.0\,\text{m}$, והכבד $4.0\,\text{m}$.
+
+  - id: W-3.4-04
+    level: mid
+    objectives: [OBJ-3.4-1]
+    prompt: >-
+      לוח דק ואחיד בצורת L בנוי משני מלבנים: מלבן תחתון, $0.40\,\text{m}$ לאורך ציר $x$ ו-$0.10\,\text{m}$ לגובה, מ-$(0,\,0)$;
+      ועליו, בקצה השמאלי, מלבן עומד, $0.10\,\text{m}$ ברוחב ו-$0.30\,\text{m}$ בגובה, מ-$y = 0.10\,\text{m}$ עד $y = 0.40\,\text{m}$.
+      היכן מרכז המסה של הלוח? האם הוא על הלוח?
+    answer: >-
+      $(0.136,\ 0.136)\,\text{m}$; לא על הלוח.
+    solution:
+      - kind: given
+        text: >-
+          צפיפות משטחית אחידה $\sigma$. מלבן א: שטח $0.040\,\text{m}^2$, מרכז ב-$(0.20,\ 0.05)\,\text{m}$. מלבן ב: שטח $0.030\,\text{m}^2$,
+          מרכז ב-$(0.05,\ 0.25)\,\text{m}$.
+      - kind: law
+        text: >-
+          מרכז המסה של גוף מורכב הוא הממוצע המשוקלל של מרכזי החלקים, והמסות פרופורציוניות לשטחים.
+      - kind: manipulation
+        text: >-
+          $X_{\text{cm}} = \dfrac{A_ax_a + A_bx_b}{A_a + A_b}$, וכך גם $Y_{\text{cm}}$. ה-$\sigma$ מצטמצם.
+      - kind: limit
+        text: >-
+          אם $A_b \to 0$, מרכז המסה הוא מרכז המלבן התחתון, $(0.20,\ 0.05)$. התוצאה על הקטע שבין שני המרכזים.
+      - kind: units
+        text: >-
+          $\text{m}^2\cdot\text{m}/\text{m}^2 = \text{m}$.
+      - kind: substitution
+        text: >-
+          $X_{\text{cm}} = (0.040\cdot0.20 + 0.030\cdot0.05)/0.070 = 0.136\,\text{m}$, $Y_{\text{cm}} = (0.040\cdot0.05 + 0.030\cdot0.25)/0.070 = 0.136\,\text{m}$.
+      - kind: reasoning
+        text: >-
+          הנקודה מימין למלבן העומד ($x > 0.10$) ומעל המלבן התחתון ($y > 0.10$): בפינה הריקה של ה-L.
+      - kind: result
+        text: >-
+          $(0.136,\ 0.136)\,\text{m}$, מחוץ ללוח, בפינה הפנימית של ה-L.
+
+  - id: W-3.4-05
+    level: mid
+    objectives: [OBJ-3.4-1]
+    prompt: >-
+      מוט דק באורך $L = 0.80\,\text{m}$ לאורך ציר $x$, מ-$x = 0$ עד $x = L$, והצפיפות הקווית שלו
+      $\lambda(x) = \lambda_0\left(1 + \dfrac{x^2}{L^2}\right)$. היכן מרכז המסה?
+    answer: >-
+      $X_{\text{cm}} = \dfrac{9L}{16} = 0.450\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $L = 0.80\,\text{m}$, $\lambda(x) = \lambda_0\left(1 + x^2/L^2\right)$; הקצה ב-$x = L$ כבד פי 2 מהקצה ב-$x = 0$.
+      - kind: law
+        text: >-
+          $X_{\text{cm}} = \dfrac{\int_0^Lx\lambda\,dx}{\int_0^L\lambda\,dx}$.
+      - kind: manipulation
+        text: >-
+          $\int_0^L\lambda\,dx = \lambda_0\left(L + \dfrac L3\right) = \dfrac43\lambda_0L$, ו-$\int_0^Lx\lambda\,dx = \lambda_0\left(\dfrac{L^2}{2} + \dfrac{L^2}{4}\right) = \dfrac34\lambda_0L^2$.
+          לכן $X_{\text{cm}} = \dfrac{3/4}{4/3}L = \dfrac{9}{16}L$.
+      - kind: limit
+        text: >-
+          צפיפות אחידה נותנת $L/2 = 0.5L$, וצפיפות $\lambda \propto x^2$ בלבד נותנת $3L/4$. כאן יש חלק אחיד וחלק שגדל, והתוצאה,
+          $0.5625\,L$, ביניהן, קרוב יותר לאחידה.
+      - kind: units
+        text: >-
+          $\lambda_0$ מצטמצם, ונשאר $L$ במטרים.
+      - kind: substitution
+        text: >-
+          $X_{\text{cm}} = 9\cdot0.80/16 = 0.450\,\text{m}$.
+      - kind: result
+        text: >-
+          $0.450\,\text{m}$ מהקצה הקל, $5.0\,\text{cm}$ אחרי האמצע.
+
+  - id: W-3.4-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      אדם בעל מסה $60\,\text{kg}$ עומד על קרח חלק לגמרי וזורק כדור בעל מסה $0.50\,\text{kg}$ באלכסון כלפי מעלה. הזניחו את
+      האוויר. מה עושה מרכז המסה של "אדם וכדור" בזמן שהכדור באוויר: נשאר במנוחה, נע בקו ישר במהירות קבועה, נע בפרבולה
+      של זריקה רגילה, או משהו אחר? קבעו ונמקו, ומצאו את התאוצה שלו.
+    answer: >-
+      משהו אחר: הוא מאיץ כלפי מטה ב-$\dfrac{m}{M}g = 0.0810\,\text{m/s}^2$, ובכיוון האופקי נע במהירות קבועה.
+    solution:
+      - kind: given
+        text: >-
+          המערכת: אדם ($60\,\text{kg}$) וכדור ($m = 0.50\,\text{kg}$), $M = 60.5\,\text{kg}$. ציר $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$.
+      - kind: reasoning
+        text: >-
+          הכוחות החיצוניים בזמן שהכדור עף: הכובד על האדם, הכובד על הכדור, והכוח הנורמלי של הקרח על האדם. האדם לא נע
+          אנכית, ולכן הנורמלי מאזן את הכובד שלו. אין חיכוך, ולכן אין כוח אופקי. נשאר הכובד של הכדור בלבד, $mg$ כלפי מטה.
+          זה לא $Mg$, ולכן זו לא זריקה רגילה של גוף אחד.
+      - kind: manipulation
+        text: >-
+          $a_{\text{cm},x} = 0$ ו-$a_{\text{cm},y} = -\dfrac{mg}{M}$. בזריקה עצמה הכוחות בין היד לכדור פנימיים, ולכן מיד אחריה התנע
+          האופקי הכולל עדיין אפס: $v_{\text{cm},x} = 0$, ומרכז המסה לא זז אופקית.
+      - kind: limit
+        text: >-
+          אם $M \to m$ (אדם חסר מסה), $a_{\text{cm}} \to g$: זריקה רגילה. אם $m/M \to 0$, מרכז המסה כמעט לא מאיץ.
+      - kind: units
+        text: >-
+          $m/M$ חסר ממדים, כפול $g$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $a_{\text{cm},y} = -0.50\cdot9.8/60.5 = -0.0810\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          מרכז המסה לא זז אופקית ומאיץ כלפי מטה ב-$0.0810\,\text{m/s}^2$ בלבד, כי רק הכובד של הכדור לא מאוזן.
+
+  - id: W-3.4-07
+    level: mid
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      כלב בעל מסה $10\,\text{kg}$ עומד על רפסודה בעלת מסה $40\,\text{kg}$ שעומדת במים שקטים, והוא $8.0\,\text{m}$ מהחוף. הוא
+      הולך $3.0\,\text{m}$ על הרפסודה, ביחס לרפסודה, לכיוון החוף. הזניחו את החיכוך עם המים. כמה רחוק הוא מהחוף עכשיו?
+    answer: >-
+      $5.6\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 10\,\text{kg}$, $M = 40\,\text{kg}$, $d = 3.0\,\text{m}$ ביחס לרפסודה. ציר $x$ לכיוון החוף.
+      - kind: law
+        text: >-
+          אין כוח חיצוני אופקי, ולכן $X_{\text{cm}}$ קבוע: $m\,\Delta x_{\text{d}} + M\,\Delta x_{\text{r}} = 0$, עם
+          $\Delta x_{\text{d}} = d + \Delta x_{\text{r}}$.
+      - kind: manipulation
+        text: >-
+          $\Delta x_{\text{r}} = -\dfrac{md}{m + M}$, ולכן $\Delta x_{\text{d}} = d - \dfrac{md}{m + M} = \dfrac{M}{m + M}\,d$.
+      - kind: limit
+        text: >-
+          רפסודה כבדה מאוד ($M \to \infty$): $\Delta x_{\text{d}} \to d$, כמו על מזח. רפסודה קלה מאוד: הכלב כמעט לא מתקרב לחוף.
+      - kind: units
+        text: >-
+          יחס מסות כפול $d$, במטרים.
+      - kind: substitution
+        text: >-
+          $\Delta x_{\text{d}} = 40\cdot3.0/50 = 2.4\,\text{m}$, והרפסודה זזה $0.60\,\text{m}$ הרחק מהחוף. המרחק מהחוף: $8.0 - 2.4 = 5.6\,\text{m}$.
+      - kind: result
+        text: >-
+          $5.6\,\text{m}$ מהחוף, ולא $5.0\,\text{m}$: הרפסודה זזה אחורה בזמן ההליכה.
+
+  - id: W-3.4-08
+    level: bagrut
+    objectives: [OBJ-3.4-1]
+    prompt: >-
+      תיל דק ואחיד כפוף לצורת D: חצי מעגל ברדיוס $R = 0.25\,\text{m}$, והקוטר שלו, מאותו תיל, סוגר אותו. הקוטר על ציר $x$
+      והמרכז בראשית. מצאו את גובה מרכז המסה מעל הקוטר, בביטוי סימבולי ובמספרים.
+    answer: >-
+      $Y_{\text{cm}} = \dfrac{2R}{\pi + 2} = 0.0972\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          צפיפות קווית אחידה $\lambda$. הקשת: אורך $\pi R$, מרכז המסה שלה בגובה $2R/\pi$. הקוטר: אורך $2R$, מרכז המסה שלו
+          באמצעו, בגובה $0$. ציר $y$ הוא ציר סימטריה, ולכן $X_{\text{cm}} = 0$.
+      - kind: law
+        text: >-
+          מרכז המסה של גוף מורכב הוא הממוצע המשוקלל של מרכזי החלקים.
+      - kind: manipulation
+        text: >-
+          $Y_{\text{cm}} = \dfrac{\lambda\pi R\cdot\frac{2R}{\pi} + \lambda\cdot2R\cdot0}{\lambda\pi R + \lambda\cdot2R} = \dfrac{2R^2}{(\pi + 2)R}$.
+      - kind: limit
+        text: >-
+          בלי הקוטר, המכנה $\pi R$ ונשאר $2R/\pi$, של הקשת לבדה. הקוטר מוסיף מסה בגובה אפס ומוריד את מרכז המסה, אבל
+          לא מתחת לקוטר: $0 < Y_{\text{cm}} < 2R/\pi$.
+      - kind: units
+        text: >-
+          $R^2/R$ במטרים.
+      - kind: substitution
+        text: >-
+          $Y_{\text{cm}} = 2\cdot0.25/(\pi + 2) = 0.0972\,\text{m}$, לעומת $0.159\,\text{m}$ לקשת לבדה.
+      - kind: result
+        text: >-
+          $Y_{\text{cm}} = \dfrac{2R}{\pi + 2} = 0.0972\,\text{m}$, בתוך ה-D ולא על התיל.
+
+  - id: W-3.4-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      זיקוק נורה אנכית כלפי מעלה במהירות $30\,\text{m/s}$. בשיא הוא מתפוצץ לשני חצאים שווים: אחד נע מיד אחרי הפיצוץ
+      כלפי מעלה ב-$10\,\text{m/s}$, והשני כלפי מטה ב-$10\,\text{m/s}$. הזניחו את האוויר.
+
+      א. קבעו ונמקו, בלי לחשב: איפה מרכז המסה של שני החצאים כל עוד שניהם באוויר?
+
+      ב. החצי התחתון פוגע בקרקע ונעצר. מתי, ואיפה מרכז המסה באותו רגע?
+
+      ג. מה התאוצה של מרכז המסה אחרי הרגע הזה, ולמה? מתי מרכז המסה מגיע לקרקע, לעומת הזיקוק בלי פיצוץ?
+    answer: >-
+      א. במקום שבו היה הזיקוק בלי פיצוץ.
+
+      ב. $2.21\,\text{s}$ אחרי הפיצוץ; מרכז המסה בגובה $22.1\,\text{m}$.
+
+      ג. $g/2$ כלפי מטה; מרכז המסה מגיע לקרקע $4.25\,\text{s}$ אחרי הפיצוץ, ולא $3.06\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $y$ כלפי מעלה, הראשית בקרקע. $v_0 = 30\,\text{m/s}$, השיא $H = v_0^2/(2g)$. אחרי הפיצוץ: $\pm u$ עם $u = 10\,\text{m/s}$.
+          הזמן $\tau$ נמדד מהפיצוץ.
+      - kind: law
+        text: >-
+          $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$; הפיצוץ פנימי.
+      - kind: reasoning
+        text: >-
+          א: כל עוד שניהם באוויר, $\vec F_{\text{ext}} = M\vec g$, ומרכז המסה מתחיל בשיא במנוחה, כמו הזיקוק. לכן הוא נופל בדיוק
+          כמו הזיקוק בלי פיצוץ: $y_{\text{cm}} = H - \tfrac12g\tau^2$. ג: אחרי שהחצי התחתון נחת, הקרקע מחזיקה אותו, והכוח
+          החיצוני השקול הוא הכובד של החצי העליון בלבד, $\tfrac12Mg$. לכן $a_{\text{cm}} = g/2$ כלפי מטה, עד שגם העליון נוחת.
+      - kind: manipulation
+        text: >-
+          ב: החצי התחתון: $H - u\tau - \tfrac12g\tau^2 = 0$, ולכן $\tau_1 = \dfrac{-u + \sqrt{u^2 + 2gH}}{g}$. החצי העליון נוחת ב-
+          $\tau_2 = \dfrac{u + \sqrt{u^2 + 2gH}}{g}$, ואז גם מרכז המסה בקרקע (שני החצאים בקרקע).
+      - kind: limit
+        text: >-
+          כש-$u \to 0$, $\tau_1 = \tau_2 = \sqrt{2H/g}$: שני החצאים נוחתים יחד, ברגע שבו היה נוחת הזיקוק.
+      - kind: units
+        text: >-
+          $\sqrt{u^2 + 2gH}$ ב-$\text{m/s}$, ומחולק ב-$g$ נותן שניות.
+      - kind: substitution
+        text: >-
+          $H = 45.9\,\text{m}$. $\tau_1 = 2.21\,\text{s}$; אז העליון בגובה $45.9 + 10\cdot2.21 - 4.9\cdot2.21^2 = 44.1\,\text{m}$, ומרכז
+          המסה בגובה $44.1/2 = 22.1\,\text{m}$, וגם $H - \tfrac12g\tau_1^2 = 22.1\,\text{m}$. $\tau_2 = 4.25\,\text{s}$, ובלי פיצוץ
+          $\sqrt{2H/g} = 3.06\,\text{s}$.
+      - kind: result
+        text: >-
+          א. על המסלול של הזיקוק בלי פיצוץ. ב. $2.21\,\text{s}$, בגובה $22.1\,\text{m}$. ג. $g/2 = 4.9\,\text{m/s}^2$ כלפי מטה;
+          מרכז המסה מגיע לקרקע רק אחרי $4.25\,\text{s}$.
+
+  - id: W-3.4-10
+    level: bagrut
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      מכונת אטווד: גלגלת קלה וחסרת חיכוך תלויה בציר קבוע, ועל חוט קל שעובר עליה תלויות שתי מסות, $3.0\,\text{kg}$ ו-$1.0\,\text{kg}$.
+      המערכת משוחררת ממנוחה.
+
+      א. מה התאוצה של מרכז המסה של שתי המסות (גודל וכיוון)?
+
+      ב. השתמשו בתוצאה כדי למצוא את הכוח שהציר מפעיל על הגלגלת, והשוו אותו למשקל הכולל של המסות.
+    answer: >-
+      א. $2.45\,\text{m/s}^2$ כלפי מטה.
+
+      ב. $29.4\,\text{N}$ כלפי מעלה, פחות מ-$39.2\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 3.0\,\text{kg}$, $m_2 = 1.0\,\text{kg}$, $M = 4.0\,\text{kg}$. ציר $y$ כלפי מעלה. החוט והגלגלת קלים.
+      - kind: law
+        text: >-
+          החוק השני לכל מסה נותן $a = \dfrac{m_1 - m_2}{m_1 + m_2}\,g$: $m_1$ יורדת ו-$m_2$ עולה באותה תאוצה. ולמערכת "גלגלת, חוט
+          ושתי מסות": $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$.
+      - kind: manipulation
+        text: >-
+          א: $a_{\text{cm},y} = \dfrac{m_1(-a) + m_2(+a)}{M} = -\left(\dfrac{m_1 - m_2}{m_1 + m_2}\right)^2g$. ב: על המערכת פועלים הכובד
+          $Mg$ (הגלגלת והחוט קלים) והכוח של הציר $F$, ולכן $F - Mg = Ma_{\text{cm},y}$, ו-$F = M\left(g + a_{\text{cm},y}\right)$.
+      - kind: limit
+        text: >-
+          אם $m_1 = m_2$, $a_{\text{cm}} = 0$ ו-$F = Mg$: הכול במנוחה או במהירות קבועה. אם $m_2 \to 0$, $a_{\text{cm}} \to -g$ ו-$F \to 0$:
+          $m_1$ נופלת חופשית, והציר לא נושא דבר.
+      - kind: units
+        text: >-
+          $\left(\cdot\right)^2$ חסר ממדים, כפול $g$; ו-$\text{kg}\cdot\text{m/s}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          $a = 4.9\,\text{m/s}^2$, $a_{\text{cm},y} = -(0.5)^2\cdot9.8 = -2.45\,\text{m/s}^2$. $F = 4.0\cdot(9.8 - 2.45) = 29.4\,\text{N}$. בדיקה:
+          $F = 2T$ עם $T = \dfrac{2m_1m_2g}{m_1 + m_2} = 14.7\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $2.45\,\text{m/s}^2$ כלפי מטה. ב. $29.4\,\text{N}$, פחות מהמשקל הכולל, $39.2\,\text{N}$, כי מרכז המסה מאיץ כלפי מטה.
+
+challenge:
+  - id: W-3.4-c1
+    stars: 2
+    objectives: [OBJ-3.4-2, OBJ-3.4-1]
+    prompt: >-
+      שני חלקיקים קטנים, $m_1 = 2.0\,\text{kg}$ ו-$m_2 = 3.0\,\text{kg}$, מושכים זה את זה בכוח שגודלו הפוך לחזקה
+      השלישית של המרחק ביניהם, ואין כוחות אחרים. ברגע $t_0$ החלקיק $m_2$ במנוחה, ו-$m_1$ נמצא במרחק $d = 1.0\,\text{m}$
+      ממנו ונע אליו במהירות $v_0 = 0.50\,\text{m/s}$. החלקיקים מתנגשים ברגע $t_1$, $0.80\,\text{s}$ אחרי $t_0$.
+
+      א. קבעו ונמקו: למה אין צורך בחוק הכוח כדי לדעת איפה הם מתנגשים?
+
+      ב. מצאו, באופן כללי ובמספרים, את המרחק $L$ שעובר $m_1$ עד ההתנגשות.
+
+      ג. כמה זז $m_2$ עד ההתנגשות, ולאיזה כיוון?
+    answer: >-
+      א. הכוח פנימי, ולכן מרכז המסה נע במהירות קבועה, וההתנגשות היא במקום שבו מרכז המסה נמצא ברגע $t_1$.
+
+      ב. $L = \dfrac{m_2d + m_1v_0\left(t_1 - t_0\right)}{m_1 + m_2} = 0.76\,\text{m}$.
+
+      ג. $0.24\,\text{m}$, לעבר $m_1$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מ-$m_1$ אל $m_2$, והראשית במקום של $m_1$ ברגע $t_0$; $m_2$ ב-$x = d$. $T = t_1 - t_0 = 0.80\,\text{s}$,
+          $M = m_1 + m_2 = 5.0\,\text{kg}$.
+      - kind: law
+        text: >-
+          $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$, ו-$M\vec v_{\text{cm}} = \sum_i m_i\vec v_i$.
+      - kind: reasoning
+        text: >-
+          א: המשיכה בין החלקיקים היא זוג של החוק השלישי, כוח פנימי, ואין כוח חיצוני. לכן מרכז המסה נע במהירות קבועה, בלי
+          קשר לאופן שבו הכוח תלוי במרחק. ברגע ההתנגשות שני החלקיקים באותה נקודה, ולכן גם מרכז המסה שלהם שם.
+      - kind: manipulation
+        text: >-
+          ב: ברגע $t_0$, $X_{\text{cm}} = \dfrac{m_1\cdot0 + m_2d}{M}$ ו-$V_{\text{cm}} = \dfrac{m_1v_0}{M}$. ההתנגשות ב-
+          $X_{\text{cm}}(t_1) = \dfrac{m_2d + m_1v_0T}{M}$, ו-$m_1$ התחיל בראשית, ולכן $L = X_{\text{cm}}(t_1)$. ג: $m_2$ התחיל
+          ב-$d$, ולכן ההעתק שלו $X_{\text{cm}}(t_1) - d = -\dfrac{m_1\left(d - v_0T\right)}{M}$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$, $L \to d$: $m_2$ לא זז, ו-$m_1$ עובר את כל המרחק. כש-$v_0 = 0$, $L = \dfrac{m_2}{M}d$: שניהם
+          מתחילים במנוחה ונפגשים במרכז המסה ההתחלתי, במרחקים ביחס הפוך למסות.
+      - kind: units
+        text: >-
+          $m_2d/M$ במטרים, ו-$m_1v_0T/M$ ב-$\text{kg}\cdot\text{m/s}\cdot\text{s}/\text{kg} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $X_{\text{cm}}(t_0) = 3.0\cdot1.0/5.0 = 0.60\,\text{m}$, $V_{\text{cm}} = 2.0\cdot0.50/5.0 = 0.20\,\text{m/s}$, ולכן
+          $L = 0.60 + 0.20\cdot0.80 = 0.76\,\text{m}$, ו-$m_2$ זז $0.76 - 1.0 = -0.24\,\text{m}$.
+      - kind: result
+        text: >-
+          א. הכוח פנימי, ומרכז המסה נע במהירות קבועה. ב. $L = 0.76\,\text{m}$, יותר מ-$v_0T = 0.40\,\text{m}$, כי המשיכה
+          מאיצה את $m_1$. ג. $0.24\,\text{m}$, לעבר $m_1$.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics, Fall 2016, Problem Set 5
+      year: 2016
+      problem: Problem 5, Two Particles Colliding
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/ebe813c4c1e0a146933380112612a58f_MIT8_01F16_pset5.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.4-c2
+    stars: 1
+    objectives: [OBJ-3.4-2]
+    prompt: >-
+      קליע נורה מקרקע מישורית ומתפוצץ בשיא, במרחק אופקי $x_i$ מנקודת הירי, לשני חלקים שעפים מיד אחרי הפיצוץ אופקית. לחלק
+      הקטן רבע מהמסה, ולגדול שלושה רבעים. להפתעת הצוות, החלק הקטן נוחת בדיוק בנקודת הירי. הזניחו את האוויר.
+
+      א. היכן נוחת החלק הגדול? פתרו בעזרת מרכז המסה, ובדקו בדרך שנייה: מהירויות החלקים מיד אחרי הפיצוץ.
+
+      ב. הכלילו: לחלק הקטן חלק $f$ מהמסה, והוא שוב נוחת בנקודת הירי. היכן נוחת הגדול? איזה $f$ שולח את הגדול ל-$4x_i$?
+
+      ג. חשבו את תשובת א ל-$x_i = 30\,\text{m}$.
+    answer: >-
+      א. $\dfrac83x_i$.
+
+      ב. $\dfrac{2x_i}{1 - f}$; $f = \dfrac12$.
+
+      ג. $80\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ראשית בנקודת הירי, ציר $x$ בכיוון הירי. בשיא המהירות $v_1$ אופקית, הזמן מהשיא לקרקע שווה לזמן מהירי לשיא, $t_1$, ולכן
+          $x_i = v_1t_1$. החלק הקטן $fM$, הגדול $(1 - f)M$.
+      - kind: law
+        text: >-
+          $M\vec a_{\text{cm}} = \vec F_{\text{ext}}$: הפיצוץ פנימי, ולכן כל עוד שני החלקים באוויר מרכז המסה ממשיך בפרבולה.
+      - kind: reasoning
+        text: >-
+          שני החלקים מתחילים בשיא עם מהירות אנכית אפס, ולכן שניהם נופלים מאותו גובה באותו זמן ונוחתים **יחד**, ברגע שבו
+          היה נוחת הקליע. עד אז רק הכובד פועל, ולכן מרכז המסה נוחת בסוף הפרבולה, ב-$2x_i$.
+      - kind: manipulation
+        text: >-
+          $M\cdot2x_i = fM\cdot0 + (1 - f)M\,x_3$, ולכן $x_3 = \dfrac{2x_i}{1 - f}$. עם $f = \tfrac14$: $x_3 = \tfrac83x_i$. דרך שנייה: הקטן חוזר
+          לנקודת הירי בזמן $t_1$, ולכן מהירותו $v_2 = -v_1$. מהתנע האופקי, $Mv_1 = \tfrac14M(-v_1) + \tfrac34Mv_3$, ולכן $v_3 = \tfrac53v_1$, והגדול
+          נוחת ב-$x_i + \tfrac53v_1t_1 = \tfrac83x_i$.
+      - kind: limit
+        text: >-
+          כש-$f \to 0$, $x_3 \to 2x_i$: החלק "הגדול" הוא כמעט כל הקליע, והוא נוחת בסוף הפרבולה. כש-$f$ גדל, הגדול צריך להתרחק יותר
+          כדי לאזן את הקטן שחזר, ו-$x_3 \to \infty$ כש-$f \to 1$.
+      - kind: units
+        text: >-
+          $f$ חסר ממדים, ו-$x_3$ במטרים כמו $x_i$.
+      - kind: substitution
+        text: >-
+          $x_3 = \tfrac83\cdot30 = 80\,\text{m}$. ל-$x_3 = 4x_i$: $\dfrac{2}{1 - f} = 4$, ולכן $f = \tfrac12$.
+      - kind: result
+        text: >-
+          א. $\tfrac83x_i$. ב. $\dfrac{2x_i}{1 - f}$, ו-$f = \tfrac12$ נותן $4x_i$. ג. $80\,\text{m}$.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics, Fall 2016, online textbook, chapter 10
+      year: 2016
+      problem: Example 10.5, Exploding Projectile
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/mit8_01scs22_chapter10.pdf
+      verified: '2026-11-10'
+      adapted: true

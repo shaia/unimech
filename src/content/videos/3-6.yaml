@@ -1,0 +1,31 @@
+# Videos of lesson 3.6. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date
+# (exists, embeddable; title and channel exactly as returned). Lengths, chapter times and caption tracks come from
+# the watch page (lengthSeconds, chapterRenderer, captionTracks). `why` claims only what the title, the description
+# and the chapter list support.
+#   VQXmBGdVjQI: 863 s; no chapters; caption tracks en-US and iw (Hebrew); the description only advertises the
+#     author's textbook, so `why` rests on the title alone (spot-check).
+#   BBYLiF_R0Xs: 2919 s; chapters 24:07 "Rocket propulsion physics" (1447 s), 31:28 "Rocket motion analysis",
+#     47:42 "Fire extinguisher rocket" (2862 s) to the end; the description links the lecture notes "Rocket
+#     Equations". The clip runs from 1447 s to the end.
+
+- id: v-3-6-frenkel-variable-mass
+  youtubeId: VQXmBGdVjQI
+  title: 'כמה דקות על - מסה משתנה, כוח דחף ותנועת טילים'
+  channel: Gady Frenkel
+  lang: he
+  captions: [he]
+  start: 0
+  minutes: 14
+  why: 'לפי הכותרת, סקירה קצרה בעברית של מסה משתנה, כוח דחף ותנועת טילים, מאת מחבר ספר לימוד אוניברסיטאי במכניקה. השוו את הדרך שבה הוא מגדיר את המערכת ואת מהירות הפליטה לגזירה בשיעור: האם הוא כותב את מהירות הגזים ביחס לרקטה?'
+  verified: '2026-11-10'
+
+- id: v-3-6-lewin-rockets
+  youtubeId: BBYLiF_R0Xs
+  title: '8.01x - Lect 17 - Impulse, Rockets'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 1447
+  minutes: 25
+  why: 'החלק השני של הרצאה מקורס 8.01 של MIT, לפי פרקי הסרטון: הפיזיקה של הנעת רקטות, ניתוח התנועה של רקטה, ובסוף "רקטה" של מטף כיבוי. השוו את הגזירה שלו לשימור התנע בפרק זמן קצר של איור 3.6א, ובהדגמה של המטף חפשו את כוח הדחף, מהירות הפליטה כפול קצב הפליטה.'
+  verified: '2026-11-10'

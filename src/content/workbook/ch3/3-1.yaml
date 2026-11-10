@@ -1,0 +1,478 @@
+# Workbook, lesson 3.1 (work and the work-energy theorem). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-1/numbers.ts against src/physics/work.ts with G = 9.8:
+#   W02 W = −7 J, |Δr| = 5.39 m, |F||Δr| = 26.9 J, cos θ = −0.260, θ = 105°;
+#   W03 W_net = −3.0·10⁵ J, stopping distance 50 m (78.1 m from 25 m/s);
+#   W04 W = 0.32 J (0.50 J from −0.05 to 0, −0.18 J from 0 to 0.03 m);
+#   W05 parabola 1.0 J, straight line 0.75 J, along x then y 1.5 J, along y then x 0;
+#   W07 W_g = 31.1 J, W_f = −13.3 J, W_net = 17.7 J, v = 3.44 m/s (4.55 m/s without friction);
+#   W08 W(λ) = 3.03 J, v(λ) = 2.01 m/s, W(∞) = 4.8 J, v∞ = 2.53 m/s;
+#   W09 drag 0.60 N, lap 9.42 m, W_drag = −5.65 J per lap, lap time 4.71 s;
+#   c1 W_f = −½mgbd² = −1.76 J, K at the spring 7.24 J, x_c = 0.269 m (0.234 m with μ = bd all the way),
+#      v₀ ≥ 1.33 m/s to reach the spring;
+#   c2 W_f = −0.651 J, W_g = −1.01 J, K_B = 0.744 J, v_B = 2.226 m/s, mv_B²/R = 2.974 N, mg sin φ = 1.006 N,
+#      T_B = 1.97 N (1.98 from the rounded 2.23; .scratch/ch3/3-1/review-fixes.ts), T_B ≥ 0 needs v₀ ≥ 3.57 m/s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.1'
+practice:
+  - id: W-3.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.1-1]
+    prompt: >-
+      אדם מחזיק מזוודה בידו. לכל מקרה, קבעו את הסימן של העבודה שהיד עושה על המזוודה, במערכת הקרקע, ונמקו.
+
+      א. הוא הולך במסדרון אופקי במהירות קבועה, והמזוודה באותו גובה כל הזמן.
+
+      ב. הוא מרים אותה לאט מהרצפה אל השולחן.
+
+      ג. הוא מוריד אותה לאט מהשולחן אל הרצפה.
+    answer: >-
+      א. אפס. ב. חיובית. ג. שלילית.
+    solution:
+      - kind: given
+        text: >-
+          המזוודה נעה במהירות קבועה, ולכן השקול עליה אפס: היד מפעילה עליה כוח כלפי מעלה, השווה בגודלו לכובד. ציר $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          $W = \vec F\cdot\Delta\vec r$: רק הרכיב של ההעתק בכיוון הכוח נכנס.
+      - kind: reasoning
+        text: >-
+          א: הכוח אנכי וההעתק אופקי, ולכן הזווית $90^\circ$ והעבודה אפס, גם אם הוא הולך קילומטר. העייפות היא של השרירים,
+          לא עבודה על המזוודה. ב: הכוח וההעתק שניהם כלפי מעלה: חיובית. ג: הכוח כלפי מעלה, ההעתק כלפי מטה: שלילית.
+      - kind: limit
+        text: >-
+          בב ובג המזוודה עוברת אותה דרך בכיוונים הפוכים, והעבודות הפוכות בסימן: סכומן אפס, כמו בא.
+      - kind: units
+        text: >-
+          כל עבודה כאן היא $\text{N}\cdot\text{m} = \text{J}$.
+      - kind: result
+        text: >-
+          א. אפס. ב. חיובית. ג. שלילית.
+
+  - id: W-3.1-02
+    level: basic
+    objectives: [OBJ-3.1-1]
+    prompt: >-
+      כוח קבוע $\vec F = (4,\,3)\,\text{N}$ פועל על גוף שעובר העתק $\Delta\vec r = (2,\,-5)\,\text{m}$. מה העבודה של הכוח, ומה
+      הזווית בין הכוח להעתק?
+    answer: >-
+      $W = -7.0\,\text{J}$; הזווית $105^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec F = (4,\,3)\,\text{N}$, $\Delta\vec r = (2,\,-5)\,\text{m}$, כוח קבוע.
+      - kind: law
+        text: >-
+          $W = \vec F\cdot\Delta\vec r = F_x\Delta x + F_y\Delta y = F\,\Delta r\cos\theta$.
+      - kind: manipulation
+        text: >-
+          $\cos\theta = \dfrac{\vec F\cdot\Delta\vec r}{F\,\Delta r}$.
+      - kind: limit
+        text: >-
+          העבודה שלילית, ולכן הזווית חייבת להיות מעל $90^\circ$: הכוח "נגד" התנועה בחלקו.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m} = \text{J}$; הקוסינוס חסר ממדים.
+      - kind: substitution
+        text: >-
+          $W = 4\cdot2 + 3\cdot(-5) = -7.0\,\text{J}$. $F = 5.0\,\text{N}$, $\Delta r = \sqrt{29} = 5.39\,\text{m}$, ולכן
+          $\cos\theta = -7/26.9 = -0.260$ ו-$\theta = 105^\circ$.
+      - kind: result
+        text: >-
+          $W = -7.0\,\text{J}$, $\theta = 105^\circ$.
+
+  - id: W-3.1-03
+    level: basic
+    objectives: [OBJ-3.1-2]
+    prompt: >-
+      מכונית במסה $1500\,\text{kg}$ נוסעת ב-$20\,\text{m/s}$ ובולמת עד עצירה על כביש אופקי.
+
+      א. מה העבודה הכוללת של כל הכוחות על המכונית בזמן הבלימה?
+
+      ב. אם כוח הבלימה של הכביש על המכונית קבוע, $6000\,\text{N}$, באיזה מרחק היא עוצרת?
+
+      ג. באיזה מרחק הייתה עוצרת, באותו כוח, ממהירות של $25\,\text{m/s}$?
+    answer: >-
+      א. $-3.0\cdot10^5\,\text{J}$. ב. $50\,\text{m}$. ג. $78.1\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הנסיעה. $m = 1500\,\text{kg}$, $v_A = 20\,\text{m/s}$, $v_B = 0$, $f = 6000\,\text{N}$ נגד התנועה.
+      - kind: law
+        text: >-
+          משפט עבודה-אנרגיה: $W_{\text{net}} = \tfrac12mv_B^2 - \tfrac12mv_A^2$. הכובד והנורמלי ניצבים לתנועה ולא עושים עבודה.
+      - kind: manipulation
+        text: >-
+          $W_{\text{net}} = -fd = -\tfrac12mv_A^2$, ולכן $d = \dfrac{mv_A^2}{2f}$.
+      - kind: limit
+        text: >-
+          $d \propto v_A^2$: מהירות כפולה, מרחק בלימה פי 4. וכש-$f \to \infty$, $d \to 0$.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2/\text{s}^2/\text{N} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $W_{\text{net}} = -\tfrac12\cdot1500\cdot20^2 = -3.0\cdot10^5\,\text{J}$; $d = 3.0\cdot10^5/6000 = 50\,\text{m}$; מ-$25\,\text{m/s}$:
+          $d = \tfrac12\cdot1500\cdot25^2/6000 = 78.1\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $-3.0\cdot10^5\,\text{J}$. ב. $50\,\text{m}$. ג. $78.1\,\text{m}$: $25\%$ יותר מהירות, $56\%$ יותר מרחק.
+
+  - id: W-3.1-04
+    level: mid
+    objectives: [OBJ-3.1-1]
+    prompt: >-
+      גוש על משטח חלק מחובר לקפיץ בעל קבוע $k = 400\,\text{N/m}$, ו-$x$ הוא ההתארכות של הקפיץ ($x < 0$ פירושו כיווץ).
+      הגוש נע מ-$x = -0.05\,\text{m}$ ל-$x = +0.03\,\text{m}$. מה העבודה של כוח הקפיץ על הגוש? מה העבודה בכל אחד משני
+      החלקים, עד $x = 0$ ומשם הלאה, ולמה הסימנים שלהן שונים?
+    answer: >-
+      $W = 0.32\,\text{J}$: $0.50\,\text{J}$ עד $x = 0$ ו-$(-0.18\,\text{J})$ אחריו.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך הקפיץ, הראשית במצב הרפוי. $F_x = -kx$, $k = 400\,\text{N/m}$, $x_A = -0.05\,\text{m}$, $x_B = 0.03\,\text{m}$.
+      - kind: law
+        text: >-
+          $W = \int_{x_A}^{x_B}(-kx)\,dx$.
+      - kind: manipulation
+        text: >-
+          $W = -\tfrac k2\left(x_B^2 - x_A^2\right) = \tfrac k2\left(x_A^2 - x_B^2\right)$. עד $x = 0$ הכוח, $(-kx) > 0$, בכיוון התנועה,
+          והעבודה חיובית; אחרי $x = 0$ הכוח שלילי והתנועה בכיוון $+x$, והעבודה שלילית.
+      - kind: limit
+        text: >-
+          אם $x_B = -x_A$, העבודה אפס: הקפיץ מחזיר בדרך מ-0 החוצה את מה שנתן בדרך אל 0.
+      - kind: units
+        text: >-
+          $\text{N/m}\cdot\text{m}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $W = 200\left(0.0025 - 0.0009\right) = 0.32\,\text{J}$; עד $x = 0$: $200\cdot0.0025 = 0.50\,\text{J}$; אחריו $-200\cdot0.0009 = -0.18\,\text{J}$.
+      - kind: result
+        text: >-
+          $0.32\,\text{J}$ בסך הכול: $0.50\,\text{J}$ בדרך אל המצב הרפוי, ו-$(-0.18\,\text{J})$ אחריו.
+
+  - id: W-3.1-05
+    level: mid
+    objectives: [OBJ-3.1-1]
+    prompt: >-
+      במישור פועל הכוח $\vec F = (0,\,cx)$, עם $c = 6.0\,\text{N/m}$ ($x$ ו-$y$ במטרים). חשבו את העבודה שלו מ-$(0,\,0)$
+      ל-$(L,\,L)$, עם $L = 0.50\,\text{m}$:
+
+      א. לאורך הקטע הישר $y = x$.
+
+      ב. לאורך הפרבולה $y = x^2/L$.
+
+      ג. לאורך $x$ עד $(L,\,0)$, ואז לאורך $y$.
+    answer: >-
+      א. $0.75\,\text{J}$. ב. $1.0\,\text{J}$. ג. $1.5\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $F_x = 0$, $F_y = cx$, ולכן $dW = cx\,dy$: רק תנועה לאורך $y$ תורמת, והתרומה גדלה עם $x$.
+      - kind: law
+        text: >-
+          $W = \int\vec F\cdot d\vec r = \int cx\,dy$, לאורך כל מסלול לחוד, בהצגה פרמטרית עם $x$ כפרמטר.
+      - kind: manipulation
+        text: >-
+          א: $y = x$, $dy = dx$: $W = \int_0^L cx\,dx = \tfrac12cL^2$. ב: $y = x^2/L$, $dy = (2x/L)\,dx$: $W = \int_0^L \dfrac{2c}{L}x^2\,dx = \tfrac23cL^2$.
+          ג: בקטע הראשון $dy = 0$; בשני $x = L$ קבוע: $W = cL\cdot L = cL^2$.
+      - kind: limit
+        text: >-
+          המסלול שעולה ב-$y$ כש-$x$ כבר גדול נותן יותר עבודה: ג (כל העלייה ב-$x = L$) הכי הרבה; מסלול שעולה כל
+          הדרך ב-$x = 0$ ואז נע לאורך $x$ היה נותן אפס.
+      - kind: units
+        text: >-
+          $cL^2$ ב-$\text{N/m}\cdot\text{m}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $cL^2 = 6.0\cdot0.25 = 1.5\,\text{J}$: א $0.75\,\text{J}$, ב $1.0\,\text{J}$, ג $1.5\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $0.75\,\text{J}$. ב. $1.0\,\text{J}$. ג. $1.5\,\text{J}$: אותן נקודות קצה, שלוש עבודות שונות.
+
+  - id: W-3.1-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.1-2]
+    prompt: >-
+      זורקים כדור ישר כלפי מעלה, והוא חוזר ליד. בעזרת משפט עבודה-אנרגיה, בלי לפתור את התנועה, קבעו ונמקו:
+
+      א. בלי אוויר, באיזו מהירות הוא חוזר?
+
+      ב. עם גרר אוויר, האם הוא חוזר מהר יותר, לאט יותר, או באותה מהירות?
+    answer: >-
+      א. באותה מהירות שבה נזרק. ב. לאט יותר.
+    solution:
+      - kind: given
+        text: >-
+          נקודת הזריקה היא גם נקודת החזרה. ציר $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          $W_{\text{net}} = K_{\text{ret}} - K_0$, כאשר $W_{\text{net}}$ סכום העבודות של הכובד ושל הגרר על כל המסלול, עלייה וירידה.
+      - kind: reasoning
+        text: >-
+          הכובד קבוע, ולכן העבודה שלו $m\vec g\cdot\Delta\vec r$, וההעתק הכולל אפס: $W_g = 0$. הגרר מנוגד למהירות בכל רגע,
+          בעלייה ובירידה, ולכן $\vec F_d\cdot d\vec r < 0$ בכל חתיכה: $W_d < 0$.
+      - kind: limit
+        text: >-
+          כשהגרר שואף לאפס, $W_d \to 0$ ומהירות החזרה שואפת למהירות הזריקה.
+      - kind: units
+        text: >-
+          כל עבודה ב-$\text{J}$, כמו $\tfrac12mv^2$.
+      - kind: result
+        text: >-
+          א. בלי אוויר $W_{\text{net}} = 0$, ולכן $K_{\text{ret}} = K_0$: אותו גודל מהירות. ב. עם גרר $W_{\text{net}} = W_d < 0$, ולכן הוא חוזר לאט יותר.
+
+  - id: W-3.1-07
+    level: mid
+    objectives: [OBJ-3.1-2]
+    prompt: >-
+      גוש במסה $3.0\,\text{kg}$ מחליק ממנוחה במורד מדרון בזווית $25^\circ$, לאורך $2.5\,\text{m}$. מקדם החיכוך הקינטי
+      $0.20$. חשבו את העבודה של כל כוח, ואת גודל המהירות בתחתית.
+    answer: >-
+      $W_g = 31.1\,\text{J}$, $W_f = -13.3\,\text{J}$, $W_N = 0$; $v = 3.44\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר לאורך המדרון, חיובי במורד. $m = 3.0\,\text{kg}$, $\theta = 25^\circ$, $\mu_k = 0.20$, $d = 2.5\,\text{m}$, $v_0 = 0$.
+      - kind: law
+        text: >-
+          משפט עבודה-אנרגיה, $W_g + W_N + W_f = \tfrac12mv^2$. הנורמלי ניצב למדרון, $N = mg\cos\theta$, והחיכוך $\mu_kN$ נגד התנועה.
+      - kind: manipulation
+        text: >-
+          $W_g = mgd\sin\theta$ (הירידה בגובה $d\sin\theta$), $W_N = 0$, $W_f = -\mu_kmgd\cos\theta$. לכן
+          $v = \sqrt{2gd\left(\sin\theta - \mu_k\cos\theta\right)}$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to 0$, $v \to \sqrt{2gd\sin\theta} = \sqrt{2gh}$. כש-$\mu_k = \tan\theta$ הסוגריים מתאפסים: החיכוך מאזן את רכיב הכובד, והגוש לא מאיץ.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m/s}^2\cdot\text{m}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $W_g = 3.0\cdot9.8\cdot2.5\cdot\sin25^\circ = 31.1\,\text{J}$; $W_f = -0.20\cdot3.0\cdot9.8\cdot\cos25^\circ\cdot2.5 = -13.3\,\text{J}$;
+          $W_{\text{net}} = 17.7\,\text{J}$, $v = \sqrt{2\cdot17.7/3.0} = 3.44\,\text{m/s}$ (בלי חיכוך $4.55\,\text{m/s}$).
+      - kind: result
+        text: >-
+          $W_g = 31.1\,\text{J}$, $W_f = -13.3\,\text{J}$, $W_N = 0$, ו-$v = 3.44\,\text{m/s}$.
+
+  - id: W-3.1-08
+    level: bagrut
+    objectives: [OBJ-3.1-2, OBJ-3.1-1]
+    prompt: >-
+      עגלה במסה $1.5\,\text{kg}$ עומדת על מסילה ישרה וחלקה. מ-$t = 0$ פועל עליה, לאורך המסילה, כוח שתלוי במקום,
+      $F(x) = F_0e^{-x/\lambda}$, עם $F_0 = 12\,\text{N}$ ו-$\lambda = 0.40\,\text{m}$; $x$ נמדד מהמקום שבו העגלה עמדה.
+
+      א. מה גודל המהירות שלה ב-$x = \lambda$?
+
+      ב. האם המהירות שלה גדלה בלי גבול? אם לא, לאיזו מהירות היא מתקרבת?
+    answer: >-
+      א. $2.01\,\text{m/s}$. ב. לא: היא מתקרבת ל-$\sqrt{2F_0\lambda/m} = 2.53\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך המסילה, הראשית במקום ההתחלה. $m = 1.5\,\text{kg}$, $v_0 = 0$. הכובד והנורמלי ניצבים למסילה.
+      - kind: law
+        text: >-
+          $\tfrac12mv^2 = W(x) = \int_0^x F_0e^{-x'/\lambda}\,dx'$.
+      - kind: manipulation
+        text: >-
+          הפונקציה הקדומה של $e^{-x/\lambda}$ היא $-\lambda e^{-x/\lambda}$, ולכן $W(x) = F_0\lambda\left(1 - e^{-x/\lambda}\right)$ ו-
+          $v(x) = \sqrt{\dfrac{2F_0\lambda}{m}\left(1 - e^{-x/\lambda}\right)}$.
+      - kind: limit
+        text: >-
+          כש-$x \ll \lambda$, $1 - e^{-x/\lambda} \approx x/\lambda$ ו-$W \approx F_0x$: כוח כמעט קבוע. כש-$x \to \infty$, $W \to F_0\lambda$, סכום סופי:
+          הכוח דועך מהר מספיק כדי שהשטח מתחתיו יהיה סופי.
+      - kind: units
+        text: >-
+          $F_0\lambda$ ב-$\text{N}\cdot\text{m} = \text{J}$; $F_0\lambda/m$ ב-$\text{m}^2/\text{s}^2$.
+      - kind: substitution
+        text: >-
+          $F_0\lambda = 4.8\,\text{J}$. א: $W(\lambda) = 4.8\left(1 - e^{-1}\right) = 3.03\,\text{J}$, $v = \sqrt{2\cdot3.03/1.5} = 2.01\,\text{m/s}$.
+          ב: $v_\infty = \sqrt{2\cdot4.8/1.5} = 2.53\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $2.01\,\text{m/s}$. ב. המהירות גדלה כל הזמן אבל מתקרבת ל-$2.53\,\text{m/s}$.
+
+  - id: W-3.1-09
+    level: bagrut
+    objectives: [OBJ-3.1-1, OBJ-3.1-2]
+    prompt: >-
+      מכונית צעצוע נוסעת על רצפה אופקית במעגל ברדיוס $1.5\,\text{m}$, בגודל מהירות קבוע $2.0\,\text{m/s}$. האוויר מפעיל
+      עליה גרר ליניארי, $\vec F_d = -b\vec v$, עם $b = 0.30\,\text{kg/s}$.
+
+      א. כמה עבודה עושה הגרר בסיבוב אחד?
+
+      ב. הרצפה מפעילה על הגלגלים כוח אופקי. חלקו אותו לרכיב לאורך המהירות ולרכיב אל מרכז המעגל. כמה עבודה עושה כל
+      רכיב בסיבוב, ולמה?
+    answer: >-
+      א. $-5.65\,\text{J}$. ב. הרכיב לאורך המהירות $+5.65\,\text{J}$; הרכיב אל המרכז אפס.
+    solution:
+      - kind: given
+        text: >-
+          $R = 1.5\,\text{m}$, $v = 2.0\,\text{m/s}$ קבוע, $b = 0.30\,\text{kg/s}$. המכונית היא גוף נקודתי במעגל אופקי.
+      - kind: law
+        text: >-
+          $W = \int\vec F\cdot d\vec r$ לאורך המעגל, ומשפט עבודה-אנרגיה: $\Delta K = 0$ בסיבוב, כי גודל המהירות קבוע.
+      - kind: manipulation
+        text: >-
+          הגרר מנוגד ל-$d\vec r$ בכל נקודה ובגודל קבוע $bv$, ולכן $W_d = -bv\cdot2\pi R$. הרכיב של כוח הרצפה אל המרכז ניצב
+          ל-$d\vec r$: $W_\perp = 0$. הכובד והנורמלי אנכיים: אפס. מהמשפט, $W_\parallel + W_d = 0$, ולכן $W_\parallel = bv\cdot2\pi R$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ שתי העבודות מתאפסות, והמכונית מקיפה בלי שהרצפה תצטרך "לדחוף" קדימה. הרכיב אל המרכז נשאר, $mv^2/R$, אבל הוא לא עושה עבודה בשום מקרה.
+      - kind: units
+        text: >-
+          $bv$ ב-$\text{kg/s}\cdot\text{m/s} = \text{N}$, כפול מטרים: $\text{J}$.
+      - kind: substitution
+        text: >-
+          $bv = 0.60\,\text{N}$, $2\pi R = 9.42\,\text{m}$, $W_d = -0.60\cdot9.42 = -5.65\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $-5.65\,\text{J}$. ב. $+5.65\,\text{J}$ לרכיב שלאורך המהירות, ואפס לרכיב שאל המרכז.
+
+  - id: W-3.1-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.1-2]
+    prompt: >-
+      גוש במסה $m$ על קרח חלק נדחף בכוח אופקי קבוע $F$, ממנוחה ועד מהירות $v$, בזמן $\Delta t$. מערכת ייחוס S' נעה ביחס
+      לקרח במהירות קבועה $v/2$, בכיוון הדחיפה.
+
+      א. מה השינוי באנרגיה הקינטית של הגוש ב-S'?
+
+      ב. מה ההעתק של הגוש ב-S' בזמן הדחיפה, ומה העבודה של $F$ שם?
+
+      ג. האם משפט עבודה-אנרגיה מתקיים ב-S'? איך ייתכן שהכוח פעל כל הזמן ולא עשה עבודה?
+    answer: >-
+      א. אפס. ב. ההעתק אפס, והעבודה אפס. ג. כן: ב-S' הגוש נע קודם אחורה ואחר כך קדימה, והעבודה בשני החלקים מתקזזת.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הדחיפה. במערכת הקרח: $v(0) = 0$, $v(\Delta t) = v$, $F = mv/\Delta t$. ב-S': $v' = v - v/2$.
+      - kind: law
+        text: >-
+          S' אינרציאלית (מהירות קבועה ביחס לקרח), והכוח זהה בשתי המערכות. משפט עבודה-אנרגיה בכל מערכת עם המהירויות וההעתקים שלה.
+      - kind: manipulation
+        text: >-
+          א: ב-S' המהירות מתחילה ב-$(-v/2)$ ומסתיימת ב-$(+v/2)$: $\Delta K' = \tfrac12m(v/2)^2 - \tfrac12m(v/2)^2 = 0$.
+          ב: במערכת הקרח הגוש עובר $\tfrac12v\Delta t$ (תאוצה קבועה ממנוחה), ו-S' עוברת $\tfrac12v\Delta t$: ההעתק ב-S' אפס, ו-$W' = F\cdot0 = 0$.
+      - kind: reasoning
+        text: >-
+          ג: ב-S' הגוש נע בחצי הראשון של הזמן לכיוון $-x$, נגד הכוח (עבודה שלילית, $K'$ קטנה), ובחצי השני לכיוון $+x$,
+          עם הכוח (עבודה חיובית). שני החלקים שווים בגודלם. במערכת הקרח אותו כוח עושה $\tfrac12mv^2$.
+      - kind: limit
+        text: >-
+          אם S' נעה במהירות אפס, היא מערכת הקרח, ו-$W' = \Delta K' = \tfrac12mv^2$. אם היא נעה במהירות $v$, הגוש מתחיל ב-$(-v)$
+          ומסתיים במנוחה: $\Delta K' = -\tfrac12mv^2$, וגם ההעתק ב-S' שלילי.
+      - kind: units
+        text: >-
+          $F\cdot\Delta x'$ ו-$\tfrac12mv^2$ שניהם ב-$\text{J}$.
+      - kind: result
+        text: >-
+          א. $\Delta K' = 0$. ב. ההעתק ב-S' אפס, $W' = 0$. ג. המשפט מתקיים ב-S', עם המספרים של S': עבודה ואנרגיה קינטית תלויות במערכת הייחוס.
+
+challenge:
+  - id: W-3.1-c1
+    stars: 1
+    objectives: [OBJ-3.1-1, OBJ-3.1-2]
+    prompt: >-
+      גוש במסה $m = 2.0\,\text{kg}$ נע על משטח אופקי במהירות $v_0 = 3.0\,\text{m/s}$, ונכנס ב-$x = 0$ לקטע מחוספס באורך
+      $d = 0.60\,\text{m}$. מקדם החיכוך הקינטי בקטע גדל קווית עם המרחק, $\mu_k(x) = bx$, עם $b = 0.50\,\text{m}^{-1}$. אחרי
+      הקטע המשטח חלק, ושם הגוש פוגע בקפיץ רפוי בעל קבוע $k = 200\,\text{N/m}$.
+
+      א. מצאו ביטוי סימבולי לעבודה של החיכוך בקטע המחוספס.
+
+      ב. בכמה מתכווץ הקפיץ עד שהגוש נעצר לראשונה?
+
+      ג. מה המהירות $v_0$ המינימלית שבה הגוש מגיע לקפיץ?
+    answer: >-
+      א. $W_f = -\tfrac12mgbd^2$. ב. $0.269\,\text{m}$. ג. $1.33\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה, הראשית בתחילת הקטע המחוספס. $m = 2.0\,\text{kg}$, $v_0 = 3.0\,\text{m/s}$, $b = 0.50\,\text{m}^{-1}$,
+          $d = 0.60\,\text{m}$, $k = 200\,\text{N/m}$. על משטח אופקי $N = mg$.
+      - kind: law
+        text: >-
+          $W_f = \int_0^d\left(-\mu_k(x)\,mg\right)dx$, עבודת הקפיץ מהמצב הרפוי עד כיווץ $x_c$ היא $-\tfrac12kx_c^2$, ומשפט עבודה-אנרגיה
+          מהכניסה לקטע עד העצירה: $W_f - \tfrac12kx_c^2 = 0 - \tfrac12mv_0^2$.
+      - kind: manipulation
+        text: >-
+          א: $W_f = -mgb\int_0^dx\,dx = -\tfrac12mgbd^2$: החיכוך גדל לאורך הקטע, ולכן העבודה היא שטח של משולש, לא מלבן.
+          ב: $\tfrac12kx_c^2 = \tfrac12mv_0^2 - \tfrac12mgbd^2$, ולכן $x_c = \sqrt{\dfrac{m\left(v_0^2 - gbd^2\right)}{k}}$.
+          ג: הגוש מגיע לקפיץ אם האנרגיה הקינטית בסוף הקטע לא שלילית: $v_0^2 \ge gbd^2$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ אין חיכוך, ו-$x_c \to v_0\sqrt{m/k}$: כל האנרגיה הקינטית עוברת לקפיץ. כש-$v_0^2 = gbd^2$, $x_c = 0$: הגוש נעצר בדיוק בקצה הקטע.
+      - kind: units
+        text: >-
+          $mgbd^2$: $\text{kg}\cdot\text{m/s}^2\cdot\text{m}^{-1}\cdot\text{m}^2 = \text{J}$; $\sqrt{m v^2/k}$: $\sqrt{\text{kg}\cdot\text{m}^2/\text{s}^2/(\text{N/m})} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $W_f = -\tfrac12\cdot2.0\cdot9.8\cdot0.50\cdot0.36 = -1.76\,\text{J}$; $\tfrac12mv_0^2 = 9.0\,\text{J}$, ולכן $\tfrac12kx_c^2 = 7.24\,\text{J}$ ו-
+          $x_c = \sqrt{2\cdot7.24/200} = 0.269\,\text{m}$. (מקדם קבוע $bd = 0.30$ לכל הקטע היה נותן $0.234\,\text{m}$.)
+          ג: $v_0 = \sqrt{9.8\cdot0.50\cdot0.36} = 1.33\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $W_f = -\tfrac12mgbd^2$. ב. $0.269\,\text{m}$. ג. $1.33\,\text{m/s}$.
+    source:
+      name: MIT 8.01 Classical Mechanics (OCW), Problem Set 7
+      year: 2016
+      problem: Problem 2, Collision and Sliding on a Rough Surface (without the collision)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/15aa14b5647ea989a352a972dc4b3dfe_MIT8_01F16_pset7.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.1-c2
+    stars: 2
+    objectives: [OBJ-3.1-1, OBJ-3.1-2]
+    prompt: >-
+      גוף קטן במסה $m = 0.30\,\text{kg}$ קשור לחוט באורך $R = 0.50\,\text{m}$, שהקצה השני שלו קבוע בנקודה על מישור משופע
+      בזווית $\varphi = 20^\circ$ לאופק. הגוף נע על המישור במעגל סביב הנקודה הזו, והחוט מתוח. מקדם החיכוך הקינטי בין
+      הגוף למישור $\mu = 0.15$. בנקודה הנמוכה ביותר של המעגל, A, גודל המהירות $v_0 = 4.0\,\text{m/s}$.
+
+      א. מה העבודה של החיכוך בדרך מ-A לנקודה הגבוהה ביותר, B (חצי מעגל)?
+
+      ב. מה גודל המהירות ב-B?
+
+      ג. מה המתיחות בחוט ב-B?
+    answer: >-
+      א. $W_f = -\pi\mu mgR\cos\varphi = -0.651\,\text{J}$. ב. $2.23\,\text{m/s}$. ג. $1.97\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          במישור המשופע: ציר לאורך קו השיפוע, חיובי במעלה; ניצב למישור: ציר מחוץ למישור. $m = 0.30\,\text{kg}$, $R = 0.50\,\text{m}$,
+          $\varphi = 20^\circ$, $\mu = 0.15$, $v_0 = 4.0\,\text{m/s}$. B גבוהה מ-A ב-$2R\sin\varphi$.
+      - kind: law
+        text: >-
+          $N = mg\cos\varphi$ (המתיחות במישור, ולכן לא משנה את הנורמלי). החיכוך בגודל $\mu N$, נגד המהירות בכל רגע.
+          משפט עבודה-אנרגיה מ-A ל-B, וב-B החוק השני ברכיב שאל המרכז.
+      - kind: manipulation
+        text: >-
+          א: החיכוך מנוגד ל-$d\vec r$ ובגודל קבוע, ולכן $W_f = -\mu mg\cos\varphi\cdot\pi R$. הכובד: $W_g = -mg\cdot2R\sin\varphi$.
+          המתיחות ניצבת ל-$d\vec r$ (מעגל): $W_T = 0$; וגם הנורמלי. ב: $\tfrac12mv_B^2 = \tfrac12mv_0^2 + W_g + W_f$.
+          ג: ב-B המרכז במורד השיפוע, וגם רכיב הכובד לאורך המישור, $mg\sin\varphi$, פונה אליו: $T + mg\sin\varphi = mv_B^2/R$.
+      - kind: limit
+        text: >-
+          כש-$\mu \to 0$ ו-$\varphi \to 0$ (שולחן אופקי וחלק), $W_f = W_g = 0$, $v_B = v_0$ ו-$T = mv_0^2/R$: תנועה מעגלית במהירות קבועה.
+          כש-$v_0$ קטן, $T$ יורד לאפס: החוט מתרפה לפני B, כש-$v_0 < 3.57\,\text{m/s}$.
+      - kind: units
+        text: >-
+          $\mu mgR$ ב-$\text{N}\cdot\text{m} = \text{J}$; $mv^2/R$ ב-$\text{N}$.
+      - kind: substitution
+        text: >-
+          $N = 2.76\,\text{N}$, $\mu N = 0.414\,\text{N}$, $W_f = -0.414\cdot\pi\cdot0.50 = -0.651\,\text{J}$; $W_g = -0.30\cdot9.8\cdot1.0\cdot\sin20^\circ = -1.01\,\text{J}$;
+          $\tfrac12mv_0^2 = 2.40\,\text{J}$, ולכן $K_B = 0.744\,\text{J}$ ו-$v_B = 2.226\,\text{m/s}$. $T = 0.30\cdot2.226^2/0.50 - 0.30\cdot9.8\sin20^\circ = 2.974 - 1.006 = 1.97\,\text{N}$
+          (עם $v_B$ המעוגל ל-$2.23\,\text{m/s}$ היה יוצא $1.98\,\text{N}$: בחישוב ביניים שומרים ספרה נוספת).
+      - kind: result
+        text: >-
+          א. $-0.651\,\text{J}$. ב. $2.23\,\text{m/s}$. ג. $1.97\,\text{N}$.
+    source:
+      name: MIT 8.01 Classical Mechanics (OCW), Problem Set 7
+      year: 2016
+      problem: Problem 3, Inclined plane
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/15aa14b5647ea989a352a972dc4b3dfe_MIT8_01F16_pset7.pdf
+      verified: '2026-11-10'
+      adapted: true

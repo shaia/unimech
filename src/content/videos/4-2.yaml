@@ -1,0 +1,31 @@
+# Videos of lesson 4.2. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths and caption tracks come from the watch page (lengthSeconds,
+# captionTracks); the content claims come from the transcripts MIT OCW publishes with each clip
+# (ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016, week 9, "Deep Dive: Center of Mass Reference Frame").
+#   7x62TdS0Nn0: 226 s; captions en. Transcript: v1' = (μ/m1) v12, v2' = −(μ/m2) v12; in an elastic collision the
+#     speeds in the CM frame do not change, only the directions.
+#   mjrQHIJj1iI: 267 s; caption tracks include en and iw (Hebrew). Transcript: K_cm = ½ m1 v1'² + ½ m2 v2'² = ½ μ v12²;
+#     ΔK_cm = 0 for an elastic collision, −½ μ v12² for a completely inelastic one.
+# Both clips write the centre-of-mass-frame velocity with a prime, where the lesson writes u.
+
+- id: v-4-2-cm-velocities
+  youtubeId: 7x62TdS0Nn0
+  title: 'DD.2.3 1D Elastic Collision Velocities in CM Frame'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 4
+  why: 'לפי התמליל: המהירות של כל גוף במערכת מרכז המסה היא קבוע כפול המהירות היחסית, ולכן בהתנגשות אלסטית הגדלים של המהירויות במערכת הזו לא משתנים, רק הכיוונים. בסרטון התג מסמן את מערכת מרכז המסה; בשיעור היא מסומנת u.'
+  verified: '2026-11-10'
+
+- id: v-4-2-cm-energy
+  youtubeId: mjrQHIJj1iI
+  title: 'DD.2.6 Kinetic Energy in the CM Frame'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en, he]
+  start: 0
+  minutes: 5
+  why: 'לפי התמליל: חישוב האנרגיה הקינטית במערכת מרכז המסה, שיוצאת חצי המסה המצומצמת כפול ריבוע המהירות היחסית, והמסקנה שבהתנגשות פלסטית אובד כל החלק הזה. השוו לפסים של איור 4.2ב.'
+  verified: '2026-11-10'

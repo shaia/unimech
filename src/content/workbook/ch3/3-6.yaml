@@ -1,0 +1,492 @@
+# Workbook, lesson 3.6 (variable mass: the rocket). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-6/numbers.ts against src/physics/rocket.ts with G = 9.8:
+#   W02 Δv = 2200 ln(850/810) = 106 m/s (one push 103.5);  W03 a0 = 5.2 m/s², a_end = 40.2 m/s²;
+#   W04 m0/m1 = e^(9.5/3.0) = 23.7 (final 4.21 %), with u = 4.4 km/s 8.66 (11.5 %);
+#   W06 F = 36 N, motor 86.4 W, kinetic 43.2 W, heat 43.2 W;  W07 v(30 s) = 3.75 m/s, x = 141 m (180 m without sand);
+#   W08 T = 2.0·10⁴ N > 4900 N, t_b = 30 s, v_b = 1539 m/s (1833 − 294), y_b = 1.89·10⁴ m, apex 1.40·10⁵ m at 187 s;
+#   W09 hover time (u/g) ln 1.5 = 103 s, burn rate 3.53 → 2.35 kg/s;  W10 F = 7.35 + 2.0 = 9.35 N, P = 18.7 W,
+#       dU/dt = 14.7 W, dK/dt = 2.0 W, lost 2.0 W;
+#   c1 v_T = √(g/k) = 49.5 m/s (k = 4.0·10⁻³ m⁻¹), 1/√(gk) = 5.05 s, v(10 s) = 47.6 m/s, 90 % after 7.44 s;
+#   c2 6249, 3845, 3343, 7188 m/s; stage 1 μ = 1.35·10⁵ kg/s, thrust 4.06·10⁸ N, T/W = 1.47; one stage over 510 s
+#      T/W = 0.525; g·510 s = 4998 m/s.
+#   c2's masses were checked against the source PDF (opened and text-extracted 2026-11-10): m = 2.81·10⁷ kg, fuel
+#      2.46·10⁷ kg, stage 1 fuel 2.03·10⁷ kg in 150 s, casing 1.4·10⁶ kg, stage 2 fuel 4.3·10⁶ kg, 510 s in all, as
+#      printed there (about ten times a real Saturn V; the answers depend only on mass ratios and T/W).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.6'
+practice:
+  - id: W-3.6-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.6-1]
+    prompt: >-
+      רקטה בחלל, רחוק מכל גוף, פולטת גז במהירות $u$ ביחס אליה. לכל משפט, קבעו אם הוא נכון ונמקו.
+
+      א. אם מכפילים את מהירות הפליטה, המהירות בסוף השריפה גדלה פי 2.
+
+      ב. אם מכפילים את קצב השריפה, המהירות בסוף השריפה גדלה פי 2.
+
+      ג. כשמהירות הרקטה עולה על $u$, הגז שהיא פולטת כבר לא מאיץ אותה.
+
+      ד. אם יחס המסות $m_0/m_1$ עולה בריבוע, המהירות בסוף השריפה גדלה פי 2.
+    answer: >-
+      א. נכון. ב. לא נכון: היא לא משתנה. ג. לא נכון. ד. נכון.
+    solution:
+      - kind: law
+        text: >-
+          משוואת הרקטה, $M\,dv = -u\,dM$, ובחלל $\Delta v = u\ln(m_0/m_1)$.
+      - kind: reasoning
+        text: >-
+          א: $\Delta v$ פרופורציוני ל-$u$. ב: הזמן לא מופיע ב-$M\,dv = -u\,dM$; הדחף גדל פי 2 אבל פועל חצי מהזמן.
+          ג: מה שקובע הוא המהירות של הגז **ביחס לרקטה**, $u$, בכל מהירות של הרקטה; במערכת האינרציאלית הגז אולי נע
+          קדימה, אבל לאט יותר מהרקטה. ד: $\ln(R^2) = 2\ln R$.
+      - kind: limit
+        text: >-
+          כש-$m_1 \to m_0$, $\Delta v \to 0$: בלי דלק אין שינוי מהירות, בכל $u$ ובכל קצב.
+      - kind: units
+        text: >-
+          $u\ln(m_0/m_1)$ ב-$\text{m/s}$; הלוגריתם חסר ממדים.
+      - kind: result
+        text: >-
+          א ו-ד נכונים; ב ו-ג לא נכונים.
+
+  - id: W-3.6-02
+    level: basic
+    objectives: [OBJ-3.6-1]
+    prompt: >-
+      לוויין במסה $850\,\text{kg}$ (כולל הדלק) מפעיל מנוע תמרון שפולט גז ב-$2200\,\text{m/s}$ ביחס אליו, עד שנשרפו
+      $40\,\text{kg}$ דלק. בכמה משתנה מהירותו? השוו לחישוב "בזריקה אחת", $u\,\Delta m/m_0$.
+    answer: >-
+      $106\,\text{m/s}$; הזריקה האחת נותנת $103.5\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון הדחף. $m_0 = 850\,\text{kg}$, $m_1 = 810\,\text{kg}$, $u = 2200\,\text{m/s}$. בזמן התמרון הכובד
+          של כדור הארץ משפיע באותו אופן על הלוויין ועל הגז, ולכן נחשב רק את השינוי שהמנוע נותן.
+      - kind: law
+        text: >-
+          $\Delta v = u\ln(m_0/m_1)$.
+      - kind: manipulation
+        text: >-
+          כש-$\Delta m \ll m_0$: $\ln\dfrac{m_0}{m_1} = -\ln\left(1 - \dfrac{\Delta m}{m_0}\right) \approx \dfrac{\Delta m}{m_0} + \dfrac12\left(\dfrac{\Delta m}{m_0}\right)^2$.
+      - kind: limit
+        text: >-
+          כשנשרף רק מעט דלק, שני החישובים מתקרבים; התיקון היחסי הוא $\tfrac12\,\Delta m/m_0$, כאן כ-$2.4\%$.
+      - kind: units
+        text: >-
+          $u\,\Delta m/m_0$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $2200\ln(850/810) = 106\,\text{m/s}$; $2200\cdot40/850 = 103.5\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $106\,\text{m/s}$, קצת יותר מהזריקה האחת, כי כל קילוגרם שנפלט מאוחר יותר מאיץ לוויין קל יותר.
+
+  - id: W-3.6-03
+    level: basic
+    objectives: [OBJ-3.6-2]
+    prompt: >-
+      רקטה משוגרת אנכית. כוח הדחף שלה קבוע, $1.5\cdot10^6\,\text{N}$. מסתה בהצתה $1.0\cdot10^5\,\text{kg}$, ובסוף
+      השריפה $3.0\cdot10^4\,\text{kg}$. הזניחו את האוויר. מה תאוצתה רגע אחרי ההצתה, ומה רגע לפני סוף השריפה? למה היא
+      גדלה, אם הדחף קבוע?
+    answer: >-
+      $5.2\,\text{m/s}^2$ בהתחלה ו-$40.2\,\text{m/s}^2$ בסוף, כי אותו דחף מאיץ מסה קטנה יותר.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה. דחף $F_T = 1.5\cdot10^6\,\text{N}$, $m_0 = 1.0\cdot10^5\,\text{kg}$, $m_1 = 3.0\cdot10^4\,\text{kg}$.
+      - kind: law
+        text: >-
+          $M\,dv/dt = u\mu - Mg$, כלומר $a = u\mu/M - g$, עם הדחף $u\mu$.
+      - kind: reasoning
+        text: >-
+          הדחף קבוע והכובד קטן עם המסה, ולכן הכוח השקול גדל; ובנוסף הוא מאיץ מסה שהולכת וקטנה.
+      - kind: limit
+        text: >-
+          אם הדחף היה שווה בדיוק לכובד בהצתה, $a(0) = 0$; הרקטה הייתה מתחילה לעלות רק כשהמסה קטנה.
+      - kind: units
+        text: >-
+          $\text{N}/\text{kg} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $a(0) = 1.5\cdot10^6/1.0\cdot10^5 - 9.8 = 5.2\,\text{m/s}^2$; $a_{\text{end}} = 1.5\cdot10^6/3.0\cdot10^4 - 9.8 = 40.2\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $5.2\,\text{m/s}^2$ ו-$40.2\,\text{m/s}^2$, פי 7.7.
+
+  - id: W-3.6-04
+    level: mid
+    objectives: [OBJ-3.6-1]
+    prompt: >-
+      כדי להגיע למסלול סביב כדור הארץ, רקטה צריכה שינוי מהירות כולל של כ-$9.5\,\text{km/s}$ (כולל ההפסדים לכובד
+      ולאוויר). נניח שכל השינוי הזה מושג במשוואת הרקטה של החלל.
+
+      א. רקטה חד-שלבית עם $u = 3.0\,\text{km/s}$: מה יחס המסות $m_0/m_1$ הדרוש, ואיזה חלק מהמסה ההתחלתית נשאר בסוף
+      (מבנה ומטען יחד)?
+
+      ב. ואם $u = 4.4\,\text{km/s}$?
+    answer: >-
+      א. $23.7$, כלומר $4.2\%$ נשאר. ב. $8.66$, כלומר $11.5\%$.
+    solution:
+      - kind: given
+        text: >-
+          $\Delta v = 9500\,\text{m/s}$; $u = 3000$ או $4400\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $\Delta v = u\ln(m_0/m_1)$.
+      - kind: manipulation
+        text: >-
+          $m_0/m_1 = e^{\Delta v/u}$, והחלק שנשאר $m_1/m_0 = e^{-\Delta v/u}$.
+      - kind: limit
+        text: >-
+          כש-$u \to \infty$, $m_1/m_0 \to 1$: כמעט בלי דלק. כש-$u \ll \Delta v$ החלק שנשאר קטן באקספוננט, וזה מה שהופך
+          מהירות פליטה גבוהה לכל כך חשובה.
+      - kind: units
+        text: >-
+          $\Delta v/u$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          א. $e^{9.5/3.0} = e^{3.17} = 23.7$, ו-$1/23.7 = 0.042$. ב. $e^{9.5/4.4} = 8.66$, ו-$1/8.66 = 0.115$.
+      - kind: result
+        text: >-
+          א. $m_0/m_1 = 23.7$, ונשאר $4.2\%$ למבנה ולמטען יחד. ב. $8.66$ ו-$11.5\%$. זו הסיבה שרקטות למסלול הן רב-שלביות.
+
+  - id: W-3.6-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.6-1, OBJ-3.6-2]
+    prompt: >-
+      סטודנט כותב לרקטה בחלל: "אין כוח חיצוני, ולכן $0 = \dfrac{d(Mv)}{dt} = M\dfrac{dv}{dt} + v\dfrac{dM}{dt}$".
+
+      א. מה המשוואה שלו אומרת על רקטה שנמצאת ברגע מסוים במנוחה? האם זה סביר?
+
+      ב. מה המשוואה שלו אומרת כשמתארים את אותה רקטה ממערכת אינרציאלית אחרת, שבה היא נעה? מה זה מלמד?
+
+      ג. מה הטעות, ומה המשוואה הנכונה?
+    answer: >-
+      א. שהיא לא מאיצה: לא סביר. ב. תאוצה שתלויה במערכת הייחוס: סימן לטעות. ג. $Mv$ איננו התנע של אוסף קבוע של
+      חלקיקים; הנכון $M\,dv/dt = u\mu$.
+    solution:
+      - kind: law
+        text: >-
+          החוק השני, $F = dP/dt$, חל על אוסף קבוע של חלקיקים. בגירסה הכללית לגוף שמסתו משתנה:
+          $M\,dv/dt = F + (w - v)\,dM/dt$, כש-$w$ מהירות המסה היוצאת.
+      - kind: reasoning
+        text: >-
+          א: עם $v = 0$ נשאר $M\,dv/dt = 0$, כלומר רקטה במנוחה לא מאיצה, גם כשהמנוע פועל. ב: במערכת שבה הרקטה נעה
+          ב-$v$, $dv/dt = -(v/M)\,dM/dt$, שתלוי ב-$v$. תאוצה היא אותה תאוצה בכל מערכת אינרציאלית (שיעור 1.5), ולכן
+          המשוואה לא יכולה להיות נכונה. ג: $Mv$ הוא התנע של מה שנמצא ברקטה עכשיו; הגז שיצא לקח איתו תנע
+          $(-dM)(v - u)$, ואותו המשוואה של הסטודנט לא סופרת.
+      - kind: manipulation
+        text: >-
+          עם $w - v = -u$ ו-$dM/dt = -\mu$: $M\,dv/dt = 0 + (-u)(-\mu) = u\mu$, בלי $v$.
+      - kind: limit
+        text: >-
+          המשוואה של הסטודנט נכונה רק כשהמסה שיוצאת נשארת במנוחה במערכת שבה כותבים, $w = 0$, כלומר במקרה המיוחד
+          $v = u$.
+      - kind: units
+        text: >-
+          $u\mu$ ב-$\text{m/s}\cdot\text{kg/s} = \text{N}$, כמו $M\,dv/dt$.
+      - kind: result
+        text: >-
+          המשוואה שגויה כי היא מתעלמת מהתנע שהגז לוקח; הנכונה היא $M\,dv/dt = u\mu$, זהה בכל מערכת אינרציאלית.
+
+  - id: W-3.6-06
+    level: mid
+    objectives: [OBJ-3.6-2]
+    prompt: >-
+      ממשפך עומד נופל חול, אנכית, על קרון שטוח שנע במהירות קבועה $2.4\,\text{m/s}$, בקצב $15\,\text{kg/s}$. מה הכוח
+      האופקי שדרוש כדי לשמור על המהירות, מה ההספק שלו, וכמה מההספק הופך לחום?
+    answer: >-
+      $F = 36\,\text{N}$, $P = 86.4\,\text{W}$, מתוכם $43.2\,\text{W}$ חום.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון התנועה, במערכת של הקרקע. $v = 2.4\,\text{m/s}$ קבוע, $\mu = 15\,\text{kg/s}$, לחול אין מהירות אופקית.
+      - kind: law
+        text: >-
+          שינוי התנע האופקי בפרק זמן $dt$: $F\,dt = (M + dm)\,v - Mv$; הספק $P = Fv$.
+      - kind: manipulation
+        text: >-
+          $F = v\mu$, $P = v^2\mu$, והאנרגיה הקינטית גדלה בקצב $\tfrac12v^2\mu$; ההפרש הוא חום.
+      - kind: limit
+        text: >-
+          כש-$\mu \to 0$ הכוח וההספק מתאפסים. החלק שהופך לחום, מחצית, לא תלוי לא ב-$v$, לא ב-$\mu$ ולא בחיכוך.
+      - kind: units
+        text: >-
+          $v\mu$ ב-$\text{kg}\cdot\text{m/s}^2 = \text{N}$, ו-$v^2\mu$ ב-$\text{W}$.
+      - kind: substitution
+        text: >-
+          $F = 2.4\cdot15 = 36\,\text{N}$; $P = 36\cdot2.4 = 86.4\,\text{W}$; קינטית $\tfrac12\cdot2.4^2\cdot15 = 43.2\,\text{W}$; חום $43.2\,\text{W}$.
+      - kind: result
+        text: >-
+          $36\,\text{N}$ ו-$86.4\,\text{W}$, שמחציתם, $43.2\,\text{W}$, הופכת לחום.
+
+  - id: W-3.6-07
+    level: mid
+    objectives: [OBJ-3.6-2]
+    prompt: >-
+      עגלה במסה $500\,\text{kg}$ מתגלגלת בלי חיכוך במהירות $6.0\,\text{m/s}$ מתחת למשפך ארוך, שממנו נופל לתוכה חול
+      אנכית בקצב $10\,\text{kg/s}$. אין עליה כוח אופקי. מה מהירותה אחרי $30\,\text{s}$, ואיזה מרחק עברה בזמן הזה?
+    answer: >-
+      $3.75\,\text{m/s}$; $141\,\text{m}$ (בלי חול היו $180\,\text{m}$).
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון התנועה, ראשית במקום שבו העגלה ב-$t = 0$. $M_0 = 500\,\text{kg}$, $v_0 = 6.0\,\text{m/s}$,
+          $\mu = 10\,\text{kg/s}$, $t = 30\,\text{s}$.
+      - kind: law
+        text: >-
+          בלי כוח אופקי והחול בלי תנע אופקי, $Mv$ נשמר: $v = \dfrac{M_0v_0}{M_0 + \mu t}$.
+      - kind: manipulation
+        text: >-
+          $x(t) = \int_0^t v\,dt' = \dfrac{M_0v_0}{\mu}\ln\left(1 + \dfrac{\mu t}{M_0}\right)$, כי הנגזרת של
+          $\ln(M_0 + \mu t)$ היא $\mu/(M_0 + \mu t)$.
+      - kind: limit
+        text: >-
+          כש-$\mu t \ll M_0$, $\ln(1 + x) \approx x$ ו-$x(t) \approx v_0t$: כמעט בלי האטה.
+      - kind: units
+        text: >-
+          $M_0v_0/\mu$ ב-$\text{kg}\cdot\text{m/s}/(\text{kg/s}) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $v = 500\cdot6.0/800 = 3.75\,\text{m/s}$; $x = 300\ln1.6 = 141\,\text{m}$.
+      - kind: result
+        text: >-
+          $3.75\,\text{m/s}$ ו-$141\,\text{m}$, לעומת $180\,\text{m}$ בלי חול.
+
+  - id: W-3.6-08
+    level: bagrut
+    objectives: [OBJ-3.6-2]
+    prompt: >-
+      רקטת מחקר במסה $500\,\text{kg}$, מתוכם $300\,\text{kg}$ דלק, משוגרת אנכית ממנוחה. מהירות הפליטה
+      $2000\,\text{m/s}$, וקצב השריפה $10\,\text{kg/s}$. הזניחו את האוויר ואת השינוי ב-$g$.
+
+      א. הראו שהיא מתרוממת מיד.
+
+      ב. מה מהירותה וגובהה בסוף השריפה? כמה מהירות הפסידה לכובד?
+
+      ג. לאיזה גובה מרבי היא מגיעה, ומתי?
+    answer: >-
+      א. $2.0\cdot10^4\,\text{N} > 4900\,\text{N}$. ב. $1539\,\text{m/s}$ ו-$1.89\cdot10^4\,\text{m}$; הפסד $294\,\text{m/s}$.
+      ג. $1.40\cdot10^5\,\text{m}$, אחרי $187\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה, ראשית על הכן. $m_0 = 500\,\text{kg}$, $m_1 = 200\,\text{kg}$, $u = 2000\,\text{m/s}$,
+          $\mu = 10\,\text{kg/s}$, ולכן $t_b = 30\,\text{s}$.
+      - kind: law
+        text: >-
+          $M\,dv/dt = u\mu - Mg$; בשריפה $v = u\ln(m_0/M) - gt$ ו-$y = u\left[t - (M/\mu)\ln(m_0/M)\right] - \tfrac12gt^2$;
+          אחריה תאוצה $(-g)$.
+      - kind: manipulation
+        text: >-
+          הגובה המרבי: $H = y_b + v_b^2/(2g)$, ברגע $t_b + v_b/g$.
+      - kind: limit
+        text: >-
+          כש-$g \to 0$, $v_b \to u\ln(m_0/m_1) = 1833\,\text{m/s}$, והרקטה לא נעצרת. וכש-$t \to 0$, $y \approx \tfrac12(u\mu/m_0 - g)t^2$.
+      - kind: units
+        text: >-
+          $u\,t$ ו-$gt^2$ במטרים; $v_b/g$ בשניות.
+      - kind: substitution
+        text: >-
+          א. $u\mu = 2.0\cdot10^4\,\text{N}$, $m_0g = 4900\,\text{N}$. ב. $v_b = 1833 - 294 = 1539\,\text{m/s}$;
+          $y_b = 2000\left[30 - 20\ln2.5\right] - 4.9\cdot900 = 1.89\cdot10^4\,\text{m}$. ג. $H = 1.89\cdot10^4 + 1539^2/19.6 = 1.40\cdot10^5\,\text{m}$,
+          אחרי $30 + 157 = 187\,\text{s}$.
+      - kind: result
+        text: >-
+          ב. $1539\,\text{m/s}$, $18.9\,\text{km}$, הפסד $294\,\text{m/s}$. ג. כ-$140\,\text{km}$ אחרי $187\,\text{s}$; בגובה כזה
+          ההנחה ש-$g$ קבוע כבר גסה (הוא קטן בכ-$4\%$), ובפועל האוויר בשכבות התחתונות היה מקטין את הגובה.
+
+  - id: W-3.6-09
+    level: bagrut
+    objectives: [OBJ-3.6-2, OBJ-3.6-1]
+    prompt: >-
+      רקטה מרחפת במקום, בגובה קבוע מעל הקרקע, כשהדחף מאזן בדיוק את הכובד. מהירות הפליטה $u$ קבועה, אבל קצב השריפה
+      מותאם בכל רגע.
+
+      א. איך צריכה מסת הרקטה להשתנות עם הזמן?
+
+      ב. כמה זמן היא יכולה לרחף עם $u = 2500\,\text{m/s}$, אם מסתה יורדת מ-$900$ ל-$600\,\text{kg}$? מה קצב השריפה
+      בהתחלה ובסוף?
+    answer: >-
+      א. $M = m_0e^{-gt/u}$. ב. $103\,\text{s}$; מ-$3.53$ עד $2.35\,\text{kg/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה. $v = 0$ כל הזמן, ולכן $dv/dt = 0$.
+      - kind: law
+        text: >-
+          $M\,dv/dt = u\mu - Mg$, עם $\mu = -dM/dt$.
+      - kind: manipulation
+        text: >-
+          $0 = -u\,dM/dt - Mg$, כלומר $dM/M = -(g/u)\,dt$, ובהפרדת משתנים $M = m_0e^{-gt/u}$. הזמן עד $m_1$:
+          $t = (u/g)\ln(m_0/m_1)$. קצב השריפה $\mu = Mg/u$, יורד עם המסה.
+      - kind: limit
+        text: >-
+          כש-$u \to \infty$ הרקטה מרחפת זמן רב מאוד על מעט דלק. וכש-$g \to 0$ אין צורך בדחף כלל, והזמן אינסופי.
+      - kind: units
+        text: >-
+          $gt/u$ חסר ממדים; $u/g$ בשניות; $Mg/u$ ב-$\text{kg/s}$.
+      - kind: substitution
+        text: >-
+          $t = (2500/9.8)\ln1.5 = 103\,\text{s}$; $\mu_0 = 900\cdot9.8/2500 = 3.53\,\text{kg/s}$, $\mu_1 = 600\cdot9.8/2500 = 2.35\,\text{kg/s}$.
+      - kind: result
+        text: >-
+          א. דעיכה אקספוננציאלית, $M = m_0e^{-gt/u}$. ב. $103\,\text{s}$, בקצב שיורד מ-$3.53$ ל-$2.35\,\text{kg/s}$.
+          שימו לב: הזמן שווה ל-$\Delta v/g$ של אותה רקטה בחלל, כי כל הדחף הולך לבטל את הכובד.
+
+  - id: W-3.6-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.6-2]
+    prompt: >-
+      שרשרת גמישה, בצפיפות קווית $0.50\,\text{kg/m}$, מונחת בערימה על רצפה. מושכים את הקצה שלה כלפי מעלה במהירות
+      קבועה $2.0\,\text{m/s}$.
+
+      א. מה הכוח שצריך להפעיל ברגע שהקצה בגובה $1.5\,\text{m}$?
+
+      ב. השוו את ההספק של הכוח הזה לקצב העלייה באנרגיה הפוטנציאלית והקינטית של השרשרת. לאן הולך ההפרש, והאם הוא
+      תלוי במהירות?
+    answer: >-
+      א. $9.35\,\text{N}$. ב. ההספק $18.7\,\text{W}$; פוטנציאלית $14.7\,\text{W}$, קינטית $2.0\,\text{W}$, ו-$2.0\,\text{W}$
+      הולכים לחום בחוליות שנמשכות בבת אחת. ההפרש, $\tfrac12\lambda v^3$, תלוי במהירות.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה, ראשית ברצפה. $\lambda = 0.50\,\text{kg/m}$, $v = 2.0\,\text{m/s}$, $y = 1.5\,\text{m}$. החלק שבאוויר
+          נע כולו ב-$v$; החוליות בערימה במנוחה.
+      - kind: law
+        text: >-
+          שינוי התנע של המערכת: החלק שבאוויר ועוד החתיכה $dm = \lambda v\,dt$ שמתרוממת בפרק הזמן $dt$.
+          $(F - \lambda yg)\,dt = v\,dm$.
+      - kind: manipulation
+        text: >-
+          $F = \lambda yg + \lambda v^2$. ההספק $Fv = \lambda ygv + \lambda v^3$. האנרגיה הפוטנציאלית של החלק שבאוויר,
+          $\tfrac12\lambda gy^2$, גדלה בקצב $\lambda gyv$; הקינטית, $\tfrac12\lambda yv^2$, בקצב $\tfrac12\lambda v^3$.
+      - kind: reasoning
+        text: >-
+          ההפרש, $\tfrac12\lambda v^3$, הוא בדיוק כמו במסוע: כל חוליה עוברת בבת אחת ממנוחה למהירות $v$ במשיכה לא
+          אלסטית של החוליה שמעליה, ומחצית מהעבודה הופכת לחום (ולקול). הוא גדל כמו $v^3$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $F \to \lambda yg$, המשקל של מה שבאוויר, וההפרש נעלם: הרמה איטית מאוד היא הרמה "הפיכה".
+      - kind: units
+        text: >-
+          $\lambda v^2$ ב-$\text{kg/m}\cdot\text{m}^2/\text{s}^2 = \text{N}$; $\lambda v^3$ ב-$\text{W}$.
+      - kind: substitution
+        text: >-
+          $F = 0.50\cdot9.8\cdot1.5 + 0.50\cdot4.0 = 7.35 + 2.0 = 9.35\,\text{N}$; $Fv = 18.7\,\text{W}$; $\lambda gyv = 14.7\,\text{W}$;
+          $\tfrac12\lambda v^3 = 2.0\,\text{W}$.
+      - kind: result
+        text: >-
+          א. $9.35\,\text{N}$. ב. $18.7 = 14.7 + 2.0 + 2.0\,\text{W}$: $2.0\,\text{W}$ הולכים לחום, כמו $v^3$.
+
+challenge:
+  - id: W-3.6-c1
+    stars: 2
+    objectives: [OBJ-3.6-2, OBJ-3.6-1]
+    prompt: >-
+      טיפת גשם, במסה התחלתית $m_0$, נופלת ממנוחה דרך ענן. היא אוספת טיפונות שעומדות במקום, ולכן מסתה גדלה בקצב
+      שפרופורציוני לתנע שלה: $\dfrac{dm}{dt} = kmv$, כש-$k$ קבוע ביחידות $\text{m}^{-1}$. הזניחו את התנגדות האוויר.
+
+      א. גזרו משוואה דיפרנציאלית לתאוצה של הטיפה, $dv/dt$, כפונקציה של $k$, $g$ ו-$v$.
+
+      ב. מה המהירות הסופית של הטיפה?
+
+      ג. פתרו את המשוואה, ומצאו את המהירות אחרי $10\,\text{s}$ ואת הזמן עד $90\%$ מהמהירות הסופית, עבור
+      $k = 4.0\cdot10^{-3}\,\text{m}^{-1}$.
+    answer: >-
+      א. $dv/dt = g - kv^2$. ב. $v_T = \sqrt{g/k}$. ג. $v = v_T\tanh\left(\sqrt{gk}\,t\right)$; $v_T = 49.5\,\text{m/s}$,
+      $v(10\,\text{s}) = 47.6\,\text{m/s}$, ו-$90\%$ אחרי $7.44\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מטה. המערכת: הטיפה ברגע $t$ ועוד הטיפונות $dm$ שהיא אוספת עד $t + dt$, שמהירותן אפס.
+      - kind: law
+        text: >-
+          שינוי התנע שווה למתקף של הכובד: $(m + dm)(v + dv) - mv = mg\,dt$ (הכובד על $dm$ לאורך $dt$ מסדר שני).
+      - kind: manipulation
+        text: >-
+          $m\,dv + v\,dm = mg\,dt$, ומחלקים ב-$m\,dt$: $\dfrac{dv}{dt} = g - \dfrac{v}{m}\dfrac{dm}{dt} = g - kv^2$.
+          כאן דווקא $F = d(mv)/dt$ נכון, כי המסה הנכנסת הייתה במנוחה ($w = 0$). המהירות הסופית כש-$dv/dt = 0$:
+          $v_T = \sqrt{g/k}$. זו בדיוק המשוואה של גרר ריבועי (שיעור 2.7), עם $c/m$ במקום $k$, ולכן ממנוחה
+          $v = v_T\tanh\left(t/T\right)$ עם $T = v_T/g = 1/\sqrt{gk}$.
+      - kind: limit
+        text: >-
+          כש-$k \to 0$, $v_T \to \infty$ ו-$\tanh x \approx x$ נותן $v \approx gt$: נפילה חופשית. וכש-$t \gg T$,
+          $v \to v_T$: הטיפה אוספת מסה בקצב שבולם אותה בדיוק כמו שהכובד מאיץ.
+      - kind: units
+        text: >-
+          $kv^2$ ב-$\text{m}^{-1}\cdot\text{m}^2/\text{s}^2 = \text{m/s}^2$; $\sqrt{g/k}$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v_T = \sqrt{9.8/4.0\cdot10^{-3}} = 49.5\,\text{m/s}$, $T = 5.05\,\text{s}$; $v(10) = 49.5\tanh(1.98) = 47.6\,\text{m/s}$;
+          $t_{90} = T\operatorname{artanh}0.9 = 7.44\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $dv/dt = g - kv^2$. ב. $v_T = \sqrt{g/k}$. ג. $47.6\,\text{m/s}$ אחרי $10\,\text{s}$, ו-$90\%$ מ-$49.5\,\text{m/s}$ אחרי $7.44\,\text{s}$.
+    source:
+      name: MIT OpenCourseWare 8.01 Classical Mechanics, Problem Set 6
+      year: 2016
+      problem: Problem 4, Falling Drop
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/44b46fb9ae75796759884a9a7f7bd167_MIT8_01F16_pset6.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.6-c2
+    stars: 1
+    objectives: [OBJ-3.6-1, OBJ-3.6-2]
+    prompt: >-
+      רקטה בחלל, רחוק מכל גוף, במסה התחלתית $2.81\cdot10^7\,\text{kg}$, מתוכם $2.46\cdot10^7\,\text{kg}$ דלק. מהירות
+      הפליטה $3000\,\text{m/s}$, ממנוחה.
+
+      א. מה המהירות אחרי שכל הדלק נשרף, בשלב אחד?
+
+      ב. עכשיו בשני שלבים. בשלב הראשון נשרפים $2.03\cdot10^7\,\text{kg}$ דלק. מה שינוי המהירות?
+
+      ג. אחרי השלב הראשון מנתקים את המכלים הריקים שלו, $1.4\cdot10^6\,\text{kg}$, בלי לשנות את המהירות, ושורפים את
+      שאר הדלק, $4.3\cdot10^6\,\text{kg}$. מה שינוי המהירות בשלב השני, ומה המהירות הסופית? השוו לסעיף א.
+
+      ד. השלב הראשון נשרף ב-$150\,\text{s}$. אילו אותה רקטה הייתה משוגרת ממנוחה מפני כדור הארץ, האם הייתה מתרוממת?
+      ואם כל הדלק היה נשרף בשלב אחד במשך $510\,\text{s}$?
+    answer: >-
+      א. $6249\,\text{m/s}$. ב. $3845\,\text{m/s}$. ג. $3343\,\text{m/s}$; סך הכול $7188\,\text{m/s}$, כ-$940\,\text{m/s}$ יותר.
+      ד. כן: הדחף פי $1.47$ מהכובד. בשריפה של $510\,\text{s}$ הדחף רק $0.525$ מהכובד, והיא לא הייתה מתרוממת.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון התנועה. $u = 3000\,\text{m/s}$; $m_0 = 2.81\cdot10^7\,\text{kg}$; $m_1 = 0.35\cdot10^7\,\text{kg}$ בשלב אחד.
+          בשניים: $2.81\cdot10^7 \to 0.78\cdot10^7\,\text{kg}$, ניתוק ל-$6.4\cdot10^6\,\text{kg}$, ואז $\to 2.1\cdot10^6\,\text{kg}$.
+      - kind: law
+        text: >-
+          בכל שלב $\Delta v = u\ln(m_{\text{start}}/m_{\text{end}})$; ניתוק המכלים לא משנה את המהירות. תנאי ההתרוממות
+          $u\mu > m_0g$.
+      - kind: manipulation
+        text: >-
+          המהירות הסופית בשני שלבים היא $u\left[\ln\dfrac{2.81}{0.78} + \ln\dfrac{6.4}{2.1}\right]$, לעומת $u\ln\dfrac{2.81}{0.35}$
+          בשלב אחד. היתרון: השלב השני לא צריך להאיץ את $1.4\cdot10^6\,\text{kg}$ המכלים הריקים.
+      - kind: limit
+        text: >-
+          אם למכלים של השלב הראשון לא הייתה מסה, הניתוק לא היה משנה דבר, ושתי הדרכים היו נותנות אותה מהירות.
+      - kind: units
+        text: >-
+          יחסי מסות חסרי ממדים; $u\mu$ ב-$\text{N}$.
+      - kind: substitution
+        text: >-
+          א. $3000\ln(2.81/0.35) = 6249\,\text{m/s}$. ב. $3000\ln(2.81/0.78) = 3845\,\text{m/s}$. ג. $3000\ln(6.4/2.1) = 3343\,\text{m/s}$,
+          וסך הכול $7188\,\text{m/s}$. ד. $\mu_1 = 2.03\cdot10^7/150 = 1.35\cdot10^5\,\text{kg/s}$, הדחף $4.06\cdot10^8\,\text{N}$, והכובד
+          $2.75\cdot10^8\,\text{N}$: יחס $1.47$. בשריפה של $510\,\text{s}$: $\mu = 4.82\cdot10^4\,\text{kg/s}$, דחף $1.45\cdot10^8\,\text{N}$,
+          יחס $0.525$.
+      - kind: result
+        text: >-
+          ג. $7188\,\text{m/s}$ בשני שלבים לעומת $6249\,\text{m/s}$ בשלב אחד. ד. השלב הראשון מתרומם; שריפה איטית של כל הדלק
+          לא הייתה מרימה את הרקטה מהכן. (גם אילו הייתה: עלייה אנכית של $510\,\text{s}$ הייתה מפסידה לכובד $gt_b \approx 5000\,\text{m/s}$.)
+    source:
+      name: MIT OpenCourseWare 8.01 Classical Mechanics, Problem Set 6
+      year: 2016
+      problem: Problem 3, Multi-stage Rocket in Empty Space
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/44b46fb9ae75796759884a9a7f7bd167_MIT8_01F16_pset6.pdf
+      verified: '2026-11-10'
+      adapted: true

@@ -1,0 +1,459 @@
+# Workbook, lesson 3.5 (momentum, impulse and the conservation of momentum). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-5/workbook.ts against src/physics/momentum.ts (and constraints.ts
+# `wedgeRecoil`) with G = 9.8:
+#   W01 J = 2.0 (rect 200 N), 1.5 (triangle 300 N), 1.91 N·s (half-sine 300 N), 10 ms each;
+#   W02 J = 10.3 N·s, F = 1.15·10³ N (weight 4.21 N);  W03 V = 0.125 m/s, 10 m in 80 s;
+#   W05 J = 6.4 N·s, v = 15.0 m/s, average 640 N;  W06 J = (−2.4, 3.2) N·s, 4.0 N·s at 36.9° west of north, 160 N;
+#   W07 v = 1.8 m/s, energies 130 + 97.2 = 227 J;  W08 ΔX = 0.167 m (block 0.558 m);
+#   W09 V = 1.5 m/s, J = 2.4 N·s, F = 1.2·10⁴ N, friction impulse 1.6·10⁻⁴ N·s at μ = 0.05, 718 J lost;
+#   W10 time average mg (0.060 kg at 3.0 m/s: T = 0.612 s, 0.588 N);
+#   c1 (m = 0.40, M = 1.6 kg, v = 5.0 m/s) H = 1.02 m (1.28 m on a fixed wedge), common 1.0 m/s, after: −3.0 and 2.0 m/s;
+#   c2 v = 6.26 m/s, Δt = 3.2 ms, N = 1.18·10⁵ N = 201 mg, 5.12·10⁴ N per tibia, 5.91·10⁴ N per leg; d ≥ 1.16 cm.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.5'
+practice:
+  - id: W-3.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      שלושה כוחות פועלים, כל אחד לבדו, על אותו גוש שנח על משטח חלק, וכל אחד נמשך $10\,\text{ms}$. הכוח A קבוע,
+      $200\,\text{N}$. הכוח B עולה בקו ישר מאפס ל-$300\,\text{N}$ באמצע הזמן ויורד בקו ישר לאפס. הכוח C הוא חצי גל
+      סינוס שהשיא שלו $300\,\text{N}$. דרגו את מהירויות הגוש בסוף, בלי לחשב את המסה, ונמקו.
+    answer: >-
+      $v_A \gt v_C \gt v_B$: המתקפים $2.0$, $1.91$ ו-$1.5\,\text{N·s}$.
+    solution:
+      - kind: law
+        text: >-
+          משפט המתקף-תנע: $mv = J$, השטח מתחת לגרף כוח-זמן. לאותו גוש, המהירות בסוף פרופורציונית ל-$J$.
+      - kind: manipulation
+        text: >-
+          $J = \kappa F_{\max}\Delta t$, עם $\kappa = 1$ במלבן, $\tfrac12$ במשולש ו-$2/\pi$ בחצי סינוס.
+      - kind: reasoning
+        text: >-
+          B ו-C באותו שיא ובאותו זמן; חצי סינוס "מלא" יותר ממשולש, כי $2/\pi \approx 0.64 \gt 0.5$. A נמוך יותר
+          בשיא אבל קבוע כל הזמן, והשטח שלו גדול משל C כי $200 \gt 0.64\cdot300 = 191$.
+      - kind: limit
+        text: >-
+          אילו שלושתם היו בשיא $200\,\text{N}$, הדירוג היה A, C, B בבירור; השיא הגבוה של B ו-C מצמצם את הפער.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{s}$, יחידות של תנע.
+      - kind: substitution
+        text: >-
+          $J_A = 200\cdot0.010 = 2.0$, $J_B = \tfrac12\cdot300\cdot0.010 = 1.5$, $J_C = \tfrac2\pi\cdot300\cdot0.010 = 1.91\,\text{N·s}$.
+      - kind: result
+        text: >-
+          $v_A \gt v_C \gt v_B$. הכוח עם השיא הנמוך ביותר נותן את המהירות הגדולה ביותר.
+
+  - id: W-3.5-02
+    level: basic
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      שחקן בועט בכדור כדורגל במסה $0.43\,\text{kg}$ שנח על הדשא, והכדור עף במהירות $24\,\text{m/s}$. המגע בין הנעל
+      לכדור נמשך $9.0\,\text{ms}$. מה המתקף שהנעל נתנה, ומה הכוח הממוצע שלה על הכדור?
+    answer: >-
+      $J = 10.3\,\text{N·s}$, $\bar F = 1.15\cdot10^3\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון שבו הכדור עף. $m = 0.43\,\text{kg}$, $v_1 = 0$, $v_2 = 24\,\text{m/s}$, $\Delta t = 9.0\cdot10^{-3}\,\text{s}$.
+      - kind: law
+        text: >-
+          $J = \Delta p$, ו-$\bar F = J/\Delta t$.
+      - kind: manipulation
+        text: >-
+          $J = m\left(v_2 - v_1\right) = mv_2$, ו-$\bar F = mv_2/\Delta t$. בזמן המגע הכוח של הנעל גדול פי מאות מהמשקל, ולכן
+          אפשר להתייחס אליו כאל הכוח השקול.
+      - kind: limit
+        text: >-
+          מגע קצר פי שניים, אותה מהירות: כוח ממוצע כפול.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s} = \text{N·s}$; חלקי שניות, $\text{N}$.
+      - kind: substitution
+        text: >-
+          $J = 0.43\cdot24 = 10.3\,\text{N·s}$, $\bar F = 10.32/0.0090 = 1.15\cdot10^3\,\text{N}$, לעומת משקל של $4.21\,\text{N}$.
+      - kind: result
+        text: >-
+          $J = 10.3\,\text{N·s}$ בכיוון הבעיטה, $\bar F = 1.15\cdot10^3\,\text{N}$.
+
+  - id: W-3.5-03
+    level: basic
+    objectives: [OBJ-3.5-2]
+    prompt: >-
+      אסטרונאוטית במסה $80\,\text{kg}$ (עם החליפה) מרחפת במנוחה ליד תחנת חלל, $10\,\text{m}$ ממנה, והחבל שלה ניתק. היא
+      זורקת מפתח ברגים במסה $2.0\,\text{kg}$ במהירות $5.0\,\text{m/s}$ הרחק מהתחנה. באיזו מהירות היא נעה אל התחנה, וכמה
+      זמן תגיע אליה?
+    answer: >-
+      $0.125\,\text{m/s}$, אחרי $80\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר מהתחנה החוצה. $M = 80\,\text{kg}$, $m = 2.0\,\text{kg}$, $u = 5.0\,\text{m/s}$, ההתחלה במנוחה.
+      - kind: law
+        text: >-
+          המערכת אסטרונאוטית + מפתח. אין עליה כוח חיצוני (הכובד של כדור הארץ פועל על התחנה ועליה באותה תאוצה, ונעזוב
+          אותו ביחס לתחנה), ולכן התנע שלה נשמר: $0 = mu + MV$.
+      - kind: manipulation
+        text: >-
+          $V = -mu/M$: הסימן אומר שהיא נעה אל התחנה. הזמן: $t = d/|V|$.
+      - kind: limit
+        text: >-
+          כש-$m \to 0$, $V \to 0$: בלי לזרוק משהו אי אפשר לזוז. אין משהו בפנים שיכול לשנות את התנע של המערכת.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}/\text{kg} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $|V| = 2.0\cdot5.0/80 = 0.125\,\text{m/s}$, $t = 10/0.125 = 80\,\text{s}$.
+      - kind: result
+        text: >-
+          $0.125\,\text{m/s}$ אל התחנה; היא מגיעה אחרי $80\,\text{s}$.
+
+  - id: W-3.5-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.5-2]
+    prompt: >-
+      גוש מחליק במורד מדרון חלק שמחובר היטב לקרקע. ציר $s$ במורד המדרון, ציר $n$ ניצב לו, ו-$x$, $y$ אופקי ואנכי.
+      לכל אחד מהרכיבים $p_x$, $p_y$, $p_s$ ו-$p_n$ של התנע **של הגוש**, קבעו ונמקו אם הוא נשמר. ומה קורה כשמכניסים
+      את כדור הארץ (עם המדרון) למערכת?
+    answer: >-
+      לגוש לבדו נשמר רק $p_n$ (הוא אפס כל הזמן). לגוש + כדור הארץ התנע כולו נשמר.
+    solution:
+      - kind: law
+        text: >-
+          רכיב של התנע נשמר כשהרכיב הזה של הכוח השקול על המערכת אפס.
+      - kind: reasoning
+        text: >-
+          על הגוש פועלים הכובד $mg$, אנכי, והכוח הנורמלי $N$, ניצב למדרון. ברכיב $n$: $N - mg\cos\theta = 0$, כי הגוש
+          לא עוזב את המדרון ולא חודר אליו. ברכיב $s$: $mg\sin\theta \neq 0$. אופקית: $N$ יש רכיב אופקי, $N\sin\theta$.
+          אנכית: $N\cos\theta - mg = -mg\sin^2\theta \neq 0$.
+      - kind: reasoning
+        text: >-
+          כשכדור הארץ בתוך המערכת, הכובד והכוח הנורמלי הם כוחות פנימיים, וכל רכיבי התנע נשמרים: כדור הארץ מקבל תנע
+          שווה והפוך לזה שהגוש צובר, במהירות זעירה.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$, מדרון אופקי: $p_x = p_s$ נשמר (אין כוח אופקי). כש-$\theta \to 90^\circ$: נפילה חופשית, ו-$p_x = p_n$ נשמר.
+      - kind: units
+        text: >-
+          $mg\sin^2\theta$ בניוטון, כמו כל רכיב של כוח.
+      - kind: result
+        text: >-
+          לגוש לבדו נשמר רק הרכיב הניצב למדרון, $p_n = 0$. לגוש + כדור הארץ נשמר התנע כולו.
+
+  - id: W-3.5-05
+    level: mid
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      כדור במסה $0.32\,\text{kg}$ נע במהירות $5.0\,\text{m/s}$ אל מחבט. הכוח של המחבט עליו, בכיוון ההפוך לתנועתו,
+      עולה בקו ישר מאפס ל-$800\,\text{N}$ ב-$2.0\,\text{ms}$, נשאר $800\,\text{N}$ במשך $6.0\,\text{ms}$, ויורד בקו ישר
+      לאפס ב-$2.0\,\text{ms}$. מה מהירות הכדור אחרי המכה, ומה הכוח הממוצע?
+    answer: >-
+      $15.0\,\text{m/s}$, בכיוון ההפוך לתנועה ההתחלתית; $\bar F = 640\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון הכוח של המחבט. $v_1 = -5.0\,\text{m/s}$, $m = 0.32\,\text{kg}$, $\Delta t = 10\,\text{ms}$.
+      - kind: law
+        text: >-
+          $mv_2 - mv_1 = J$, ו-$J$ השטח של הטרפז מתחת לגרף.
+      - kind: manipulation
+        text: >-
+          שטח הטרפז: שני משולשים, $2\cdot\tfrac12F_{\max}t_1$, ועוד מלבן, $F_{\max}t_2$, כלומר $J = F_{\max}\left(t_1 + t_2\right)$.
+          $v_2 = v_1 + J/m$, ו-$\bar F = J/\Delta t$.
+      - kind: limit
+        text: >-
+          כש-$t_1 \to 0$ הטרפז הופך למלבן, $J = F_{\max}t_2$; כש-$t_2 \to 0$, למשולש שבסיסו $2t_1$, $J = F_{\max}t_1$.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{s}/\text{kg} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $J = 800\cdot(0.0060 + 0.0020) = 6.4\,\text{N·s}$. $v_2 = -5.0 + 6.4/0.32 = 15.0\,\text{m/s}$. $\bar F = 6.4/0.010 = 640\,\text{N}$.
+      - kind: result
+        text: >-
+          $15.0\,\text{m/s}$ בכיוון ההפוך; $\bar F = 640\,\text{N}$. מי שמשמיט את $v_1$ מקבל $20\,\text{m/s}$.
+
+  - id: W-3.5-06
+    level: mid
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      כדור במסה $0.40\,\text{kg}$ נע מזרחה במהירות $6.0\,\text{m/s}$. מקל פוגע בו, ואחרי $0.025\,\text{s}$ הוא נע צפונה
+      במהירות $8.0\,\text{m/s}$. מה גודל המתקף, מה כיוונו, ומה הכוח הממוצע?
+    answer: >-
+      $4.0\,\text{N·s}$, בזווית $36.9^\circ$ מערבה מהצפון; $\bar F = 160\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מזרחה, ציר $y$ צפונה. $\vec v_1 = (6.0,\ 0)$, $\vec v_2 = (0,\ 8.0)\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $\vec J = m\left(\vec v_2 - \vec v_1\right)$, רכיב אחר רכיב.
+      - kind: manipulation
+        text: >-
+          $J_x = -mv_1$, $J_y = mv_2$, $|\vec J| = m\sqrt{v_1^2 + v_2^2}$, והזווית מהצפון מערבה $\arctan\left(v_1/v_2\right)$.
+      - kind: limit
+        text: >-
+          כש-$v_1 \to 0$, המתקף צפונה בלבד, $mv_2$. אילו הכדור היה ממשיך מזרחה באותה מהירות, $\vec J = 0$.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\vec J = (-2.4,\ 3.2)\,\text{N·s}$, $|\vec J| = 4.0\,\text{N·s}$, $\arctan(6/8) = 36.9^\circ$. $\bar F = 4.0/0.025 = 160\,\text{N}$.
+      - kind: result
+        text: >-
+          $4.0\,\text{N·s}$ בכיוון $36.9^\circ$ מערבה מהצפון, ו-$\bar F = 160\,\text{N}$ באותו כיוון. ההפרש בין הגדלים,
+          $2.0\,\text{m/s}$, לא אומר דבר על המתקף.
+
+  - id: W-3.5-07
+    level: mid
+    objectives: [OBJ-3.5-2]
+    prompt: >-
+      שני מחליקים, במסות $60\,\text{kg}$ ו-$45\,\text{kg}$, עומדים זה מול זה על קרח חלק ודוחפים זה את זה. המחליק
+      הקל מתרחק במהירות $2.4\,\text{m/s}$. באיזו מהירות מתרחק הכבד? כמה עבודה עשו השרירים של שניהם יחד?
+    answer: >-
+      $1.8\,\text{m/s}$ בכיוון ההפוך; $227\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון שבו הקל נע. $m_1 = 45\,\text{kg}$, $v_1 = 2.4\,\text{m/s}$, $m_2 = 60\,\text{kg}$, ההתחלה במנוחה.
+      - kind: law
+        text: >-
+          הקרח חלק, והכוחות החיצוניים אנכיים: התנע האופקי נשמר, $m_1v_1 + m_2v_2 = 0$. העבודה הפנימית של השרירים
+          היא האנרגיה הקינטית שנוצרה (שיעור 3.1).
+      - kind: manipulation
+        text: >-
+          $v_2 = -m_1v_1/m_2$. $W = \tfrac12m_1v_1^2 + \tfrac12m_2v_2^2$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$ (דוחפים קיר), $v_2 \to 0$, וכל האנרגיה אצל המחליק הקל.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $v_2 = -45\cdot2.4/60 = -1.8\,\text{m/s}$. $W = 129.6 + 97.2 = 227\,\text{J}$.
+      - kind: result
+        text: >-
+          הכבד מתרחק ב-$1.8\,\text{m/s}$; השרירים עשו $227\,\text{J}$, ורוב האנרגיה אצל הקל.
+
+  - id: W-3.5-08
+    level: bagrut
+    objectives: [OBJ-3.5-2]
+    prompt: >-
+      טריז במסה $4.0\,\text{kg}$ וזווית $25^\circ$ עומד על רצפה חלקה. גוש במסה $1.2\,\text{kg}$ משתחרר ממנוחה על הדופן
+      החלקה ומחליק לאורכה $0.80\,\text{m}$. כמה זז הטריז, ולאיזה כיוון? (הדופן יורדת לכיוון שבו הגוש נע.)
+    answer: >-
+      $0.167\,\text{m}$, לכיוון ההפוך לתנועת הגוש.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ אופקי, בכיוון שבו הגוש נע. $M = 4.0\,\text{kg}$, $m = 1.2\,\text{kg}$, $\theta = 25^\circ$, $L = 0.80\,\text{m}$.
+      - kind: law
+        text: >-
+          אין כוח חיצוני אופקי, ולכן $P_x$ נשמר, והוא אפס. לכן גם $M\,\Delta X + m\,\Delta x = 0$ (מרכז המסה לא זז אופקית,
+          שיעור 3.4).
+      - kind: manipulation
+        text: >-
+          האילוץ: ביחס לטריז הגוש זז $L$ לאורך הדופן, כלומר $\Delta x - \Delta X = L\cos\theta$. מציבים
+          $\Delta x = \Delta X + L\cos\theta$ בשימור: $(M + m)\Delta X = -mL\cos\theta$.
+      - kind: limit
+        text: >-
+          כש-$M \to \infty$, $\Delta X \to 0$. כש-$\theta \to 90^\circ$, הגוש נע רק אנכית, ו-$\Delta X \to 0$.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}/\text{kg} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\Delta X = -1.2\cdot0.80\cdot\cos25^\circ/5.2 = -0.167\,\text{m}$, והגוש זז $0.558\,\text{m}$ קדימה ביחס לרצפה.
+      - kind: result
+        text: >-
+          הטריז זז $0.167\,\text{m}$ לכיוון ההפוך. התוצאה לא תלויה בזמן או במהירויות: רק בשימור ובאילוץ.
+
+  - id: W-3.5-09
+    level: bagrut
+    objectives: [OBJ-3.5-1, OBJ-3.5-2]
+    prompt: >-
+      קליע במסה $8.0\,\text{g}$ נע אופקית במהירות $450\,\text{m/s}$, עובר דרך גוש עץ במסה $1.6\,\text{kg}$ שנח על קרח,
+      ויוצא ממנו במהירות $150\,\text{m/s}$. המעבר נמשך $0.20\,\text{ms}$.
+
+      א. באיזו מהירות הגוש נע מיד אחרי?
+
+      ב. מה המתקף שהקליע נתן לגוש, ומה הכוח הממוצע?
+
+      ג. מקדם החיכוך בין הגוש לקרח $0.05$. הראו שבזמן המעבר מותר להזניח את החיכוך.
+    answer: >-
+      א. $1.5\,\text{m/s}$. ב. $2.4\,\text{N·s}$, $1.2\cdot10^4\,\text{N}$. ג. המתקף של החיכוך, $1.6\cdot10^{-4}\,\text{N·s}$,
+      זניח לעומת $2.4\,\text{N·s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר בכיוון הקליע. $m = 0.0080\,\text{kg}$, $u_1 = 450$, $u_2 = 150\,\text{m/s}$, $M = 1.6\,\text{kg}$, $\Delta t = 2.0\cdot10^{-4}\,\text{s}$.
+      - kind: law
+        text: >-
+          בזמן המעבר: שימור התנע האופקי של קליע + גוש (אם החיכוך זניח), ומשפט המתקף-תנע לגוש לבדו.
+      - kind: manipulation
+        text: >-
+          $mu_1 = mu_2 + MV$, ולכן $V = m\left(u_1 - u_2\right)/M$. המתקף על הגוש: $J = MV = m\left(u_1 - u_2\right)$, כלומר
+          מה שהקליע איבד. $\bar F = J/\Delta t$. החיכוך חסום: $f \le \mu(M + m)g$, והמתקף שלו $\le \mu(M + m)g\,\Delta t$.
+      - kind: limit
+        text: >-
+          כש-$u_2 \to u_1$ (הקליע עובר בלי להאט), $V \to 0$. כש-$\Delta t \to 0$, המתקף של החיכוך שואף לאפס.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}/\text{kg} = \text{m/s}$; $\text{N}\cdot\text{s}$.
+      - kind: substitution
+        text: >-
+          $V = 0.0080\cdot300/1.6 = 1.5\,\text{m/s}$. $J = 2.4\,\text{N·s}$, $\bar F = 2.4/2.0\cdot10^{-4} = 1.2\cdot10^4\,\text{N}$.
+          החיכוך: $0.05\cdot1.608\cdot9.8\cdot2.0\cdot10^{-4} = 1.6\cdot10^{-4}\,\text{N·s}$, פחות מאלפית מ-$J$.
+      - kind: result
+        text: >-
+          א. $1.5\,\text{m/s}$. ב. $2.4\,\text{N·s}$ ו-$1.2\cdot10^4\,\text{N}$. ג. המתקף של החיכוך קטן פי $1.5\cdot10^4$, ולכן
+          השימור מוצדק בזמן המעבר. (אנרגיה קינטית לא נשמרת: $718\,\text{J}$ הפכו לחום ולעיוות העץ.)
+
+  - id: W-3.5-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      כדור קטן במסה $m$ קופץ שוב ושוב, אנכית, על משקל אמבטיה, ובכל פגיעה חוזר באותה מהירות $v$ שבה פגע. המשקל מגיב
+      לאט, ומראה את הממוצע בזמן של הכוח עליו. הראו שהוא מראה $mg$, כאילו הכדור מונח עליו, בלי תלות ב-$v$.
+    answer: >-
+      בכל מחזור, באורך $2v/g$, המשקל נותן מתקף $2mv$; הממוצע $2mv/(2v/g) = mg$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה. בכל פגיעה המהירות מתהפכת מ-$(-v)$ ל-$(+v)$. בין פגיעות הכדור באוויר, ורק הכובד פועל עליו.
+      - kind: law
+        text: >-
+          משפט המתקף-תנע על פני מחזור שלם, מפגיעה לפגיעה: התנע של הכדור חוזר לאותו ערך, ולכן המתקף הכולל עליו אפס.
+      - kind: manipulation
+        text: >-
+          הכובד נותן במחזור מתקף $(-mgT)$, והמשקל נותן מתקף $(+J)$. סכומם אפס: $J = mgT$. לכן הכוח הממוצע של המשקל על
+          הכדור, וגם של הכדור על המשקל (החוק השלישי), הוא $J/T = mg$. ובדיקה ישירה: $J = 2mv$ ו-$T = 2v/g$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$ המחזור מתקצר והפגיעות מתמזגות: כדור מונח, והמשקל מראה $mg$ גם רגע אחר רגע.
+      - kind: units
+        text: >-
+          $2mv/(2v/g) = mg$, בניוטון.
+      - kind: substitution
+        text: >-
+          לדוגמה, $m = 0.060\,\text{kg}$ ו-$v = 3.0\,\text{m/s}$: $T = 0.612\,\text{s}$, $J = 0.36\,\text{N·s}$, הממוצע $0.588\,\text{N} = mg$.
+      - kind: result
+        text: >-
+          הממוצע בזמן הוא $mg$ לכל $v$. הכוח הרגעי בפגיעה גדול בהרבה, אבל הוא פועל רק חלק קטן מהזמן.
+
+challenge:
+  - id: W-3.5-c1
+    stars: 2
+    objectives: [OBJ-3.5-2]
+    prompt: >-
+      גוש במסה $m = 0.40\,\text{kg}$ נע על רצפה חלקה במהירות $v = 5.0\,\text{m/s}$ אל גוש גדול במסה $M = 1.6\,\text{kg}$
+      שעומד במנוחה. בגוש הגדול חצובה מסילה חלקה: היא מתחילה אופקית בגובה הרצפה, מתעקלת כלפי מעלה, ומסתיימת בקטע אנכי
+      קצר בגובה $0.50\,\text{m}$. הגוש הגדול חופשי לנוע על הרצפה ואינו מתהפך.
+
+      א. הגוש הקטן עולה במסילה, עוזב את הקטע האנכי ונע באוויר. מה הגובה המרבי שאליו הוא מגיע?
+
+      ב. מה מהירות הגוש הגדול ברגע הזה?
+
+      ג. הגוש הקטן נופל חזרה לקטע האנכי, יורד במסילה ויוצא ממנה. מה המהירויות של שני הגושים בסוף?
+    answer: >-
+      א. $H = \dfrac{M}{M + m}\dfrac{v^2}{2g} = 1.02\,\text{m}$. ב. $1.0\,\text{m/s}$. ג. הקטן $3.0\,\text{m/s}$ לאחור, הגדול $2.0\,\text{m/s}$ קדימה.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה ההתחלתית, ציר $y$ כלפי מעלה. כל המשטחים חלקים. בקטע האנכי, ביחס לגוש הגדול, הגוש הקטן נע
+          אנכית בלבד, ולכן כשהוא עוזב את המסילה רכיב $x$ של מהירותו שווה למהירות הגוש הגדול, $V$, וכך גם בכל מעופו.
+      - kind: law
+        text: >-
+          הכוחות החיצוניים (הכובד והרצפה) אנכיים: $P_x$ נשמר. אין חיכוך, והכוחות הנורמליים בין הגושים לא עושים עבודה
+          כוללת: האנרגיה המכנית נשמרת.
+      - kind: manipulation
+        text: >-
+          בשיא, לגוש הקטן אין מהירות אנכית, ושני הגושים נעים יחד ב-$V$: $mv = (M + m)V$. אנרגיה:
+          $\tfrac12mv^2 = \tfrac12(M + m)V^2 + mgH$. מציבים $V$: $mgH = \tfrac12mv^2\left(1 - \dfrac{m}{M + m}\right)$.
+      - kind: manipulation
+        text: >-
+          ג: בסוף שני הגושים שוב על הרצפה, וגובה הגוש הקטן אפס: $mv = mv_1 + MV_2$ ו-$\tfrac12mv^2 = \tfrac12mv_1^2 + \tfrac12MV_2^2$.
+          הפתרון שאינו המצב ההתחלתי: $v_1 = \dfrac{m - M}{m + M}v$, $V_2 = \dfrac{2m}{m + M}v$ (אותן משוואות כמו בהתנגשות
+          אלסטית, שיעור 4.1).
+      - kind: limit
+        text: >-
+          כש-$M \to \infty$, $H \to v^2/(2g)$, הגובה במסילה קבועה, ו-$v_1 \to -v$: הגוש חוזר כמו מקיר. כש-$M \to 0$, $H \to 0$:
+          המסילה נדחפת לפניו בלי להרים אותו.
+      - kind: units
+        text: >-
+          $v^2/g$ במטרים; שאר הגורמים יחסי מסות, חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $H = \dfrac{1.6}{2.0}\cdot\dfrac{25}{19.6} = 1.02\,\text{m}$ (על מסילה קבועה $1.28\,\text{m}$), מעל הקטע האנכי, ולכן
+          הגוש אכן עף. $V = 0.40\cdot5.0/2.0 = 1.0\,\text{m/s}$. $v_1 = -0.6\cdot5.0 = -3.0\,\text{m/s}$, $V_2 = 0.4\cdot5.0 = 2.0\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $1.02\,\text{m}$. ב. $1.0\,\text{m/s}$, ושני הגושים נעים ברגע הזה באותה מהירות אופקית. ג. הקטן חוזר ב-$3.0\,\text{m/s}$,
+          והגדול ממשיך ב-$2.0\,\text{m/s}$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2019
+      problem: Exam A, Question 3
+      url: https://www.aapt.org/physicsteam/2019/upload/2019_Fma_A_solution.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.5-c2
+    stars: 1
+    objectives: [OBJ-3.5-1]
+    prompt: >-
+      העצם בשוק נשברת בלחץ של כ-$1.6\cdot10^8\,\text{N/m}^2$, ושטח החתך הקטן ביותר שלה, מעל הקרסול, כ-$3.2\,\text{cm}^2$.
+      אדם במסה $60\,\text{kg}$ קופץ לקרקע מגובה $2.0\,\text{m}$, נוחת על שתי רגליו, ובולם בכפיפת ברכיים שמורידה את
+      מרכז המסה שלו $1.0\,\text{cm}$ מרגע המגע עד העצירה. הניחו האטה קבועה בזמן הבלימה.
+
+      א. כמה זמן נמשכת הבלימה?
+
+      ב. מה הכוח הממוצע של הקרקע על האדם? פי כמה הוא גדול מהמשקל? האם מותר להזניח את הכובד בזמן הבלימה?
+
+      ג. אם הכוח מתחלק שווה בין שתי הרגליים, האם העצם נשברת? מה הבלימה המינימלית שמונעת שבר?
+    answer: >-
+      א. $3.2\,\text{ms}$. ב. $1.18\cdot10^5\,\text{N}$, פי $201$; כן. ג. כן: $5.91\cdot10^4\,\text{N}$ לרגל, מעל $5.12\cdot10^4\,\text{N}$;
+      צריך לבלום לפחות $1.16\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר כלפי מעלה. $m = 60\,\text{kg}$, $h = 2.0\,\text{m}$, $d = 0.010\,\text{m}$, $\sigma = 1.6\cdot10^8\,\text{N/m}^2$,
+          $A = 3.2\cdot10^{-4}\,\text{m}^2$.
+      - kind: law
+        text: >-
+          מהירות הפגיעה מנפילה חופשית, $v = \sqrt{2gh}$. בהאטה קבועה המהירות הממוצעת $v/2$, ולכן $d = \tfrac12v\,\Delta t$.
+          משפט המתקף-תנע לאדם: $\left(\bar N - mg\right)\Delta t = 0 - (-mv) = mv$.
+      - kind: manipulation
+        text: >-
+          $\Delta t = 2d/v$. $\bar N = mv/\Delta t + mg = \dfrac{mv^2}{2d} + mg = mg\left(\dfrac hd + 1\right)$. כוח השבירה לרגל:
+          $\sigma A$. ללא שבר צריך $\bar N/2 \le \sigma A$, כלומר $d \ge \dfrac{mgh}{2\sigma A - mg}$.
+      - kind: limit
+        text: >-
+          כש-$d \to 0$ (רגליים נעולות), $\bar N \to \infty$. כש-$d \gg h$, $\bar N \to mg$: עמידה רגילה.
+      - kind: units
+        text: >-
+          $h/d$ חסר ממדים, ולכן $\bar N$ בניוטון; $\sigma A$ ב-$\text{N/m}^2\cdot\text{m}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{2\cdot9.8\cdot2.0} = 6.26\,\text{m/s}$, $\Delta t = 0.020/6.26 = 3.2\,\text{ms}$. $\bar N = 588\cdot(200 + 1) = 1.18\cdot10^5\,\text{N}$,
+          פי $201$ מהמשקל: הכובד תורם פחות מאחוז. $\sigma A = 5.12\cdot10^4\,\text{N}$, ולכל רגל $5.91\cdot10^4\,\text{N}$.
+          $d_{\min} = 1176/\left(1.024\cdot10^5 - 588\right) = 0.0116\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $3.2\,\text{ms}$. ב. $1.18\cdot10^5\,\text{N}$, פי $201$ מהמשקל, ולכן מותר להזניח את הכובד. ג. כן, העצם נשברת;
+          כפיפה של $1.16\,\text{cm}$ לפחות מספיקה, וכפיפת ברכיים אמיתית, עשרות סנטימטרים, משאירה מרווח גדול.
+    source:
+      name: MIT 8.01 Classical Mechanics (OCW 8.01SC), Fall 2016
+      year: 2016
+      problem: Problem Set 5, Problem 3 (Compressive Strength of Bones)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/ebe813c4c1e0a146933380112612a58f_MIT8_01F16_pset5.pdf
+      verified: '2026-11-10'
+      adapted: true

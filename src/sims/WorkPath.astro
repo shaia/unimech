@@ -1,0 +1,7 @@
+---
+/** Work along a path for lesson MDX: <Spread figure={WorkPath} figureProps={{ mode: 'path', field: 'gravity', … }}>. */
+import WorkPath, { type WorkPathProps } from './WorkPath';
+type Props = WorkPathProps;
+---
+
+<WorkPath client:visible {...Astro.props} />

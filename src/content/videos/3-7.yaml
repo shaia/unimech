@@ -1,0 +1,30 @@
+# Videos of lesson 3.7. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths, chapter times and caption tracks come from the watch page
+# (lengthSeconds, the description, captionTracks). `why` claims only what the title and the description support.
+#   MFkqOBq94Gk: 590 s; chapters 1:04 "Demonstrating Point Particle Angular Momentum", 3:39 "How Angular Momentum
+#     Depends on Mass and Velocity", 5:52 "… on r and θ", 8:07 "The Angle of 180 Degrees", 8:45 "The Right-Hand Rule";
+#     caption tracks include en.
+#   OPTY5V0aqkY: 264 s; chapters 0:17 "The Point Particle Angular Momentum Equation", 2:46 "Creating a Right
+#     Triangle", 3:24 "The Angular Momentum of the Point Particle is Constant!"; caption tracks include en and iw (he).
+
+- id: v-3-7-particle-demo
+  youtubeId: MFkqOBq94Gk
+  title: 'Angular Momentum of Particles Introduction | Flipping Physics'
+  channel: Flipping Physics
+  lang: en
+  captions: [en]
+  start: 64
+  minutes: 9
+  why: 'לפי התיאור: כדור שמתגלגל בקו ישר פוגע בלוח שמסתובב על ציר, והלוח, שהיה במנוחה, מתחיל להסתובב: הכדור מסר לו תנע זוויתי, אף שנע בקו ישר. אחר כך משנים את המסה, המהירות, המרחק מהציר והזווית, ובונים את L = rmv sin θ. שימו לב למקרה של כדור שנע ישר אל הציר (8:07), והשוו לרגע שבו גררתם את O אל קו התנועה באיור 3.7א.'
+  verified: '2026-11-10'
+
+- id: v-3-7-triangle
+  youtubeId: OPTY5V0aqkY
+  title: 'Common Point Particle Angular Momentum Triangle | Flipping Physics'
+  channel: Flipping Physics
+  lang: en
+  captions: [en, he]
+  start: 0
+  minutes: 5
+  why: 'לפי פרקי הסרטון: כשחלקיק מתקרב בקו ישר, גם r וגם הזווית משתנים, אבל משולש ישר זווית מראה ש-r sin θ שווה למרחק ניצב קבוע, ולכן התנע הזוויתי קבוע. זה הזרוע d של איור 3.7א, באותו היגיון של סעיף ההגדרה. יש לסרטון כתוביות בעברית.'
+  verified: '2026-11-10'

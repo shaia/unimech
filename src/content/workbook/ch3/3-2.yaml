@@ -1,0 +1,441 @@
+# Workbook, lesson 3.2 (conservative forces and potential energy). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-2/workbook.ts against src/physics/conservative.ts:
+#   W02 U(0) = F₀λ = 1.50 J (numeric from a far reference agrees), U(λ) = 0.552 J;  W03 |F| ≈ 1 J / 0.2 m = 5 N;
+#   W04 c = 1 (curl 0), U = −(x³y + xy), U(1,2) − U(0,0) = −4.00 J;  W05 −kab = −0.600 J (sides and curl·area agree);
+#   W06 F = (−2.0, 2.0) N, |F| = 2.83 N, at 135° from +x;  W08 W = a(x²y + y³) = 15.0 J (line integral along y = 2x² agrees);
+#   W09 kL³ = 0.192 J (sides agree), curl 2kx;  W10 g₀ = GM/R² = 9.81 m/s², ΔU = 9.66·10⁵ J vs mg₀h = 9.81·10⁵ J,
+#       ratio R/(R + h) = 0.985, error of mg₀h relative to ΔU h/R = 1.57% (h = 1 km: 0.0157%);
+#   c1 (review 2026-11-10, .scratch/ch3/3-2/review.ts) planet with drag −Amv²v̂, Sun, r = AU = 1.5e11 m, A = 1e-22 /m:
+#       v = 2.97e4 m/s, W_d/m = −2πAGM = −0.0834 J/kg, Δr = −4πAr² = −28.3 m per orbit (RK4 over one period: −28.27 m);
+#   c2 n = −2, C = 1.5 N·m, r 0.50 → 2.0 m: W = −C ln 4 = −2.08 J (straight and bent paths agree); n = 1: −3.94 J.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.2'
+practice:
+  - id: W-3.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.2-1]
+    prompt: >-
+      לכל אחד מהכוחות הבאים, קבעו ונמקו: האם הוא שדה כוח (תלוי רק במקום)? ואם כן, האם הוא משמר?
+
+      א. הכובד על אבן ליד פני הארץ.
+
+      ב. החיכוך הקינטי על ארגז שנגרר על רצפה.
+
+      ג. הכוח של קפיץ שקצהו האחד קבוע, על גוף שקשור לקצה השני.
+
+      ד. הכוח $\vec F = k\,(-y,\,x)$ על חלקיק במישור.
+    answer: >-
+      א. שדה כוח, משמר. ב. לא שדה כוח (תלוי בכיוון המהירות), ולא משמר. ג. שדה כוח, משמר. ד. שדה כוח, לא משמר.
+    solution:
+      - kind: law
+        text: >-
+          שדה כוח הוא כוח שיש לו ערך $\vec F(\vec r)$ בכל נקודה. שדה כוח משמר אם העבודה שלו סביב כל מסלול סגור אפס;
+          בתחום בלי חורים, אם ורק אם $\partial F_y/\partial x = \partial F_x/\partial y$.
+      - kind: reasoning
+        text: >-
+          א: $\vec F = (0,\ -mg)$ קבוע, הרוטור אפס, ו-$U = mgy$. ב: באותה נקודה החיכוך פונה הפוך לכיוון התנועה, ולכן אין לו
+          ערך אחד בנקודה; העבודה שלו במסלול סגור שלילית. ג: $\vec F = -k\,(\vec r - \vec r_0)$ תלוי רק במקום, ו-$U = \tfrac12k|\vec r - \vec r_0|^2$.
+          ד: $\partial F_y/\partial x - \partial F_x/\partial y = k - (-k) = 2k \neq 0$.
+      - kind: limit
+        text: >-
+          כש-$k \to 0$ בסעיף ד אין כוח בכלל, והרוטור $2k$ מתאפס: גבול רציף בין משמר ללא משמר.
+      - kind: units
+        text: >-
+          ב-ד, $k$ ב-$\text{N/m}$, והרוטור $2k$ באותן יחידות: עבודה ליחידת שטח, $\text{J/m}^2$.
+      - kind: result
+        text: >-
+          משמרים: א ו-ג. לא משמר: ד (שדה כוח). ב אינו שדה כוח כלל.
+
+  - id: W-3.2-02
+    level: basic
+    objectives: [OBJ-3.2-2]
+    prompt: >-
+      על חלקיק על ציר $x$, ב-$x \ge 0$, פועל כוח דוחה שנחלש מהר עם המרחק, $F_x = F_0\,e^{-x/\lambda}$, עם $F_0 = 3.0\,\text{N}$
+      ו-$\lambda = 0.50\,\text{m}$. מצאו את $U(x)$, כש-$U = 0$ רחוק מאוד, ואת $U(0)$.
+    answer: >-
+      $U(x) = F_0\lambda\,e^{-x/\lambda}$, ו-$U(0) = 1.50\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$, $F_0 = 3.0\,\text{N}$, $\lambda = 0.50\,\text{m}$, $U(\infty) = 0$.
+      - kind: law
+        text: >-
+          $U(x) = U(\infty) - \int_\infty^x F_x\,dx' = \int_x^\infty F_x\,dx'$.
+      - kind: manipulation
+        text: >-
+          $\int_x^\infty F_0e^{-x'/\lambda}dx' = F_0\left[-\lambda e^{-x'/\lambda}\right]_x^\infty = F_0\lambda e^{-x/\lambda}$. בדיקה:
+          $-dU/dx = F_0e^{-x/\lambda} = F_x$.
+      - kind: limit
+        text: >-
+          כש-$\lambda \to \infty$ הכוח קבוע, והאנרגיה הנדרשת "לברוח" מהראשית אינסופית: $U(0) = F_0\lambda \to \infty$.
+      - kind: units
+        text: >-
+          $F_0\lambda$ ב-$\text{N}\cdot\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $U(0) = 3.0\cdot0.50 = 1.50\,\text{J}$, ו-$U(\lambda) = 1.50\,e^{-1} = 0.552\,\text{J}$.
+      - kind: result
+        text: >-
+          $U(x) = F_0\lambda e^{-x/\lambda}$; $U(0) = 1.50\,\text{J}$.
+
+  - id: W-3.2-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.2-2]
+    prompt: >-
+      במפה של קווי גובה של אנרגיה פוטנציאלית $U$ על שולחן, הקווים במרווחים של $1\,\text{J}$. בנקודה X הקווים ישרים וצפופים,
+      במרחק $0.2\,\text{m}$ זה מזה, ו-$U$ גדלה כלפי צפון. בנקודה Y הם במרחק $1\,\text{m}$ זה מזה. קבעו ונמקו: לאן פונה הכוח
+      ב-X, ובערך מה גודלו? איפה הכוח חזק יותר?
+    answer: >-
+      ב-X הכוח פונה דרומה, ניצב לקווים, בגודל של כ-$5\,\text{N}$. הוא חזק יותר ב-X, כי שם הקווים צפופים יותר.
+    solution:
+      - kind: law
+        text: >-
+          $\vec F = -\nabla U$: ניצב לקווי הגובה, לעבר $U$ נמוכה, וגודלו בערך $\Delta U/\Delta s$.
+      - kind: reasoning
+        text: >-
+          לאורך קו גובה $U$ לא משתנה, ולכן לכוח אין רכיב לאורכו. $U$ עולה צפונה, והכוח פונה הפוך לכיוון העלייה: דרומה.
+      - kind: manipulation
+        text: >-
+          ב-X: $|F| \approx 1\,\text{J}/0.2\,\text{m}$; ב-Y: $1\,\text{J}/1\,\text{m}$.
+      - kind: limit
+        text: >-
+          אם הקווים רחוקים מאוד זה מזה, $U$ כמעט קבועה והכוח שואף לאפס.
+      - kind: units
+        text: >-
+          $\text{J/m} = \text{N}$.
+      - kind: result
+        text: >-
+          ב-X: כ-$5\,\text{N}$ דרומה; ב-Y: כ-$1\,\text{N}$. הכוח חזק יותר ב-X.
+
+  - id: W-3.2-04
+    level: mid
+    objectives: [OBJ-3.2-1, OBJ-3.2-2]
+    prompt: >-
+      במישור פועל הכוח $\vec F = \left(3x^2y + y,\ x^3 + cx\right)$, ב-$\text{N}$ כש-$x$ ו-$y$ במטרים ($c$ קבוע). לאיזה ערך של $c$ הכוח
+      משמר? בערך הזה, מצאו את $U$ ואת $U(1,\,2) - U(0,\,0)$.
+    answer: >-
+      $c = 1$; $U = -\left(x^3y + xy\right) + C$, וההפרש $-4.00\,\text{J}$.
+    solution:
+      - kind: law
+        text: >-
+          מבחן הרוטור: $\partial F_y/\partial x = \partial F_x/\partial y$ בכל המישור. ואז $F_x = -\partial U/\partial x$, $F_y = -\partial U/\partial y$.
+      - kind: manipulation
+        text: >-
+          $\partial F_y/\partial x = 3x^2 + c$, $\partial F_x/\partial y = 3x^2 + 1$, ולכן $c = 1$. מ-$F_x$: $U = -\left(x^3y + xy\right) + g(y)$.
+          מ-$F_y$: $-\partial U/\partial y = x^3 + x - g'(y) = x^3 + x$, ולכן $g' = 0$.
+      - kind: limit
+        text: >-
+          בכל ערך אחר של $c$ צעד ה-$g$ נכשל: $g'(y)$ היה יוצא $(1 - c)x$, תלוי ב-$x$, וזה סימן שאין $U$.
+      - kind: units
+        text: >-
+          המקדמים המושמטים: $3\,\text{N/m}^3$ ליד $x^2y$ ו-$1\,\text{N/m}$ ליד $y$; $U$ יוצאת ב-$\text{N}\cdot\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $U(1,\,2) - U(0,\,0) = -(1\cdot2 + 1\cdot2) - 0 = -4.00\,\text{J}$.
+      - kind: result
+        text: >-
+          $c = 1$, $U = -\left(x^3y + xy\right)$, וההפרש $-4.00\,\text{J}$: הכוח עושה $4.00\,\text{J}$ מ-$(0,\,0)$ ל-$(1,\,2)$ בכל מסלול.
+
+  - id: W-3.2-05
+    level: mid
+    objectives: [OBJ-3.2-1]
+    prompt: >-
+      על חלקיק במישור פועל הכוח $\vec F = k\,(y,\ 0)$, עם $k = 4.0\,\text{N/m}$. החלקיק מקיף פעם אחת, נגד כיוון השעון, מלבן שפינותיו
+      $(0,\,0)$, $(a,\,0)$, $(a,\,b)$ ו-$(0,\,b)$, עם $a = 0.50\,\text{m}$ ו-$b = 0.30\,\text{m}$. חשבו את העבודה צלע אחר צלע, ובדקו
+      במשפט סטוקס.
+    answer: >-
+      $W = -kab = -0.600\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בפינה השמאלית התחתונה, $x$ ימינה ו-$y$ למעלה. $k = 4.0\,\text{N/m}$, $a = 0.50\,\text{m}$, $b = 0.30\,\text{m}$.
+      - kind: law
+        text: >-
+          $W = \oint\vec F\cdot d\vec r$; משפט סטוקס: $\oint\vec F\cdot d\vec r = \iint\left(\nabla\times\vec F\right)_z\,dA$.
+      - kind: manipulation
+        text: >-
+          תחתונה ($y = 0$): $F_x = 0$, תרומה $0$. ימנית ושמאלית (אנכיות): $F_y = 0$, תרומה $0$. עליונה ($y = b$, שמאלה, $\Delta x = -a$):
+          $kb\cdot(-a)$. רוטור: $0 - k = -k$, כפול השטח $ab$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ המלבן נסגר והעבודה מתאפסת. במלבן שצלעו התחתונה על $y = y_0 \neq 0$ התוצאה זהה: גם התחתונה תורמת, אבל ההפרש נשאר $-kab$.
+      - kind: units
+        text: >-
+          $kab$ ב-$\text{N/m}\cdot\text{m}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $-4.0\cdot0.50\cdot0.30 = -0.600\,\text{J}$.
+      - kind: result
+        text: >-
+          $W = -kab = -0.600\,\text{J}$, בשתי הדרכים. הכוח לא משמר.
+
+  - id: W-3.2-06
+    level: mid
+    objectives: [OBJ-3.2-2]
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק במישור היא $U(x,\,y) = A\,x\,e^{-y/\lambda}$, עם $A = 2.0\,\text{J/m}$ ו-$\lambda = 1.0\,\text{m}$.
+      מצאו את הכוח בנקודה $(1.0,\ 0)\,\text{m}$: רכיבים, גודל וכיוון.
+    answer: >-
+      $\vec F = (-2.0,\ 2.0)\,\text{N}$, בגודל $2.83\,\text{N}$, ב-$135°$ מציר $x$ (שמאלה ולמעלה).
+    solution:
+      - kind: law
+        text: >-
+          $\vec F = -\nabla U = -\left(\partial U/\partial x,\ \partial U/\partial y\right)$.
+      - kind: manipulation
+        text: >-
+          $\partial U/\partial x = Ae^{-y/\lambda}$, $\partial U/\partial y = -\left(Ax/\lambda\right)e^{-y/\lambda}$. לכן
+          $\vec F = Ae^{-y/\lambda}\left(-1,\ x/\lambda\right)$.
+      - kind: limit
+        text: >-
+          כש-$\lambda \to \infty$, $U = Ax$, והכוח קבוע, $(-A,\ 0)$: הרכיב $y$ נעלם.
+      - kind: units
+        text: >-
+          $A$ ב-$\text{J/m} = \text{N}$; $x/\lambda$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          ב-$(1.0,\ 0)$: $\vec F = 2.0\cdot(-1,\ 1) = (-2.0,\ 2.0)\,\text{N}$, $|\vec F| = 2.0\sqrt2 = 2.83\,\text{N}$.
+      - kind: result
+        text: >-
+          $(-2.0,\ 2.0)\,\text{N}$, $2.83\,\text{N}$, שמאלה ולמעלה, ב-$135°$ מכיוון $+x$.
+
+  - id: W-3.2-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.2-1, OBJ-3.2-2]
+    prompt: >-
+      כוח מרכזי במישור הוא כוח שפונה תמיד לאורך הקו מהראשית, וגודלו תלוי רק במרחק ממנה: $\vec F = f(r)\,\hat r$. קבעו ונמקו,
+      בלי לבחור $f$: האם כוח כזה תמיד משמר? אם כן, כתבו את $U$ כאינטגרל.
+    answer: >-
+      כן, בכל תחום שבו $f$ מוגדרת: $U(r) = -\int_{r_0}^{r}f(r')\,dr'$. העבודה תלויה רק במרחקים של נקודות הקצה מהראשית.
+    solution:
+      - kind: law
+        text: >-
+          $W = \int\vec F\cdot d\vec r$. מפרקים את $d\vec r$ לרכיב לאורך $\hat r$, שהוא $dr$, ולרכיב ניצב, שלאורך קשת סביב הראשית.
+      - kind: reasoning
+        text: >-
+          $\vec F\cdot d\vec r = f(r)\,\hat r\cdot d\vec r = f(r)\,dr$: רק השינוי במרחק תורם, ובתנועה לאורך קשת סביב הראשית הכוח ניצב
+          למסלול. לכן $W_{A\to B} = \int_{r_A}^{r_B}f(r)\,dr$, שתלוי רק ב-$r_A$ וב-$r_B$, לכל מסלול.
+      - kind: manipulation
+        text: >-
+          $U(r) = U(r_0) - \int_{r_0}^{r}f\,dr'$. לדוגמה $f = -kr$ נותן $\tfrac12kr^2$, ו-$f = -K/r^2$ נותן $-K/r$ (עם $r_0 \to \infty$).
+      - kind: limit
+        text: >-
+          לולאה שלא משנה את $r$ כלל, מעגל סביב הראשית, מקבלת עבודה אפס: הכוח ניצב למסלול בכל נקודה.
+      - kind: units
+        text: >-
+          $f\,dr$ ב-$\text{N}\cdot\text{m} = \text{J}$.
+      - kind: result
+        text: >-
+          כוח מרכזי $f(r)\hat r$ תמיד משמר, ו-$U(r) = -\int^r f\,dr'$, תלויה רק במרחק.
+
+  - id: W-3.2-08
+    level: bagrut
+    objectives: [OBJ-3.2-1, OBJ-3.2-2]
+    prompt: >-
+      במישור פועל הכוח $\vec F = a\left(2xy,\ x^2 + 3y^2\right)$, עם $a = 1.5\,\text{N/m}^2$. חלקיק נע מהראשית לנקודה
+      $(1.0,\ 2.0)\,\text{m}$ לאורך הפרבולה $y = 2x^2$. מצאו את העבודה של הכוח, בלי לחשב אינטגרל לאורך הפרבולה.
+    answer: >-
+      $W = a\left(x^2y + y^3\right)\Big|_{(1,2)} = 15.0\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $a = 1.5\,\text{N/m}^2$, מ-$(0,\,0)$ ל-$(1.0,\ 2.0)\,\text{m}$.
+      - kind: law
+        text: >-
+          אם $\partial F_y/\partial x = \partial F_x/\partial y$ בכל המישור, הכוח משמר, ו-$W_{A\to B} = U(A) - U(B)$.
+      - kind: manipulation
+        text: >-
+          $\partial F_y/\partial x = 2ax = \partial F_x/\partial y$. מ-$F_x$: $U = -ax^2y + g(y)$; מ-$F_y$: $ax^2 - g'(y) = ax^2 + 3ay^2$,
+          ולכן $g = -ay^3$, ו-$U = -a\left(x^2y + y^3\right)$.
+      - kind: limit
+        text: >-
+          כש-$a \to 0$ אין כוח ואין עבודה. ובמסלול שחוזר לראשית, העבודה אפס בכל צורה של מסלול.
+      - kind: units
+        text: >-
+          $a\cdot x^2y$ ב-$\text{N/m}^2\cdot\text{m}^3 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $W = U(0,\,0) - U(1,\,2) = 1.5\left(1\cdot2 + 8\right) = 15.0\,\text{J}$ (אינטגרציה מספרית לאורך הפרבולה נותנת אותו ערך).
+      - kind: result
+        text: >-
+          $W = 15.0\,\text{J}$; צורת המסלול לא משנה.
+
+  - id: W-3.2-09
+    level: bagrut
+    objectives: [OBJ-3.2-1]
+    prompt: >-
+      על חלקיק במישור פועל הכוח $\vec F = \left(0,\ kx^2\right)$, עם $k = 3.0\,\text{N/m}^2$. מצאו את הרוטור שלו, ואת העבודה סביב ריבוע
+      שצלעו $L = 0.40\,\text{m}$ ופינותיו $(0,\,0)$, $(L,\,0)$, $(L,\,L)$, $(0,\,L)$, נגד כיוון השעון, בשתי דרכים: צלע אחר צלע,
+      ובמשפט סטוקס. מה משתנה אם מזיזים את הריבוע ימינה?
+    answer: >-
+      $\left(\nabla\times\vec F\right)_z = 2kx$; $W = kL^3 = 0.192\,\text{J}$. ריבוע רחוק יותר מציר $y$ מקבל עבודה גדולה יותר.
+    solution:
+      - kind: given
+        text: >-
+          $k = 3.0\,\text{N/m}^2$, $L = 0.40\,\text{m}$, סיבוב נגד כיוון השעון.
+      - kind: law
+        text: >-
+          $\oint\vec F\cdot d\vec r = \iint\left(\nabla\times\vec F\right)_z\,dA$, ו-$\left(\nabla\times\vec F\right)_z = \partial F_y/\partial x - \partial F_x/\partial y$.
+      - kind: manipulation
+        text: >-
+          הרוטור: $2kx - 0$. צלעות אופקיות: $F_x = 0$, אפס. ימנית ($x = L$, למעלה): $kL^2\cdot L$. שמאלית ($x = 0$): $0$. סטוקס:
+          $\int_0^L\int_0^L2kx\,dx\,dy = kL^2\cdot L$. ריבוע שצלעו השמאלית ב-$x = x_0$: $\int_{x_0}^{x_0 + L}2kx\,dx\cdot L = kL\left[\left(x_0 + L\right)^2 - x_0^2\right]$.
+      - kind: limit
+        text: >-
+          כש-$L \to 0$ העבודה חלקי השטח, $kL$, שואפת לרוטור בפינה $x = 0$, שהוא אפס; ובריבוע קטן סביב $x_0$ היא שואפת ל-$2kx_0$, כמו שצריך.
+      - kind: units
+        text: >-
+          $kL^3$ ב-$\text{N/m}^2\cdot\text{m}^3 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $3.0\cdot0.40^3 = 0.192\,\text{J}$.
+      - kind: result
+        text: >-
+          הרוטור $2kx$, לא קבוע; $W = 0.192\,\text{J}$, וגדל כשמזיזים את הריבוע ימינה, כי שם הרוטור גדול יותר.
+
+  - id: W-3.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.2-2]
+    prompt: >-
+      האנרגיה הפוטנציאלית של גוף במסה $m$ בכובד של כדור הארץ, מחוץ לו, היא $U(r) = -GMm/r$ ($M$ מסת כדור הארץ, $r$ המרחק ממרכזו).
+      הראו שכשמרימים את הגוף לגובה $h$ מעל פני הארץ, ברדיוס $R$, ו-$h \ll R$, השינוי ב-$U$ הוא בערך $mg_0h$, עם $g_0 = GM/R^2$.
+      בכמה אחוזים טועה $mg_0h$ ב-$h = 100\,\text{km}$, ובכמה ב-$h = 1\,\text{km}$?
+    answer: >-
+      $\Delta U = mg_0h\cdot\dfrac{R}{R + h} \approx mg_0h$. השגיאה היחסית $h/R$: $1.57\%$ ב-$100\,\text{km}$, $0.0157\%$ ב-$1\,\text{km}$.
+    solution:
+      - kind: law
+        text: >-
+          $\Delta U = U(R + h) - U(R)$, עם $U = -GMm/r$.
+      - kind: manipulation
+        text: >-
+          $\Delta U = GMm\left(\dfrac1R - \dfrac{1}{R + h}\right) = \dfrac{GMm\,h}{R(R + h)} = mg_0h\cdot\dfrac{R}{R + h}$. היחס בין
+          $mg_0h$ ל-$\Delta U$ הוא $1 + h/R$, ולכן $mg_0h$ גדול מהערך המדויק, בשגיאה יחסית $h/R$.
+      - kind: limit
+        text: >-
+          כש-$h/R \to 0$, $R/(R + h) \to 1$, ו-$\Delta U \to mg_0h$: הכובד האחיד של $U = mgy$ הוא הגבול של גובה קטן. כש-$h \to \infty$,
+          $\Delta U \to GMm/R$, סופי: האנרגיה הדרושה כדי להתרחק בלי גבול.
+      - kind: units
+        text: >-
+          $GMm/R$ ב-$\text{N}\cdot\text{m}^2/\text{kg}^2\cdot\text{kg}^2/\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          עם הקבועים של הקורס $g_0 = 9.81\,\text{m/s}^2$. לגוף של $1.0\,\text{kg}$ ב-$h = 100\,\text{km}$: $\Delta U = 9.66\cdot10^5\,\text{J}$,
+          $mg_0h = 9.81\cdot10^5\,\text{J}$, ההפרש $1.57\%$ מהערך המדויק. ב-$1\,\text{km}$: $0.0157\%$.
+      - kind: result
+        text: >-
+          $\Delta U \approx mg_0h$ כש-$h \ll R$; השגיאה $1.57\%$ ב-$100\,\text{km}$ ו-$0.0157\%$ ב-$1\,\text{km}$.
+
+challenge:
+  - id: W-3.2-c1
+    stars: 2
+    objectives: [OBJ-3.2-1, OBJ-3.2-2]
+    prompt: >-
+      כוכב לכת קטן במסה $m$ נע במסלול מעגלי ברדיוס $r$ סביב כוכב במסה $M$, עם $M \gg m$, כך שהכוכב נשאר במקומו.
+      הכוח של הכוכב על כוכב הלכת הוא $\vec F_g = -\dfrac{GMm}{r^2}\,\hat r$ ($G$ קבוע הכבידה, $\hat r$ וקטור היחידה
+      מהכוכב אל כוכב הלכת).
+
+      א. מצאו את האנרגיה הפוטנציאלית $U(r)$, עם $U \to 0$ כש-$r \to \infty$. בעזרת החוק השני ברכיב הרדיאלי מצאו גם
+      את האנרגיה הקינטית $K(r)$ במסלול המעגלי, ואת הסכום $E = K + U$.
+
+      ב. עכשיו פועל על כוכב הלכת גם כוח גרר חלש, $\vec F_d = -A\,m\,v^2\,\hat v$, עם $A$ קבוע ו-$\hat v$ וקטור היחידה
+      בכיוון התנועה. קבעו ונמקו: האם $\vec F_d$ הוא שדה כוח, והאם הוא משמר? חשבו את העבודה שלו בהקפה אחת, בהנחה
+      שהגרר חלש מספיק כדי ש-$r$ ו-$v$ כמעט לא משתנים בהקפה.
+
+      ג. בעזרת משפט עבודה-אנרגיה, מצאו בכמה משתנה הרדיוס בהקפה אחת. האם כוכב הלכת מתקרב לכוכב או מתרחק ממנו, ומה
+      קורה לגודל המהירות שלו? הציבו לכדור הארץ סביב השמש, עם $A = 1.0\cdot10^{-22}\,\text{m}^{-1}$.
+    answer: >-
+      א. $U = -GMm/r$, $K = GMm/(2r)$, $E = -GMm/(2r)$. ב. לא שדה כוח (תלוי במהירות), ולא משמר;
+      $W_d = -2\pi AGMm$ בהקפה. ג. $\Delta r = -4\pi Ar^2$: כוכב הלכת מתקרב, ו-$K$ דווקא גדלה, ב-$2\pi AGMm$.
+      לכדור הארץ: $\Delta r = -28.3\,\text{m}$ בהקפה.
+    solution:
+      - kind: given
+        text: >-
+          הראשית במרכז הכוכב, $\hat r$ החוצה. מסלול כמעט מעגלי ברדיוס $r$, במהירות $v$. לכדור הארץ: $M = M_\odot = 1.99\cdot10^{30}\,\text{kg}$,
+          $r = 1.5\cdot10^{11}\,\text{m}$, $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$, $A = 1.0\cdot10^{-22}\,\text{m}^{-1}$.
+      - kind: law
+        text: >-
+          $U(r) = -\int_\infty^r F_r\,dr'$ לכוח מרכזי; החוק השני ברכיב הרדיאלי, $mv^2/r = GMm/r^2$ (הכוח השקול ברכיב
+          הרדיאלי, כאן הכובד לבדו, שווה ל-$mv^2/r$); משפט עבודה-אנרגיה, $\Delta K = W_g + W_d$, עם $W_g = -\Delta U$, ולכן
+          $\Delta(K + U) = W_d$.
+      - kind: manipulation
+        text: >-
+          א: $U = -\int_\infty^r\left(-GMm/r'^2\right)dr' = -GMm/r$. $v^2 = GM/r$, ולכן $K = \tfrac12mv^2 = GMm/(2r)$ ו-$E = -GMm/(2r)$.
+      - kind: reasoning
+        text: >-
+          ב: באותה נקודה הגרר פונה הפוך לכיוון התנועה, ולכן אין לו ערך אחד בנקודה: הוא לא שדה כוח, ואין לו $U$. לאורך
+          המסלול הוא פונה תמיד נגד התנועה, ולכן העבודה שלו במסלול הסגור שלילית, ולא אפס: הוא לא משמר.
+      - kind: manipulation
+        text: >-
+          ב: הגרר קבוע בגודלו ומנוגד להעתק, ולכן $W_d = -Amv^2\cdot2\pi r = -2\pi AmGM$, בלי תלות ב-$r$. ג: $dE/dr = GMm/(2r^2)$,
+          ולכן $\Delta r = W_d\big/\left(dE/dr\right) = -4\pi Ar^2$. ו-$K = -E$, ולכן $\Delta K = -\Delta E = +2\pi AGMm$.
+      - kind: limit
+        text: >-
+          כש-$A \to 0$, $\Delta r \to 0$ ו-$W_d \to 0$: המסלול המעגלי הרגיל. הגרר לוקח אנרגיה, $E$ יורדת, ובמסלול מעגלי $E$ נמוכה
+          יותר פירושה רדיוס קטן יותר; הכובד עושה עבודה חיובית בירידה, פי 2 ממה שהגרר לוקח, ולכן $K$ גדלה. וכש-$r \to \infty$,
+          $E \to 0^-$, כמו שצריך לגוף שבקושי קשור.
+      - kind: units
+        text: >-
+          $A\,mv^2$ הוא כוח, ולכן $A$ ב-$\text{m}^{-1}$; $Ar^2$ ב-$\text{m}$. $GMm/r$ ב-$\text{N}\cdot\text{m}^2/\text{kg}^2\cdot\text{kg}^2/\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{GM/r} = 2.97\cdot10^4\,\text{m/s}$; $W_d/m = -2\pi AGM = -0.0834\,\text{J/kg}$ בהקפה;
+          $\Delta r = -4\pi\cdot1.0\cdot10^{-22}\cdot\left(1.5\cdot10^{11}\right)^2 = -28.3\,\text{m}$ בהקפה (שילוב מספרי של התנועה
+          עם הגרר לאורך הקפה אחת נותן אותו ערך).
+      - kind: result
+        text: >-
+          $U = -GMm/r$, $E = -GMm/(2r)$. הגרר אינו שדה כוח ואינו משמר, ולוקח $2\pi AGMm$ בכל הקפה. לכן כוכב הלכת
+          מתקרב לכוכב, ב-$4\pi Ar^2$ בהקפה ($28.3\,\text{m}$ לכדור הארץ), ונע **מהר יותר**.
+    source:
+      name: MIT 8.012 Physics I, Classical Mechanics, Exam 2
+      year: 2008
+      problem: Problem 5, Planet Orbit
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/4769e1e9f16e380d2f9a5855e427a3a3_exam2.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.2-c2
+    stars: 1
+    objectives: [OBJ-3.2-1, OBJ-3.2-2]
+    prompt: >-
+      על חלקיק במישור פועל כוח שמושך אל הראשית, $\vec F = -C\,r^n\,(x,\ y)$, עם $C > 0$, $n$ מספר שלם ו-$r = \sqrt{x^2 + y^2}$.
+
+      א. חשבו את $\left(\nabla\times\vec F\right)_z$ לכל $n$.
+
+      ב. מצאו $U(r)$ לכל $n$. לאיזה $n$ הנוסחה הכללית נכשלת, ומה $U$ שם?
+
+      ג. עם $n = -2$ ו-$C = 1.5\,\text{N}\cdot\text{m}$, מה העבודה של הכוח כשהחלקיק מתרחק מ-$r = 0.50\,\text{m}$ ל-$r = 2.0\,\text{m}$?
+    answer: >-
+      א. $0$ לכל $n$. ב. $U = Cr^{n+2}/(n + 2)$; ב-$n = -2$: $U = C\ln(r/r_0)$. ג. $W = -C\ln4 = -2.08\,\text{J}$.
+    solution:
+      - kind: law
+        text: >-
+          מבחן הרוטור; $\vec F = -\nabla U$, ולכוח מרכזי $F_r = -dU/dr$.
+      - kind: manipulation
+        text: >-
+          א: לפי כלל השרשרת, $\partial r/\partial x = x/r$, ולכן $\partial F_y/\partial x = -Cnr^{n-2}xy$ וגם $\partial F_x/\partial y = -Cnr^{n-2}xy$:
+          ההפרש אפס. ב: $\vec F = -Cr^{n+1}\hat r$, כלומר $F_r = -Cr^{n+1}$, ולכן $dU/dr = Cr^{n+1}$ ו-$U = Cr^{n+2}/(n + 2)$. ב-$n = -2$
+          המכנה מתאפס: שם $dU/dr = C/r$, ו-$U = C\ln(r/r_0)$, עם נקודת ייחוס $r_0$.
+      - kind: limit
+        text: >-
+          $n = -1$ נותן $U = Cr$, כוח קבוע בגודל $C$; $n = 0$ נותן קפיץ, $U = \tfrac12Cr^2$; $n = -3$ נותן $U = -C/r$, המשיכה $1/r^2$.
+          ב-$n = -2$, $\ln r$ לא שואף לאפס באינסוף, ולכן אי אפשר לבחור $U(\infty) = 0$.
+      - kind: units
+        text: >-
+          ב-$n = -2$, $C$ ב-$\text{N}\cdot\text{m}$, ו-$C\ln(r/r_0)$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $W = U(0.50) - U(2.0) = -C\ln\left(2.0/0.50\right) = -1.5\ln4 = -2.08\,\text{J}$ (גם לאורך מסלול שבור, מספרית).
+      - kind: result
+        text: >-
+          הרוטור אפס לכל $n$; $U = Cr^{n+2}/(n + 2)$, וב-$n = -2$ לוגריתם; $W = -2.08\,\text{J}$: המשיכה עושה עבודה שלילית על חלקיק שמתרחק.
+    source:
+      name: MIT 18.02 Multivariable Calculus, Problem Set 8
+      year: 2006
+      problem: Part B, Problem 3
+      url: https://ocw.mit.edu/courses/18-02-multivariable-calculus-spring-2006/6fd63212fc89bcb06fdd53a142c8b5ab_ps8_s06.pdf
+      verified: '2026-11-10'
+      adapted: true

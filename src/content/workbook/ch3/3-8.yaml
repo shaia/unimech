@@ -1,0 +1,459 @@
+# Workbook, lesson 3.8 (angular momentum of a system of particles). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-8/workbook.ts and .scratch/ch3/3-8/challenge.ts against
+# src/physics/systemangular.ts with G = 9.8:
+#   W02 V = 1.0 m/s, K = 12.5 J, ½MV² = 2.5 J, K_rel = 10.0 J = ½μv² with μ = 0.80 kg;
+#   W03 μ = 0.375 kg, I = 0.54 kg·m², radii 0.30 and 0.90 m, speeds 0.90 and 2.7 m/s, L_rel = 1.62 kg·m²/s, K_rel = 2.43 J;
+#   W05 I = 0.050 kg·m², τ = 1.0 N·m, L = 0.30 kg·m²/s, ω = 6.0 rad/s, K_rel = 0.90 J (work τθ, θ = 0.90 rad);
+#   W06 L = −0.24 kg·m²/s about every point, K = K_rel = 1.8 J, ω of the line 15 rad/s (clockwise) when they pass;
+#   W08 I = 0.0090 kg·m², L_rel = −0.072, T = 0.505 s, R×MV = −M Vₓ(h + ½gt²): −2.0 → −4.0, L_O(T) = −4.07 kg·m²/s,
+#       ½MV² 3.2 → 8.1 J (Mgh = 4.9 J), K_rel = 0.288 J;
+#   W09 μ = 0.20 kg, u = 5.20 m/s, v = 5.46 and 0.268 m/s, K 1.8 → 4.5 J;
+#   c1 V = v₀/4, ω = v₀/L, I = ¾ML², the 3M block at rest after, K unchanged (½Mv₀²: ⅛ + ⅜);
+#   c2 I_tot = 25/6 MR², ω = (3ω₀ − 8v₀/R)/25, no rotation at ω₀ = 8v₀/(3R), K lost = (M/50)(11R²ω₀² + 8Rv₀ω₀ + 6v₀²)
+#       (0.12 Mv₀² at ω₀ = 0).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.8'
+practice:
+  - id: W-3.8-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.8-1]
+    prompt: >-
+      לכל משפט על מערכת של חלקיקים, קבעו אם הוא נכון ונמקו.
+
+      א. כוחות פנימיים שווים בגודלם והפוכים בכיוונם לא יכולים לשנות את התנע הכולל של המערכת.
+
+      ב. כוחות פנימיים שווים בגודלם והפוכים בכיוונם לא יכולים לשנות את התנע הזוויתי הכולל של המערכת.
+
+      ג. אם הכוח החיצוני השקול על המערכת אפס, התנע הזוויתי שלה ביחס לכל נקודה קבועה נשמר.
+
+      ד. בשדה כובד אחיד, המומנט של הכובד ביחס למרכז המסה של המערכת אפס.
+    answer: >-
+      א. נכון. ב. לא נכון: צריך גם שיפעלו לאורך הקו בין החלקיקים. ג. לא נכון: זוג כוחות חיצוניים הפוכים על קווים שונים נותן מומנט. ד. נכון.
+    solution:
+      - kind: law
+        text: >-
+          $d\vec P/dt = \vec F_{\text{ext}}$ ו-$d\vec L_O/dt = \sum_i\vec r_i\times\vec F_i^{\text{ext}} + \sum_{\text{pairs}}\left(\vec r_i - \vec r_j\right)\times\vec F_{ij}$.
+      - kind: reasoning
+        text: >-
+          א: בסכום הכוחות כל זוג פנימי נותן $\vec F_{ij} + \vec F_{ji} = 0$. ב: במומנט נשאר $\left(\vec r_i - \vec r_j\right)\times\vec F_{ij}$,
+          שמתאפס רק כש-$\vec F_{ij}$ מקביל לקו בין החלקיקים. ג: שני כוחות חיצוניים, $\vec F$ ו-$-\vec F$, על נקודות שונות: סכומם
+          אפס, אבל המומנט שלהם $\left(\vec r_1 - \vec r_2\right)\times\vec F$ לא אפס, והמערכת מתחילה להסתובב. ד: $\sum_i\vec r_i'\times m_i\vec g = \left(\sum_i m_i\vec r_i'\right)\times\vec g = 0$.
+      - kind: limit
+        text: >-
+          כשהזוג החיצוני של ג פועל על אותו קו, $\vec r_1 - \vec r_2$ מקביל ל-$\vec F$ והמומנט אפס: רק אז אפס כוח שקול מבטיח גם שימור של $\vec L_O$.
+      - kind: units
+        text: >-
+          מומנט ב-$\text{N·m}$, קצב השינוי של תנע זוויתי ב-$\text{kg·m}^2/\text{s}^2$: אותן יחידות.
+      - kind: result
+        text: >-
+          א ו-ד נכונים; ב ו-ג לא נכונים.
+
+  - id: W-3.8-02
+    level: basic
+    objectives: [OBJ-3.8-2]
+    prompt: >-
+      על מסילה ישרה וחלקה, עגלה של $4.0\,\text{kg}$ נעה ימינה ב-$2.0\,\text{m/s}$, ועגלה של $1.0\,\text{kg}$ נעה לקראתה, שמאלה,
+      ב-$3.0\,\text{m/s}$. מצאו את מהירות מרכז המסה, את האנרגיה הקינטית הכוללת ואת שני החלקים שלה, ובדקו את $K_{\text{rel}}$ בעזרת
+      המסה המצומצמת.
+    answer: >-
+      $V = 1.0\,\text{m/s}$ ימינה; $K = 12.5\,\text{J} = 2.5\,\text{J} + 10.0\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה. $m_1 = 4.0\,\text{kg}$, $v_1 = 2.0\,\text{m/s}$; $m_2 = 1.0\,\text{kg}$, $v_2 = -3.0\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $V = \left(m_1v_1 + m_2v_2\right)/M$; $K = \tfrac12MV^2 + K_{\text{rel}}$, ולשני גופים $K_{\text{rel}} = \tfrac12\mu\left(v_1 - v_2\right)^2$, $\mu = m_1m_2/M$.
+      - kind: substitution
+        text: >-
+          $V = (8.0 - 3.0)/5.0 = 1.0\,\text{m/s}$. $K = \tfrac12\cdot4.0\cdot4.0 + \tfrac12\cdot1.0\cdot9.0 = 12.5\,\text{J}$, $\tfrac12MV^2 = 2.5\,\text{J}$,
+          ולכן $K_{\text{rel}} = 10.0\,\text{J}$. בדיקה: $\mu = 0.80\,\text{kg}$, $v_1 - v_2 = 5.0\,\text{m/s}$, $\tfrac12\cdot0.80\cdot25 = 10.0\,\text{J}$.
+      - kind: limit
+        text: >-
+          אם העגלות נעות באותה מהירות, $v_1 = v_2$, אז $K_{\text{rel}} = 0$ וכל האנרגיה של מרכז המסה.
+      - kind: units
+        text: >-
+          $\mu v^2$ ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: result
+        text: >-
+          $V = 1.0\,\text{m/s}$; $K = 12.5\,\text{J}$, מתוכם $2.5\,\text{J}$ של מרכז המסה ו-$10.0\,\text{J}$ יחסיים.
+
+  - id: W-3.8-03
+    level: basic
+    objectives: [OBJ-3.8-2]
+    prompt: >-
+      משקולת: $1.5\,\text{kg}$ ו-$0.50\,\text{kg}$ בקצוות של מוט קל באורך $1.2\,\text{m}$, מסתובבת סביב מרכז המסה שלה
+      ב-$3.0\,\text{rad/s}$, ומרכז המסה עומד. באיזה מרחק ממרכז המסה נמצאת כל מסה, ומה המהירות שלה? מה התנע הזוויתי ביחס
+      למרכז המסה, ומה האנרגיה הקינטית?
+    answer: >-
+      $0.30\,\text{m}$ ו-$0.90\,\text{m}$; $0.90$ ו-$2.7\,\text{m/s}$; $L_{\text{rel}} = 1.62\,\text{kg·m}^2/\text{s}$; $K = 2.43\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 1.5\,\text{kg}$, $m_2 = 0.50\,\text{kg}$, $d = 1.2\,\text{m}$, $\omega = 3.0\,\text{rad/s}$, $V = 0$.
+      - kind: law
+        text: >-
+          $r_1' = \frac{m_2}{M}d$, $r_2' = \frac{m_1}{M}d$; $L_{\text{rel}} = I\omega$ ו-$K_{\text{rel}} = \tfrac12I\omega^2$, עם $I = \mu d^2$.
+      - kind: manipulation
+        text: >-
+          כל מסה נעה במעגל סביב מרכז המסה, במהירות $\omega r_i'$. $V = 0$, ולכן $K = K_{\text{rel}}$.
+      - kind: limit
+        text: >-
+          המסה הכבדה קרובה למרכז המסה ונעה לאט; כש-$m_1 \to \infty$, $r_1' \to 0$ ו-$I \to m_2d^2$.
+      - kind: units
+        text: >-
+          $\mu d^2\omega$ ב-$\text{kg·m}^2/\text{s}$; $\mu d^2\omega^2$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $r_1' = 0.25\cdot1.2 = 0.30\,\text{m}$, $r_2' = 0.75\cdot1.2 = 0.90\,\text{m}$; מהירויות $0.90$ ו-$2.7\,\text{m/s}$. $\mu = 0.375\,\text{kg}$,
+          $I = 0.375\cdot1.44 = 0.54\,\text{kg·m}^2$, $L_{\text{rel}} = 1.62\,\text{kg·m}^2/\text{s}$, $K = \tfrac12\cdot0.54\cdot9.0 = 2.43\,\text{J}$.
+      - kind: result
+        text: >-
+          $0.30$ ו-$0.90\,\text{m}$; $0.90$ ו-$2.7\,\text{m/s}$; $1.62\,\text{kg·m}^2/\text{s}$; $2.43\,\text{J}$.
+
+  - id: W-3.8-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.8-1]
+    prompt: >-
+      אסטרונאוטית מרחפת במנוחה בתוך תחנת חלל, רחוק מהקירות. היא מחזיקה מפתח ברגים ביד מורמת, ומסובבת אותו במעגלים
+      מעל ראשה, נגד כיוון השעון במבט מלמעלה. קבעו ונמקו: מה קורה לגוף שלה? ומה קורה כשהיא מפסיקה לסובב?
+    answer: >-
+      הגוף שלה מסתובב עם כיוון השעון, כך שהתנע הזוויתי הכולל נשאר אפס. כשהיא מפסיקה, גם הגוף מפסיק להסתובב.
+    solution:
+      - kind: given
+        text: >-
+          המערכת: האסטרונאוטית ומפתח הברגים. אין כוחות חיצוניים (היא לא נוגעת בדבר). בהתחלה הכול במנוחה, ולכן $\vec L_{\text{rel}} = 0$.
+      - kind: law
+        text: >-
+          $d\vec L_{\text{rel}}/dt = \vec\tau_{\text{cm}} = 0$: התנע הזוויתי ביחס למרכז המסה נשאר אפס.
+      - kind: reasoning
+        text: >-
+          היד מפעילה על המפתח כוחות, והמפתח על היד כוחות שווים והפוכים, לאורך קווי המגע: כוחות פנימיים שלא משנים את $\vec L_{\text{rel}}$.
+          המפתח מקבל תנע זוויתי נגד כיוון השעון, ולכן הגוף חייב לקבל תנע זוויתי שווה, עם כיוון השעון. כשהמפתח נעצר ביחס אליה,
+          התנע הזוויתי שלו אפס, ולכן גם של הגוף: היא מפסיקה להסתובב, אבל בזווית אחרת מזו שהתחילה בה.
+      - kind: limit
+        text: >-
+          כשמסת המפתח שואפת לאפס, הגוף כמעט לא מסתובב. וכשהמפתח כבד מאוד, הוא כמעט לא זז והגוף מסתובב סביבו.
+      - kind: units
+        text: >-
+          $\sum m_ir_i'^2\omega$ ב-$\text{kg·m}^2/\text{s}$, לשני החלקים.
+      - kind: result
+        text: >-
+          הגוף מסתובב עם כיוון השעון כל עוד המפתח מסתובב, ונעצר כשהמפתח נעצר. התנע הזוויתי הכולל נשאר אפס כל הזמן.
+
+  - id: W-3.8-05
+    level: mid
+    objectives: [OBJ-3.8-1]
+    prompt: >-
+      משקולת על שולחן אופקי חלק: $0.40\,\text{kg}$ בכל קצה של מוט קל באורך $0.50\,\text{m}$, במנוחה. שני חוטים מושכים את שתי
+      המסות בכוחות של $2.0\,\text{N}$ כל אחד, בכיוונים הפוכים וניצבים למוט, במשך $0.30\,\text{s}$ (הכוחות נשארים ניצבים למוט).
+
+      א. מה קורה למרכז המסה?
+
+      ב. מה המהירות הזוויתית בסוף, ומה האנרגיה הקינטית?
+    answer: >-
+      א. נשאר במנוחה. ב. $6.0\,\text{rad/s}$ ו-$0.90\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.40\,\text{kg}$ לכל מסה, $d = 0.50\,\text{m}$, $F = 2.0\,\text{N}$, $t = 0.30\,\text{s}$. הכוחות חיצוניים (החוטים מחוץ למערכת).
+      - kind: law
+        text: >-
+          $M\,d\vec V/dt = \vec F_{\text{ext}}$ ו-$dL_{\text{rel}}/dt = \tau_{\text{cm}}$; במשקולת $L_{\text{rel}} = \mu d^2\omega$.
+      - kind: manipulation
+        text: >-
+          סכום הכוחות אפס, ולכן $\vec V$ נשאר אפס. המומנט ביחס למרכז המסה: כל כוח בזרוע $d/2$, ושניהם מסובבים באותו כיוון: $\tau = Fd$.
+          לכן $L_{\text{rel}} = Fdt$ ו-$\omega = Fdt/\left(\mu d^2\right)$, $K = \tfrac12\mu d^2\omega^2$.
+      - kind: limit
+        text: >-
+          אם שני הכוחות היו פועלים על אותו קו, $d \to 0$ בזרוע, המומנט אפס ואין סיבוב: סכום כוחות אפס לא מבטיח שימור של תנע זוויתי.
+      - kind: units
+        text: >-
+          $Fdt$ ב-$\text{N}\cdot\text{m}\cdot\text{s} = \text{kg·m}^2/\text{s}$.
+      - kind: substitution
+        text: >-
+          $\mu = 0.20\,\text{kg}$, $I = 0.20\cdot0.25 = 0.050\,\text{kg·m}^2$, $L = 2.0\cdot0.50\cdot0.30 = 0.30\,\text{kg·m}^2/\text{s}$,
+          $\omega = 6.0\,\text{rad/s}$, $K = \tfrac12\cdot0.050\cdot36 = 0.90\,\text{J}$ (העבודה של המומנט: $\tau\theta$, עם $\theta = 0.90\,\text{rad}$).
+      - kind: result
+        text: >-
+          א. מרכז המסה נשאר במנוחה. ב. $\omega = 6.0\,\text{rad/s}$, $K = 0.90\,\text{J}$.
+
+  - id: W-3.8-06
+    level: mid
+    objectives: [OBJ-3.8-2]
+    prompt: >-
+      שתי דסקיות של $0.20\,\text{kg}$ על שולחן חלק נעות על שני קווים מקבילים במרחק $0.40\,\text{m}$ זה מזה, בכיוונים הפוכים,
+      כל אחת ב-$3.0\,\text{m/s}$.
+
+      א. הראו שהתנע הזוויתי של המערכת זהה ביחס לכל נקודה, ומצאו אותו.
+
+      ב. מה האנרגיה הקינטית ביחס למרכז המסה?
+
+      ג. באיזו מהירות זוויתית מסתובב הקו בין הדסקיות ברגע שהן חולפות זו על פני זו?
+    answer: >-
+      א. $0.24\,\text{kg·m}^2/\text{s}$ בגודלו, בכל נקודה. ב. $1.8\,\text{J}$. ג. $15\,\text{rad/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.20\,\text{kg}$, $v = 3.0\,\text{m/s}$, $b = 0.40\,\text{m}$. התנע הכולל אפס.
+      - kind: law
+        text: >-
+          $\vec L_O = \vec R\times M\vec V + \vec L_{\text{rel}}$; $L_{\text{rel}} = \mu\left|\vec r\times\vec v\right|$, ובמישור $L_{\text{rel}} = \mu d^2\omega$.
+      - kind: manipulation
+        text: >-
+          $M\vec V = 0$, ולכן $\vec L_O = \vec L_{\text{rel}}$ לכל $O$. המהירות היחסית $2v$, והרכיב של $\vec r$ הניצב לה הוא $b$: $L_{\text{rel}} = \mu\cdot2v\cdot b$.
+          ברגע החליפה $d = b$ ו-$\vec r$ ניצב ל-$\vec v$: $\omega = 2v/b$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ (הדסקיות על אותו קו), $L = 0$: הן נעות זו לקראת זו בלי לסובב.
+      - kind: units
+        text: >-
+          $\mu vb$ ב-$\text{kg·m}^2/\text{s}$; $v/b$ ב-$1/\text{s}$.
+      - kind: substitution
+        text: >-
+          $\mu = 0.10\,\text{kg}$; $L = 0.10\cdot6.0\cdot0.40 = 0.24\,\text{kg·m}^2/\text{s}$; $K_{\text{rel}} = K = 2\cdot\tfrac12\cdot0.20\cdot9.0 = 1.8\,\text{J}$;
+          $\omega = 6.0/0.40 = 15\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          א. $0.24\,\text{kg·m}^2/\text{s}$ ביחס לכל נקודה. ב. $1.8\,\text{J}$. ג. $15\,\text{rad/s}$.
+
+  - id: W-3.8-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.8-1, OBJ-3.8-2]
+    prompt: >-
+      זיקוק נזרק באוויר כשהוא מסתובב, ובשיא הוא מתפוצץ לרסיסים. הזניחו את התנגדות האוויר. קבעו ונמקו: מה קורה בפיצוץ
+      למסלול של מרכז המסה, לתנע הזוויתי ביחס למרכז המסה, ולאנרגיה הקינטית?
+    answer: >-
+      מרכז המסה ממשיך באותה פרבולה; התנע הזוויתי ביחס למרכז המסה לא משתנה; האנרגיה הקינטית גדלה, ורק החלק היחסי שלה.
+    solution:
+      - kind: law
+        text: >-
+          $M\,d\vec V/dt = \vec F_{\text{ext}}$, $d\vec L_{\text{rel}}/dt = \vec\tau_{\text{cm}}$, $K = \tfrac12MV^2 + K_{\text{rel}}$.
+      - kind: reasoning
+        text: >-
+          כוחות הפיצוץ פנימיים: הם לא משנים את התנע הכולל, ולכן מרכז המסה ממשיך בפרבולה שלו, כאילו לא קרה דבר. הם פועלים בין
+          חלקים צמודים ומקיימים את הצורה החזקה, ולכן גם $\vec L_{\text{rel}}$ לא משתנה; הכובד בשדה אחיד לא מוסיף מומנט ביחס למרכז המסה.
+          אבל הכוחות האלה עושים עבודה, כי הרסיסים מתרחקים זה מזה: $K_{\text{rel}}$ גדל, על חשבון האנרגיה הכימית. $\tfrac12MV^2$ נקבע על ידי $M\vec V$ ולא משתנה בפיצוץ.
+      - kind: limit
+        text: >-
+          אם הזיקוק לא הסתובב לפני הפיצוץ, $\vec L_{\text{rel}} = 0$, והרסיסים לא יכולים להסתובב כולם באותו כיוון סביב מרכז המסה.
+      - kind: units
+        text: >-
+          האנרגיה הכימית שמשתחררת ב-$\text{J}$, כמו העלייה ב-$K_{\text{rel}}$.
+      - kind: result
+        text: >-
+          מסלול מרכז המסה ו-$\vec L_{\text{rel}}$ לא משתנים; $K$ גדלה ב-$K_{\text{rel}}$ בלבד.
+
+  - id: W-3.8-08
+    level: bagrut
+    objectives: [OBJ-3.8-1, OBJ-3.8-2]
+    prompt: >-
+      משקולת, $0.20\,\text{kg}$ בכל קצה של מוט קל באורך $0.30\,\text{m}$, נזרקת אופקית כך שמרכז המסה עוזב נקודה בגובה
+      $1.25\,\text{m}$ מעל הרצפה במהירות $4.0\,\text{m/s}$, והיא מסתובבת עם כיוון השעון ב-$8.0\,\text{rad/s}$. הנקודה $O$ על
+      הרצפה, בדיוק מתחת לנקודת הזריקה. ציר $x$ בכיוון הזריקה, $y$ למעלה, נגד כיוון השעון חיובי.
+
+      א. מצאו את $L_O(t)$ עד הנחיתה של מרכז המסה, ואת ערכו ברגע הזריקה ובנחיתה.
+
+      ב. מצאו את $\tfrac12MV^2$ ואת $K_{\text{rel}}$ ברגע הזריקה ובנחיתה, והסבירו את ההבדל.
+    answer: >-
+      א. $L_O(t) = -MV_x\left(h + \tfrac12gt^2\right) + I\omega_0$: $-2.07$ ו-$-4.07\,\text{kg·m}^2/\text{s}$.
+
+      ב. $\tfrac12MV^2$: $3.2 \to 8.1\,\text{J}$; $K_{\text{rel}} = 0.288\,\text{J}$ בשניהם.
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.40\,\text{kg}$, $d = 0.30\,\text{m}$, $h = 1.25\,\text{m}$, $V_x = 4.0\,\text{m/s}$, $\omega_0 = -8.0\,\text{rad/s}$. $O$ בראשית, על הרצפה.
+      - kind: law
+        text: >-
+          $L_O = \left(\vec R\times M\vec V\right)_z + L_{\text{rel}}$, $L_{\text{rel}} = \mu d^2\omega$ קבוע (אין מומנט ביחס למרכז המסה); $K = \tfrac12MV^2 + K_{\text{rel}}$.
+      - kind: manipulation
+        text: >-
+          $X = V_xt$, $Y = h - \tfrac12gt^2$, $\vec V = \left(V_x,\ -gt\right)$. $\left(\vec R\times M\vec V\right)_z = M\left(X(-gt) - YV_x\right) = -MV_x\left(h + \tfrac12gt^2\right)$.
+          הנחיתה ב-$T = \sqrt{2h/g}$, ושם $h + \tfrac12gT^2 = 2h$. בדיקה: $dL_O/dt = -MgV_xt = -MgX$, המומנט של הכובד ביחס ל-$O$.
+      - kind: limit
+        text: >-
+          כש-$h \to 0$ ו-$t \to 0$, $\vec R \to 0$ ונשאר רק $L_{\text{rel}}$. כש-$d \to 0$ נשאר התנע הזוויתי של חלקיק נזרק.
+      - kind: units
+        text: >-
+          $MV_xh$ ב-$\text{kg}\cdot\text{m/s}\cdot\text{m} = \text{kg·m}^2/\text{s}$.
+      - kind: substitution
+        text: >-
+          $\mu = 0.10\,\text{kg}$, $I = 0.10\cdot0.09 = 0.0090\,\text{kg·m}^2$, $L_{\text{rel}} = -0.072\,\text{kg·m}^2/\text{s}$. ברגע הזריקה:
+          $-0.40\cdot4.0\cdot1.25 = -2.0$, ו-$L_O = -2.07\,\text{kg·m}^2/\text{s}$. בנחיתה ($T = 0.505\,\text{s}$): $-2MV_xh = -4.0$, ו-$L_O = -4.07\,\text{kg·m}^2/\text{s}$.
+          $\tfrac12MV^2$: $\tfrac12\cdot0.40\cdot16 = 3.2\,\text{J}$, ובנחיתה $3.2 + Mgh = 3.2 + 4.9 = 8.1\,\text{J}$. $K_{\text{rel}} = \tfrac12\cdot0.0090\cdot64 = 0.288\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $-2.07$ ו-$-4.07\,\text{kg·m}^2/\text{s}$. ב. הכובד, כוח חיצוני, עושה עבודה $Mgh$ על מרכז המסה; הסיבוב לא מושפע, ו-$K_{\text{rel}}$ נשאר $0.288\,\text{J}$.
+
+  - id: W-3.8-09
+    level: bagrut
+    objectives: [OBJ-3.8-2]
+    prompt: >-
+      שתי דסקיות, $0.30\,\text{kg}$ מלפנים ו-$0.60\,\text{kg}$ מאחור, נעות יחד על קרח ב-$2.0\,\text{m/s}$, וביניהן קפיץ דחוס
+      שחוט מחזיק. החוט נקרע, והקפיץ משחרר $2.7\,\text{J}$ לאורך כיוון התנועה. מה המהירויות של הדסקיות אחר כך? הראו שהאנרגיה
+      שהקפיץ שחרר כולה ב-$K_{\text{rel}}$.
+    answer: >-
+      $5.46\,\text{m/s}$ (הקדמית) ו-$0.268\,\text{m/s}$ (האחורית), שתיהן קדימה.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה. $m_1 = 0.30\,\text{kg}$ (מלפנים), $m_2 = 0.60\,\text{kg}$, $V = 2.0\,\text{m/s}$, $E = 2.7\,\text{J}$.
+      - kind: law
+        text: >-
+          שימור התנע: $V$ לא משתנה. משפט קניג: $K = \tfrac12MV^2 + \tfrac12\mu u^2$, עם $u = v_1 - v_2$.
+      - kind: manipulation
+        text: >-
+          לפני הקריעה $u = 0$. $\tfrac12MV^2$ לא משתנה, ולכן $\tfrac12\mu u^2 = E$, $u = \sqrt{2E/\mu}$. במערכת מרכז המסה $v_1' = \frac{m_2}{M}u$
+          ו-$v_2' = -\frac{m_1}{M}u$, ולכן $v_1 = V + \frac{m_2}{M}u$ ו-$v_2 = V - \frac{m_1}{M}u$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$, $v_2 \to V$ והדסקית הקלה מקבלת את כל האנרגיה. כש-$E \to 0$ שתיהן ממשיכות ב-$V$.
+      - kind: units
+        text: >-
+          $\sqrt{E/\mu}$ ב-$\sqrt{\text{J}/\text{kg}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\mu = 0.20\,\text{kg}$, $u = \sqrt{27} = 5.20\,\text{m/s}$; $v_1 = 2.0 + 3.46 = 5.46\,\text{m/s}$, $v_2 = 2.0 - 1.73 = 0.268\,\text{m/s}$.
+          $K$: לפני $1.8\,\text{J}$, אחרי $4.5\,\text{J}$; ההפרש $2.7\,\text{J}$, כולו ב-$K_{\text{rel}}$.
+      - kind: result
+        text: >-
+          $5.46\,\text{m/s}$ ו-$0.268\,\text{m/s}$, שתיהן בכיוון התנועה; $\tfrac12MV^2 = 1.8\,\text{J}$ לא השתנה.
+
+  - id: W-3.8-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.8-1]
+    prompt: >-
+      שני חלקיקים מפעילים זה על זה כוחות שנגזרים מאנרגיה פוטנציאלית שתלויה רק במרחק ביניהם, $U\left(\left|\vec r_1 - \vec r_2\right|\right)$.
+      הראו שהכוחות מקיימים את הצורה החזקה של החוק השלישי, והסיקו שהם לא משנים את התנע הזוויתי של המערכת.
+    answer: >-
+      $\vec F_{12} = -U'(d)\hat r$ ו-$\vec F_{21} = +U'(d)\hat r$, כאשר $\hat r$ וקטור יחידה מ-2 ל-1: שווים, הפוכים ולאורך הקו.
+    solution:
+      - kind: given
+        text: >-
+          $\vec r = \vec r_1 - \vec r_2$, $d = \left|\vec r\right|$, $\hat r = \vec r/d$. הכוח על חלקיק הוא מינוס הגרדיאנט של $U$ לפי המקום שלו.
+      - kind: law
+        text: >-
+          $\vec F_{12} = -\nabla_1U$, $\vec F_{21} = -\nabla_2U$; תרומת הזוג למומנט $\left(\vec r_1 - \vec r_2\right)\times\vec F_{12}$.
+      - kind: manipulation
+        text: >-
+          לפי כלל השרשרת, $\nabla_1d = \hat r$ (הזזה של חלקיק 1 בכיוון $\hat r$ מגדילה את $d$ הכי מהר) ו-$\nabla_2d = -\hat r$. לכן
+          $\vec F_{12} = -U'(d)\hat r$ ו-$\vec F_{21} = U'(d)\hat r = -\vec F_{12}$. הכוח מקביל ל-$\vec r$, ולכן $\vec r\times\vec F_{12} = 0$.
+      - kind: limit
+        text: >-
+          קפיץ, $U = \tfrac12k\left(d - d_0\right)^2$, נותן $\vec F_{12} = -k\left(d - d_0\right)\hat r$: מושך כשהוא מתוח ודוחף כשהוא דחוס.
+          כובד, $U = -Gm_1m_2/d$, נותן משיכה לאורך הקו.
+      - kind: units
+        text: >-
+          $U'(d)$ ב-$\text{J/m} = \text{N}$.
+      - kind: result
+        text: >-
+          כוח שנגזר מ-$U(d)$ הוא מרכזי ושווה והפוך, ולכן תרומתו ל-$d\vec L/dt$ אפס בכל נקודה. רק כוח שתלוי גם בכיוון או במהירות יכול להפר זאת.
+
+challenge:
+  - id: W-3.8-c1
+    stars: 1
+    objectives: [OBJ-3.8-2, OBJ-3.8-1]
+    prompt: >-
+      גוש של $3M$ מחובר לקצה של מוט קל באורך $L$, ושניהם נחים על שולחן חלק. גוש של $M$ נע במהירות $v_0$, ניצב למוט,
+      פוגע בקצה החופשי של המוט ונדבק אליו. הגושים קטנים לעומת $L$.
+
+      א. מה מהירות מרכז המסה אחרי ההתנגשות?
+
+      ב. מה המהירות הזוויתית של המערכת סביב מרכז המסה?
+
+      ג. מה המהירות של הגוש הכבד מיד אחרי ההתנגשות?
+
+      ד. כמה אנרגיה קינטית אבדה? הסבירו את התוצאה.
+    answer: >-
+      א. $v_0/4$. ב. $v_0/L$. ג. אפס. ד. לא אבדה אנרגיה.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך המוט, מהגוש הכבד לקצה החופשי; ציר $y$ בכיוון $v_0$. אחרי ההדבקה: שתי מסות $M$ ו-$3M$ במרחק $L$.
+      - kind: law
+        text: >-
+          אין כוחות חיצוניים אופקיים: התנע והתנע הזוויתי (ביחס לנקודה קבועה) נשמרים. משפט קניג לשני חלקיקים.
+      - kind: manipulation
+        text: >-
+          $4MV = Mv_0$. מרכז המסה במרחק $L/4$ מהגוש הכבד ו-$3L/4$ מהקצה. ביחס לנקודה הקבועה שבה נמצא מרכז המסה ברגע הפגיעה,
+          לפני: $L = \tfrac34L\cdot Mv_0$ (לגוש הכבד אין תנע). אחרי: $\vec R$ אפס באותו רגע, ולכן $L = I\omega$, עם $I = \mu L^2 = \tfrac34ML^2$.
+          מהירות הגוש הכבד: $V - \omega\cdot\tfrac L4$.
+      - kind: limit
+        text: >-
+          כשהגוש הכבד כבד מאוד ($3M \to \infty$), $V \to 0$ ו-$\omega \to v_0/L$: הגוש הקל מסתובב סביב נקודה קבועה. כשהפגיעה במרכז המסה, אין סיבוב.
+      - kind: units
+        text: >-
+          $v_0/L$ ב-$1/\text{s}$; $ML^2\omega^2$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $V = v_0/4$; $\omega = \tfrac34MLv_0/\left(\tfrac34ML^2\right) = v_0/L$; הגוש הכבד: $v_0/4 - v_0/4 = 0$. $K$ אחרי:
+          $\tfrac12(4M)\left(v_0/4\right)^2 + \tfrac12\cdot\tfrac34ML^2\left(v_0/L\right)^2 = \tfrac18Mv_0^2 + \tfrac38Mv_0^2 = \tfrac12Mv_0^2$.
+      - kind: result
+        text: >-
+          א. $v_0/4$. ב. $v_0/L$. ג. הגוש הכבד עומד. ד. שום אנרגיה לא אבדה: מיד אחרי ההדבקה הגוש הקל נע ב-$v_0/4 + \tfrac34L\cdot v_0/L = v_0$,
+          כמו לפני, כך שלא הייתה מהירות יחסית בנקודת המגע, ולא היה ממה להפסיד.
+    source:
+      name: MIT OpenCourseWare, 8.012 Physics I (Fall 2008), 2006 Exam 2 with solutions
+      year: 2006
+      problem: Problem 1, Masses and Rod
+      url: https://www.ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/3f1f6661a3d91a2d3cd3b34f182347f9_2006_quiz2_sol.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.8-c2
+    stars: 2
+    objectives: [OBJ-3.8-1, OBJ-3.8-2]
+    prompt: >-
+      על שולחן חלק, דסקה אחידה במסה $M$ וברדיוס $R$ נעה ימינה במהירות $v_0$ ומסתובבת סביב המרכז שלה נגד כיוון השעון
+      ב-$\omega_0$. התנע הזוויתי של דסקה כזו ביחס למרכז שלה הוא $\tfrac12MR^2\omega_0$. היא פוגעת בדסקה במסה $2M$ וברדיוס $R$ שעומדת,
+      כך שאחרי המגע המרכזים זה מעל זה (הדסקה הנעה למעלה, המרחק בין המרכזים $2R$), והדסקות נדבקות.
+
+      א. מה המהירות של מרכז המסה, ומה המהירות הזוויתית של הגוף המשותף? (רמז: מצאו את התנע הזוויתי של הגוף המשותף ביחס למרכז המסה שלו,
+      כשכל דסקה מסתובבת איתו, בעזרת משפט קניג לכל דסקה.)
+
+      ב. באיזה $\omega_0$ הגוף המשותף לא מסתובב?
+
+      ג. כמה אנרגיה קינטית אבדה?
+    answer: >-
+      א. $v_0/3$ ימינה; $\omega = \left(3\omega_0 - 8v_0/R\right)/25$ (חיובי נגד כיוון השעון). ב. $\omega_0 = 8v_0/(3R)$.
+      ג. $\tfrac{M}{50}\left(11R^2\omega_0^2 + 8Rv_0\omega_0 + 6v_0^2\right)$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה, $y$ למעלה, נגד כיוון השעון חיובי. מרכז המסה המשותף במרחק $\tfrac43R$ מתחת למרכז הדסקה $M$ ו-$\tfrac23R$ מעל מרכז הדסקה $2M$.
+      - kind: law
+        text: >-
+          אין כוחות חיצוניים אופקיים: התנע נשמר, והתנע הזוויתי ביחס לנקודה הקבועה שבה נמצא מרכז המסה ברגע ההדבקה נשמר.
+          משפט קניג לכל דסקה: התנע הזוויתי שלה ביחס לנקודה הוא $\vec r\times m\vec v$ של המרכז שלה ועוד $\tfrac12mR^2\omega$.
+      - kind: manipulation
+        text: >-
+          תנע: $3MV = Mv_0$. לפני: הדסקה $M$ נעה ימינה $\tfrac43R$ מעל הנקודה, ולכן $L = -\tfrac43MRv_0 + \tfrac12MR^2\omega_0$. אחרי, הגוף
+          המשותף מסתובב ב-$\omega$ סביב מרכז המסה, וכל דסקה תורמת $\tfrac12mR^2\omega$ ועוד $mr^2\omega$ של המרכז שלה:
+          $I = \tfrac12MR^2 + \tfrac12(2M)R^2 + M\left(\tfrac43R\right)^2 + 2M\left(\tfrac23R\right)^2 = \tfrac{25}6MR^2$. לכן $\omega = L/I$.
+          אנרגיה: לפני $\tfrac12Mv_0^2 + \tfrac14MR^2\omega_0^2$, אחרי $\tfrac12(3M)V^2 + \tfrac12I\omega^2$.
+      - kind: limit
+        text: >-
+          כש-$\omega_0 = 0$: $\omega = -\tfrac{8v_0}{25R}$, עם כיוון השעון, כמו שהתנועה של הדסקה מעל המרכז מכתיבה, ו-$\tfrac{6}{50}Mv_0^2$ אובדת.
+          ב-$\omega_0 = 8v_0/(3R)$ הסיבוב העצמי מבטל בדיוק את התרומה של התנועה, והגוף זז בלי להסתובב.
+      - kind: units
+        text: >-
+          $v_0/R$ ו-$\omega_0$ ב-$1/\text{s}$; כל איבר בהפסד ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $V = v_0/3$; $\omega = \left(\tfrac12MR^2\omega_0 - \tfrac43MRv_0\right)\Big/\tfrac{25}6MR^2 = \left(3\omega_0 - 8v_0/R\right)/25$.
+          ההפסד: $\tfrac12Mv_0^2 + \tfrac14MR^2\omega_0^2 - \tfrac16Mv_0^2 - \tfrac{25}{12}MR^2\omega^2 = \tfrac{M}{50}\left(11R^2\omega_0^2 + 8Rv_0\omega_0 + 6v_0^2\right)$.
+      - kind: result
+        text: >-
+          א. $V = v_0/3$, $\omega = \left(3\omega_0 - 8v_0/R\right)/25$. ב. $\omega_0 = 8v_0/(3R)$. ג. $\tfrac{M}{50}\left(11R^2\omega_0^2 + 8Rv_0\omega_0 + 6v_0^2\right)$.
+    source:
+      name: MIT OpenCourseWare, 8.012 Physics I (Fall 2008), Final Exam
+      year: 2008
+      problem: Problem 4, Sticky Disks
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/15cdb14e63ed07c47115ce18c73917bf_final.pdf
+      verified: '2026-11-10'
+      adapted: true

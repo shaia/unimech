@@ -1,0 +1,7 @@
+---
+/** Two-particle system figure for lesson MDX: <Spread figure={SystemSpin} figureProps={{ connector: 'rod', … }}>. */
+import SystemSpin, { type SystemSpinProps } from './SystemSpin';
+type Props = SystemSpinProps;
+---
+
+<SystemSpin client:visible {...Astro.props} />

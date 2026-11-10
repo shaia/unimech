@@ -1,0 +1,515 @@
+# Workbook, lesson 3.7 (angular momentum and torque of a particle). Format: CLAUDE.md, "The solution format".
+# Axes: x right, y up, z out of the page unless a problem says otherwise. Every number was recomputed by
+# .scratch/ch3/3-7/workbook.ts against src/physics/angularmomentum.ts with src/physics/constants.ts (G = 9.8):
+#   W02 L_z(O) = 18 kg·m²/s, τ_z(O) = −10 N·m; about P(2, 3): L_z = 48, τ_z = 0;
+#   W04 L_z(t) = −30000 t, L_z(5 s) = −1.5·10⁵ kg·m²/s, τ_z = −3.0·10⁴ N·m (numerical dL/dt agrees);
+#   W05 ω = 4.0 rad/s, b = 0.15 m, v_b = 1.2 m/s, E = 0.45 J at both points (RK4 quarter period: (0, 0.15) m, 1.2 m/s);
+#   W07 dA/dt = π AU²/YEAR = 2.24·10¹⁵ m²/s, L = 2.67·10⁴⁰ kg·m²/s (= m v r with v = 2πAU/YEAR = 2.99·10⁴ m/s);
+#   W08 τ = −0.670 N·m, α = −4.19 rad/s², tangential acceleration −3.35 m/s²;
+#   W09 L 1.2 → 0.30 kg·m²/s, T 2.08 → 8.33 N, τ₀ = −0.104 N·m = dL/dt; through a hole instead: 10 m/s; 2.86 turns of wrap;
+#   W10 L = 0.173 kg·m²/s, E = 1.45 J, r_max = 0.511 m, r_min = 0.169 m (RK4 agrees), v 0.847 and 2.56 m/s,
+#       r_max r_min = 0.0866 m² = √(L²/(mk));
+#   c1 2GM/R = 1.25·10⁸ m²/s², v_i = 5.0 km/s: h = 2.45 R_E = 1.56·10⁷ m, grazing speed 12.2 km/s (RK4 from 60 R_E
+#       away grazes at 1.01 R_E, as the finite-start energy predicts);
+#   c2 r_f/r₀ = 1/0.99 = 1.0101, v_f/v₀ = 0.99 (RK4 with GM falling 1 % over 200 periods: r = 1.0101 r₀, L unchanged).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.7'
+practice:
+  - id: W-3.7-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.7-1]
+    prompt: >-
+      לכל משפט, קבעו אם הוא נכון ונמקו.
+
+      א. לחלקיק שנע בקו ישר במהירות קבועה אין תנע זוויתי ביחס לשום נקודה.
+
+      ב. ביחס לנקודה שנמצאת על קו התנועה של חלקיק, התנע הזוויתי שלו אפס.
+
+      ג. כוח שהקו שלו עובר דרך הנקודה $O$ לא נותן מומנט ביחס ל-$O$, גם אם הוא גדול מאוד.
+
+      ד. המומנט של כוח ביחס לנקודה פונה בכיוון הכוח.
+    answer: >-
+      א. לא נכון. ב. נכון. ג. נכון. ד. לא נכון: המומנט ניצב לכוח.
+    solution:
+      - kind: law
+        text: >-
+          $\vec L_O = \vec r\times\vec p$ ו-$\vec\tau_O = \vec r\times\vec F$, כאשר $\vec r$ המקום ביחס ל-$O$. גודל המכפלה הווקטורית הוא
+          הגודל של הגורם השני כפול הזרוע שלו.
+      - kind: reasoning
+        text: >-
+          א: ביחס לנקודה שלא על הקו, $\vec r$ ו-$\vec p$ לא מקבילים, ו-$|\vec L_O| = m|\vec v|d \neq 0$. ב: על הקו $d = 0$, $\vec r \parallel \vec p$.
+          ג: הזרוע של הכוח אפס, ולכן $|\vec\tau_O| = |\vec F|\cdot0 = 0$. ד: מכפלה וקטורית ניצבת לשני הגורמים, ולכן $\vec\tau_O \perp \vec F$.
+      - kind: limit
+        text: >-
+          ככל ש-$O$ מתקרבת לקו התנועה, $d \to 0$ ו-$L_O \to 0$ ברציפות: ב הוא הגבול של א.
+      - kind: units
+        text: >-
+          $m|\vec v|d$ ב-$\text{kg·m}^2/\text{s}$; $|\vec F|d_F$ ב-$\text{N·m}$.
+      - kind: result
+        text: >-
+          ב ו-ג נכונים; א ו-ד לא נכונים.
+
+  - id: W-3.7-02
+    level: basic
+    objectives: [OBJ-3.7-1]
+    prompt: >-
+      חלקיק בעל מסה $3.0\,\text{kg}$ נמצא ברגע מסוים ב-$\vec r = (2.0,\,-1.0,\,0)\,\text{m}$, מהירותו $\vec v = (4.0,\,1.0,\,0)\,\text{m/s}$,
+      ופועל עליו כוח $\vec F = (0,\,-5.0,\,0)\,\text{N}$.
+
+      א. חשבו את $L_z$ ואת $\tau_z$ ביחס לראשית.
+
+      ב. חשבו אותם ביחס לנקודה $P = (2.0,\,3.0,\,0)\,\text{m}$. למה המומנט ביחס ל-$P$ יוצא אפס?
+    answer: >-
+      א. $L_z = 18\,\text{kg·m}^2/\text{s}$, $\tau_z = -10\,\text{N·m}$.
+
+      ב. $L_z = 48\,\text{kg·m}^2/\text{s}$, $\tau_z = 0$: הקו של הכוח, האנכי $x = 2.0\,\text{m}$, עובר דרך $P$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 3.0\,\text{kg}$, $\vec r = (2.0,\,-1.0)\,\text{m}$, $\vec v = (4.0,\,1.0)\,\text{m/s}$, $\vec F = (0,\,-5.0)\,\text{N}$.
+      - kind: law
+        text: >-
+          $L_z = m\left(xv_y - yv_x\right)$ ו-$\tau_z = xF_y - yF_x$, כאשר $(x,\,y)$ המקום **ביחס לנקודה שנבחרה**.
+      - kind: manipulation
+        text: >-
+          ביחס ל-$P$ המקום הוא $\vec r - \vec r_P = (0,\,-4.0)\,\text{m}$.
+      - kind: limit
+        text: >-
+          ל-$P$ אין זרוע ביחס לכוח האנכי שעובר דרכה, ולכן $\tau_z(P) = 0$; ובכל זאת $L_z(P) \neq 0$, כי למהירות יש זרוע ביחס ל-$P$.
+          מומנט אפס לא אומר תנע זוויתי אפס, רק שהוא לא משתנה ברגע הזה.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}\cdot\text{m/s} = \text{kg·m}^2/\text{s}$, ו-$\text{m}\cdot\text{N} = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          ראשית: $L_z = 3.0\left(2.0\cdot1.0 - (-1.0)\cdot4.0\right) = 18$; $\tau_z = 2.0\cdot(-5.0) - (-1.0)\cdot0 = -10$.
+          $P$: $L_z = 3.0\left(0\cdot1.0 - (-4.0)\cdot4.0\right) = 48$; $\tau_z = 0\cdot(-5.0) - (-4.0)\cdot0 = 0$.
+      - kind: result
+        text: >-
+          ראשית: $18\,\text{kg·m}^2/\text{s}$ ו-$-10\,\text{N·m}$. $P$: $48\,\text{kg·m}^2/\text{s}$ ו-$0$.
+
+  - id: W-3.7-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.7-2]
+    prompt: >-
+      בכל מקרה, קבעו אם התנע הזוויתי של הגוף ביחס לנקודה שצוינה נשמר, ונמקו לפי הכוחות שפועלים עליו.
+
+      א. לוויין שמקיף את כדור הארץ (בלי אוויר), ביחס למרכז כדור הארץ.
+
+      ב. המשקולת של מטוטלת פשוטה שמתנדנדת, ביחס לנקודת התלייה.
+
+      ג. כדור קשור לחוט שקצהו קבוע בנקודה $P$, ומסתובב במעגל **אנכי**, ביחס ל-$P$.
+
+      ד. דסקית שמחליקה על שולחן חלק, קשורה לגומייה שקצה אחד שלה קשור לנקודה $C$ על השולחן, ביחס ל-$C$.
+    answer: >-
+      א. נשמר. ב. לא. ג. לא. ד. נשמר (כל עוד הגומייה מתוחה, וגם כשהיא רפויה).
+    solution:
+      - kind: law
+        text: >-
+          $d\vec L/dt = \vec\tau$ ביחס לאותה נקודה. $\vec L$ נשמר אם המומנט השקול ביחס לנקודה אפס, למשל כשכל כוח הוא מרכזי ביחס אליה.
+      - kind: reasoning
+        text: >-
+          א: הכוח היחיד הוא הכבידה, שפונה אל מרכז כדור הארץ: מרכזי. ב: המתיחות עוברת דרך נקודת התלייה, אבל הכובד אנכי, ויש לו
+          זרוע בכל מקום חוץ מהנקודה הנמוכה ביותר. ג: כמו ב, הכובד נותן מומנט ביחס ל-$P$, ולכן הכדור מאט בעלייה ומאיץ בירידה.
+          ד: הגומייה מושכת לאורך הקו אל $C$ (מרכזי), והכובד והכוח הנורמלי אנכיים ומבטלים זה את זה; כשהגומייה רפויה אין כוח
+          אופקי בכלל.
+      - kind: limit
+        text: >-
+          בב ובג, אם מבטלים את הכובד ($g \to 0$) נשארת רק המתיחות, ואז התנע הזוויתי ביחס לנקודת התלייה כן נשמר.
+      - kind: units
+        text: >-
+          המומנט של הכובד בב: $mg\ell\sin\theta$ ב-$\text{N·m}$, וזה קצב השינוי של $L$ ב-$\text{kg·m}^2/\text{s}^2$.
+      - kind: result
+        text: >-
+          נשמר בא ובד; לא נשמר בב ובג, בגלל המומנט של הכובד.
+
+  - id: W-3.7-04
+    level: mid
+    objectives: [OBJ-3.7-1]
+    prompt: >-
+      מכונית בעלת מסה $1000\,\text{kg}$ יוצאת ממנוחה ומאיצה בתאוצה קבועה $2.0\,\text{m/s}^2$ לאורך כביש ישר. בית $H$ נמצא
+      $15\,\text{m}$ מהכביש, מול נקודת היציאה.
+
+      א. מצאו את $L_z(t)$ של המכונית ביחס ל-$H$.
+
+      ב. מצאו את המומנט של הכוח השקול על המכונית ביחס ל-$H$, והראו שהוא $dL_z/dt$.
+
+      ג. כמה $L_z$ אחרי $5.0\,\text{s}$?
+    answer: >-
+      א. $L_z = -mayt = -3.0\cdot10^4\,t$ ביחידות $\text{kg·m}^2/\text{s}$ (עם $t$ בשניות).
+
+      ב. $\tau_z = -may = -3.0\cdot10^4\,\text{N·m}$, קבוע.
+
+      ג. $-1.5\cdot10^5\,\text{kg·m}^2/\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית ב-$H$, ציר $x$ לאורך הכביש בכיוון הנסיעה, והכביש הוא הקו $y = 15\,\text{m}$. $m = 1000\,\text{kg}$, $a = 2.0\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $L_z = xp_y - yp_x$, $\tau_z = xF_y - yF_x$. הכוח השקול $ma$ לאורך $x$ (הכובד והכוח הנורמלי מבטלים זה את זה).
+      - kind: manipulation
+        text: >-
+          $x = \tfrac12at^2$, $y = 15\,\text{m}$, $p_x = mat$, $p_y = 0$: $L_z = -y\,mat$. $\tau_z = x\cdot0 - y\cdot ma = -may$.
+          $dL_z/dt = -may = \tau_z$. הזרוע של התנע וגם של הכוח היא המרחק הקבוע $y$, ולכן $L_z$ תלוי רק ב-$p_x$, ולא במקום של המכונית.
+      - kind: limit
+        text: >-
+          כש-$y \to 0$, הבית על הכביש: $L_z = 0$ ו-$\tau_z = 0$ כל הזמן. כש-$a = 0$, המכונית בנסיעה קבועה: $\tau_z = 0$ ו-$L_z$ קבוע.
+      - kind: units
+        text: >-
+          $may$ ב-$\text{N}\cdot\text{m}$, ו-$mayt$ ב-$\text{kg·m}^2/\text{s}$.
+      - kind: substitution
+        text: >-
+          $may = 1000\cdot2.0\cdot15 = 3.0\cdot10^4$, ולכן $L_z(5.0\,\text{s}) = -3.0\cdot10^4\cdot5.0 = -1.5\cdot10^5\,\text{kg·m}^2/\text{s}$.
+      - kind: result
+        text: >-
+          $L_z = -3.0\cdot10^4\,t$, $\tau_z = -3.0\cdot10^4\,\text{N·m}$; אחרי $5.0\,\text{s}$, $-1.5\cdot10^5\,\text{kg·m}^2/\text{s}$, לתוך הדף.
+
+  - id: W-3.7-05
+    level: mid
+    objectives: [OBJ-3.7-2]
+    prompt: >-
+      דסקית בעלת מסה $0.50\,\text{kg}$ על שולחן חלק קשורה לקפיץ שאורכו הרפוי זניח, $k = 8.0\,\text{N/m}$, שקצהו השני קשור
+      לנקודה $C$. ברגע $t = 0$ הדסקית במרחק $0.30\,\text{m}$ מ-$C$, ומהירותה $0.60\,\text{m/s}$ בניצב לקו אל $C$. המרחק הקטן
+      ביותר שלה מ-$C$, שבו מהירותה שוב ניצבת לקו אל $C$, הוא $0.15\,\text{m}$.
+
+      א. מצאו את המהירות שם משימור התנע הזוויתי.
+
+      ב. בדקו את התשובה בשימור אנרגיה.
+    answer: >-
+      א. $1.2\,\text{m/s}$. ב. $E = 0.45\,\text{J}$ בשתי הנקודות.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.50\,\text{kg}$, $k = 8.0\,\text{N/m}$, $r_0 = 0.30\,\text{m}$, $v_0 = 0.60\,\text{m/s}$, $r_1 = 0.15\,\text{m}$, ובשתי הנקודות $\vec v \perp \vec r_C$.
+      - kind: law
+        text: >-
+          כוח הקפיץ מרכזי ביחס ל-$C$, ולכן $L_C = mr_C|\vec v|\sin\alpha$ נשמר. כוח הקפיץ משמר: $\tfrac12mv^2 + \tfrac12kr_C^2$ נשמרת.
+      - kind: manipulation
+        text: >-
+          בשתי הנקודות $\sin\alpha = 1$, ולכן $mr_0v_0 = mr_1v_1$, ו-$v_1 = v_0r_0/r_1$.
+      - kind: limit
+        text: >-
+          אם $r_1 = r_0$, אז $v_1 = v_0$: מעגל. וכדי לבדוק: מעגל דורש $v_0 = r_0\sqrt{k/m} = 1.2\,\text{m/s}$, ו-$v_0$ כאן קטנה מזה,
+          ולכן הדסקית אכן נופלת פנימה, אל מרחק קטן מ-$r_0$.
+      - kind: units
+        text: >-
+          $v_0r_0/r_1$ ב-$\text{m/s}$; $\tfrac12kr^2$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $v_1 = 0.60\cdot0.30/0.15 = 1.2\,\text{m/s}$. בהתחלה: $\tfrac12\cdot0.50\cdot0.36 + \tfrac12\cdot8.0\cdot0.090 = 0.090 + 0.36 = 0.45\,\text{J}$.
+          במרחק הקטן: $\tfrac12\cdot0.50\cdot1.44 + \tfrac12\cdot8.0\cdot0.0225 = 0.36 + 0.090 = 0.45\,\text{J}$.
+      - kind: result
+        text: >-
+          $1.2\,\text{m/s}$, ושתי הנקודות עם אותה אנרגיה, $0.45\,\text{J}$.
+
+  - id: W-3.7-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.7-1, OBJ-3.7-2]
+    prompt: >-
+      חרוז מושחל על מוט אופקי חלק. מנוע מסובב את המוט סביב ציר אנכי שעובר בקצה שלו, $O$, במהירות זוויתית **קבועה**. החרוז
+      מתחיל קרוב ל-$O$ ומחליק החוצה לאורך המוט. קבעו ונמקו:
+
+      א. האם הכוח שהמוט מפעיל על החרוז הוא כוח מרכזי ביחס ל-$O$?
+
+      ב. האם התנע הזוויתי של החרוז ביחס ל-$O$ נשמר? אם לא, האם הוא גדל או קטן?
+
+      ג. מי מספק את המומנט?
+    answer: >-
+      א. לא: המוט החלק דוחף את החרוז בניצב לעצמו. ב. לא נשמר, הוא גדל. ג. המוט, כלומר המנוע שמסובב אותו.
+    solution:
+      - kind: given
+        text: >-
+          ציר $z$ אנכי. על החרוז: הכובד, ומהמוט כוח שניצב למוט (חלק, ולכן בלי רכיב לאורכו): רכיב אנכי שמאזן את הכובד, ורכיב
+          אופקי בניצב למוט.
+      - kind: law
+        text: >-
+          $dL_z/dt = \tau_z$ ביחס ל-$O$. כוח מרכזי ביחס ל-$O$ פונה לאורך הקו מ-$O$ אל החרוז, כלומר לאורך המוט.
+      - kind: reasoning
+        text: >-
+          א: הרכיב האופקי של הכוח ניצב למוט, ולא לאורכו: לא מרכזי. ב: לכוח הזה זרוע $r$ ביחס ל-$O$ (המרחק של החרוז), ולכן יש מומנט
+          אנכי. החרוז נע במעגל של המוט במהירות $r\omega$ בניצב למוט, ו-$L_z = mr\cdot r\omega = mr^2\omega$. $\omega$ קבועה ו-$r$ גדל,
+          ולכן $L_z$ גדל. ג: המוט דוחף את החרוז קדימה, בכיוון הסיבוב, וכדי להמשיך באותה $\omega$ המנוע צריך לעבוד.
+      - kind: limit
+        text: >-
+          אילו המנוע היה כבוי והמוט מסתובב חופשי (ובלי מסה), המוט לא היה יכול להפעיל כוח בניצב לעצמו, החרוז היה נע בקו ישר,
+          ו-$L_z$ שלו היה נשמר. השימור נשבר בגלל המנוע, לא בגלל המוט.
+      - kind: units
+        text: >-
+          $mr^2\omega$ ב-$\text{kg}\cdot\text{m}^2\cdot\text{s}^{-1}$, כמו כל תנע זוויתי.
+      - kind: result
+        text: >-
+          הכוח לא מרכזי; $L_z = mr^2\omega$ גדל, והמומנט מגיע מהמוט שהמנוע מסובב.
+
+  - id: W-3.7-07
+    level: mid
+    objectives: [OBJ-3.7-2]
+    prompt: >-
+      בקירוב של מסלול מעגלי ברדיוס $1\,\text{AU}$, שזמן המחזור שלו שנה, מצאו את המהירות השטחית של כדור הארץ סביב השמש ואת
+      התנע הזוויתי שלו ביחס לשמש. השתמשו בערכי $\text{AU}$, השנה ומסת כדור הארץ של הקורס: $1.5\cdot10^{11}\,\text{m}$, $3.156\cdot10^7\,\text{s}$ ו-$5.97\cdot10^{24}\,\text{kg}$.
+    answer: >-
+      $dA/dt = 2.24\cdot10^{15}\,\text{m}^2/\text{s}$, $L = 2.67\cdot10^{40}\,\text{kg·m}^2/\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r = 1.5\cdot10^{11}\,\text{m}$, $T = 3.156\cdot10^7\,\text{s}$, $m = 5.97\cdot10^{24}\,\text{kg}$. הכבידה של השמש מרכזית ביחס לשמש.
+      - kind: law
+        text: >-
+          המהירות השטחית קבועה בכוח מרכזי, ולכן בשנה אחת הקו מהשמש מכסה את כל העיגול: $dA/dt = \pi r^2/T$. ו-$L = 2m\,dA/dt$.
+      - kind: manipulation
+        text: >-
+          בדיקה בדרך שנייה: $v = 2\pi r/T$ ו-$\vec v \perp \vec r$, ולכן $L = mrv = 2\pi mr^2/T = 2m\cdot\pi r^2/T$, אותו דבר.
+      - kind: limit
+        text: >-
+          שנה ארוכה יותר באותו רדיוס פירושה תנועה איטית יותר, ו-$dA/dt \propto 1/T$ קטן, כמו שצריך.
+      - kind: units
+        text: >-
+          $\text{m}^2/\text{s}$, ו-$\text{kg}\cdot\text{m}^2/\text{s}$.
+      - kind: substitution
+        text: >-
+          $dA/dt = \pi\cdot\left(1.5\cdot10^{11}\right)^2/3.156\cdot10^7 = 2.24\cdot10^{15}\,\text{m}^2/\text{s}$;
+          $L = 2\cdot5.97\cdot10^{24}\cdot2.24\cdot10^{15} = 2.67\cdot10^{40}\,\text{kg·m}^2/\text{s}$ (ו-$v = 2.99\cdot10^4\,\text{m/s}$).
+      - kind: result
+        text: >-
+          $2.24\cdot10^{15}\,\text{m}^2/\text{s}$ ו-$2.67\cdot10^{40}\,\text{kg·m}^2/\text{s}$.
+
+  - id: W-3.7-08
+    level: bagrut
+    objectives: [OBJ-3.7-1]
+    prompt: >-
+      מטוטלת פשוטה: משקולת בעלת מסה $0.25\,\text{kg}$ בקצה חוט באורך $\ell = 0.80\,\text{m}$, תלוי מנקודה קבועה $P$. החוט יוצר
+      זווית $\theta$ עם האנך.
+
+      א. כתבו את $L_z$ ואת $\tau_z$ של המשקולת ביחס ל-$P$, וגזרו מ-$dL_z/dt = \tau_z$ את משוואת התנועה של $\theta$.
+
+      ב. משחררים את המשקולת ממנוחה ב-$\theta = 20^\circ$. מה המומנט ביחס ל-$P$ ומה התאוצה הזוויתית ברגע השחרור?
+    answer: >-
+      א. $m\ell^2\ddot\theta = -mg\ell\sin\theta$, כלומר $\ddot\theta = -(g/\ell)\sin\theta$.
+
+      ב. $\tau_z = -0.670\,\text{N·m}$, $\ddot\theta = -4.19\,\text{rad/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית ב-$P$, ציר $x$ ימינה, $y$ למעלה, $z$ החוצה מהדף; $\theta$ נמדדת מהאנך כלפי מטה, חיובית נגד כיוון השעון (המשקולת מימין
+          כש-$\theta > 0$). המשקולת ב-$\ell(\sin\theta,\,-\cos\theta)$.
+      - kind: law
+        text: >-
+          $dL_z/dt = \tau_z$ ביחס לנקודה הקבועה $P$. הכוחות: המתיחות, שהחוט מפעיל לאורך החוט, והכובד שהארץ מפעילה.
+      - kind: manipulation
+        text: >-
+          המהירות $\ell\dot\theta(\cos\theta,\,\sin\theta)$ ניצבת לחוט, ולכן $L_z = m\ell\cdot\ell\dot\theta = m\ell^2\dot\theta$. המתיחות
+          לאורך $\vec r$: מומנט אפס. הכובד: $\tau_z = x\cdot(-mg) = -mg\ell\sin\theta$. לכן $m\ell^2\ddot\theta = -mg\ell\sin\theta$.
+      - kind: limit
+        text: >-
+          לזוויות קטנות $\sin\theta \approx \theta$, ו-$\ddot\theta = -(g/\ell)\theta$: תנודה הרמונית. ב-$\theta = 0$ המומנט אפס, והמשקולת
+          לא מאיצה ברגע שהיא עוברת בנקודה הנמוכה ביותר. המתיחות לא מופיעה בכלל: זה היתרון של בחירת $P$.
+      - kind: units
+        text: >-
+          $mg\ell$ ב-$\text{N·m}$, ו-$g/\ell$ ב-$\text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\tau_z = -0.25\cdot9.8\cdot0.80\cdot\sin20^\circ = -0.670\,\text{N·m}$; $\ddot\theta = -(9.8/0.80)\sin20^\circ = -4.19\,\text{rad/s}^2$,
+          כלומר תאוצה משיקית $\ell\ddot\theta = -3.35\,\text{m/s}^2 = -g\sin20^\circ$.
+      - kind: result
+        text: >-
+          $\ddot\theta = -(g/\ell)\sin\theta$; ברגע השחרור $\tau_z = -0.670\,\text{N·m}$ ו-$\ddot\theta = -4.19\,\text{rad/s}^2$.
+
+  - id: W-3.7-09
+    level: bagrut
+    objectives: [OBJ-3.7-2, OBJ-3.7-1]
+    prompt: >-
+      דסקית בעלת מסה $0.40\,\text{kg}$ על שולחן חלק קשורה לחוט, וקצהו השני של החוט קשור לעמוד אנכי דק בעל רדיוס $a = 0.050\,\text{m}$
+      שעומד על השולחן. הדסקית מסתובבת, והחוט **מתלפף** על העמוד ומתקצר. בהתחלה החלק החופשי של החוט באורכו $\ell_0 = 1.2\,\text{m}$
+      ומהירות הדסקית $2.5\,\text{m/s}$, בניצב לחוט.
+
+      א. הראו שגודל המהירות לא משתנה, ושהתנע הזוויתי ביחס לציר העמוד לא נשמר.
+
+      ב. מה התנע הזוויתי ביחס לציר העמוד ומה המתיחות, כשהחלק החופשי של החוט $0.30\,\text{m}$?
+
+      ג. השוו לדסקית שהחוט שלה נמשך דרך חור עד אותו אורך.
+    answer: >-
+      א. המתיחות ניצבת למהירות, אבל הקו שלה משיק לעמוד ולא עובר דרך הציר.
+
+      ב. $L = 0.30\,\text{kg·m}^2/\text{s}$ (מ-$1.2$), $T = 8.33\,\text{N}$ (מ-$2.08$).
+
+      ג. דרך חור $L$ נשמר והמהירות גדלה ל-$10\,\text{m/s}$; כאן המהירות נשמרת ו-$L$ קטן.
+    solution:
+      - kind: given
+        text: >-
+          ציר $z$ אנכי, לאורך ציר העמוד $A$. החוט יוצא מהעמוד בנקודת השקה, משיק לו, באורך חופשי $\ell$. $m = 0.40\,\text{kg}$,
+          $v_0 = 2.5\,\text{m/s}$, $a = 0.050\,\text{m}$.
+      - kind: law
+        text: >-
+          $dL_z/dt = \tau_z$ ביחס לציר; עבודה של כוח היא $\vec T\cdot\vec v\,dt$.
+      - kind: reasoning
+        text: >-
+          ברגע נתון, הדסקית נעה במעגל קטן סביב נקודת ההשקה, ברדיוס $\ell$, ולכן מהירותה ניצבת לחוט. המתיחות לאורך החוט ניצבת
+          למהירות ולא עושה עבודה: $|\vec v|$ קבוע. אבל החוט משיק לעמוד, והקו שלו עובר במרחק $a$ מהציר: למתיחות יש זרוע $a$, ומומנט
+          $-Ta$ שמקטין את $L_z$. לכן כאן $\vec L_A$ לא נשמר, אף שהחוט "מושך פנימה".
+      - kind: manipulation
+        text: >-
+          המהירות ניצבת לחוט, ולכן הזרוע שלה ביחס לציר היא האורך החופשי $\ell$: $L_z = mv\ell$. המתיחות היא הכוח הצנטריפטלי של
+          המעגל הקטן: $T = mv^2/\ell$. בדיקה: $\ell$ מתקצר בקצב $a\cdot v/\ell$ (העמוד "בולע" חוט בקצב הסיבוב), ו-$dL_z/dt = -mva\,v/\ell = -Ta$.
+      - kind: limit
+        text: >-
+          כש-$a \to 0$, הקו של החוט עובר דרך הציר, המומנט מתאפס, ו-$\ell$ מפסיק להתקצר: מעגל רגיל עם $L$ קבוע. וכש-$\ell \to 0$,
+          $T = mv^2/\ell$ שואפת לאינסוף: החוט ייקרע לפני שהדסקית תגיע לעמוד.
+      - kind: units
+        text: >-
+          $mv\ell$ ב-$\text{kg·m}^2/\text{s}$; $mv^2/\ell$ ב-$\text{N}$; $Ta$ ב-$\text{N·m}$.
+      - kind: substitution
+        text: >-
+          $L_0 = 0.40\cdot2.5\cdot1.2 = 1.2$, $L_1 = 0.40\cdot2.5\cdot0.30 = 0.30\,\text{kg·m}^2/\text{s}$. $T_0 = 0.40\cdot6.25/1.2 = 2.08\,\text{N}$,
+          $T_1 = 0.40\cdot6.25/0.30 = 8.33\,\text{N}$. בהתחלה $\tau_z = -2.08\cdot0.050 = -0.104\,\text{N·m}$. דרך חור: $v = 2.5\cdot1.2/0.30 = 10\,\text{m/s}$.
+      - kind: result
+        text: >-
+          המהירות נשארת $2.5\,\text{m/s}$; $L_z$ יורד מ-$1.2$ ל-$0.30\,\text{kg·m}^2/\text{s}$ והמתיחות עולה ל-$8.33\,\text{N}$. דרך חור, להפך:
+          $L$ נשמר והמהירות עולה ל-$10\,\text{m/s}$.
+
+  - id: W-3.7-10
+    level: bagrut
+    objectives: [OBJ-3.7-2]
+    prompt: >-
+      דסקית בעלת מסה $0.40\,\text{kg}$ על שולחן חלק קשורה לקפיץ שאורכו הרפוי זניח, $k = 10\,\text{N/m}$, שקצהו השני קשור לנקודה
+      $C$. ברגע $t = 0$ היא במרחק $0.50\,\text{m}$ מ-$C$, ומהירותה $1.0\,\text{m/s}$ בזווית $60^\circ$ מהכיוון מ-$C$ אל הדסקית
+      (החוצה).
+
+      א. חשבו את התנע הזוויתי ביחס ל-$C$ ואת האנרגיה המכנית.
+
+      ב. מצאו את המרחק הגדול ביותר והקטן ביותר מ-$C$, ואת המהירות בכל אחד מהם.
+    answer: >-
+      א. $L = 0.173\,\text{kg·m}^2/\text{s}$, $E = 1.45\,\text{J}$.
+
+      ב. $r_{\max} = 0.511\,\text{m}$ עם $0.847\,\text{m/s}$; $r_{\min} = 0.169\,\text{m}$ עם $2.56\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.40\,\text{kg}$, $k = 10\,\text{N/m}$, $r_0 = 0.50\,\text{m}$, $v_0 = 1.0\,\text{m/s}$, $\alpha_0 = 60^\circ$ בין $\vec r_C$ ל-$\vec v$.
+      - kind: law
+        text: >-
+          $L = mr|\vec v|\sin\alpha$ נשמר (כוח מרכזי ביחס ל-$C$), ו-$E = \tfrac12mv^2 + \tfrac12kr^2$ נשמרת (כוח משמר, שולחן חלק).
+      - kind: manipulation
+        text: >-
+          במרחק הגדול ביותר והקטן ביותר אין למהירות רכיב לאורך $\vec r_C$ (המרחק לא גדל ולא קטן), ולכן $v = L/(mr)$. מציבים באנרגיה:
+          $E = \dfrac{L^2}{2mr^2} + \tfrac12kr^2$. כופלים ב-$2r^2$ ומקבלים משוואה ריבועית ב-$r^2$: $kr^4 - 2Er^2 + L^2/m = 0$, ולכן
+          $$r^2 = \frac{E \pm \sqrt{E^2 - kL^2/m}}{k}$$
+      - kind: limit
+        text: >-
+          כש-$E^2 = kL^2/m$ השורש מתאפס, $r_{\max} = r_{\min}$: מסלול מעגלי. כש-$L \to 0$, $r_{\min} \to 0$: הדסקית עוברת דרך $C$, תנודה
+          על קו. ומכפלת השורשים: $r_{\max}^2r_{\min}^2 = L^2/(mk)$, בלי תלות ב-$E$.
+      - kind: units
+        text: >-
+          $E/k$ ב-$\text{J}/(\text{N/m}) = \text{m}^2$, ו-$kL^2/m$ ב-$\text{J}^2$.
+      - kind: substitution
+        text: >-
+          $L = 0.40\cdot0.50\cdot1.0\cdot\sin60^\circ = 0.173\,\text{kg·m}^2/\text{s}$; $E = 0.20 + 1.25 = 1.45\,\text{J}$; $kL^2/m = 0.75\,\text{J}^2$,
+          $\sqrt{1.45^2 - 0.75} = 1.163\,\text{J}$. $r_{\max} = \sqrt{2.613/10} = 0.511\,\text{m}$, $r_{\min} = \sqrt{0.287/10} = 0.169\,\text{m}$.
+          $v = L/(mr)$: $0.847$ ו-$2.56\,\text{m/s}$. (חישוב מספרי בצעדים קטנים נותן אותם מרחקים.)
+      - kind: result
+        text: >-
+          $L = 0.173\,\text{kg·m}^2/\text{s}$, $E = 1.45\,\text{J}$; הדסקית נעה בין $0.169\,\text{m}$ (ב-$2.56\,\text{m/s}$) ל-$0.511\,\text{m}$ (ב-$0.847\,\text{m/s}$).
+
+challenge:
+  - id: W-3.7-c1
+    stars: 2
+    objectives: [OBJ-3.7-2, OBJ-3.7-1]
+    prompt: >-
+      מטאוריט בעל מסה $m$ מגיע מרחוק מאוד במהירות $v_i$, בקו ישר שעובר במרחק $h$ ממרכז כדור הארץ (מרחק ניצב). הוא נמשך
+      רק בכבידה של כדור הארץ, שהאנרגיה הפוטנציאלית שלה $U = -GM_Em/r$, והזניחו את התנועה של כדור הארץ. המסלול של
+      המטאוריט בדיוק משיק לפני כדור הארץ, ברדיוס $R_E$.
+
+      א. אילו גדלים נשמרים לאורך המסלול, ומה הזווית בין המהירות לבין הקו אל מרכז כדור הארץ בנקודה הקרובה ביותר?
+
+      ב. מצאו את $h$ בעזרת $v_i$, $R_E$, $M_E$ ו-$G$.
+
+      ג. חשבו את $h/R_E$ ואת המהירות בנקודת ההשקה עבור $v_i = 5.0\,\text{km/s}$, עם $G$, $M_E$ ו-$R_E$ של הקורס.
+    answer: >-
+      א. התנע הזוויתי ביחס למרכז כדור הארץ והאנרגיה המכנית; בנקודה הקרובה $90^\circ$.
+
+      ב. $h = R_E\sqrt{1 + \dfrac{2GM_E}{R_Ev_i^2}}$.
+
+      ג. $h = 2.45\,R_E = 1.56\cdot10^7\,\text{m}$, ובנקודת ההשקה $12.2\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          מרכז כדור הארץ $E$. רחוק מאוד: מהירות $v_i$, זרוע $h$, ו-$U \to 0$. בנקודה הקרובה ביותר: מרחק $R_E$ ומהירות $v_f$.
+      - kind: law
+        text: >-
+          הכבידה מרכזית ביחס ל-$E$, ולכן $\vec L_E$ נשמר; היא כוח משמר, ולכן $\tfrac12mv^2 - GM_Em/r$ נשמרת.
+      - kind: reasoning
+        text: >-
+          בנקודה הקרובה ביותר המרחק מ-$E$ לא גדל ולא קטן, ולכן אין למהירות רכיב לאורך הקו אל $E$: היא ניצבת לו, ו-$L_E = mR_Ev_f$.
+          רחוק מאוד, $L_E = mv_ih$, כמו לחלקיק חופשי.
+      - kind: manipulation
+        text: >-
+          מהתנע הזוויתי: $v_f = v_ih/R_E$. מהאנרגיה: $\tfrac12v_i^2 = \tfrac12v_f^2 - GM_E/R_E$. מציבים:
+          $\tfrac12v_i^2\left(\dfrac{h^2}{R_E^2} - 1\right) = \dfrac{GM_E}{R_E}$, ולכן $\dfrac{h^2}{R_E^2} = 1 + \dfrac{2GM_E}{R_Ev_i^2}$.
+      - kind: limit
+        text: >-
+          כש-$v_i \to \infty$, הכבידה לא מספיקה להסיט, ו-$h \to R_E$: המטאוריט משיק לכדור הארץ בקו ישר. כש-$v_i \to 0$, $h \to \infty$:
+          מטאוריט איטי נלכד גם ממרחק גדול. כש-$M_E \to 0$, $h \to R_E$.
+      - kind: units
+        text: >-
+          $GM_E/(R_Ev_i^2)$: $\dfrac{\text{N·m}^2/\text{kg}^2\cdot\text{kg}}{\text{m}\cdot\text{m}^2/\text{s}^2} = 1$, חסר ממדים.
+      - kind: substitution
+        text: >-
+          $2GM_E/R_E = 2\cdot6.67\cdot10^{-11}\cdot5.97\cdot10^{24}/6.37\cdot10^6 = 1.25\cdot10^8\,\text{m}^2/\text{s}^2$; חלקי $v_i^2 = 2.5\cdot10^7$ נותן $5.00$.
+          $h/R_E = \sqrt{6.00} = 2.45$, $h = 1.56\cdot10^7\,\text{m}$; $v_f = \sqrt{6.00}\cdot5.0 = 12.2\,\text{km/s}$.
+      - kind: result
+        text: >-
+          $h = R_E\sqrt{1 + 2GM_E/(R_Ev_i^2)} = 2.45\,R_E$, ומהירות ההשקה $12.2\,\text{km/s}$. כל מטאוריט שבא מכיוון זה עם $h$ קטן מזה
+          פוגע בכדור הארץ: "החתך" של כדור הארץ גדול פי $6.00$ מהחתך הגיאומטרי.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics, course notes chapter 19
+      year: 2016
+      problem: Example 19.4 Meteor Flyby of Earth
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/mit8_01scs22_chapter19.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.7-c2
+    stars: 1
+    objectives: [OBJ-3.7-2]
+    prompt: >-
+      כוכב לכת נע במסלול מעגלי ברדיוס $r_0$ סביב כוכב. במשך זמן ארוך מאוד, הרבה יותר מזמן מחזור אחד, הכוכב מאבד לאט ובהדרגה
+      $1\%$ ממסתו, והמסלול נשאר בכל רגע כמעט מעגלי. הזניחו את התנועה של הכוכב.
+
+      א. למה התנע הזוויתי של כוכב הלכת ביחס לכוכב נשמר, אף שהכוח עליו משתנה?
+
+      ב. מה הרדיוס הסופי? פי כמה השתנתה המהירות?
+    answer: >-
+      א. הכוח עדיין פונה אל הכוכב: מרכזי, גם כשגודלו משתנה. ב. $r_f = r_0/0.99 = 1.0101\,r_0$, והמהירות קטנה פי $0.99$.
+    solution:
+      - kind: law
+        text: >-
+          $d\vec L/dt = \vec\tau$ ביחס לכוכב; כוח מרכזי, $\vec\tau = 0$, בכל רגע, גם כשהגודל שלו $GMm/r^2$ משתנה עם $M$. במסלול מעגלי:
+          $mv^2/r = GMm/r^2$.
+      - kind: manipulation
+        text: >-
+          $L = mvr$ קבוע, ולכן $v = L/(mr)$. מציבים בתנאי המעגל: $v^2r = GM$ נותן $\dfrac{L^2}{m^2r} = GM$, כלומר $r = \dfrac{L^2}{GMm^2} \propto \dfrac1M$.
+          ו-$v = L/(mr) \propto M$.
+      - kind: limit
+        text: >-
+          אם $M$ לא משתנה, $r$ ו-$v$ לא משתנים. אם $M \to 0$, $r \to \infty$: בלי כוח, כוכב הלכת מתרחק. וכדאי לשים לב: האנרגיה לא
+          נשמרת כאן, כי הכוח תלוי בזמן; רק התנע הזוויתי עובר את השינוי.
+      - kind: units
+        text: >-
+          $L^2/(GMm^2)$: $\dfrac{\text{kg}^2\text{m}^4/\text{s}^2}{\text{N·m}^2/\text{kg}^2\cdot\text{kg}\cdot\text{kg}^2} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $M_f = 0.99\,M_0$: $r_f = r_0/0.99 = 1.0101\,r_0$, גדול ב-$1.01\%$; $v_f = 0.99\,v_0$. (חישוב מספרי, עם $M$ שקטנה ב-$1\%$
+          לאורך 200 מחזורים, נותן $r = 1.0101\,r_0$ ו-$L$ ללא שינוי.)
+      - kind: result
+        text: >-
+          $r_f \approx 1.01\,r_0$ והמהירות קטנה ב-$1\%$, כי התנע הזוויתי ביחס לכוכב נשמר.
+    source:
+      name: AAPT F=ma Exam
+      year: 2020
+      problem: Exam A, Question 6
+      url: https://www.aapt.org/physicsteam/upload/2020_Fma_A_Solutions_v2.pdf
+      verified: '2026-11-10'
+      adapted: true

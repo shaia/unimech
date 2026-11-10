@@ -1,14 +1,14 @@
 # Misconceptions first detected in lesson 4.2. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it (an anchor in lesson 4.2).
 
 - id: MC-4-cm-elastic-both-stop
   title: במערכת מרכז המסה הגופים תמיד נעצרים
   belief: מכיוון שהתנע הכולל במערכת מרכז המסה אפס, אחרי כל התנגשות שני הגופים עומדים בה.
   truth: הגופים נעצרים במערכת מרכז המסה רק בהתנגשות פלסטית. בהתנגשות אלסטית כל מהירות מתהפכת ושומרת על גודלה, ובהתנגשות עם מקדם תקומה e היא מתהפכת וקטנה פי e.
-  remedy: { lesson: '4.2', label: 'שיעור 4.2: התנגשות במערכת מרכז המסה' }
+  remedy: { lesson: '4.2', anchor: cm-stop, label: 'שיעור 4.2: מתי הגופים נעצרים במערכת מרכז המסה' }
 
 - id: MC-4-cm-frame-is-lab-answer
   title: המהירויות במערכת מרכז המסה הן התשובה
   belief: אחרי שפתרו את ההתנגשות במערכת מרכז המסה, המהירויות שיצאו הן המהירויות במערכת המעבדה.
   truth: מהירות במערכת מרכז המסה היא מהירות יחסית למרכז המסה. כדי לחזור למערכת המעבדה מוסיפים לכל מהירות את מהירות מרכז המסה.
-  remedy: { lesson: '4.2', label: 'שיעור 4.2: החזרה למערכת המעבדה' }
+  remedy: { lesson: '4.2', anchor: back-to-lab, label: 'שיעור 4.2: החזרה למערכת המעבדה' }

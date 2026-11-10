@@ -1,0 +1,32 @@
+# Videos of lesson 4.4. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date
+# (exists, embeddable; title and channel exactly as returned). Lengths, descriptions and caption tracks come from
+# the watch page (lengthSeconds, shortDescription, captionTracks). `why` claims only what the title and the
+# description support.
+#   dBAi74A8Td8: 85 s; description: "a demonstration of conservation of energy and momentum using the ballistic
+#     pendulum, a gun that fires a steel ball, which is captured by a pendulum, which then swings up to a maximum
+#     height" (Utah State University, Prof. Boyd F. Edwards); caption tracks include en and iw (Hebrew).
+#   7sIE03Ac3t0: 716 s; description: "Demonstration of the ballistic pendulum and a thorough explanation of the
+#     physics is done here. The speed of a bullet is calculated using this technique." (James Dann, ck12.org);
+#     caption track en.
+
+- id: v-4-4-ballistic-demo
+  youtubeId: dBAi74A8Td8
+  title: 'Collisions Demo: Ballistic Pendulum'
+  channel: Physics Demos
+  lang: en
+  captions: [en, he]
+  start: 0
+  minutes: 1.5
+  why: 'הדגמה קצרה מאוניברסיטת מדינת יוטה: רובה יורה כדור פלדה אל מטוטלת שלוכדת אותו. חפשו את שני השלבים של איור 4.4א: רגע הלכידה הקצר, ואחריו העלייה האיטית עד הגובה המרבי. יש כתוביות בעברית.'
+  verified: '2026-11-10'
+
+- id: v-4-4-dann-pendulum
+  youtubeId: 7sIE03Ac3t0
+  title: 'Ballistic Pendulum Demonstration'
+  channel: 'James Dann, Ph.D.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 12
+  why: 'הדגמה של מטוטלת בליסטית והסבר של הפיזיקה, שבו מחשבים את מהירות הקליע מהמדידה. השוו את החישוב שלו לפתרון בשני שלבים של השיעור, ובדקו באיזה שלב הוא משתמש בתנע ובאיזה באנרגיה.'
+  verified: '2026-11-10'

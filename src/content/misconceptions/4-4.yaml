@@ -1,26 +1,27 @@
 # Misconceptions first detected in lesson 4.4. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. The anchors point at
+# lesson 4.4's step, note and Explain ids.
 
 - id: MC-4-energy-through-collision
   title: האנרגיה המכנית נשמרת לאורך כל התהליך
   belief: כשאין חיכוך עם הסביבה, אפשר לכתוב שימור אנרגיה מתחילת התהליך ועד סופו, גם כשיש בו התנגשות שבה הגופים נצמדים.
   truth: בהתנגשות פלסטית, או כשקליע עובר דרך גוש, אנרגיה קינטית הופכת לחום ולעיוות, ולכן שימור אנרגיה תקף רק בשלבים שלפני ההתנגשות ואחריה. את ההתנגשות עצמה עוברים בשימור תנע.
-  remedy: { lesson: '4.4', label: 'שיעור 4.4: מטוטלת בליסטית בשני שלבים' }
+  remedy: { lesson: '4.4', anchor: stage1-end, label: 'שיעור 4.4: מטוטלת בליסטית בשני שלבים' }
 
 - id: MC-4-external-always-negligible
   title: בהתנגשות תמיד מזניחים כוחות חיצוניים
   belief: בזמן התנגשות קצרה מותר תמיד להזניח את כל הכוחות החיצוניים, ולכן התנע של הגופים המתנגשים נשמר תמיד.
   truth: מזניחים רק כוחות חיצוניים סופיים. קיר, רצפה או ציר שמונעים תנועה מפעילים כוח שגדל לרגע כמו הכוח בהתנגשות, והמתקף שלו לא זניח. בכיוון שבו הם פועלים התנע לא נשמר.
-  remedy: { lesson: '4.4', label: 'שיעור 4.4: מתי מותר להזניח כוחות חיצוניים' }
+  remedy: { lesson: '4.4', anchor: impulsive, label: 'שיעור 4.4: כוח חיצוני שאסור להזניח' }
 
 - id: MC-4-finite-force-spoils-momentum
   title: כל כוח חיצוני מקלקל את שימור התנע בהתנגשות
   belief: כיוון שכוח הכובד או החיכוך פועלים על הגופים גם בזמן ההתנגשות, אסור לכתוב בה שימור תנע.
   truth: כוח חיצוני סופי משנה את התנע במכפלה שלו במשך ההתנגשות, וכשהמשך קצר מאוד השינוי זניח. לכן התנע נשמר בקירוב מצוין בין הרגע שלפני ההתנגשות לרגע שאחריה.
-  remedy: { lesson: '4.4', label: 'שיעור 4.4: המתקף של כוח סופי בזמן קצר' }
+  remedy: { lesson: '4.4', anchor: neglect, label: 'שיעור 4.4: המתקף של כוח סופי בזמן קצר' }
 
 - id: MC-4-momentum-through-all-stages
   title: התנע נשמר בכל שלבי התהליך
   belief: אם התנע נשמר בהתנגשות, הוא נשמר גם בשלבים שאחריה, למשל כשהגוף מכווץ קפיץ שמחובר לקיר או עולה במטוטלת.
   truth: אחרי ההתנגשות פועלים כוחות חיצוניים בזמן ארוך, כמו קפיץ שהקיר מחזיק, כובד או חיכוך, והם משנים את התנע. בשלבים האלה משתמשים באנרגיה, או במשפט עבודה-אנרגיה.
-  remedy: { lesson: '4.4', label: 'שיעור 4.4: תהליך בשלבים' }
+  remedy: { lesson: '4.4', anchor: spring, label: 'שיעור 4.4: התנגשות ואחריה קפיץ' }

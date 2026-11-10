@@ -1,26 +1,33 @@
 # Misconceptions first detected in lesson 3.5. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. The anchors point at the
+# steps and sections of lesson 3.5 that refute each one.
 
 - id: MC-3-soft-landing-less-impulse
   title: משטח רך נותן מתקף קטן יותר
   belief: כרית או מזרן מקטינים את המתקף על גוף שנוחת עליהם.
   truth: המתקף שווה לשינוי בתנע, והוא זהה כשהגוף נעצר מאותה מהירות. המשטח הרך מאריך את זמן העצירה, ולכן מקטין את הכוח הממוצע.
-  remedy: { lesson: '3.5', label: 'שיעור 3.5: מתקף כשטח מתחת לגרף כוח-זמן' }
+  remedy: { lesson: '3.5', anchor: stretch, label: 'שיעור 3.5: מתקף כשטח מתחת לגרף כוח-זמן' }
 
 - id: MC-3-impulse-from-speed-change
   title: השינוי בתנע מחושב מהשינוי בגודל המהירות
   belief: כשגוף חוזר מקיר, השינוי בתנע הוא המסה כפול ההפרש בין גודלי המהירויות.
   truth: התנע וקטור. כשהגוף הופך כיוון, השינוי במהירות הוא סכום הגדלים, ולכן המתקף גדול בהרבה מההפרש ביניהם.
-  remedy: { lesson: '3.5', label: 'שיעור 3.5: התנע כווקטור' }
+  remedy: { lesson: '3.5', anchor: bounce, label: 'שיעור 3.5: התנע כווקטור' }
 
 - id: MC-3-momentum-always-conserved
   title: תנע תמיד נשמר
   belief: התנע של גוף או של מערכת נשמר תמיד, ובפרט בכל התנגשות.
   truth: התנע של מערכת נשמר רק כשהכוח החיצוני השקול עליה אפס, ורכיב של התנע נשמר כשהרכיב הזה של הכוח החיצוני אפס. בהתנגשות קצרה הוא נשמר בקירוב, כי המתקף החיצוני קטן.
-  remedy: { lesson: '3.5', label: 'שיעור 3.5: מתי תנע נשמר' }
+  remedy: { lesson: '3.5', anchor: when, label: 'שיעור 3.5: מתי תנע נשמר' }
 
 - id: MC-3-kinetic-energy-conserved-in-collision
   title: בהתנגשות האנרגיה הקינטית נשמרת כמו התנע
   belief: בכל התנגשות אפשר להשתמש בשימור האנרגיה הקינטית, כמו בשימור התנע.
   truth: התנע נשמר כשאין כוח חיצוני; האנרגיה הקינטית נשמרת רק בהתנגשות אלסטית. כשגופים נצמדים, חלק גדול ממנה הופך לחום ולעיוות.
   remedy: { lesson: '4.1', label: 'שיעור 4.1: התנגשויות אלסטיות ולא אלסטיות' }
+
+- id: MC-3-moving-surface-no-work
+  title: כוח נורמלי לא עושה עבודה גם כשהמשטח זז
+  belief: הכוח הנורמלי תמיד ניצב לתנועה, ולכן גוש שמחליק על טריז או על מסילה שזזים מגיע לתחתית באותה מהירות כמו על משטח קבוע.
+  truth: הכוח הנורמלי ניצב למשטח, לא בהכרח לתנועה. כשהמשטח זז, הנורמלי עושה עבודה שלילית על הגוש וחיובית על המשטח; רק העבודה הכוללת של הזוג אפס, כי התנועה היחסית היא לאורך המשטח. לכן חלק מהאנרגיה עובר למשטח, והגוש מגיע לאט יותר.
+  remedy: { lesson: '3.5', anchor: pair-work, label: 'שיעור 3.5: העבודה של זוג הכוחות הנורמליים בין גוש לטריז' }

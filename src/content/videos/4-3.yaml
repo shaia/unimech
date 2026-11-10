@@ -1,0 +1,32 @@
+# Videos of lesson 4.3. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date
+# (exists, embeddable; title and channel exactly as returned).
+#   UE-O9TiKOw0: MIT OCW 8.01SC (Fall 2016), lesson 27.6 "2D Collisions". `why` rests on the full transcript, read
+#     on OCW (2cb395af7226688f683e10ab08419ad1_UE-O9TiKOw0.pdf): a target at rest, momentum in components with the
+#     outgoing directions θ1, θ2 measured, the elastic energy condition, four unknowns and three equations, so one more
+#     quantity must be measured. The transcript is about 650 words: `minutes` is an estimate. OCW lists an English
+#     .srt for this id (search result 9675febe…_UE-O9TiKOw0.srt), hence captions [en].
+#   mqlJDPo5N-E: MIT Physics Instructional Resources Lab, "Two Dimensional Collisions (B65) [1N40.24]". The watch page
+#     gave no description, length or caption list: `why` rests on the title and the demonstration code alone
+#     (PIRA 1N40 = collisions in two dimensions), and `minutes` is a conservative guess. Spot-check it.
+
+- id: v-4-3-ocw-2d
+  youtubeId: UE-O9TiKOw0
+  title: '27.6 2D Collisions'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 5
+  why: 'קטע קצר מקורס 8.01 של MIT: מטרה במנוחה, שימור התנע בשני רכיבים כשמודדים את כיווני היציאה, ושימור האנרגיה בהתנגשות אלסטית. שימו לב לספירה בסוף: ארבעה נעלמים ושלוש משוואות, ולכן צריך למדוד עוד גודל אחד. זו אותה ספירה כמו בשיעור.'
+  verified: '2026-11-10'
+
+- id: v-4-3-mit-demo
+  youtubeId: mqlJDPo5N-E
+  title: 'Two Dimensional Collisions (B65) [1N40.24]'
+  channel: MIT Physics Instructional Resources Lab
+  lang: en
+  captions: []
+  start: 0
+  minutes: 3
+  why: 'הדגמה של התנגשויות בשני ממדים ממעבדת ההדגמות של המחלקה לפיזיקה ב-MIT. בדקו אם אחד הגופים עומד לפני ההתנגשות, ואם המסות שוות, אם המסלולים אחריה נפרדים בזווית ישרה, כמו באיור 4.3א.'
+  verified: '2026-11-10'

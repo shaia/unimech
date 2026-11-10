@@ -1,0 +1,7 @@
+---
+/** Energy-diagram figure for lesson MDX: <Spread figure={EnergyLandscape} figureProps={{ preset: 'double', E: 3, … }}>. */
+import EnergyLandscape, { type EnergyLandscapeProps } from './EnergyLandscape';
+type Props = EnergyLandscapeProps;
+---
+
+<EnergyLandscape client:visible {...Astro.props} />

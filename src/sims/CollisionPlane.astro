@@ -1,0 +1,7 @@
+---
+/** Collision figure for lesson MDX: <Spread figure={CollisionPlane} figureProps={{ m1: 0.15, m2: 0.25, … }}>. */
+import CollisionPlane, { type CollisionPlaneProps } from './CollisionPlane';
+type Props = CollisionPlaneProps;
+---
+
+<CollisionPlane client:visible {...Astro.props} />

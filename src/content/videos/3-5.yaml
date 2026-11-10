@@ -1,0 +1,32 @@
+# Videos of lesson 3.5. Every id was checked against YouTube oEmbed on the `verified` date (200: exists and embeds;
+# title and channel exactly as returned). Lengths, chapters and caption tracks come from the watch page
+# (lengthSeconds, the description, captionTracks). `why` claims only what the title and the description support.
+#   IpfSPAoUUcQ: 260 s; chapters 0:00 the demonstration without a helmet, 1:15 the impulse equation, 2:36 the
+#     demonstration with a helmet and the comparison. The description gives the measured numbers: a 2.733 kg
+#     medicine ball dropped from 39.5 cm onto a force platform, peak 1310 N, average 618 N, 0.015 s, impulse
+#     9.84 N·s; with a cloth "helmet" 0.018 s, average 544 N, peak 971 N, impulse 10.3 N·s (a slightly higher
+#     rebound). Caption tracks include en and iw (Hebrew).
+#   aIhScO3_I50: 3137 s; no chapters; the description says only "Momentum - Conservation of Momentum - Center of
+#     Mass - Nice Demos". English captions.
+
+- id: v-3-5-helmet-impulse
+  youtubeId: IpfSPAoUUcQ
+  title: 'Demonstrating How Helmets Affect Impulse and Impact Force'
+  channel: Flipping Physics
+  lang: en
+  captions: [en, he]
+  start: 0
+  minutes: 4.5
+  why: 'כדור כבד נופל על משטח שמודד כוח, פעם חשוף ופעם עם ריפוד, והגרף שמתקבל הוא גרף כוח-זמן אמיתי, כמו באיור 3.5א. לפי התיאור, הריפוד האריך את זמן המגע מ-0.015 ל-0.018 שניות, והוריד את הכוח המרבי מ-1310 ל-971 ניוטון, אבל לא הקטין את המתקף, השטח מתחת לגרף: הוא אפילו עלה מעט, מ-9.84 ל-10.3 ניוטון-שנייה, כי עם הריפוד הכדור קפץ מעט גבוה יותר. השוו לשני הדופקים באיור.'
+  verified: '2026-11-10'
+
+- id: v-3-5-lewin-momentum
+  youtubeId: aIhScO3_I50
+  title: '8.01x - Lect 15 - Momentum, Conservation of Momentum, Center of Mass'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 52
+  why: 'הרצאה שלמה של קורס 8.01 של MIT על תנע, שימור תנע ומרכז מסה. לפי התיאור יש בה הדגמות, אבל התיאור לא מפרט אותן. חפשו את הקשר שבין התנע הכולל למהירות מרכז המסה, ואת התנאי שבו התנע נשמר: אין כוח חיצוני.'
+  verified: '2026-11-10'

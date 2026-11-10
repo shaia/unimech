@@ -1,0 +1,7 @@
+---
+/** Short-collision figure for lesson MDX: <Spread figure={BallisticPendulum} figureProps={{ scene: 'pendulum', … }}>. */
+import BallisticPendulum, { type BallisticPendulumProps } from './BallisticPendulum';
+type Props = BallisticPendulumProps;
+---
+
+<BallisticPendulum client:visible {...Astro.props} />

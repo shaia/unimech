@@ -1,0 +1,31 @@
+# Videos of lesson 3.4. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date: it
+# exists and is embeddable; title and channel exactly as returned. Lengths and caption tracks come from the watch page
+# (lengthSeconds, captionTracks: a manual English track for nyJeaUe7wXM, only auto-generated English for aIhScO3_I50).
+# `why` claims only what the title, the description and the chapter list support.
+#   nyJeaUe7wXM: 425 s; chapters 0:01 "Defining Center of Mass", 1:44 "Projectile Motion of Center of Mass",
+#     4:00 "Pushing on the Center of Mass, and the Weeble", 5:52 "Finding the Center of Mass". The description: the
+#     centre of mass follows the parabolic path of a single point particle however the system tumbles.
+#   aIhScO3_I50: 3137 s; no chapters; the description reads "Momentum - Conservation of Momentum - Center of Mass-
+#     Nice Demos".
+
+- id: v-3-4-flipping-cm
+  youtubeId: nyJeaUe7wXM
+  title: 'Center of Mass Introduction'
+  channel: Flipping Physics
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 7
+  why: 'לפי התיאור והפרקים: הגדרה של מרכז המסה, ומ-1:44 גוף שמסתובב באוויר ומרכז המסה שלו נע בפרבולה של חלקיק אחד, כמו מרכז המסה של הרסיסים באיור 3.4ג. בסוף, מציאת מרכז המסה של לוח בתלייה.'
+  verified: '2026-11-10'
+
+- id: v-3-4-lewin-momentum
+  youtubeId: aIhScO3_I50
+  title: '8.01x - Lect 15 - Momentum, Conservation of Momentum, Center of Mass'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 52
+  why: 'הרצאה שלמה מקורס 8.01 של MIT על תנע, שימור תנע ומרכז מסה, ולפי התיאור שלה יש בה הדגמות. מתאימה גם כהכנה לשיעור 3.5.'
+  verified: '2026-11-10'

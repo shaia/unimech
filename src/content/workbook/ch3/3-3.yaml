@@ -1,0 +1,462 @@
+# Workbook, lesson 3.3 (energy conservation, power, energy diagrams). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch3/3-3/numbers.ts with G = 9.8 (and turning points with src/physics/energy.ts):
+#   W02 h = ½kx²/(mg) = 4.08 m;  W04 v = √(2gL(sinθ − μcosθ)) = 4.71 m/s, W_f = −42.4 J (no friction 6.26 m/s);
+#   W05 P = (1200 − 900)·9.8·2.0 = 5880 W, with 400 N of friction 6680 W;
+#   W06 U = ½kx² − ¼βx⁴, k = 8.0 N/m, β = 2.0 N/m³, m = 0.50 kg: hills at ±2.0 m, U = 8.0 J, U″ = −16 N/m; trapped below
+#       5.66 m/s; at 4.0 m/s turning points ±1.08 m;
+#   W08 P = 150 kW, m = 1.2·10⁴ kg, sinθ = 0.050: v_max = 25.5 m/s, a(10 m/s) = 0.76 m/s² (level road 1.25 m/s²);
+#   W09 L = 0.50 m: v₀ = 2.0 m/s gives cosθ = 0.5918, θ = 53.7°; over the top needs √(4gL) = 4.43 m/s; 90° needs 3.13 m/s;
+#   c1 U₀ = 1.0 J, a = 0.50 m, m = 0.20 kg: v₀ = √(2U₀(1 − 1/e)/m) = 2.51 m/s, escape 3.16 m/s, U″(0) = 2U₀/a² = 8.0 N/m;
+#   c2 (F=ma 2010, Q18–20) the V-shaped well: |F| = 1.0 N, E = −5 J, quarter period 2 s: a = 2.5 m/s², m = 0.40 kg,
+#      v(0) = 5.0 m/s, escape from the bottom needs 7.07 m/s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '3.3'
+practice:
+  - id: W-3.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.3-1]
+    prompt: >-
+      בכל מצב, קבעו ונמקו אם האנרגיה המכנית של הגוף (אנרגיה קינטית ועוד אנרגיה פוטנציאלית של הכובד או של הקפיץ) נשמרת.
+
+      א. מזחלת מחליקה במורד גבעה מכוסה קרח חלק לגמרי.
+
+      ב. כדור על חוט מתנודד כמטוטלת באוויר דליל מאוד.
+
+      ג. ארגז נגרר במהירות קבועה על רצפה מחוספסת.
+
+      ד. מעלית עולה במהירות קבועה, משוכה בכבל.
+    answer: >-
+      א. נשמרת. ב. נשמרת (בקירוב טוב). ג. $E$ קבועה, אבל לא כי אין עבודה: החיכוך והכוח המושך עושים עבודות שוות והפוכות, והאנרגיה זורמת דרך הארגז, מהגורר אל החום. ד. לא: הכבל עושה עבודה חיובית, והאנרגיה המכנית גדלה.
+    solution:
+      - kind: law
+        text: >-
+          $W_{\text{nc}} = \Delta E$: האנרגיה המכנית נשמרת אם העבודה של כל הכוחות הלא משמרים אפס.
+      - kind: reasoning
+        text: >-
+          א: הכוח הנורמלי ניצב לתנועה, $\vec N\cdot\vec v = 0$, ואין חיכוך. ב: המתיחות ניצבת למסלול המעגלי, והאוויר הדליל
+          כמעט לא עושה עבודה. ג: המהירות קבועה והרצפה אופקית, ולכן $\Delta K = 0$ ו-$\Delta U = 0$: $E$ קבועה, ולפי
+          $W_{\text{nc}} = \Delta E$ העבודה הכוללת של הכוחות הלא משמרים אפס. אבל כל אחת מהן לא אפס: החיכוך מנוגד
+          לתנועה ($W \lt 0$) והכוח המושך בכיוונה ($W > 0$), והן שוות בגודלן. האנרגיה זורמת דרך הארגז: העבודה של
+          הגורר הופכת לחום ברצפה ובארגז. ד: $K$ קבועה ו-$U$ גדלה, ולכן $\Delta E > 0$, והעבודה של הכבל חיובית.
+      - kind: limit
+        text: >-
+          במעלית, אם המהירות שואפת לאפס, ההספק של הכבל $Tv$ שואף לאפס, אבל העבודה עד גובה נתון נשארת $mgh$: שימור לא תלוי במהירות, רק בעבודה.
+      - kind: units
+        text: >-
+          כל איבר ב-$\text{J}$.
+      - kind: result
+        text: >-
+          $E$ קבועה ב-א, ב-ב וב-ג; ב-ג רק כי שתי עבודות לא משמרות מתקזזות, והאנרגיה עוברת מהגורר לחום. ב-ד $E$ גדלה.
+
+  - id: W-3.3-02
+    level: basic
+    objectives: [OBJ-3.3-1]
+    prompt: >-
+      משגר צעצוע אנכי: קפיץ עם $k = 400\,\text{N/m}$ דחוס ב-$0.10\,\text{m}$, ועליו כדור במסה $0.050\,\text{kg}$. משחררים. לאיזה גובה, מעל
+      המקום שבו הכדור היה כשהקפיץ דחוס, הכדור עולה? הזניחו את האוויר ואת המסה של הקפיץ.
+    answer: >-
+      $4.08\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $k = 400\,\text{N/m}$, $x = 0.10\,\text{m}$, $m = 0.050\,\text{kg}$. הגובה $h$ נמדד כלפי מעלה מהמקום הדחוס.
+      - kind: law
+        text: >-
+          שימור אנרגיה מכנית: בהתחלה ובשיא $K = 0$, ולכן $\tfrac12kx^2 = mgh$ (האנרגיה של הקפיץ הופכת כולה לאנרגיה פוטנציאלית של הכובד).
+      - kind: manipulation
+        text: >-
+          $h = \dfrac{kx^2}{2mg}$.
+      - kind: limit
+        text: >-
+          כש-$m \to 0$, $h \to \infty$: כדור קל מאוד היה עף בלי גבול. בפועל אז האוויר והמסה של הקפיץ כבר לא זניחים.
+      - kind: units
+        text: >-
+          $kx^2/(mg)$ ב-$(\text{N/m})\cdot\text{m}^2/\text{N} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $h = 400\cdot0.10^2/(2\cdot0.050\cdot9.8) = 4.08\,\text{m}$.
+      - kind: result
+        text: >-
+          $4.08\,\text{m}$.
+
+  - id: W-3.3-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-3.3-2]
+    prompt: >-
+      חלקיק נע על ציר $x$ באנרגיה פוטנציאלית $U(x) = \alpha x^4$, עם $\alpha > 0$, והאנרגיה המכנית שלו $E > 0$.
+
+      א. מצאו את נקודות המפנה.
+
+      ב. איפה גודל המהירות שלו מרבי, ומה הכוח עליו שם?
+
+      ג. האם בנקודת מפנה הכוח עליו אפס? נמקו.
+    answer: >-
+      א. $x = \pm\left(E/\alpha\right)^{1/4}$. ב. ב-$x = 0$, שם הכוח אפס. ג. לא: $F = -4\alpha x^3 \neq 0$ בנקודות המפנה.
+    solution:
+      - kind: law
+        text: >-
+          נקודות מפנה ב-$U = E$; $K = E - U$ מרבית איפה ש-$U$ מינימלית; $F = -dU/dx$.
+      - kind: manipulation
+        text: >-
+          $\alpha x^4 = E$ נותן $x = \pm\left(E/\alpha\right)^{1/4}$. $U$ מינימלית ב-$x = 0$, ושם $F = -4\alpha x^3 = 0$.
+      - kind: reasoning
+        text: >-
+          ג: בנקודת מפנה $x \neq 0$, ולכן $F = -4\alpha x^3 \neq 0$, ופונה אל הראשית. המהירות אפס לרגע, אבל הכוח מחזיר את החלקיק.
+      - kind: limit
+        text: >-
+          כש-$E \to 0$, נקודות המפנה מתכנסות לראשית: חלקיק בלי אנרגיה נח בשיווי המשקל.
+      - kind: units
+        text: >-
+          $\alpha$ ב-$\text{J/m}^4$, ולכן $E/\alpha$ ב-$\text{m}^4$ והשורש הרביעי שלו במטרים.
+      - kind: result
+        text: >-
+          א. $\pm\left(E/\alpha\right)^{1/4}$. ב. ב-$x = 0$, עם כוח אפס. ג. לא.
+
+  - id: W-3.3-04
+    level: mid
+    objectives: [OBJ-3.3-1]
+    prompt: >-
+      גוש במסה $5.0\,\text{kg}$ מחליק ממנוחה $4.0\,\text{m}$ לאורך מדרון בזווית $30^\circ$. מקדם החיכוך הקינטי $0.25$. מה העבודה של החיכוך, ומה מהירות הגוש
+      בתחתית המדרון?
+    answer: >-
+      $W_f = -42.4\,\text{J}$, $v = 4.71\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 5.0\,\text{kg}$, $L = 4.0\,\text{m}$, $\theta = 30^\circ$, $\mu_k = 0.25$, $v_0 = 0$. גובה הירידה $L\sin\theta$.
+      - kind: law
+        text: >-
+          $W_{\text{nc}} = \Delta K + \Delta U$. החיכוך, שהמדרון מפעיל, בגודל $\mu_kN = \mu_kmg\cos\theta$ ומנוגד לתנועה.
+      - kind: manipulation
+        text: >-
+          $W_f = -\mu_kmg\cos\theta\,L$, ו-$\tfrac12mv^2 - mgL\sin\theta = W_f$, ולכן $v = \sqrt{2gL\left(\sin\theta - \mu_k\cos\theta\right)}$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to 0$, $v \to \sqrt{2gL\sin\theta} = \sqrt{2gh}$: נפילה חופשית מאותו גובה. כש-$\mu_k = \tan\theta$, $v = 0$: הגוש לא מאיץ.
+      - kind: units
+        text: >-
+          $gL$ ב-$\text{m}^2/\text{s}^2$; $\mu_kmgL$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $W_f = -0.25\cdot5.0\cdot9.8\cdot0.866\cdot4.0 = -42.4\,\text{J}$; $v = \sqrt{2\cdot9.8\cdot4.0\cdot(0.5 - 0.2165)} = 4.71\,\text{m/s}$ (בלי חיכוך $6.26\,\text{m/s}$).
+      - kind: result
+        text: >-
+          $W_f = -42.4\,\text{J}$, $v = 4.71\,\text{m/s}$.
+
+  - id: W-3.3-05
+    level: mid
+    objectives: [OBJ-3.3-1]
+    prompt: >-
+      תא מעלית במסה $1200\,\text{kg}$ קשור בכבל שעובר על גלגלת בראש הפיר אל משקולת נגד במסה $900\,\text{kg}$. המנוע מסובב את הגלגלת, והתא עולה במהירות
+      קבועה $2.0\,\text{m/s}$.
+
+      א. מה ההספק שהמנוע מספק, אם אין חיכוך?
+
+      ב. ומה אם מסילות הפיר מפעילות על התא כוח חיכוך של $400\,\text{N}$?
+    answer: >-
+      א. $5880\,\text{W}$. ב. $6680\,\text{W}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1200\,\text{kg}$, $m_c = 900\,\text{kg}$, $v = 2.0\,\text{m/s}$ קבועה; התא עולה והמשקולת יורדת באותה מהירות.
+      - kind: law
+        text: >-
+          במהירות קבועה $\Delta K = 0$, ולכן ההספק של המנוע שווה לקצב השינוי של האנרגיה הפוטנציאלית של כל המערכת, ועוד ההספק שהחיכוך לוקח.
+      - kind: manipulation
+        text: >-
+          $\dfrac{dU}{dt} = Mgv - m_cgv = (M - m_c)gv$; עם חיכוך $f$ על התא: $P = (M - m_c)gv + fv$.
+      - kind: limit
+        text: >-
+          כש-$m_c = M$, $P = fv$: משקולת נגד שווה למסת התא מבטלת את עבודת ההרמה, והמנוע רק מתגבר על החיכוך.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}^2\cdot\text{m/s} = \text{W}$.
+      - kind: substitution
+        text: >-
+          $P = 300\cdot9.8\cdot2.0 = 5880\,\text{W}$; $P = 5880 + 400\cdot2.0 = 6680\,\text{W}$.
+      - kind: result
+        text: >-
+          א. $5880\,\text{W}$. ב. $6680\,\text{W}$.
+
+  - id: W-3.3-06
+    level: mid
+    objectives: [OBJ-3.3-2, OBJ-3.3-1]
+    prompt: >-
+      חלקיק במסה $0.50\,\text{kg}$ נע על ציר $x$ באנרגיה פוטנציאלית $U(x) = \tfrac12kx^2 - \tfrac14\beta x^4$, עם $k = 8.0\,\text{N/m}$ ו-$\beta = 2.0\,\text{N/m}^3$
+      (קפיץ שמתרכך כשמותחים אותו הרבה).
+
+      א. מצאו את נקודות שיווי המשקל וקבעו את היציבות של כל אחת.
+
+      ב. החלקיק בראשית, ונותנים לו מהירות $v_0$. מה המהירות הגדולה ביותר שבה הוא נשאר כלוא סביב הראשית?
+
+      ג. בין אילו נקודות הוא נע אם $v_0 = 4.0\,\text{m/s}$?
+    answer: >-
+      א. $x = 0$ יציבה; $x = \pm2.0\,\text{m}$ לא יציבות. ב. $5.66\,\text{m/s}$. ג. בין $-1.08$ ל-$+1.08\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.50\,\text{kg}$, $k = 8.0\,\text{N/m}$, $\beta = 2.0\,\text{N/m}^3$, $x(0) = 0$.
+      - kind: law
+        text: >-
+          שיווי משקל ב-$U' = 0$, יציבות לפי הסימן של $U''$; שימור אנרגיה, וכליאה כש-$E$ נמוכה מהשפה הנמוכה של הבור.
+      - kind: manipulation
+        text: >-
+          $U' = kx - \beta x^3 = x\left(k - \beta x^2\right)$: $x = 0$ או $x = \pm\sqrt{k/\beta}$. $U'' = k - 3\beta x^2$: ב-$0$ הוא $k > 0$, וב-$\pm\sqrt{k/\beta}$ הוא $-2k \lt 0$.
+          גובה הגבעות: $U\left(\pm\sqrt{k/\beta}\right) = \dfrac{k^2}{2\beta} - \dfrac{k^2}{4\beta} = \dfrac{k^2}{4\beta}$; שתי השפות באותו גובה, והחלקיק כלוא אם
+          $\tfrac12mv_0^2 \lt k^2/(4\beta)$. נקודות המפנה ב-(ג): $\tfrac14\beta x^4 - \tfrac12kx^2 + E = 0$, משוואה ריבועית ב-$x^2$; הפתרון הקטן הוא שבתוך הבור:
+          $x^2 = \left(k - \sqrt{k^2 - 4\beta E}\right)/\beta$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, הגבעות בורחות לאינסוף ($\sqrt{k/\beta} \to \infty$) והחלקיק תמיד כלוא, כמו בקפיץ רגיל; וב-(ג), כש-$\beta \to 0$, $x^2 \to 2E/k$, נקודות המפנה של קפיץ.
+      - kind: units
+        text: >-
+          $k/\beta$ ב-$(\text{N/m})/(\text{N/m}^3) = \text{m}^2$; $k^2/\beta$ ב-$\text{N}\cdot\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\sqrt{k/\beta} = 2.0\,\text{m}$; $U'' = -16\,\text{N/m}$ שם; $k^2/(4\beta) = 8.0\,\text{J}$, ולכן $v_0 \lt \sqrt{2\cdot8.0/0.50} = 5.66\,\text{m/s}$.
+          ב-$v_0 = 4.0\,\text{m/s}$: $E = 4.0\,\text{J}$, $x^2 = (8 - \sqrt{64 - 32})/2 = 1.17\,\text{m}^2$, $x = \pm1.08\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $0$ יציבה, $\pm2.0\,\text{m}$ לא יציבות. ב. $5.66\,\text{m/s}$. ג. $\pm1.08\,\text{m}$.
+
+  - id: W-3.3-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-3.3-1, OBJ-3.3-2]
+    prompt: >-
+      חלקיק נע על ציר באנרגיה פוטנציאלית $U(x)$ עם כמה בורות, ופועל עליו גם גרר ליניארי $-bv$. קבעו ונמקו:
+
+      א. האם האנרגיה המכנית שלו יכולה לגדול בקטע כלשהו של התנועה?
+
+      ב. האם הוא יכול לעבור בסוף לבור שהשפה שלו גבוהה מהאנרגיה המכנית ההתחלתית שלו?
+
+      ג. מה הסימן של ההספק של הגרר, ומתי הוא אפס?
+    answer: >-
+      א. לא. ב. לא. ג. שלילי תמיד, ואפס רק כש-$v = 0$ (בנקודות מפנה ובמנוחה).
+    solution:
+      - kind: law
+        text: >-
+          $dE/dt = P_{\text{nc}}$, וההספק של הגרר $P = (-bv)v = -bv^2$.
+      - kind: reasoning
+        text: >-
+          א: $dE/dt = -bv^2 \le 0$ בכל רגע, ולכן $E$ לא עולה אף פעם. ב: החלקיק נמצא תמיד בתחום שבו $U(x) \le E(t) \le E_0$, ולכן הוא לא חוצה
+          אף נקודה שבה $U > E_0$. ג: $-bv^2 \lt 0$ כש-$v \neq 0$, ואפס רק כשהחלקיק עוצר.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$, $dE/dt \to 0$ ו-$E$ נשמרת: חוזרים לדיאגרמה בלי גרר, שבה החלקיק מגיע בדיוק לנקודות המפנה של $E_0$.
+      - kind: units
+        text: >-
+          $bv^2$ ב-$\text{kg/s}\cdot\text{m}^2/\text{s}^2 = \text{W}$.
+      - kind: result
+        text: >-
+          א. לא. ב. לא. ג. $P = -bv^2 \le 0$, אפס רק ב-$v = 0$.
+
+  - id: W-3.3-08
+    level: bagrut
+    objectives: [OBJ-3.3-1]
+    prompt: >-
+      משאית במסה $1.2\cdot10^4\,\text{kg}$ עולה בכביש שהשיפוע שלו $\sin\theta = 0.050$. המנוע מספק לגלגלים הספק מרבי של $150\,\text{kW}$. הזניחו את
+      הגרר ואת חיכוך הגלגול.
+
+      א. מה המהירות המרבית של המשאית בעלייה?
+
+      ב. מה התאוצה שלה בעלייה, בהספק המרבי, כשמהירותה $10\,\text{m/s}$? השוו לתאוצה באותה מהירות על כביש אופקי.
+    answer: >-
+      א. $25.5\,\text{m/s}$. ב. $0.76\,\text{m/s}^2$ (על כביש אופקי $1.25\,\text{m/s}^2$).
+    solution:
+      - kind: given
+        text: >-
+          $m = 1.2\cdot10^4\,\text{kg}$, $\sin\theta = 0.050$, $P = 1.5\cdot10^5\,\text{W}$. ציר לאורך הכביש, חיובי במעלה.
+      - kind: law
+        text: >-
+          הכוח המניע בהספק $P$ הוא $F = P/v$; החוק השני לאורך הכביש: $ma = P/v - mg\sin\theta$.
+      - kind: manipulation
+        text: >-
+          במהירות המרבית $a = 0$: $v_{\max} = \dfrac{P}{mg\sin\theta}$. בכל מהירות אחרת: $a = \dfrac{P}{mv} - g\sin\theta$.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$, $v_{\max} \to \infty$: בלי שום התנגדות הספק קבוע מאיץ בלי גבול (התאוצה $P/(mv)$ קטנה אבל לא מתאפסת).
+          וכש-$v \to v_{\max}$, $a \to 0$.
+      - kind: units
+        text: >-
+          $P/(mg)$ ב-$\text{W/N} = \text{m/s}$; $P/(mv)$ ב-$\text{W}/(\text{kg}\cdot\text{m/s}) = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $mg\sin\theta = 1.2\cdot10^4\cdot9.8\cdot0.050 = 5880\,\text{N}$; $v_{\max} = 1.5\cdot10^5/5880 = 25.5\,\text{m/s}$.
+          ב-$10\,\text{m/s}$: $F = 1.5\cdot10^4\,\text{N}$, $a = (15000 - 5880)/1.2\cdot10^4 = 0.76\,\text{m/s}^2$; על כביש אופקי $a = 15000/1.2\cdot10^4 = 1.25\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $25.5\,\text{m/s}$. ב. $0.76\,\text{m/s}^2$, לעומת $1.25\,\text{m/s}^2$ על כביש אופקי.
+
+  - id: W-3.3-09
+    level: bagrut
+    objectives: [OBJ-3.3-2, OBJ-3.3-1]
+    prompt: >-
+      כדור קטן בקצה מוט קל וקשיח באורך $L = 0.50\,\text{m}$, שמסתובב בלי חיכוך סביב ציר אופקי בקצהו השני. הקואורדינטה היא הזווית $\theta$ מהאנך
+      כלפי מטה, והאנרגיה הפוטנציאלית $U(\theta) = mgL\left(1 - \cos\theta\right)$.
+
+      א. שרטטו את $U(\theta)$ בתחום $-\pi \le \theta \le \pi$, וסמנו את נקודות שיווי המשקל ואת היציבות שלהן.
+
+      ב. הכדור בתחתית ומקבל מהירות $2.0\,\text{m/s}$. לאיזו זווית הוא מגיע?
+
+      ג. מה המהירות הקטנה ביותר בתחתית שבה הכדור מסתובב סיבוב שלם? מה משתנה בדיאגרמה במהירות הזו?
+    answer: >-
+      א. $\theta = 0$ יציבה, $\theta = \pm\pi$ (למעלה) לא יציבה. ב. $53.7^\circ$. ג. מעט יותר מ-$\sqrt{4gL} = 4.43\,\text{m/s}$: הקו $E$ עובר מעל המקסימום ונקודות המפנה נעלמות.
+    solution:
+      - kind: given
+        text: >-
+          $L = 0.50\,\text{m}$, $U(\theta) = mgL(1 - \cos\theta)$, $v_0 = 2.0\,\text{m/s}$ ב-$\theta = 0$. המוט קשיח, ולכן הכדור נשאר על המעגל בכל מהירות.
+      - kind: law
+        text: >-
+          $\tfrac12mv^2 + U(\theta) = E$ (המוט ניצב למהירות ולא עושה עבודה); נקודות מפנה ב-$U = E$; שיווי משקל ב-$dU/d\theta = 0$.
+      - kind: manipulation
+        text: >-
+          $dU/d\theta = mgL\sin\theta = 0$ ב-$\theta = 0, \pm\pi$; $d^2U/d\theta^2 = mgL\cos\theta$, חיובי ב-$0$ ושלילי ב-$\pm\pi$.
+          נקודת מפנה: $mgL(1 - \cos\theta_m) = \tfrac12mv_0^2$, כלומר $\cos\theta_m = 1 - \dfrac{v_0^2}{2gL}$. סיבוב שלם: $E > U(\pi) = 2mgL$, כלומר $v_0^2 > 4gL$.
+      - kind: limit
+        text: >-
+          כש-$v_0 \to 0$, $\cos\theta_m \to 1$ ו-$\theta_m \to 0$. כש-$v_0 = \sqrt{2gL}$, $\theta_m = 90^\circ$. וכש-$v_0^2 \to 4gL$ מלמטה, $\theta_m \to \pi$:
+          הכדור מגיע לשיווי המשקל הלא יציב למעלה, ובאנרגיה בדיוק $2mgL$ הוא מתקרב אליו בלי לעבור.
+      - kind: units
+        text: >-
+          $v_0^2/(gL)$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\cos\theta_m = 1 - 4.0/(2\cdot9.8\cdot0.50) = 0.592$, $\theta_m = 53.7^\circ$. $\sqrt{4\cdot9.8\cdot0.50} = 4.43\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $0$ יציבה, $\pm\pi$ לא יציבה. ב. $53.7^\circ$. ג. יותר מ-$4.43\,\text{m/s}$; אז אין נקודות מפנה, והתנועה היא סיבוב.
+
+  - id: W-3.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-3.3-2, OBJ-3.3-1]
+    prompt: >-
+      אטום מתקרב מרחוק אל אטום כבד שעומד במקומו. האנרגיה הפוטנציאלית שלהם כפונקציה של המרחק, $U(r)$, היא בור כמו באיור 3.3א: דופן תלולה ב-$r$
+      קטן, מינימום שלילי, ו-$U \to 0$ כש-$r \to \infty$. האנרגיה המכנית של האטום המתקרב $E > 0$, קטנה.
+
+      א. בלי שום כוח נוסף, האם השניים יכולים להיקשר למולקולה? נמקו לפי הדיאגרמה.
+
+      ב. נניח שבזמן ההתקרבות פועל על האטום גם כוח לא משמר חלש (למשל, התנגשות עם אטום שלישי שלוקחת ממנו אנרגיה). מה התנאי כדי שייקשר?
+    answer: >-
+      א. לא: ב-$E > 0$ יש נקודת מפנה רק בצד הקרוב, והאטום חוזר ובורח. ב. הכוח הלא משמר צריך לעשות עבודה $W_{\text{nc}} \lt -E$, כך ש-$E$ תרד מתחת ל-$0$ לפני שהאטום מתרחק.
+    solution:
+      - kind: law
+        text: >-
+          בלי כוחות לא משמרים $E$ קבועה; עם כוח לא משמר $\Delta E = W_{\text{nc}}$. תנועה קשורה דורשת שתי נקודות מפנה.
+      - kind: reasoning
+        text: >-
+          א: $E > 0$ והשפה הימנית של הבור היא $U(\infty) = 0 \lt E$. הקו $E$ פוגש את העקומה רק בדופן הקרובה: האטום נכנס, נעצר בה, חוזר החוצה ומגיע
+          לאינסוף באותה אנרגיה קינטית. ב: כדי שתהיה נקודת מפנה גם בצד הרחוק, צריך $E_{\text{after}} \lt 0$, כלומר $W_{\text{nc}} \lt -E$. לכן בגז,
+          שני אטומים נקשרים כמעט רק בהתנגשות של שלושה גופים, כשהשלישי לוקח את העודף.
+      - kind: limit
+        text: >-
+          כש-$E \to 0^+$, כל עבודה שלילית קטנה מספיקה. כש-$E$ גדולה מעומק הבור, גם עבודה בגודל העומק לא מספיקה.
+      - kind: units
+        text: >-
+          $E$ ו-$W_{\text{nc}}$ בג׳אול.
+      - kind: result
+        text: >-
+          א. לא. ב. $W_{\text{nc}} \lt -E$: מישהו אחר צריך לקחת יותר מהאנרגיה המכנית שהייתה לו.
+
+challenge:
+  - id: W-3.3-c1
+    stars: 2
+    objectives: [OBJ-3.3-2, OBJ-3.3-1]
+    prompt: >-
+      חלקיק במסה $m$ נע על ציר $x$ באנרגיה פוטנציאלית $U(x) = -U_0e^{-x^2/a^2}$, עם $U_0, a > 0$.
+
+      א. שרטטו את $U(x)$, בחרו אנרגיה מכנית $-U_0 \lt E \lt 0$, וסמנו בנקודה אחת את $K$, את $U$ ואת $E$.
+
+      ב. מצאו את הכוח על החלקיק כפונקציה של $x$, ואת נקודות שיווי המשקל ויציבותן.
+
+      ג. מה המהירות בראשית שבה החלקיק עוצר ומשנה כיוון בדיוק ב-$x = \pm a$?
+
+      ד. מה המהירות הקטנה ביותר בראשית שבה החלקיק לא חוזר? חשבו את (ג) ואת (ד) עבור $U_0 = 1.0\,\text{J}$, $a = 0.50\,\text{m}$, $m = 0.20\,\text{kg}$.
+    answer: >-
+      ב. $F = -\dfrac{2U_0x}{a^2}e^{-x^2/a^2}$; שיווי משקל יחיד, $x = 0$, יציב. ג. $v_0 = \sqrt{2U_0\left(1 - e^{-1}\right)/m} = 2.51\,\text{m/s}$. ד. $\sqrt{2U_0/m} = 3.16\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $U(x) = -U_0e^{-x^2/a^2}$; ציר $x$ ימינה. הבור עמוק $U_0$ בראשית, ו-$U \to 0$ כש-$|x| \to \infty$.
+      - kind: law
+        text: >-
+          $F = -dU/dx$; $E = \tfrac12mv^2 + U$ קבועה; נקודת מפנה ב-$U = E$.
+      - kind: manipulation
+        text: >-
+          לפי כלל השרשרת $\dfrac{dU}{dx} = -U_0e^{-x^2/a^2}\cdot\left(-\dfrac{2x}{a^2}\right) = \dfrac{2U_0x}{a^2}e^{-x^2/a^2}$, ולכן $F = -\dfrac{2U_0x}{a^2}e^{-x^2/a^2}$:
+          אפס רק ב-$x = 0$, ופונה תמיד אל הראשית. $U''(0) = 2U_0/a^2 > 0$: יציב. (ג): $\tfrac12mv_0^2 - U_0 = U(\pm a) = -U_0e^{-1}$.
+          (ד): החלקיק לא חוזר אם $E \ge 0$, כלומר $\tfrac12mv_0^2 \ge U_0$.
+      - kind: limit
+        text: >-
+          ליד הראשית $U \approx -U_0 + (U_0/a^2)x^2$: קפיץ עם $k = 2U_0/a^2$. וכש-$x \to \pm\infty$ גם $F \to 0$: רחוק מהבור החלקיק נע במהירות קבועה.
+          ב-(ג), אם נקודת המפנה רחוקה מאוד ($e^{-x^2/a^2} \to 0$), התשובה שואפת לזו של (ד).
+      - kind: units
+        text: >-
+          $U_0x/a^2$ ב-$\text{J/m} = \text{N}$; $U_0/m$ ב-$\text{m}^2/\text{s}^2$.
+      - kind: substitution
+        text: >-
+          (ג) $v_0 = \sqrt{2\cdot1.0\cdot(1 - 0.368)/0.20} = 2.51\,\text{m/s}$. (ד) $\sqrt{2\cdot1.0/0.20} = 3.16\,\text{m/s}$. ליד הראשית $k = 2\cdot1.0/0.25 = 8.0\,\text{N/m}$.
+      - kind: result
+        text: >-
+          ב. $F = -(2U_0x/a^2)e^{-x^2/a^2}$, שיווי משקל יציב ב-$0$. ג. $2.51\,\text{m/s}$. ד. $3.16\,\text{m/s}$.
+    source:
+      name: MIT 8.01 Classical Mechanics, Problem Set 8
+      year: 2016
+      problem: Problem 5 (Exponential Potential Energy Diagram)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/aaa4c8ddef3a164e107623ec7c65dc0c_MIT8_01F16_pset8.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-3.3-c2
+    stars: 1
+    objectives: [OBJ-3.3-2, OBJ-3.3-1]
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק על ציר $x$ היא בור בצורת V: $U = 0$ כש-$|x| \ge 10\,\text{m}$, $U = -10\,\text{J}$ ב-$x = 0$, וביניהם $U$ ליניארית
+      ב-$|x|$. החלקיק מתנודד בין $x = -5\,\text{m}$ ל-$x = +5\,\text{m}$, וזמן המחזור $8.0\,\text{s}$.
+
+      א. מה הכוח על החלקיק בכל אחד משלושת התחומים?
+
+      ב. מה האנרגיה המכנית שלו?
+
+      ג. מה המסה שלו, ומה המהירות שלו בראשית?
+
+      ד. מה המהירות הקטנה ביותר בראשית שבה הוא היה בורח מהבור?
+    answer: >-
+      א. $|F| = 1.0\,\text{N}$ אל הראשית כש-$0 \lt |x| \lt 10\,\text{m}$; אפס כש-$|x| > 10\,\text{m}$. ב. $-5.0\,\text{J}$. ג. $0.40\,\text{kg}$, $5.0\,\text{m/s}$. ד. $7.07\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          בור V עמוק $10\,\text{J}$ ורוחבו $\pm10\,\text{m}$; נקודות מפנה ב-$\pm5\,\text{m}$; $T = 8.0\,\text{s}$.
+      - kind: law
+        text: >-
+          $F = -dU/dx$; בנקודות מפנה $U = E$; כוח קבוע נותן תאוצה קבועה (שיעור 1.1).
+      - kind: manipulation
+        text: >-
+          השיפוע $10\,\text{J}/10\,\text{m} = 1.0\,\text{N}$, ולכן $F = -1.0\,\text{N}$ כש-$0 \lt x \lt 10$, $F = +1.0\,\text{N}$ כש-$-10 \lt x \lt 0$.
+          $E = U(\pm5) = -5.0\,\text{J}$. מהראשית לנקודת המפנה (רבע מחזור, $t_q = T/4$) הכוח קבוע: התנועה בתאוצה קבועה, ובסופה $v = 0$, ולכן
+          $A = \tfrac12at_q^2$, $a = 2A/t_q^2$, $m = |F|/a$. המהירות בראשית $v = at_q$, או מ-$\tfrac12mv^2 = E - U(0)$.
+      - kind: limit
+        text: >-
+          כשהאנרגיה עולה ל-$0$, נקודות המפנה מגיעות ל-$\pm10\,\text{m}$, שם הכוח נעלם: מעבר להן החלקיק כבר לא חוזר. ושימו לב: בבור V זמן המחזור תלוי באנרגיה
+          ($T \propto \sqrt{A}$), בניגוד לבור הרמוני.
+      - kind: units
+        text: >-
+          $2A/t_q^2$ ב-$\text{m/s}^2$; $|F|/a$ ב-$\text{N}/(\text{m/s}^2) = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $t_q = 2.0\,\text{s}$, $a = 2\cdot5/2.0^2 = 2.5\,\text{m/s}^2$, $m = 1.0/2.5 = 0.40\,\text{kg}$, $v = 2.5\cdot2.0 = 5.0\,\text{m/s}$ (ובדיקה: $\tfrac12\cdot0.40\cdot5.0^2 = 5.0\,\text{J} = E - U(0)$).
+          בריחה: $\tfrac12mv^2 \ge 10\,\text{J}$, $v \ge \sqrt{2\cdot10/0.40} = 7.07\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $1.0\,\text{N}$ אל הראשית בתוך הבור, אפס מחוצה לו. ב. $-5.0\,\text{J}$. ג. $0.40\,\text{kg}$, $5.0\,\text{m/s}$. ד. $7.07\,\text{m/s}$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2010
+      problem: Question 20 (with Questions 18 and 19)
+      url: https://www.aapt.org/physicsteam/2010/upload/2010_FmaSolutions.pdf
+      verified: '2026-11-10'
+      adapted: true

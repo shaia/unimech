@@ -1,0 +1,464 @@
+# Workbook, lesson 4.1 (collisions in one dimension). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch4/4-1/workbook.ts against src/physics/collisions.ts with G = 9.8:
+#   W02 m2 = 1.2 kg, K lost 6.0 J (all of it);  W03 momentum 0.600 before and after, e = 0.867, K 0.360 → 0.326 J,
+#   lost 0.0336 J (9.3 %);  W05 m2 = 2 m1, v2' = 2v/3;  W06 rebound 9.0 m/s, impulse 1.22 N·s, K 4.18 J, lost 1.83 J (43.75 %);
+#   W07 e = 0, 0.5, 1: v1' = 0.5, 0.25, 0 v; v2' = 0.5, 0.75, 1 v; lost 50, 37.5, 0 %;
+#   W08 v = √(2gh) = 4.85 m/s, tennis ball up at 12.8 m/s (2.65 v), 8.41 m = 7.01 h (9h = 10.8 m in the limit),
+#       basketball 3.14 m/s up;  W09 0.75 and 2.25 m/s, then −1.5 and 0; K 4.5 → 2.81 → 1.125 J, lost 1.69 J twice,
+#       3.375 J = 75 %;  W10 V = 0, v1' = −1.8, v2' = 1.2 m/s, K 15 → 5.4 J, 64 % = 1 − e²;
+#   c1 α = 0.5: r1 from 1/3 (e = 1) to 2/3 (e = 0), r2 from 2/3 to 4/3;
+#   c2 V = 0.833 m/s, 50 m after 60 s; μ = 1.67 kg, K 25 J, ½(m+M)V² = 4.17 J, ½μv0² = 20.8 J; 44 collisions for
+#      the relative speed to fall below 1 %; after 10 collisions relative speed 1.74 m/s, 18.3 J lost (stepwise check).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '4.1'
+practice:
+  - id: W-4.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-4.1-1, OBJ-4.1-2]
+    prompt: >-
+      לכל משפט, קבעו אם הוא נכון ונמקו. בכל המקרים שני גופים מתנגשים חזיתית על משטח אופקי בלי חיכוך.
+
+      א. התנע הכולל של שני הגופים נשמר בכל התנגשות כזו.
+
+      ב. בהתנגשות פלסטית כל האנרגיה הקינטית של הגופים הופכת לחום.
+
+      ג. אם בגופים לא אגורה אנרגיה שיכולה להשתחרר בהתנגשות (כמו קפיץ דחוס), ואין מקור אנרגיה אחר, מקדם התקומה
+      יכול להיות $1.2$.
+
+      ד. אחרי התנגשות אלסטית, הגופים מתרחקים זה מזה באותה מהירות שבה התקרבו.
+    answer: >-
+      א. נכון. ב. לא נכון: נשארת האנרגיה של התנועה המשותפת. ג. לא נכון: $e > 1$ מוסיף אנרגיה קינטית, ובלי אנרגיה
+      אגורה אין מאיפה לקחת אותה. ד. נכון.
+    solution:
+      - kind: law
+        text: >-
+          התנע נשמר כשהמתקף החיצוני זניח. מקדם התקומה מוגדר כ-$e = -\dfrac{v_1' - v_2'}{v_1 - v_2}$, והאנרגיה שאובדת היא
+          $\Delta K = \tfrac12\mu\left(v_1 - v_2\right)^2\left(1 - e^2\right)$.
+      - kind: reasoning
+        text: >-
+          א: הכוחות החיצוניים, הכובד והכוח הנורמלי, אנכיים, ואין חיכוך: המתקף החיצוני האופקי אפס. ב: בהתנגשות
+          פלסטית הגופים נעים יחד במהירות $V$ של מרכז המסה, ונשארת אנרגיה $\tfrac12(m_1 + m_2)V^2$, שהיא אפס רק אם
+          התנע הכולל אפס. ג: עם $e > 1$, $\Delta K < 0$: האנרגיה הקינטית הייתה גדלה, והאנרגיה הזו חייבת לבוא
+          ממקום כלשהו. קפיץ דחוס ונעול שמשתחרר במגע יכול לתת אותה, אבל המשפט שולל את זה. ד: זה בדיוק $e = 1$.
+      - kind: limit
+        text: >-
+          ב-$e = 0$ ההפסד הגדול ביותר, $\tfrac12\mu\left(v_1 - v_2\right)^2$; ב-$e = 1$ אפס.
+      - kind: units
+        text: >-
+          $\mu\left(v_1 - v_2\right)^2$ ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$, ו-$e$ חסר ממדים.
+      - kind: result
+        text: >-
+          א ו-ד נכונים; ב ו-ג לא נכונים.
+
+  - id: W-4.1-02
+    level: basic
+    objectives: [OBJ-4.1-1]
+    prompt: >-
+      על מסילה בלי חיכוך, עגלה בעלת מסה $2.0\,\text{kg}$ נעה ימינה ב-$1.5\,\text{m/s}$, ועגלה שנייה נעה שמאלה
+      ב-$2.5\,\text{m/s}$. העגלות מתנגשות, נצמדות זו לזו, ו**נעצרות**. מה מסת העגלה השנייה, וכמה אנרגיה קינטית אבדה?
+    answer: >-
+      $1.2\,\text{kg}$; אבדה כל האנרגיה הקינטית, $6.0\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה. $m_1 = 2.0\,\text{kg}$, $v_1 = +1.5\,\text{m/s}$, $v_2 = -2.5\,\text{m/s}$, ואחרי ההתנגשות $V = 0$.
+      - kind: law
+        text: >-
+          שימור תנע: $m_1v_1 + m_2v_2 = \left(m_1 + m_2\right)V$.
+      - kind: manipulation
+        text: >-
+          עם $V = 0$: $m_1v_1 = -m_2v_2$, ולכן $m_2 = m_1v_1/\left(-v_2\right)$. התנע הכולל אפס, ולכן כל האנרגיה הקינטית
+          אובדת: $\Delta K = \tfrac12m_1v_1^2 + \tfrac12m_2v_2^2$.
+      - kind: limit
+        text: >-
+          אם $|v_2|$ שואף לאפס, $m_2$ צריכה לשאוף לאינסוף: רק קיר עוצר עגלה שפוגעת בו בלי לזוז.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot(\text{m/s})/(\text{m/s}) = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $m_2 = 2.0\cdot1.5/2.5 = 1.2\,\text{kg}$. $\Delta K = \tfrac12\cdot2.0\cdot1.5^2 + \tfrac12\cdot1.2\cdot2.5^2 = 2.25 + 3.75 = 6.0\,\text{J}$.
+      - kind: result
+        text: >-
+          $m_2 = 1.2\,\text{kg}$, ואבדו $6.0\,\text{J}$, כל האנרגיה הקינטית.
+
+  - id: W-4.1-03
+    level: basic
+    objectives: [OBJ-4.1-2]
+    prompt: >-
+      בניסוי על מסילת אוויר, דאון בעל מסה $0.50\,\text{kg}$ נע ב-$1.20\,\text{m/s}$ ופוגע בדאון בעל מסה $0.30\,\text{kg}$
+      שעומד. אחרי ההתנגשות מדדו: הדאון הראשון ממשיך באותו כיוון ב-$0.36\,\text{m/s}$, והשני ב-$1.40\,\text{m/s}$. בדקו
+      שהתנע נשמר, ומצאו את מקדם התקומה ואת האנרגיה הקינטית שאבדה.
+    answer: >-
+      התנע $0.600\,\text{kg}\cdot\text{m/s}$ לפני ואחרי; $e = 0.867$; אבדו $0.0336\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה. $m_1 = 0.50$, $m_2 = 0.30\,\text{kg}$; $v_1 = 1.20$, $v_2 = 0$, $v_1' = 0.36$, $v_2' = 1.40\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $e = -\dfrac{v_1' - v_2'}{v_1 - v_2}$, ו-$\Delta K = K - K'$.
+      - kind: substitution
+        text: >-
+          תנע: $0.50\cdot1.20 = 0.600$ לפני, ו-$0.50\cdot0.36 + 0.30\cdot1.40 = 0.18 + 0.42 = 0.600\,\text{kg}\cdot\text{m/s}$ אחרי.
+          $e = (1.40 - 0.36)/1.20 = 0.867$. $K = \tfrac12\cdot0.50\cdot1.20^2 = 0.360\,\text{J}$,
+          $K' = \tfrac12\cdot0.50\cdot0.36^2 + \tfrac12\cdot0.30\cdot1.40^2 = 0.326\,\text{J}$.
+      - kind: limit
+        text: >-
+          בדיקה בנוסחה: $\tfrac12\mu v_{\text{rel}}^2\left(1 - e^2\right)$ עם $\mu = 0.1875\,\text{kg}$ ו-$v_{\text{rel}} = 1.20\,\text{m/s}$ נותן אותו
+          $0.0336\,\text{J}$. אם היה יוצא $e = 1$, ההפסד היה אפס.
+      - kind: units
+        text: >-
+          $e$ הוא יחס של שתי מהירויות: חסר ממדים.
+      - kind: result
+        text: >-
+          התנע נשמר; $e = 0.867$; אבדו $0.0336\,\text{J}$, $9.3\%$ מהאנרגיה.
+
+  - id: W-4.1-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-4.1-1]
+    prompt: >-
+      שתי עגלות בעלות אותה מסה נעות זו לקראת זו על מסילה בלי חיכוך, כל אחת במהירות $v$. קבעו ונמקו, בלי חישוב ארוך,
+      מה המהירויות שלהן אחרי ההתנגשות כש-$e = 1$, כש-$e = 0$, וכש-$e$ כלשהו בין 0 ל-1.
+    answer: >-
+      התנע הכולל אפס, ולכן העגלות יוצאות במהירויות שוות והפוכות: כל אחת חוזרת לאחור במהירות $ev$. ב-$e = 1$ ב-$v$, וב-$e = 0$ הן נעצרות.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה, $v_1 = +v$, $v_2 = -v$, $m_1 = m_2$.
+      - kind: law
+        text: >-
+          שימור תנע, ו-$v_2' - v_1' = e\left(v_1 - v_2\right)$.
+      - kind: reasoning
+        text: >-
+          התנע הכולל $mv - mv = 0$, ולכן אחרי ההתנגשות $v_1' = -v_2'$. מהירות ההתקרבות $2v$, ומהירות ההתרחקות
+          $v_2' - v_1' = 2v_2' = 2ev$. לכן $v_2' = ev$ ו-$v_1' = -ev$.
+      - kind: limit
+        text: >-
+          $e = 1$: כל עגלה חוזרת במהירות שבה באה. $e = 0$: שתיהן נעצרות, וכל האנרגיה הקינטית אובדת, כי התנע הכולל אפס.
+      - kind: units
+        text: >-
+          $ev$ במטרים לשנייה.
+      - kind: result
+        text: >-
+          $v_1' = -ev$, $v_2' = +ev$: כל עגלה חוזרת לאחור במהירות $ev$.
+
+  - id: W-4.1-05
+    level: mid
+    objectives: [OBJ-4.1-1]
+    prompt: >-
+      כדור במסה $m_1$ נע במהירות $v$ ופוגע התנגשות חזיתית ואלסטית בכדור במסה $m_2$ שעומד. אחרי ההתנגשות הכדור הראשון
+      חוזר לאחור במהירות $v/3$. מה היחס $m_2/m_1$, ובאיזו מהירות נע הכדור השני?
+    answer: >-
+      $m_2 = 2m_1$, והכדור השני נע קדימה ב-$2v/3$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון $v$. $v_1 = v$, $v_2 = 0$, $v_1' = -v/3$, $e = 1$. נסמן $r = m_2/m_1$.
+      - kind: law
+        text: >-
+          התנגשות אלסטית עם גוף 2 עומד: $v_1' = \dfrac{m_1 - m_2}{m_1 + m_2}\,v$ ו-$v_2' = \dfrac{2m_1}{m_1 + m_2}\,v$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{1 - r}{1 + r} = -\dfrac13$, כלומר $3 - 3r = -1 - r$, ולכן $r = 2$. אז $v_2' = \dfrac{2}{1 + r}\,v = \dfrac23v$.
+      - kind: limit
+        text: >-
+          בדיקה: המהירות היחסית מתהפכת, $v_2' - v_1' = \tfrac23v + \tfrac13v = v$. ובדיקת תנע: $m_1v = m_1\left(-\tfrac v3\right) + 2m_1\cdot\tfrac23v$.
+      - kind: units
+        text: >-
+          $r$ חסר ממדים, ו-$v_2'$ במטרים לשנייה.
+      - kind: result
+        text: >-
+          $m_2/m_1 = 2$; $v_2' = 2v/3$, קדימה.
+
+  - id: W-4.1-06
+    level: mid
+    objectives: [OBJ-4.1-2]
+    prompt: >-
+      כדור טניס במסה $0.058\,\text{kg}$ פוגע בניצב בקיר במהירות $12\,\text{m/s}$, ומקדם התקומה בין הכדור לקיר $0.75$. באיזו
+      מהירות הוא חוזר, מה המתקף שהקיר נותן לו, וכמה אנרגיה קינטית אבדה?
+    answer: >-
+      $9.0\,\text{m/s}$; מתקף $1.22\,\text{N}\cdot\text{s}$, בכיוון מהקיר החוצה; אבדו $1.83\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ אל הקיר. $m = 0.058\,\text{kg}$, $v = 12\,\text{m/s}$, $e = 0.75$. הקיר כבד מאוד ועומד.
+      - kind: law
+        text: >-
+          מול קיר שעומד, $v' = -ev$. המתקף שווה לשינוי בתנע (שיעור 3.5): $J = m\left(v' - v\right)$.
+      - kind: manipulation
+        text: >-
+          $J = -m(1 + e)v$, והאנרגיה שאבדה $\tfrac12mv^2 - \tfrac12m(ev)^2 = \tfrac12mv^2\left(1 - e^2\right)$.
+      - kind: limit
+        text: >-
+          ב-$e = 1$ אין הפסד, והמתקף מרבי, $2mv$. ב-$e = 0$ הכדור נדבק לקיר, המתקף $mv$, וכל האנרגיה אובדת.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s} = \text{N}\cdot\text{s}$.
+      - kind: substitution
+        text: >-
+          $v' = -0.75\cdot12 = -9.0\,\text{m/s}$. $|J| = 0.058\cdot1.75\cdot12 = 1.22\,\text{N}\cdot\text{s}$.
+          $K = \tfrac12\cdot0.058\cdot12^2 = 4.18\,\text{J}$, ואבד החלק $1 - 0.75^2 = 0.4375$: $1.83\,\text{J}$.
+      - kind: result
+        text: >-
+          חוזר ב-$9.0\,\text{m/s}$; מתקף $1.22\,\text{N}\cdot\text{s}$ בכיוון מהקיר החוצה; אבדו $1.83\,\text{J}$.
+
+  - id: W-4.1-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-4.1-2]
+    prompt: >-
+      עגלה פוגעת במהירות $v$ בעגלה זהה לה שעומדת. מצאו את $v_1'$, את $v_2'$ ואת החלק מהאנרגיה הקינטית שאובד, כפונקציה
+      של $e$, ושרטטו את שלושתם עבור $e$ מ-0 עד 1. מה קורה ב-$e = 0$, ב-$e = 0.5$ וב-$e = 1$?
+    answer: >-
+      $v_1' = \tfrac12(1 - e)v$, $v_2' = \tfrac12(1 + e)v$, ואובד $\tfrac12\left(1 - e^2\right)$ מהאנרגיה: $50\%$, $37.5\%$ ו-$0$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון $v$. $m_1 = m_2 = m$, $v_1 = v$, $v_2 = 0$.
+      - kind: law
+        text: >-
+          $v_1' = V - \dfrac{m_2}{M}e\,v_{\text{rel}}$, $v_2' = V + \dfrac{m_1}{M}e\,v_{\text{rel}}$, ו-$\Delta K = \tfrac12\mu v_{\text{rel}}^2\left(1 - e^2\right)$.
+      - kind: manipulation
+        text: >-
+          כאן $V = v/2$, $v_{\text{rel}} = v$, $\dfrac{m_2}{M} = \dfrac{m_1}{M} = \tfrac12$ ו-$\mu = m/2$. לכן $v_1' = \tfrac12(1 - e)v$, $v_2' = \tfrac12(1 + e)v$,
+          ו-$\Delta K/K = \dfrac{\tfrac14mv^2\left(1 - e^2\right)}{\tfrac12mv^2} = \tfrac12\left(1 - e^2\right)$.
+      - kind: reasoning
+        text: >-
+          $v_1'$ יורד בקו ישר מ-$v/2$ ל-0, $v_2'$ עולה בקו ישר מ-$v/2$ ל-$v$, והחלק שאובד יורד בפרבולה מ-$\tfrac12$ ל-0. הפרבולה שטוחה ליד $e = 0$ ותלולה ליד $e = 1$:
+          גם ב-$e = 0.5$ אובדים $37.5\%$, כמעט כמו בהתנגשות פלסטית.
+      - kind: limit
+        text: >-
+          $e = 0$: שתי העגלות ב-$v/2$, חצי מהאנרגיה אובד. $e = 1$: החלפת מהירויות, בלי הפסד.
+      - kind: units
+        text: >-
+          המהירויות ב-$\text{m/s}$ והחלק חסר ממדים.
+      - kind: result
+        text: >-
+          $e = 0$: $\tfrac12v$, $\tfrac12v$, $50\%$. $e = 0.5$: $\tfrac14v$, $\tfrac34v$, $37.5\%$. $e = 1$: $0$, $v$, $0$.
+
+  - id: W-4.1-08
+    level: bagrut
+    objectives: [OBJ-4.1-1]
+    prompt: >-
+      מניחים כדור טניס, במסה $0.058\,\text{kg}$, על גבי כדורסל, במסה $0.60\,\text{kg}$, ומשחררים את שניהם יחד ממנוחה, כשתחתית
+      הכדורסל בגובה $1.2\,\text{m}$ מעל הרצפה. הכדורסל פוגע ברצפה וחוזר מעלה, ומיד אחר כך פוגע בכדור הטניס שעדיין יורד.
+      כל ההתנגשויות חזיתיות ואלסטיות, והכדורים קטנים לעומת הגובה. לאיזה גובה, מעל נקודת ההתנגשות, יעלה כדור הטניס?
+    answer: >-
+      הוא יוצא ב-$12.8\,\text{m/s}$ ועולה $8.41\,\text{m}$, פי $7.01$ מגובה השחרור (בגבול של כדורסל כבד מאוד: פי 9).
+    solution:
+      - kind: given
+        text: >-
+          ציר $y$ כלפי מעלה. $m_t = 0.058\,\text{kg}$, $m_b = 0.60\,\text{kg}$, $h = 1.2\,\text{m}$, $e = 1$ בכל התנגשות.
+      - kind: law
+        text: >-
+          נפילה חופשית נותנת $v = \sqrt{2gh}$. הכדורסל חוזר מהרצפה ב-$+v$ בזמן שכדור הטניס עדיין ב-$-v$. ההתנגשות ביניהם
+          אלסטית: $v_t' = \dfrac{(m_t - m_b)v_t + 2m_bv_b}{m_t + m_b}$.
+      - kind: manipulation
+        text: >-
+          עם $v_t = -v$ ו-$v_b = +v$: $v_t' = \dfrac{-(m_t - m_b) + 2m_b}{m_t + m_b}\,v = \dfrac{3m_b - m_t}{m_b + m_t}\,v$. הגובה
+          $H = v_t'^2/(2g) = h\left(\dfrac{3m_b - m_t}{m_b + m_t}\right)^2$.
+      - kind: limit
+        text: >-
+          כש-$m_t \ll m_b$, $v_t' \to 3v$ ו-$H \to 9h$: במערכת הייחוס של הכדורסל, כדור הטניס מגיע ב-$2v$ ונרתע ב-$2v$, ובמעבדה
+          מוסיפים $v$. כש-$m_t = m_b$, $v_t' = v$: החלפת מהירויות, וכדור הטניס חוזר לגובה $h$ בלבד.
+      - kind: units
+        text: >-
+          יחס המסות חסר ממדים, ו-$H$ במטרים.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{2\cdot9.8\cdot1.2} = 4.85\,\text{m/s}$. $\dfrac{3\cdot0.60 - 0.058}{0.658} = 2.65$, ולכן $v_t' = 12.8\,\text{m/s}$ ו-$H = 8.41\,\text{m}$.
+          הכדורסל ממשיך מעלה ב-$3.14\,\text{m/s}$ בלבד.
+      - kind: result
+        text: >-
+          $12.8\,\text{m/s}$ ו-$8.41\,\text{m}$, פי $7.01$ מ-$h$.
+
+  - id: W-4.1-09
+    level: bagrut
+    objectives: [OBJ-4.1-1, OBJ-4.1-2]
+    prompt: >-
+      על מסילה בלי חיכוך, עגלה A בעלת מסה $1.0\,\text{kg}$ נעה ימינה ב-$3.0\,\text{m/s}$ אל עגלה B, בעלת מסה $1.0\,\text{kg}$,
+      שעומדת. מקדם התקומה בין העגלות $0.50$. אחרי ההתנגשות B ממשיכה ימינה, פוגעת התנגשות אלסטית בקיר כבד בקצה המסילה,
+      חוזרת, ופוגעת שוב ב-A.
+
+      א. מה מהירויות העגלות אחרי ההתנגשות הראשונה ביניהן?
+
+      ב. מה מהירויותיהן אחרי ההתנגשות השנייה ביניהן?
+
+      ג. איזה חלק מהאנרגיה הקינטית ההתחלתית אבד בסך הכול?
+    answer: >-
+      א. $0.75$ ו-$2.25\,\text{m/s}$, ימינה. ב. A שמאלה ב-$1.5\,\text{m/s}$, B עומדת. ג. $75\%$: $3.375\,\text{J}$ מתוך $4.5\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה. $m_A = m_B = 1.0\,\text{kg}$, $e = 0.50$ בין העגלות, $e = 1$ מול הקיר.
+      - kind: law
+        text: >-
+          לכל התנגשות בין העגלות: $v_A' = V - \tfrac12e\,v_{\text{rel}}$, $v_B' = V + \tfrac12e\,v_{\text{rel}}$, עם $V = \tfrac12\left(v_A + v_B\right)$ ו-$v_{\text{rel}} = v_A - v_B$.
+          מול הקיר: $v' = -v$.
+      - kind: manipulation
+        text: >-
+          א: $V = 1.5$, $v_{\text{rel}} = 3.0$, ולכן $v_A' = 1.5 - 0.75 = 0.75$ ו-$v_B' = 1.5 + 0.75 = 2.25\,\text{m/s}$. B חוזרת מהקיר ב-$-2.25\,\text{m/s}$.
+          ב: $V = \tfrac12(0.75 - 2.25) = -0.75$, $v_{\text{rel}} = 0.75 - (-2.25) = 3.0$, ולכן $v_A'' = -0.75 - 0.75 = -1.5$ ו-$v_B'' = -0.75 + 0.75 = 0$.
+      - kind: reasoning
+        text: >-
+          בשתי ההתנגשויות מהירות ההתקרבות $3.0\,\text{m/s}$ ו-$\mu = 0.50\,\text{kg}$, ולכן בכל אחת אובד אותו
+          $\tfrac12\mu v_{\text{rel}}^2\left(1 - e^2\right)$. הקיר האלסטי לא מאבד דבר.
+      - kind: limit
+        text: >-
+          ב-$e = 1$ העגלות היו מחליפות מהירויות פעמיים, ו-A הייתה חוזרת ב-$3.0\,\text{m/s}$ בלי הפסד. ב-$e = 0$ הן היו נצמדות כבר בהתנגשות הראשונה.
+      - kind: units
+        text: >-
+          $\mu v_{\text{rel}}^2$ ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\tfrac12\cdot0.50\cdot3.0^2\cdot0.75 = 1.69\,\text{J}$ בכל התנגשות. האנרגיה: $4.5 \to 2.81 \to 1.125\,\text{J}$. אבדו $3.375\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $0.75$ ו-$2.25\,\text{m/s}$. ב. $-1.5$ ו-$0$. ג. $75\%$ מהאנרגיה.
+
+  - id: W-4.1-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-4.1-2]
+    prompt: >-
+      בהתנגשות חזיתית מסוימת התנע הכולל של שני הגופים אפס. הראו שהחלק מהאנרגיה הקינטית שאובד הוא $1 - e^2$, לכל זוג
+      מסות. בדקו עם גוף בעל מסה $2.0\,\text{kg}$ ב-$+3.0\,\text{m/s}$ וגוף בעל מסה $3.0\,\text{kg}$ ב-$-2.0\,\text{m/s}$, עם $e = 0.60$.
+    answer: >-
+      כש-$V = 0$, $K = \tfrac12\mu v_{\text{rel}}^2$, ולכן $\Delta K/K = 1 - e^2$. בדוגמה: $v_1' = -1.8$, $v_2' = 1.2\,\text{m/s}$, $K$ יורד מ-$15$ ל-$5.4\,\text{J}$, $64\%$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה. $m_1v_1 + m_2v_2 = 0$, כלומר $V = 0$.
+      - kind: law
+        text: >-
+          $\Delta K = \tfrac12\mu v_{\text{rel}}^2\left(1 - e^2\right)$, ו-$v_1' = V - \dfrac{m_2}{M}e\,v_{\text{rel}}$, $v_2' = V + \dfrac{m_1}{M}e\,v_{\text{rel}}$.
+      - kind: manipulation
+        text: >-
+          עם $V = 0$: $v_1 = \dfrac{m_2}{M}v_{\text{rel}}$ ו-$v_2 = -\dfrac{m_1}{M}v_{\text{rel}}$, ולכן $K = \tfrac12m_1v_1^2 + \tfrac12m_2v_2^2 = \dfrac{m_1m_2^2 + m_2m_1^2}{2M^2}v_{\text{rel}}^2 = \tfrac12\mu v_{\text{rel}}^2$.
+          מכאן $\Delta K/K = 1 - e^2$.
+      - kind: reasoning
+        text: >-
+          כשהתנע הכולל אפס, אין תנועה משותפת שהתנע מחייב לשמר: כל האנרגיה היא של התנועה היחסית, וכולה זמינה להפסד.
+          בכל מקרה אחר החלק שאובד קטן מ-$1 - e^2$.
+      - kind: limit
+        text: >-
+          $e = 0$: הגופים נעצרים, וכל האנרגיה אובדת. $e = 1$: שום דבר לא אובד, וכל גוף חוזר במהירות שבה בא.
+      - kind: units
+        text: >-
+          $1 - e^2$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          תנע $2.0\cdot3.0 - 3.0\cdot2.0 = 0$. $v_{\text{rel}} = 5.0\,\text{m/s}$, $M = 5.0\,\text{kg}$: $v_1' = -0.60\cdot0.60\cdot5.0 = -1.8$, $v_2' = 0.40\cdot0.60\cdot5.0 = 1.2\,\text{m/s}$.
+          $K = 9.0 + 6.0 = 15\,\text{J}$, $K' = 3.24 + 2.16 = 5.4\,\text{J}$, ו-$1 - 5.4/15 = 0.64 = 1 - 0.60^2$.
+      - kind: result
+        text: >-
+          $\Delta K/K = 1 - e^2$; בדוגמה $64\%$.
+
+challenge:
+  - id: W-4.1-c1
+    stars: 1
+    objectives: [OBJ-4.1-1, OBJ-4.1-2]
+    prompt: >-
+      גוף במסה $m_1$ נע במהירות $v_0$ ופוגע חזיתית בגוף במסה $m_2 = \alpha m_1$, עם $\alpha < 1$, שעומד. ההתנגשות יכולה להיות
+      אלסטית, פלסטית או ביניהן, והגופים לא עוברים זה דרך זה. נסמן $r_1 = v_1'/v_0$ ו-$r_2 = v_2'/v_0$.
+
+      א. מצאו את $r_1$ ואת $r_2$ כפונקציה של $\alpha$ ושל מקדם התקומה $e$.
+
+      ב. מצאו את התחום של כל אחד מהם, ובדקו עבור $\alpha = 0.5$.
+
+      ג. למה הגוף הראשון לא יכול לחזור לאחור, כש-$\alpha < 1$?
+    answer: >-
+      א. $r_1 = \dfrac{1 - \alpha e}{1 + \alpha}$, $r_2 = \dfrac{1 + e}{1 + \alpha}$. ב. $\dfrac{1 - \alpha}{1 + \alpha} \le r_1 \le \dfrac{1}{1 + \alpha}$ ו-$\dfrac{1}{1 + \alpha} \le r_2 \le \dfrac{2}{1 + \alpha}$;
+      ב-$\alpha = 0.5$: $r_1$ מ-$\tfrac13$ עד $\tfrac23$, $r_2$ מ-$\tfrac23$ עד $\tfrac43$. ג. $1 - \alpha e > 0$ כש-$\alpha < 1$ ו-$e \le 1$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון $v_0$. $v_1 = v_0$, $v_2 = 0$, $M = (1 + \alpha)m_1$, $0 \le e \le 1$.
+      - kind: law
+        text: >-
+          $v_1' = V - \dfrac{m_2}{M}e\,v_{\text{rel}}$, $v_2' = V + \dfrac{m_1}{M}e\,v_{\text{rel}}$, עם $V = \dfrac{m_1v_0}{M}$ ו-$v_{\text{rel}} = v_0$.
+      - kind: manipulation
+        text: >-
+          $V = \dfrac{v_0}{1 + \alpha}$, $\dfrac{m_2}{M} = \dfrac{\alpha}{1 + \alpha}$, $\dfrac{m_1}{M} = \dfrac{1}{1 + \alpha}$. לכן $r_1 = \dfrac{1 - \alpha e}{1 + \alpha}$ ו-$r_2 = \dfrac{1 + e}{1 + \alpha}$.
+      - kind: reasoning
+        text: >-
+          שניהם ליניאריים ב-$e$: $r_1$ יורד ו-$r_2$ עולה. הקצוות ב-$e = 0$ (פלסטית, שניהם $\tfrac{1}{1 + \alpha}$) וב-$e = 1$
+          (אלסטית: $r_1 = \tfrac{1 - \alpha}{1 + \alpha}$, $r_2 = \tfrac{2}{1 + \alpha}$). כש-$\alpha < 1$, $\alpha e < 1$, ולכן $r_1 > 0$: הגוף הכבד ממשיך קדימה.
+      - kind: limit
+        text: >-
+          $\alpha \to 1$ ו-$e = 1$: $r_1 = 0$, $r_2 = 1$, החלפת מהירויות. $\alpha \to 0$: $r_1 \to 1$, $r_2 \to 1 + e$, הגוף הכבד לא מרגיש דבר.
+      - kind: units
+        text: >-
+          $r_1$, $r_2$, $\alpha$ ו-$e$ כולם חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $\alpha = 0.5$: $r_1 = (1 - 0.5e)/1.5$, מ-$\tfrac13$ ב-$e = 1$ עד $\tfrac23$ ב-$e = 0$; $r_2 = (1 + e)/1.5$, מ-$\tfrac23$ עד $\tfrac43$.
+      - kind: result
+        text: >-
+          $\dfrac{1 - \alpha}{1 + \alpha} \le r_1 \le \dfrac{1}{1 + \alpha}$ ו-$\dfrac{1}{1 + \alpha} \le r_2 \le \dfrac{2}{1 + \alpha}$; ב-$\alpha = 0.5$: $[\tfrac13, \tfrac23]$ ו-$[\tfrac23, \tfrac43]$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2014
+      problem: Question 16
+      url: https://www.aapt.org/physicsteam/2015/upload/exam1-2014-2-2-solutions.pdf
+      verified: '2026-11-10'
+      adapted: true
+
+  - id: W-4.1-c2
+    stars: 2
+    objectives: [OBJ-4.1-1, OBJ-4.1-2]
+    prompt: >-
+      קופסה בעלת מסה $10\,\text{kg}$ חופשית לנוע על משטח אופקי בלי חיכוך. בתוכה גוש קטן בעל מסה $2.0\,\text{kg}$, שנע בלי
+      חיכוך על רצפת הקופסה. ברגע $t = 0$ הקופסה עומדת, והגוש נע ב-$5.0\,\text{m/s}$ ישר אל אחת הדפנות. מקדם התקומה בכל
+      פגיעה של הגוש בדופן הוא $0.90$, וכל התנועה על קו אחד.
+
+      א. איפה נמצא הגוש, בערך, אחרי דקה?
+
+      ב. מה המהירות היחסית בין הגוש לקופסה אחרי $n$ פגיעות, וכמה אנרגיה קינטית אבדה עד אז?
+
+      ג. אחרי כמה פגיעות המהירות היחסית יורדת מתחת ל-$1\%$ מההתחלתית? כמה אנרגיה קינטית תישאר בסוף, ולמה לא אפס?
+    answer: >-
+      א. כ-$50\,\text{m}$ מנקודת ההתחלה, עם מרכז המסה. ב. $5.0\cdot0.90^n\,\text{m/s}$; אבדו $20.8\left(1 - 0.81^n\right)\,\text{J}$. ג. אחרי 44 פגיעות;
+      נשארים $4.17\,\text{J}$, האנרגיה של התנועה המשותפת, כי התנע $10\,\text{kg}\cdot\text{m/s}$ נשמר.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה של הגוש. $m = 2.0\,\text{kg}$, $M_b = 10\,\text{kg}$, $v_0 = 5.0\,\text{m/s}$, $e = 0.90$.
+      - kind: law
+        text: >-
+          אין כוח חיצוני אופקי, ולכן התנע הכולל נשמר ומרכז המסה נע במהירות קבועה $V$. בכל פגיעה המהירות היחסית מתהפכת
+          ומוכפלת ב-$e$, ואובד $\tfrac12\mu v_{\text{rel}}^2\left(1 - e^2\right)$, כאשר $v_{\text{rel}}$ המהירות היחסית לפני הפגיעה.
+      - kind: manipulation
+        text: >-
+          א: $V = \dfrac{mv_0}{m + M_b}$, ובתוך דקה מרכז המסה נע $60V$. הגוש תמיד בתוך הקופסה, ליד מרכז המסה.
+          ב: לפני הפגיעה הראשונה המהירות היחסית היא $v_0$, ואחרי $n$ פגיעות גודלה $e^nv_0$. ההפסדים מצטברים לסכום של סדרה הנדסית: $\tfrac12\mu v_0^2\left(1 - e^2\right)\left(1 + e^2 + \dots + e^{2(n - 1)}\right) = \tfrac12\mu v_0^2\left(1 - e^{2n}\right)$.
+      - kind: reasoning
+        text: >-
+          ג: $e^n < 0.01$ כש-$n > \ln0.01/\ln0.90 = 43.7$. ההפסד שואף ל-$\tfrac12\mu v_0^2$, האנרגיה של התנועה היחסית. מה שנשאר
+          הוא $\tfrac12(m + M_b)V^2$: התנע נשמר, ולכן הקופסה והגוש ממשיכים יחד במהירות $V$.
+      - kind: limit
+        text: >-
+          $e = 1$: אין הפסד, והגוש מקפץ בין הדפנות לנצח. $e = 0$: הגוש נדבק בפגיעה הראשונה, וההפסד כולו מיד. $M_b \to \infty$: $V \to 0$ ו-$\mu \to m$,
+          וכל האנרגיה של הגוש אובדת בהדרגה.
+      - kind: units
+        text: >-
+          $\mu v_0^2$ בג׳אול; $e^n$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $V = 10/12 = 0.833\,\text{m/s}$, ואחרי $60\,\text{s}$ מרכז המסה זז $50\,\text{m}$. $\mu = \dfrac{2.0\cdot10}{12} = 1.67\,\text{kg}$,
+          $\tfrac12\mu v_0^2 = 20.8\,\text{J}$ מתוך $K = 25\,\text{J}$; נשארים $\tfrac12\cdot12\cdot0.833^2 = 4.17\,\text{J}$. אחרי 10 פגיעות
+          המהירות היחסית $1.74\,\text{m/s}$ ואבדו $18.3\,\text{J}$ (חישוב פגיעה אחר פגיעה נותן אותו דבר).
+      - kind: result
+        text: >-
+          א. כ-$50\,\text{m}$. ב. המהירות היחסית $5.0\cdot0.90^n\,\text{m/s}$, אבדו $20.8\left(1 - 0.81^n\right)\,\text{J}$. ג. 44 פגיעות; נשארים $4.17\,\text{J}$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2014
+      problem: Question 6
+      url: https://www.aapt.org/physicsteam/2015/upload/exam1-2014-2-2-solutions.pdf
+      verified: '2026-11-10'
+      adapted: true

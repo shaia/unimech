@@ -1,18 +1,19 @@
 # Misconceptions first detected in lesson 3.1. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until the lesson
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. The anchors point
+# at the sections of lesson 3.1 that refute each one.
 
 - id: MC-3-force-implies-work
   title: כל כוח שפועל על גוף עושה עליו עבודה
   belief: אם כוח פועל על גוף שנע, הכוח עושה עליו עבודה.
   truth: עבודה נעשית רק על ידי הרכיב של הכוח לאורך ההעתק. כוח שניצב למהירות בכל רגע, כמו מתיחות במעגל או כוח נורמלי על מסילה קבועה, משנה רק את כיוון המהירות ולא עושה עבודה.
-  remedy: { lesson: '3.1', label: 'שיעור 3.1: העבודה כאינטגרל של F·dr' }
+  remedy: { lesson: '3.1', anchor: perpendicular, label: 'שיעור 3.1: כוח ניצב לתנועה לא עושה עבודה' }
 
 - id: MC-3-work-magnitudes
   title: עבודה היא גודל הכוח כפול גודל הדרך
   belief: את העבודה מחשבים ככוח כפול מרחק, בלי לשים לב לזווית ובלי לשים לב שהכוח משתנה.
   truth: העבודה היא סכום של F·dr לאורך המסלול. נכנס בה רק הרכיב של הכוח לאורך ההעתק, וכשהכוח משתנה לאורך הדרך צריך אינטגרל ולא מכפלה אחת.
-  remedy: { lesson: '3.1', label: 'שיעור 3.1: העבודה כאינטגרל של F·dr' }
+  remedy: { lesson: '3.1', anchor: line-integral, label: 'שיעור 3.1: העבודה כאינטגרל של F·dr' }
 
 - id: MC-3-work-path-independent-always
   title: העבודה של כל כוח תלויה רק בנקודות הקצה
@@ -24,4 +25,4 @@
   title: העבודה והאנרגיה הקינטית זהות בכל מערכת ייחוס
   belief: העבודה שכוח עושה היא גודל מוחלט, ולכן השינוי באנרגיה הקינטית זהה בכל מערכת ייחוס אינרציאלית.
   truth: ההעתק תלוי במערכת, ולכן גם העבודה, וגם האנרגיה הקינטית. משפט עבודה-אנרגיה נכון בכל מערכת אינרציאלית, כל מערכת עם המספרים שלה.
-  remedy: { lesson: '3.1', label: 'שיעור 3.1: משפט עבודה-אנרגיה בשתי מערכות ייחוס' }
+  remedy: { lesson: '3.1', anchor: frames, label: 'שיעור 3.1: עבודה במערכות ייחוס שונות' }

@@ -5,14 +5,19 @@
 # Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/q.ts and q2.ts:
 #   triangle pulse, peak 600 N, 0.010 s: J = 3.0 N·s (6.0 from F_max·Δt);
 #   0.20 kg ball, 15 m/s in, 12 m/s out, 0.0050 s: Δp = 5.4 N·s, F_avg = 1080 N (120 from 15 − 12);
-#   F = F0 sin(πt/T), F0 = 50 N, T = 0.20 s, m = 0.40 kg, v0 = −2.0 m/s: J = 2F0T/π = 6.37 N·s, v = 13.9 m/s
-#   (23 from F0·T, 10.5 from F0·T/2, 15.9 without v0);
 #   50 g bullet at 300 m/s into a 1.0 kg block: v = 15/1.05 = 14.3 m/s (15 without the bullet's mass,
 #   65.5 from energy conservation);
-#   20 kg cart at 3.0 m/s, 5.0 kg bag dropped on it: v = 60/25 = 2.4 m/s;
-#   wedge M = 3.0 kg, 30°, block m = 1.0 kg from h = 0.45 m, all frictionless: wedge V = 0.713 m/s
-#   (closed form √(2gh m²cos²θ / ((M+m)(M + m sin²θ))); 0.643 from the fixed-wedge speed; 0.990 from
-#   m√(2gh)/M; 1.71 from giving the wedge all of mgh).
+#   (Q-3.5-sandbag-cart is qualitative; its feedback no longer quotes numbers the prompt does not give.)
+# Review fixes (2026-11-10): Q-3.5-free-track's feedback and a third hint now derive energy conservation from the
+#   zero total work of the normal-force pair (lesson step pair-work), and its 0.99 distractor is tagged
+#   MC-3-moving-surface-no-work. No number changed.
+# The two exam rungs were rewritten with lesson 3.5's text (the lesson prints J = 2F₀T/π for a half-sine and
+# the free wedge's V in closed form, so the old rungs were answered by the text). .scratch/ch3/3-5/bank.ts:
+#   F = 4F0 (t/T)(1 − t/T), F0 = 50 N, T = 0.20 s, m = 0.40 kg, v0 = −2.0 m/s: J = (2/3)F0T = 6.67 N·s,
+#   v = 14.7 m/s (23 from F0·T, 10.5 from F0·T/2, 13.9 from the half-sine's 2F0T/π, 16.7 without v0);
+#   quarter-circle track, M = 3.0 kg, R = 0.45 m, block m = 1.0 kg, all smooth: block v = √(2gR M/(M+m)) =
+#   2.57 m/s, track V = m v/M = 0.857 m/s (0.990 from the fixed-track speed √(2gR) = 2.97 m/s; 1.71 from giving
+#   the track all of mgR; 2.57 is the block's speed).
 
 chapter: 3
 questions:
@@ -86,30 +91,33 @@ questions:
     hints:
       - 'אם הכדור נע לפני הפגיעה במהירות $v_1 = -15\,\text{m/s}$, מה הסימן של מהירותו אחרי?'
 
-  - id: Q-3.5-sine-pulse
+  - id: Q-3.5-parabola-pulse
     type: numeric
     objectives: [OBJ-3.5-1]
     level: bagrut
     prompt: >-
       גוף בעל מסה $0.40\,\text{kg}$ נע על ציר $x$ במהירות $v_0 = -2.0\,\text{m/s}$. מ-$t = 0$ עד $t = T$ פועל עליו
-      הכוח $F(t) = F_0\sin(\pi t/T)$, עם $F_0 = 50\,\text{N}$ ו-$T = 0.20\,\text{s}$, ואחר כך הכוח מפסיק. מה מהירותו
-      בסוף?
-    answer: 13.9
+      הכוח $F(t) = 4F_0\dfrac tT\left(1 - \dfrac tT\right)$, עם $F_0 = 50\,\text{N}$ ו-$T = 0.20\,\text{s}$, ואחר כך
+      הכוח מפסיק. מה מהירותו בסוף?
+    answer: 14.7
     unit: m/s
     correctFeedback: >-
-      נכון. $J = \int_0^TF_0\sin\dfrac{\pi t}{T}\,dt = \dfrac{2F_0T}{\pi} = 6.37\,\text{N·s}$, ולכן
-      $v = v_0 + \dfrac Jm = -2.0 + 15.9 = 13.9\,\text{m/s}$. **בדיקה:** הכוח הממוצע הוא $\dfrac2\pi F_0 \approx 0.64F_0$,
-      בין 0 ל-$F_0$, כמו שצריך לחצי גל סינוס.
-    wrongFeedback: 'חשבו את המתקף כאינטגרל של $F(t)$ בזמן, ואז השתמשו ב-$m v - m v_0 = J$ עם הסימן של $v_0$.'
+      נכון. עם $u = t/T$: $J = 4F_0T\int_0^1u(1 - u)\,du = 4F_0T\left(\tfrac12 - \tfrac13\right) = \tfrac23F_0T = 6.67\,\text{N·s}$,
+      ולכן $v = v_0 + \dfrac Jm = -2.0 + 16.7 = 14.7\,\text{m/s}$. **בדיקה:** הכוח הממוצע $\tfrac23F_0$ נמצא בין
+      הממוצע של משולש, $\tfrac12F_0$, לממוצע של מלבן, $F_0$, וגם מעל חצי סינוס, $\tfrac2\pi F_0 \approx 0.64F_0$: הקשת
+      של הפרבולה מלאה יותר.
+    wrongFeedback: 'חשבו את המתקף כאינטגרל של $F(t)$ בזמן, ואז השתמשו ב-$mv - mv_0 = J$ עם הסימן של $v_0$.'
     commonWrong:
       - value: 23
-        feedback: 'כפלתם $F_0T$, כאילו הכוח היה מרבי כל הזמן. הכוח הממוצע בחצי גל סינוס הוא $2F_0/\pi$.'
+        feedback: 'כפלתם $F_0T$, כאילו הכוח היה מרבי כל הזמן. השטח מתחת לקשת קטן מהמלבן שחוסם אותה.'
       - value: 10.5
-        feedback: 'לקחתם כוח ממוצע $F_0/2$, כמו במשולש. בחצי גל סינוס הממוצע $2F_0/\pi \approx 0.64F_0$, גדול מ-$F_0/2$.'
-      - value: 15.9
+        feedback: 'לקחתם כוח ממוצע $F_0/2$, כמו במשולש. הפרבולה מלאה יותר ממשולש: חשבו את האינטגרל.'
+      - value: 13.9
+        feedback: 'השתמשתם בממוצע של חצי סינוס, $2F_0/\pi$. הכוח כאן הוא פרבולה, לא סינוס: חשבו את האינטגרל שלה.'
+      - value: 16.7
         feedback: 'זה $J/m$, השינוי במהירות. הגוף לא התחיל ממנוחה: הוסיפו את $v_0 = -2.0\,\text{m/s}$.'
     hints:
-      - '$\int_0^T\sin(\pi t/T)\,dt = 2T/\pi$.'
+      - 'הציבו $u = t/T$, ואז $dt = T\,du$ והגבולות מ-0 עד 1.'
 
   # ------------------------------------ OBJ-3.5-2 when momentum is conserved, entirely or in one component
   - id: Q-3.5-falling-ball
@@ -168,8 +176,9 @@ questions:
       - text: רק הרכיב האופקי של התנע נשמר.
         correct: true
         feedback: >-
-          נכון. אופקית אין כוח חיצוני, ולכן $Mv_0 = (M + m)v$: עגלה של $20\,\text{kg}$ ב-$3.0\,\text{m/s}$ ושק של
-          $5.0\,\text{kg}$ ממשיכים ב-$2.4\,\text{m/s}$. אנכית התנע של השק נעלם, כי המסילה דחפה אותו כלפי מעלה.
+          נכון. אופקית אין כוח חיצוני, ולכן $Mv_0 = (M + m)v$, עם $M$ המסה של העגלה, $m$ של השק, $v_0$ מהירות העגלה
+          לפני ו-$v$ המהירות המשותפת אחרי: העגלה מאטה, כי אותו תנע אופקי מתחלק עכשיו על מסה גדולה יותר. אנכית התנע של
+          השק נעלם, כי המסילה דחפה אותו, דרך העגלה, כלפי מעלה.
       - text: התנע כולו נשמר, כי זו התנגשות.
         feedback: >-
           לפני המגע לשק יש תנע כלפי מטה, ואחרי אין לאף אחד תנע אנכי. מי לקח אותו? המסילה, שהיא חיצונית למערכת,
@@ -220,35 +229,39 @@ questions:
     hints:
       - 'השוו את המתקף של החיכוך במשך $0.1\,\text{s}$ לתנע של מכונית בנסיעה.'
 
-  - id: Q-3.5-free-wedge
+  - id: Q-3.5-free-track
     type: numeric
     objectives: [OBJ-3.5-2]
     level: bagrut
     prompt: >-
-      טריז בעל מסה $M = 3.0\,\text{kg}$ וזווית $30^\circ$ מונח על רצפה חלקה. גוש בעל מסה $m = 1.0\,\text{kg}$ משתחרר
-      ממנוחה על הדופן המשופעת, בגובה $h = 0.45\,\text{m}$ מעל הרצפה, ומחליק עליה בלי חיכוך. גם הטריז מתחיל ממנוחה.
-      מה גודל מהירות הטריז ברגע שהגוש מגיע לרצפה?
-    answer: 0.713
+      בגוש בעל מסה $M = 3.0\,\text{kg}$ חצובה מסילה חלקה בצורת רבע מעגל ברדיוס $R = 0.45\,\text{m}$: היא מתחילה אנכית
+      בגובה $R$ מעל הרצפה ומסתיימת אופקית בגובה הרצפה. הגוש מונח על רצפה חלקה. גוש קטן בעל מסה $m = 1.0\,\text{kg}$
+      משתחרר ממנוחה בראש המסילה, ושני הגושים מתחילים במנוחה. מה גודל מהירות הגוש הגדול ברגע שהגוש הקטן יוצא
+      מתחתית המסילה?
+    answer: 0.857
     unit: m/s
     correctFeedback: >-
-      נכון. אין כוח חיצוני אופקי, ולכן $MV = mv_x$ (בכיוונים הפוכים). ביחס לטריז הגוש נע לאורך הדופן, במהירות $u$,
-      ולכן $v_x = u\cos\theta - V$ ו-$v_y = u\sin\theta$. אין חיכוך, והאנרגיה נשמרת:
-      $mgh = \tfrac12MV^2 + \tfrac12m\left(v_x^2 + v_y^2\right)$. הפתרון:
-      $$V = \sqrt{\frac{2ghm^2\cos^2\theta}{(M + m)\left(M + m\sin^2\theta\right)}} = 0.713\,\text{m/s}$$
-      והגוש נע ב-$v_x = 2.14\,\text{m/s}$ אופקית ו-$v_y = 1.65\,\text{m/s}$ כלפי מטה. **בדיקת גבולות:** כש-$M \to \infty$
-      הטריז לא זז, $V \to 0$; כש-$\theta \to 90^\circ$ הגוש נופל אנכית ולא דוחף את הטריז, $V \to 0$.
+      נכון. אין כוח חיצוני אופקי, ולכן רכיב x של התנע נשאר אפס. בתחתית המסילה אופקית, ולכן גם מהירות הגוש הקטן,
+      ביחס לרצפה, אופקית: $mv = MV$ (בכיוונים הפוכים). האנרגיה נשמרת, אבל לא רק כי אין חיכוך: הכוח הנורמלי בין
+      הגושים עושה עבודה על כל אחד מהם, והעבודה הכוללת של הזוג, $\vec N\cdot\left(d\vec r_1 - d\vec r_2\right)$, אפס, כי
+      התנועה היחסית היא לאורך המסילה, ניצבת ל-$\vec N$, כמו בטריז של שיעור 3.5. לכן $mgR = \tfrac12mv^2 + \tfrac12MV^2$.
+      מציבים $v = MV/m$ ומקבלים $V = m\sqrt{\dfrac{2gR}{M(M + m)}} = 0.857\,\text{m/s}$, והגוש הקטן נע ב-$2.57\,\text{m/s}$.
+      **בדיקת גבולות:** כש-$M \to \infty$, $V \to 0$ והגוש הקטן מגיע ל-$\sqrt{2gR}$, כמו על מסילה קבועה.
     wrongFeedback: >-
-      יש שלושה נעלמים: $V$, ו-$v_x$, $v_y$ של הגוש. המשוואות: שימור התנע האופקי, שימור האנרגיה, והאילוץ שביחס לטריז
-      הגוש נע לאורך הדופן.
+      שני נעלמים, $v$ ו-$V$, ושתי משוואות: רכיב x של התנע, ושימור האנרגיה. מה הכיוון של מהירות הגוש הקטן ברגע שהוא
+      יוצא מהתחתית?
     commonWrong:
-      - value: 0.643
-        feedback: >-
-          לקחתם לגוש את המהירות $\sqrt{2gh}$ לאורך הדופן, כמו על טריז קבוע. אבל הטריז זז, ולוקח חלק מהאנרגיה. וגם
-          הכיוון של מהירות הגוש ביחס לרצפה כבר לא לאורך הדופן.
       - value: 0.99
-        feedback: 'הנחתם שכל המהירות $\sqrt{2gh}$ של הגוש אופקית. ביחס לרצפה יש לגוש גם רכיב אנכי, והאנרגיה מתחלקת ביניהם ובין הטריז.'
+        feedback: >-
+          לקחתם לגוש הקטן את המהירות $\sqrt{2gR}$, כמו על מסילה קבועה, כאילו הכוח הנורמלי לא עושה עבודה על הגוש
+          הקטן. אבל המסילה זזה: הנורמלי עושה עבודה חיובית על הגוש הגדול ושלילית באותו גודל על הקטן, ולכן הגוש הקטן
+          יוצא לאט יותר.
+        misconception: MC-3-moving-surface-no-work
       - value: 1.71
-        feedback: 'נתתם לטריז את כל האנרגיה $mgh$. גם לגוש יש אנרגיה קינטית בסוף, ורוב האנרגיה אצלו.'
+        feedback: 'נתתם לגוש הגדול את כל האנרגיה $mgR$. גם לגוש הקטן יש אנרגיה קינטית בסוף, ורוב האנרגיה אצלו.'
+      - value: 2.57
+        feedback: 'זו מהירות הגוש הקטן. השאלה על הגוש הגדול: מהשימור, $V = mv/M$.'
     hints:
-      - 'אילו רכיבים של כוח חיצוני פועלים על גוש + טריז? איזה רכיב של התנע נשמר?'
-      - 'ביחס לטריז, מהירות הגוש מקבילה לדופן: $\tan\theta = \dfrac{v_y}{v_x + V}$.'
+      - 'אילו רכיבים של כוח חיצוני פועלים על שני הגושים יחד? איזה רכיב של התנע נשמר?'
+      - 'בתחתית המסילה אופקית. מה זה אומר על הרכיב האנכי של מהירות הגוש הקטן שם?'
+      - 'האם האנרגיה המכנית נשמרת? חשבו על העבודה הכוללת של שני הכוחות הנורמליים בין הגושים, כמו בצעד "אנרגיה" של הטריז בשיעור 3.5.'

@@ -1,0 +1,33 @@
+# Videos of lesson 3.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch page (lengthSeconds); the content claims rest on
+# the English transcripts MIT OpenCourseWare publishes beside each video (opened 2026-11-10):
+#   oQqskrRWGco: 325 s; transcript ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/
+#     b08fe7afdc54f3902d4c3933f9aff7f0_oQqskrRWGco.srt: the path cut into small intervals Δs_j, the work of each piece
+#     F_j·Δs_j = |F_j| cos θ_j |Δs_j| (the component of the force along the displacement), the sum, its dependence on the
+#     number of pieces, and the limit n → ∞ named the line integral.
+#   i2_731Gi9bg: 351 s; transcript ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/
+#     5c91191d7a63e9e62bc19e9939118601_i2_731Gi9bg.pdf: W = ∫F·ds with F = m dv/dt and ds = v dt, so the work becomes
+#     ∫m dv·v; in Cartesian components ∫m v_x dv_x + ∫m v_y dv_y = ΔK.
+# No Hebrew video on the line integral or the work-energy theorem at this level was found (searched 2026-11-10).
+
+- id: v-3-1-mit-work-2d
+  youtubeId: oQqskrRWGco
+  title: '21.4 Work in 2D and 3D'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 6
+  why: 'לפי התמליל: המרצה מחלק מסלול עקום לקטעים קטנים, כופל בכל קטע את רכיב הכוח לאורך ההעתק בגודל ההעתק, סוכם, ומראה שהסכום תלוי בעדינות החלוקה עד שעוברים לגבול: האינטגרל הקווי. זו בדיוק החלוקה לקטעים של איור 3.1א, עם מחוון "מספר הקטעים".'
+  verified: '2026-11-10'
+
+- id: v-3-1-mit-work-energy
+  youtubeId: i2_731Gi9bg
+  title: '21.5 Work-Kinetic Energy Theorem in 2D and 3D'
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 6
+  why: 'לפי התמליל: גזירה של משפט עבודה-אנרגיה בשני ממדים, מהחוק השני ומ-dr = v dt, ואחר כך ברכיבים, x ו-y לחוד. השוו לגזירה בשיעור, שעוברת דרך הזהות של הנגזרת של v² במקום דרך הרכיבים.'
+  verified: '2026-11-10'

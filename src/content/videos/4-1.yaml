@@ -1,0 +1,31 @@
+# Videos of lesson 4.1. Every id was checked against YouTube oEmbed on the `verified` date (HTTP 200, embeddable;
+# title and channel exactly as returned). Lengths and caption tracks come from the watch page (lengthSeconds,
+# captionTracks). `why` claims only what the title, the description and the course pages support.
+#   Acadt8XxRns: 563 s; manual captions ar, en, iw. The description: Campus IL online mechanics course of
+#     Dr. Yossi Ben-Zion, Bar-Ilan University physics department. No chapters; the content rests on the title.
+#   -q-WiX-KVXo: 2914 s; captions en (manual and automatic). The description gives only the title. The contents
+#     (bowling ball and ping-pong ball, air-track carts of equal masses and 1:2, Velcro carts, Newton's cradle)
+#     come from the video index of the same lecture on MIT OCW 8.01 (Fall 1999), lecture 16, opened 2026-11-10:
+#     https://opencw.aprende.org/courses/physics/8-01-physics-i-classical-mechanics-fall-1999/video-lectures/lecture-16
+
+- id: v-4-1-biu-collision-types
+  youtubeId: Acadt8XxRns
+  title: 'סוגי התנגשויות'
+  channel: 'מבוא לפיזיקה BIU'
+  lang: he
+  captions: [he, en]
+  start: 0
+  minutes: 9
+  why: 'שיעור בעברית מקורס המבוא לפיזיקה של ד"ר יוסי בן ציון מאוניברסיטת בר-אילן, באתר קמפוס. לפי הכותרת הוא ממיין את סוגי ההתנגשויות: השוו את המיון לשלושת המקרים של מקדם התקומה, e = 1, e = 0 וביניהם.'
+  verified: '2026-11-10'
+
+- id: v-4-1-lewin-collisions
+  youtubeId: -q-WiX-KVXo
+  title: '8.01x - Lect 16 -  Elastic & Inelastic Collisions, Center of Mass Frame of Reference'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 49
+  why: 'הרצאה שלמה של קורס 8.01 של MIT על התנגשויות אלסטיות ולא אלסטיות. לפי עמוד ההרצאה ב-MIT OpenCourseWare יש בה כדור באולינג שפוגע בכדור פינג-פונג, עגלות על מסילת אוויר במסות שוות וביחס 1:2, עגלות שנצמדות בסקוטש, ועריסת ניוטון. השוו לאיור 4.1א.'
+  verified: '2026-11-10'

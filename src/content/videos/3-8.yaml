@@ -1,0 +1,20 @@
+# Videos of lesson 3.8. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned).
+#   sNaaL19opxw: oEmbed 200, title and channel as below. The watch page gave no length or caption data to the
+#     fetch; ~50 minutes rests on mirror listings (51:15) and is unconfirmed. `why` rests on the lecture's OCW
+#     description (MIT 8.01 Fall 1999, lecture 20, opencw.aprende.org mirror): angular momentum as a vector, its
+#     rate of change related to torque, conservation without external torque, spin of planets, stars and
+#     neutron stars. Captions are not listed: none were confirmed.
+# Only one video: no short demonstration clip with a verifiable id was found in this session (a Flipping Physics
+# stool demonstration and a lit thrown plunger were found by title only, without an id).
+
+- id: v-3-8-lewin-angular-momentum
+  youtubeId: sNaaL19opxw
+  title: '8.01x - Lect 20 - Angular Momentum, Torques, Conservation of Angular Momentum'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  captions: []
+  start: 0
+  minutes: 50
+  why: 'הרצאה שלמה של קורס 8.01 של MIT. לפי התיאור שלה: התנע הזוויתי כווקטור, הקשר בין קצב השינוי שלו למומנט, שימור כשאין מומנט חיצוני, והתנע הזוויתי העצמי של כוכבי לכת, כוכבים וכוכבי נייטרונים. השוו את הכוכב שמתכווץ ומסתובב מהר יותר לשתי המסות שמתקרבות זו לזו באיור 3.8ג.'
+  verified: '2026-11-10'

@@ -1,0 +1,7 @@
+---
+/** Rocket and variable-mass figure for lesson MDX: <Spread figure={RocketLab} figureProps={{ scene: 'rocket', … }}>. */
+import RocketLab, { type RocketLabProps } from './RocketLab';
+type Props = RocketLabProps;
+---
+
+<RocketLab client:visible {...Astro.props} />

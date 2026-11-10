@@ -1,0 +1,30 @@
+# Videos of lesson 3.2. Every id was checked against YouTube oEmbed on the `verified` date (200: exists, embeddable;
+# title and channel exactly as returned). Lengths and the English caption track come from the watch page
+# (lengthSeconds, captionTracks); neither video lists chapters. `why` claims only what the title and the
+# description support.
+#   76nzOtupeRc: 377 s; the description: defines a conservative vector field (line integrals path independent,
+#     physically the work), and computes an example modelling gravity.
+#   ZGUvyGeNT44: 330 s; the description: derives a test of whether a field is conservative, three equations
+#     between partial derivatives of the components of the field.
+
+- id: v-3-2-conservative-fields
+  youtubeId: 76nzOtupeRc
+  title: 'Conservative Vector Fields  //  Vector Calculus'
+  channel: Dr. Trefor Bazett
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 6
+  why: 'לפי התיאור: הגדרה של שדה משמר, שבו האינטגרל הקווי, כלומר העבודה, תלוי רק בנקודות הקצה, ודוגמה של כובד שמראה שהוא משמר. השוו לשלב הראשון של איור 3.2א, ולהגדרה בסעיף "עבודה במסלול סגור".'
+  verified: '2026-11-10'
+
+- id: v-3-2-curl-test
+  youtubeId: ZGUvyGeNT44
+  title: 'How to Test if a Vector Field is Conservative  //  Vector Calculus'
+  channel: Dr. Trefor Bazett
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 6
+  why: 'לפי התיאור: גזירה של מבחן פשוט לשדה משמר, שלוש משוואות בין נגזרות חלקיות של רכיבי השדה. אלה שלושת הרכיבים של הרוטור במרחב מהסעיף "מבחן הרוטור".'
+  verified: '2026-11-10'

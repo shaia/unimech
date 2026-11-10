@@ -42,7 +42,7 @@ questions:
         answer: 2773
         unit: m/s
         correctFeedback: 'נכון. $\Delta v = u\ln\dfrac{m_0}{m} = 2000\cdot\ln\dfrac{1200}{300} = 2000\ln4 = 2773\,\text{m/s}$.'
-        wrongFeedback: 'אינטגרלו את משוואת הרקטה, $M\,dv = -u\,dM$, מ-$m_0$ עד המסה בלי הדלק.'
+        wrongFeedback: 'בצעו אינטגרל על משוואת הרקטה, $M\,dv = -u\,dM$, מ-$m_0$ עד המסה בלי הדלק.'
         commonWrong:
           - value: 1500
             feedback: 'חישבתם $u\,\Delta m/m_0$, כאילו כל הדלק נפלט בבת אחת מרקטה שמסתה $m_0$. הרקטה נעשית קלה יותר בזמן השריפה, ולכן לוגריתם.'
@@ -207,7 +207,7 @@ questions:
           (2) חשבו את העבודה שהמתיחות עושה על הדסקית בזמן שהרדיוס קטן מ-$r_0$ ל-$r_1 = 0.25\,\text{m}$, כאינטגרל של
           $T(r)$, והראו שהיא שווה לשינוי באנרגיה הקינטית. בדקו את הביטוי בגבולות וביחידות.
         hints:
-          - 'במשיכה איטית, בכל רדיוס המתיחות היא הכוח הצנטריפטלי $mv^2/r$, עם $v$ משימור $L$.'
+          - 'במשיכה איטית, בכל רדיוס המתיחות היא הכוח השקול ברכיב הרדיאלי, ולכן היא שווה ל-$mv^2/r$, עם $v$ משימור $L$.'
         solution:
           - { kind: law, text: 'התנע הזוויתי ביחס ל-$O$ נשמר, $mrv = mr_0v_0$, והחוק השני ברכיב הרדיאלי (מסלול כמעט מעגלי): $T = \dfrac{mv^2}{r}$. העבודה: $W = \int\vec T\cdot d\vec r$.' }
           - { kind: manipulation, text: 'מ-$v = v_0r_0/r$: $$T(r) = \frac{mv_0^2r_0^2}{r^3}$$ המתיחות פונה פנימה, וגם ההעתק הרדיאלי, ולכן העבודה חיובית: $$W = \int_{r_1}^{r_0}\frac{mv_0^2r_0^2}{r^3}\,dr = \frac{mv_0^2r_0^2}{2}\left(\frac1{r_1^2} - \frac1{r_0^2}\right) = \tfrac12mv_0^2\left(\frac{r_0^2}{r_1^2} - 1\right)$$ ומצד שני $\Delta K = \tfrac12m\left(v_0^2\dfrac{r_0^2}{r_1^2} - v_0^2\right)$, אותו ביטוי.' }
@@ -402,7 +402,7 @@ questions:
           - value: -24
             feedback: 'זה רכיב ה-$y$, $F_y = -30\cdot0.60/0.75$. לרכיב ה-$x$ כופלים ב-$x/r$.'
         hints:
-          - '$\dfrac{\partial r}{\partial x} = \dfrac xr$, ולכן $\dfrac{\partial U}{\partial x} = \dfrac{dU}{dr}\cdot\dfrac xr$.'
+          - '$\dfrac{\partial r}{\partial x} = \dfrac xr$, ולכן $\dfrac{\partial U}{\partial x} = \dfrac{dU}{dr}\cdot\dfrac xr$. ביחד עם $y$, זה $\vec F = -\dfrac{dU}{dr}\,\hat r$ (שיעור 3.2).'
 
       - label: ג
         type: numeric
@@ -441,7 +441,7 @@ questions:
           - 'בתנועה מעגלית, הכוח הרדיאלי פנימה הוא $mv^2/r$.'
         solution:
           - { kind: law, text: '$\vec F = -\nabla U = -\dfrac{dU}{dr}\hat r$, כוח מרכזי ביחס ל-$O$, ולכן $\vec\tau = \vec r\times\vec F = 0$ ו-$\vec L$ נשמר (והתנועה במישור השולחן). לתנועה מעגלית, החוק השני ברכיב הרדיאלי: $\dfrac{mv^2}{r} = \dfrac{dU}{dr}$, הכוח פנימה.' }
-          - { kind: manipulation, text: '$\dfrac{dU}{dr} = \dfrac{4U_0}{a^2}\,r\left(\dfrac{r^2}{a^2} - 1\right)$, ולכן $$v(r) = \sqrt{\frac{r}{m}\cdot\frac{dU}{dr}} = \frac{2r}{a}\sqrt{\frac{U_0}{m}\left(\frac{r^2}{a^2} - 1\right)}$$ ביטוי שקיים רק כש-$r \ge a$: בתוך התעלה הכוח פונה החוצה, ואין כוח צנטריפטלי שיחזיק מסלול מעגלי.' }
+          - { kind: manipulation, text: '$\dfrac{dU}{dr} = \dfrac{4U_0}{a^2}\,r\left(\dfrac{r^2}{a^2} - 1\right)$, ולכן $$v(r) = \sqrt{\frac{r}{m}\cdot\frac{dU}{dr}} = \frac{2r}{a}\sqrt{\frac{U_0}{m}\left(\frac{r^2}{a^2} - 1\right)}$$ ביטוי שקיים רק כש-$r \ge a$: בתוך התעלה הכוח פונה החוצה, ואין רכיב רדיאלי פנימה של הכוח השקול שיספק את $mv^2/r$ של מסלול מעגלי.' }
           - { kind: limit, text: 'כש-$r \to a$: $v \to 0$. בתחתית התעלה הכוח אפס, והדסקית יכולה רק לנוח שם. כש-$r \gg a$: $v \approx \dfrac{2r^2}{a^2}\sqrt{U_0/m}$, גדלה מהר, כי הכוח גדל כמו $r^3$.' }
           - { kind: units, text: '$\sqrt{U_0/m}$ ביחידות $\sqrt{\text{J}/\text{kg}} = \text{m/s}$, ו-$\dfrac{2r}{a}$ ו-$\dfrac{r^2}{a^2} - 1$ חסרי ממדים.' }
           - { kind: substitution, text: 'ב-$r = 0.75\,\text{m}$: $\dfrac{r}{a} = 1.5$, ולכן $v = 2\cdot1.5\cdot\sqrt{\dfrac{2.0}{0.10}\cdot(2.25 - 1)} = 3\cdot\sqrt{25} = 15\,\text{m/s}$. בדיקה מחלק ב: $\dfrac{dU}{dr} = 30\,\text{N}$, ו-$\dfrac{mv^2}{r} = \dfrac{0.10\cdot225}{0.75} = 30\,\text{N}$.' }
