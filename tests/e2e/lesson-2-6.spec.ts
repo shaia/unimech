@@ -82,7 +82,8 @@ test.describe('live figures', () => {
     const fig = await openFigure(page, 'fig-2-6c');
     await expect(fig.locator('[data-readout="support"]')).toContainText('6.74 mg');
     await setSlider(fig.locator('input[type=range]').nth(0), 7);
-    expect((await progress(page)).tasks['fig-2-6c:top-min']).toBeTruthy();
+    // no readout changes at this step to wait on, and a slow runner reads the store before the figure saves the task
+    await expect.poll(async () => (await progress(page)).tasks['fig-2-6c:top-min']).toBeTruthy();
     await setSlider(fig.locator('input[type=range]').nth(0), 6);
     await expect(fig.locator('[data-readout="slack"]')).toContainText('124°');
     await fig.getByRole('button', { name: 'מוט', exact: true }).click();
