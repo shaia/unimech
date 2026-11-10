@@ -751,7 +751,9 @@ function paintForces(ctx: CanvasRenderingContext2D, view: View, p: Palette, s: F
   ctx.save();
   ctx.fillStyle = withAlpha(p.paper2, 0.6);
   ctx.fillRect(sx(-TABLE_W / 2), sy(TABLE_H / 2), TABLE_W * ppm, TABLE_H * ppm);
-  ctx.strokeStyle = withAlpha(p.rule, 0.6);
+  // --rule itself (rgba, alpha 0.14): withAlpha would replace that alpha, not scale it, and a 0.6 grid outweighed
+  // the force arrows
+  ctx.strokeStyle = p.rule;
   ctx.lineWidth = 1;
   for (let x = -TABLE_W / 2 + 1; x < TABLE_W / 2; x++) {
     ctx.beginPath();

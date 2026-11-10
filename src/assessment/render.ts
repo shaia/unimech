@@ -70,13 +70,19 @@ export function renderQuestion(q: Question): Question {
           };
         }),
       } as Question;
-    case 'rank':
+    case 'rank': {
+      // the learner starts from the items' order, so it is shuffled like choices and never starts on the key
+      const rendered = q.items.map((it, i) => ({ ...it, label: t(it.label, `items[${i}]`) }));
+      let items = (q as { shuffle?: boolean }).shuffle === false ? rendered : seededShuffle(rendered, `${q.id}:items`);
+      const key = q.order.flat();
+      if (items.length > 1 && items.every((it, i) => it.id === key[i])) items = [...items.slice(1), items[0]];
       return {
         ...base,
         type: 'rank',
-        items: q.items.map((it, i) => ({ ...it, label: t(it.label, `items[${i}]`) })),
+        items,
         correctFeedback: t(q.correctFeedback, 'correctFeedback'),
         wrongFeedback: t(q.wrongFeedback, 'wrongFeedback'),
       } as Question;
+    }
   }
 }

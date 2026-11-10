@@ -25,6 +25,11 @@ export function tex(input: string, where = ''): string {
 }
 
 function renderMath(src: string, display: boolean, where: string): string {
+  // KaTeX reads a lone `\` before a newline or an `&` as a space, so a multi-line formula silently became one
+  // long row (4.1 lost every `\\` to a shell heredoc that collapsed them)
+  if (/(^|[^\\])\\(?:[ \t]*\r?\n|[ \t]+&)/.test(src)) {
+    throw new Error(`a row of ${JSON.stringify(src)}${where ? ` in ${where}` : ''} ends in a single \\: a row break is \\\\`);
+  }
   try {
     return katex.renderToString(src, { displayMode: display, throwOnError: true, strict: 'error' });
   } catch (err) {

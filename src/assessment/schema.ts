@@ -26,7 +26,8 @@ const common = {
   explanation: z.string().optional(),
   /** ask "sure / not sure" before checking: separates misconceptions from gaps */
   confidence: z.boolean().default(true),
-  /** show mc/multi/twotier choices in a fixed shuffled order; false keeps a deliberate order */
+  /** show mc/multi/twotier choices and rank items in a fixed shuffled order; false keeps a deliberate order
+   *  (a rank question never starts on its key either way) */
   shuffle: z.boolean().default(true),
 };
 
