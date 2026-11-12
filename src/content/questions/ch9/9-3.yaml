@@ -9,6 +9,16 @@
 #   γ(t + vx/c²) = 4.75, t − vx/c² = 0.200; check c²t² − x² = −5 (light-s)² in both frames;
 #   beacons Δx = 1.5e9 m, simultaneous in S, β = 0.6: Δt′ = −γβΔx/c = −3.75 s (wrong −3.00, −2.40);
 #   A = (0, 0), B = (1.5e9 m, 3.0 s): simultaneous in β = c Δt/Δx·c = 0.600, where Δx′ = 1.2e9 m = √(−s²).
+# Rechecked by the lesson author with .scratch/ch9/9-3/bank.ts (every key and commonWrong above was right; each
+# commonWrong is > 3% from the answer and the others). Once lesson 9.3 was written, two exam rungs that its text
+# answers were rebuilt: Q-9.3-derive-gamma now sends the pulse toward −x (the lesson sends it toward +x;
+# ct′ = γ(c + v)t, ct = γ(c − v)t′, the same γ), and Q-9.3-contraction-from-lt now measures a rod at rest in S from
+# S′ (the lesson does the rod at rest in S′; Δt′ = 0 ⇒ Δt = vL₀/c², Δx′ = γL₀(1 − β²) = L₀/γ; Δt = 0 gives γL₀).
+# Q-9.3-same-place-same-time was added (a basic rung for OBJ-9.3-2). The lesson's own numbers (β = 0.8, the figure's
+# strikes, the examples) appear in no question.
+# Chapter-9 review (2026-11-12, .scratch/review/ch9/r34.ts, independent closed forms): every key and commonWrong
+# right. Q-9.3-event-t now restates its event (it stands alone), Q-9.3-same-place-same-time uses a collision (a bell
+# rings after it is hit), and the sim-shift feedback states the rule as the lesson does.
 
 chapter: 9
 questions:
@@ -77,8 +87,8 @@ questions:
     objectives: [OBJ-9.3-1]
     level: mid
     prompt: >-
-      לאותו מאורע ($x = 9.0\cdot10^8\,\text{m}$, $t = 2.0\,\text{s}$ ב-$S$, ו-$S'$ נעה במהירות $0.6c$ לאורך $+x$), מה
-      הזמן $t'$ ב-$S'$?
+      מאורע קורה ב-$S$ במקום $x = 9.0\cdot10^8\,\text{m}$ (שלוש שניות אור) ובזמן $t = 2.0\,\text{s}$. מערכת $S'$ נעה
+      ביחס ל-$S$ במהירות $0.6c$ לאורך $+x$, והראשיות מתלכדות ב-$t = t' = 0$. מה הזמן $t'$ של המאורע ב-$S'$?
     answer: 0.25
     unit: s
     correctFeedback: >-
@@ -110,37 +120,67 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      בגזירה מניחים $x' = \gamma(x - vt)$, ולפי עקרון היחסות גם $x = \gamma(x' + vt')$, עם אותו $\gamma$. פולס אור יוצא
-      מהראשית המשותפת ב-$t = t' = 0$ לכיוון $+x$, ולפי ההנחה השנייה הוא מקיים $x = ct$ ב-$S$ וגם $x' = ct'$ ב-$S'$.
-      איזו משוואה ל-$\gamma$ מתקבלת מהצבת הפולס בשתי המשוואות?
+      בגזירה מניחים $x' = \gamma(x - vt)$, ולפי עקרון היחסות גם $x = \gamma(x' + vt')$, עם אותו $\gamma$. הפעם פולס האור
+      יוצא מהראשית המשותפת ב-$t = t' = 0$ לכיוון $(-x)$, כלומר $x = -ct$ ב-$S$ ו-$x' = -ct'$ ב-$S'$ (עם $t, t' > 0$). אילו
+      משוואות מתקבלות מהצבת הפולס בשתי המשוואות, ומה יוצא מהן ל-$\gamma$?
     choices:
       - text: >-
-          $\gamma^2\left(1 - v^2/c^2\right) = 1$
+          $ct' = \gamma(c + v)t$ ו-$ct = \gamma(c - v)t'$, ולכן שוב $\gamma^2\left(1 - v^2/c^2\right) = 1$.
         correct: true
         feedback: >-
-          נכון. ההצבה נותנת $ct' = \gamma(c - v)t$ ו-$ct = \gamma(c + v)t'$. כופלים את שתיהן: $c^2tt' = \gamma^2(c^2 - v^2)tt'$,
-          ולכן $\gamma = 1/\sqrt{1 - v^2/c^2}$. **בדיקת גבולות:** כש-$v \to 0$, $\gamma \to 1$ ומקבלים את גליליי;
-          כש-$v \to c$, $\gamma \to \infty$, ומערכת במהירות האור אינה אפשרית.
+          נכון. הראשונה נותנת $\gamma(-ct - vt) = -ct'$, והשנייה $\gamma(-ct' + vt') = -ct$. כופלים את התוצאות, אחרי הכפלה של כל אחת ב-$(-1)$: $c^2tt' = \gamma^2(c + v)(c - v)tt'$,
+          ולכן $\gamma = 1/\sqrt{1 - v^2/c^2}$, אותו $\gamma$ כמו לפולס לכיוון $+x$. טוב שכך: אילו כל כיוון היה נותן $\gamma$ אחר,
+          לטרנספורמציה לא היה ערך אחד. **בדיקת גבולות:** כש-$v \to 0$, $\gamma \to 1$, גליליי.
       - text: >-
-          $\gamma\left(1 - v/c\right) = 1$
+          $ct' = \gamma(c - v)t$ ו-$ct = \gamma(c + v)t'$, בדיוק כמו לפולס לכיוון $+x$, ולכן אותו $\gamma$.
         feedback: >-
-          זה מה שיוצא מהמשוואה הראשונה לבד, עם $t' = t$. אבל אסור להניח $t' = t$: זמן הפולס בכל מערכת הוא נעלם בפני עצמו,
-          ולכן צריך את שתי המשוואות. וגם הבדיקה נכשלת: $\gamma = 1/(1 - v/c)$ לא נותן את אותו $\gamma$ למהירות $v$ ולמהירות ההפוכה.
+          ה-$\gamma$ נכון, אבל המשוואות לא. בפולס לכיוון $(-x)$, $x - vt = -ct - vt = -(c + v)t$: הפולס והראשית של $S'$ מתרחקים
+          זה מזה, והגורם הוא $c + v$. התפקידים של $c - v$ ו-$c + v$ מתחלפים, והמכפלה שלהם לא.
+      - text: >-
+          $ct' = \gamma(c + v)t$, ועם $t' = t$ יוצא $\gamma = 1/(1 + v/c)$, שונה מה-$\gamma$ של פולס לכיוון $+x$.
+        feedback: >-
+          אסור להניח $t' = t$: זמן הפולס בכל מערכת הוא נעלם בפני עצמו, ולכן צריך את שתי המשוואות. עם $t' = t$ גם כל פולס
+          היה נותן $\gamma$ אחר, וזו סתירה.
         misconception: MC-9-absolute-time
       - text: >-
-          $\gamma^2\left(1 + v^2/c^2\right) = 1$
+          $\gamma^2\left(1 + v^2/c^2\right) = 1$, כי בפולס לכיוון $(-x)$ הסימן של $v$ מתהפך.
         feedback: >-
-          בדקו את הסימן: בכפל מופיע $(c - v)(c + v) = c^2 - v^2$. עם פלוס היה יוצא $\gamma < 1$, ומשם שעונים נעים
-          ממהרים, בניגוד לשעון האור.
-      - text: >-
-          $\gamma = 1$, כי הפולס נע במהירות $c$ בשתי המערכות.
-        feedback: >-
-          עם $\gamma = 1$ המשוואה הראשונה נותנת $ct' = (c - v)t$ והשנייה $ct = (c + v)t'$. כפל שלהן נותן $c^2 = c^2 - v^2$,
-          סתירה כש-$v \neq 0$.
+          בכפל מופיע $(c + v)(c - v) = c^2 - v^2$, לא $c^2 + v^2$. עם פלוס היה יוצא $\gamma < 1$, ושעונים נעים היו ממהרים, בניגוד
+          לשעון האור.
     hints:
-      - 'הציבו $x = ct$ ו-$x'' = ct''$ בשתי המשוואות, וכפלו את שתיהן אחת בשנייה.'
+      - 'הציבו $x = -ct$ ו-$x'' = -ct''$ בשתי המשוואות, שימו לב לסימנים, וכפלו את שתיהן אחת בשנייה.'
 
   # ---------------------------------------------------------------- OBJ-9.3-2 dilation, contraction, simultaneity from it
+  - id: Q-9.3-same-place-same-time
+    type: mc
+    objectives: [OBJ-9.3-2]
+    qualitative: true
+    level: basic
+    prompt: >-
+      במערכת $S$ שני מאורעות קורים באותו מקום ובאותו זמן: כדור A מגיע לנקודה P, וכדור B מגיע לאותה נקודה P באותו רגע,
+      והם מתנגשים. מערכת $S'$ נעה ביחס ל-$S$
+      במהירות $v$ לאורך $x$. האם במערכת $S'$ שני המאורעות בו-זמניים?
+    choices:
+      - text: >-
+          כן, בכל מערכת: $\Delta x = 0$ ו-$\Delta t = 0$ נותנים $\Delta t' = \gamma\left(0 - v\cdot0/c^2\right) = 0$.
+        correct: true
+        feedback: >-
+          נכון. יחסיות הבו-זמניות נובעת מהאיבר $v\Delta x/c^2$, והוא אפס כשהמאורעות באותו מקום. על מפגש, שני דברים באותו מקום
+          ובאותו רגע, כל המערכות מסכימות. לכן "הכדורים התנגשו" הוא עובדה, לא עניין של מערכת.
+      - text: לא. בו-זמניות תלויה במערכת, ולכן ב-$S'$ אחד מהם קודם.
+        feedback: >-
+          בו-זמניות תלויה במערכת רק בשני מאורעות **במקומות שונים**. בטרנספורמציה $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$,
+          ועם $\Delta x = 0$ ו-$\Delta t = 0$ יוצא אפס בכל מהירות.
+      - text: רק אם $v \ll c$. במהירות גבוהה אחד מהם קודם, בהפרש $\gamma - 1$ בערך.
+        feedback: >-
+          $\gamma$ כופל את כל הסוגריים, וכשהסוגריים אפס התוצאה אפס בכל $v$. אין כאן תיקון שגדל עם המהירות.
+      - text: לא. ב-$S'$ שני המאורעות קורים במקום אחר, $x' = \gamma(x - vt)$, ולכן גם בזמנים שונים.
+        feedback: >-
+          שני המאורעות עוברים לאותו $x'$, כי יש להם אותו $x$ ואותו $t$. מקום אחר מאשר ב-$S$, אבל אותו מקום זה כמו זה, ולכן
+          גם אותו $t'$.
+    hints:
+      - 'כתבו את $\Delta t''$ בטרנספורמציה להפרשים, והציבו $\Delta x = 0$ ו-$\Delta t = 0$.'
+
   - id: Q-9.3-sim-shift
     type: numeric
     objectives: [OBJ-9.3-2]
@@ -152,8 +192,8 @@ questions:
     unit: s
     correctFeedback: >-
       נכון. עם $\Delta t = 0$: $\Delta t' = \gamma\left(\Delta t - \dfrac{v\Delta x}{c^2}\right) = -1.25\cdot0.6\cdot5.0\,\text{s}$,
-      כלומר $\Delta t' = -3.75\,\text{s}$. ב-$S'$ משדר B מהבהב קודם. מ-$S'$ נראה ש-$S$ נעה לכיוון $x$ השלילי, ו-B נמצא בחלק
-      **האחורי** שלה: המאורע האחורי מבין שני מאורעות בו-זמניים קורה קודם.
+      כלומר $\Delta t' = -3.75\,\text{s}$. ב-$S'$ משדר B מהבהב קודם: מבין שני מאורעות בו-זמניים ב-$S$, זה שנמצא רחוק יותר
+      בכיוון התנועה של $S'$ (כאן B, ב-$x$ הגדול) קורה קודם ב-$S'$.
     wrongFeedback: >-
       שני המאורעות בו-זמניים ב-$S$, ולכן $\Delta t = 0$. הציבו בטרנספורמציה של $t'$ את ההפרשים, עם הסימן.
     commonWrong:
@@ -217,37 +257,36 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      מוט נח ב-$S'$ בין $x' = 0$ ל-$x' = L_0$. ב-$S$ המוט נע במהירות $v$. איך מקבלים את האורך שלו ב-$S$ מטרנספורמציית
-      לורנץ, ומה יוצא?
+      הפעם המוט נח ב-$S$, בין $x = 0$ ל-$x = L_0$, ורוצים את האורך שלו במערכת $S'$, שבה הוא נע במהירות $(-v)$. משתמשים
+      בטרנספורמציה הישירה, $x' = \gamma(x - vt)$ ו-$t' = \gamma\left(t - vx/c^2\right)$. איך מקבלים ממנה את האורך ב-$S'$, ומה יוצא?
     choices:
       - text: >-
-          מסמנים את שני הקצוות באותו זמן $t$ ב-$S$, כלומר $\Delta t = 0$. אז $L_0 = \Delta x' = \gamma(\Delta x - v\Delta t) = \gamma\Delta x$,
-          ולכן $\Delta x = L_0/\gamma$.
+          מסמנים את הקצוות באותו רגע של $S'$, $\Delta t' = 0$. ממשוואת $t'$ יוצא $\Delta t = v\Delta x/c^2 = vL_0/c^2$, ואז
+          $\Delta x' = \gamma\left(L_0 - v^2L_0/c^2\right) = L_0/\gamma$.
         correct: true
         feedback: >-
-          נכון. האורך במערכת מסוימת הוא המרחק בין הקצוות באותו רגע **שלה**. **בדיקת גבולות:** כש-$v \to 0$, $\Delta x \to L_0$,
-          וכש-$v \to c$, $\Delta x \to 0$. בדרך הזו גם מתקבלת יחסיות הבו-זמניות: שני הסימונים קורים ב-$S'$ בזמנים שונים,
-          $\Delta t' = -\gamma v\Delta x/c^2 = -vL_0/c^2$, והקצה הקדמי סומן קודם.
+          נכון. האורך ב-$S'$ הוא המרחק בין הקצוות באותו רגע **של $S'$**. שני הסימונים האלה אינם בו-זמניים ב-$S$: הקצה ב-$x = L_0$
+          מסומן $vL_0/c^2$ אחרי הקצה ב-$x = 0$, ולכן צריך להציב את ה-$\Delta t$ הזה, לא אפס. **בדיקת גבולות:** כש-$v \to 0$,
+          $\Delta x' \to L_0$; כש-$v \to c$, $\Delta x' \to 0$. ומה שיצא, $L_0/\gamma$, הוא אותה התקצרות כמו למוט שנח ב-$S'$: המצב סימטרי.
       - text: >-
-          מסמנים את שני הקצוות באותו זמן $t'$ ב-$S'$, כלומר $\Delta t' = 0$. אז $\Delta x = \gamma(\Delta x' + v\Delta t') = \gamma L_0$,
-          והמוט ארוך יותר ב-$S$.
+          מסמנים את הקצוות באותו רגע של $S$, $\Delta t = 0$. אז $\Delta x' = \gamma(L_0 - 0) = \gamma L_0$: המוט ארוך יותר ב-$S'$.
         feedback: >-
-          שני סימונים בו-זמניים ב-$S'$ אינם בו-זמניים ב-$S$, ובין שני הסימונים, במערכת $S$, המוט זז. המרחק בין שני
-          הסימנים האלה ב-$S$ אינו האורך של המוט ב-$S$.
-        misconception: MC-9-ends-not-simultaneous
-      - text: לא משנה מתי מסמנים את הקצוות, כי המוט קשיח והאורך שלו קבוע.
-        feedback: >-
-          המוט נע ב-$S$. אם מסמנים קצה אחד ומחכים, הקצה השני מספיק לזוז, והמרחק בין הסימנים תלוי בזמן ההמתנה. רק
-          סימון בו-זמני ב-$S$ מודד את האורך ב-$S$.
+          $\Delta t = 0$ פירושו בו-זמני ב-$S$, אבל ב-$S'$ שני הסימונים האלה קורים בזמנים שונים, $\Delta t' = -\gamma vL_0/c^2$, ובינתיים
+          המוט זז ב-$S'$. המרחק $\gamma L_0$ בין שני המאורעות האלה הוא לא האורך של המוט ב-$S'$.
         misconception: MC-9-ends-not-simultaneous
       - text: >-
-          $\Delta x = \gamma L_0$, כי כמו שהזמן מתארך פי $\gamma$, גם האורך מתארך.
+          $\Delta x' = L_0$: המוט נח ב-$S$, ולכן שום דבר במערכת אחרת לא משנה את האורך שלו.
+        feedback: >-
+          האורך העצמי, $L_0$, נמדד במערכת שבה המוט נח. בכל מערכת שבה הוא נע, מדידה בו-זמנית של שני הקצוות נותנת פחות. נסו
+          להציב $\Delta t' = 0$ ולראות מה יוצא.
+      - text: >-
+          $\Delta x' = \gamma L_0$, כי ב-$S'$ המוט נע, ומוט שנע מתארך פי $\gamma$, כמו הזמן.
         feedback: >-
           הזמן העצמי הוא הקצר ביותר והאורך העצמי הוא **הארוך** ביותר. שתי ההשפעות נובעות מאותה טרנספורמציה, אבל בכיוונים
           הפוכים.
         misconception: MC-9-moving-rod-longer
     hints:
-      - 'מה צריך להיות $\Delta t$ כדי שהמרחק $\Delta x$ בין הסימנים יהיה האורך ב-$S$?'
+      - 'אורך ב-$S''$ פירושו $\Delta t'' = 0$. מה זה נותן ל-$\Delta t$, לפי משוואת $t''$?'
 
   - id: Q-9.3-simultaneous-frame
     type: numeric

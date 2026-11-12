@@ -4,14 +4,23 @@
 # times in seconds (or minutes), so c = 1 in those units.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed with src/physics/constants.ts (C_LIGHT = 3.0e8), .scratch/ch9/nums.ts:
+# Every number was recomputed with src/physics/constants.ts (C_LIGHT = 3.0e8) and src/physics/relativity.ts by
+# .scratch/ch9/9-5/bank.ts (lesson 9.5 written, 2026-11-12):
 #   Δt = 5.0 s, Δx = 9.0e8 m = 3 light-s: s² = 16 (light-s)², proper time 4.00 s (wrong √34 = 5.83, 5.00);
 #   axes tilt at β = 0.6: atan 0.6 = 31.0° (wrong 90° − 31.0° = 59.0°, asin 0.6 = 36.9°);
-#   A → B: Δx = 10 light-min, Δt = 6.0 min, s² = −64; β = 0.8 (γ = 5/3): Δt′ = γ(Δt − βΔx) = −3.33 min,
-#   Δx′ = 8.67 light-min (check 8.67² − 3.33² = 64); wrong −2.00 (no γ), +23.3 (sign), 6.00 (t′ = t);
-#   P = (x, ct) = (3, 5) light-s, β = 0.6: x′ = 0, ct′ = γ(5 − 1.8) = 4.00 light-s = √(25 − 9)
-#   (wrong ruler length √34 = 5.83, γ·5 = 6.25); P = (4, 2) lies on ct = 0.5 x, the x′ axis of β = 0.5;
-#   rank at β = 0.5: ct − 0.5x = 2 (P1), 0.5 (P2), 2 (P3), 1 (P4) → [P1 = P3], P4, P2.
+#   A → B: Δx = 10 light-min, Δt = 6.0 min, s² = −64 (simultaneous at β = 0.6, 8 light-min apart there);
+#   order-reversal (rebuilt at exam level when the lesson printed Δt′ = γ(Δt − βΔx) with its own numbers): the
+#   explosion 3.0 min BEFORE the flash: γ(6 − 10β) = −3 → 109β² − 120β + 27 = 0, β = 0.786 (the other root 0.315
+#   gives +3.0 min; wrong 0.900 without γ, 0.300 without γ and sign, 0.600 the simultaneous frame);
+#   Δx′ there 8.54 light-min (check 3² − 8.54² = −64);
+#   P = (4, 2) lies on ct = 0.5 x, the x′ axis of β = 0.5; x′ = √12 = 3.46;
+#   rank at β = 0.5: ct − 0.5x = 2 (P1), 0.5 (P2), 2 (P3), 1 (P4) → [P1 = P3], P4, P2;
+#   read-tilted-axis (rebuilt: the lesson reads an event on the ct′ axis by the interval at β = 0.75): the x′ axis
+#   passes through Q = (6, 2) → β = 1/3; P on the ct′ axis at ct = 9 → x = 3, s² = 72, t′ = 8.49 s
+#   (wrong ruler √90 = 9.49, t = 9.00, Q's x instead of P's √45 = 6.71).
+# Review 2026-11-12 (.scratch/review/ch9/r56.ts, closed forms): every key, commonWrong and feedback number holds.
+#   Added Q-9.5-unit-tick (the lesson's calibration had no ladder question): β = 0.8, tick ct′ = 2 at
+#   (2γβ, 2γ) = (2.67, 3.33), on (ct)² − x² = 4.00, paper distance 4.27 (wrong 2.0 ruler, 1.20 = 2/γ, 2.67 = x).
 
 chapter: 9
 questions:
@@ -32,7 +41,7 @@ questions:
           $2\gamma^2 v\Delta x\Delta t$ מופיע עם מינוס גם ב-$c^2\Delta t'^2$ וגם ב-$\Delta x'^2$, ומתבטל בהפרש, ונשאר $\gamma^2(1 - \beta^2)\left(c^2\Delta t^2 - \Delta x^2\right)$, כלומר אותו $s^2$.
       - text: $\Delta x^2 + c^2\Delta t^2$
         feedback: >-
-          זה "פיתגורס" במרחב-זמן, והוא משתנה ממערכת למערכת. במערכת שבה שני המאורעות באותו מקום, למשל, הוא $c^2\Delta\tau^2$,
+          זה "פיתגורס" במרחב-זמן, והוא משתנה ממערכת למערכת. במערכת שבה שני המאורעות באותו מקום, למשל, הוא $c^2\tau^2$,
           ובמערכת אחרת גדול ממנו. הגודל הקבוע הוא ההפרש, עם מינוס.
         misconception: MC-9-euclidean-interval
       - text: הזמן $\Delta t$ ביניהם.
@@ -81,10 +90,10 @@ questions:
     answer: 4.0
     unit: s
     correctFeedback: >-
-      נכון. $c^2\Delta\tau^2 = s^2 = c^2\Delta t^2 - \Delta x^2$, ובשניות אור $s^2 = 25 - 9 = 16$, ולכן $\Delta\tau = 4.0\,\text{s}$.
+      נכון. $c^2\tau^2 = s^2 = c^2\Delta t^2 - \Delta x^2$, ובשניות אור $s^2 = 25 - 9 = 16$, ולכן $\tau = 4.0\,\text{s}$.
       זה השעון שנע במהירות $\Delta x/\Delta t = 0.6c$, ואכן $5.0/\gamma = 5.0/1.25 = 4.0\,\text{s}$.
     wrongFeedback: >-
-      במערכת של השעון שני המאורעות באותו מקום, ולכן שם $s^2 = c^2\Delta\tau^2$. האינטרוול זהה בכל המערכות: חשבו אותו
+      במערכת של השעון שני המאורעות באותו מקום, ולכן שם $s^2 = c^2\tau^2$, עם $\tau$ הזמן העצמי. האינטרוול זהה בכל המערכות: חשבו אותו
       ב-$S$.
     commonWrong:
       - value: 5.83
@@ -147,30 +156,38 @@ questions:
     objectives: [OBJ-9.5-1]
     level: bagrut
     prompt: >-
-      למאורעות A ו-B מהשאלה הקודמת ($\Delta x = 10$ דקות אור, $\Delta t = 6.0\,\text{min}$ במערכת של כדור הארץ), מה הזמן
-      $\Delta t' = t'_B - t'_A$ במערכת של חללית שנעה במהירות $0.8c$ מכדור הארץ לכיוון התחנה? ענו בדקות, עם הסימן.
-    answer: -3.33
-    unit: min
+      מאורע A: הבזק על כדור הארץ ברגע $t = 0$. מאורע B: פיצוץ בתחנת חלל שנחה במרחק 10 דקות אור מכדור הארץ, ברגע
+      $t = 6.0\,\text{min}$, שניהם במערכת של כדור הארץ. חללית נעה מכדור הארץ לכיוון התחנה, ובמערכת שלה הפיצוץ קורה
+      $3.0\,\text{min}$ **לפני** ההבזק. מה המהירות של החללית? ענו כשבר של $c$.
+    answer: 0.786
+    unit: c
     correctFeedback: >-
-      נכון. בדקות ובדקות אור, $\Delta t' = \gamma(\Delta t - \beta\Delta x) = \tfrac53(6.0 - 8.0)$, כלומר
-      $\Delta t' = -3.33\,\text{min}$: בחללית הפיצוץ קורה לפני ההבזק. בדיקה: $\Delta x' = \tfrac53(10 - 0.8\cdot6.0) = 8.67$,
-      ו-$3.33^2 - 8.67^2 = -64$, אותו $s^2$. **בדיקת גבולות:** הסדר מתהפך רק כש-$\beta > c\Delta t/\Delta x = 0.6$, וב-$\beta = 0.6$
-      שני המאורעות בו-זמניים. אילו A היה שולח אות שגורם ל-B, בחללית התוצאה הייתה קודמת לסיבה.
+      נכון. בדקות ובדקות אור, $c\Delta t' = \gamma\left(c\Delta t - \beta\Delta x\right)$, וצריך $\gamma(6.0 - 10\beta) = -3.0$,
+      כלומר $10\beta - 6 = 3\sqrt{1 - \beta^2}$. בריבוע: $109\beta^2 - 120\beta + 27 = 0$, עם השורשים $\beta = 0.786$ ו-$\beta = 0.315$.
+      השורש הקטן נותן $10\beta - 6 < 0$: שם הפיצוץ קורה $3.0\,\text{min}$ **אחרי** ההבזק, והוא נכנס רק מפני שהעלינו בריבוע.
+      בדיקה: $\gamma = 1.62$ ו-$1.62\cdot(6.0 - 7.86) = -3.0$; $\Delta x' = 8.54$ דקות אור, ו-$3.0^2 - 8.54^2 = -64$, אותו $s^2$
+      כמו ב-$6^2 - 10^2$. **בדיקת גבולות:** הסדר מתהפך רק מעל $\beta = c\Delta t/\Delta x = 0.6$, שם המאורעות בו-זמניים, ו-$\beta$
+      של התשובה אכן גדול ממנו; וכש-$\beta \to 1$, $c\Delta t' \to -\infty$.
     wrongFeedback: >-
-      $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$. ביחידות של דקות ודקות אור, $v\Delta x/c^2 = \beta\Delta x$.
+      כתבו $c\Delta t' = \gamma\left(c\Delta t - \beta\Delta x\right)$ בדקות ובדקות אור, הציבו $c\Delta t' = -3.0$, והעבירו את השורש
+      לאגף אחד לפני שאתם מעלים בריבוע.
     commonWrong:
-      - value: 3.33
+      - value: 0.315
         feedback: >-
-          הסימן הפוך. $\Delta t - \beta\Delta x = 6.0 - 8.0$ שלילי: בחללית B קודם ל-A. זו כל הנקודה של השאלה.
-      - value: -2.0
-        feedback: 'שכחתם את $\gamma = 5/3$.'
-      - value: 23.3
-        feedback: 'סימן: $\Delta t'' = \gamma(\Delta t - \beta\Delta x)$, עם מינוס, כשהחללית נעה לכיוון $+x$, כמו B.'
-      - value: 6.0
-        feedback: 'זה $\Delta t'' = \Delta t$, זמן מוחלט. ביחסות הזמן בין מאורעות במקומות שונים תלוי במערכת.'
-        misconception: MC-9-absolute-time
+          זה השורש השני של המשוואה הריבועית. הציבו אותו בחזרה: $6.0 - 3.15 > 0$, ולכן בחללית הזו הפיצוץ קורה $3.0\,\text{min}$
+          **אחרי** ההבזק. העלאה בריבוע מוסיפה פתרון שלא מקיים את המשוואה המקורית.
+      - value: 0.9
+        feedback: 'פתרתם $6.0 - 10\beta = -3.0$, בלי $\gamma$. ההפרש בזמן ב-$S''$ כפול $\gamma$.'
+      - value: 0.3
+        feedback: >-
+          פתרתם $6.0 - 10\beta = 3.0$: בלי $\gamma$, ועם הסימן הפוך. "לפני" פירושו $\Delta t' = t'_B - t'_A < 0$.
+      - value: 0.6
+        feedback: >-
+          זו המהירות שבה שני המאורעות **בו-זמניים**, $c\Delta t/\Delta x$. כדי שהפיצוץ יקדים ב-$3.0\,\text{min}$ החללית צריכה
+          לנוע מהר יותר.
     hints:
-      - 'עבדו בדקות ובדקות אור, כך ש-$c = 1$.'
+      - 'עבדו בדקות ובדקות אור, כך ש-$c = 1$. מה הסימן של $\Delta t''$ שמבקשים?'
+      - 'אחרי ההעלאה בריבוע יש שני פתרונות. הציבו כל אחד בחזרה במשוואה עם $\gamma$.'
 
   # ---------------------------------------------------------------- OBJ-9.5-2 Minkowski diagrams with a moving frame
   - id: Q-9.5-axes-tilt
@@ -192,9 +209,44 @@ questions:
         feedback: >-
           זו הזווית מציר $x$. הזווית מציר $ct$ היא המשלימה, עם $\tan\alpha = x/(ct) = \beta$.
       - value: 36.9
-        feedback: 'חישבתם $\arcsin 0.6$. היחס בין $x$ ל-$ct$ לאורך הציר הוא טנגנס הזווית, לא סינוס.'
+        feedback: >-
+          זה $\arcsin 0.6$ (וגם הזווית של מערכת שנעה ב-$0.75c$). כאן $0.6$ הוא היחס בין $x$ ל-$ct$ לאורך הציר, כלומר טנגנס הזווית,
+          לא סינוס.
     hints:
       - 'כמה $x$ מתקדם הקו לכל שנייה אור של $ct$?'
+
+  - id: Q-9.5-unit-tick
+    type: numeric
+    objectives: [OBJ-9.5-2]
+    level: mid
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ (ציר $x$ אופקי וציר $ct$ אנכי, בשניות אור) משרטטים את ציר $ct'$ של מערכת $S'$ שנעה במהירות
+      $0.8c$ לאורך $x$, והראשיות מתלכדות ב-$t = t' = 0$. מסמנים על הציר את השנתה $ct' = 2$ שניות אור, כלומר את המאורע שבו
+      השעון בראשית של $S'$ מראה $2\,\text{s}$. באיזה גובה $ct$ בדיאגרמה נמצאת השנתה? ענו בשניות אור.
+    answer: 3.33
+    unit: שניות אור
+    correctFeedback: >-
+      נכון. השנתה היא המאורע $x' = 0$, $ct' = 2$, ובטרנספורמציה ההפוכה $(x,\ ct) = (2\gamma\beta,\ 2\gamma)$. עם $\gamma = 5/3$:
+      $(2.67,\ 3.33)$. בדיקה בהיפרבולת הכיול: $3.33^2 - 2.67^2 = 4.00 = 2^2$, ולכן השנתה על $c^2t^2 - x^2 = 4$. המרחק שלה
+      מהראשית על הנייר, $4.27$, גדול מ-2: קנה המידה של ציר נוטה נקבע בהיפרבולה, לא בסרגל. **בדיקת גבולות:** כש-$\beta \to 0$,
+      $\gamma \to 1$ והשנתה חוזרת ל-$ct = 2$, על ציר $ct$.
+    wrongFeedback: >-
+      השנתה היא מאורע שבו $x' = 0$ ו-$ct' = 2$. העבירו אותו ל-$S$ בטרנספורמציה ההפוכה, $ct = \gamma\left(ct' + \beta x'\right)$.
+    commonWrong:
+      - value: 2.0
+        feedback: >-
+          סימנתם את השנתה בגובה 2, כאילו ציר $ct'$ מכויל כמו ציר $ct$. השעון בראשית של $S'$ נע ב-$S$, ולכן לפי $S$ הוא מגיע ל-2
+          שניות מאוחר יותר, ב-$ct = 2\gamma$.
+        misconception: MC-9-minkowski-euclidean
+      - value: 1.2
+        feedback: >-
+          חילקתם ב-$\gamma$ במקום לכפול. השעון של $S'$ נע ב-$S$ ומפגר, ולכן ב-$S$ עובר **יותר** זמן עד שהוא מראה 2.
+        misconception: MC-9-proper-time-rest-frame
+      - value: 2.67
+        feedback: >-
+          זה ה-$x$ של השנתה, $2\gamma\beta$. הגובה בדיאגרמה הוא $ct = 2\gamma$.
+    hints:
+      - 'השנתה $ct'' = 2$ היא המאורע $x'' = 0$, $ct'' = 2$. מה $ct$ שלו בטרנספורמציה ההפוכה?'
 
   - id: Q-9.5-xprime-axis
     type: mc
@@ -202,8 +254,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      באותה דיאגרמה, ציר $ct'$ של המערכת שנעה במהירות $0.6c$ כבר משורטט: הוא נוטה ימינה מציר $ct$ ב-$31^\circ$. איפה
-      נמצא ציר $x'$, כלומר כל המאורעות שבהם $t' = 0$?
+      בדיאגרמת מינקובסקי של $S$, עם ציר $x$ אופקי וציר $ct$ אנכי, משורטט ציר $ct'$ של מערכת $S'$ שנעה במהירות $0.6c$
+      לאורך $x$: הוא נוטה ימינה מציר $ct$ ב-$31^\circ$. איפה נמצא ציר $x'$, כלומר כל המאורעות שבהם $t' = 0$?
     choices:
       - text: >-
           על הקו $ct = 0.6x$: הוא נוטה **מעל** ציר $x$ ב-$31^\circ$, לקראת קו האור.
@@ -237,8 +289,8 @@ questions:
       - text: במערכת $S'$, P ו-O בו-זמניים.
         correct: true
         feedback: >-
-          נכון. ציר $x'$ הוא אוסף המאורעות עם $t' = 0$, כמו O. בדיקה: $t' = \gamma\left(t - \beta x/c\right)$, ובשניות
-          ובשניות אור $\gamma(2 - 0.5\cdot4) = 0$. ומ-$s^2 = 4 - 16 = -12$: המרחק ביניהם ב-$S'$ הוא $\sqrt{12} = 3.46$ שניות אור.
+          נכון. ציר $x'$ הוא אוסף המאורעות עם $t' = 0$, כמו O. בדיקה: $ct' = \gamma\left(ct - \beta x\right)$, וכשהזמן
+          בשניות והמרחק בשניות אור, $\gamma(2 - 0.5\cdot4) = 0$. ומ-$s^2 = 4 - 16 = -12$: המרחק ביניהם ב-$S'$ הוא $\sqrt{12} = 3.46$ שניות אור.
       - text: P נמצא על קו העולם של גוף שעבר ב-O ונע במהירות $0.5c$.
         feedback: >-
           קו עולם של גוף איטי מ-$c$ נוטה מציר $ct$, כמו ציר $ct'$, ולא מציר $x$. גוף שעובר ב-O וב-P צריך לנוע במהירות
@@ -286,31 +338,33 @@ questions:
     objectives: [OBJ-9.5-2, OBJ-9.5-1]
     level: bagrut
     prompt: >-
-      בדיאגרמת מינקובסקי של $S$ משורטטים הצירים של מערכת $S'$ שנעה במהירות $0.6c$. מאורע P מסומן ב-$x = 3$ שניות אור
-      וב-$ct = 5$ שניות אור, והוא נמצא בדיוק על ציר $ct'$. מה מראה ב-P שעון שנמצא בראשית של $S'$ ומראה אפס ב-O? ענו
-      בשניות.
-    answer: 4.0
+      בדיאגרמת מינקובסקי של $S$ (ציר $x$ אופקי וציר $ct$ אנכי, בשניות אור) משורטטים הצירים של מערכת $S'$, שנעה לאורך $x$
+      במהירות שלא נתונה. ציר $x'$ עובר דרך הראשית O ודרך המאורע Q, ב-$x = 6$ ו-$ct = 2$ שניות אור. מאורע P נמצא על ציר $ct'$,
+      בגובה $ct = 9$ שניות אור. שעון שנח בראשית של $S'$ מראה אפס ב-O. מה הוא מראה ב-P? ענו בשניות.
+    answer: 8.49
     unit: s
     correctFeedback: >-
-      נכון. P על ציר $ct'$, כלומר $x' = 0$, ולכן $s^2 = c^2t'^2$. מ-$S$: $s^2 = 25 - 9 = 16$, ולכן $ct' = 4$ שניות אור
-      ו-$t' = 4.0\,\text{s}$. אותו דבר מהטרנספורמציה: $ct' = \gamma(ct - \beta x) = 1.25(5 - 1.8) = 4.0$. **בדיקת גבולות:**
-      כש-$\beta \to 0$ ציר $ct'$ הופך לציר $ct$ ו-$t' \to t$. שימו לב: בשרטוט הקטע מ-O ל-P **ארוך** מ-5 יחידות, אבל
-      הוא מייצג רק 4 שניות. קנה המידה על הצירים הנוטים שונה.
+      נכון. ציר $x'$ הוא הקו $ct = \beta x$, ולכן $\beta = 2/6 = 1/3$. ציר $ct'$ הוא $x = \beta\,ct$, ולכן P ב-$x = 9/3 = 3$
+      שניות אור. P על ציר $ct'$, כלומר $x' = 0$, ולכן ב-$S'$, $s^2 = c^2t'^2$. מ-$S$: $s^2 = 81 - 9 = 72$, ולכן
+      $ct' = \sqrt{72} = 8.49$ שניות אור ו-$t' = 8.49\,\text{s}$. אותו דבר מהטרנספורמציה: $\gamma = 1.061$ ו-$ct' = \gamma(9 - 1) = 8.49$.
+      **בדיקת גבולות:** כש-$\beta \to 0$ ציר $x'$ נצמד לציר $x$, ציר $ct'$ לציר $ct$, ו-$t' \to 9\,\text{s}$. שימו לב: על הנייר
+      הקטע OP **ארוך** מ-9 יחידות, אבל הוא מייצג פחות מ-9 שניות.
     wrongFeedback: >-
-      ב-$S'$ המאורע P קורה בראשית, $x' = 0$. השתמשו באינטרוול, שזהה בשתי המערכות.
+      שלושה צעדים: מהשיפוע של ציר $x'$ מוצאים את $\beta$; מציר $ct'$ מוצאים את ה-$x$ של P; ואז האינטרוול מ-O, שזהה בשתי
+      המערכות, כשב-$S'$ P קורה ב-$x' = 0$.
     commonWrong:
-      - value: 5.83
+      - value: 9.49
         feedback: >-
-          מדדתם את אורך הקטע OP בשרטוט, $\sqrt{9 + 25}$. דיאגרמת מינקובסקי היא לא מפה רגילה: הזמן לאורך קו עולם נקבע
+          מדדתם את אורך הקטע OP על הנייר, $\sqrt{3^2 + 9^2}$. דיאגרמת מינקובסקי היא לא מפה רגילה: הזמן לאורך קו עולם נקבע
           באינטרוול, $\sqrt{c^2t^2 - x^2}$.
         misconception: MC-9-minkowski-euclidean
-      - value: 5.0
+      - value: 9.0
         feedback: >-
           זה הזמן ב-$S$. השעון בראשית של $S'$ נמצא גם ב-O וגם ב-P, ולכן הוא מודד את הזמן העצמי, הקצר יותר.
         misconception: MC-9-proper-time-rest-frame
-      - value: 6.25
+      - value: 6.71
         feedback: >-
-          כפלתם ב-$\gamma$. השעון של $S'$ נמצא בשני המאורעות ומודד את הזמן העצמי, ולכן הוא מראה **פחות** מ-$S$.
-        misconception: MC-9-proper-time-rest-frame
+          לקחתם את ה-$x$ של Q, $6$, במקום את ה-$x$ של P. Q על ציר $x'$, ו-P על ציר $ct'$: על ציר $ct'$, $x = \beta\,ct = 3$.
     hints:
+      - 'ציר $x''$ הוא $ct = \beta x$. מה $\beta$, אם הוא עובר ב-Q?'
       - 'מה $x''$ של P? מה זה אומר על $s^2$ במערכת $S''$?'

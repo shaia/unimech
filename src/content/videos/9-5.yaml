@@ -1,0 +1,32 @@
+# Videos of lesson 9.5. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what a transcript supports.
+#   WFAEHKAR5hU: minutephysics, "Spacetime Intervals: Not EVERYTHING is Relative | Special Relativity Ch. 7".
+#     Duration 7:25 and the transcript summary from a transcript page (rosetta.to): a rotated stick keeps its
+#     Pythagorean length; a light bulb on for 4 s in its own frame, combined time and distance in light-seconds,
+#     gives back 4 s for a moving observer; a proper-length example; the name "spacetime interval"; the sign
+#     convention is mentioned briefly. No hyperbolae and no timelike/spacelike classification. Captions unconfirmed.
+#   FscOJbr_bvs: MIT OpenCourseWare, 8.20 (IAP 2021, Markus Klute), "5.5 Causality". Its subtitle file on OCW
+#     (…_FscOJbr_bvs.srt) ends at 5:29: the good guys leave at 0.6c, the bad guys build a faster-than-light ship in
+#     year 4 and attack in year 5; from 1:45 a spacetime diagram; at 3:15 "the attack happens before the spacecraft
+#     is invented" in the good guys' frame; at 3:57 a concept question; at 4:31–4:48 "only C lies within what we call
+#     the light cone of event A". YouTube caption tracks were not confirmed, so `captions` lists nothing.
+
+- id: v-9-5-minutephysics-interval
+  youtubeId: WFAEHKAR5hU
+  title: 'Spacetime Intervals: Not EVERYTHING is Relative | Special Relativity Ch. 7'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 7
+  why: 'סרטון של minutephysics באנגלית. לפי התמליל, הוא משווה מקל מסובב, שהאורך שלו נשמר לפי פיתגורס, לזוג מאורעות, ומראה שצירוף של הזמן והמרחק בשניות אור נותן לכל הצופים את אותו זמן עצמי. השוו לחשבון של המיואון בשיעור.'
+  verified: '2026-11-12'
+
+- id: v-9-5-mit-causality
+  youtubeId: FscOJbr_bvs
+  title: '5.5 Causality'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'הרצאה קצרה של MIT OpenCourseWare באנגלית. לפי התמליל, היא מראה בטרנספורמציית לורנץ שחללית מהירה מהאור תוקפת, במערכת של הנרדפים, לפני שהומצאה, ובסוף, בערך בדקה 4:30, עונה בעזרת חרוט האור איזה מאורע יכול להיות תוצאה של מאורע אחר.'
+  verified: '2026-11-12'

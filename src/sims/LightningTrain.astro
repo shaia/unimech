@@ -1,0 +1,7 @@
+---
+/** Einstein's train and the two lightning strikes, for lesson MDX: <Spread fig="fig-9-1b" figure={LightningTrain} figureProps={{ beta: 0.4, tasks: [...] }}>. */
+import LightningTrain, { type LightningTrainProps } from './LightningTrain';
+type Props = LightningTrainProps;
+---
+
+<LightningTrain client:visible {...Astro.props} />

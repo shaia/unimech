@@ -1,33 +1,34 @@
 # Misconceptions first detected in lesson 9.1. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 9.1
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. Each remedy now
+# points at the element of lesson 9.1 that refutes it (`anchor`, an element id).
 
 - id: MC-9-null-means-earth-at-rest
   title: התוצאה של מייקלסון-מורלי אומרת שכדור הארץ נח באתר
   belief: ההזזה בניסוי מייקלסון-מורלי יצאה אפס כי במקרה כדור הארץ עמד ביחס לאתר בזמן המדידה.
   truth: כדור הארץ מסתובב סביב השמש, ולכן המהירות שלו משנה כיוון במהלך השנה, בכ-60 קילומטרים בשנייה בין שני צדי המסלול. הניסוי חזר בעונות שונות, והתוצאה הייתה אפס בכולן. אי אפשר שכדור הארץ ינוח באתר בכל העונות.
-  remedy: { lesson: '9.1', label: 'שיעור 9.1: מה תוצאת האפס של מייקלסון-מורלי שוללת' }
+  remedy: { lesson: '9.1', label: 'שיעור 9.1: מה תוצאת האפס של מייקלסון-מורלי שוללת', anchor: 'what-they-saw' }
 
 - id: MC-9-mm-not-sensitive
   title: ניסוי מייקלסון-מורלי לא היה רגיש מספיק
   belief: ההזזה הצפויה של פסי ההתאבכות הייתה קטנה מכדי שיראו אותה, ולכן התוצאה לא אומרת כלום.
   truth: התאוריה של האתר ניבאה הזזה של כ-0.4 פס כשמסובבים את המכשיר, והמכשיר הבחין בהזזה של כ-0.01 פס, קטנה פי 40. תוצאת האפס היא מדידה, לא כישלון.
-  remedy: { lesson: '9.1', label: 'שיעור 9.1: ההזזה הצפויה של הפסים' }
+  remedy: { lesson: '9.1', label: 'שיעור 9.1: ההזזה הצפויה של הפסים, ומה נמדד', anchor: 'expected-shift' }
 
 - id: MC-9-light-speed-adds-to-source
   title: מהירות האור מתחברת למהירות המקור או של הצופה
   belief: אור שיוצא ממקור שנע במהירות v נע במהירות c + v, כמו כדור שנזרק מרכבת.
   truth: לפי ההנחה השנייה של איינשטיין, כל צופה אינרציאלי מודד לאור במהירות c, בלי קשר לתנועת המקור או לתנועה של הצופה עצמו. כלל החיבור של גליליי נכשל במהירויות קרובות ל-c.
-  remedy: { lesson: '9.1', label: 'שיעור 9.1: ההנחה השנייה של איינשטיין' }
+  remedy: { lesson: '9.1', label: 'שיעור 9.1: ההנחה השנייה של איינשטיין', anchor: 'two-postulates' }
 
 - id: MC-9-simultaneity-absolute
   title: בו-זמניות היא מוחלטת
   belief: אם שני מאורעות קורים באותו רגע בעיני צופה אחד, הם קורים באותו רגע בעיני כל צופה.
   truth: שני מאורעות שקורים במקומות שונים ובו-זמנית במערכת ייחוס אחת אינם בו-זמניים במערכת שנעה ביחס אליה לאורך הקו שמחבר אותם. זו תוצאה ישירה של שתי הנחות היסוד.
-  remedy: { lesson: '9.1', label: 'שיעור 9.1: ברקים בשני קצות הרכבת' }
+  remedy: { lesson: '9.1', label: 'שיעור 9.1: ברקים בשני קצות הרכבת, במערכת הרכבת', anchor: 'train-frame' }
 
 - id: MC-9-simultaneity-is-signal-delay
   title: יחסיות הבו-זמניות היא רק עיכוב של האות
   belief: צופה רואה מאורע אחד לפני השני רק כי האור מהמאורע הרחוק מגיע אליו מאוחר יותר. אחרי שמתקנים את זמן ההגעה של האור, כל הצופים מסכימים.
   truth: יחסיות הבו-זמניות נשארת גם אחרי התיקון לזמן שהאור עבר. כל צופה מתקן במערכת שלו, עם מהירות האור c, ומקבל סדר זמנים אחר. זו תכונה של הזמן עצמו, לא של האות.
-  remedy: { lesson: '9.1', label: 'שיעור 9.1: הנוסעת באמצע הרכבת מתקנת את זמני ההגעה' }
+  remedy: { lesson: '9.1', label: 'שיעור 9.1: הנוסעת באמצע הרכבת מתקנת את זמני ההגעה', anchor: 'not-delay' }

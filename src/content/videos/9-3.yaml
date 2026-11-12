@@ -1,0 +1,30 @@
+# Videos of lesson 9.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what the sources below support.
+#   _naTiUQOq34: MIT OpenCourseWare, 8.20 Introduction to Special Relativity (IAP 2021, Markus Klute), lecture 4.5,
+#     "Lorentz Transformation", 6:54 (OCW page). Its OCW subtitle file (…_naTiUQOq34.srt) assumes linearity
+#     (1:10), uses the invariance of (ct)² − x² (0:56, 2:38) and the motion of the moving origin (2:10), checks the
+#     Galilean limit (4:45–5:20), then length contraction with Δt = 0 in S (5:44), time dilation (5:49) and the
+#     relativity of simultaneity (6:01–6:42). Ends at 6:48.
+#   Rh0pYtQG5wI: minutephysics, "Lorentz Transformations | Special Relativity Ch. 3", 12:17 (a transcript summary
+#     at rosetta.to): the Galilean shear changes the speed of light (≈5:05), the Lorentz "squeeze" keeps it
+#     (≈8:08), on spacetime diagrams. Not watched; the note rests on that summary.
+
+- id: v-9-3-mit-lorentz
+  youtubeId: _naTiUQOq34
+  title: '4.5 Lorentz Transformation'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 7
+  why: 'הרצאה קצרה מהקורס MIT 8.20, באנגלית. לפי התמליל, היא גוזרת את הטרנספורמציה מליניאריות ומהתנועה של הראשית, כמו שלנו, אבל במקום הבזק אור היא משתמשת בגודל שזהה בכל המערכות, ובסוף מסיקה את גבול גליליי, התקצרות אורך, התארכות זמן ויחסיות הבו-זמניות.'
+  verified: '2026-11-12'
+
+- id: v-9-3-minutephysics-lorentz
+  youtubeId: Rh0pYtQG5wI
+  title: 'Lorentz Transformations | Special Relativity Ch. 3'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 12
+  why: 'סרטון של minutephysics, באנגלית. לפי תיאורו, הוא משווה בציור של מקום וזמן את המעבר של גליליי למערכת נעה, שמשנה את מהירות האור, למעבר של לורנץ, שלא משנה אותה. חפשו את ההשוואה שעשיתם באיור עם הכפתורים גליליי ולורנץ.'
+  verified: '2026-11-12'

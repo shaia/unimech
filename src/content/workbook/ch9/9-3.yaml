@@ -1,0 +1,457 @@
+# Workbook, lesson 9.3 (the Lorentz transformation, and dilation, contraction and simultaneity from it). Format:
+# CLAUDE.md, "The solution format". Every number was recomputed by .scratch/ch9/9-3/workbook.ts with
+# src/physics/constants.ts (C_LIGHT = 3.0e8 m/s), src/physics/relativity.ts and lorentzmap.ts:
+#   W01 β = 0.6, x = 6.0e8 m, t = 5.0 s: x − vt = −3.0e8 m, x′ = −3.75e8 m; vx/c² = 1.20 s, t′ = 4.75 s;
+#   W03 lamp at rest in S, T = 4.0 s, β = 0.6: Δt′ = 5.00 s, Δx′ = −9.0e8 m;
+#   W04 S′ origin clock t′ = 6.0 s, β = 0.6: t = 7.50 s, x = 1.35e9 m (= vt);
+#   W05 lamps 900 m apart, β = 0.8: Δt′ = −4.00 μs (wrong −2.40, −1.44), Δx′ = 1500 m;
+#   W07 L₀ = 100 m, β = 0.96: γ = 3.57, L = 28.0 m, rear clock lead vL₀/c² = 0.320 μs;
+#   W08 B = (10 s, 2.4e9 m): at β = 0.6, t′ = 6.50 s, x′ = 7.5e8 m; co-local β = 0.800: t′ = 6.00 s, x′ = 0;
+#   W09 L₀ = 600 m, flashes simultaneous in S′, β = 0.6: in S the front 1.50 μs later, Δx = 750 m, L = 480 m,
+#       750 − 270 = 480;
+#   W10 check x′ = 4, t′ = 2 (c = 1), β = 0.6: t = 5.50 = γ(t′ + βx′).
+#   c1 MIT 8.20 (2021) PS2 P4, β = 1/3, clocks 1 m apart: γ = 1.06, places ±0.943, ±1.89 m, readings ∓1.11, ∓2.22 ns;
+#   c2 MIT 8.20 (2021) PS3 P4: two boosts 0.5 ∘ 0.5 = 0.8 (γ = 5/3 = γ₁γ₂(1 + β₁β₂)); 0.6 ∘ 0.8 = 0.946, γ = 3.08.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '9.3'
+practice:
+  - id: W-9.3-01
+    level: basic
+    objectives: [OBJ-9.3-1]
+    prompt: >-
+      מערכת $S'$ נעה ביחס למערכת $S$ במהירות $0.60c$ לכיוון $+x$, והראשיות מתלכדות ב-$t = t' = 0$. ב-$S$ מאורע קורה
+      במקום $x = 6.0\cdot10^8\,\text{m}$ ובזמן $t = 5.0\,\text{s}$. מתי ואיפה הוא קורה ב-$S'$?
+    answer: >-
+      $x' = -3.75\cdot10^8\,\text{m}$, $t' = 4.75\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = 0.60$, $\gamma = 1.25$, $v = 1.8\cdot10^8\,\text{m/s}$; $x = 6.0\cdot10^8\,\text{m}$ (שתי שניות אור), $t = 5.0\,\text{s}$.
+      - kind: law
+        text: >-
+          $x' = \gamma(x - vt)$, $t' = \gamma\left(t - vx/c^2\right)$.
+      - kind: manipulation
+        text: >-
+          $vt = 9.0\cdot10^8\,\text{m}$, ולכן $x - vt = -3.0\cdot10^8\,\text{m}$. $vx/c^2 = \beta x/c = 0.60\cdot2.0\,\text{s} = 1.2\,\text{s}$, ולכן
+          $t - vx/c^2 = 3.8\,\text{s}$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $x' \to x$ ו-$t' \to t$.
+      - kind: units
+        text: >-
+          $vx/c^2$ בשניות, כמו $t$.
+      - kind: substitution
+        text: >-
+          $x' = 1.25\cdot(-3.0\cdot10^8) = -3.75\cdot10^8\,\text{m}$; $t' = 1.25\cdot3.8 = 4.75\,\text{s}$.
+      - kind: result
+        text: >-
+          ב-$S'$ המאורע קורה ב-$x' = -3.75\cdot10^8\,\text{m}$ (מאחורי הראשית של $S'$) ובזמן $t' = 4.75\,\text{s}$.
+
+  - id: W-9.3-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-9.3-1]
+    prompt: >-
+      קבעו ונמקו לכל טענה אם היא נכונה.
+
+      א. בטרנספורמציית לורנץ, $t'$ תלוי רק ב-$t$.
+
+      ב. כדי לעבור מ-$S'$ ל-$S$ מחליפים בטרנספורמציה את $v$ ב-$(-v)$.
+
+      ג. כש-$v \ll c$, טרנספורמציית לורנץ נותנת בקירוב טוב את טרנספורמציית גליליי.
+
+      ד. $y' = \gamma y$, כי גם בכיוון הניצב לתנועה יש התקצרות.
+    answer: >-
+      א. לא נכונה. ב. נכונה. ג. נכונה. ד. לא נכונה.
+    solution:
+      - kind: law
+        text: >-
+          $x' = \gamma(x - vt)$, $t' = \gamma\left(t - vx/c^2\right)$, $y' = y$, $z' = z$.
+      - kind: reasoning
+        text: >-
+          א: $t'$ תלוי גם ב-$x$, דרך $vx/c^2$; זו יחסיות הבו-זמניות. ב: לפי עקרון היחסות $S$ נעה ביחס ל-$S'$ ב-$(-v)$ והכלל זהה,
+          ואכן פתרון של שתי המשוואות נותן $x = \gamma(x' + vt')$. ג: $\gamma \to 1$ ו-$vx/c^2 \to 0$. ד: הכיוון הניצב לא משתנה,
+          $y' = y$: אורך מתקצר רק לאורך התנועה.
+      - kind: limit
+        text: >-
+          בגבול $c \to \infty$ נעלם האיבר $vx/c^2$ שבגללו א לא נכונה, וחוזרים ל-$t' = t$.
+      - kind: result
+        text: >-
+          א. לא נכונה. ב. נכונה. ג. נכונה. ד. לא נכונה.
+
+  - id: W-9.3-03
+    level: basic
+    objectives: [OBJ-9.3-2]
+    prompt: >-
+      מנורה נחה בראשית של מערכת $S$ ומהבהבת פעמיים, בהפרש $4.0\,\text{s}$ בשעון שלידה. מערכת $S'$ נעה ביחס ל-$S$
+      במהירות $0.60c$ לכיוון $+x$. מה הזמן ומה המרחק בין שני ההבהובים ב-$S'$? איזה מהזמנים הוא הזמן העצמי?
+    answer: >-
+      $\Delta t' = 5.0\,\text{s}$, $\Delta x' = -9.0\cdot10^8\,\text{m}$. הזמן העצמי הוא $4.0\,\text{s}$, של השעון שליד המנורה.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S$: $\Delta x = 0$, $\Delta t = 4.0\,\text{s}$. $\beta = 0.60$, $\gamma = 1.25$.
+      - kind: law
+        text: >-
+          $\Delta x' = \gamma(\Delta x - v\Delta t)$, $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$.
+      - kind: manipulation
+        text: >-
+          עם $\Delta x = 0$: $\Delta t' = \gamma\Delta t$ ו-$\Delta x' = -\gamma v\Delta t$. כאן מותר להציב $\Delta x = 0$, כי המנורה נחה ב-$S$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $\Delta t' \to \Delta t$ ו-$\Delta x' \to 0$.
+      - kind: units
+        text: >-
+          $v\Delta t$ במטרים.
+      - kind: substitution
+        text: >-
+          $\Delta t' = 1.25\cdot4.0 = 5.0\,\text{s}$; $\Delta x' = -1.25\cdot1.8\cdot10^8\cdot4.0 = -9.0\cdot10^8\,\text{m}$.
+      - kind: result
+        text: >-
+          ב-$S'$ ההבהובים $5.0\,\text{s}$ זה מזה, וההבהוב השני $9.0\cdot10^8\,\text{m}$ מאחורי הראשון ($(-x')$). $4.0\,\text{s}$ הוא הזמן העצמי:
+          שעון אחד, שנמצא בשני המאורעות.
+
+  - id: W-9.3-04
+    level: mid
+    objectives: [OBJ-9.3-1, OBJ-9.3-2]
+    prompt: >-
+      חללית היא מערכת $S'$, שנעה ביחס לכדור הארץ, $S$, במהירות $0.60c$; הראשיות מתלכדות ב-$t = t' = 0$. השעון שבראשית
+      החללית מראה $6.0\,\text{s}$ כשהקפטנית לוחצת על כפתור. מתי ואיפה, במערכת כדור הארץ, היא לחצה? בדקו את התשובה בשתי דרכים.
+    answer: >-
+      $t = 7.5\,\text{s}$, $x = 1.35\cdot10^9\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S'$: $x' = 0$, $t' = 6.0\,\text{s}$. $\gamma = 1.25$, $v = 1.8\cdot10^8\,\text{m/s}$.
+      - kind: law
+        text: >-
+          הטרנספורמציה ההפוכה: $x = \gamma(x' + vt')$, $t = \gamma\left(t' + vx'/c^2\right)$.
+      - kind: manipulation
+        text: >-
+          עם $x' = 0$: $t = \gamma t'$ ו-$x = \gamma vt'$. בדיקה ראשונה: $x = vt$, כמו שצריך לראשית של $S'$. בדיקה שנייה: השעון
+          בראשית נמצא בשני המאורעות (המעבר ליד הראשית של $S$ והלחיצה), ולכן הוא מודד זמן עצמי, ו-$t = \gamma\tau$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $t \to t'$ ו-$x \to 0$.
+      - kind: units
+        text: >-
+          $\gamma vt'$ במטרים.
+      - kind: substitution
+        text: >-
+          $t = 1.25\cdot6.0 = 7.5\,\text{s}$; $x = 1.25\cdot1.8\cdot10^8\cdot6.0 = 1.35\cdot10^9\,\text{m}$, וגם $vt = 1.8\cdot10^8\cdot7.5 = 1.35\cdot10^9\,\text{m}$.
+      - kind: result
+        text: >-
+          ב-$S$ הלחיצה קרתה ב-$t = 7.5\,\text{s}$, במקום $x = 1.35\cdot10^9\,\text{m}$.
+
+  - id: W-9.3-05
+    level: mid
+    objectives: [OBJ-9.3-2]
+    prompt: >-
+      בשני הקצוות של תחנת חלל שאורכה $900\,\text{m}$ נדלקות שתי מנורות, בו-זמנית במערכת התחנה. חללית חולפת לאורך התחנה
+      במהירות $0.80c$. במערכת החללית, איזו מנורה נדלקה קודם, בכמה זמן, ומה המרחק בין שני המאורעות?
+    answer: >-
+      המנורה שבכיוון התנועה של החללית, $4.0\,\mu\text{s}$ קודם; המרחק $1500\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לכיוון התנועה של החללית. במערכת התחנה, $S$: $\Delta t = 0$, $\Delta x = 900\,\text{m}$. $\beta = 0.80$, $\gamma = 5/3$.
+      - kind: law
+        text: >-
+          $\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$, $\Delta x' = \gamma\left(\Delta x - v\Delta t\right)$.
+      - kind: manipulation
+        text: >-
+          $\Delta t' = -\gamma v\Delta x/c^2 < 0$: המנורה הקדמית (ב-$x$ הגדול) קודמת. $\Delta x' = \gamma\Delta x$: גדול מ-$900\,\text{m}$, כי שני המאורעות
+          לא בו-זמניים ב-$S'$, ולכן זה לא אורך של התחנה ב-$S'$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $\Delta t' \to 0$ ו-$\Delta x' \to \Delta x$.
+      - kind: units
+        text: >-
+          $v\Delta x/c^2$ בשניות.
+      - kind: substitution
+        text: >-
+          $\Delta t' = -\tfrac53\cdot\dfrac{0.80\cdot900}{3.0\cdot10^8} = -4.0\cdot10^{-6}\,\text{s}$; $\Delta x' = \tfrac53\cdot900 = 1500\,\text{m}$.
+      - kind: result
+        text: >-
+          במערכת החללית המנורה שבכיוון התנועה נדלקה $4.0\,\mu\text{s}$ קודם, ושני המאורעות $1500\,\text{m}$ זה מזה.
+
+  - id: W-9.3-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.3-2]
+    prompt: >-
+      רכבת, מערכת $S'$, נוסעת ביחס לרציף, מערכת $S$, במהירות $v$. לכל זוג מאורעות, קבעו באיזו מערכת הם קורים באותו מקום
+      (אם יש כזו), ואם מותר לכתוב בין הזמנים במערכות $\Delta t = \gamma\Delta t'$ או להפך. נמקו.
+
+      א. שני תקתוקים של שעון שתלוי בקרון.
+
+      ב. הרכבת חולפת על פני עמוד ראשון, והרכבת (אותו קרון) חולפת על פני עמוד שני ברציף.
+
+      ג. שתי מנורות, בשני קצוות הרציף, נדלקות זו אחר זו.
+    answer: >-
+      א. באותו מקום ברכבת: $\Delta t = \gamma\Delta t'$. ב. אותו דבר, כי שני המאורעות קורים באותו קרון. ג. באף מערכת
+      מהשתיים אין אותו מקום, ואין כלל פשוט: צריך את הטרנספורמציה המלאה.
+    solution:
+      - kind: law
+        text: >-
+          $\Delta t = \gamma\left(\Delta t' + v\Delta x'/c^2\right)$. אם $\Delta x' = 0$, $\Delta t = \gamma\Delta t'$, ו-$\Delta t'$ הוא הזמן העצמי.
+      - kind: reasoning
+        text: >-
+          א: השעון נח בקרון, ולכן שני התקתוקים באותו מקום ברכבת, והרציף מודד זמן ארוך פי $\gamma$. ב: שני המאורעות קורים בקרון,
+          באותו מקום ברכבת, אף שבמקומות שונים ברציף; שעון הקרון מודד את הזמן העצמי. ג: המנורות במקומות שונים ברציף, וגם ברכבת
+          המאורעות במקומות שונים. כאן הפרש הזמנים תלוי גם ב-$\Delta x$, ו-$\gamma$ לבד לא נותן אותו.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$ כל הזמנים שווים בשתי המערכות, ושאלת "איזו מערכת" כבר לא משנה.
+      - kind: result
+        text: >-
+          א ו-ב: מותר, $\Delta t = \gamma\Delta t'$, עם $\Delta t'$ הזמן העצמי. ג: לא; משתמשים ב-$\Delta t' = \gamma\left(\Delta t - v\Delta x/c^2\right)$.
+
+  - id: W-9.3-07
+    level: mid
+    objectives: [OBJ-9.3-2]
+    prompt: >-
+      חללית שאורכה העצמי $100\,\text{m}$ נעה ביחס לתחנה במהירות $0.96c$. השעונים בזנב ובחרטום שלה מסונכרנים בחללית.
+
+      א. מה האורך של החללית במערכת התחנה?
+
+      ב. ברגע אחד של התחנה, כמה מקדים שעון הזנב את שעון החרטום?
+    answer: >-
+      א. $28.0\,\text{m}$. ב. $0.32\,\mu\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $L_0 = 100\,\text{m}$, $\beta = 0.96$, ולכן $\gamma = 1/\sqrt{1 - 0.9216} = 3.57$.
+      - kind: law
+        text: >-
+          $\Delta x' = \gamma(\Delta x - v\Delta t)$ ו-$\Delta t = \gamma\left(\Delta t' + v\Delta x'/c^2\right)$, עם $\Delta t = 0$ (רגע אחד של התחנה).
+      - kind: manipulation
+        text: >-
+          א: $L_0 = \gamma\Delta x$, ולכן $\Delta x = L_0/\gamma$. ב: $0 = \Delta t' + vL_0/c^2$, כלומר שעון החרטום ($\Delta x' = L_0$) מראה פחות ב-$vL_0/c^2$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$: האורך $L_0$, וההקדמה אפס.
+      - kind: units
+        text: >-
+          $vL_0/c^2$ בשניות.
+      - kind: substitution
+        text: >-
+          א: $100/3.57 = 28.0\,\text{m}$. ב: $\dfrac{0.96\cdot100}{3.0\cdot10^8} = 3.2\cdot10^{-7}\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $28.0\,\text{m}$. ב. שעון הזנב מקדים ב-$0.32\,\mu\text{s}$.
+
+  - id: W-9.3-08
+    level: bagrut
+    objectives: [OBJ-9.3-1, OBJ-9.3-2]
+    prompt: >-
+      ב-$S$ מאורע A קורה ב-$x = 0$, $t = 0$, ומאורע B ב-$x = 2.4\cdot10^9\,\text{m}$, $t = 10\,\text{s}$.
+
+      א. מתי ואיפה קורה B במערכת שנעה במהירות $0.60c$ לכיוון $+x$ (ראשיות מתלכדות ב-A)?
+
+      ב. באיזו מהירות צריכה לנוע מערכת כדי ששני המאורעות יקרו בה באותו מקום? הראו בטרנספורמציה שאכן זה כך, וחשבו את
+      הזמן ביניהם במערכת הזו.
+    answer: >-
+      א. $t' = 6.5\,\text{s}$, $x' = 7.5\cdot10^8\,\text{m}$. ב. $0.80c$; שם $x' = 0$ ו-$t' = 6.0\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\Delta x = 2.4\cdot10^9\,\text{m}$ = 8 שניות אור, $\Delta t = 10\,\text{s}$.
+      - kind: law
+        text: >-
+          $x' = \gamma(x - vt)$, $t' = \gamma\left(t - vx/c^2\right)$.
+      - kind: manipulation
+        text: >-
+          א: $\gamma = 1.25$; $vx/c^2 = 0.60\cdot8\,\text{s} = 4.8\,\text{s}$; $x - vt = (8 - 6)$ שניות אור. ב: באותו מקום פירושו $x' = 0$, כלומר
+          $x = vt$: $v = \Delta x/\Delta t$. במהירות הזו $\gamma = 5/3$, ו-$t' = \gamma\left(t - \beta\cdot\beta t\right) = t/\gamma$.
+      - kind: limit
+        text: >-
+          המערכת קיימת רק אם $\Delta x/\Delta t < c$; כאן $0.80c$. אם $\Delta x \to c\Delta t$, $\gamma \to \infty$ והזמן במערכת הזו שואף לאפס.
+      - kind: units
+        text: >-
+          $\Delta x/\Delta t$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          א: $t' = 1.25\cdot(10 - 4.8) = 6.5\,\text{s}$; $x' = 1.25\cdot2 = 2.5$ שניות אור $= 7.5\cdot10^8\,\text{m}$. ב: $v = 8/10 = 0.80c$;
+          $x' = \tfrac53(8 - 0.8\cdot10) = 0$, $t' = \tfrac53(10 - 0.8\cdot8) = 6.0\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $t' = 6.5\,\text{s}$, $x' = 7.5\cdot10^8\,\text{m}$. ב. $0.80c$; במערכת הזו B קורה $6.0\,\text{s}$ אחרי A, באותו מקום: זה הזמן העצמי
+          של שעון שנע מ-A ל-B.
+
+  - id: W-9.3-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-9.3-2]
+    prompt: >-
+      בחרטום ובזנב של חללית שאורכה העצמי $600\,\text{m}$ מהבהבות שתי מנורות, בו-זמנית במערכת החללית. החללית נעה ביחס לתחנה
+      במהירות $0.60c$.
+
+      א. במערכת התחנה, איזו מנורה הבהבה קודם, ובכמה?
+
+      ב. מה המרחק בין שני ההבהובים במערכת התחנה? סטודנטית אומרת שהוא צריך להיות האורך של החללית בתחנה. קבעו ונמקו.
+    answer: >-
+      א. הזנב, $1.5\,\mu\text{s}$ לפני החרטום. ב. $750\,\text{m}$, ולא $480\,\text{m}$: ההבהובים לא בו-זמניים בתחנה.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S'$ (החללית): $\Delta t' = 0$, $\Delta x' = 600\,\text{m}$ (חרטום פחות זנב). $\beta = 0.60$, $\gamma = 1.25$.
+      - kind: law
+        text: >-
+          $\Delta t = \gamma\left(\Delta t' + v\Delta x'/c^2\right)$, $\Delta x = \gamma\left(\Delta x' + v\Delta t'\right)$.
+      - kind: manipulation
+        text: >-
+          $\Delta t = \gamma v\Delta x'/c^2 > 0$: החרטום מהבהב אחרי הזנב בתחנה. $\Delta x = \gamma\Delta x'$. האורך בתחנה הוא $L_0/\gamma$, אבל הוא
+          נמדד ב-$\Delta t = 0$; כאן בין שני ההבהובים החרטום זז עוד $v\Delta t$, ואכן $\gamma L_0 - v\Delta t = L_0/\gamma$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $\Delta t \to 0$ ו-$\Delta x \to L_0$, ושני הגדלים, המרחק והאורך, מתלכדים.
+      - kind: units
+        text: >-
+          $v\Delta x'/c^2$ בשניות.
+      - kind: substitution
+        text: >-
+          $\Delta t = 1.25\cdot\dfrac{0.60\cdot600}{3.0\cdot10^8} = 1.5\cdot10^{-6}\,\text{s}$; $\Delta x = 750\,\text{m}$; $v\Delta t = 270\,\text{m}$, ו-$750 - 270 = 480 = 600/1.25$.
+      - kind: result
+        text: >-
+          א. הזנב הבהב $1.5\,\mu\text{s}$ לפני החרטום. ב. $750\,\text{m}$. הסטודנטית טועה: אורך דורש שני סימונים בו-זמניים במערכת המודדת,
+          והאורך בתחנה הוא $480\,\text{m}$.
+
+  - id: W-9.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-9.3-1]
+    prompt: >-
+      בשיעור קיבלנו את $x = \gamma(x' + vt')$ משתי משוואות הטרנספורמציה, בשיטת החיבור.
+
+      א. באותה שיטה, מצאו את $t$ כפונקציה של $t'$ ו-$x'$.
+
+      ב. בדקו את התוצאה: הבזק אור שנע ב-$S'$ לכיוון $(-x)$, $x' = -ct'$, חייב לנוע ב-$S$ לפי $x = -ct$.
+
+      ג. בדקו מספרית, עם $c = 1$, $\beta = 0.60$, $x' = 4$, $t' = 2$.
+    answer: >-
+      א. $t = \gamma\left(t' + vx'/c^2\right)$. ב. $x = \gamma(1 - \beta)(-ct')$ ו-$t = \gamma(1 - \beta)t'$, ולכן $x = -ct$. ג. $t = 5.5$.
+    solution:
+      - kind: law
+        text: >-
+          $x' = \gamma(x - vt)$ ו-$t' = \gamma\left(t - vx/c^2\right)$.
+      - kind: manipulation
+        text: >-
+          א: כופלים את משוואת $x'$ ב-$v/c^2$ ומחברים למשוואת $t'$: $t' + vx'/c^2 = \gamma\left(t - vx/c^2 + vx/c^2 - v^2t/c^2\right) = \gamma t(1 - \beta^2) = t/\gamma$.
+          ב: מציבים $x' = -ct'$: $t = \gamma t'(1 - \beta)$ ו-$x = \gamma(-ct' + vt') = -c\gamma t'(1 - \beta) = -ct$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $t = t'$. וזה בדיוק $t' = \gamma\left(t - vx/c^2\right)$ עם $(-v)$ במקום $v$, כפי שעקרון היחסות דורש.
+      - kind: units
+        text: >-
+          $vx'/c^2$ בשניות.
+      - kind: substitution
+        text: >-
+          ג: $\gamma = 1.25$, $t = 1.25\cdot(2 + 0.60\cdot4) = 5.5$; וחישוב ישיר בטרנספורמציה ההפוכה נותן אותו מספר.
+      - kind: result
+        text: >-
+          א. $t = \gamma\left(t' + vx'/c^2\right)$. ב. ההבזק נע ב-$S$ במהירות $c$, לכיוון $(-x)$. ג. $t = 5.5$.
+
+challenge:
+  - id: W-9.3-c1
+    stars: 1
+    objectives: [OBJ-9.3-2, OBJ-9.3-1]
+    prompt: >-
+      על רציף עומדים חמישה שעונים, במרחק $1.0\,\text{m}$ זה מזה, מסונכרנים ברציף. על רכבת שנוסעת במהירות $c/3$ יש סידור זהה,
+      מסונכרן ברכבת. ג׳יל עומדת ליד השעון האמצעי ברציף, וזאק ליד השעון האמצעי ברכבת, והם חולפים זה על פני זה ב-$t = t' = 0$.
+
+      א. ג׳יל רושמת מה מראים שעוני הרכבת ברגע שכל שעוני הרציף מראים $t = 0$. מה היא רושמת, ואיפה נמצא כל שעון?
+
+      ב. זאק רושם מה מראים שעוני הרציף ברגע שכל שעוני הרכבת מראים $t' = 0$. מה הוא רושם?
+
+      ג. איך שתי הרשימות מתיישבות זו עם זו?
+    answer: >-
+      א. השעונים במקומות $0$, $\pm0.943$, $\pm1.89\,\text{m}$; הקריאות מהאחורי לקדמי: $2.22$, $1.11$, $0$, $(-1.11)$, $(-2.22\,\text{ns})$. ב. אותה
+      תמונה בכיוון ההפוך: שעוני הרציף מתקצרים, והשעון האחורי שלהם (בכיוון $+x$) מקדים. ג. כל אחד מהם מודד ברגע אחד שלו, וכל אחד
+      מוצא שהשעונים של השני לא מסונכרנים; התמונות סימטריות.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = 1/3$, $\gamma = 1/\sqrt{1 - 1/9} = 1.06$. שעוני הרכבת במקומות $\xi = -2, -1, 0, 1, 2\,\text{m}$ ברכבת; הרכבת נעה לכיוון $+x$.
+      - kind: law
+        text: >-
+          שעון שנח ב-$x' = \xi$, ברגע $t$ של הרציף: $x = vt + \xi/\gamma$, והוא מראה $t' = t/\gamma - v\xi/c^2$ (מהטרנספורמציה).
+      - kind: manipulation
+        text: >-
+          א: ב-$t = 0$, $x = \xi/\gamma$ ו-$t' = -\beta\xi/c$. ב: ב-$S'$ הרציף נע ב-$(-v)$: שעון הרציף ב-$x = \xi$ נמצא ב-$x' = \xi/\gamma$ ומראה $+\beta\xi/c$.
+          ג: הקריאות שונות כי "ברגע $t = 0$" ו"ברגע $t' = 0$" הם שני אוספי מאורעות שונים; רק המאורע באמצע, המפגש, משותף לשניהם,
+          ועליו שניהם מסכימים: שני השעונים שם מראים $0$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ כל הקריאות $0$ והמרווחים $1.0\,\text{m}$. ההפרש בין שכנים, $\beta d_0/c$, גדל עם המהירות ועם המרחק.
+      - kind: units
+        text: >-
+          $\beta\xi/c$ ב-$\text{m}/(\text{m/s}) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $\xi/\gamma = \pm0.943, \pm1.89\,\text{m}$; $\beta\cdot1.0\,\text{m}/c = 1.11\cdot10^{-9}\,\text{s}$, ולכן הקריאות $\mp1.11$ ו-$\mp2.22\,\text{ns}$.
+      - kind: result
+        text: >-
+          ג׳יל: שעוני הרכבת $0.943\,\text{m}$ זה מזה, והקריאות יורדות ב-$1.11\,\text{ns}$ מכל שעון לשכנו הקדמי ($+2.22$ באחורי, $(-2.22)$ בקדמי).
+          זאק: אותו דבר על שעוני הרציף, שהאחורי שלהם הוא הימני. כל אחד צודק במערכת שלו.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity (IAP 2021), Problem Set 2
+      year: 2021
+      problem: Problem 4 (Getting All Your Clocks in a Row)
+      url: https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/cd3a0af9faab703bd3ad01a92538f959_MIT8_20iap21_pset2.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-9.3-c2
+    stars: 2
+    objectives: [OBJ-9.3-1]
+    prompt: >-
+      כתבו את טרנספורמציית לורנץ בצורה $ct' = \gamma(ct - \beta x)$, $x' = \gamma(x - \beta ct)$.
+
+      א. כתבו באותה צורה את טרנספורמציית גליליי, עם $ct$ כקואורדינטת הזמן.
+
+      ב. מערכת $S'$ נעה ביחס ל-$S$ במהירות $\beta_1c$, ומערכת $S''$ נעה ביחס ל-$S'$ במהירות $\beta_2c$, שתיהן לכיוון $+x$. הציבו את
+      הטרנספורמציה הראשונה בשנייה, והראו שהמעבר מ-$S$ ל-$S''$ הוא טרנספורמציית לורנץ עם
+      $\beta = (\beta_1 + \beta_2)/(1 + \beta_1\beta_2)$.
+
+      ג. הראו שה-$\gamma$ שלה הוא $\gamma_1\gamma_2(1 + \beta_1\beta_2)$, ובדקו עם $\beta_1 = \beta_2 = 0.5$.
+
+      ד. הראו שהמעבר ההפוך, מ-$S'$ ל-$S$, הוא הטרנספורמציה עם $(-\beta)$.
+    answer: >-
+      א. $ct' = ct$, $x' = x - \beta ct$. ב, ג. $ct'' = \gamma_1\gamma_2(1 + \beta_1\beta_2)(ct - \beta x)$ ובדומה ל-$x''$; עם $0.5$ ו-$0.5$: $\beta = 0.80$, $\gamma = 5/3$.
+      ד. פתרון שתי המשוואות נותן $ct = \gamma(ct' + \beta x')$, $x = \gamma(x' + \beta ct')$.
+    solution:
+      - kind: law
+        text: >-
+          $ct' = \gamma_1(ct - \beta_1x)$, $x' = \gamma_1(x - \beta_1ct)$; $ct'' = \gamma_2(ct' - \beta_2x')$, $x'' = \gamma_2(x' - \beta_2ct')$.
+      - kind: manipulation
+        text: >-
+          ב: $ct'' = \gamma_1\gamma_2\left[(ct - \beta_1x) - \beta_2(x - \beta_1ct)\right] = \gamma_1\gamma_2\left[(1 + \beta_1\beta_2)ct - (\beta_1 + \beta_2)x\right]$,
+          כלומר $\gamma_1\gamma_2(1 + \beta_1\beta_2)(ct - \beta x)$; באותו אופן $x'' = \gamma_1\gamma_2(1 + \beta_1\beta_2)(x - \beta ct)$.
+      - kind: manipulation
+        text: >-
+          ג: $1 - \beta^2 = \dfrac{(1 + \beta_1\beta_2)^2 - (\beta_1 + \beta_2)^2}{(1 + \beta_1\beta_2)^2} = \dfrac{(1 - \beta_1^2)(1 - \beta_2^2)}{(1 + \beta_1\beta_2)^2}$,
+          ולכן $1/\sqrt{1 - \beta^2} = \gamma_1\gamma_2(1 + \beta_1\beta_2)$: המקדם הוא בדיוק ה-$\gamma$ של $\beta$. ד: כופלים את משוואת $x'$ ב-$\beta$
+          ומחברים למשוואת $ct'$: $ct' + \beta x' = \gamma ct(1 - \beta^2) = ct/\gamma$; ובאותו אופן ל-$x$.
+      - kind: limit
+        text: >-
+          כש-$\beta_1, \beta_2 \ll 1$, $\beta \approx \beta_1 + \beta_2$, החיבור של גליליי. כש-$\beta_2 \to 1$, $\beta \to 1$: שתי מערכות מתחת למהירות האור
+          לא מצטרפות למערכת מעליה. וכש-$\beta_2 = -\beta_1$, $\beta = 0$: חזרה ל-$S$, כמו בחלק ד.
+      - kind: units
+        text: >-
+          כל הגדלים $\beta$ ו-$\gamma$ חסרי ממדים, ו-$ct$ ו-$x$ באותן יחידות.
+      - kind: substitution
+        text: >-
+          $\beta = 1.0/1.25 = 0.80$; $\gamma_1 = \gamma_2 = 1.155$, ו-$1.155^2\cdot1.25 = 1.667 = 5/3$, ה-$\gamma$ של $0.80$.
+      - kind: result
+        text: >-
+          שתי טרנספורמציות לורנץ ברצף הן טרנספורמציית לורנץ אחת, במהירות $(\beta_1 + \beta_2)/(1 + \beta_1\beta_2)$, וההפוכה היא עם $(-\beta)$. את חוק
+          חיבור המהירויות הזה נפגוש שוב בשיעור 9.4.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity (IAP 2021), Problem Set 3
+      year: 2021
+      problem: Problem 4 (Velocity Addition in Matrix Form)
+      url: https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/18347837df19446a4cd9dc40f752c28c_MIT8_20iap21_pset3.pdf
+      verified: '2026-11-12'
+      adapted: true

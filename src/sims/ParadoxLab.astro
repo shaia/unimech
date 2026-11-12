@@ -1,0 +1,7 @@
+---
+/** Paradoxes figure for lesson 9.6: <Spread fig="fig-9-6a" figure={ParadoxLab} figureProps={{ scene: 'twins', tasks: [...] }}>. */
+import ParadoxLab, { type ParadoxLabProps } from './ParadoxLab';
+type Props = ParadoxLabProps;
+---
+
+<ParadoxLab client:visible {...Astro.props} />

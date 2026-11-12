@@ -1,0 +1,31 @@
+# Videos of lesson 9.6. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what the video's description and chapter list support
+# (read on rosetta.to's pages for each video, 2026-11-12); neither video was watched.
+#   LKjaBPVtvms: minutephysics, "The Twins Paradox Hands-On Explanation | Special Relativity Ch. 8". Description: a
+#     trip at one third of c, 6 s per leg on Earth; the traveller's legs read about 5.66 s each (11.3 s against 12 s),
+#     the traveller has two frames and the stay-at-home twin one, and a check with √(6² − 2²). No timestamps; the
+#     length (about 4 min) comes from a search snippet, unconfirmed.
+#   6MfJ59lkABY: PBS Space Time, "Can We Break the Universe?" (16:42). Chapters: 3:45 the twin paradox (lines of
+#     simultaneity that tilt opposite ways on the two legs), 5:45 closed universes (off this lesson), 8:12 the ladder
+#     paradox (relativity of simultaneity), 12:16 viewer comments. Start at the ladder chapter, end before comments.
+
+- id: v-9-6-minutephysics-twins
+  youtubeId: LKjaBPVtvms
+  title: 'The Twins Paradox Hands-On Explanation | Special Relativity Ch. 8'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'סרטון קצר של minutephysics, באנגלית. לפי התיאור שלו, מסע במהירות של שליש ממהירות האור, 6 שניות בכל כיוון בשעון של כדור הארץ: הנוסע מודד כ-5.66 שניות בכל כיוון, ובסוף נבדק החשבון בשורש של $6^2 - 2^2$, אותו חשבון של זמן עצמי לאורך קו עולם כמו בשיעור. שימו לב לרגע שבו הנוסע מחליף מערכת.'
+  verified: '2026-11-12'
+
+- id: v-9-6-pbs-ladder
+  youtubeId: 6MfJ59lkABY
+  title: 'Can We Break the Universe?'
+  channel: PBS Space Time
+  lang: en
+  start: 492
+  end: 736
+  minutes: 4
+  why: 'קטע מפרק של PBS Space Time, באנגלית, מהפרק "Ladder Paradox" (בדקה 8:12): סולם מעט ארוך מאסם שעובר בו מהר מאוד, והפתרון ביחסיות הבו-זמניות, כמו המוט והאסם בשיעור. לפי רשימת הפרקים, באותו סרטון, מדקה 3:45, יש גם הסבר לפרדוקס התאומים עם קווי בו-זמניות שנוטים לצדדים שונים בשתי הדרכים, כמו באיור 9.6א.'
+  verified: '2026-11-12'

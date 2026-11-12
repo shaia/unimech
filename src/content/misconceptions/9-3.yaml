@@ -1,27 +1,28 @@
 # Misconceptions first detected in lesson 9.3. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 9.3
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. Lesson 9.3 is
+# written: its remedies point at the Steps that refute them (#time-equation, #dilation, #contraction).
 
 - id: MC-9-absolute-time
   title: הזמן זהה בכל המערכות
   belief: כשעוברים ממערכת ייחוס אחת לאחרת, משנים רק את המקום, x′ = x − vt, והזמן נשאר t′ = t.
   truth: זו טרנספורמציית גליליי, והיא סותרת את ההנחה השנייה. בטרנספורמציית לורנץ גם הזמן משתנה, t′ = γ(t − vx/c²), והוא תלוי גם במקום של המאורע. רק כש-v ≪ c חוזרים בקירוב ל-t′ = t.
-  remedy: { lesson: '9.3', label: 'שיעור 9.3: גזירת טרנספורמציות לורנץ' }
+  remedy: { lesson: '9.3', label: 'שיעור 9.3: גזירת טרנספורמציות לורנץ', anchor: 'time-equation' }
 
 - id: MC-9-same-place-wrong-frame
   title: מציבים Δx = 0 במערכת הלא נכונה
   belief: כששעון מתקתק "באותו מקום", מציבים Δx = 0 בכל אחת מנוסחאות הטרנספורמציה.
   truth: שעון מתקתק באותו מקום רק במערכת שבה הוא נח. במערכת שבה הוא נע, Δx = vΔt. הצבה של Δx = 0 במערכת הזו הופכת את התארכות הזמן ונותנת שעון שממהר.
-  remedy: { lesson: '9.3', label: 'שיעור 9.3: התארכות הזמן מתוך הטרנספורמציה' }
+  remedy: { lesson: '9.3', label: 'שיעור 9.3: התארכות הזמן מתוך הטרנספורמציה', anchor: 'dilation' }
 
 - id: MC-9-ends-not-simultaneous
   title: לא משנה מתי מסמנים את קצות המוט
   belief: כדי למדוד את האורך של מוט נע, אפשר לסמן את שני הקצוות שלו בכל שני רגעים, או באותו רגע במערכת של המוט.
   truth: האורך במערכת מסוימת הוא המרחק בין הקצוות באותו רגע במערכת הזו, Δt = 0. סימון באותו רגע במערכת של המוט הוא סימון ברגעים שונים במערכת המודדת, ובינתיים המוט זז.
-  remedy: { lesson: '9.3', label: 'שיעור 9.3: התקצרות האורך מתוך הטרנספורמציה' }
+  remedy: { lesson: '9.3', label: 'שיעור 9.3: התקצרות האורך מתוך הטרנספורמציה', anchor: 'contraction' }
 
 - id: MC-9-any-pair-same-place
   title: לכל שני מאורעות יש מערכת שבה הם באותו מקום
   belief: תמיד אפשר למצוא מערכת ייחוס שנעה כך ששני מאורעות נתונים קורים בה באותו מקום.
   truth: מערכת כזו צריכה לנוע במהירות Δx/Δt, וזה אפשרי רק כש-|Δx| < cΔt, כלומר כשהאינטרוול זמני. לשני מאורעות שהאינטרוול ביניהם מרחבי יש במקום זה מערכת שבה הם בו-זמניים.
-  remedy: { lesson: '9.5', label: 'שיעור 9.5: אינטרוול זמני ואינטרוול מרחבי' }
+  remedy: { lesson: '9.5', label: 'שיעור 9.5: אינטרוול זמני ואינטרוול מרחבי', anchor: 'spacelike' }

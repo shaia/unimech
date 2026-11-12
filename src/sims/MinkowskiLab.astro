@@ -1,0 +1,7 @@
+---
+/** Minkowski diagram for lesson MDX: <Spread fig="fig-9-5a" figure={MinkowskiLab} figureProps={{ beta: 0, tasks: [...] }}>. */
+import MinkowskiLab, { type MinkowskiLabProps } from './MinkowskiLab';
+type Props = MinkowskiLabProps;
+---
+
+<MinkowskiLab client:visible {...Astro.props} />

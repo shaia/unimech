@@ -1,0 +1,7 @@
+---
+/** The Michelson–Morley interferometer in an ether wind, for lesson MDX: <Spread fig="fig-9-1a" figure={MichelsonMorley} figureProps={{ beta: 0, tasks: [...] }}>. */
+import MichelsonMorley, { type MichelsonMorleyProps } from './MichelsonMorley';
+type Props = MichelsonMorleyProps;
+---
+
+<MichelsonMorley client:visible {...Astro.props} />

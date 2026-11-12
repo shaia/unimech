@@ -1,0 +1,31 @@
+# Videos of lesson 9.4. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what a summary of the video's transcript supports
+# (rosetta.to's pages for each video, opened 2026-11-12); neither video was watched. No Hebrew video on relativistic
+# velocity addition or the relativistic Doppler effect was found. Caption tracks were not confirmed.
+#   R5oCXHWEL9A: minutephysics, "Relativistic Addition of Velocity | Special Relativity Ch. 6", 5:06 (2018). Per the
+#     transcript summary: naive addition of two speeds of 0.6c gives more than c; on a spacetime diagram a worldline
+#     below the light line stays below it under a Lorentz transformation; the formula is stated (not derived) and
+#     checked: one speed c gives c, both below c give below c, small speeds give the ordinary sum.
+#   CPaFPYeVKoY: MIT OpenCourseWare, "7.2 Relativistic Doppler Effect" (8.20, Markus Klute), 3:19. Per the transcript
+#     summary: pulses one period apart, followed on a spacetime diagram and Lorentz-transformed to the observer, who
+#     moves away from the source: the period is longer by √((1 + β)/(1 − β)) (receding, so β there is our −β).
+
+- id: v-9-4-minutephysics-addition
+  youtubeId: R5oCXHWEL9A
+  title: 'Relativistic Addition of Velocity | Special Relativity Ch. 6'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'סרטון קצר של minutephysics, באנגלית. לפי סיכום התמליל, הוא מראה שחיבור פשוט של שתי מהירויות של 0.6c נותן יותר מ-c, ובודק את הכלל היחסותי באותם גבולות שבדקנו: מהירות c נותנת c, מהירויות קטנות מ-c נותנות פחות מ-c, ומהירויות קטנות מתחברות כרגיל. הוא משתמש בדיאגרמה של מרחב-זמן, שנלמד בשיעור 9.5.'
+  verified: '2026-11-12'
+
+- id: v-9-4-mit-doppler
+  youtubeId: CPaFPYeVKoY
+  title: '7.2 Relativistic Doppler Effect'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'קטע של כ-3 דקות מקורס 8.20 של MIT, באנגלית. לפי סיכום התמליל, צופה מתרחק ממקור שפולט פולסים, ובעזרת טרנספורמציית לורנץ מקבלים זמן מחזור ארוך פי √((1 + β)/(1 − β)). שימו לב למוסכמה: שם הצופה מתרחק, ולכן β שם הוא (−β) שלנו. השוו לגזירה שלנו במערכת המקור.'
+  verified: '2026-11-12'

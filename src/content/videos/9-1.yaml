@@ -1,0 +1,20 @@
+# Videos of lesson 9.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what the video's transcript supports.
+#   8rbXjIqF3IA: MIT OpenCourseWare, 8.20 Introduction to Special Relativity (IAP 2021), "3.3 Michelson-Morley
+#     Experiment", Markus Klute. Its subtitle file on OCW (…_8rbXjIqF3IA.srt) ends at 5:25: the set-up and the
+#     "aether wind" at 1:07, rotating the table at 1:54, the arm along the wind as l1/(c − v) + l1/(c + v) at 3:06,
+#     the triangle for the cross arm at 3:28, unequal arms and "compare the difference of the differences" after a
+#     rotation at 4:05, the approximation (1 ± x)ⁿ ≈ 1 ± nx at 4:44, the null result right after, and ether drag as the next
+#     objection. YouTube caption tracks were not confirmed, so `captions` lists nothing.
+# No video of Einstein's train that teaches simultaneity without the Lorentz transformation or a spacetime diagram
+# (both later lessons) was found and verified; minutephysics' "Relativity of Simultaneity" (SrNVsfkGW-0) uses both.
+
+- id: v-9-1-mit-michelson-morley
+  youtubeId: 8rbXjIqF3IA
+  title: '3.3 Michelson-Morley Experiment'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'הרצאה קצרה של MIT OpenCourseWare על ניסוי מייקלסון-מורלי, באנגלית. לפי התמליל, בערך בדקה 3:06 המרצה כותב את זמן ההלוך-חזור לאורך רוח האתר עם c − v ו-c + v, בדקה 3:28 משרטט את המשולש של הזרוע הניצבת, ובדקה 4:05 מסביר למה מסובבים את השולחן כשהזרועות לא שוות בדיוק. השוו לגזירה שלנו ולאיור 9.1א.'
+  verified: '2026-11-12'

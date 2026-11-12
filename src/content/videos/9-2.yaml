@@ -1,0 +1,17 @@
+# Videos of lesson 9.2. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what the video's published transcript summary supports.
+#   rVzDP8SMhPo: minutephysics, "Impossible Muons" (2018-11-13, 4:33). Its transcript (rosetta.to/u/minutephysics/
+#     impossible-muons): mean lifetime 2.2 μs and light's 660 m in that time; at 99.5% of c about 22 μs in the
+#     Earth's frame; in the muon's frame the atmosphere contracts and the ground comes up at about 300 m per μs.
+#     Captions were not confirmed, so `captions` lists nothing. The 1962 film "Time Dilation: An Experiment with
+#     Mu-Mesons" (Frisch and Smith) was looked for and found only on archive.org and A/V Geeks, not on YouTube.
+
+- id: v-9-2-impossible-muons
+  youtubeId: rVzDP8SMhPo
+  title: 'Impossible Muons'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'סרטון קצר של minutephysics, באנגלית. לפי התמליל, הוא מסביר איך מיואונים מגיעים לקרקע פעמיים: במערכת של כדור הארץ בהתארכות זמן, ובמערכת של המיואון בהתקצרות אורך, כמו באיור 9.2ב.'
+  verified: '2026-11-12'

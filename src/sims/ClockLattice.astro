@@ -1,0 +1,7 @@
+---
+/** Clock-lattice figure for lesson MDX: <Spread fig="fig-9-3a" figure={ClockLattice} figureProps={{ beta: 0.8, t: 5, tasks: [...] }}>. */
+import ClockLattice, { type ClockLatticeProps } from './ClockLattice';
+type Props = ClockLatticeProps;
+---
+
+<ClockLattice client:visible {...Astro.props} />

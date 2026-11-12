@@ -1,0 +1,7 @@
+---
+/** Light-clock and muon figure for lesson MDX: <Spread fig="fig-9-2a" figure={LightClock} figureProps={{ mode: 'clock', … }}>. */
+import LightClock, { type LightClockProps } from './LightClock';
+type Props = LightClockProps;
+---
+
+<LightClock client:visible {...Astro.props} />

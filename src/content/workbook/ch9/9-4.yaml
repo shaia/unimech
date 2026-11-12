@@ -1,0 +1,468 @@
+# Workbook, lesson 9.4 (relativistic velocity addition and the longitudinal Doppler effect). Format: CLAUDE.md,
+# "The solution format". Every number was recomputed by .scratch/ch9/9-4/workbook.ts with src/physics/constants.ts
+# (C_LIGHT = 3.0e8 m/s), src/physics/relativity.ts and src/physics/doppler.ts (speeds in units of c):
+#   W02 0.80 ⊕ 0.40 = 0.909, (−0.80) ⊕ 0.40 = −0.588 (Galilean 1.20, −0.400);
+#   W03 589 nm approaching at 0.10c: 532.8 nm (first order 530.1);
+#   W04 muon 0.99c, frame 0.90c: u′ = 0.09/0.109 = 0.826c (Galilean 0.0900);
+#   W05 β = ±0.10: λ/λ₀ = 1.106 and 0.9045 (+10.6%, −9.5%), mean 1.005 = γ;
+#   W06 24.0 GHz, 30 m/s: β = 1.00e-7, Δf = 2βf₀/(1 − β) = 4800 Hz (one way 2400);
+#   W07 (−0.75) ⊕ 0.50 = −0.400 (Galilean −0.250): D(0.4) = 1.53 (wrong D(0.25) = 1.29);
+#   W08 (review: changed from 0.5c, which repeated the lesson's example 3, and the English word dropped)
+#       φ(0.6) = artanh 0.6 = ln 2 = 0.693, tanh(4φ) = 255/257 = 0.992; artanh 0.999 = 3.80 = 5.48 φ: after 5 launches
+#       0.99805, after 6 0.99951 (6 launches);
+#   W09 β = 0.5 approaching: emission events (0, 0), (1.15, 0.577) in S, received 0.577 T₀ apart = √(1/3);
+#   W10 Fizeau, n = 1.33, v = 5.0 m/s: u − c/n = 2.17 m/s = v(1 − 1/n²), drag coefficient 0.435;
+#   c1 650 → 570 nm: β = (1 − r²)/(1 + r²) = 0.131, 3.92e7 m/s (first order 0.123);
+#   c2 symbolic; check with v = 0.5c, u = 0.8c, T = 1.0 h: t′(E2) = 1.15 h, 0.577 light-h, t(E3) = 2.67 h,
+#      t′(E3) = 2.31 h, u′ = 0.500c = (u − v)/(1 − uv/c²), and the Lorentz transformation of E3 agrees.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '9.4'
+practice:
+  - id: W-9.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      קבעו ונמקו לכל אחד מהמקרים.
+
+      א. חללית שנעה במהירות $0.9c$ ביחס לכדור הארץ מדליקה פנס קדימה. מה מהירות האור של הפנס ביחס לכדור הארץ?
+
+      ב. שני פולסי אור יוצאים מנקודה אחת בכיוונים הפוכים. מה המהירות של פולס אחד במערכת המנוחה של השני?
+
+      ג. באותה דוגמה, באיזה קצב גדל המרחק בין הפולסים במערכת של המעבדה? האם זה סותר את תורת היחסות?
+    answer: >-
+      א. $c$. ב. אין לשאלה משמעות: אין מערכת אינרציאלית שנעה עם פולס אור. ג. $2c$, ואין סתירה: זה קצב שינוי של מרחק
+      במערכת המעבדה, לא מהירות של גוף.
+    solution:
+      - kind: law
+        text: >-
+          חיבור מהירויות יחסותי, $u = \dfrac{u' + v}{1 + u'v/c^2}$, וההנחה השנייה: מהירות האור $c$ בכל מערכת אינרציאלית.
+      - kind: reasoning
+        text: >-
+          א: $u' = c$ במערכת של החללית, ולכן $u = \dfrac{c + 0.9c}{1 + 0.9} = c$. ב: מערכת אינרציאלית נעה תמיד לאט מ-$c$
+          (גורם לורנץ של $c$ אינסופי), ולכן "המערכת של הפולס" לא קיימת. בכל מערכת אינרציאלית כל אחד מהפולסים נע במהירות $c$.
+          ג: במעבדה כל פולס מתרחק מנקודת היציאה ב-$c$, ולכן המרחק ביניהם גדל ב-$2c$. זה לא מהירות של שום גוף או אות.
+      - kind: limit
+        text: >-
+          בחללית איטית, $v \to 0$, התשובה של א היא $c$ גם בלי כלל החיבור. ושני גופים איטיים שנעים זה מזה במהירות $w$ כל אחד
+          מתרחקים בקצב $2w$ במעבדה, ובמערכת של כל אחד מהם השני נע במהירות $2w/(1 + w^2/c^2)$, פחות מ-$c$ תמיד.
+      - kind: units
+        text: >-
+          כל התשובות ביחידות של מהירות, כפולות של $c$.
+      - kind: result
+        text: >-
+          א. $c$. ב. השאלה חסרת משמעות; בכל מערכת אינרציאלית שני הפולסים נעים ב-$c$. ג. $2c$, קצב שינוי של מרחק במעבדה, בלי
+          סתירה.
+
+  - id: W-9.4-02
+    level: basic
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      גרעין נע במעבדה במהירות $0.40c$ לאורך $+x$ ופולט אלקטרון במהירות $0.80c$ ביחס לגרעין. מה מהירות האלקטרון במעבדה
+      אם הוא נפלט קדימה, ומה אם הוא נפלט אחורה?
+    answer: >-
+      קדימה $0.909c$; אחורה $(-0.588c)$, כלומר $0.588c$ לכיוון $-x$.
+    solution:
+      - kind: given
+        text: >-
+          $S$ מערכת המעבדה, $S'$ מערכת הגרעין, $v = 0.40c$. קדימה $u' = +0.80c$, אחורה $u' = -0.80c$.
+      - kind: law
+        text: >-
+          $u = \dfrac{u' + v}{1 + u'v/c^2}$, עם הסימנים.
+      - kind: manipulation
+        text: >-
+          קדימה: $u = \dfrac{1.20c}{1 + 0.32}$. אחורה: $u = \dfrac{-0.40c}{1 - 0.32}$.
+      - kind: limit
+        text: >-
+          גליליי היה נותן $1.20c$ ו-$(-0.40c)$. כשהמכנה $1 + u'v/c^2$ קטן מ-1 (פליטה אחורה), התוצאה היחסותית **גדולה** בגודלה
+          מזו של גליליי; כשהוא גדול מ-1, קטנה ממנה. בשני המקרים $|u| < c$.
+      - kind: units
+        text: >-
+          $u'v/c^2$ חסר ממדים; $u$ ביחידות של $c$.
+      - kind: substitution
+        text: >-
+          קדימה $1.20/1.32 = 0.909$; אחורה $-0.40/0.68 = -0.588$.
+      - kind: result
+        text: >-
+          קדימה $0.909c$, אחורה $0.588c$ לכיוון $-x$.
+
+  - id: W-9.4-03
+    level: basic
+    objectives: [OBJ-9.4-2]
+    prompt: >-
+      כוכב מתקרב אלינו לאורך קו הראייה במהירות $0.10c$. קו של נתרן, שאורך הגל שלו במעבדה $589\,\text{nm}$, נפלט מהכוכב.
+      באיזה אורך גל נמדוד אותו? השוו לקירוב $\lambda_0(1 - \beta)$.
+    answer: >-
+      $533\,\text{nm}$ (הקירוב נותן $530\,\text{nm}$).
+    solution:
+      - kind: given
+        text: >-
+          $\beta = +0.10$ (מתקרבים), $\lambda_0 = 589\,\text{nm}$ במערכת של הכוכב.
+      - kind: law
+        text: >-
+          $\lambda = \dfrac{\lambda_0}{D(\beta)} = \lambda_0\sqrt{\dfrac{1 - \beta}{1 + \beta}}$.
+      - kind: manipulation
+        text: >-
+          $\lambda = 589\sqrt{0.9/1.1}\,\text{nm}$. בקירוב $\sqrt{1 - \beta}/\sqrt{1 + \beta} \approx (1 - \beta/2)(1 - \beta/2) \approx 1 - \beta$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\lambda \to \lambda_0$. ההפרש בין התוצאה המדויקת לקירוב הוא מסדר $\beta^2$: כאן $2.7\,\text{nm}$, כ-$5\%$ מההסחה עצמה.
+      - kind: units
+        text: >-
+          השורש חסר ממדים; $\lambda$ ב-$\text{nm}$.
+      - kind: substitution
+        text: >-
+          $\lambda = 589\cdot0.9045 = 532.8\,\text{nm}$; הקירוב $589\cdot0.90 = 530.1\,\text{nm}$.
+      - kind: result
+        text: >-
+          $533\,\text{nm}$: הקו הצהוב מגיע ירוק. הקירוב הליניארי טועה ב-$2.7\,\text{nm}$.
+
+  - id: W-9.4-04
+    level: mid
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      מיואון נע במעבדה במהירות $0.99c$. חללית חולפת לידו באותו כיוון במהירות $0.90c$ ביחס למעבדה. מה מהירות המיואון
+      במערכת של החללית? בדקו את התשובה בהצבה חזרה בכלל החיבור.
+    answer: >-
+      $0.826c$ (גליליי: $0.09c$).
+    solution:
+      - kind: given
+        text: >-
+          $S$ המעבדה, $S'$ החללית, $v = 0.90c$; המיואון $u = 0.99c$ במערכת $S$.
+      - kind: law
+        text: >-
+          במערכת $S'$ המעבדה נעה במהירות $(-v)$, ולכן $u' = \dfrac{u - v}{1 - uv/c^2}$.
+      - kind: manipulation
+        text: >-
+          $u' = \dfrac{0.09c}{1 - 0.891} = \dfrac{0.09c}{0.109}$. בדיקה: $\dfrac{0.826 + 0.90}{1 + 0.826\cdot0.90} = 0.990$.
+      - kind: limit
+        text: >-
+          כש-$u \to c$, גם $u' \to c$ (אור). כש-$u = v$, $u' = 0$: המיואון עומד ליד החללית. במהירויות קטנות $u' \approx u - v$.
+      - kind: units
+        text: >-
+          $uv/c^2$ חסר ממדים.
+      - kind: result
+        text: >-
+          $0.826c$, פי תשעה בערך מההפרש של גליליי. ליד $c$ הבדל קטן במעבדה הוא הבדל גדול במערכת נעה.
+
+  - id: W-9.4-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.4-2]
+    prompt: >-
+      כוכב במערכת כפולה נע במעגל, וקו הראייה שלנו נמצא במישור המסלול. כשהוא מתקרב אלינו הוא נע במהירות $0.10c$ לאורך קו
+      הראייה, וחצי מחזור אחר כך הוא מתרחק באותה מהירות.
+
+      א. באילו נקודות במסלול הקו הספקטרלי מוסט לכחול, ובאילו לאדום?
+
+      ב. קבעו ונמקו: האם ההסחה לאדום שווה בגודלה להסחה לכחול? חשבו את שתיהן באחוזים מ-$\lambda_0$.
+
+      ג. הממוצע של שני אורכי הגל גדול מ-$\lambda_0$. פי כמה?
+    answer: >-
+      א. כחול כשהכוכב מתקרב, אדום כשהוא מתרחק. ב. לא: $+10.6\%$ לעומת $-9.5\%$. ג. פי $1.005$, שהוא בדיוק $\gamma$.
+    solution:
+      - kind: law
+        text: >-
+          $\lambda = \lambda_0/D(\beta)$, $D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$, $\beta > 0$ בהתקרבות; $D(-\beta) = 1/D(\beta)$.
+      - kind: reasoning
+        text: >-
+          א: התקרבות נותנת $D > 1$ ואורך גל קצר; התרחקות $D < 1$ ואורך גל ארוך. בנקודות שבהן המהירות ניצבת לקו הראייה אין
+          הסחה לאורך הקו (בסדר הראשון).
+      - kind: manipulation
+        text: >-
+          ב: מתרחק, $\lambda/\lambda_0 = D(0.1) = 1.106$; מתקרב, $1/D(0.1) = 0.9045$. ג: הממוצע
+          $\dfrac12\left(D + \dfrac1D\right) = \dfrac12\cdot\dfrac{(1 + \beta) + (1 - \beta)}{\sqrt{1 - \beta^2}} = \gamma$.
+      - kind: limit
+        text: >-
+          בסדר הראשון ב-$\beta$ שתי ההסחות שוות, $\pm\beta$, והממוצע $\lambda_0$. ההבדל מסדר $\beta^2$: $\gamma \approx 1 + \beta^2/2$, כלומר
+          $0.5\%$ כאן.
+      - kind: units
+        text: >-
+          כל היחסים חסרי ממדים.
+      - kind: result
+        text: >-
+          א. כחול בהתקרבות, אדום בהתרחקות. ב. $+10.6\%$ לאדום, $-9.5\%$ לכחול: לא סימטרי. ג. פי $\gamma = 1.005$; זה סימן של
+          התארכות הזמן של הכוכב, שמאריכה כל זמן מחזור שלו בלי קשר לכיוון.
+
+  - id: W-9.4-06
+    level: mid
+    objectives: [OBJ-9.4-2]
+    prompt: >-
+      מכ״ם משטרתי משדר בתדירות $24.0\,\text{GHz}$ אל מכונית שמתקרבת אליו במהירות $30\,\text{m/s}$. בכמה הרץ התדירות של ההד
+      שחוזר שונה מזו של המכ״ם?
+    answer: >-
+      $4800\,\text{Hz}$ יותר.
+    solution:
+      - kind: given
+        text: >-
+          $f_0 = 24.0\,\text{GHz}$, $\beta = v/c = 30/(3.0\cdot10^8) = 1.00\cdot10^{-7}$, מתקרבים.
+      - kind: law
+        text: >-
+          מראה נעה: במערכת שלה היא מקבלת $f_0D$ ומחזירה אותה תדירות; לגבי המכ״ם היא מקור שמתקרב, ולכן ההד $f_0D^2 = f_0\dfrac{1 + \beta}{1 - \beta}$.
+      - kind: manipulation
+        text: >-
+          $\Delta f = f_0\left(\dfrac{1 + \beta}{1 - \beta} - 1\right) = \dfrac{2\beta}{1 - \beta}f_0 \approx 2\beta f_0$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\Delta f \to 0$. הגורם 2 בא משני המסלולים; מסלול אחד היה נותן $\beta f_0$ בלבד. במהירות כזו
+          ההפרש בין הנוסחה המדויקת לקירוב הוא חלק אחד מעשרה מיליון.
+      - kind: units
+        text: >-
+          $\beta$ חסר ממדים, ולכן $\Delta f$ ב-$\text{Hz}$.
+      - kind: substitution
+        text: >-
+          $\Delta f = 2\cdot1.00\cdot10^{-7}\cdot24.0\cdot10^9 = 4800\,\text{Hz}$.
+      - kind: result
+        text: >-
+          ההד גבוה ב-$4800\,\text{Hz}$, שינוי של חלק אחד מחמישה מיליון: המכ״ם מודד אותו בקלות, כי הוא משווה את ההד לגל שהוא עצמו שולח.
+
+  - id: W-9.4-07
+    level: mid
+    objectives: [OBJ-9.4-1, OBJ-9.4-2]
+    prompt: >-
+      חללית מתרחקת מכדור הארץ במהירות $0.50c$, ומשגרת גשושית **אחורה**, לכיוון כדור הארץ, במהירות $0.75c$ ביחס לחללית.
+      על הגשושית משדר רדיו בתדירות $1.00\,\text{GHz}$ במערכת שלה.
+
+      א. מה המהירות של הגשושית ביחס לכדור הארץ, ולאיזה כיוון?
+
+      ב. באיזו תדירות קולטים את המשדר על כדור הארץ?
+    answer: >-
+      א. $0.400c$, לכיוון כדור הארץ. ב. $1.53\,\text{GHz}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מכדור הארץ החוצה. $v = +0.50c$ (החללית), $u' = -0.75c$ (הגשושית ביחס לחללית).
+      - kind: law
+        text: >-
+          $u = \dfrac{u' + v}{1 + u'v/c^2}$, ואחר כך $f = f_0D(\beta)$ עם $\beta$ מהירות ההתקרבות של הגשושית לכדור הארץ.
+      - kind: manipulation
+        text: >-
+          $u = \dfrac{-0.25c}{1 - 0.375} = -0.40c$: הגשושית מתקרבת לכדור הארץ, $\beta = +0.40$. $D(0.40) = \sqrt{1.4/0.6}$.
+          רק המהירות של הגשושית עצמה ביחס לכדור הארץ קובעת; המהירות של החללית נכנסת רק דרך $u$.
+      - kind: limit
+        text: >-
+          אילו $u' = -v$, הגשושית הייתה עומדת ביחס לכדור הארץ ו-$f = f_0$. בגליליי $u = -0.25c$ ו-$D(0.25) = 1.29$: טעות של
+          כ-$15\%$ בתדירות.
+      - kind: units
+        text: >-
+          $u'v/c^2$ ו-$D$ חסרי ממדים; $f$ ב-$\text{GHz}$.
+      - kind: substitution
+        text: >-
+          $f = 1.00\cdot\sqrt{2.333} = 1.53\,\text{GHz}$.
+      - kind: result
+        text: >-
+          א. $0.400c$ לכיוון כדור הארץ. ב. $1.53\,\text{GHz}$.
+
+  - id: W-9.4-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      **מהירויות שמתחברות כמו מספרים.** לכל $|\beta| < 1$ נגדיר גודל חסר ממדים $\varphi$ כך ש-$\beta = \tanh\varphi$, כלומר
+      $\varphi = \operatorname{artanh}\beta$. נתונה הזהות $\tanh(a + b) = \dfrac{\tanh a + \tanh b}{1 + \tanh a\,\tanh b}$.
+
+      א. הראו שבחיבור מהירויות יחסותי לאורך קו אחד, ה-$\varphi$-ים פשוט מתחברים.
+
+      ב. חללית משגרת גשושית במהירות $0.6c$, זו משגרת עוד אחת במהירות $0.6c$ ביחס לעצמה, וכן הלאה. מה המהירות אחרי ארבעה
+      שיגורים? קבעו ונמקו בעזרת א: האם שרשרת כזו יכולה להגיע ל-$c$?
+
+      ג. כמה שיגורים כאלה צריך כדי לעבור $0.999c$?
+    answer: >-
+      א. $\beta = \tanh(\varphi_1 + \varphi_2)$. ב. $0.992c$; לא, כי $\tanh$ של כל מספר סופי קטן מ-1. ג. שישה.
+    solution:
+      - kind: law
+        text: >-
+          $\beta = \dfrac{\beta_1 + \beta_2}{1 + \beta_1\beta_2}$ (חיבור מהירויות, ביחידות של $c$), והזהות של $\tanh$.
+      - kind: manipulation
+        text: >-
+          א: מציבים $\beta_1 = \tanh\varphi_1$, $\beta_2 = \tanh\varphi_2$: $\beta = \dfrac{\tanh\varphi_1 + \tanh\varphi_2}{1 + \tanh\varphi_1\tanh\varphi_2} = \tanh(\varphi_1 + \varphi_2)$.
+          ב: $\varphi(0.6) = \operatorname{artanh}0.6 = 0.693$; אחרי $n$ שיגורים $\beta_n = \tanh(0.693n)$, ואחרי ארבעה $\tanh(2.77) = 0.992$.
+          ג: $\operatorname{artanh}0.999 = 3.80$, כלומר $3.80/0.693 = 5.48$ שיגורים: אחרי חמישה $0.998c$, אחרי שישה $0.9995c$. שישה.
+      - kind: reasoning
+        text: >-
+          $\tanh x$ עולה ושואף ל-1 רק כש-$x \to \infty$. לכן כל מספר סופי של שיגורים נותן $\beta < 1$, וזו הוכחה נוספת לכך שאי
+          אפשר להגיע ל-$c$.
+      - kind: limit
+        text: >-
+          במהירויות קטנות $\tanh\varphi \approx \varphi$, ולכן $\beta \approx \varphi$, וחיבור של $\varphi$-ים הוא חיבור מהירויות של גליליי.
+      - kind: units
+        text: >-
+          $\varphi$ ו-$\beta$ חסרי ממדים.
+      - kind: result
+        text: >-
+          א. ה-$\varphi$-ים מתחברים. ב. $0.992c$, ואף פעם לא $c$. ג. שישה שיגורים.
+
+  - id: W-9.4-09
+    level: bagrut
+    objectives: [OBJ-9.4-2]
+    prompt: >-
+      גזרו את אפקט דופלר בדרך אחרת מזו של השיעור: מקור נח בראשית של מערכת $S'$, שנעה במהירות $v$ לאורך $+x$ ביחס ל-$S$,
+      ומהבהב ב-$t' = 0$ וב-$t' = T_0$. צופה נח במערכת $S$ במקום $x = L$, לפני המקור.
+
+      א. מצאו בעזרת טרנספורמציית לורנץ ההפוכה את המקום והזמן של שני ההבהובים במערכת $S$.
+
+      ב. מצאו את הזמן בין שתי הקליטות אצל הצופה, והראו שהוא $T_0\sqrt{(1 - \beta)/(1 + \beta)}$.
+
+      ג. בדקו במספרים, עם $\beta = 0.5$.
+    answer: >-
+      א. $(t, x) = (0, 0)$ ו-$(\gamma T_0,\ \gamma vT_0)$. ב. $\gamma T_0(1 - \beta) = T_0\sqrt{(1 - \beta)/(1 + \beta)}$. ג. $0.577T_0$.
+    solution:
+      - kind: law
+        text: >-
+          $x = \gamma(x' + vt')$, $t = \gamma(t' + vx'/c^2)$; האור נע במהירות $c$ במערכת $S$, מהמקום של כל הבהוב אל הצופה.
+      - kind: manipulation
+        text: >-
+          א: עם $x' = 0$: ההבהוב הראשון ב-$(0, 0)$, והשני ב-$t = \gamma T_0$, $x = \gamma vT_0$. ב: ההבהוב הראשון מגיע ב-$L/c$, והשני
+          ב-$\gamma T_0 + (L - \gamma vT_0)/c$. ההפרש $\gamma T_0 - \gamma\beta T_0 = \gamma(1 - \beta)T_0$, ו-$\gamma(1 - \beta) = \sqrt{(1 - \beta)/(1 + \beta)}$
+          כמו בשיעור.
+      - kind: reasoning
+        text: >-
+          כאן התארכות הזמן לא הונחה: היא יצאה מהטרנספורמציה, ב-$t = \gamma T_0$. גם המרחק $\gamma vT_0$ שהמקור עבר יצא ממנה.
+          ה-$L$ נעלם מהתשובה, כל עוד המקור לא חלף על פני הצופה.
+      - kind: limit
+        text: >-
+          $v = 0$: $T = T_0$. $v \to c$: $T \to 0$, כל ההבהובים מגיעים כמעט יחד.
+      - kind: units
+        text: >-
+          $\gamma vT_0/c$ בשניות, כמו $T_0$.
+      - kind: substitution
+        text: >-
+          $\gamma(0.5) = 1.155$: ההבהוב השני ב-$t = 1.155T_0$, $x = 0.577cT_0$, ו-$T = 1.155\cdot0.5\,T_0 = 0.577T_0 = T_0/\sqrt3$.
+      - kind: result
+        text: >-
+          $T = T_0\sqrt{(1 - \beta)/(1 + \beta)}$; ב-$\beta = 0.5$, $0.577T_0$.
+
+  - id: W-9.4-10
+    level: bagrut
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      **ניסוי פיזו (1851).** אור נע במים במהירות $c/n$ ביחס למים, עם $n = 1.33$. המים זורמים בצינור במהירות $v = 5.0\,\text{m/s}$,
+      והאור נע עם הזרם.
+
+      א. מצאו את מהירות האור ביחס לצינור, וכתבו אותה בקירוב כ-$c/n + kv$. מה המקדם $k$?
+
+      ב. בכמה מהירות האור ביחס לצינור גדולה מ-$c/n$? מה היה החיבור של גליליי נותן?
+    answer: >-
+      א. $k = 1 - 1/n^2 = 0.435$. ב. ב-$2.17\,\text{m/s}$ (גליליי: $5.0\,\text{m/s}$).
+    solution:
+      - kind: given
+        text: >-
+          $S$ הצינור, $S'$ המים, שנעים ב-$v$; האור נע במים ב-$u' = c/n$.
+      - kind: law
+        text: >-
+          $u = \dfrac{u' + v}{1 + u'v/c^2}$.
+      - kind: manipulation
+        text: >-
+          $u = \dfrac{c/n + v}{1 + v/(nc)}$. כש-$v \ll c$: $\dfrac{1}{1 + v/(nc)} \approx 1 - \dfrac{v}{nc}$, ולכן
+          $u \approx \left(\dfrac cn + v\right)\left(1 - \dfrac{v}{nc}\right) \approx \dfrac cn + v - \dfrac{v}{n^2}$, בלי האיבר $v^2/(nc)$.
+      - kind: limit
+        text: >-
+          $n = 1$ (ריק): $k = 0$, ומהירות האור $c$ בלי קשר לזרם. $n \to \infty$: $k \to 1$, גליליי. במאה ה-19 קראו ל-$k$
+          "מקדם הגרירה" של האתר; כלל החיבור היחסותי נותן אותו בלי אתר.
+      - kind: units
+        text: >-
+          $v/(nc)$ חסר ממדים; $kv$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $k = 1 - 1/1.33^2 = 0.435$; $kv = 2.17\,\text{m/s}$. גליליי: $5.0\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $k = 1 - 1/n^2 = 0.435$. ב. מהירות האור עולה ב-$2.17\,\text{m/s}$ בלבד, לא ב-$5.0$: הזרם "גורר" את האור רק חלקית,
+          כפי שפיזו מדד.
+
+challenge:
+  - id: W-9.4-c1
+    stars: 1
+    objectives: [OBJ-9.4-2]
+    prompt: >-
+      אורך הגל של אור אדום הוא $650\,\text{nm}$, ושל אור צהוב $570\,\text{nm}$. נהג עבר ברמזור אדום, ולשוטר שעצר אותו הסביר
+      שבגלל אפקט דופלר הרמזור נראה לו צהוב. השוטר האמין לו, ולמד יחסות. באיזו מהירות, לפי השוטר, נסע הנהג?
+    answer: >-
+      $0.131c \approx 3.9\cdot10^7\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          הנהג מתקרב לרמזור: $\beta > 0$. $\lambda_0 = 650\,\text{nm}$ במערכת הרמזור, $\lambda = 570\,\text{nm}$ במערכת הנהג.
+      - kind: law
+        text: >-
+          $\lambda = \lambda_0\sqrt{\dfrac{1 - \beta}{1 + \beta}}$.
+      - kind: manipulation
+        text: >-
+          נסמן $r = \lambda/\lambda_0$. מעלים בריבוע: $\dfrac{1 - \beta}{1 + \beta} = r^2$, ולכן $1 - \beta = r^2 + r^2\beta$, כלומר
+          $\beta = \dfrac{1 - r^2}{1 + r^2}$.
+      - kind: limit
+        text: >-
+          $r = 1$: $\beta = 0$, אין שינוי צבע בלי תנועה. $r \to 0$: $\beta \to 1$. וכש-$r$ קרוב ל-1, $\beta \approx 1 - r$, הקירוב
+          הליניארי, שנותן כאן $0.123$.
+      - kind: units
+        text: >-
+          $r$ ו-$\beta$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $r = 570/650 = 0.877$, $r^2 = 0.769$, $\beta = 0.231/1.769 = 0.131$, $v = 0.131\cdot3.0\cdot10^8 = 3.92\cdot10^7\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $0.131c$, כ-$3.9\cdot10^7\,\text{m/s}$, יותר ממאה מיליון קמ״ש. התירוץ מחליף עברה קטנה בעברת מהירות גדולה בהרבה.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 2
+      year: 2008
+      problem: "Problem 14 (Won't this excuse get you in worse trouble?)"
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset2.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-9.4-c2
+    stars: 2
+    objectives: [OBJ-9.4-1]
+    prompt: >-
+      **גזירה של חיבור מהירויות בלי טרנספורמציית לורנץ.** חללית A חולפת על פני כדור הארץ במהירות $v$; ברגע הזה השעון שלה והשעון
+      של כדור הארץ מראים אפס (מאורע $E_1$). כשהשעון של כדור הארץ מראה $T$, חללית B חולפת על פני כדור הארץ במהירות $u > v$
+      באותו כיוון (מאורע $E_2$). לבסוף B משיגה את A (מאורע $E_3$). $S$ מערכת כדור הארץ, $S'$ מערכת החללית A.
+
+      א. בין אילו מהמאורעות נמדד זמן עצמי במערכת $S$, ובין אילו במערכת $S'$?
+
+      ב. מה הזמן של $E_2$ לפי השעונים של $S'$, ובאיזה מרחק מ-A נמצא אז כדור הארץ, לפי $S'$?
+
+      ג. מה הזמן של $E_3$ לפי השעונים של $S$, ולפי השעונים של $S'$?
+
+      ד. מצאו מכאן את המהירות של B במערכת $S'$, והראו שהיא $\dfrac{u - v}{1 - uv/c^2}$.
+    answer: >-
+      א. $E_1$–$E_2$ ב-$S$ (שניהם בכדור הארץ); $E_1$–$E_3$ ב-$S'$ (שניהם ב-A). ב. $\gamma T$; $\gamma vT$. ג. $uT/(u - v)$; $uT/(\gamma(u - v))$.
+      ד. $u' = (u - v)/(1 - uv/c^2)$.
+    solution:
+      - kind: law
+        text: >-
+          זמן עצמי נמדד בשעון שנמצא בשני המאורעות; במערכת אחרת הזמן ארוך פי $\gamma$. מרחק במערכת אחת הוא מהירות כפול זמן באותה
+          מערכת.
+      - kind: reasoning
+        text: >-
+          א: $E_1$ ו-$E_2$ קורים שניהם ליד כדור הארץ: זמן עצמי ב-$S$. $E_1$ ו-$E_3$ קורים שניהם ב-A: זמן עצמי ב-$S'$. $E_2$ ו-$E_3$
+          קורים שניהם ב-B, שאינה נחה באף אחת מהמערכות.
+      - kind: manipulation
+        text: >-
+          ב: ב-$S'$ השעון של כדור הארץ נע ומפגר, ולכן $t'(E_2) = \gamma T$; כדור הארץ נע ב-$S'$ במהירות $(-v)$, ולכן הוא אז במרחק
+          $\gamma vT$ מ-A. ג: ב-$S$, $vt = u(t - T)$, ולכן $t(E_3) = \dfrac{uT}{u - v}$; זה זמן ב-$S$ בין $E_1$ ל-$E_3$, והשעון של A
+          מראה $t'(E_3) = \dfrac{uT}{\gamma(u - v)}$.
+      - kind: manipulation
+        text: >-
+          ד: ב-$S'$, B עוברת את המרחק $\gamma vT$ מ-$E_2$ ל-$E_3$ בזמן $t'(E_3) - t'(E_2)$:
+          $u' = \dfrac{\gamma vT}{\dfrac{uT}{\gamma(u - v)} - \gamma T} = \dfrac{\gamma^2v(u - v)}{u - \gamma^2(u - v)}$. כופלים מונה ומכנה ב-$1 - v^2/c^2 = 1/\gamma^2$:
+          $u' = \dfrac{v(u - v)}{u(1 - v^2/c^2) - (u - v)} = \dfrac{v(u - v)}{v - uv^2/c^2} = \dfrac{u - v}{1 - uv/c^2}$.
+      - kind: limit
+        text: >-
+          $u \to c$: $u' \to c$. $u \to v$: $u' \to 0$. מהירויות קטנות: $u' \approx u - v$. בדיקה במספרים, $v = 0.5c$, $u = 0.8c$,
+          $T = 1.0\,\text{h}$: $t'(E_2) = 1.15\,\text{h}$, המרחק $0.577$ שעות אור, $t'(E_3) = 2.31\,\text{h}$, ו-$u' = 0.577/1.15 = 0.500c = 0.3/0.6$.
+      - kind: units
+        text: >-
+          $\gamma vT$ באורך, הזמנים בשניות, $u'$ במהירות.
+      - kind: result
+        text: >-
+          $u' = \dfrac{u - v}{1 - uv/c^2}$, מהתארכות זמן ומהמרחקים בלבד, בלי לכתוב את טרנספורמציית לורנץ.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 2
+      year: 2008
+      problem: Problem 8 (An alternative derivation of the velocity transformation law)
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset2.pdf
+      verified: '2026-11-12'
+      adapted: true

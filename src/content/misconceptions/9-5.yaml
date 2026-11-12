@@ -1,27 +1,26 @@
 # Misconceptions first detected in lesson 9.5. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 9.5
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 9.5 that refutes it (`anchor`, an element id).
 
 - id: MC-9-euclidean-interval
   title: המרחק במרחב-זמן מחושב לפי פיתגורס
   belief: המרחק בין שני מאורעות במרחב-זמן הוא √(Δx² + c²Δt²), כמו המרחק בין שתי נקודות במישור.
   truth: הגודל שכל המערכות מסכימות עליו הוא האינטרוול, s² = c²Δt² − Δx², עם סימן מינוס. הסכום Δx² + c²Δt² משתנה ממערכת למערכת, ולכן אין לו משמעות פיזיקלית.
-  remedy: { lesson: '9.5', label: 'שיעור 9.5: האינטרוול' }
+  remedy: { lesson: '9.5', label: 'שיעור 9.5: האינטרוול, ולמה מינוס ולא פלוס', anchor: 'interval-invariance' }
 
 - id: MC-9-causality-frame-dependent
   title: אם מאורע אחד יכול לגרום לאחר תלוי בצופה
   belief: יש צופים שבעיניהם מאורע A יכול לגרום למאורע B, ויש צופים שבעיניהם לא.
   truth: הסיווג של אינטרוול לזמני, מרחבי או אורי זהה בכל המערכות, כי s² זהה בכולן. לכן כל המערכות מסכימות אם אות יכול לעבור מ-A ל-B. רק אצל זוג עם אינטרוול מרחבי הסדר בזמן תלוי במערכת, ובזוג כזה אף אחד מהמאורעות לא יכול לגרום לשני.
-  remedy: { lesson: '9.5', label: 'שיעור 9.5: חרוט האור וסיבתיות' }
+  remedy: { lesson: '9.5', label: 'שיעור 9.5: זוג זמני שומר על הסדר שלו בכל מערכת', anchor: 'order-kept' }
 
 - id: MC-9-ftl-harmless
   title: אות מהיר מהאור רק מגיע מוקדם
   belief: אות שנע מהר מהאור היה פשוט מגיע מוקדם יותר, בלי לשבור שום עיקרון.
   truth: אות כזה מחבר שני מאורעות עם אינטרוול מרחבי. לזוג כזה יש מערכות אינרציאליות שבהן קבלת האות קודמת לשליחתו, ושם התוצאה הייתה לפני הסיבה. לכן אות מהיר מהאור סותר את הסיבתיות.
-  remedy: { lesson: '9.5', label: 'שיעור 9.5: היפוך סדר של מאורעות עם אינטרוול מרחבי' }
+  remedy: { lesson: '9.5', label: 'שיעור 9.5: למה אין אות מהיר מהאור', anchor: 'ftl-signal' }
 
 - id: MC-9-minkowski-euclidean
   title: דיאגרמת מינקובסקי נקראת כמו מפה רגילה
   belief: הצירים של מערכת נעה מסתובבים יחד ונשארים ניצבים, כמו בסיבוב של מערכת צירים במישור, ומרחקים בדיאגרמה מודדים בסרגל.
   truth: הצירים ct′ ו-x′ נוטים זה לקראת זה, כל אחד בזווית α עם tan α = β, סימטרית סביב קו האור. גם קנה המידה על הצירים הנוטים שונה, ולכן זמן ומרחק קוראים בעזרת קווים מקבילים לצירים ובעזרת האינטרוול, לא באורך של קטע בסרגל.
-  remedy: { lesson: '9.5', label: 'שיעור 9.5: הצירים של מערכת נעה בדיאגרמת מינקובסקי' }
+  remedy: { lesson: '9.5', label: 'שיעור 9.5: למה הצירים של מערכת נעה נוטים זה לקראת זה', anchor: 'scissors' }

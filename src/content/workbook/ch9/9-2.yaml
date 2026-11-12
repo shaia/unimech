@@ -1,0 +1,449 @@
+# Workbook, lesson 9.2 (time dilation from a light clock, proper time, length contraction, muons). Format:
+# CLAUDE.md, "The solution format". Every number was recomputed by .scratch/ch9/9-2/workbook.ts with
+# src/physics/constants.ts (C_LIGHT = 3.0e8 m/s, YEAR = 3.156e7 s, DAY = 86400 s), relativity.ts and dilation.ts:
+#   W02 τ = 26 ns at 0.95c: γ = 3.20, γτ = 83.3 ns, γvτ = 23.7 m (vτ = 7.41 m);
+#   W03 90 m at 0.5c: γ = 1.155, 77.9 m;
+#   W05 1.0 s a day: β ≈ √(2/86400) = 4.81e-3, v = 1.44e6 m/s (the exact β agrees to 3e-6);
+#   W06 1.00 m measured 0.280 m: γ = 3.57, β = 0.960; at a lab point 0.972 ns (proper), in the stick's frame 3.47 ns;
+#   W08 half survive 12.0 → 4.0 km: decay length 8.0 km/ln 2 = 11.5 km, sea level 0.5^1.5 = 0.354; γβ = 17.5,
+#       γ = 17.5; muon frame 8.0 km → 457 m, crossed in τ ln 2 = 1.52 μs; wrong 0.250 (linear), 0.750;
+#   W09 300 m train fills a 180 m platform: γ = 5/3, β = 0.800; platform in the train frame 108 m; the front crosses
+#       it in 750 ns (platform) and 450 ns (train, proper);
+#   W10 tilted clock L₀ = 1.00 m at 60°, 0.6c: in S dx = 0.400 m, dy = 0.866 m (0.954 m at 65.2°); legs 5.42 and
+#       2.92 ns, sum 8.33 ns = γ · 6.67 ns;
+#   c1 Moon (review: the source's 0.75 km/s and 1722 km replaced by the course's R_MOON = 1.74e6 m and the Moon's
+#       orbital speed 2π·D_EARTH_MOON/27.3 d = 1.02e3 m/s, stated as 1.0 km/s): D = 3.48e6 m, β = 3.33e-6,
+#       Dβ²/2 = 1.93e-5 m = 19 μm;
+#   review (.scratch/review/ch9/r12.ts) recomputed every number: none wrong. Lifetimes: τ_μ (muon), τ_π, τ_n, τ_H;
+#       τ alone is proper time (chapter-wide); W08's decay length is d = γvτ_μ, as in the lesson.
+#   c2 Cygnus X-3: 1 ly = 9.468e15 m; neutron γβ = L/(cτ) = 3.56e8, 1 − β ≈ 1/(2γ²β²) = 3.9e-18; γ = 1e10 →
+#       γcτ = 2.81e5 ly; a particle with γ = 1e10 crossing 10,000 ly: τ = 31.6 s; in its frame L/γ = 9.47e9 m.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '9.2'
+practice:
+  - id: W-9.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-9.2-1]
+    prompt: >-
+      בכל אחד מהמקרים הבאים, קבעו ונמקו איזה שעון מודד את הזמן העצמי בין שני המאורעות.
+
+      א. פיון נוצר במטרה של מאיץ ודועך $10\,\text{m}$ משם. המאורעות: הלידה והדעיכה של הפיון.
+
+      ב. אסטרונאוטית טסה במהירות קבועה מכדור הארץ לתחנת חלל רחוקה. המאורעות: היציאה מכדור הארץ וההגעה לתחנה.
+
+      ג. רופאה ברכבת מהירה מודדת את הזמן בין שתי פעימות לב של מטופל שוכב על הרציף. המאורעות: שתי הפעימות.
+    answer: >-
+      א. שעון שנע עם הפיון. ב. השעון של האסטרונאוטית. ג. שעון על הרציף, ליד המטופל.
+    solution:
+      - kind: law
+        text: >-
+          הזמן העצמי נמדד בשעון אחד שנמצא בשני המאורעות, כלומר במערכת שבה הם קורים באותו מקום. כל מערכת אחרת מודדת זמן ארוך פי $\gamma$.
+      - kind: reasoning
+        text: >-
+          א: במעבדה הלידה והדעיכה רחוקות $10\,\text{m}$; רק במערכת של הפיון שתיהן באותו מקום. ב: האסטרונאוטית נמצאת בשני המאורעות, והשעון שלה
+          איתה; כדור הארץ צריך שני שעונים, בכדור הארץ ובתחנה. ג: הלב של המטופל נח על הרציף, ושתי הפעימות שם; ברכבת הן במקומות שונים,
+          והרופאה מודדת זמן ארוך יותר. מי "נע" ומי "נח" לא קובע, רק איפה המאורעות.
+      - kind: limit
+        text: >-
+          כשהמהירות היחסית שואפת לאפס, $\gamma \to 1$, וכל השעונים מודדים אותו זמן.
+      - kind: result
+        text: >-
+          א. השעון של הפיון. ב. השעון של האסטרונאוטית. ג. שעון על הרציף; לא השעון של הרופאה.
+
+  - id: W-9.2-02
+    level: basic
+    objectives: [OBJ-9.2-1]
+    prompt: >-
+      פיון, חלקיק לא יציב שזמן החיים הממוצע שלו במערכת שבה הוא נח הוא $\tau_\pi = 26\,\text{ns}$, נע במעבדה במהירות $0.95c$. מה זמן החיים
+      הממוצע שלו במערכת המעבדה, ואיזה מרחק הוא עובר בממוצע במעבדה לפני שהוא דועך?
+    answer: >-
+      $83.3\,\text{ns}$, ו-$23.7\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          זמן החיים הממוצע $\tau_\pi = 26\,\text{ns}$ (במערכת שבה הפיון נח, כלומר בשעון שלו), $\beta = 0.95$, $v = 2.85\cdot10^8\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $\Delta t = \gamma\Delta\tau$, ולכן במעבדה זמן החיים הממוצע $\gamma\tau_\pi$, והמרחק הממוצע $d = v\gamma\tau_\pi$.
+      - kind: manipulation
+        text: >-
+          $\gamma = 1/\sqrt{1 - 0.95^2} = 1/\sqrt{0.0975} = 3.20$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $d \to v\tau_\pi$, המרחק בלי יחסות, $7.41\,\text{m}$ במהירות הזו: היחסות מאריכה אותו פי $\gamma$.
+      - kind: units
+        text: >-
+          $\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\gamma\tau_\pi = 3.20\cdot26 = 83.3\,\text{ns}$, $d = 2.85\cdot10^8\cdot83.3\cdot10^{-9} = 23.7\,\text{m}$.
+      - kind: result
+        text: >-
+          $83.3\,\text{ns}$ במעבדה, ומרחק ממוצע $23.7\,\text{m}$.
+
+  - id: W-9.2-03
+    level: basic
+    objectives: [OBJ-9.2-2]
+    prompt: >-
+      חללית שאורכה העצמי $90\,\text{m}$ חולפת על פני תחנה במהירות $0.5c$, לאורך הציר שלה. מה אורך החללית במערכת של התחנה? ומה
+      הקוטר שלה שם, אם הקוטר העצמי $12\,\text{m}$?
+    answer: >-
+      $77.9\,\text{m}$ באורך; הקוטר נשאר $12\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $L_0 = 90\,\text{m}$ לאורך התנועה, קוטר $12\,\text{m}$ בניצב לה, $\beta = 0.5$.
+      - kind: law
+        text: >-
+          $L = L_0/\gamma$ לאורך התנועה; מידות בניצב לתנועה לא משתנות.
+      - kind: manipulation
+        text: >-
+          $\gamma = 1/\sqrt{1 - 0.25} = 1/\sqrt{0.75} = 1.155$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $L \to L_0$. כש-$\beta \to 1$, $L \to 0$, אבל הקוטר תמיד $12\,\text{m}$.
+      - kind: units
+        text: >-
+          $\gamma$ חסר ממדים, ו-$L$ במטרים כמו $L_0$.
+      - kind: substitution
+        text: >-
+          $L = 90/1.155 = 77.9\,\text{m}$.
+      - kind: result
+        text: >-
+          אורך $77.9\,\text{m}$, קוטר $12\,\text{m}$.
+
+  - id: W-9.2-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.2-2]
+    prompt: >-
+      רכבת מהירה מאוד נכנסת למנהרה. במערכת של הרכבת הגובה שלה שווה בדיוק לגובה של המנהרה במערכת של הקרקע. תלמיד טוען:
+      "במערכת של הקרקע הרכבת נעה, ולכן היא נמוכה יותר ועוברת בקלות; במערכת של הרכבת המנהרה נעה, ולכן היא נמוכה יותר והרכבת
+      נתקעת. זה פרדוקס!" מה הטעות שלו, ומה קורה באמת?
+    answer: >-
+      גבהים בניצב לתנועה לא משתנים. בשתי המערכות הרכבת בדיוק בגובה המנהרה, ואין פרדוקס.
+    solution:
+      - kind: law
+        text: >-
+          התקצרות אורך חלה רק לאורך כיוון התנועה. מרחקים בניצב לתנועה זהים בכל המערכות.
+      - kind: reasoning
+        text: >-
+          הנימוק של השיעור: אם גבהים של גופים נעים היו קטנים, כל מערכת הייתה רואה את הגוף השני נמוך, ושתי המערכות היו חלוקות על
+          עובדה אחת: האם הגג של הרכבת משפשף את התקרה. עובדה כזו, שריטה במקום מסוים, לא יכולה להיות תלויה במערכת, ולכן גבהים לא
+          משתנים. הטענה של התלמיד היא בדיוק הסתירה הזו, והיא מוכיחה שההנחה שלו שגויה.
+      - kind: limit
+        text: >-
+          גם בלי יחסות ($v \to 0$) הרכבת בגובה המנהרה. המהירות לא משנה את התשובה.
+      - kind: result
+        text: >-
+          הרכבת בדיוק בגובה המנהרה בשתי המערכות. האורך שלה לאורך המסילה הוא שמתקצר, לא הגובה.
+
+  - id: W-9.2-05
+    level: mid
+    objectives: [OBJ-9.2-1]
+    prompt: >-
+      באיזו מהירות צריך לנוע שעון, ביחס למערכת אינרציאלית, כדי שיפגר בה בשנייה אחת ביום, כלומר בשנייה אחת בכל $86{,}400$ שניות
+      של המערכת? השתמשו בקירוב למהירויות קטנות, ובדקו שהוא מוצדק.
+    answer: >-
+      $\beta = 4.81\cdot10^{-3}$, כלומר $v = 1.44\cdot10^6\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\Delta t = 86{,}400\,\text{s}$, הפיגור $\Delta t - \Delta\tau = 1.0\,\text{s}$.
+      - kind: law
+        text: >-
+          $\Delta\tau = \Delta t/\gamma$, ובמהירויות קטנות $1/\gamma = \sqrt{1 - \beta^2} \approx 1 - \beta^2/2$.
+      - kind: manipulation
+        text: >-
+          $\Delta t - \Delta\tau \approx \dfrac{\beta^2}{2}\Delta t$, ולכן $\beta = \sqrt{\dfrac{2(\Delta t - \Delta\tau)}{\Delta t}}$.
+      - kind: limit
+        text: >-
+          פיגור אפס דורש $\beta = 0$. והקירוב מוצדק: $\beta^2 \approx 2\cdot10^{-5}$, והשגיאה היחסית שלו בערך $\beta^2/4 \sim 10^{-5}$.
+      - kind: units
+        text: >-
+          יחס של שני זמנים, חסר ממדים, כמו $\beta^2$.
+      - kind: substitution
+        text: >-
+          $\beta = \sqrt{2/86{,}400} = 4.81\cdot10^{-3}$, $v = 4.81\cdot10^{-3}\cdot3.0\cdot10^8 = 1.44\cdot10^6\,\text{m/s}$.
+      - kind: result
+        text: >-
+          כ-$1{,}440\,\text{km/s}$, הרבה יותר מכל רקטה שבנינו.
+
+  - id: W-9.2-06
+    level: mid
+    objectives: [OBJ-9.2-2, OBJ-9.2-1]
+    prompt: >-
+      סרגל שאורכו העצמי $1.00\,\text{m}$ נע לאורכו במעבדה, ובמעבדה מודדים את אורכו, $28.0\,\text{cm}$.
+
+      א. מה מהירות הסרגל?
+
+      ב. כמה זמן עובר, לפי שעון שעומד במעבדה, מהרגע שהקצה הקדמי חולף על פניו עד שהקצה האחורי חולף? וכמה במערכת של הסרגל?
+    answer: >-
+      א. $0.960c$. ב. $0.972\,\text{ns}$ לפי שעון המעבדה (זמן עצמי), $3.47\,\text{ns}$ במערכת של הסרגל.
+    solution:
+      - kind: given
+        text: >-
+          $L_0 = 1.00\,\text{m}$, $L = 0.280\,\text{m}$ במעבדה.
+      - kind: law
+        text: >-
+          $L = L_0/\gamma$; $\Delta t = \gamma\Delta\tau$, כש-$\Delta\tau$ בשעון שנמצא בשני המאורעות.
+      - kind: manipulation
+        text: >-
+          $\gamma = L_0/L = 3.57$, $\beta = \sqrt{1 - 1/\gamma^2} = \sqrt{1 - 0.0784} = 0.960$. שני המאורעות קורים ליד השעון של המעבדה, ולכן הוא
+          מודד זמן עצמי: הסרגל, באורך $L$ במעבדה, חולף במהירות $v$: $\Delta\tau = L/v$. במערכת של הסרגל השעון חולף לאורך $L_0$: $L_0/v$.
+      - kind: limit
+        text: >-
+          היחס בין שני הזמנים הוא $L_0/L = \gamma$, בדיוק כמו בהתארכות זמן. כש-$L \to L_0$, $\beta \to 0$ ושני הזמנים שואפים לאינסוף: סרגל שעומד לא חולף.
+      - kind: units
+        text: >-
+          $\text{m}/(\text{m/s}) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $v = 2.88\cdot10^8\,\text{m/s}$; $\dfrac{0.280}{2.88\cdot10^8} = 0.972\,\text{ns}$, $\dfrac{1.00}{2.88\cdot10^8} = 3.47\,\text{ns}$.
+      - kind: result
+        text: >-
+          א. $0.960c$. ב. $0.972\,\text{ns}$ במעבדה, $3.47\,\text{ns}$ בסרגל.
+
+  - id: W-9.2-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.2-2]
+    prompt: >-
+      שתי חלליות זהות, באותו אורך עצמי, חולפות זו על פני זו במהירות יחסית גבוהה. כל צוות מודד את האורך של החללית השנייה,
+      ומוצא שהיא קצרה מהחללית שלו. האם זו סתירה? איך כל צוות מודד אורך, ומה ההבדל בין המדידות?
+    answer: >-
+      אין סתירה: כל צוות מסמן את שני הקצוות של החללית השנייה "באותו רגע" לפי השעונים שלו, ו"באותו רגע" שונה בשתי המערכות.
+    solution:
+      - kind: law
+        text: >-
+          אורך של גוף נע הוא המרחק בין שני הקצוות שלו, שנרשמים באותו רגע של המערכת שמודדת. בכל מערכת שבה הגוף נע, $L = L_0/\gamma$.
+      - kind: reasoning
+        text: >-
+          הצוות של A רושם את שני הקצוות של B באותו רגע לפי השעונים של A, ומוצא $L_0/\gamma$. הצוות של B עושה את אותו דבר עם השעונים
+          של B. אילו שני הצוותים היו מסכימים מתי זה "אותו רגע" בשני מקומות שונים, היה כאן ויכוח אמיתי. אבל מהשיעור הקודם,
+          בו-זמניות תלויה במערכת: כל צוות יגיד שהשני רשם את הקצה האחורי מוקדם מדי או מאוחר מדי. המצב סימטרי לגמרי, כמו בהתארכות הזמן.
+      - kind: limit
+        text: >-
+          במהירות יחסית קטנה שני הצוותים מסכימים על הבו-זמניות ועל האורכים, ומוצאים שהחלליות שוות.
+      - kind: result
+        text: >-
+          שני הצוותים צודקים, כל אחד במערכת שלו. ההבדל הוא איזה זוג מאורעות כל צוות קורא "מדידה של שני הקצוות באותו רגע".
+
+  - id: W-9.2-08
+    level: bagrut
+    objectives: [OBJ-9.2-2, OBJ-9.2-1]
+    prompt: >-
+      מיואונים (זמן חיים ממוצע $\tau_\mu = 2.2\,\mu\text{s}$ במערכת שבה הם נחים) נוצרים כולם בגובה $12.0\,\text{km}$ ונעים ישר
+      כלפי מטה, כולם באותה מהירות. גלאי בפסגת הר, בגובה $4.0\,\text{km}$, מוצא שבדיוק חצי מהם מגיעים אליו.
+
+      א. איזה חלק מהם מגיע לגלאי על פני הים?
+
+      ב. מה גורם לורנץ שלהם?
+
+      ג. במערכת של המיואונים, מה המרחק מהמקום שבו נוצרו עד הפסגה, וכמה זמן לוקח לפסגה להגיע אליהם?
+    answer: >-
+      א. $0.354$. ב. $\gamma = 17.5$. ג. $457\,\text{m}$, ו-$1.52\,\mu\text{s}$, שזה $\tau_\mu\ln2$.
+    solution:
+      - kind: given
+        text: >-
+          גובה הלידה $12.0\,\text{km}$, הפסגה $4.0\,\text{km}$: $8.0\,\text{km}$ בין הלידה לפסגה במערכת של כדור הארץ, שבה האוויר נח. חצי שורדים את הדרך הזו.
+      - kind: law
+        text: >-
+          החלק ששורד $e^{-\Delta\tau/\tau_\mu}$, עם $\Delta\tau = x/(\gamma v)$ אחרי מרחק $x$ במערכת של כדור הארץ. כלומר $e^{-x/d}$, עם $d = \gamma v\tau_\mu$, המרחק הממוצע מהשיעור.
+      - kind: manipulation
+        text: >-
+          א: $e^{-8.0/d} = \tfrac12$ ($d$ בקילומטרים), ולכן אחרי $12.0\,\text{km}$ שורד $\left(\tfrac12\right)^{12.0/8.0} = 0.5^{1.5}$. ב: $d = 8.0\,\text{km}/\ln2$, ו-$\gamma\beta = d/(c\tau_\mu)$;
+          $\gamma = \sqrt{1 + (\gamma\beta)^2}$. ג: במערכת של המיואונים הדרך מקוצרת, $8.0\,\text{km}/\gamma$, וחולפת במהירות $v$.
+      - kind: limit
+        text: >-
+          החלק ששורד לא תלוי ב-$\tau_\mu$ בכלל, רק ביחס בין המרחקים: אם חצי שורדים $8.0\,\text{km}$, רבע ישרדו $16\,\text{km}$. ובחלק ג, הזמן
+          העצמי לחצי שורדים חייב להיות $\tau_\mu\ln2$, בכל מהירות.
+      - kind: units
+        text: >-
+          $d/(c\tau_\mu)$: $\text{m}/(\text{m/s}\cdot\text{s})$, חסר ממדים כמו $\gamma\beta$.
+      - kind: substitution
+        text: >-
+          א: $0.5^{1.5} = 0.354$. ב: $d = 11.5\,\text{km}$, $c\tau_\mu = 660\,\text{m}$, $\gamma\beta = 17.5$, $\gamma = 17.5$, $\beta = 0.998$.
+          ג: $8.0\,\text{km}/17.5 = 457\,\text{m}$, ו-$\dfrac{457}{2.995\cdot10^8} = 1.52\,\mu\text{s} = 2.2\cdot\ln2$.
+      - kind: result
+        text: >-
+          א. $0.354$ מגיעים לפני הים. ב. $\gamma = 17.5$. ג. $457\,\text{m}$ במערכת של המיואונים, שעוברים ב-$1.52\,\mu\text{s}$.
+
+  - id: W-9.2-09
+    level: bagrut
+    objectives: [OBJ-9.2-2, OBJ-9.2-1]
+    prompt: >-
+      רכבת שאורכה העצמי $300\,\text{m}$ חולפת על פני רציף שאורכו העצמי $180\,\text{m}$. במערכת של הרציף, הרכבת ממלאת אותו בדיוק.
+
+      א. מה מהירות הרכבת?
+
+      ב. מה אורך הרציף במערכת של הרכבת?
+
+      ג. כמה זמן לוקח לקטר, הקצה הקדמי של הרכבת, לעבור מתחילת הרציף עד סופו? חשבו בשתי המערכות, וקבעו איזה מהזמנים הוא הזמן העצמי.
+    answer: >-
+      א. $0.800c$. ב. $108\,\text{m}$. ג. $750\,\text{ns}$ ברציף, $450\,\text{ns}$ ברכבת (הזמן העצמי, בשעון של הקטר).
+    solution:
+      - kind: given
+        text: >-
+          $L_{0,\text{train}} = 300\,\text{m}$, $L_{0,\text{platform}} = 180\,\text{m}$; במערכת של הרציף $L_{\text{train}} = 180\,\text{m}$.
+      - kind: law
+        text: >-
+          $L = L_0/\gamma$ לכל גוף, במערכת שבה הוא נע. $\Delta t = \gamma\Delta\tau$.
+      - kind: manipulation
+        text: >-
+          א: $\gamma = 300/180 = 5/3$, $\beta = \sqrt{1 - 9/25} = 0.800$. ב: הרציף נע במערכת של הרכבת: $180/\gamma$. ג: ברציף, הקטר עובר
+          $180\,\text{m}$ במהירות $v$. ברכבת, הרציף, באורך $108\,\text{m}$, חולף על פני הקטר במהירות $v$. שני המאורעות קורים בקטר, ולכן
+          השעון של הקטר מודד את הזמן העצמי.
+      - kind: limit
+        text: >-
+          היחס בין הזמנים $750/450 = 5/3 = \gamma$, כמו שהתארכות הזמן דורשת. כש-$v \to 0$ הרכבת לא הייתה נכנסת ברציף, $300 > 180$: הקיצור
+          הוא מה שמאפשר את ה"מילוי".
+      - kind: units
+        text: >-
+          $\text{m}/(\text{m/s}) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $v = 2.40\cdot10^8\,\text{m/s}$; $\dfrac{180}{2.40\cdot10^8} = 750\,\text{ns}$, $\dfrac{108}{2.40\cdot10^8} = 450\,\text{ns}$.
+      - kind: reasoning
+        text: >-
+          במערכת של הרכבת הרציף, $108\,\text{m}$, קצר בהרבה מהרכבת, $300\,\text{m}$, ולכן שם הרכבת לא "נכנסת" אליו. אין כאן סתירה: "הרכבת
+          ממלאת את הרציף" פירושו ששני הקצוות שלה מול שני הקצוות שלו **באותו רגע**, וזו שאלה של בו-זמניות. בשיעור 9.6 נפתור את זה עד הסוף.
+      - kind: result
+        text: >-
+          א. $0.800c$. ב. $108\,\text{m}$. ג. $750\,\text{ns}$ ברציף; $450\,\text{ns}$ ברכבת, הזמן העצמי.
+
+  - id: W-9.2-10
+    level: bagrut
+    objectives: [OBJ-9.2-1, OBJ-9.2-2]
+    prompt: >-
+      שעון אור עם מראות במרחק עצמי $1.00\,\text{m}$ נח על קרון, כשהקו בין המראות נוטה $60^\circ$ מכיוון הנסיעה, במערכת של הקרון.
+      הקרון נע במהירות $0.6c$ ביחס לקרקע.
+
+      א. מה המרחק בין המראות במערכת של הקרקע, ובאיזו זווית מכיוון הנסיעה?
+
+      ב. חשבו במערכת של הקרקע את הזמן של כל אחת משתי הדרכים של האור, ואת התקתוק. השוו ל-$\gamma T_0$, והסבירו למה התוצאה חייבת לצאת כך.
+    answer: >-
+      א. $0.954\,\text{m}$, בזווית $65.2^\circ$. ב. $5.42 + 2.92 = 8.33\,\text{ns} = 1.25\cdot6.67\,\text{ns}$.
+    solution:
+      - kind: given
+        text: >-
+          $L_0 = 1.00\,\text{m}$, $\theta_0 = 60^\circ$, $\beta = 0.6$, $\gamma = 1.25$. ציר $x$ לכיוון הנסיעה. $T_0 = 2L_0/c = 6.67\,\text{ns}$.
+      - kind: law
+        text: >-
+          רכיב לאורך התנועה מתקצר פי $\gamma$, רכיב בניצב לא משתנה. האור נע ב-$c$ גם במערכת של הקרקע.
+      - kind: manipulation
+        text: >-
+          א: $d_x = L_0\cos\theta_0/\gamma = 0.400\,\text{m}$, $d_y = L_0\sin\theta_0 = 0.866\,\text{m}$. ב: בדרך הלוך, המראה השנייה נמצאת ב-$\vec d + (vt_1,\ 0)$
+          כשהאור מגיע אליה, ו-$\left|\vec d + (vt_1,\ 0)\right| = ct_1$: $(c^2 - v^2)t_1^2 - 2d_xvt_1 - d^2 = 0$. בדרך חזרה, $\left|-\vec d + (vt_2,\ 0)\right| = ct_2$:
+          $(c^2 - v^2)t_2^2 + 2d_xvt_2 - d^2 = 0$. הסכום של שני השורשים החיוביים: $\dfrac{2\sqrt{c^2d_x^2 + (c^2 - v^2)d_y^2}}{c^2 - v^2}$, ועם $d_x$ ו-$d_y$ שלמעלה
+          השורש הוא $cL_0/\gamma$, והסכום $\gamma\cdot2L_0/c$.
+      - kind: limit
+        text: >-
+          $\theta_0 = 90^\circ$ נותן את השעון הניצב, ו-$\theta_0 = 0$ את השעון שלאורך התנועה, $L/(c - v) + L/(c + v)$. בכל זווית התקתוק $\gamma T_0$.
+      - kind: units
+        text: >-
+          $\sqrt{c^2d^2}/c^2$ ב-$\text{m}/(\text{m/s}) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $d = \sqrt{0.400^2 + 0.866^2} = 0.954\,\text{m}$, $\tan\theta = 0.866/0.400$, $\theta = 65.2^\circ$. $t_1 = 5.42\,\text{ns}$, $t_2 = 2.92\,\text{ns}$, יחד $8.33\,\text{ns}$, ו-$\gamma T_0 = 1.25\cdot6.67 = 8.33\,\text{ns}$.
+      - kind: reasoning
+        text: >-
+          זה חייב לצאת כך: על הקרון שעון האור הנטוי ושעון ניצב שמתחילים מאותה נקודה מתקתקים יחד, וכל תקתוק הוא מפגש במקום אחד, שכל
+          המערכות מסכימות עליו. אילו השעון הנטוי היה מתקתק אחרת, נוסע בקרון היה מגלה שהוא נע, בניגוד לעקרון היחסות.
+      - kind: result
+        text: >-
+          א. $0.954\,\text{m}$ בזווית $65.2^\circ$. ב. $8.33\,\text{ns}$, בדיוק $\gamma T_0$.
+
+challenge:
+  - id: W-9.2-c1
+    stars: 1
+    objectives: [OBJ-9.2-2]
+    prompt: >-
+      הירח נע סביב כדור הארץ במהירות של בערך $1.0\,\text{km/s}$, ורדיוס הירח $1.74\cdot10^6\,\text{m}$. בכמה מתקצר הקוטר של
+      הירח, לאורך כיוון התנועה שלו, במערכת של צופה שנח ביחס לכדור הארץ? (התייחסו לתנועה הזו כאילו היא במהירות קבועה.)
+    answer: >-
+      בכ-$1.9\cdot10^{-5}\,\text{m}$, כלומר כ-$19\,\mu\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $D_0 = 2\cdot1.74\cdot10^6 = 3.48\cdot10^6\,\text{m}$ (קוטר עצמי), $v = 1.0\cdot10^3\,\text{m/s}$, $\beta = 3.33\cdot10^{-6}$.
+      - kind: law
+        text: >-
+          $D = D_0/\gamma$ לאורך התנועה, ובמהירויות קטנות $1/\gamma \approx 1 - \beta^2/2$.
+      - kind: manipulation
+        text: >-
+          $\Delta D = D_0 - D = D_0\left(1 - 1/\gamma\right) \approx D_0\,\beta^2/2$. חשבון ישיר של $\sqrt{1 - \beta^2}$ במחשבון לא יעזור: $\beta^2 \sim 10^{-11}$, ובמחשבון של
+          10 ספרות $1 - \beta^2$ יוצא פשוט 1. בדיוק בשביל זה יש קירוב.
+      - kind: limit
+        text: >-
+          הקיצור יחסי ל-$\beta^2$: פי שניים במהירות, פי ארבעה בקיצור. ובמהירות אפס, אפס.
+      - kind: units
+        text: >-
+          $\beta^2$ חסר ממדים; $\Delta D$ במטרים כמו $D_0$.
+      - kind: substitution
+        text: >-
+          $\beta^2/2 = 5.56\cdot10^{-12}$, $\Delta D = 3.48\cdot10^6\cdot5.56\cdot10^{-12} = 1.93\cdot10^{-5}\,\text{m}$.
+      - kind: result
+        text: >-
+          כ-$19\,\mu\text{m}$, פחות מעובי של שערה, על גוף שהקוטר שלו $3480\,\text{km}$.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 2
+      year: 2005
+      problem: Problem 6 (Moon contraction)
+      url: https://ocw.iti.hr/courses/physics/8-20-introduction-to-special-relativity-january-iap-2005/assignments/ps2.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-9.2-c2
+    stars: 2
+    objectives: [OBJ-9.2-1, OBJ-9.2-2]
+    prompt: >-
+      לפני כמה עשורים גלאים של קרינה קוסמית רשמו מקלחות של חלקיקים שנראו כאילו הן באות מהכיוון של המקור Cygnus X-3, במרחק
+      של בערך $10{,}000$ שנות אור. חלקיק טעון היה מתעקל בשדות המגנטיים שבין הכוכבים ולא היה "מצביע" חזרה על המקור, ולכן
+      חיפשו חלקיק ניטרלי. מועמד ראשון: הנייטרון, שזמן החיים הממוצע שלו (במערכת שבה הוא נח) הוא $885.7\,\text{s}$.
+
+      א. כדי שנייטרון יעבור את המרחק בזמן חיים ממוצע אחד שלו, מה צריך להיות $\gamma\beta$? כמה קרוב ל-1 צריך להיות $\beta$?
+
+      ב. הניסויים הראו ש-$\gamma$ של החלקיקים היה לכל היותר בערך $10^{10}$. עד איזה מרחק יכלו נייטרונים כאלה להגיע בזמן חיים ממוצע
+      אחד? האם הנייטרון יכול להסביר את המקלחות?
+
+      ג. נניח חלקיק חדש, ניטרלי, עם $\gamma = 10^{10}$, שעובר בדיוק $10{,}000$ שנות אור בזמן חיים ממוצע אחד. מה זמן החיים הממוצע
+      שלו? תארו את המסע במערכת של החלקיק: איזה מרחק הוא "עובר" שם?
+    answer: >-
+      א. $\gamma\beta = 3.56\cdot10^8$, $1 - \beta \approx 4\cdot10^{-18}$. ב. כ-$2.8\cdot10^5$ שנות אור: כן, אם $\gamma$ קרוב ל-$10^{10}$. ג. כ-$32\,\text{s}$; במערכת
+      שלו הדרך היא $9.5\cdot10^9\,\text{m}$, והיא חולפת על פניו בכ-$32\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $L = 10^4$ שנות אור $= 10^4\cdot c\cdot3.156\cdot10^7\,\text{s} = 9.47\cdot10^{19}\,\text{m}$ (אורך עצמי, במערכת של כדור הארץ והמקור). $\tau_n = 885.7\,\text{s}$.
+      - kind: law
+        text: >-
+          במערכת של כדור הארץ, החלקיק עובר $L$ בזמן $L/v$, והשעון שלו מראה $\Delta\tau = L/(\gamma v)$. במערכת שלו, הדרך מקוצרת ל-$L/\gamma$ וחולפת על פניו במהירות $v$: אותו $\Delta\tau$.
+      - kind: manipulation
+        text: >-
+          א: $\Delta\tau = \tau_n$ נותן $\gamma\beta = \dfrac{L}{c\tau_n}$. כש-$\gamma\beta \gg 1$, $\gamma \approx \gamma\beta$ ו-$1 - \beta \approx \dfrac{1}{2\gamma^2}$ (מ-$1 - \beta^2 = 1/\gamma^2$ ו-$1 + \beta \approx 2$).
+          ב: המרחק בזמן חיים אחד הוא $\gamma\beta c\tau_n \approx \gamma c\tau_n$. ג: זמן החיים הממוצע של החלקיק החדש, $\tau_H = \dfrac{L}{\gamma\beta c} \approx \dfrac{L}{\gamma c}$, ובמערכת של החלקיק $L/\gamma$.
+      - kind: limit
+        text: >-
+          בלי יחסות, $\gamma = 1$, נייטרון היה עובר רק $c\tau_n = 2.7\cdot10^{11}\,\text{m}$, פחות מפעמיים המרחק לשמש. וככל ש-$\gamma$ גדל, $L/\gamma$ קטן, והחלקיק
+          חי פחות זמן עצמי בדרך: שתי המערכות מסכימות.
+      - kind: units
+        text: >-
+          $L/(c\tau_n)$ ב-$\text{m}/(\text{m/s}\cdot\text{s})$, חסר ממדים.
+      - kind: substitution
+        text: >-
+          א: $\gamma\beta = \dfrac{9.47\cdot10^{19}}{3.0\cdot10^8\cdot885.7} = 3.56\cdot10^8$, $1 - \beta \approx \dfrac{1}{2(3.56\cdot10^8)^2} = 3.9\cdot10^{-18}$.
+          ב: $10^{10}\cdot3.0\cdot10^8\cdot885.7 = 2.66\cdot10^{21}\,\text{m} = 2.8\cdot10^5$ שנות אור. ג: $\tau_H = \dfrac{9.47\cdot10^{19}}{10^{10}\cdot3.0\cdot10^8} = 31.6\,\text{s}$, ו-$L/\gamma = 9.47\cdot10^9\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $\gamma\beta = 3.56\cdot10^8$: $\beta$ שונה מ-1 רק בספרה ה-18 אחרי הנקודה. ב. עד $2.8\cdot10^5$ שנות אור, יותר מ-$10{,}000$: נייטרון עם $\gamma \sim 10^{10}$ היה מגיע.
+          ג. $31.6\,\text{s}$; במערכת של החלקיק כל $10{,}000$ שנות האור הן $9.5$ מיליון קילומטרים, בערך 25 פעמים המרחק לירח.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 2
+      year: 2005
+      problem: Problems 8 and 9 (Cosmic neutrons?, Cosmic something else?)
+      url: https://ocw.iti.hr/courses/physics/8-20-introduction-to-special-relativity-january-iap-2005/assignments/ps2.pdf
+      verified: '2026-11-12'
+      adapted: true

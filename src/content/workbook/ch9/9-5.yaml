@@ -1,0 +1,449 @@
+# Workbook, lesson 9.5 (the interval, light cones and causality, the Minkowski diagram with the axes of a moving
+# frame). Format: CLAUDE.md, "The solution format". Every number was recomputed by .scratch/ch9/9-5/workbook.ts with
+# src/physics/constants.ts (C_LIGHT = 3.0e8), src/physics/relativity.ts and src/physics/minkowski.ts:
+#   W01 Δt = 10 µs, Δx = 2.0 km: cΔt = 3000 m, s² = 5.00e6 m², τ = 7.45 µs, v = 0.667c;
+#   W02 (Δx, cΔt) = (3, 3) s² = 0, (2, 7) 45, (6, 1) −35;
+#   W03 β = 0.25: tilt 14.0°, angle between the primed axes 61.9°;
+#   W04 5.0 light-hours, 13 h: s² = 144, τ = 12.0 h, β = 0.385, γ = 1.08;
+#   W05 5.0e4 ly, 3.5e4 years: s² = −1.28e9 ly², β = 0.700, distance there 3.57e4 ly, a signal at 1.43c;
+#   W06 β = 0.5, (−1, 3): x′ = −2.89, ct′ = 4.04, s² = 8;
+#   W07 β = 0.6: unit on paper γ√(1 + β²) = 1.25·1.166 = 1.46; a tick at paper distance 1 is ct′ = 0.686;
+#   W08 Δt = 5.0 µs, Δx = 1050 m: β = 0.700, τ = 3.57 µs (= minimum of Δt′(β), scanned); Δt′(0.9) = 4.24 µs;
+#   W09 β = 0.6, emission at t′ = 2.0 s: (x, ct) = (1.5, 2.5), received on Earth at t = 4.0 s (ratio 2.00 = D(0.6));
+#       in the rocket frame: received at t′ = 5.0 s, Earth at x′ = −3.0, Earth clock 5.0/γ = 4.0 s;
+#   W10 the tangent of (ct)² − x² = 1 at (γβ, γ) has slope dct/dx = x/ct = β (checked at β = 0.3, 0.75);
+#   c1 q = (x, ct) = (1, 2), β = 0.6: x′ = −0.25, ct′ = 1.75; (ct)² + x² 5 → 3.13; (ct)² − x² 3 → 3.00;
+#      γ = cosh φ = 1.25, γβ = sinh φ = 0.75;
+#   c2 Δx = 2400 m, cΔt = 1500 m, r = 0.625: β = 2r/(1 + r²) = 0.899 (2.70e8 m/s), γ = 2.28, Δx′ = +2400 m,
+#      cΔt′ = −1500 m (Δt′ = −5.00 µs), s² = −3.51e6 m² in both.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '9.5'
+practice:
+  - id: W-9.5-01
+    level: basic
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      במערכת הייחוס של מעבדה, גלאי אחד מצפצף, ו-$10\,\mu\text{s}$ אחר כך גלאי שני, במרחק $2.0\,\text{km}$ ממנו, מצפצף גם הוא.
+      חשבו את האינטרוול בין שני הצפצופים, וקבעו את הסוג שלו. אם יש ביניהם זמן עצמי, מה הוא?
+    answer: >-
+      $s^2 = 5.0\cdot10^6\,\text{m}^2 > 0$, אינטרוול זמני; $\tau = 7.45\,\mu\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          במערכת המעבדה: $\Delta t = 10\,\mu\text{s}$, $\Delta x = 2.0\cdot10^3\,\text{m}$; $c = 3.0\cdot10^8\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $s^2 = c^2\Delta t^2 - \Delta x^2$; אם $s^2 > 0$ האינטרוול זמני, והזמן העצמי $\tau = \sqrt{s^2}/c$.
+      - kind: manipulation
+        text: >-
+          $c\Delta t = 3.0\cdot10^8\cdot1.0\cdot10^{-5} = 3000\,\text{m}$. לכן $s^2 = 3000^2 - 2000^2 = 9.0\cdot10^6 - 4.0\cdot10^6\,\text{m}^2$.
+      - kind: limit
+        text: >-
+          כש-$\Delta x \to 0$, $\tau \to \Delta t$: שני הצפצופים באותו גלאי, ושעון המעבדה הוא השעון העצמי.
+      - kind: units
+        text: >-
+          $s^2$ ב-$\text{m}^2$; $\sqrt{s^2}/c$ ב-$\text{m}/(\text{m/s}) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $s^2 = 5.0\cdot10^6\,\text{m}^2$, $\sqrt{s^2} = 2236\,\text{m}$, $\tau = 2236/(3.0\cdot10^8)\,\text{s} = 7.45\,\mu\text{s}$.
+      - kind: result
+        text: >-
+          $s^2 = 5.0\cdot10^6\,\text{m}^2$, זמני. שעון שנע מגלאי לגלאי במהירות $2000/10^{-5} = 2.0\cdot10^8\,\text{m/s}$ מודד ביניהם
+          $7.45\,\mu\text{s}$.
+
+  - id: W-9.5-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      שלושה זוגות של מאורעות, כל אחד נתון בהפרשים במערכת $S$, בשנות אור ובשנים: (א) $\Delta x = 3$, $c\Delta t = 3$;
+      (ב) $\Delta x = 2$, $c\Delta t = 7$; (ג) $\Delta x = 6$, $c\Delta t = 1$. סווגו כל אינטרוול, וקבעו ונמקו באיזה זוג
+      המאורע הראשון יכול לגרום לשני. האם התשובה יכולה להשתנות במערכת ייחוס אחרת?
+    answer: >-
+      (א) אורי, יכול (רק אור). (ב) זמני, יכול. (ג) מרחבי, לא יכול. התשובה זהה בכל המערכות.
+    solution:
+      - kind: law
+        text: >-
+          $s^2 = c^2\Delta t^2 - \Delta x^2$: חיובי זמני, אפס אורי, שלילי מרחבי. קשר סיבתי אפשרי רק כשהמאורע השני בעתיד של
+          הראשון, כלומר באינטרוול זמני או אורי עם $\Delta t > 0$.
+      - kind: manipulation
+        text: >-
+          (א) $9 - 9 = 0$. (ב) $49 - 4 = 45$. (ג) $1 - 36 = -35$.
+      - kind: reasoning
+        text: >-
+          ב-(א) רק אות במהירות האור מגיע בדיוק בזמן; ב-(ב) מספיק אות במהירות $2/7\cdot c$; ב-(ג) אפילו אור צריך שש שנים ויש רק
+          שנה אחת. $s^2$ זהה בכל המערכות, ולכן גם הסימן שלו והסיווג.
+      - kind: limit
+        text: >-
+          אם ב-(ג) $c\Delta t$ היה גדל ל-6, הזוג היה הופך לאורי, ומשם והלאה לזמני: הגבול בין הסוגים הוא קו האור.
+      - kind: result
+        text: >-
+          (א) אורי, (ב) זמני: בשניהם הראשון יכול לגרום לשני. (ג) מרחבי: לא. אף מערכת לא תשנה את זה, כי $s^2$ אינווריאנטי.
+
+  - id: W-9.5-03
+    level: basic
+    objectives: [OBJ-9.5-2]
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ משרטטים את הצירים של מערכת $S'$ שנעה במהירות $0.25c$ לאורך $x$. באיזו זווית נוטה ציר $ct'$
+      מציר $ct$, ולאיזה כיוון? באיזו זווית נוטה ציר $x'$ מציר $x$? מה הזווית בין ציר $ct'$ לציר $x'$ על הנייר?
+    answer: >-
+      שניהם $14.0^\circ$, לקראת קו האור; הזווית ביניהם $61.9^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          ציר $ct'$ הוא $x = \beta\,ct$ וציר $x'$ הוא $ct = \beta x$; כל אחד נוטה בזווית $\alpha$ עם $\tan\alpha = \beta$.
+      - kind: manipulation
+        text: >-
+          $\alpha = \arctan 0.25$. ציר $ct'$ נוטה ימינה מציר $ct$, וציר $x'$ למעלה מציר $x$, ולכן הזווית ביניהם קטנה מ-$90^\circ$
+          ב-$2\alpha$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\alpha \to 0$ והצירים ניצבים; כש-$\beta \to 1$, $\alpha \to 45^\circ$ ושניהם נצמדים לקו האור.
+      - kind: substitution
+        text: >-
+          $\alpha = \arctan 0.25 = 14.04^\circ$, כלומר $14.0^\circ$; $90^\circ - 2\cdot14.04^\circ = 61.9^\circ$.
+      - kind: result
+        text: >-
+          $14.0^\circ$ ימינה מציר $ct$, $14.0^\circ$ מעל ציר $x$, ו-$61.9^\circ$ ביניהם.
+
+  - id: W-9.5-04
+    level: mid
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      שתי תחנות חלל נחות במערכת $S$, במרחק $5.0$ שעות אור זו מזו. חללית חולפת על פני הראשונה, ובמערכת $S$ היא חולפת על פני
+      השנייה $13$ שעות אחר כך. כמה זמן עובר בשעון החללית בין שני המאורעות? חשבו פעם באינטרוול ופעם בהתארכות זמן.
+    answer: >-
+      $12.0\,\text{h}$.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S$: $\Delta x = 5.0$ שעות אור, $c\Delta t = 13$ שעות אור. השעון של החללית נוכח בשני המאורעות.
+      - kind: law
+        text: >-
+          $\tau = \sqrt{s^2}/c$, עם $s^2 = c^2\Delta t^2 - \Delta x^2$; ובדרך השנייה $\Delta t = \gamma\tau$.
+      - kind: manipulation
+        text: >-
+          $s^2 = 169 - 25 = 144$ שעות אור בריבוע, ולכן $\tau = 12$ שעות. בדרך השנייה: $\beta = 5/13$,
+          $\gamma = 1/\sqrt{1 - 25/169} = 13/12$, ו-$\tau = \Delta t/\gamma = 13\cdot12/13 = 12$ שעות.
+      - kind: limit
+        text: >-
+          חללית איטית מאוד, $\Delta x \ll c\Delta t$: $\tau \to \Delta t$. חללית במהירות שמתקרבת ל-$c$, $c\Delta t \to \Delta x$: $\tau \to 0$.
+      - kind: units
+        text: >-
+          בשעות ובשעות אור $c = 1$, ו-$\sqrt{s^2}$ בשעות אור מתאים ל-$\tau$ בשעות.
+      - kind: result
+        text: >-
+          $12.0$ שעות בשעון החללית, בשתי הדרכים: האינטרוול והתארכות הזמן הם אותו חשבון.
+
+  - id: W-9.5-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      שתי גלקסיות נחות זו ביחס לזו במרחק $5.0\cdot10^4$ שנות אור. כתבה טוענת שסופרנובה בגלקסיה הראשונה "גרמה" לסופרנובה
+      בשנייה, שהתפוצצה $3.5\cdot10^4$ שנים אחריה במערכת שלהן. קבעו ונמקו אם זה אפשרי. מצאו מערכת ייחוס שבה שתי ההתפוצצויות
+      בו-זמניות ואת המרחק ביניהן בה, ותארו מה רואים במערכות מהירות ממנה.
+    answer: >-
+      לא אפשרי: $s^2 < 0$. בו-זמניות ב-$0.700c$ לכיוון הגלקסיה השנייה, $3.57\cdot10^4$ שנות אור זו מזו; מהר מזה, השנייה קודמת.
+    solution:
+      - kind: given
+        text: >-
+          $\Delta x = 5.0\cdot10^4$ שנות אור, $c\Delta t = 3.5\cdot10^4$ שנות אור, במערכת של הגלקסיות.
+      - kind: law
+        text: >-
+          $s^2 = c^2\Delta t^2 - \Delta x^2$; זוג מרחבי בו-זמני ב-$\beta = c\Delta t/\Delta x$, והמרחק שם $\sqrt{-s^2}$.
+      - kind: manipulation
+        text: >-
+          $s^2 = (3.5^2 - 5.0^2)\cdot10^8 = -1.28\cdot10^9$ שנות אור בריבוע: מרחבי. אות מהראשונה היה צריך לנוע ב-$5.0/3.5 = 1.43c$.
+          $\beta = 3.5/5.0 = 0.700$; $\sqrt{1.275\cdot10^9} = 3.57\cdot10^4$ שנות אור.
+      - kind: reasoning
+        text: >-
+          במערכות שנעות לכיוון הגלקסיה השנייה מהר מ-$0.700c$, $c\Delta t' = \gamma(c\Delta t - \beta\Delta x) < 0$: ה"תוצאה" קודמת
+          ל"סיבה". זה מה שפוסל כל קשר סיבתי.
+      - kind: limit
+        text: >-
+          אילו ההפרש בזמן היה $5.0\cdot10^4$ שנים, הזוג היה אורי, ואור מהסופרנובה הראשונה היה יכול להגיע בדיוק בזמן; אין אז
+          מערכת שבה הם בו-זמניים ($\beta \to 1$).
+      - kind: result
+        text: >-
+          הטענה בלתי אפשרית. במערכת שנעה ב-$0.700c$ שתי ההתפוצצויות בו-זמניות, $3.57\cdot10^4$ שנות אור זו מזו, ובמערכות מהירות
+          ממנה השנייה קודמת לראשונה.
+
+  - id: W-9.5-06
+    level: mid
+    objectives: [OBJ-9.5-2]
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$ משורטטים הצירים של מערכת $S'$ שנעה במהירות $0.5c$. מאורע E נמצא ב-$x = -1$ ו-$ct = 3$ שניות
+      אור. מצאו את $x'$ ואת $ct'$ שלו, תארו איך קוראים אותם בשרטוט, ובדקו באינטרוול.
+    answer: >-
+      $x' = -2.89$, $ct' = 4.04$ שניות אור.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = 0.5$, $\gamma = 1/\sqrt{0.75} = 1.155$; E ב-$(x,\ ct) = (-1,\ 3)$.
+      - kind: law
+        text: >-
+          $x' = \gamma\left(x - \beta\,ct\right)$, $ct' = \gamma\left(ct - \beta x\right)$. בשרטוט: דרך E קו מקביל לציר $x'$ עד ציר $ct'$
+          נותן את $ct'$, וקו מקביל לציר $ct'$ עד ציר $x'$ נותן את $x'$, בשנתות של $S'$.
+      - kind: manipulation
+        text: >-
+          $x' = 1.155\cdot(-1 - 1.5) = -2.89$; $ct' = 1.155\cdot(3 + 0.5) = 4.04$. הקו המקביל לציר $ct'$ פוגש את ציר $x'$ משמאל
+          לראשית, ולכן $x' < 0$; הקו המקביל לציר $x'$ פוגש את ציר $ct'$ מעל הראשית.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $(x',\ ct') \to (-1,\ 3)$.
+      - kind: units
+        text: >-
+          הכול בשניות אור; $\beta$ ו-$\gamma$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          אינטרוול: ב-$S$, $9 - 1 = 8$; ב-$S'$, $4.04^2 - 2.89^2 = 16.33 - 8.33 = 8.0$.
+      - kind: result
+        text: >-
+          $x' = -2.89$ שניות אור, $ct' = 4.04$ שניות אור, ו-$s^2 = 8$ בשתי המערכות.
+
+  - id: W-9.5-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-9.5-2]
+    prompt: >-
+      סטודנט משרטט דיאגרמת מינקובסקי של $S$ ואת ציר $ct'$ של מערכת שנעה במהירות $0.6c$. הוא מסמן את השנתה $ct' = 1$ בסרגל,
+      במרחק 1 מהראשית לאורך הציר הנוטה, "כמו בציר $ct$". קבעו ונמקו מה הטעות. איפה השנתה צריכה להיות, ומה המרחק שלה על
+      הנייר? איזה $ct'$ מתאים לסימון של הסטודנט?
+    answer: >-
+      השנתה ב-$(0.75,\ 1.25)$, על ההיפרבולה $c^2t^2 - x^2 = 1$, במרחק $1.46$ על הנייר; הסימון שלו הוא $ct' = 0.686$.
+    solution:
+      - kind: law
+        text: >-
+          השנתה $ct' = 1$ היא המאורע $x' = 0$, $ct' = 1$, וה-$s^2$ שלו מהראשית הוא 1 בכל מערכת: הוא על ההיפרבולה
+          $c^2t^2 - x^2 = 1$, ב-$(\gamma\beta,\ \gamma)$.
+      - kind: reasoning
+        text: >-
+          הסטודנט קרא את הנייר כמפה של פיתגורס. אבל האורך של קטע על הנייר אינו גודל פיזיקלי: מה שכל המערכות מסכימות עליו הוא
+          $s^2$, ולכן קנה המידה על ציר נוטה נקבע בהיפרבולה, לא בסרגל.
+      - kind: manipulation
+        text: >-
+          $\gamma = 1.25$: השנתה ב-$(0.75,\ 1.25)$, ומרחקה $\gamma\sqrt{1 + \beta^2} = 1.25\cdot1.166 = 1.46$. נקודה בציר במרחק 1 על
+          הנייר היא $1/1.46$ מהשנתה: $ct' = 0.686$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ הגורם $\gamma\sqrt{1 + \beta^2} \to 1$, והסימון של הסטודנט היה נכון: רק על ציר $ct$ עצמו הסרגל עובד.
+      - kind: result
+        text: >-
+          השנתה צריכה להיות ב-$(0.75,\ 1.25)$, $1.46$ מהראשית על הנייר; הסימון של הסטודנט מתאים ל-$ct' = 0.686$ בלבד.
+
+  - id: W-9.5-08
+    level: bagrut
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      במערכת $S$ שני מאורעות קורים $\Delta t = 5.0\,\mu\text{s}$ זה אחרי זה ובמרחק $\Delta x = 1050\,\text{m}$. (א) מצאו מערכת
+      ייחוס שבה הם קורים באותו מקום, והראו בטרנספורמציה שהזמן ביניהם שם הוא $\sqrt{s^2}/c$. (ב) הראו שזה הזמן הקצר ביותר
+      ביניהם בכל מערכת אינרציאלית שנעה לאורך $x$.
+    answer: >-
+      (א) $\beta = 0.700$, $\Delta t' = 3.57\,\mu\text{s}$. (ב) $c^2\Delta t'^2 = s^2 + \Delta x'^2 \ge s^2$, שוויון רק ב-$\Delta x' = 0$.
+    solution:
+      - kind: given
+        text: >-
+          $c\Delta t = 1500\,\text{m}$, $\Delta x = 1050\,\text{m}$; $S'$ נעה ב-$\beta c$ לאורך $x$.
+      - kind: law
+        text: >-
+          $\Delta x' = \gamma\left(\Delta x - \beta\,c\Delta t\right)$, $c\Delta t' = \gamma\left(c\Delta t - \beta\Delta x\right)$, ו-$s^2$ אינווריאנטי.
+      - kind: manipulation
+        text: >-
+          (א) $\Delta x' = 0$ כש-$\beta = \Delta x/(c\Delta t) = 1050/1500 = 0.700$, $\gamma = 1.40$. אז
+          $c\Delta t' = \gamma\left(c\Delta t - \beta^2c\Delta t\right) = \gamma\left(1 - \beta^2\right)c\Delta t = c\Delta t/\gamma$, ו-$s^2 = c^2\Delta t^2\left(1 - \beta^2\right) = c^2\Delta t'^2$.
+      - kind: manipulation
+        text: >-
+          (ב) בכל מערכת $c^2\Delta t'^2 - \Delta x'^2 = s^2$, ולכן $c^2\Delta t'^2 = s^2 + \Delta x'^2 \ge s^2$, ושוויון רק כש-$\Delta x' = 0$.
+          סריקה של $\Delta t'(\beta)$ על כל ה-$\beta$ בין $-0.999$ ל-$0.999$ נותנת את המינימום ב-$\beta = 0.700$.
+      - kind: limit
+        text: >-
+          ב-$\beta = 0$, $\Delta t' = 5.0\,\mu\text{s}$; ב-$\beta = 0.9$, $\Delta t' = 4.24\,\mu\text{s}$; וכש-$\beta \to \pm1$, $\Delta t' \to \infty$. המינימום
+          באמצע, במערכת שבה המאורעות באותו מקום.
+      - kind: units
+        text: >-
+          $\sqrt{s^2}$ במטרים, ולחלק ב-$c$ נותן שניות.
+      - kind: substitution
+        text: >-
+          $s^2 = 1500^2 - 1050^2 = 1.15\cdot10^6\,\text{m}^2$, $\sqrt{s^2} = 1071\,\text{m}$, $\Delta t' = 1071/(3.0\cdot10^8)\,\text{s} = 3.57\,\mu\text{s} = 5.0/1.40\,\mu\text{s}$.
+      - kind: result
+        text: >-
+          (א) במערכת שנעה ב-$0.700c$ המאורעות באותו מקום, ו-$3.57\,\mu\text{s}$ ביניהם, הזמן העצמי. (ב) זה הזמן הקצר ביותר בכל
+          מערכת.
+
+  - id: W-9.5-09
+    level: bagrut
+    objectives: [OBJ-9.5-2, OBJ-9.5-1]
+    prompt: >-
+      חללית חולפת על פני כדור הארץ ברגע $t = t' = 0$ ומתרחקת במהירות $0.6c$. כשהשעון שלה מראה $2.0\,\text{s}$ היא שולחת הבזק
+      אור חזרה לכדור הארץ. (א) שרטטו בדיאגרמת מינקובסקי של $S$, מערכת כדור הארץ, את קו העולם של כדור הארץ, את ציר $ct'$, את
+      מאורע השליחה ואת קו העולם של ההבזק. מה $x$ ו-$ct$ של השליחה? (ב) מה מראה שעון כדור הארץ כשההבזק מגיע? (ג) חשבו את
+      אותו דבר במערכת של החללית.
+    answer: >-
+      (א) $(1.5,\ 2.5)$ שניות אור. (ב) $4.0\,\text{s}$. (ג) ב-$S'$ ההבזק מגיע ב-$t' = 5.0\,\text{s}$, ושעון כדור הארץ מראה $5.0/\gamma = 4.0\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = 0.6$, $\gamma = 1.25$; השליחה ב-$x' = 0$, $ct' = 2.0$ שניות אור; כדור הארץ ב-$x = 0$.
+      - kind: law
+        text: >-
+          $x = \gamma\left(x' + \beta\,ct'\right)$, $ct = \gamma\left(ct' + \beta x'\right)$; אור נע ב-$45^\circ$ בשתי המערכות.
+      - kind: manipulation
+        text: >-
+          (א) $(x,\ ct) = (\gamma\beta\cdot2,\ \gamma\cdot2) = (1.5,\ 2.5)$, על ציר $ct'$ ($x = 0.6\,ct$). ההבזק נע שמאלה: $x = 1.5 - (ct - 2.5)$.
+          (ב) הוא מגיע ל-$x = 0$ ב-$ct = 4.0$. (ג) ב-$S'$ כדור הארץ נע ב-$-0.6c$: $x' = -0.6\,ct'$. ההבזק יוצא מ-$x' = 0$ ב-$ct' = 2$
+          ונע שמאלה, $x' = -(ct' - 2)$, ופוגש את כדור הארץ כש-$ct' - 2 = 0.6\,ct'$, כלומר $ct' = 5.0$. שעון כדור הארץ נוכח
+          במאורעות $t = 0$ ו-$t = 4.0$, ולכן מראה $5.0/\gamma = 4.0\,\text{s}$, בהתאם.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ ההבזק נשלח ומתקבל באותו מקום ובאותו רגע, $2.0\,\text{s}$. היחס $4.0/2.0 = 2.00$ הוא $\sqrt{(1 + \beta)/(1 - \beta)}$,
+          גורם הדופלר של שיעור 9.4 למקור שמתרחק.
+      - kind: units
+        text: >-
+          כל הקואורדינטות בשניות אור, וזמנים בשניות.
+      - kind: result
+        text: >-
+          השליחה ב-$(1.5,\ 2.5)$ שניות אור; שעון כדור הארץ מראה $4.0\,\text{s}$ כשההבזק מגיע, ואותה תשובה יוצאת במערכת החללית.
+
+  - id: W-9.5-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-9.5-2]
+    prompt: >-
+      בדיאגרמת מינקובסקי של $S$, ההיפרבולה $c^2t^2 - x^2 = 1$ (בשניות אור בריבוע) חותכת את ציר $ct'$ של מערכת שנעה במהירות
+      $\beta c$ בשנתה $ct' = 1$. (א) הסבירו למה. (ב) הראו שהמשיק להיפרבולה בנקודה הזו מקביל לציר $x'$. (ג) מה המשמעות של זה
+      לצופה ב-$S'$?
+    answer: >-
+      (א) $s^2$ אינווריאנטי. (ב) שיפוע המשיק $x/ct = \beta$, כמו ציר $x'$. (ג) קו הבו-זמניות של $S'$ ברגע $ct' = 1$ משיק להיפרבולה:
+      לפי $S'$, השעון שלה מגיע ראשון ל"שנייה אחת של זמן עצמי", ושעונים שיצאו מהראשית במהירויות אחרות מגיעים לשם מאוחר יותר.
+    solution:
+      - kind: law
+        text: >-
+          $s^2 = c^2t^2 - x^2$ זהה בכל המערכות; ציר $x'$ הוא $ct = \beta x$; השנתה $ct' = 1$ ב-$(\gamma\beta,\ \gamma)$.
+      - kind: reasoning
+        text: >-
+          (א) לשנתה, ב-$S'$, $s^2 = 1^2 - 0^2 = 1$. לכן גם ב-$S$, והיא על ההיפרבולה.
+      - kind: manipulation
+        text: >-
+          (ב) גוזרים את $c^2t^2 - x^2 = 1$ לפי $x$: $2\,ct\,\dfrac{d(ct)}{dx} - 2x = 0$, ולכן $\dfrac{d(ct)}{dx} = \dfrac{x}{ct}$. בשנתה
+          $x/ct = \gamma\beta/\gamma = \beta$: בדיוק השיפוע של ציר $x'$.
+      - kind: reasoning
+        text: >-
+          (ג) הקו המשיק הוא קו הבו-זמניות של $S'$ ברגע $ct' = 1$. בדיאגרמה של $S'$ עצמה ההיפרבולה נראית אותו דבר, והשנתה שלה
+          היא הנקודה הנמוכה ביותר שלה, על ציר $ct'$. שעונים שיצאו מהראשית במהירויות אחרות מגיעים ל"שנייה אחת" שלהם על אותה
+          היפרבולה, ולפי $S'$ כולם מגיעים לשם מאוחר יותר, כי הם נעים ב-$S'$.
+      - kind: limit
+        text: >-
+          ב-$\beta = 0$ המשיק אופקי בקודקוד $(0,\ 1)$, וקו הבו-זמניות של $S$ הוא $ct = 1$: אותה תמונה במערכת $S$.
+      - kind: result
+        text: >-
+          השנתה על ההיפרבולה כי $s^2 = 1$ בכל מערכת, והמשיק בה מקביל לציר $x'$ עם שיפוע $\beta$. ההיפרבולה היא אוסף כל
+          המאורעות "שנייה אחת של זמן עצמי אחרי O", לכל מהירות.
+
+challenge:
+  - id: W-9.5-c1
+    stars: 1
+    objectives: [OBJ-9.5-2, OBJ-9.5-1]
+    prompt: >-
+      סיבוב לעומת טרנספורמציית לורנץ. במישור $(x,\ y)$, סיבוב של הצירים בזווית $\theta$ נותן $x' = x\cos\theta + y\sin\theta$,
+      $y' = -x\sin\theta + y\cos\theta$. טרנספורמציית לורנץ במישור $(x,\ ct)$, לאורך $x$: $ct' = \gamma\left(ct - \beta x\right)$,
+      $x' = \gamma\left(x - \beta\,ct\right)$.
+
+      א. שרטטו את הצירים $x$, $y$ ואת הצירים המסובבים $x'$, $y'$. הראו ש-$x'^2 + y'^2 = x^2 + y^2$.
+
+      ב. שרטטו את הצירים $x$, $ct$ ואת $x'$, $ct'$ של מערכת שנעה במהירות $0.6c$. סמנו את המאורע $q = (x,\ ct) = (1,\ 2)$ ומצאו
+      את $x'$, $ct'$ שלו. מה שונה בין הסיבוב לבין טרנספורמציית לורנץ בשרטוט?
+
+      ג. הראו ש"מרחק" שמוגדר כמו במישור, $d^2 = c^2t^2 + x^2$, לא נשמר בטרנספורמציית לורנץ, ומצאו צירוף של $c^2t^2$ ו-$x^2$
+      שכן נשמר.
+
+      ד. נגדיר $\gamma = \cosh\varphi$ ו-$\gamma\beta = \sinh\varphi$ (זה אפשרי כי $\gamma^2 - \gamma^2\beta^2 = 1$, כמו
+      $\cosh^2\varphi - \sinh^2\varphi = 1$). כתבו את הטרנספורמציה בעזרת $\varphi$, והשוו לסיבוב.
+    answer: >-
+      א. $\cos^2 + \sin^2 = 1$. ב. $x' = -0.25$, $ct' = 1.75$; הצירים נוטים זה לקראת זה ולא מסתובבים יחד. ג. $d^2$: 5 ב-$S$, $3.13$ ב-$S'$;
+      $c^2t^2 - x^2 = 3$ בשתיהן. ד. $ct' = ct\cosh\varphi - x\sinh\varphi$, $x' = x\cosh\varphi - ct\sinh\varphi$: "סיבוב היפרבולי".
+    solution:
+      - kind: manipulation
+        text: >-
+          א. $x'^2 + y'^2 = x^2\cos^2\theta + 2xy\cos\theta\sin\theta + y^2\sin^2\theta + x^2\sin^2\theta - 2xy\sin\theta\cos\theta + y^2\cos^2\theta = x^2 + y^2$.
+          שני הצירים המסובבים פונים באותו כיוון סיבוב ונשארים ניצבים.
+      - kind: manipulation
+        text: >-
+          ב. $\gamma = 1.25$: $x' = 1.25\cdot(1 - 1.2) = -0.25$, $ct' = 1.25\cdot(2 - 0.6) = 1.75$. ציר $ct'$ ($x = 0.6\,ct$) נוטה ימינה, ציר $x'$
+          ($ct = 0.6x$) נוטה למעלה: הם נסגרים לקראת קו האור $ct = x$ במקום להסתובב יחד, ואינם ניצבים על הנייר.
+      - kind: manipulation
+        text: >-
+          ג. $c^2t'^2 + x'^2 = 1.75^2 + 0.25^2 = 3.13 \ne 5$. באופן כללי, באיברים המעורבים: $c^2t'^2 + x'^2 = \gamma^2(1 + \beta^2)(c^2t^2 + x^2) - 4\gamma^2\beta\,ct\,x$,
+          לא אותו דבר. לעומת זאת $c^2t'^2 - x'^2 = 3.0625 - 0.0625 = 3 = 4 - 1$: האיברים המעורבים מתבטלים ו-$\gamma^2(1 - \beta^2) = 1$.
+      - kind: manipulation
+        text: >-
+          ד. $ct' = ct\cosh\varphi - x\sinh\varphi$, $x' = x\cosh\varphi - ct\sinh\varphi$, עם $\tanh\varphi = \beta$. ב-$\beta = 0.6$, $\cosh\varphi = 1.25$ ו-$\sinh\varphi = 0.75$.
+          המבנה כמו בסיבוב, אבל עם פונקציות היפרבוליות ושני מינוסים במקום מינוס ופלוס; לכן הוא שומר על $c^2t^2 - x^2$ במקום
+          על $c^2t^2 + x^2$, ונקודות של "מרחק" קבוע יושבות על היפרבולות במקום על מעגלים.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\varphi \to 0$, $\cosh\varphi \to 1$ ו-$\sinh\varphi \to 0$: אין טרנספורמציה, כמו סיבוב ב-$\theta = 0$.
+      - kind: result
+        text: >-
+          סיבוב שומר על $x^2 + y^2$ ומשאיר את הצירים ניצבים; טרנספורמציית לורנץ שומרת על $c^2t^2 - x^2$, ומטה את שני הצירים
+          לקראת קו האור. ל-$q$: $(x',\ ct') = (-0.25,\ 1.75)$.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 2
+      year: 2021
+      problem: 'Problem 5 (Review: Space-Time Diagrams)'
+      url: https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/cd3a0af9faab703bd3ad01a92538f959_MIT8_20iap21_pset2.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-9.5-c2
+    stars: 2
+    objectives: [OBJ-9.5-1]
+    prompt: >-
+      צופה במערכת $S$ רואה שני הבזקים על החלק החיובי של ציר $x$, במרחק $2400\,\text{m}$ זה מזה: הבזק כחול, ו-$5.00\,\mu\text{s}$ אחריו
+      הבזק אדום, הרחוק יותר מהראשית. צופה שנייה, במערכת $S'$ שנעה לאורך $x$, מודדת **בדיוק** את אותו הפרש זמנים ואת אותו
+      מרחק, אבל לפיה ההבזק האדום קרה ראשון.
+
+      א. מה המהירות של $S'$ ביחס ל-$S$?
+
+      ב. איזה הבזק רחוק יותר מהראשית של $S'$?
+    answer: >-
+      א. $0.899c = 2.70\cdot10^8\,\text{m/s}$, בכיוון $+x$. ב. האדום, $2400\,\text{m}$ אחרי הכחול לאורך $+x'$.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S$: $\Delta x = x_{\text{red}} - x_{\text{blue}} = 2400\,\text{m}$, $c\Delta t = 3.0\cdot10^8\cdot5.00\cdot10^{-6} = 1500\,\text{m}$. ב-$S'$:
+          $c\Delta t' = -1500\,\text{m}$ ו-$|\Delta x'| = 2400\,\text{m}$.
+      - kind: law
+        text: >-
+          $c\Delta t' = \gamma\left(c\Delta t - \beta\Delta x\right)$, $\Delta x' = \gamma\left(\Delta x - \beta\,c\Delta t\right)$. האינטרוול
+          $s^2 = 1500^2 - 2400^2 < 0$ נשמר, וזה עקבי עם $|\Delta x'| = |\Delta x|$ ו-$|\Delta t'| = |\Delta t|$; הזוג מרחבי, ולכן הסדר יכול להתהפך.
+      - kind: manipulation
+        text: >-
+          נסמן $r = c\Delta t/\Delta x = 0.625$. צריך $\gamma\left(r - \beta\right) = -r$, כלומר $\beta - r = r\sqrt{1 - \beta^2}$. בריבוע:
+          $\beta^2 - 2r\beta + r^2 = r^2 - r^2\beta^2$, ולכן $\beta\left(1 + r^2\right) = 2r$ (השורש $\beta = 0$ לא הופך את הסדר).
+      - kind: manipulation
+        text: >-
+          $\beta = \dfrac{2r}{1 + r^2} = \dfrac{1.25}{1.391} = 0.899$, ו-$\gamma = \dfrac{1 + r^2}{1 - r^2} = 2.28$. אז
+          $\Delta x' = 2.28\cdot\left(2400 - 0.899\cdot1500\right) = +2400\,\text{m}$. (הסימן השני, $\Delta x' = -2400\,\text{m}$, היה דורש $\beta > 1$.)
+      - kind: limit
+        text: >-
+          כש-$r \to 0$, הבזקים בו-זמניים ב-$S$, $\beta \to 0$: אין מה להפוך. כש-$r \to 1$, זוג אורי, $\beta \to 1$: אין מערכת כזו. וב-$\beta = r = 0.625$, בין
+          לבין, ההבזקים בו-זמניים, כמו שצריך באמצע הדרך מ-$+5.00$ ל-$-5.00\,\mu\text{s}$.
+      - kind: units
+        text: >-
+          $r$ ו-$\beta$ חסרי ממדים; $\beta c$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v = 0.899\cdot3.0\cdot10^8 = 2.70\cdot10^8\,\text{m/s}$; בדיקה: $c\Delta t' = 2.28\cdot\left(1500 - 0.899\cdot2400\right) = -1500\,\text{m}$, ו-$s^2 = -3.51\cdot10^6\,\text{m}^2$ בשתי המערכות.
+      - kind: result
+        text: >-
+          א. $S'$ נעה במהירות $0.899c$ בכיוון $+x$, לכיוון ההבזקים. ב. $\Delta x' = +2400\,\text{m}$: גם ב-$S'$ ההבזק האדום נמצא
+          $2400\,\text{m}$ הלאה לאורך $+x'$ מהכחול, ולכן הוא הרחוק יותר מהראשית שלה (כששניהם בצד החיובי).
+    source:
+      name: MIT 8.033 Relativity, Problem Set 3 (problem taken from Resnick and Halliday, Basic Concepts in Relativity)
+      year: 2006
+      problem: 'Problem 7 (Two Events - Same Time Difference, Same Separation, Different Sequence)'
+      url: https://ocw.mit.edu/courses/8-033-relativity-fall-2006/d0a46e5655cc06d21ace2d54d4b774f9_ps3.pdf
+      verified: '2026-11-12'
+      adapted: true

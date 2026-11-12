@@ -1,0 +1,7 @@
+---
+/** Velocity-addition and Doppler figure for lesson 9.4: <Spread fig="fig-9-4a" figure={VelocityDoppler} figureProps={{ mode: 'add', tasks: [...] }}>. */
+import VelocityDoppler, { type VelocityDopplerProps } from './VelocityDoppler';
+type Props = VelocityDopplerProps;
+---
+
+<VelocityDoppler client:visible {...Astro.props} />
