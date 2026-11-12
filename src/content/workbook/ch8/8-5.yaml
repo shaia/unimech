@@ -1,0 +1,461 @@
+# Workbook, lesson 8.5 (rigid-body equilibrium). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-5/workbook.ts with G = 9.8 and src/physics/statics.ts:
+#   W02 metre stick 0.20 kg on a pivot at 40 cm, mass at 10 cm: m = 0.0667 kg (66.7 g);
+#   W03 wheelbarrow 60 kg, CM 0.40 m behind the axle, handles 1.40 m: lift 168 N, wheel 420 N;
+#   W04 plank 2.0 m, 6.0 kg on scales reading 410 N (head) and 335 N (feet): person 70.0 kg, CM 1.11 m from the feet;
+#   W05 beam 3.0 m, 20 kg, hinged at the floor at 60°, horizontal rope at the top: T = Mg/(2 tan 60°) = 56.6 N,
+#       hinge 56.6 N horizontal and 196 N vertical, 204 N at 73.9° above the horizontal;
+#   W06 plank 2.0 m, 5.0 kg, hands at the end and at 0.50 m: the end hand pushes down 49.0 N, the other up 98.0 N;
+#   W08 rough wall μ_w = 0.20, floor μ_s = 0.40, ladder 4.0 m 10 kg at 60°, person 60 kg: s_max = 3.01 m
+#       (smooth wall 2.90 m), N₁ = 635 N, N₂ = f = 254 N, f_w = 50.8 N;
+#   W09 box 0.40 m wide, 1.0 m tall, μ_s = 0.50 on a tilting board: tips at 21.8°, would slide at 26.6°;
+#   W10 rod 2.0 m on a smooth peg 0.80 m high at 30°: N = 0.541 Mg, f = 0.271 Mg, N₁ = 0.531 Mg, μ_min = 0.509;
+#   c1 (MIT 8.01SC, ch. 18, Example 18.3) slope 15°, h = 0.95 m, 70 kg, d = 0.60 m: N_down = 612 N, N_up = 50.2 N,
+#      d_min = 2h tan α = 0.509 m;
+#   c2 (AAPT F=ma 2019 B, Q9) board 0.80 m, ball 2.0 kg, R = 0.10 m, 60° to the wall: F = 2RW/ℓ = 4.90 N, the board
+#      pushes the ball with 2W/√3 = 22.6 N, the wall with W/√3 = 11.3 N.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.5'
+practice:
+  - id: W-8.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.5-1]
+    prompt: >-
+      על גוף צפיד בשיווי משקל פועלים רק שני כוחות. הראו ששני הכוחות שווים בגודלם, מנוגדים בכיוונם, ופועלים לאורך
+      **אותו קו**. מה זה אומר על הכוח שמפעיל מוט קל שמחובר בשני קצותיו בצירים, ושאין עליו כוח נוסף?
+    answer: >-
+      מ-$\sum\vec F = 0$, $\vec F_2 = -\vec F_1$. סביב נקודת הפעולה של $\vec F_1$, המומנט של $\vec F_2$ חייב להתאפס, ולכן קו
+      הפעולה שלו עובר דרכה: שני הכוחות על אותו קו. מוט קל כזה מושך או דוחף רק לאורכו.
+    solution:
+      - kind: law
+        text: >-
+          שיווי משקל: $\sum\vec F = 0$ ו-$\sum\vec\tau = 0$ סביב כל נקודה.
+      - kind: manipulation
+        text: >-
+          מהכוחות: $\vec F_1 + \vec F_2 = 0$. בוחרים למומנטים את הנקודה $A$ שבה פועל $\vec F_1$: המומנט שלו שם אפס, ולכן גם
+          המומנט של $\vec F_2$ סביב $A$ אפס. כוח שאינו אפס נותן מומנט אפס רק כשהזרוע שלו אפס, כלומר כשקו הפעולה שלו עובר דרך $A$.
+      - kind: reasoning
+        text: >-
+          מוט קל עם צירים בשני הקצוות: עליו פועלים רק שני הכוחות של הצירים, בשתי נקודות הקצה. הם על אותו קו, ולכן לאורך המוט.
+      - kind: limit
+        text: >-
+          אילו הכוחות היו שווים והפוכים אבל על קווים מקבילים במרחק $d$, זה היה זוג כוחות עם מומנט $Fd$, והגוף היה מסתובב.
+      - kind: units
+        text: >-
+          אין כאן מספרים; המומנט $Fd$ ב-$\text{N·m}$.
+      - kind: result
+        text: >-
+          שני כוחות בשיווי משקל: שווים, הפוכים, ועל קו אחד. מוט קל בין שני צירים מותח או דוחק רק לאורכו.
+
+  - id: W-8.5-02
+    level: basic
+    objectives: [OBJ-8.5-2]
+    prompt: >-
+      סרגל אחיד של מטר, במסה $0.20\,\text{kg}$, מונח על ציר בסימן $40\,\text{cm}$. איזו מסה צריך לתלות בסימן $10\,\text{cm}$
+      כדי שהסרגל יהיה אופקי ובמנוחה?
+    answer: >-
+      $66.7\,\text{g}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.20\,\text{kg}$, מרכז המסה בסימן $50\,\text{cm}$, הציר בסימן $40\,\text{cm}$, המסה $m$ בסימן $10\,\text{cm}$.
+      - kind: law
+        text: >-
+          מומנטים סביב הציר, שהכוח שלו לא נכנס: $m g\,d_1 = Mg\,d_2$.
+      - kind: manipulation
+        text: >-
+          $d_1 = 0.30\,\text{m}$ (משמאל לציר), $d_2 = 0.10\,\text{m}$ (מימין לציר), ולכן $m = M\dfrac{d_2}{d_1}$.
+      - kind: limit
+        text: >-
+          אם הציר במרכז המסה, $d_2 = 0$ ו-$m = 0$: הסרגל מאוזן לבד.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}/\text{m} = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $m = 0.20\cdot\dfrac{0.10}{0.30} = 0.0667\,\text{kg}$.
+      - kind: result
+        text: >-
+          $66.7\,\text{g}$.
+
+  - id: W-8.5-03
+    level: basic
+    objectives: [OBJ-8.5-2]
+    prompt: >-
+      מריצה עם מטען, במסה כוללת $60\,\text{kg}$, עומדת על הגלגל שלה. מרכז המסה במרחק אופקי $0.40\,\text{m}$ מציר הגלגל,
+      והידיות במרחק אופקי $1.40\,\text{m}$ ממנו. איזה כוח אנכי צריך להפעיל על הידיות כדי להחזיק את המריצה, ומה הכוח של
+      הקרקע על הגלגל?
+    answer: >-
+      $168\,\text{N}$ על הידיות; $420\,\text{N}$ על הגלגל.
+    solution:
+      - kind: given
+        text: >-
+          $m = 60\,\text{kg}$, $d_{cm} = 0.40\,\text{m}$, $d_F = 1.40\,\text{m}$, שניהם מציר הגלגל, שבו הקרקע דוחפת.
+      - kind: law
+        text: >-
+          מומנטים סביב נקודת המגע של הגלגל, שם הכוח של הקרקע לא נכנס; אחר כך $\sum F_y = 0$.
+      - kind: manipulation
+        text: >-
+          $F\,d_F = mg\,d_{cm}$, ולכן $F = mg\dfrac{d_{cm}}{d_F}$; הקרקע: $N = mg - F$.
+      - kind: limit
+        text: >-
+          כשהמטען ממש מעל הגלגל, $d_{cm} = 0$: הידיים לא נושאות כלום. לכן מעמיסים מריצה קרוב לגלגל.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m}/\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $F = 60\cdot9.8\cdot\dfrac{0.40}{1.40} = 168\,\text{N}$; $N = 588 - 168 = 420\,\text{N}$.
+      - kind: result
+        text: >-
+          $168\,\text{N}$ כלפי מעלה על הידיות, $420\,\text{N}$ מהקרקע על הגלגל.
+
+  - id: W-8.5-04
+    level: mid
+    objectives: [OBJ-8.5-1]
+    prompt: >-
+      קרש אחיד באורך $2.0\,\text{m}$ ובמסה $6.0\,\text{kg}$ מונח על שני משקלי אמבטיה, אחד מתחת לכל קצה. אדם שוכב על הקרש.
+      המשקל שמתחת לראשו מראה $410\,\text{N}$, והמשקל שמתחת לרגליו $335\,\text{N}$. מה מסת האדם, ובאיזה מרחק מכפות
+      רגליו נמצא מרכז המסה שלו?
+    answer: >-
+      $70.0\,\text{kg}$; $1.11\,\text{m}$ מהקצה של הרגליים.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מהקצה של הרגליים ($x = 0$) אל הראש ($x = 2.0\,\text{m}$); $y$ למעלה. על הקרש: $N_F = 335\,\text{N}$ ב-$x = 0$,
+          $N_H = 410\,\text{N}$ ב-$x = 2.0\,\text{m}$, הכובד שלו $6.0g$ ב-$x = 1.0\,\text{m}$, והאדם, שדוחף אותו ב-$m_pg$ ב-$x_p$.
+      - kind: law
+        text: >-
+          $\sum F_y = 0$ נותן את המסה; $\sum\tau = 0$ סביב הקצה של הרגליים נותן את המקום.
+      - kind: manipulation
+        text: >-
+          $N_F + N_H = (6.0 + m_p)g$. סביב $x = 0$: $N_H\cdot2.0 = 6.0g\cdot1.0 + m_pg\,x_p$, ולכן
+          $x_p = \dfrac{2.0N_H - 6.0g}{m_pg}$.
+      - kind: limit
+        text: >-
+          אם שני המשקלים מראים אותו דבר, $N_H = N_F$, יוצא $x_p = 1.0\,\text{m}$: מרכז המסה באמצע, כמו שהסימטריה דורשת.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m}/\text{N} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $m_p = \dfrac{745}{9.8} - 6.0 = 70.0\,\text{kg}$; $x_p = \dfrac{820 - 58.8}{70.0\cdot9.8} = 1.11\,\text{m}$.
+      - kind: result
+        text: >-
+          $70.0\,\text{kg}$, ומרכז המסה $1.11\,\text{m}$ מכפות הרגליים.
+
+  - id: W-8.5-05
+    level: mid
+    objectives: [OBJ-8.5-2]
+    prompt: >-
+      קורה אחידה באורך $3.0\,\text{m}$ ובמסה $20\,\text{kg}$ מחוברת ברצפה בציר, ונוטה בזווית $60^\circ$ עם הרצפה. חבל
+      אופקי קשור לראש הקורה ומחזיק אותה, ומושך אותה לכיוון הצד של הציר. מה המתיחות בחבל, ומה הכוח שהציר מפעיל על
+      הקורה (גודל וכיוון)?
+    answer: >-
+      $T = 56.6\,\text{N}$; הציר: $56.6\,\text{N}$ אופקית ו-$196\,\text{N}$ כלפי מעלה, כלומר $204\,\text{N}$ ב-$73.9^\circ$ מעל האופק.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון שאליו הקורה נוטה, $y$ למעלה; נגד כיוון השעון חיובי. הציר בראשית, הראש ב-$(L\cos\theta,\,L\sin\theta)$.
+          על הקורה: $T$ בראש, בכיוון $-x$; הכובד $Mg$ באמצע; וכוח הציר $(H,\,V)$.
+      - kind: law
+        text: >-
+          מומנטים סביב הציר, שבו $H$ ו-$V$ לא נכנסים; אחר כך שתי משוואות הכוחות.
+      - kind: manipulation
+        text: >-
+          $T$ אופקי בגובה $L\sin\theta$, והכובד בזרוע $\tfrac L2\cos\theta$: $TL\sin\theta = Mg\,\tfrac L2\cos\theta$, ולכן
+          $T = \dfrac{Mg}{2\tan\theta}$. מהכוחות: $H = T$, $V = Mg$.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 90^\circ$ הקורה זקופה, $T \to 0$, והציר נושא את המשקל לבד. כש-$\theta \to 0$, $T \to \infty$: חבל אופקי לא
+          יכול להחזיק קורה שוכבת.
+      - kind: units
+        text: >-
+          $Mg$ ב-$\text{N}$, $\tan\theta$ חסר יחידות.
+      - kind: substitution
+        text: >-
+          $T = \dfrac{20\cdot9.8}{2\tan60^\circ} = 56.6\,\text{N}$; $V = 196\,\text{N}$; $|F| = \sqrt{56.6^2 + 196^2} = 204\,\text{N}$, בזווית
+          $\arctan(196/56.6) = 73.9^\circ$ מעל האופק.
+      - kind: result
+        text: >-
+          $T = 56.6\,\text{N}$; הציר דוחף ב-$204\,\text{N}$, ב-$73.9^\circ$ מעל האופק, הרחק מהחבל. האורך $3.0\,\text{m}$ לא נכנס.
+
+  - id: W-8.5-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.5-1]
+    prompt: >-
+      מחזיקים קרש אחיד באורך $2.0\,\text{m}$ ובמסה $5.0\,\text{kg}$ במצב אופקי בשתי ידיים: יד אחת בקצה הקרש, והשנייה
+      $0.50\,\text{m}$ ממנו. קבעו ונמקו: איזו יד דוחפת למעלה ואיזו למטה? חשבו את שני הכוחות.
+    answer: >-
+      היד שבקצה דוחפת **כלפי מטה** ב-$49.0\,\text{N}$; היד הפנימית דוחפת כלפי מעלה ב-$98.0\,\text{N}$, פי שניים מהמשקל.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מהקצה המוחזק לאורך הקרש, $y$ למעלה. יד 1 ב-$x = 0$, יד 2 ב-$x = 0.50\,\text{m}$, הכובד $Mg = 49\,\text{N}$ ב-$x = 1.0\,\text{m}$.
+      - kind: law
+        text: >-
+          מומנטים סביב יד 2, שהכוח שלה לא נכנס; אחר כך $\sum F_y = 0$.
+      - kind: reasoning
+        text: >-
+          סביב יד 2 הכובד, מימינה, מסובב את הקרש מטה. כדי לאזן, יד 1, משמאלה, חייבת לסובב לאותו כיוון שבו הקצה השמאלי
+          יורד, כלומר **לדחוף כלפי מטה**. אילו היא דחפה למעלה, שני המומנטים היו באותו כיוון.
+      - kind: manipulation
+        text: >-
+          $F_1\cdot0.50 = Mg\cdot0.50$, ולכן $F_1 = Mg$, כלפי מטה. מהכוחות: $F_2 = Mg + F_1 = 2Mg$, כלפי מעלה.
+      - kind: limit
+        text: >-
+          אילו יד 2 הייתה במרכז הקרש, $F_1 = 0$: יד אחת מתחת למרכז המסה מספיקה. ככל שיד 2 קרובה לקצה, $F_1$ גדל בלי גבול.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m}/\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $F_1 = 5.0\cdot9.8 = 49.0\,\text{N}$; $F_2 = 98.0\,\text{N}$.
+      - kind: result
+        text: >-
+          היד שבקצה דוחפת למטה, $49.0\,\text{N}$; היד הפנימית למעלה, $98.0\,\text{N}$.
+
+  - id: W-8.5-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.5-1]
+    prompt: >-
+      על גוף צפיד בשיווי משקל פועלים שלושה כוחות, ואין שניים מהם מקבילים. הראו שקווי הפעולה של שלושתם נפגשים בנקודה
+      אחת. השתמשו בזה כדי לקבוע את כיוון הכוח של ציר בקיר על קורה אופקית שתלויה בכבל מהקצה השני שלה, כשהקורה קלה
+      ותלוי עליה משא באמצע.
+    answer: >-
+      סביב נקודת המפגש של שני קווים, המומנט של השלישי חייב להתאפס, ולכן גם הוא עובר שם. בקורה: הקו של הכבל והקו האנכי של
+      המשא נפגשים מעל אמצע הקורה, ולכן כוח הציר מכוון אל הנקודה הזו, באלכסון כלפי מעלה, הרחק מהקיר.
+    solution:
+      - kind: law
+        text: >-
+          $\sum\vec\tau = 0$ סביב כל נקודה, כי $\sum\vec F = 0$.
+      - kind: manipulation
+        text: >-
+          שני כוחות לא מקבילים, $\vec F_1$ ו-$\vec F_2$: קווי הפעולה שלהם נפגשים בנקודה $X$. סביב $X$ המומנטים שלהם אפס,
+          ולכן גם המומנט של $\vec F_3$ סביב $X$ אפס, כלומר קו הפעולה שלו עובר דרך $X$.
+      - kind: reasoning
+        text: >-
+          בקורה: הכבל מושך מהקצה הרחוק אל הקיר ולמעלה, והמשא מושך באמצע, אנכית. הקו של הכבל חוצה את הקו האנכי שדרך האמצע
+          מעל הקורה. כוח הציר עובר דרך הנקודה הזו, ולכן הוא מכוון מעלה ובאלכסון, הרחק מהקיר.
+      - kind: limit
+        text: >-
+          אם שני כוחות מקבילים, אין נקודת מפגש, והטענה הופכת לכך שגם השלישי מקביל להם, כמו בקורה על שתי תמיכות.
+      - kind: units
+        text: >-
+          אין כאן מספרים.
+      - kind: result
+        text: >-
+          שלושה כוחות לא מקבילים בשיווי משקל נפגשים בנקודה אחת. כוח הציר מכוון אל הנקודה שמעל אמצע הקורה, שבה פוגש קו הכבל
+          את האנך של המשא.
+
+  - id: W-8.5-08
+    level: bagrut
+    objectives: [OBJ-8.5-2]
+    prompt: >-
+      סולם אחיד באורך $4.0\,\text{m}$ ובמסה $10\,\text{kg}$ נשען בזווית $60^\circ$ עם הרצפה על קיר **מחוספס**. מקדם החיכוך
+      הסטטי ברצפה $\mu_s = 0.40$ ובקיר $\mu_w = 0.20$. אדם במסה $60\,\text{kg}$ מטפס עליו. עד איזה מרחק מהרגליים, לאורך
+      הסולם, הוא יכול לעלות? השוו לקיר חלק.
+    answer: >-
+      $3.01\,\text{m}$; ליד קיר חלק $2.90\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ הרחק מהקיר, $y$ למעלה, נגד כיוון השעון חיובי. על הסולם: $N_1$ ו-$f$ ברגליים, $N_2$ ו-$f_w$ בראש, $Mg$
+          באמצע, $mg$ על השלב במרחק $s$ מהרגליים. $W = (M + m)g$.
+      - kind: law
+        text: >-
+          שלוש משוואות שיווי משקל. בסף הרגליים והראש מחליקים יחד, ולכן $f = \mu_sN_1$ ו-$f_w = \mu_wN_2$, כלפי מעלה.
+      - kind: manipulation
+        text: >-
+          $N_2 = \mu_sN_1$ ו-$N_1 + \mu_wN_2 = W$, ולכן $N_1 = \dfrac{W}{1 + \mu_s\mu_w}$. סביב הרגליים:
+          $N_2\left(L\sin\theta + \mu_wL\cos\theta\right) = g\cos\theta\left(M\tfrac L2 + ms\right)$, ומכאן
+          $\dfrac sL = \dfrac{1}{m}\left[\dfrac{\mu_s(M + m)(\tan\theta + \mu_w)}{1 + \mu_s\mu_w} - \dfrac M2\right]$.
+      - kind: limit
+        text: >-
+          כש-$\mu_w \to 0$ חוזרים לקיר חלק, $\dfrac sL = \dfrac{\mu_s(M + m)\tan\theta - M/2}{m}$, כמו בדוגמה 4 של השיעור.
+      - kind: units
+        text: >-
+          $s/L$ חסר יחידות: $\text{kg}/\text{kg}$.
+      - kind: substitution
+        text: >-
+          $\dfrac sL = \dfrac{1}{60}\left[\dfrac{0.40\cdot70\cdot1.932}{1.08} - 5.0\right] = 0.752$, $s = 3.01\,\text{m}$. בקיר חלק:
+          $\dfrac{0.40\cdot70\cdot1.732 - 5.0}{60} = 0.725$, $s = 2.90\,\text{m}$. בסף: $N_1 = 635\,\text{N}$, $N_2 = f = 254\,\text{N}$, $f_w = 50.8\,\text{N}$.
+      - kind: result
+        text: >-
+          עד $3.01\,\text{m}$, כ-$11\,\text{cm}$ יותר מליד קיר חלק: החיכוך של הקיר נושא חלק קטן מהמשקל.
+
+  - id: W-8.5-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.5-2]
+    prompt: >-
+      ארגז אחיד ברוחב $0.40\,\text{m}$ ובגובה $1.0\,\text{m}$ עומד על לוח, ומקדם החיכוך הסטטי ביניהם $0.50$. מרימים את
+      הקצה של הלוח לאט, כך שהוא נעשה מדרון שזוויתו גדלה. קבעו ונמקו: האם הארגז יחליק קודם או יתהפך קודם, ובאיזו זווית?
+    answer: >-
+      יתהפך קודם, ב-$21.8^\circ$ ($\tan\alpha = w/H$), לפני זווית ההחלקה $26.6^\circ$ ($\tan\alpha = \mu_s$).
+    solution:
+      - kind: given
+        text: >-
+          $w = 0.40\,\text{m}$, $H = 1.0\,\text{m}$, $\mu_s = 0.50$; זווית המדרון $\alpha$. ציר $x$ במורד המדרון.
+      - kind: law
+        text: >-
+          החלקה: כשהחיכוך הדרוש, $mg\sin\alpha$, עולה על $\mu_smg\cos\alpha$. התהפכות: כשהכוח של הלוח צריך לפעול מחוץ לבסיס,
+          כלומר כשהאנך ממרכז המסה עובר מחוץ לפינה התחתונה.
+      - kind: reasoning
+        text: >-
+          סביב הפינה התחתונה, ששם פועל הכוח של הלוח בסף, רק הכובד יוצר מומנט. הוא מחזיר את הארגז כל עוד הקו האנכי ממרכז
+          המסה נופל בתוך הבסיס, ומהפך אותו כשהקו עובר את הפינה.
+      - kind: manipulation
+        text: >-
+          מרכז המסה בגובה $H/2$ מעל הלוח ובמרחק $w/2$ מהפינה, לאורך הלוח. האנך ממנו עובר בדיוק בפינה כש-$\tan\alpha = \dfrac{w/2}{H/2} = \dfrac wH$.
+          החלקה: $\tan\alpha = \mu_s$. הארגז מתהפך קודם אם $\dfrac wH < \mu_s$.
+      - kind: limit
+        text: >-
+          ארגז שטוח, $H \to 0$, אף פעם לא מתהפך ורק מחליק. וכש-$\mu_s \to 0$, כל ארגז מחליק מיד.
+      - kind: units
+        text: >-
+          $w/H$ ו-$\mu_s$ שניהם חסרי יחידות.
+      - kind: substitution
+        text: >-
+          $\arctan(0.40/1.0) = 21.8^\circ$; $\arctan0.50 = 26.6^\circ$.
+      - kind: result
+        text: >-
+          מתהפך ב-$21.8^\circ$, לפני שהוא מגיע לזווית ההחלקה $26.6^\circ$.
+
+  - id: W-8.5-10
+    level: bagrut
+    objectives: [OBJ-8.5-1, OBJ-8.5-2]
+    prompt: >-
+      מוט אחיד באורך $2.0\,\text{m}$ נשען על יתד חלקה שנמצאת בגובה $0.80\,\text{m}$ מעל הרצפה, וקצהו התחתון על הרצפה. המוט
+      יוצר זווית $30^\circ$ עם הרצפה. מה מקדם החיכוך הסטטי הקטן ביותר בין המוט לרצפה שמאפשר לו לעמוד כך?
+    answer: >-
+      $\mu_s \ge 0.509$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ מהרגל לכיוון שאליו המוט נוטה, $y$ למעלה, נגד כיוון השעון חיובי. המרחק מהרגל ליתד לאורך המוט:
+          $d = h/\sin\theta = 1.60\,\text{m}$. על המוט: הכובד $Mg$ באמצע, הכוח $N$ של היתד **ניצב למוט** (היתד חלקה),
+          ו-$N_1$ ו-$f$ של הרצפה ברגל.
+      - kind: law
+        text: >-
+          מומנטים סביב הרגל, שבה שני הכוחות של הרצפה לא נכנסים; אחר כך שתי משוואות הכוחות, ו-$f \le \mu_sN_1$.
+      - kind: manipulation
+        text: >-
+          $N$ ניצב למוט, ולכן הזרוע שלו סביב הרגל היא $d$: $Nd = Mg\,\tfrac L2\cos\theta$, ומכאן $N = \dfrac{MgL\cos\theta}{2d}$.
+          הכיוון של $N$ הוא $(-\sin\theta,\,\cos\theta)$, ולכן $f = N\sin\theta$ ו-$N_1 = Mg - N\cos\theta$.
+          $\mu_{\min} = \dfrac{N\sin\theta}{Mg - N\cos\theta}$.
+      - kind: limit
+        text: >-
+          אילו היתד הייתה בדיוק במרכז המסה, $d = L/2$, אז $N = Mg\cos\theta$, $N_1 = Mg\sin^2\theta$, ו-$\mu_{\min} = \cot\theta$:
+          ב-$30^\circ$ זה $1.73$. ככל שהיתד רחוקה יותר מהרגל, $N$ קטן והחיכוך הדרוש יורד.
+      - kind: units
+        text: >-
+          $N/(Mg)$ חסר יחידות, ולכן גם $\mu_{\min}$; המסה מצטמצמת.
+      - kind: substitution
+        text: >-
+          $N = Mg\,\dfrac{2.0\cdot0.866}{2\cdot1.60} = 0.541Mg$; $f = 0.271Mg$; $N_1 = (1 - 0.469)Mg = 0.531Mg$; $\mu_{\min} = 0.509$.
+      - kind: result
+        text: >-
+          $\mu_s \ge 0.509$, בלי תלות במסה של המוט.
+
+challenge:
+  - id: W-8.5-c1
+    stars: 1
+    objectives: [OBJ-8.5-1, OBJ-8.5-2]
+    prompt: >-
+      אדם במסה $70\,\text{kg}$ עומד על צלע גבעה שמשופעת בזווית $15^\circ$, רגל אחת במעלה והשנייה במורד, במרחק $d$ זו
+      מזו לאורך המדרון. מרכז המסה שלו בגובה $h = 0.95\,\text{m}$ מעל המדרון (בניצב לו), באמצע בין הרגליים. החיכוך גדול
+      מספיק כדי שהאדם לא יחליק.
+
+      א. מצאו את הכוח הנורמלי על כל רגל כביטוי, וחשבו אותו כש-$d = 0.60\,\text{m}$.
+
+      ב. מה המרחק הקטן ביותר בין הרגליים שבו האדם לא נופל במורד?
+    answer: >-
+      א. $N_{\text{down}} = mg\left(\tfrac12\cos\alpha + \tfrac hd\sin\alpha\right) = 612\,\text{N}$,
+      $N_{\text{up}} = mg\left(\tfrac12\cos\alpha - \tfrac hd\sin\alpha\right) = 50.2\,\text{N}$. ב. $d = 2h\tan\alpha = 0.509\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ במעלה המדרון, $y$ בניצב לו, החוצה; $\alpha = 15^\circ$. על האדם: $mg$ במרכז המסה; בכל רגל כוח נורמלי ($N_{\text{up}}$,
+          $N_{\text{down}}$) וחיכוך במעלה המדרון ($f_1$, $f_2$).
+      - kind: law
+        text: >-
+          $\sum F_x = 0$, $\sum F_y = 0$, ו-$\sum\tau = 0$ סביב מרכז המסה.
+      - kind: manipulation
+        text: >-
+          $N_{\text{up}} + N_{\text{down}} = mg\cos\alpha$ ו-$f_1 + f_2 = mg\sin\alpha$. סביב מרכז המסה: החיכוכים, בזרוע $h$, מסובבים
+          את האדם כך שהראש נוטה במורד; הכוחות הנורמליים, בזרוע $d/2$ כל אחד, מאזנים: $(N_{\text{down}} - N_{\text{up}})\dfrac d2 = h(f_1 + f_2)$.
+          מכאן $N_{\text{down}} - N_{\text{up}} = \dfrac{2h}{d}mg\sin\alpha$, ומחברים ומחסרים עם משוואת הנורמליים.
+      - kind: limit
+        text: >-
+          על קרקע אופקית, $\alpha = 0$, כל רגל נושאת חצי מהמשקל. הרגל העליונה מתפרקת, $N_{\text{up}} = 0$, כש-$d = 2h\tan\alpha$;
+          במרחק קטן יותר המשוואות דורשות שהקרקע תמשוך את הרגל, והאדם נופל.
+      - kind: units
+        text: >-
+          $h/d$ ו-$\tan\alpha$ חסרי יחידות; $2h\tan\alpha$ במטרים.
+      - kind: substitution
+        text: >-
+          $mg = 686\,\text{N}$, $\tfrac hd = 1.58$: $N_{\text{down}} = 686(0.483 + 0.410) = 612\,\text{N}$, $N_{\text{up}} = 50.2\,\text{N}$.
+          $d_{\min} = 2\cdot0.95\cdot\tan15^\circ = 0.509\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $612\,\text{N}$ על הרגל התחתונה ו-$50.2\,\text{N}$ על העליונה. ב. $0.509\,\text{m}$: בפסיעה צרה יותר האדם נופל במורד.
+          החיכוכים לא נקבעו כל אחד לחוד, רק הסכום שלהם.
+    source:
+      name: MIT 8.01SC Classical Mechanics, Chapter 18 (Static Equilibrium)
+      year: 2016
+      problem: Example 18.3 (Person Standing on a Hill)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/mit8_01scs22_chapter18.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.5-c2
+    stars: 2
+    objectives: [OBJ-8.5-1]
+    prompt: >-
+      לוח קל באורך $\ell$ מחובר בציר לקיר אנכי, בקצהו התחתון, ונוטה מהקיר בזווית $60^\circ$. כדור במשקל $W$ וברדיוס $R$
+      מונח בין הקיר ללוח, ונוגע בשניהם. הקיר והלוח חלקים. כוח $F$, ניצב ללוח, פועל בקצה החופשי של הלוח ומחזיק את
+      המערכת במנוחה.
+
+      א. מה הכוח שהלוח מפעיל על הכדור, ומה הכוח של הקיר על הכדור?
+
+      ב. מצאו את $F$. חשבו כש-$\ell = 0.80\,\text{m}$, $R = 0.10\,\text{m}$ ומסת הכדור $2.0\,\text{kg}$.
+    answer: >-
+      א. הלוח: $\dfrac{2W}{\sqrt3}$, בניצב ללוח; הקיר: $\dfrac{W}{\sqrt3}$, אופקית. ב. $F = \dfrac{2RW}{\ell} = 4.90\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ הרחק מהקיר, $y$ למעלה; הציר של הלוח בראשית. הלוח בכיוון $(\sin60^\circ,\,\cos60^\circ)$, והניצב אליו לכיוון הכדור
+          $(-\cos60^\circ,\,\sin60^\circ)$. **גוף 1, הכדור:** $W$ למטה, $N_{\text{wall}}$ אופקי, $N_b$ מהלוח בניצב ללוח. **גוף 2, הלוח:**
+          הכדור דוחף אותו ב-$N_b$ (החוק השלישי), $F$ בקצה, וכוח הציר.
+      - kind: law
+        text: >-
+          לכדור: $\sum\vec F = 0$ (כל הכוחות עוברים במרכזו). ללוח: מומנטים סביב הציר, שהכוח שלו לא נכנס.
+      - kind: manipulation
+        text: >-
+          לכדור: $N_b\sin60^\circ = W$, ולכן $N_b = \dfrac{2W}{\sqrt3}$, ו-$N_{\text{wall}} = N_b\cos60^\circ = \dfrac{W}{\sqrt3}$. נקודת המגע על הלוח:
+          הכדור משיק לשתי שוקי זווית של $60^\circ$, ולכן המרחק מהקודקוד לנקודת ההשקה הוא $R/\tan30^\circ = \sqrt3R$. ללוח: $N_b$
+          ניצב ללוח בזרוע $\sqrt3R$, ו-$F$ ניצב ללוח בזרוע $\ell$: $F\ell = N_b\sqrt3R = 2WR$.
+      - kind: limit
+        text: >-
+          כש-$R \to 0$, $F \to 0$: כדור קטן לוחץ קרוב לציר. ו-$F$ קטן ככל ש-$\ell$ ארוך, חוק המנוף.
+      - kind: units
+        text: >-
+          $RW/\ell$ ב-$\text{m}\cdot\text{N}/\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $W = 19.6\,\text{N}$: $N_b = 22.6\,\text{N}$, $N_{\text{wall}} = 11.3\,\text{N}$, $F = \dfrac{2\cdot0.10\cdot19.6}{0.80} = 4.90\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $22.6\,\text{N}$ מהלוח, $11.3\,\text{N}$ מהקיר. ב. $F = 2RW/\ell = 4.90\,\text{N}$, רבע מהמשקל של הכדור.
+    source:
+      name: AAPT F=ma Exam B
+      year: 2019
+      problem: Question 9
+      url: https://www.aapt.org/physicsteam/2019/upload/2019_Fma_B_solution.pdf
+      verified: '2026-11-12'
+      adapted: true

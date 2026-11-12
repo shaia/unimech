@@ -1,0 +1,482 @@
+# Workbook, lesson 8.1 (kinematics of a rigid body). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-1/workbook.ts with src/physics/rigidbody.ts and rigidkinematics.ts:
+#   W02 33⅓ rpm → 0 in 12 s: ω₀ = 3.49 rad/s, α = −0.291 rad/s², θ = 20.9 rad = 3.33 rev, rim (r = 0.15 m) 0.524 m/s;
+#   W03 90 km/h = 25.0 m/s, R = 0.31 m: |ω| = 80.6 rad/s = 770 rpm, top 50.0 m/s;
+#   W04 rod 0.80 m, v_cm = (0.30, 0.40) m/s, ω = 2.5 rad/s: v_A = (0.30, 1.4), 1.43 m/s; v_B = (0.30, −0.60), 0.671 m/s;
+#       r_Q = (−0.16, 0.12) m, 0.200 m from the CM;
+#   W05 3000 rpm = 314 rad/s, stops after 200 rev = 1257 rad: α = −39.3 rad/s², t = 8.00 s, after 100 rev ω₀/√2 = 222 rad/s;
+#   W06 v_cm = 2.0 m/s, ω = +10 rad/s (backspin), R = 0.11 m: contact slides forward at 3.1 m/s, top 0.90 m/s,
+#       r_Q = (0, 0.20) m;
+#   W07 α = 4.0 rad/s² from rest, R = 0.10 m: a_c = a_t at t = 1/√α = 0.500 s after ½ rad, |a| = √2αR = 0.566 m/s²;
+#   W08 80 rpm = 8.38 rad/s, r₁ = 0.10, r₂ = 0.040, R = 0.34 m: chain 0.838 m/s, ω₂ = 20.9 rad/s, v = 7.12 m/s
+#       (25.6 km/h; 2.85 m/s if the pedal ω is put on the wheel);
+#   W09 belt −1.5 m/s, centre +0.50 m/s, R = 0.25 m: ω = −8.0 rad/s, top 2.5 m/s;
+#   W10 rollers R = 0.050 m under a board at 0.40 m/s: centres 0.20 m/s, |ω| = 4.0 rad/s; per revolution the roller
+#       moves 0.314 m and the board 0.628 m; boards ±0.40 m/s: centre at rest, |ω| = 8.0 rad/s;
+#   c1 (MIT 8.01 Fall 2016, Problem Set 12, Problem 1) arch length 8R checked by a midpoint sum (R = 0.35 m: 2.80 m);
+#   c2 (same set, Problem 2) R = 0.50, b = 0.050 m, Ω = 2.0, ω = 10 rad/s: v = ΩR − ωb = 0.50 m/s, centre turns at
+#       1.11 rad/s about O; v = 0 at ω = 20 rad/s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.1'
+practice:
+  - id: W-8.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      $A$ ו-$B$ הן שתי נקודות בגוף צפיד. סטודנט טוען שברגע מסוים $A$ נעה ישר לעבר $B$ במהירות $2.0\,\text{m/s}$, ו-$B$
+      נעה ישר הרחק מ-$A$ במהירות $1.0\,\text{m/s}$. קבעו ונמקו: האם זה אפשרי? ומה אפשר לומר על רכיבי המהירות של שתי
+      נקודות בגוף צפיד לאורך הקו שמחבר אותן?
+    answer: >-
+      לא. בגוף צפיד הרכיבים של מהירויות שתי נקודות לאורך הקו שמחבר אותן שווים. כאן הרכיבים (בכיוון מ-$A$ אל $B$) הם
+      $2.0$ ו-$1.0\,\text{m/s}$, ולכן המרחק ביניהן היה קטן ב-$1.0\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          לשתי נקודות של גוף צפיד $\vec v_B = \vec v_A + \vec\omega\times\vec r_{AB}$, והאיבר $\vec\omega\times\vec r_{AB}$ ניצב
+          ל-$\vec r_{AB}$.
+      - kind: manipulation
+        text: >-
+          נכפול סקלרית בווקטור היחידה $\hat u$ מ-$A$ אל $B$: $\vec v_B\cdot\hat u = \vec v_A\cdot\hat u$. קצב השינוי של
+          המרחק $AB$ הוא $(\vec v_B - \vec v_A)\cdot\hat u$, והוא אפס.
+      - kind: reasoning
+        text: >-
+          בטענה, $\vec v_A\cdot\hat u = +2.0\,\text{m/s}$ ו-$\vec v_B\cdot\hat u = +1.0\,\text{m/s}$. ההפרש
+          $-1.0\,\text{m/s}$ אומר שהנקודות מתקרבות, וגוף צפיד לא מתכווץ.
+      - kind: limit
+        text: >-
+          בהזזה טהורה $\vec v_A = \vec v_B$, והרכיבים שווים כמובן. בסיבוב סביב $A$ ($\vec v_A = 0$), $\vec v_B$ ניצבת ל-$AB$,
+          והרכיב של שתיהן לאורך $AB$ אפס.
+      - kind: result
+        text: >-
+          לא אפשרי: לשתי נקודות של גוף צפיד יש אותו רכיב מהירות לאורך הקו ביניהן. רק הרכיבים הניצבים לקו יכולים להיות שונים.
+
+  - id: W-8.1-02
+    level: basic
+    objectives: [OBJ-8.1-2]
+    prompt: >-
+      תקליט מסתובב ב-$33\tfrac13$ סיבובים לדקה. מכבים את הפטיפון, והתקליט מאט בתאוצה זוויתית קבועה ועוצר אחרי
+      $12\,\text{s}$. מה התאוצה הזוויתית, כמה סיבובים עושה התקליט עד שהוא עוצר, ומה הייתה לפני הכיבוי המהירות של
+      נקודה בשפת התקליט, במרחק $0.15\,\text{m}$ מהציר?
+    answer: >-
+      $\alpha = -0.291\,\text{rad/s}^2$; $20.9\,\text{rad}$, כלומר $3.33$ סיבובים; $0.524\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 33\tfrac13$ סיבובים לדקה, $\omega(t_1) = 0$ עם $t_1 = 12\,\text{s}$, $r = 0.15\,\text{m}$. $\omega$ חיובית בכיוון הסיבוב.
+      - kind: law
+        text: >-
+          $\omega = \omega_0 + \alpha t$; $\theta = \omega_0t + \tfrac12\alpha t^2$; $v = \omega r$.
+      - kind: manipulation
+        text: >-
+          $\omega_0 = 33\tfrac13\cdot2\pi/60\,\text{rad/s}$. מ-$\omega(t_1) = 0$: $\alpha = -\omega_0/t_1$. מציבים:
+          $\theta = \omega_0t_1 - \tfrac12\omega_0t_1 = \tfrac12\omega_0t_1$.
+      - kind: limit
+        text: >-
+          $\theta = \tfrac12\omega_0t_1$ היא המהירות הזוויתית הממוצעת כפול הזמן; כש-$t_1 \to 0$ (עצירה מיידית) התקליט לא מסתובב כלל.
+      - kind: units
+        text: >-
+          $\omega_0/t_1$ ב-$\text{rad/s}^2$; $\omega_0t_1$ ב-$\text{rad}$; $\omega_0r$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = 3.49\,\text{rad/s}$; $\alpha = -3.49/12 = -0.291\,\text{rad/s}^2$; $\theta = \tfrac12\cdot3.49\cdot12 = 20.9\,\text{rad}$,
+          $20.9/2\pi = 3.33$ סיבובים; $v = 3.49\cdot0.15 = 0.524\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $\alpha = -0.291\,\text{rad/s}^2$; $3.33$ סיבובים; $0.524\,\text{m/s}$.
+
+  - id: W-8.1-03
+    level: basic
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      מכונית נוסעת ב-$90\,\text{km/h}$, והצמיגים שלה, ברדיוס $0.31\,\text{m}$, מתגלגלים בלי החלקה. מה המהירות
+      הזוויתית של הגלגלים, וכמה סיבובים לדקה הם עושים? מה מהירות הנקודה העליונה של הצמיג ביחס לכביש, ומה מהירות
+      הנקודה שנוגעת בכביש?
+    answer: >-
+      $|\omega| = 80.6\,\text{rad/s}$, $770$ סיבובים לדקה; העליונה $50.0\,\text{m/s}$ ($180\,\text{km/h}$); נקודת המגע במנוחה.
+    solution:
+      - kind: given
+        text: >-
+          $v_{cm} = 90\,\text{km/h} = 25.0\,\text{m/s}$, $R = 0.31\,\text{m}$, גלגול בלי החלקה.
+      - kind: law
+        text: >-
+          $v_{cm} = |\omega|R$; כל נקודה מסתובבת ברגע הזה סביב נקודת המגע, $v = |\omega|d$.
+      - kind: manipulation
+        text: >-
+          $|\omega| = v_{cm}/R$; סיבובים לדקה: $|\omega|\cdot60/2\pi$. הנקודה העליונה במרחק $2R$ מנקודת המגע: $v = 2v_{cm}$.
+      - kind: limit
+        text: >-
+          המרכז, במרחק $R$ מנקודת המגע, נע ב-$|\omega|R = v_{cm}$, כמו שצריך.
+      - kind: units
+        text: >-
+          $v_{cm}/R$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $|\omega| = 25.0/0.31 = 80.6\,\text{rad/s}$; $80.6\cdot60/2\pi = 770$ סיבובים לדקה; $2\cdot25.0 = 50.0\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $80.6\,\text{rad/s}$ ($770$ סיבובים לדקה); העליונה $50.0\,\text{m/s}$; נקודת המגע $0$.
+
+  - id: W-8.1-04
+    level: mid
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      מוט באורך $0.80\,\text{m}$ מחליק על שולחן אוויר. ברגע מסוים הוא מונח לאורך הציר $x$, מהירות מרכז המסה שלו
+      $\vec v_{cm} = (0.30, 0.40)\,\text{m/s}$, והוא מסתובב נגד כיוון השעון ב-$\omega = 2.5\,\text{rad/s}$. מצאו את
+      וקטורי המהירות של שני הקצוות, ואת המקום של $Q$, הנקודה (של המוט או של ההמשך הצפיד שלו) שעומדת ברגע הזה.
+      בדקו את התוצאה בשתי דרכים.
+    answer: >-
+      הקצה הימני $(0.30, 1.4)\,\text{m/s}$ ($1.43\,\text{m/s}$); השמאלי $(0.30, -0.60)\,\text{m/s}$ ($0.671\,\text{m/s}$);
+      $\vec r_Q = (-0.16, 0.12)\,\text{m}$ ממרכז המסה, במרחק $0.200\,\text{m}$, מחוץ למוט.
+    solution:
+      - kind: given
+        text: >-
+          $L = 0.80\,\text{m}$; הקצוות ב-$\vec r = (\pm0.40, 0)\,\text{m}$ ממרכז המסה; $\vec v_{cm} = (0.30, 0.40)\,\text{m/s}$;
+          $\omega = +2.5\,\text{rad/s}$ (נגד כיוון השעון).
+      - kind: law
+        text: >-
+          $\vec v_P = \vec v_{cm} + \omega\,\hat z\times\vec r$, עם $\hat z\times(x, y) = (-y, x)$. הנקודה העומדת:
+          $\vec r_Q = (-v_y, v_x)/\omega$.
+      - kind: manipulation
+        text: >-
+          $\hat z\times(\pm0.40, 0) = (0, \pm0.40)$, ולכן $\vec\omega\times\vec r = (0, \pm1.0)\,\text{m/s}$ בקצוות.
+          $\vec r_Q = (-0.40, 0.30)/2.5$.
+      - kind: limit
+        text: >-
+          בדיקה שנייה: כל נקודה נעה ב-$|\omega|$ כפול המרחק שלה מ-$Q$. הקצה הימני רחוק מ-$Q$
+          $\sqrt{0.56^2 + 0.12^2} = 0.573\,\text{m}$, ו-$2.5\cdot0.573 = 1.43\,\text{m/s}$, כמו $|(0.30, 1.4)|$. ובגבול
+          $\omega \to 0$, $Q$ בורחת לאינסוף, והקצוות נעים ב-$\vec v_{cm}$.
+      - kind: units
+        text: >-
+          $\omega r$ ב-$\text{m/s}$; $v/\omega$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          $\vec v_{\text{right}} = (0.30, 1.4)\,\text{m/s}$, $1.43\,\text{m/s}$; $\vec v_{\text{left}} = (0.30, -0.60)\,\text{m/s}$, $0.671\,\text{m/s}$;
+          $\vec r_Q = (-0.16, 0.12)\,\text{m}$, $|\vec r_Q| = 0.50/2.5 = 0.200\,\text{m}$. ולשני הקצוות אותו רכיב לאורך המוט, $0.30\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $(0.30, 1.4)\,\text{m/s}$ ו-$(0.30, -0.60)\,\text{m/s}$; $Q$ ב-$(-0.16, 0.12)\,\text{m}$ ממרכז המסה.
+
+  - id: W-8.1-05
+    level: mid
+    objectives: [OBJ-8.1-2]
+    prompt: >-
+      אבן משחזת מסתובבת ב-$3000$ סיבובים לדקה. מכבים את המנוע, והיא מאטה בתאוצה זוויתית קבועה ועוצרת אחרי $200$
+      סיבובים. מה התאוצה הזוויתית, כמה זמן נמשכת ההאטה, ומה המהירות הזוויתית אחרי $100$ הסיבובים הראשונים?
+    answer: >-
+      $\alpha = -39.3\,\text{rad/s}^2$; $8.00\,\text{s}$; $222\,\text{rad/s}$ (פי $1/\sqrt2$ מההתחלה, לא חצי).
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 3000$ סיבובים לדקה; $\Delta\theta = 200$ סיבובים עד העצירה; $\alpha$ קבועה.
+      - kind: law
+        text: >-
+          $\omega^2 = \omega_0^2 + 2\alpha\Delta\theta$; $\omega = \omega_0 + \alpha t$.
+      - kind: manipulation
+        text: >-
+          עם $\omega = 0$: $\alpha = -\omega_0^2/(2\Delta\theta)$, ו-$t = \omega_0/|\alpha| = 2\Delta\theta/\omega_0$. אחרי חצי מהזווית:
+          $\omega^2 = \omega_0^2 - \omega_0^2/2$, כלומר $\omega = \omega_0/\sqrt2$.
+      - kind: limit
+        text: >-
+          $t = \Delta\theta/(\omega_0/2)$: הזווית חלקי המהירות הזוויתית הממוצעת, כמו שצריך בתאוצה קבועה. ו-$\omega$ יורדת
+          לאט בהתחלה ומהר בסוף, כי באותה זווית עוברים בהתחלה פחות זמן.
+      - kind: units
+        text: >-
+          $\omega_0^2/\Delta\theta$ ב-$\text{rad/s}^2$; $\Delta\theta/\omega_0$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = 314\,\text{rad/s}$, $\Delta\theta = 1257\,\text{rad}$: $\alpha = -314^2/2514 = -39.3\,\text{rad/s}^2$; $t = 2514/314 = 8.00\,\text{s}$;
+          $\omega = 314/\sqrt2 = 222\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          $-39.3\,\text{rad/s}^2$; $8.00\,\text{s}$; $222\,\text{rad/s}$.
+
+  - id: W-8.1-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      כדור באולינג קטן, ברדיוס $R = 0.11\,\text{m}$, מחליק על רצפה ימינה ב-$v_{cm} = 2.0\,\text{m/s}$ עם סיבוב אחורי:
+      הוא מסתובב נגד כיוון השעון ב-$\omega = 10\,\text{rad/s}$.
+
+      א. קבעו ונמקו בלי חישוב: לאן נעה נקודת המגע ביחס לרצפה? איפה נמצאת $Q$, מתחת למרכז או מעליו?
+
+      ב. מצאו את מהירות נקודת המגע ואת מהירות הנקודה העליונה, ואת המקום של $Q$. האם $Q$ בתוך הכדור?
+    answer: >-
+      א. קדימה, ומהר יותר מהמרכז; $Q$ מעל המרכז. ב. נקודת המגע $3.1\,\text{m/s}$ ימינה, העליונה $0.90\,\text{m/s}$ ימינה;
+      $Q$ $0.20\,\text{m}$ מעל המרכז, מחוץ לכדור.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה, $y$ למעלה, $\omega > 0$ נגד כיוון השעון. $v_{cm} = 2.0\,\text{m/s}$, $\omega = +10\,\text{rad/s}$, $R = 0.11\,\text{m}$.
+      - kind: law
+        text: >-
+          $\vec v_P = \vec v_{cm} + \omega\,\hat z\times\vec r$; $\vec r_Q = (-v_y, v_x)/\omega$.
+      - kind: reasoning
+        text: >-
+          בסיבוב נגד כיוון השעון הנקודה התחתונה נעה ביחס למרכז **ימינה**, באותו כיוון כמו המרכז: שתי התרומות מתחברות.
+          ו-$Q$ ניצבת ל-$\vec v_{cm}$, משמאל לו (במבט בכיוון התנועה) כש-$\omega > 0$: כלומר מעל המרכז.
+      - kind: manipulation
+        text: >-
+          נקודת המגע, $\vec r = (0, -R)$: $v = v_{cm} + \omega R$. העליונה, $\vec r = (0, R)$: $v = v_{cm} - \omega R$.
+          $\vec r_Q = (0, v_{cm}/\omega)$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ (החלקה בלי סיבוב) כל הנקודות ב-$v_{cm}$ ו-$Q$ באינסוף. כש-$\omega R = v_{cm}$ העליונה עומדת,
+          ו-$Q$ עליה: זה גלגול "על התקרה", בכיוון ההפוך.
+      - kind: substitution
+        text: >-
+          $\omega R = 1.1\,\text{m/s}$: נקודת המגע $2.0 + 1.1 = 3.1\,\text{m/s}$; העליונה $2.0 - 1.1 = 0.90\,\text{m/s}$; $v_{cm}/\omega = 0.20\,\text{m} > R$.
+      - kind: result
+        text: >-
+          נקודת המגע מחליקה קדימה ב-$3.1\,\text{m/s}$; העליונה $0.90\,\text{m/s}$; $Q$ $0.20\,\text{m}$ מעל המרכז, מחוץ לכדור.
+
+  - id: W-8.1-07
+    level: mid
+    objectives: [OBJ-8.1-2]
+    prompt: >-
+      דסקה ברדיוס $0.10\,\text{m}$ מתחילה ממנוחה ומסתובבת סביב ציר קבוע בתאוצה זוויתית קבועה $4.0\,\text{rad/s}^2$.
+      מתי התאוצה הצנטריפטלית של נקודה בשפה שווה לתאוצה המשיקית שלה? בכמה רדיאנים הסתובבה הדסקה עד אז, ומה אז
+      גודל התאוצה של הנקודה? הראו שהזווית לא תלויה ב-$\alpha$.
+    answer: >-
+      $t = 1/\sqrt\alpha = 0.500\,\text{s}$; $\tfrac12\,\text{rad}$ לכל $\alpha$; $|\vec a| = \sqrt2\,\alpha R = 0.566\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 0$, $\alpha = 4.0\,\text{rad/s}^2$, $R = 0.10\,\text{m}$.
+      - kind: law
+        text: >-
+          $a_t = \alpha R$, $a_c = \omega^2R$, $\omega = \alpha t$, $\theta = \tfrac12\alpha t^2$.
+      - kind: manipulation
+        text: >-
+          $a_c = a_t$ כש-$\omega^2 = \alpha$, כלומר $\alpha^2t^2 = \alpha$, $t = 1/\sqrt\alpha$. אז $\theta = \tfrac12\alpha\cdot\dfrac1\alpha = \tfrac12$.
+          הרכיבים ניצבים ושווים, ולכן $|\vec a| = \sqrt2\,\alpha R$.
+      - kind: limit
+        text: >-
+          תאוצה זוויתית גדולה יותר מגיעה לנקודה הזו מהר יותר, אבל אחרי אותה זווית. ב-$t \to 0$ יש רק $a_t$ (הנקודה עוד
+          לא נעה), ובזמן ארוך $a_c$ גדלה כמו $t^2$ ושולטת.
+      - kind: units
+        text: >-
+          $1/\sqrt\alpha$ ב-$\text{s}$; $\alpha t^2$ חסר ממדים (רדיאנים).
+      - kind: substitution
+        text: >-
+          $t = 1/\sqrt{4.0} = 0.500\,\text{s}$; $|\vec a| = \sqrt2\cdot4.0\cdot0.10 = 0.566\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $t = 0.500\,\text{s}$, אחרי $0.5\,\text{rad}$ (כ-$28.6^\circ$), $|\vec a| = 0.566\,\text{m/s}^2$ בזווית $45^\circ$ מהרדיוס.
+
+  - id: W-8.1-08
+    level: mid
+    objectives: [OBJ-8.1-2]
+    prompt: >-
+      רוכבת אופניים מסובבת את הדוושות ב-$80$ סיבובים לדקה. גלגל השיניים של הדוושות ברדיוס $0.10\,\text{m}$, גלגל
+      השיניים האחורי ברדיוס $0.040\,\text{m}$ והוא מחובר לגלגל האחורי, שרדיוסו $0.34\,\text{m}$. השרשרת לא מחליקה
+      והגלגל מתגלגל בלי החלקה. מה מהירות השרשרת, מה המהירות הזוויתית של הגלגל האחורי, ומה מהירות האופניים?
+    answer: >-
+      שרשרת $0.838\,\text{m/s}$; $20.9\,\text{rad/s}$; $7.12\,\text{m/s}$ ($25.6\,\text{km/h}$).
+    solution:
+      - kind: given
+        text: >-
+          $\omega_1 = 80$ סיבובים לדקה; $r_1 = 0.10\,\text{m}$, $r_2 = 0.040\,\text{m}$, $R = 0.34\,\text{m}$.
+      - kind: law
+        text: >-
+          השרשרת לא מחליקה: בשני גלגלי השיניים המהירות של השפה שווה למהירות השרשרת, $\omega_1r_1 = \omega_2r_2$. גלגל
+          השיניים האחורי והגלגל הם גוף צפיד אחד: אותה $\omega_2$. גלגול: $v = \omega_2R$.
+      - kind: manipulation
+        text: >-
+          $v = \omega_1\,\dfrac{r_1}{r_2}\,R$.
+      - kind: limit
+        text: >-
+          כש-$r_1 = r_2$ הגלגל מסתובב בקצב הדוושות. ומי שמכפיל את $\omega_1$ ב-$R$ ישירות מקבל $2.85\,\text{m/s}$: שוכח
+          שהשרשרת מעבירה **מהירות קווית**, לא מהירות זוויתית.
+      - kind: units
+        text: >-
+          $r_1/r_2$ חסר ממדים; $\omega R$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\omega_1 = 8.38\,\text{rad/s}$; שרשרת $8.38\cdot0.10 = 0.838\,\text{m/s}$; $\omega_2 = 0.838/0.040 = 20.9\,\text{rad/s}$; $v = 20.9\cdot0.34 = 7.12\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $0.838\,\text{m/s}$; $20.9\,\text{rad/s}$; $7.12\,\text{m/s}$.
+
+  - id: W-8.1-09
+    level: bagrut
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      גליל ברדיוס $0.25\,\text{m}$ מונח על מסוע (רצועה נעה) שנע שמאלה ב-$1.5\,\text{m/s}$ ביחס לרצפה. מרכז הגליל נע
+      ימינה ב-$0.50\,\text{m/s}$ ביחס לרצפה, והגליל מתגלגל על המסוע בלי החלקה. מצאו את המהירות הזוויתית של הגליל
+      (גודל וכיוון), את מהירות הנקודה העליונה שלו ביחס לרצפה, ואת מהירות המרכז ביחס למסוע.
+    answer: >-
+      $\omega = -8.0\,\text{rad/s}$ (בכיוון השעון, $8.0\,\text{rad/s}$); הנקודה העליונה $2.5\,\text{m/s}$ ימינה; המרכז
+      $2.0\,\text{m/s}$ ימינה ביחס למסוע.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה, $\omega > 0$ נגד כיוון השעון. $u = -1.5\,\text{m/s}$ (המסוע), $v_{cm} = +0.50\,\text{m/s}$, $R = 0.25\,\text{m}$.
+      - kind: law
+        text: >-
+          "בלי החלקה" פירושו שנקודת המגע של הגליל נעה **עם המשטח**: $v_{cm} + \omega R = u$.
+      - kind: manipulation
+        text: >-
+          $\omega = (u - v_{cm})/R$. העליונה: $v_{\text{top}} = v_{cm} - \omega R = 2v_{cm} - u$. ביחס למסוע: $v_{cm} - u$.
+      - kind: limit
+        text: >-
+          כש-$u = 0$ חוזרים לגלגול על רצפה: $\omega = -v_{cm}/R$ ו-$v_{\text{top}} = 2v_{cm}$. במערכת של המסוע (אינרציאלית,
+          כי $u$ קבועה) הגליל פשוט מתגלגל על רצפה במהירות $v_{cm} - u$, וכל התוצאות נובעות מכך.
+      - kind: units
+        text: >-
+          $(u - v_{cm})/R$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\omega = (-1.5 - 0.50)/0.25 = -8.0\,\text{rad/s}$; $v_{\text{top}} = 1.0 + 1.5 = 2.5\,\text{m/s}$; $v_{cm} - u = 2.0\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $8.0\,\text{rad/s}$ בכיוון השעון; $2.5\,\text{m/s}$ ימינה; $2.0\,\text{m/s}$ ימינה ביחס למסוע.
+
+  - id: W-8.1-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.1-1, OBJ-8.1-2]
+    prompt: >-
+      במצרים העתיקה, אומרים, הזיזו אבנים כבדות על גלילים: האבן מונחת על כמה גלילי עץ, והגלילים מתגלגלים על הקרקע.
+      הגלילים מתגלגלים בלי החלקה גם על הקרקע וגם מתחת לאבן.
+
+      א. קבעו ונמקו: האם הגלילים נעים מהר יותר מהאבן, לאט יותר, או באותה מהירות? מה זה אומר על העבודה של מי
+      שמזיזים את האבן?
+
+      ב. האבן נעה ב-$0.40\,\text{m/s}$ והגלילים ברדיוס $0.050\,\text{m}$. מה מהירות מרכזי הגלילים והמהירות הזוויתית שלהם?
+      כמה מתקדמים גליל והאבן בזמן שהגליל מסתובב סיבוב אחד?
+
+      ג. כללו: הלוח העליון נע ב-$u_1$ והתחתון ב-$u_2$, שניהם לאורך $x$. מה מהירות המרכז ומה $\omega$? מתי הגליל לא זז ממקומו?
+    answer: >-
+      א. לאט יותר, בחצי ממהירות האבן; הגלילים נשארים מאחור, וצריך להעביר כל הזמן את הגליל האחורי לחזית.
+      ב. $0.20\,\text{m/s}$, $4.0\,\text{rad/s}$; בסיבוב אחד הגליל מתקדם $0.314\,\text{m}$ והאבן $0.628\,\text{m}$.
+      ג. $v_{cm} = (u_1 + u_2)/2$, $\omega = (u_2 - u_1)/(2R)$; הגליל עומד כש-$u_2 = -u_1$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון התנועה, $\omega > 0$ נגד כיוון השעון. הגליל ברדיוס $R$; הנקודה העליונה שלו נעה עם האבן ($u_1$), התחתונה עם הקרקע ($u_2$).
+      - kind: law
+        text: >-
+          $\vec v_P = \vec v_{cm} + \omega\,\hat z\times\vec r$: העליונה $v_{cm} - \omega R$, התחתונה $v_{cm} + \omega R$.
+      - kind: manipulation
+        text: >-
+          $v_{cm} - \omega R = u_1$ ו-$v_{cm} + \omega R = u_2$. חיבור: $v_{cm} = (u_1 + u_2)/2$; חיסור: $\omega = (u_2 - u_1)/(2R)$.
+          על קרקע עומדת ($u_2 = 0$): $v_{cm} = u_1/2$.
+      - kind: reasoning
+        text: >-
+          (א) הקרקע היא $Q$ של הגליל, והאבן נוגעת בנקודה הרחוקה ממנה פי 2 מהמרכז: היא נעה פי 2 מהר מהמרכז. לכן כל גליל
+          נשאר מאחור, ובכל סיבוב שלו האבן מתקדמת $4\pi R$ והגליל רק $2\pi R$.
+      - kind: limit
+        text: >-
+          כש-$u_1 = u_2$ שני הלוחות נעים יחד: $\omega = 0$ והגליל נגרר איתם. כש-$u_2 = -u_1$ המרכז עומד והגליל מסתובב במקום.
+      - kind: units
+        text: >-
+          $(u_2 - u_1)/R$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $v_{cm} = 0.40/2 = 0.20\,\text{m/s}$; $|\omega| = 0.40/(2\cdot0.050) = 4.0\,\text{rad/s}$ (בכיוון השעון); $2\pi R = 0.314\,\text{m}$, $4\pi R = 0.628\,\text{m}$.
+      - kind: result
+        text: >-
+          הגלילים בחצי ממהירות האבן ($0.20\,\text{m/s}$, $4.0\,\text{rad/s}$); כללית $v_{cm} = (u_1 + u_2)/2$ ו-$\omega = (u_2 - u_1)/(2R)$.
+
+challenge:
+  - id: W-8.1-c1
+    stars: 1
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      גלגל אופניים ברדיוס $R$ מתגלגל בלי החלקה על כביש אופקי, ומרכזו נע במהירות קבועה $V$ בכיוון $+x$. חרוז תקוע
+      בשפת הגלגל, וברגע $t = 0$ הוא בנקודה העליונה, ב-$x = x_0$, $y = 2R$ (הכביש ב-$y = 0$).
+
+      א. כתבו את $x(t)$ ואת $y(t)$ של החרוז ביחס לכביש.
+
+      ב. גזרו ומצאו את גודל המהירות של החרוז כפונקציה של הזמן. מתי הוא עומד, ואיפה?
+
+      ג. מצאו את אורך המסלול שהחרוז עובר בין שתי נגיעות בכביש. השוו לדרך שהמרכז עובר באותו זמן.
+    answer: >-
+      א. $x = x_0 + Vt + R\sin(Vt/R)$, $y = R + R\cos(Vt/R)$. ב. $|\vec v| = 2V|\cos(Vt/2R)|$; הוא עומד כש-$Vt/R = \pi, 3\pi, \dots$,
+      כלומר כשהוא נוגע בכביש. ג. $8R$, לעומת $2\pi R \approx 6.28R$ של המרכז.
+    solution:
+      - kind: given
+        text: >-
+          ציר $y$ למעלה. בגלגול ימינה הגלגל מסתובב בכיוון השעון, $|\omega| = V/R$. נסמן $\varphi = Vt/R$, הזווית שהגלגל
+          הסתובב (בכיוון השעון) מאז $t = 0$.
+      - kind: law
+        text: >-
+          מקום החרוז = מקום המרכז ועוד וקטור באורך $R$ שמסתובב עם הגלגל: $\vec r_P = \vec R_{cm} + \vec r$.
+      - kind: manipulation
+        text: >-
+          $\vec R_{cm} = (x_0 + Vt,\ R)$. ברגע $0$, $\vec r = (0, R)$; אחרי סיבוב ב-$\varphi$ בכיוון השעון, $\vec r = (R\sin\varphi,\ R\cos\varphi)$.
+          גזירה: $\dot x = V(1 + \cos\varphi)$, $\dot y = -V\sin\varphi$, ולכן $|\vec v|^2 = 2V^2(1 + \cos\varphi) = 4V^2\cos^2(\varphi/2)$.
+          אורך הקשת: $\int_0^{2\pi R/V}2V|\cos(Vt/2R)|\,dt = 4R\int_0^{\pi}|\cos u|\,du = 8R$.
+      - kind: limit
+        text: >-
+          ב-$\varphi = 0$, $|\vec v| = 2V$ (הנקודה העליונה), וב-$\varphi = \pi$ אפס (נקודת המגע): התוצאות של השיעור. אורך
+          הקשת לא תלוי ב-$V$: זו תכונה של צורת המסלול בלבד.
+      - kind: units
+        text: >-
+          $Vt/R$ חסר ממדים; $8R$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          (בדיקה מספרית עם $R = 0.35\,\text{m}$ ו-$V = 5.0\,\text{m/s}$: סכום אמצעים של $|\vec v|\,dt$ על פני $2\pi R/V = 0.440\,\text{s}$ נותן $2.80\,\text{m} = 8R$.)
+      - kind: result
+        text: >-
+          $x = x_0 + Vt + R\sin(Vt/R)$, $y = R(1 + \cos(Vt/R))$; $|\vec v| = 2V|\cos(Vt/2R)|$, אפס בכל נגיעה בכביש; קשת באורך $8R$.
+    source:
+      name: MIT 8.01 Classical Mechanics (8.01SC/8.01x), Problem Set 12
+      year: 2016
+      problem: Problem 1 (Bicycle Wheel)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4f3af212f682f52a6151aef53415d5b2_MIT8_01F16_pset12.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.1-c2
+    stars: 2
+    objectives: [OBJ-8.1-1]
+    prompt: >-
+      כדור ברדיוס $b$ מתגלגל בלי החלקה על המשטח הפנימי של טבעת ברדיוס $R > b$. הטבעת מסתובבת סביב המרכז שלה, $O$,
+      במהירות זוויתית $\Omega$, והכדור מסתובב סביב המרכז שלו במהירות זוויתית $\omega$; שתיהן חיוביות נגד כיוון השעון.
+
+      א. מצאו את מהירות מרכז הכדור (רכיב משיקי, חיובי נגד כיוון השעון סביב $O$) כביטוי ב-$b$, $R$, $\omega$ ו-$\Omega$.
+
+      ב. קבעו ונמקו: באיזו $\omega$ מרכז הכדור עומד במקום? ומה קורה כשהטבעת עומדת?
+
+      ג. חשבו עבור $R = 0.50\,\text{m}$, $b = 0.050\,\text{m}$, $\Omega = 2.0\,\text{rad/s}$, $\omega = 10\,\text{rad/s}$: את מהירות
+      המרכז ואת הקצב שבו הוא מקיף את $O$.
+    answer: >-
+      א. $v_{cm} = \Omega R - \omega b$. ב. עומד כש-$\omega = \Omega R/b$; כשהטבעת עומדת, $v_{cm} = -\omega b$: כדור שמסתובב נגד
+      כיוון השעון נע סביב $O$ בכיוון השעון. ג. $0.50\,\text{m/s}$; $1.11\,\text{rad/s}$ נגד כיוון השעון.
+    solution:
+      - kind: given
+        text: >-
+          ראשית ב-$O$; $\hat r$ הכיוון מ-$O$ אל מרכז הכדור $C$, ו-$\hat\theta = \hat z\times\hat r$. $C$ במרחק $R - b$ מ-$O$, ונקודת
+          המגע ב-$C + b\,\hat r$, במרחק $R$ מ-$O$.
+      - kind: law
+        text: >-
+          בלי החלקה, נקודת המגע של הכדור נעה כמו הנקודה של הטבעת שם. לכדור: $\vec v_P = \vec v_C + \omega\,\hat z\times(b\,\hat r)$.
+          לטבעת, שמסתובבת סביב $O$ הקבועה: $\vec v = \Omega\,\hat z\times(R\,\hat r)$.
+      - kind: manipulation
+        text: >-
+          $\hat z\times\hat r = \hat\theta$, ולכן $v_C + \omega b = \Omega R$ (רכיבי $\hat\theta$), כלומר $v_C = \Omega R - \omega b$.
+          קצב ההקפה של $C$ סביב $O$: $v_C/(R - b)$.
+      - kind: limit
+        text: >-
+          כש-$\omega = 0$ (הכדור לא מסתובב), $v_C = \Omega R$:
+          הכדור נגרר עם הטבעת. וכש-$\Omega = 0$, $v_C = -\omega b$, כמו גלגול על רצפה ($v_{cm} = -\omega R$ עם $\omega$ נגד כיוון השעון).
+      - kind: units
+        text: >-
+          $\Omega R$ ו-$\omega b$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v_C = 2.0\cdot0.50 - 10\cdot0.050 = 0.50\,\text{m/s}$; $0.50/0.45 = 1.11\,\text{rad/s}$; עמידה ב-$\omega = 2.0\cdot0.50/0.050 = 20\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          $v_{cm} = \Omega R - \omega b$; עומד כש-$\omega = \Omega R/b$; כאן $0.50\,\text{m/s}$ ו-$1.11\,\text{rad/s}$ סביב $O$.
+    source:
+      name: MIT 8.01 Classical Mechanics (8.01SC/8.01x), Problem Set 12
+      year: 2016
+      problem: Problem 2 (Rolling Without Slipping)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4f3af212f682f52a6151aef53415d5b2_MIT8_01F16_pset12.pdf
+      verified: '2026-11-12'
+      adapted: true

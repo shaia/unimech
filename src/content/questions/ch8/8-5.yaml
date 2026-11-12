@@ -9,6 +9,21 @@
 #     box on the wrong side 220.5); the left end lifts for a box of 25 kg;
 #   seesaw 30 kg at 1.6 m: 40 kg at 1.20 m (inverted 2.13);
 #   ladder, μs = 0.40, frictionless wall: tan θ_min = 1/(2μs), θ_min = 51.3° (68.2 with 1/μs, 38.7 from the wall, 21.8 = atan μs).
+# Review 2026-11-12 (lesson author, .scratch/ch8/8-5/bank.ts with src/physics/statics.ts): every key above recomputed and
+# right. Q-8.5-ladder-min-angle was rewritten: the lesson prints tan θ = 1/(2μs) as the limit of an empty ladder, so the
+# exam rung now has a person of mass 3M on the rung at 3L/4: tan θ_min = (1/2 + 9/4)/(4μs) = 11/(16μs) = 1.72,
+# θ_min = 59.8° (person ignored 51.3, person at the top 65.4, person left out of N₁ 81.7, from the wall 30.2).
+# Review 2026-11-12 (pair reviewer, independent recompute .scratch/review/ch8/p56/check.ts, closed forms only): every
+# key and commonWrong above right. Both exam rungs were still answered by the lesson: ladder-min-angle is a
+# substitution into the printed inequality and beam-overhang repeats the steps "beam" and "tip", so both are mid now,
+# and two new exam rungs climb above the text:
+#   Q-8.5-hinge-pulls-down: beam 2.0 m, 10 kg, hinged at the wall, cable at its middle at 40°, 15 kg at the free end;
+#     torques about the middle: V = −mg = −147 N (sign 147, hinge along the beam 0, M left out of the torques −49,
+#     M left out of ΣF_y −245, all the weight on the hinge 245); T = 610 N.
+#   Q-8.5-stepladder: legs 5.0 kg each, 40 kg on the apex, μs = 0.50: N = (M + m/2)g, torques about the apex give
+#     f = (M + m)g/(2 tan θ), tan θ ≥ (M + m)/(μs(2M + m)) = 1.80, θ = 60.9° (no load 45.0, from the vertical 29.1,
+#     N without the load 83.7).
+# Q-8.5-seesaw also counts for OBJ-8.5-1, so that objective opens with a basic numeric rung.
 
 chapter: 8
 questions:
@@ -32,7 +47,7 @@ questions:
         misconception: MC-8-net-force-zero-is-equilibrium
       - text: 'זה תלוי בנקודה שסביבה מחשבים את המומנט.'
         feedback: >-
-          כשהשקול אפס, המומנט זהה סביב **כל** נקודה: $\vec\tau_B = \vec\tau_A + (\vec r_A - \vec r_B)\times\sum\vec F$.
+          כשהשקול אפס, המומנט זהה סביב **כל** נקודה: $\vec\tau_E = \vec\tau_D + (\vec r_D - \vec r_E)\times\sum\vec F$.
           למומנט של זוג כוחות יש ערך אחד, $Fd$.
       - text: 'כן, כי שני הכוחות מבטלים זה את זה.'
         feedback: 'הם מבטלים זה את זה בסכום הכוחות, לא במומנט: שניהם מסובבים את המוט לאותו כיוון סביב מרכזו.'
@@ -57,7 +72,7 @@ questions:
         feedback: 'בשיווי משקל הגוף לא מסתובב סביב שום ציר, ולכן המשוואה $\sum\tau = 0$ חלה סביב כל נקודה.'
         misconception: MC-8-torques-only-about-cm
     reasons:
-      - text: 'אם $\sum\vec F = 0$, אז $\vec\tau_B = \vec\tau_A + (\vec r_A - \vec r_B)\times\sum\vec F = \vec\tau_A$, ולכן המומנט לא תלוי בנקודה.'
+      - text: 'אם $\sum\vec F = 0$, אז $\vec\tau_E = \vec\tau_D + (\vec r_D - \vec r_E)\times\sum\vec F = \vec\tau_D$, ולכן המומנט לא תלוי בנקודה.'
         correct: true
         feedback: 'זה הנימוק. תנאי הכוחות הוא שמאפשר את חופש הבחירה בנקודה.'
       - text: 'רק סביב מרכז המסה המשקל לא יוצר מומנט, ולכן רק שם המשוואה פשוטה.'
@@ -66,7 +81,7 @@ questions:
       - text: 'התמיכה דוחפת כלפי מעלה, ולכן הקורה "מסתובבת" סביבה.'
         feedback: 'הקורה במנוחה ולא מסתובבת סביב שום נקודה. הבחירה בתמיכה היא חשבונית בלבד.'
     hints:
-      - 'כתבו את המומנט סביב נקודה B בעזרת המומנט סביב נקודה A. מה עושה $\sum\vec F = 0$?'
+      - 'כתבו את המומנט סביב נקודה $E$ בעזרת המומנט סביב נקודה $D$. מה עושה $\sum\vec F = 0$?'
 
   - id: Q-8.5-hanging-sign
     type: numeric
@@ -100,7 +115,7 @@ questions:
   - id: Q-8.5-beam-overhang
     type: numeric
     objectives: [OBJ-8.5-1]
-    level: bagrut
+    level: mid
     prompt: >-
       קורה אחידה באורך $6.0\,\text{m}$ ובמסה $50\,\text{kg}$ מונחת על שתי תמיכות: אחת בקצה השמאלי, $x = 0$, ואחת
       ב-$x = 4.0\,\text{m}$. על הקצה הימני, $x = 6.0\,\text{m}$, מונח ארגז במסה $20\,\text{kg}$. מה הכוח שהתמיכה
@@ -125,10 +140,42 @@ questions:
     hints:
       - 'סביב התמיכה הימנית: משקל הקורה פועל במרחק $1.0\,\text{m}$ משמאל לה, והארגז במרחק $2.0\,\text{m}$ מימין לה.'
 
+  - id: Q-8.5-hinge-pulls-down
+    type: numeric
+    objectives: [OBJ-8.5-1]
+    level: bagrut
+    prompt: >-
+      קורה אחידה ואופקית באורך $2.0\,\text{m}$ ובמסה $10\,\text{kg}$ מחוברת בקצה אחד לקיר בציר. כבל קשור לאמצע הקורה
+      ועולה ממנו אל הקיר, בזווית $40^\circ$ עם הקורה. מהקצה החופשי של הקורה תלוי משא במסה $15\,\text{kg}$. מה הרכיב
+      האנכי של הכוח שהציר מפעיל על הקורה? כלפי מעלה חיובי.
+    answer: -147
+    unit: N
+    correctFeedback: >-
+      נכון. על הקורה: הכובד $Mg$ באמצעה, הכבל $T$ באמצעה, המשא $mg$ בקצה, וכוח הציר, $H$ אופקי ו-$V$ אנכי, בקיר.
+      בוחרים את **אמצע הקורה** כנקודה למומנטים: $T$ ו-$Mg$ פועלים בה, וקו הפעולה של $H$ הוא הקו של הקורה, שעובר
+      בה. נשארים שני מומנטים, $V$ בזרוע $\tfrac L2$ מצד הקיר ו-$mg$ בזרוע $\tfrac L2$ מהצד השני. כדי שיתבטלו, $V$ חייב
+      להיות כלפי **מטה**: $V = -mg = -15\cdot9.8 = -147\,\text{N}$. הציר מושך את הקורה למטה. התשובה לא תלויה בזווית
+      ולא במסה של הקורה; הכבל, $T = 610\,\text{N}$, נושא את שני המשקלים ועוד את המשיכה של הציר.
+      **בדיקת גבולות:** בלי משא, $m = 0$, $V = 0$: הכבל באמצע נושא את הקורה לבדו.
+    wrongFeedback: 'בחרו נקודה למומנטים שדרכה עוברים גם $T$ וגם $H$, ששניהם לא ידועים. איזה כוח נשאר עם זרוע מצד הקיר?'
+    commonWrong:
+      - value: 147
+        feedback: 'הגודל נכון, הכיוון לא. סביב אמצע הקורה המשא מסובב את הקצה החופשי למטה; כדי לאזן, $V$ בצד השני חייב לסובב את הקצה של הקיר למטה, כלומר למשוך את הקורה כלפי מטה.'
+      - value: 0
+        feedback: 'הנחתם שכוח הציר לאורך הקורה. זה נכון רק לקורה קלה שעליה פועלים כוחות רק בשני הקצוות. כאן הכבל מחובר באמצע, והמשא בקצה.'
+      - value: -49
+        feedback: 'שכחתם את המשקל של הקורה במשוואת המומנטים סביב הציר. הוא פועל באמצע, באותה נקודה כמו הכבל; סביב הציר, זרועו $\tfrac L2$.'
+      - value: -245
+        feedback: 'במשוואת הכוחות האנכיים חסר המשקל של הקורה, $Mg = 98\,\text{N}$.'
+      - value: 245
+        feedback: 'זה $(M + m)g$: הנחתם שהציר נושא את כל המשקל. הכבל נושא יותר מכל המשקל, והציר מושך למטה.'
+    hints:
+      - 'שלושה כוחות פועלים באמצע הקורה או על קו שעובר בו. סביב אמצע הקורה, אילו כוחות נשארים במשוואת המומנטים?'
+
   # ---------------------------------------------------------------- OBJ-8.5-2 ladder, lever, beam, slipping threshold
   - id: Q-8.5-seesaw
     type: numeric
-    objectives: [OBJ-8.5-2]
+    objectives: [OBJ-8.5-2, OBJ-8.5-1]
     level: basic
     prompt: >-
       נדנדה היא קרש אחיד שמונח במרכזו על ציר. ילד במסה $30\,\text{kg}$ יושב במרחק $1.6\,\text{m}$ משמאל לציר. באיזה
@@ -207,25 +254,64 @@ questions:
   - id: Q-8.5-ladder-min-angle
     type: numeric
     objectives: [OBJ-8.5-2]
-    level: bagrut
+    level: mid
     prompt: >-
-      סולם אחיד נשען על קיר חלק. מקדם החיכוך הסטטי בין רגלי הסולם לרצפה הוא $\mu_s = 0.40$. מה הזווית הקטנה
-      ביותר בין הסולם **לרצפה** שבה הסולם עוד לא מחליק?
-    answer: 51.3
+      סולם אחיד במסה $M$ נשען על קיר **חלק**, ומקדם החיכוך הסטטי בין רגלי הסולם לרצפה הוא $\mu_s = 0.40$. אדם
+      שמסתו $3M$ רוצה לעמוד על השלב שנמצא בשלושה רבעים מאורך הסולם, כשמודדים מהרגליים. מה הזווית הקטנה ביותר בין
+      הסולם **לרצפה** שבה הסולם לא יחליק כשהאדם עומד שם?
+    answer: 59.8
     unit: °
     correctFeedback: >-
-      נכון. הכוחות: משקל $mg$ במרכז, כוח אופקי $F$ מהקיר בראש, $N$ וחיכוך $f$ ברגליים. מהכוחות, $N = mg$ ו-$f = F$.
-      סביב הרגליים: $F\cdot L\sin\theta = mg\cdot\dfrac L2\cos\theta$, ולכן $f = \dfrac{mg}{2\tan\theta}$. התנאי
-      $f \le \mu_smg$ נותן $\tan\theta \ge \dfrac{1}{2\mu_s} = 1.25$, כלומר $\theta \ge 51.3^\circ$. **בדיקת גבולות:**
-      כש-$\mu_s \to 0$ הזווית שואפת ל-$90^\circ$ (רק סולם אנכי עומד), וכש-$\mu_s \to \infty$ היא שואפת לאפס.
-    wrongFeedback: 'כתבו את משוואת המומנטים סביב רגלי הסולם ואת שתי משוואות הכוחות, ודרשו $f \le \mu_sN$.'
+      נכון. על הסולם: הכובד $Mg$ במרכזו, הדחיפה של האדם $3Mg$ על השלב, כוח אופקי $N_2$ מהקיר בראש, ו-$N_1$ וחיכוך $f$
+      מהרצפה ברגליים. מהכוחות, $N_1 = 4Mg$ ו-$f = N_2$. סביב הרגליים:
+      $N_2L\sin\theta = Mg\dfrac L2\cos\theta + 3Mg\dfrac{3L}{4}\cos\theta$, ולכן $f = \dfrac{11}{4}\dfrac{Mg}{\tan\theta}$.
+      התנאי $f \le \mu_sN_1$ נותן $\tan\theta \ge \dfrac{11}{16\mu_s} = 1.72$, כלומר $\theta \ge 59.8^\circ$.
+      **בדיקת גבולות:** בלי האדם יוצא $\tan\theta = 1/(2\mu_s)$, $51.3^\circ$, הסולם הריק; וכש-$\mu_s \to 0$ הזווית
+      שואפת ל-$90^\circ$: על רצפה חלקה רק סולם אנכי עומד.
+    wrongFeedback: 'כתבו את משוואת המומנטים סביב רגלי הסולם ואת שתי משוואות הכוחות, ודרשו $f \le \mu_sN_1$.'
     commonWrong:
-      - value: 68.2
-        feedback: 'קיבלתם $\tan\theta = 1/\mu_s$: שמתם את המשקל בראש הסולם. בסולם אחיד המשקל פועל באמצע, ולכן הזרוע שלו חצי.'
+      - value: 51.3
+        feedback: 'זו הזווית של סולם ריק, $\tan\theta = 1/(2\mu_s)$. האדם על השלב מוסיף מומנט סביב הרגליים, ולכן הקיר צריך לדחוף חזק יותר.'
         misconception: MC-8-torque-ignores-position
-      - value: 38.7
-        feedback: 'זו הזווית בין הסולם **לקיר**, $90^\circ - 51.3^\circ$. השאלה שואלת על הזווית עם הרצפה.'
-      - value: 21.8
-        feedback: 'זה $\arctan\mu_s$, זווית ההחלקה של קובייה על מדרון. כאן הסולם לא מונח על מדרון, ומה שקובע הוא מאזן המומנטים.'
+      - value: 65.4
+        feedback: 'זו הזווית כשהאדם עומד בראש הסולם. כאן הוא על השלב שבשלושה רבעים, והזרוע של הדחיפה שלו סביב הרגליים היא $\tfrac{3L}{4}\cos\theta$.'
+        misconception: MC-8-torque-ignores-position
+      - value: 81.7
+        feedback: 'שכחתם שגם האדם נשען על הרצפה. $N_1 = 4Mg$, לא $Mg$, ולכן החיכוך המרבי $\mu_sN_1$ גדול פי ארבעה.'
+      - value: 30.2
+        feedback: 'זו הזווית בין הסולם **לקיר**, $90^\circ - 59.8^\circ$. השאלה שואלת על הזווית עם הרצפה.'
     hints:
-      - 'הזרוע של הכוח האופקי של הקיר סביב רגלי הסולם היא $L\sin\theta$, והזרוע של המשקל היא $\tfrac L2\cos\theta$.'
+      - 'סביב רגלי הסולם, הזרוע של הכוח של הקיר היא $L\sin\theta$, של הכובד של הסולם $\tfrac L2\cos\theta$, ושל הדחיפה של האדם $\tfrac{3L}{4}\cos\theta$.'
+
+  - id: Q-8.5-stepladder
+    type: numeric
+    objectives: [OBJ-8.5-2]
+    level: bagrut
+    prompt: >-
+      סולם כפול, בצורת האות Λ, בנוי משתי רגליים אחידות, כל אחת באורך $2.0\,\text{m}$ ובמסה $5.0\,\text{kg}$, שמחוברות
+      בציר בראשן. אין חבל בין הרגליים. הסולם עומד על רצפה, ומקדם החיכוך הסטטי בין כל רגל לרצפה הוא $\mu_s = 0.50$.
+      על הראש, בדיוק על הציר, מונח משא במסה $40\,\text{kg}$. מה הזווית הקטנה ביותר בין רגל לרצפה שבה הרגליים לא
+      מחליקות והסולם לא נפתח?
+    answer: 60.9
+    unit: °
+    correctFeedback: >-
+      נכון. **כל הסולם כגוף אחד:** החיכוכים בשתי הרגליים מבטלים זה את זה, ו-$2N = (2M + m)g$, כלומר
+      $N = (M + \tfrac m2)g$ על כל רגל. **רגל אחת, מומנטים סביב הציר בראש:** הכוח של הרגל השנייה והדחיפה של המשא
+      פועלים שם, ונעלמים. נשארים $N$ בזרוע $L\cos\theta$, הכובד $Mg$ בזרוע $\tfrac L2\cos\theta$, והחיכוך $f$, שמושך
+      את הרגל פנימה, בזרוע $L\sin\theta$: $fL\sin\theta = NL\cos\theta - Mg\tfrac L2\cos\theta$, ולכן
+      $f = \dfrac{(M + m)g}{2\tan\theta}$. התנאי $f \le \mu_sN$ נותן
+      $\tan\theta \ge \dfrac{M + m}{\mu_s(2M + m)} = \dfrac{45}{25} = 1.80$, $\theta \ge 60.9^\circ$.
+      **בדיקת גבולות:** בלי משא, $\tan\theta = \dfrac{1}{2\mu_s}$, בדיוק כמו סולם ריק ליד קיר חלק: מהסימטריה, הרגל
+      השנייה דוחפת את הראש רק אופקית, כמו קיר חלק. וכש-$m \gg M$, $\tan\theta \to 1/\mu_s$.
+    wrongFeedback: >-
+      שני שלבים. את $N$ על כל רגל מוצאים מכל הסולם כגוף אחד. את החיכוך מוצאים ממומנטים על רגל **אחת**, סביב הנקודה
+      שבה פועלים הכוחות שלא ידועים לכם: הציר בראש.
+    commonWrong:
+      - value: 45.0
+        feedback: 'זו הזווית בלי משא, $\tan\theta = 1/(2\mu_s)$. המשא מגדיל את $N$, אבל את החיכוך הדרוש הוא מגדיל יותר.'
+      - value: 29.1
+        feedback: 'זו הזווית בין רגל ל**אנך**, $90^\circ - 60.9^\circ$. השאלה שואלת על הזווית עם הרצפה.'
+      - value: 83.7
+        feedback: 'לקחתם $N = Mg$, בלי המשא. המשא נשען על שתי הרגליים, וכל רגל דוחפת את הרצפה גם בחצי ממשקלו: $N = (M + \tfrac m2)g$.'
+    hints:
+      - 'מה עושה כל רגל לראש של הרגל השנייה? מהסימטריה, הכוח ביניהן אופקי, כמו כוח של קיר חלק.'

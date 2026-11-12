@@ -1,0 +1,36 @@
+# Videos of lesson 8.2. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date: it
+# exists and is embeddable; title and channel exactly as returned. No Hebrew video on the moment of inertia was found
+# (searches for "מומנט התמד", "מומנט אינרציה", "משפט שטיינר" returned no YouTube lesson), so both are in English.
+#   1-IGPxoWofQ: Flipping Physics, 9:22 (the video's page on flippingphysics.com, which embeds this id). Its "Content
+#                Times": 0:15 rotational inertia, 0:42 linear mass density, 1:51 about the centre of mass, 3:02 about
+#                an end, 4:27 Rotational Inertia Demonstrator, 6:09 about the centre of the RID, 7:03 comparing our
+#                answers, 7:43 demonstrating our answer.
+#   r2Qb0vsxa8Y: MIT OpenCourseWare, 8.01SC Fall 2016, "29.4 Parallel Axis Theorem" (Peter Dourmashkin). The OCW page
+#                links its English transcript (…_r2Qb0vsxa8Y.pdf), read in this session: it states the theorem, applies
+#                it to a rod from the CM to an end (1/12 + 1/4 = 1/3), and checks it with the integral from the end.
+#                Its length is not stated on the page; the transcript is short (about three minutes, unconfirmed).
+#                Review 2026-11-12: its caption file (…_r2Qb0vsxa8Y.srt on ocw.mit.edu), opened, ends at 4:06 and
+#                confirms the order above (theorem 1:32, rod 1/12 + 1/4 = 1/3 2:17, integral from the end 3:50);
+#                `minutes` 3 → 4. Flipping Physics' page, opened, lists 7:03 as "Comparing our answers" without
+#                saying calculation vs measurement, so the note now names it as the page does.
+# Caption tracks were not established, so `captions` is left out.
+
+- id: v-8-2-rod-integral
+  youtubeId: 1-IGPxoWofQ
+  title: 'Using Integrals to Derive Rotational Inertia of a Long, Thin Rod with Demonstration'
+  channel: Flipping Physics
+  lang: en
+  start: 0
+  minutes: 9
+  why: 'לפי רשימת התכנים שלו: הצפיפות הקווית (0:42), מוט סביב מרכז המסה (1:51) וסביב הקצה (3:02), מכשיר הדגמה אמיתי (4:27), השוואה בין התוצאות (7:03) והדגמה שהתוצאה נכונה (7:43). זה האינטגרל של הסעיף "מסכום לאינטגרל", עם גוף אמיתי.'
+  verified: '2026-11-12'
+
+- id: v-8-2-parallel-axis
+  youtubeId: r2Qb0vsxa8Y
+  title: '29.4 Parallel Axis Theorem'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'לפי התמליל: ניסוח משפט הצירים המקבילים, מעבר ממרכז המסה של מוט אל הקצה שלו, ובדיקה באינטגרל ישיר מהקצה. אותה דרך כמו בסעיף "משפט הצירים המקבילים".'
+  verified: '2026-11-12'

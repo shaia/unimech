@@ -1,0 +1,30 @@
+# Videos of lesson 8.8. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch page's lengthSeconds; `why` claims only what
+# the title and the description support (no chapter lists; caption tracks were not established, so `captions` is
+# empty). No Hebrew video on gyroscopic precession was found (searched in Hebrew; only JoVE pages, not videos).
+#   ty9QSiVC2g0: Veritasium, "Gyroscopic Precession", 3:49. Description: the torque of the weight increases angular
+#                momentum in the direction of the torque; with no angular momentum the top swings down, with angular
+#                momentum the torque changes its direction: precession.
+#   GeyDf4ooPdo: Veritasium, "Anti-Gravity Wheel?", 5:41. Description: lifting a 19 kg wheel spinning at a few
+#                thousand rpm over his head one-handed, replicating Laithwaite, who claimed it was "light as a
+#                feather" and could not be explained by Newton's laws.
+
+- id: v-8-8-precession
+  youtubeId: ty9QSiVC2g0
+  title: 'Gyroscopic Precession'
+  channel: Veritasium
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'לפי התיאור של הסרטון: מומנט הכובד מגדיל את התנע הזוויתי בכיוון המומנט. בלי תנע זוויתי בהתחלה הגוף מתחיל להסתובב בכיוון הזה ונופל; עם תנע זוויתי, המומנט משנה את הכיוון שלו, וזו הנקיפה. זה בדיוק ההבדל בין שני הצעדים של איור 8.8ב, בלי סיבוב עצמי ועם סיבוב עצמי.'
+  verified: '2026-11-12'
+
+- id: v-8-8-heavy-wheel
+  youtubeId: GeyDf4ooPdo
+  title: 'Anti-Gravity Wheel?'
+  channel: Veritasium
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי התיאור: גלגל של 19 קילוגרם שמסתובב באלפי סיבובים לדקה מורם ביד אחת מעל הראש, כמו בניסוי של לייתווייט, שטען שהגלגל "קל כנוצה" ושחוקי ניוטון לא מסבירים זאת. צפו בו עם השאלה של הצעד "מה מחזיק את הג׳ירוסקופ?": האם הסיבוב משנה את המשקל, או רק את מה שהמומנט עושה?'
+  verified: '2026-11-12'

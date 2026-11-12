@@ -1,0 +1,31 @@
+# Videos of lesson 8.6. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). No Hebrew video on the topic was found (searches in Hebrew returned
+# JoVE pages and encyclopedia entries only).
+#   2g9_ccVTrMk: linked from UCSB's lecture-demonstration page 28.45 "Rotatable stool, dumbbells"
+#                (web.physics.ucsb.edu/~lecturedemonstrations/Composer/Pages/28.45.html), which describes the demo.
+#                Review 2026-11-12: oEmbed re-checked (title and channel as below); the watch page's lengthSeconds is
+#                153 (2:33), so `minutes` is 3; its description is empty, so the notes rest on the UCSB page alone.
+#   c15RtHXBVuQ: the YouTube id in the file names of OCW 8.01SC Fall 2016's transcript for "34.5 Worked Example -
+#                Particle Hits Pivoted Ring"; the OCW .srt runs 8:08 and its steps (pivot as the point, parallel
+#                axis, L before = after) are the timestamps quoted in `why`. Caption tracks on YouTube not checked.
+#                Review 2026-11-12: oEmbed re-checked; lengthSeconds 492 (8:12).
+
+- id: v-8-6-stool-demo
+  youtubeId: 2g9_ccVTrMk
+  title: '28.45 Rotatable stool, dumbbells'
+  channel: UCSB Physics Lecture Demonstrations
+  lang: en
+  start: 0
+  minutes: 3
+  why: 'הדגמת הרצאה אמיתית: לפי דף ההדגמה של האוניברסיטה, אדם על כיסא מסתובב מקרב ומרחיק משקולות, וקצב הסיבוב משתנה. זה איור 8.6א, עם שרירים במקום החוטים.'
+  verified: '2026-11-12'
+
+- id: v-8-6-pivoted-ring
+  youtubeId: c15RtHXBVuQ
+  title: '34.5 Worked Example - Particle Hits Pivoted Ring'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 8
+  why: 'דוגמה פתורה מ-MIT: חלקיק נדבק לטבעת שנעוצה בציר על שולחן חלק. לפי התמליל, המרצה מחשב את התנע הזוויתי סביב הציר, כי לכוח הציר אין שם זרוע (2:10), ומשתמש במשפט הצירים המקבילים (5:16). זה השלב "מוט נעוץ" של איור 8.6ב.'
+  verified: '2026-11-12'

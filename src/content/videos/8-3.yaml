@@ -1,0 +1,31 @@
+# Videos of lesson 8.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths and chapters come from the watch page's own data
+# (lengthSeconds and the description); no caption track was found on either page, so `captions` is empty.
+# `why` claims only what the title, the chapter list and the description support.
+#   jTl2H0UL0uM: SCE physics (Hebrew), 31:59; chapters 0:00 introduction, 6:31 example: a rod moving about a fixed
+#                axis, 10:51 potential energy of the body, 14:05 kinetic energy about a fixed axis, 17:33 moment of
+#                inertia, 22:06 what it depends on (a table), 25:50 back to the rod, 27:54 a drill and the Earth.
+#                The title uses the rejected spelling of rigid body; it is quoted exactly as oEmbed returned it.
+#   BV7TPvk__kE: Harvard Natural Sciences Lecture Demonstrations, 0:26. The description: a hinged board 1 m long,
+#                released from just under 35 degrees, its free end accelerating faster than g, a steel ball on a golf
+#                tee about 2 cm above the end.
+
+- id: v-8-3-hebrew-fixed-axis
+  youtubeId: jTl2H0UL0uM
+  title: 'SCE PHYSICS 1A lesson 10.1 גוף קשיח - סיבוב סביב ציר נייח, אנרגיה קינטית, מומנט התמד'
+  channel: SCE physics
+  lang: he
+  start: 391
+  minutes: 26
+  why: 'שיעור בעברית. לפי רשימת הפרקים שלו: מוט שנע סביב ציר נייח (6:31), אנרגיה פוטנציאלית של הגוף (10:51), אנרגיה קינטית בציר סיבוב נייח (14:05) ומומנט התמד (17:33). זו אותה דרך כמו בסעיף "אנרגיה קינטית סיבובית": סכום של ½mv² על החלקיקים, עם v = ωr.'
+  verified: '2026-11-12'
+
+- id: v-8-3-faster-than-g
+  youtubeId: BV7TPvk__kE
+  title: 'Falling Faster Than g'
+  channel: Harvard Natural Sciences Lecture Demonstrations
+  lang: en
+  start: 0
+  minutes: 1
+  why: 'הדגמה אמיתית: לפי התיאור, לוח באורך מטר על ציר משוחרר מזווית של קצת פחות מ-35°, והקצה שלו מאיץ מהר יותר מ-g ומשאיר מאחור כדור פלדה שמונח מעליו. זה המטבע של איור 8.3ב.'
+  verified: '2026-11-12'

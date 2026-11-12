@@ -1,15 +1,26 @@
 # Lesson 8.7 question bank: the comprehension ladder of "מטוטלת פיזיקלית".
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
 # Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
+# Notation as in the lesson: P the pivot, d from the pivot to the CM, ℓ = I_P/(md) the equivalent length, k the radius
+# of gyration, J_P the impulse of the pivot on the body.
 #
-# Every number was computed in .scratch/ch8/q.ts with src/physics/constants.ts (G = 9.8):
-#   rod L = 1.0 m about its end: T = 2π√(2L/(3g)) = 1.64 s (simple pendulum L 2.01, L/2 1.42);
-#   pivot at d from the centre: T(d) = 2π√((L²/12 + d²)/(gd)), minimum at d = L/√12 = 0.289 m (also by a numerical scan),
-#     T_min = 1.53 s; with I_end in place of I_cm the minimum moves to L/√3 = 0.577 m;
-#   disc R = 0.15 m hung at its rim: L_eq = I/(Md) = 1.5R = 0.225 m (R 0.15, R/2 0.075, 2R 0.30);
-#   bat as a uniform rod L = 0.90 m held at the end: centre of percussion 2L/3 = 0.600 m;
-#   rod M = 0.90 kg, L = 0.90 m hanging from a pivot, J = 3.0 N·s at the centre: pivot impulse
-#     J(Mdb/I_p − 1) = −0.750 N·s (I_cm used: 6.0, blow at the end: 1.5).
+# Every number was recomputed in .scratch/ch8/8-7/bank.ts with src/physics/constants.ts (G = 9.8) and rigidbody.ts
+# (review 2026-11-12, the lesson's author):
+#   rod L = 1.0 m about its end: T = 2π√(2L/(3g)) = 1.64 s (simple pendulum L 2.01, L/2 1.42), ℓ = 0.667 m;
+#   ring on a nail ℓ = 2R, disc at its rim 1.5R;
+#   disc R = 0.15 m hung at its rim: ℓ = 1.5R = 0.225 m, T = 0.952 s (wrongs R 0.15, I_cm/(md) 0.075, 2R 0.30);
+#   rod: T(d) shortest at d = L/√12 = 0.289L, where ℓ = 2d = 0.577L (end: 0.667L);
+#   min-period, REWRITTEN (the lesson prints T_min = 2π√(2k/g) for a bare rod): rod 1.0 m, 0.20 kg, with a 0.20 kg
+#     clamp at one end: CM 0.750 m from the bare end, I_cm = 0.04167 kg·m², k = 0.323 m, T_min = 1.61 s at the hole
+#     0.427 m from the bare end (a scan of the holes agrees); wrongs: bare rod 1.53, k about the rod's centre
+#     (0.408 m) 1.81, 2π√(k/g) 1.14;
+#   bat as a uniform rod L = 0.90 m held at the end: centre of percussion 2L/3 = 0.600 m (CM 0.45, end 0.90);
+#   pivot-impulse, REWRITTEN AGAIN (review 2026-11-12: the uniform door's J_P = J(3b/(2W) − 1) is printed in the
+#     lesson's doorstop example): door 12 kg, 0.90 m wide, with a 3.0 kg bar along its free edge; ball 0.40 kg in at
+#     5.0 m/s, back at 3.0 m/s, 0.30 m from the hinge: J = 3.20 N·s, I_P = 5.67 kg·m², Md = 8.10 kg·m,
+#     J_P = J(Mdb/I_P − 1) = −1.83 N·s (J_P is the hinges' impulse ON the door; the shared pivotImpulse returns its
+#     reaction, +1.83); centre of percussion 0.700 m; wrongs: 3.20 (all absorbed), 1.60 (bar ignored), 1.14 (no bounce),
+#     4.57 (bracket sign flipped), 2.29 (bar in I_P only). Recomputed by .scratch/review/ch8/pair-8-7.ts.
 
 chapter: 8
 questions:
@@ -19,21 +30,21 @@ questions:
     objectives: [OBJ-8.7-1]
     level: basic
     prompt: >-
-      מוט אחיד באורך $1.0\,\text{m}$ תלוי מציר אופקי בקצהו העליון ומתנודד בזוויות קטנות. מה זמן המחזור שלו?
+      מוט אחיד באורך $1.0\,\text{m}$ תלוי על ציר אופקי בקצהו העליון ומתנודד בזוויות קטנות. מה זמן המחזור שלו?
     answer: 1.64
     unit: s
     correctFeedback: >-
-      נכון. למטוטלת פיזיקלית $T = 2\pi\sqrt{\dfrac{I}{mgd}}$, כאשר $I$ סביב הציר ו-$d$ המרחק מהציר למרכז המסה. כאן
-      $I = \tfrac13mL^2$ ו-$d = L/2$, ולכן $T = 2\pi\sqrt{\dfrac{2L}{3g}} = 2\pi\sqrt{\dfrac{2\cdot1.0}{3\cdot9.8}} = 1.64\,\text{s}$.
-    wrongFeedback: 'כתבו את משוואת המומנט לזווית קטנה, $I\ddot\theta = -mgd\,\theta$, והשוו למתנד הרמוני.'
+      נכון. למטוטלת פיזיקלית $T = 2\pi\sqrt{\dfrac{I_P}{mgd}}$, כאשר $I_P$ סביב הציר ו-$d$ המרחק מהציר למרכז המסה. כאן
+      $I_P = \tfrac13mL^2$ ו-$d = L/2$, ולכן $T = 2\pi\sqrt{\dfrac{2L}{3g}} = 2\pi\sqrt{\dfrac{2\cdot1.0}{3\cdot9.8}} = 1.64\,\text{s}$.
+    wrongFeedback: 'כתבו את משוואת המומנט סביב הציר לזווית קטנה, $I_P\ddot\theta = -mgd\,\theta$, והשוו למתנד הרמוני.'
     commonWrong:
       - value: 2.01
         feedback: 'זה $2\pi\sqrt{L/g}$, מטוטלת פשוטה באורך $L$, שכל מסתה בקצה. במוט רוב המסה קרובה לציר, ולכן הוא מתנודד מהר יותר.'
       - value: 1.42
-        feedback: 'זה $2\pi\sqrt{(L/2)/g}$: מטוטלת פשוטה באורך המרחק למרכז המסה. אבל המוט אינו מסה נקודתית במרכז שלו: $I = \tfrac13mL^2$, לא $m(L/2)^2$.'
+        feedback: 'זה $2\pi\sqrt{(L/2)/g}$: מטוטלת פשוטה באורך המרחק למרכז המסה. אבל המוט אינו מסה נקודתית במרכז שלו: $I_P = \tfrac13mL^2$, לא $m(L/2)^2$.'
         misconception: MC-8-equivalent-length-is-cm-distance
     hints:
-      - 'מה מומנט ההתמד של מוט סביב הקצה, ומה המרחק לציר ממרכז המסה?'
+      - 'מה מומנט ההתמד של מוט סביב הקצה, ומה המרחק מהציר למרכז המסה?'
 
   - id: Q-8.7-hoop-on-nail
     type: mc
@@ -47,38 +58,38 @@ questions:
       - text: '$2R$, הקוטר.'
         correct: true
         feedback: >-
-          נכון. $L_{eq} = \dfrac{I}{md}$. סביב המסמר, לפי משפט הצירים המקבילים, $I = mR^2 + mR^2 = 2mR^2$, ו-$d = R$.
-          לכן $L_{eq} = 2R$: הטבעת מתנודדת כמו מסה נקודתית בנקודה התחתונה שלה.
+          נכון. $\ell = \dfrac{I_P}{md}$. סביב המסמר, לפי משפט הצירים המקבילים, $I_P = mR^2 + mR^2 = 2mR^2$, ו-$d = R$.
+          לכן $\ell = 2R$: הטבעת מתנודדת כמו מסה נקודתית בנקודה התחתונה שלה.
       - text: '$R$, המרחק מהמסמר למרכז הטבעת.'
-        feedback: '$R$ הוא המרחק למרכז המסה. האורך השקול גדול ממנו, כי מסת הטבעת מפוזרת רחוק ממרכז המסה: $L_{eq} = d + \dfrac{I_{cm}}{md}$.'
+        feedback: '$R$ הוא המרחק למרכז המסה. האורך השקול גדול ממנו, כי מסת הטבעת מפוזרת רחוק ממרכז המסה: $\ell = d + \dfrac{I_{cm}}{md}$.'
         misconception: MC-8-equivalent-length-is-cm-distance
       - text: '$\tfrac32R$'
         feedback: 'זה האורך השקול של **דסקה** מלאה שתלויה בשפתה. בטבעת כל המסה רחוקה מהמרכז, ולכן $I_{cm}$ גדול יותר והאורך השקול ארוך יותר.'
         misconception: MC-8-inertia-only-mass
       - text: 'אין לה אורך שקול, כי מרכז המסה שלה הוא נקודה ריקה.'
-        feedback: 'מרכז המסה לא חייב להיות בתוך החומר. מה שקובע את התנודה הוא $I$ סביב הציר ו-$d$ עד מרכז המסה, ושניהם מוגדרים היטב.'
+        feedback: 'מרכז המסה לא חייב להיות בתוך החומר. מה שקובע את התנודה הוא $I_P$ סביב הציר ו-$d$ עד מרכז המסה, ושניהם מוגדרים היטב.'
     hints:
-      - 'השוו $T = 2\pi\sqrt{I/(mgd)}$ ל-$2\pi\sqrt{L_{eq}/g}$.'
+      - 'השוו $T = 2\pi\sqrt{I_P/(mgd)}$ ל-$2\pi\sqrt{\ell/g}$.'
 
   - id: Q-8.7-disc-equivalent-length
     type: numeric
     objectives: [OBJ-8.7-1]
     level: mid
     prompt: >-
-      דסקה אחידה ברדיוס $0.15\,\text{m}$ תלויה מציר אופקי שעובר בנקודה על השפה שלה וניצב למישור הדסקה. מה האורך
+      דסקה אחידה ברדיוס $0.15\,\text{m}$ תלויה על ציר אופקי שעובר בנקודה על השפה שלה וניצב למישור הדסקה. מה האורך
       השקול שלה?
     answer: 0.225
     unit: m
     correctFeedback: >-
-      נכון. $I = \tfrac12mR^2 + mR^2 = \tfrac32mR^2$ ו-$d = R$, ולכן $L_{eq} = \dfrac{I}{md} = \tfrac32R = 0.225\,\text{m}$.
-      המסה מצטמצמת, ולכן כל דסקה ברדיוס הזה מתנודדת באותו זמן מחזור, $2\pi\sqrt{0.225/9.8} = 0.95\,\text{s}$.
-    wrongFeedback: '$L_{eq} = \dfrac{I}{md}$, עם $I$ סביב הציר (משפט הצירים המקבילים) ו-$d$ עד מרכז המסה.'
+      נכון. $I_P = \tfrac12mR^2 + mR^2 = \tfrac32mR^2$ ו-$d = R$, ולכן $\ell = \dfrac{I_P}{md} = \tfrac32R = 0.225\,\text{m}$.
+      המסה מצטמצמת, ולכן כל דסקה ברדיוס הזה מתנודדת באותו זמן מחזור, $2\pi\sqrt{0.225/9.8} = 0.952\,\text{s}$.
+    wrongFeedback: '$\ell = \dfrac{I_P}{md}$, עם $I_P$ סביב הציר (משפט הצירים המקבילים) ו-$d$ עד מרכז המסה.'
     commonWrong:
       - value: 0.15
-        feedback: 'זה $d = R$, המרחק למרכז המסה. האורך השקול כולל גם את מומנט ההתמד סביב מרכז המסה: $L_{eq} = d + \dfrac{I_{cm}}{md}$.'
+        feedback: 'זה $d = R$, המרחק למרכז המסה. האורך השקול כולל גם את מומנט ההתמד סביב מרכז המסה: $\ell = d + \dfrac{I_{cm}}{md}$.'
         misconception: MC-8-equivalent-length-is-cm-distance
       - value: 0.075
-        feedback: 'זה $\dfrac{I_{cm}}{md}$ בלבד. הציר לא עובר במרכז: $I$ סביבו כולל גם $md^2$.'
+        feedback: 'זה $\dfrac{I_{cm}}{md}$ בלבד. הציר לא עובר במרכז: $I_P$ סביבו כולל גם $md^2$.'
       - value: 0.3
         feedback: 'זה $2R$, האורך השקול של **טבעת**. בדסקה המסה קרובה יותר למרכז, ו-$I_{cm} = \tfrac12mR^2$.'
     hints:
@@ -97,19 +108,19 @@ questions:
         correct: true
         feedback: 'נכון. המינימום ב-$d = L/\sqrt{12} \approx 0.29L$, וכש-$d \to 0$ זמן המחזור שואף לאינסוף.'
       - text: 'הוא קטן כל הזמן, כמו מטוטלת פשוטה שמקצרים את החוט שלה.'
-        feedback: 'במטוטלת פשוטה $T \propto \sqrt{\ell}$. במוט, כשהחור מתקרב למרכז, $I$ לא שואף לאפס: הוא נשאר לפחות $\tfrac{1}{12}mL^2$, בעוד שמומנט הכובד, $mgd\sin\theta$, נעלם.'
+        feedback: 'במטוטלת פשוטה $T \propto \sqrt{\ell}$. במוט, כשהחור מתקרב למרכז, $I_P$ לא שואף לאפס: הוא נשאר לפחות $\tfrac{1}{12}mL^2$, בעוד שמומנט הכובד, $mgd\sin\theta$, נעלם.'
         misconception: MC-8-shorter-arm-shorter-period
       - text: 'הוא גדל כל הזמן.'
-        feedback: 'בקצה, $T = 2\pi\sqrt{2L/(3g)}$, ומעט פנימה, ב-$d = 0.29L$, הוא קטן יותר: $2\pi\sqrt{0.58L/g}$. רק מתחת לזה הוא מתחיל לגדול.'
+        feedback: 'בקצה, $T = 2\pi\sqrt{2L/(3g)}$, ופנימה יותר, ב-$d = 0.29L$, הוא קטן יותר: $2\pi\sqrt{0.58L/g}$. רק מתחת לזה הוא מתחיל לגדול.'
       - text: 'הוא לא משתנה, כי המסה והאורך של המוט לא משתנים.'
-        feedback: 'גם $I$ סביב הציר וגם $d$ משתנים עם מקום החור, ולכן גם זמן המחזור.'
+        feedback: 'גם $I_P$ סביב הציר וגם $d$ משתנים עם מקום החור, ולכן גם זמן המחזור.'
         misconception: MC-8-inertia-only-mass
     reasons:
       - text: '$T^2 \propto \dfrac{L^2/12 + d^2}{d}$: כש-$d$ גדול שולט $d$ במונה, וכש-$d$ קטן שולט $1/d$.'
         correct: true
-        feedback: 'זה הנימוק. גזירה של $\dfrac{L^2/12 + d^2}{d}$ ב-$d$ והשוואה לאפס נותנת $d^2 = \dfrac{L^2}{12}$.'
+        feedback: 'זה הנימוק. גזירה של $\dfrac{L^2/12 + d^2}{d}$ לפי $d$ והשוואה לאפס נותנת $d^2 = \dfrac{L^2}{12}$.'
       - text: '$d$ ממלא את תפקיד אורך החוט, ולכן $T \propto \sqrt d$.'
-        feedback: 'אורך החוט של המטוטלת השקולה אינו $d$ אלא $L_{eq} = d + \dfrac{L^2}{12d}$, והוא גדל גם כש-$d$ קטן.'
+        feedback: 'אורך החוט של המטוטלת השקולה אינו $d$ אלא $\ell = d + \dfrac{L^2}{12d}$, והוא גדל גם כש-$d$ קטן.'
         misconception: MC-8-shorter-arm-shorter-period
       - text: 'ככל שהחור קרוב למרכז, המוט סימטרי יותר, והוא מתנודד בקלות.'
         feedback: 'סימטריה סביב הציר דווקא מבטלת את מומנט הכובד: כשהחור במרכז בדיוק, המוט בשיווי משקל אדיש ולא מתנודד כלל.'
@@ -121,25 +132,31 @@ questions:
     objectives: [OBJ-8.7-1]
     level: bagrut
     prompt: >-
-      מוט אחיד באורך $1.0\,\text{m}$ תלוי על מסמר דרך חור במרחק $d$ ממרכזו. באיזה מרחק $d$ זמן המחזור של תנודות
-      קטנות הוא הקצר ביותר?
-    answer: 0.289
-    unit: m
+      מוט אחיד באורך $1.0\,\text{m}$ ובמסה $0.20\,\text{kg}$, ובקצה אחד שלו מהודק גוש קטן במסה $0.20\,\text{kg}$.
+      קודחים חורים לאורך המוט ותולים אותו על מסמר דרך אחד מהם. מה זמן המחזור **הקצר ביותר** של תנודות קטנות שאפשר
+      לקבל כך?
+    answer: 1.61
+    unit: s
     correctFeedback: >-
-      נכון. $T = 2\pi\sqrt{\dfrac{L^2/12 + d^2}{gd}}$. מספיק למזער $f(d) = \dfrac{L^2}{12d} + d$:
-      $f'(d) = -\dfrac{L^2}{12d^2} + 1 = 0$, ולכן $d = \dfrac{L}{\sqrt{12}} = 0.289\,\text{m}$, ושם $T_{min} = 2\pi\sqrt{2d/g} = 1.53\,\text{s}$.
-      **בדיקת גבולות:** בקצה ($d = 0.5\,\text{m}$) זמן המחזור $1.64\,\text{s}$, וכש-$d \to 0$ הוא שואף לאינסוף, ולכן
-      המינימום באמת ביניהם. ב-$d$ הזה $d^2 = I_{cm}/m$, והאורך השקול הוא $2d$.
-    wrongFeedback: 'כתבו את $T$ כפונקציה של $d$ (משפט הצירים המקבילים), גזרו את הביטוי שמתחת לשורש לפי $d$, והשוו לאפס.'
+      נכון. ציר $x$ לאורך המוט מהקצה החשוף. מרכז המסה של המערכת ב-$x_{cm} = \dfrac{0.20\cdot0.50 + 0.20\cdot1.0}{0.40} = 0.75\,\text{m}$.
+      סביבו, לפי משפט הצירים המקבילים לכל חלק,
+      $I_{cm} = \tfrac{1}{12}\cdot0.20\cdot1.0^2 + 0.20\cdot0.25^2 + 0.20\cdot0.25^2 = 0.0417\,\text{kg}\cdot\text{m}^2$, ולכן
+      $k = \sqrt{I_{cm}/M} = 0.323\,\text{m}$. זמן המחזור הקצר ביותר הוא ב-$d = k$, שם $\ell = 2k$:
+      $T_{min} = 2\pi\sqrt{2k/g} = 1.61\,\text{s}$, בחור שנמצא $0.427\,\text{m}$ מהקצה החשוף. (בצד של הגוש, $d = k$ כבר מחוץ למוט.)
+      **בדיקת גבולות:** בלי הגוש $k = L/\sqrt{12}$ ו-$T_{min} = 1.53\,\text{s}$.
+    wrongFeedback: 'מצאו קודם את מרכז המסה של המערכת, ואז את $I_{cm}$ סביבו ואת $k$. זמן המחזור הקצר ביותר הוא בחור שבו $d = k$.'
     commonWrong:
-      - value: 0.5
-        feedback: 'זה הקצה. בקצה $T = 1.64\,\text{s}$, אבל חור קצת פנימה נותן זמן קצר יותר: הקטנת $d$ מקטינה את $I$ מהר יותר מאשר את מומנט הכובד, עד המינימום.'
-        misconception: MC-8-shorter-arm-shorter-period
-      - value: 0.577
-        feedback: 'זה $L/\sqrt3$: כתבתם $I = \tfrac13mL^2 + md^2$, כלומר הוספתם $md^2$ למומנט ההתמד סביב הקצה. משפט הצירים המקבילים מתחיל ממרכז המסה, $\tfrac{1}{12}mL^2$.'
+      - value: 1.53
+        feedback: 'זה $T_{min}$ של מוט בלי הגוש. הגוש מזיז את מרכז המסה ומוסיף מומנט התמד, ולכן $k$ אחר.'
+      - value: 1.81
+        feedback: 'חישבתם את מומנט ההתמד סביב **מרכז המוט** וחילקתם במסה הכוללת. $k$ מוגדר סביב מרכז המסה של המערכת, $0.75\,\text{m}$ מהקצה החשוף, ושם $I$ קטן יותר.'
         misconception: MC-8-parallel-axis-any-axis
+      - value: 1.14
+        feedback: 'זה $2\pi\sqrt{k/g}$: מטוטלת פשוטה באורך $d = k$. אבל האורך השקול הוא $\ell = d + \dfrac{k^2}{d} = 2k$.'
+        misconception: MC-8-equivalent-length-is-cm-distance
     hints:
-      - '$I = \tfrac{1}{12}mL^2 + md^2$. איזו פונקציה של $d$ צריך למזער?'
+      - 'זמן המחזור הקצר ביותר של כל גוף הוא $2\pi\sqrt{2k/g}$, כאשר $k^2 = I_{cm}/M$. מה $I_{cm}$ של המערכת?'
+      - 'את $I_{cm}$ של המערכת מחשבים סביב מרכז המסה **של המערכת**, לא של המוט: משפט הצירים המקבילים לכל חלק בנפרד, מהמרכז שלו אל מרכז המסה המשותף, ואז סכום.'
 
   # ---------------------------------------------------------------- OBJ-8.7-2 centre of percussion
   - id: Q-8.7-sweet-spot
@@ -154,8 +171,8 @@ questions:
       - text: 'מכה בה גורמת למחבט להתחיל להסתובב בדיוק סביב הידיים, ולכן הן לא צריכות להפעיל מתקף.'
         correct: true
         feedback: >-
-          נכון. זה **מרכז ההקשה** ביחס לידיים. מכה מתחת לו (קרוב לידיים) מזיזה את הידית קדימה, ומכה מעליו מזיזה אותה
-          אחורה. בנקודה עצמה שתי הנטיות מתקזזות, והידית נשארת במקום רגעית.
+          נכון. זה **מרכז ההקשה** ביחס לידיים. מכה בין הידיים לבינו מזיזה את הידית קדימה, ומכה רחוק ממנו מזיזה אותה
+          אחורה. בנקודה עצמה שתי הנטיות מתקזזות, והידית נשארת במקום ברגע המכה.
       - text: 'היא מרכז המסה של המחבט: מכה שם לא מסובבת אותו.'
         feedback: >-
           מכה במרכז המסה של מחבט חופשי מזיזה אותו קדימה **בלי** סיבוב, כך שגם הידית נדחפת קדימה, והידיים צריכות
@@ -177,43 +194,52 @@ questions:
     answer: 0.6
     unit: m
     correctFeedback: >-
-      נכון. מכה $J$ במרחק $b$ מהציר נותנת $J b = I\omega$ ו-$J + P = m\omega d$, כאשר $P$ הוא המתקף של הציר ו-$d = L/2$.
-      $P = 0$ כש-$b = \dfrac{I}{md} = \dfrac{mL^2/3}{mL/2} = \tfrac23L = 0.600\,\text{m}$. זה בדיוק **האורך השקול** של
+      נכון. מכה $J$ במרחק $b$ מהציר נותנת $Jb = I_P\omega$ ו-$J + J_P = m\omega d$, כאשר $J_P$ הוא המתקף של הציר ו-$d = L/2$.
+      $J_P = 0$ כש-$b = \dfrac{I_P}{md} = \dfrac{mL^2/3}{mL/2} = \tfrac23L = 0.600\,\text{m}$. זה בדיוק **האורך השקול** של
       המוט כמטוטלת פיזיקלית סביב אותה נקודה.
-    wrongFeedback: 'כתבו את שימור התנע (עם מתקף הציר $P$) ואת המתקף הזוויתי סביב הציר, ודרשו $P = 0$.'
+    wrongFeedback: 'כתבו את שינוי התנע הקווי (עם מתקף הציר $J_P$) ואת המתקף הזוויתי סביב הציר, ודרשו $J_P = 0$.'
     commonWrong:
       - value: 0.45
-        feedback: 'זה מרכז המסה. מכה שם מזיזה את כל המוט קדימה, והידיים צריכות לבלום את הידית. מרכז ההקשה רחוק יותר: $\dfrac{I}{md} > d$.'
+        feedback: 'זה מרכז המסה. מכה שם מזיזה את כל המוט קדימה, והידיים צריכות לבלום את הידית. מרכז ההקשה רחוק יותר: $\dfrac{I_P}{md} > d$.'
         misconception: MC-8-sweet-spot-is-cm
       - value: 0.9
         feedback: 'זה הקצה. מכה בקצה מסובבת את המוט חזק מדי, והידית נדחפת אחורה, אל הידיים.'
     hints:
-      - 'מרכז ההקשה נמצא במרחק $\dfrac{I}{md}$ מהציר. האם הביטוי הזה מוכר מהשאלות על זמן המחזור?'
+      - 'מרכז ההקשה נמצא במרחק $\dfrac{I_P}{md}$ מהציר. האם הביטוי הזה מוכר מהשאלות על זמן המחזור?'
 
   - id: Q-8.7-pivot-impulse
     type: numeric
     objectives: [OBJ-8.7-2]
     level: bagrut
     prompt: >-
-      מוט אחיד במסה $0.90\,\text{kg}$ ובאורך $0.90\,\text{m}$ תלוי במנוחה מציר קבוע בקצהו העליון. מכים אותו
-      אופקית **במרכזו** מכה קצרה, עם מתקף $J = 3.0\,\text{N}\cdot\text{s}$. מה גודל המתקף שהציר מפעיל על המוט בזמן
-      המכה?
-    answer: 0.75
+      דלת אחידה במסה $12\,\text{kg}$ וברוחב $0.90\,\text{m}$ תלויה על צירים אנכיים בלי חיכוך. לאורך הקצה החופשי שלה,
+      $0.90\,\text{m}$ מהצירים, מחובר פס מתכת אנכי דק במסה $3.0\,\text{kg}$. הדלת פתוחה ונמצאת במנוחה. כדור במסה
+      $0.40\,\text{kg}$ פוגע בה בניצב למישור הדלת, במרחק $0.30\,\text{m}$ מהצירים, במהירות $5.0\,\text{m/s}$, וניתר
+      לאחור במהירות $3.0\,\text{m/s}$. מה גודל המתקף שהצירים מפעילים על הדלת בזמן הפגיעה?
+    answer: 1.83
     unit: N·s
     correctFeedback: >-
-      נכון. סביב הציר: $Jb = I\omega$, עם $b = L/2$ ו-$I = \tfrac13mL^2$, ולכן $\omega = \dfrac{3J}{2mL}$ ו-$v_{cm} = \omega\dfrac L2 = \dfrac{3J}{4m}$.
-      מתנע קווי: $J + P = mv_{cm} = \tfrac34J$, ולכן $P = -\tfrac14J = -0.75\,\text{N}\cdot\text{s}$: הציר דוחף **נגד**
-      כיוון המכה. **בדיקת גבולות:** בכללי $P = J\left(\dfrac{mdb}{I} - 1\right)$: אפס ב-$b = \tfrac23L$ (מרכז ההקשה),
-      שלילי מתחתיו וחיובי מעליו.
-    wrongFeedback: 'שתי משוואות: מתקף זוויתי סביב הציר (המתקף של הציר לא נכנס אליה), ושינוי תנע קווי (שבה הוא נכנס).'
+      נכון. ציר $x$ בכיוון התנועה של הכדור לפני הפגיעה, ו-$J_P$ המתקף של הצירים על הדלת לאורך $x$. המתקף של הכדור על
+      הדלת הוא מינוס שינוי התנע של הכדור: $J = 0.40\,(5.0 + 3.0) = 3.2\,\text{N}\cdot\text{s}$, בכיוון $+x$. סביב הצירים,
+      הדלת היא מוט סביב קצהו והפס מסה נקודתית ב-$W$: $I_P = \tfrac13\cdot12\cdot0.90^2 + 3.0\cdot0.90^2 = 5.67\,\text{kg}\cdot\text{m}^2$.
+      הגודל $Md$ (המסה הכוללת כפול המרחק של מרכז המסה מהצירים) הוא $12\cdot0.45 + 3.0\cdot0.90 = 8.10\,\text{kg}\cdot\text{m}$.
+      מתקף זוויתי סביב הצירים: $Jb = I_P\omega$; תנע קווי: $J + J_P = Md\,\omega$. לכן
+      $J_P = J\left(\dfrac{Mdb}{I_P} - 1\right) = 3.2\,(0.429 - 1) = -1.83\,\text{N}\cdot\text{s}$: הצירים מושכים **נגד** כיוון
+      המכה. **בדיקת גבולות:** פגיעה במרכז ההקשה, $b = I_P/(Md) = 0.700\,\text{m}$, הייתה נותנת $J_P = 0$; בלי הפס,
+      $\tfrac23W = 0.60\,\text{m}$: הפס מרחיק את מרכז ההקשה מהצירים.
+    wrongFeedback: 'מצאו קודם את המתקף של הכדור על הדלת משינוי התנע שלו. אחר כך $I_P$ ו-$Md$ של הדלת עם הפס, ושתי משוואות: מתקף זוויתי סביב הצירים (שבה מתקף הצירים לא נכנס) ושינוי תנע קווי של הדלת (שבה הוא נכנס).'
     commonWrong:
-      - value: 3.0
-        feedback: 'הנחתם שהציר בולע את כל המכה. אבל המוט כן זז: מרכז המסה מקבל תנע $\tfrac34J$, והציר מספק רק את ההפרש.'
+      - value: 3.2
+        feedback: 'הנחתם שהצירים בולעים את כל המכה. אבל הדלת כן זזה: מרכז המסה שלה מקבל תנע, והצירים מספקים רק את ההפרש בין $J$ לתנע הזה.'
         misconception: MC-8-pivot-absorbs-blow
-      - value: 6.0
-        feedback: 'השתמשתם ב-$I = \tfrac{1}{12}mL^2$, סביב המרכז. המוט מסתובב סביב הציר בקצה, $I = \tfrac13mL^2$.'
-        misconception: MC-8-inertia-only-mass
-      - value: 1.5
-        feedback: 'זה המתקף של הציר למכה **בקצה התחתון**, $b = L$. כאן המכה במרכז, $b = L/2$, מתחת למרכז ההקשה, והציר דוחף נגדה.'
+      - value: 1.6
+        feedback: 'זו התשובה לדלת בלי הפס, $J\left(1 - \dfrac{3b}{2W}\right)$. הפס בקצה מוסיף גם ל-$I_P$ (את $3.0\cdot0.90^2$) וגם ל-$Md$ (את $3.0\cdot0.90$), ומשנה את היחס ביניהם.'
+      - value: 1.14
+        feedback: 'שכחתם שהכדור ניתר. המתקף על הדלת הוא $m_b(v_1 + v_2)$, כי התנע של הכדור הפך כיוון, ולא רק $m_bv_1$.'
+      - value: 4.57
+        feedback: 'הסימן בתוך הסוגריים התהפך: $J_P = J\left(\dfrac{Mdb}{I_P} - 1\right)$, כי $J + J_P = Mv_{cm}$. כתבו כל מתקף עם הסימן שלו לאורך $x$.'
+      - value: 2.29
+        feedback: 'הוספתם את הפס ל-$I_P$ אבל לא ל-$Md$. גם הפס נע עם הדלת, ולכן הוא חלק מהתנע הקווי: $Md = 12\cdot0.45 + 3.0\cdot0.90$.'
     hints:
-      - 'חשבו קודם את $\omega$ מהמתקף הזוויתי סביב הציר, ואז את $v_{cm}$.'
+      - 'הדלת מסתובבת סביב ציר אנכי, כמו מוט סביב הקצה שלו, והפס הוא מסה נקודתית במרחק $W$. הכובד לא משחק תפקיד.'
+      - 'התנע הקווי של הדלת והפס יחד הוא $\sum m_iv_i = \omega\sum m_ir_i = Md\,\omega$, כאשר $r_i$ המרחקים מהצירים.'

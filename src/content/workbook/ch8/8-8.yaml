@@ -1,0 +1,515 @@
+# Workbook, lesson 8.8 (the inertia tensor, principal axes and the top). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-8/workbook.ts with G = 9.8 and src/physics/rigidbody.ts, top.ts:
+#   W01 ring, axis 30° from its normal: L at 16.1° from the normal, 13.9° from ω;
+#   W02 M = [[4,1,0],[1,4,0],[0,0,2]]: M(1,0,0) = (4,1,0); (1,1,0) λ = 5; (1,−1,0) λ = 3; (0,0,1) λ = 2;
+#   W03 M = 0.050 kg, d = 0.025 m, I₃ = 6.0e-6 kg·m², ω₃ = 300 rad/s: Ω = 6.81 rad/s, 0.923 s, ω₃/Ω = 44;
+#   W04 four 0.25 kg masses at ±(0.10, 0, 0.10) m and (0, ±0.15, 0) m: I_xx = I_zz = 0.01625, I_yy = 0.0100,
+#       I_xz = −0.0050 kg·m²; principal 0.01125 (45°, along (1,0,1)), 0.02125, 0.0100; ω = 8.0 ẑ: L = (−0.040, 0, 0.130),
+#       17.1°, τ = 0.320 N·m;
+#   W05 disc 8.0 kg, R = 0.30 m, tilted 1.0°, ω = 90 rad/s, bearings 0.15 m apart: I₃ = 0.360, I₁ = 0.180,
+#       L_⊥ = 0.283 kg·m²/s, τ = 25.4 N·m, F = 170 N (97 km/h on a 0.30 m tyre);
+#   W07 ring 2.0 kg, R = 0.33 m, d = 0.15 m, 4.0 rev/s: ω₃ = 25.1, L = 5.47, τ = 2.94, Ω = 0.537 rad/s, 11.7 s,
+#       T_z = 19.6 N, horizontal 0.0865 N, rope tilt 0.253°;
+#   W08 a = 0.050, b = 0.020, e = 0.030 kg·m²: λ = 0.0176 (axis at −58.3° from x in the xz plane), 0.0624 (31.7°);
+#       ω = 30 ẑ: L = (0.60, 0, 0.90), 33.7°, τ = 18.0 N·m;
+#   W09 I = 2.2 kg·m², 2400 rpm (251 rad/s), L = 553, turn 3.0°/s (0.0524 rad/s): τ = 29.0 N·m;
+#   W10 ℓ = 0.60 m, ω = 6.0 rad/s: cos θ = 3g/(2ℓω²) = 0.681, θ = 47.1°, ω_min = 4.95 rad/s (point mass: 63.0°);
+#   c1 (MIT 8.012 F08 PS9 P10) H₂O, r = 9.6e-11 m, 104.5°: z_cm = h/9 = 6.53e-12 m; I = 1.02e-47 (in plane, ⟂ axis),
+#       1.91e-47 (symmetry axis), 2.93e-47 kg·m² (⟂ plane);
+#   c2 (MIT 8.012 F07 Quiz 3 P5) coin b = 0.012 m, v = 0.50 m/s, R = 0.30 m: Ω = 1.67 rad/s, φ = 3v²/(2gR) = 0.128 rad = 7.31°.
+
+lesson: '8.8'
+practice:
+  - id: W-8.8-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      טבעת דקה ואחידה, במסה $M$ וברדיוס $R$, מסתובבת סביב ציר שעובר במרכזה. מומנט ההתמד שלה סביב הציר הניצב למישור
+      שלה הוא $MR^2$, וסביב כל קוטר $\tfrac12MR^2$. קבעו ונמקו, לכל ציר, אם $\vec L$ מקביל ל-$\vec\omega$:
+
+      א. הציר הניצב למישור הטבעת.
+
+      ב. קוטר של הטבעת.
+
+      ג. ציר שנטוי $30^\circ$ מהציר הניצב. אם לא, לאיזה צד של $\vec\omega$ נוטה $\vec L$?
+    answer: >-
+      א. כן. ב. כן. ג. לא: $\vec L$ נוטה לעבר הציר הניצב לטבעת, $16.1^\circ$ ממנו ו-$13.9^\circ$ מ-$\vec\omega$.
+    solution:
+      - kind: law
+        text: >-
+          בבסיס של הצירים הראשיים $\vec L = (I_1\omega_1,\,I_2\omega_2,\,I_3\omega_3)$. ציר סימטריה הוא ציר ראשי, ואם שני מומנטים
+          ראשיים שווים, כל כיוון במישור שלהם ראשי.
+      - kind: reasoning
+        text: >-
+          א. הציר הניצב הוא ציר הסימטריה: ראשי. ב. לכל קוטר אותו מומנט, $\tfrac12MR^2$, ולכן כל קוטר ראשי. ג. הציר הנטוי
+          אינו ראשי: לרכיב של $\vec\omega$ לאורך הניצב, $\omega\cos30^\circ$, מתאים מומנט $MR^2$, ולרכיב לאורך קוטר,
+          $\omega\sin30^\circ$, רק $\tfrac12MR^2$.
+      - kind: manipulation
+        text: >-
+          $\vec L = MR^2\omega\left(\cos30^\circ,\ \tfrac12\sin30^\circ\right)$ ברכיבים (ניצב, קוטר). הזווית שלו מהניצב:
+          $\tan\beta = \tfrac12\tan30^\circ$.
+      - kind: limit
+        text: >-
+          אם שני המומנטים היו שווים, $\tan\beta = \tan30^\circ$ ו-$\vec L$ היה לאורך $\vec\omega$, כמו בכדור.
+      - kind: substitution
+        text: >-
+          $\beta = 16.1^\circ$ מהניצב, כלומר $30^\circ - 16.1^\circ = 13.9^\circ$ מ-$\vec\omega$, בצד של הניצב.
+      - kind: result
+        text: >-
+          א, ב: $\vec L \parallel \vec\omega$. ג: לא; $\vec L$ נוטה לעבר הציר שמומנט ההתמד שלו גדול יותר, הניצב לטבעת.
+
+  - id: W-8.8-02
+    level: basic
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      נתונה המטריצה
+
+      $$\mathbf M = \begin{pmatrix}4&1&0\\1&4&0\\0&0&2\end{pmatrix}$$
+
+      חשבו את $\mathbf M\vec v$ עבור $\vec v = (1,\,0,\,0)$, $(1,\,1,\,0)$, $(1,\,-1,\,0)$ ו-$(0,\,0,\,1)$. אילו מהם וקטורים עצמיים,
+      ומה הערכים העצמיים שלהם? האם שלושת הווקטורים העצמיים ניצבים זה לזה?
+    answer: >-
+      $(4,\,1,\,0)$: לא עצמי. $(5,\,5,\,0)$: עצמי, $\lambda = 5$. $(3,\,-3,\,0)$: עצמי, $\lambda = 3$. $(0,\,0,\,2)$: עצמי, $\lambda = 2$. כן, הם ניצבים.
+    solution:
+      - kind: law
+        text: >-
+          רכיב $i$ של $\mathbf M\vec v$ הוא שורה $i$ של המטריצה כפול $\vec v$, רכיב ברכיב, בסכום. וקטור עצמי מקיים $\mathbf M\vec v = \lambda\vec v$.
+      - kind: manipulation
+        text: >-
+          $\mathbf M(1,0,0) = (4,\,1,\,0)$, העמודה הראשונה; $\mathbf M(1,1,0) = (4 + 1,\ 1 + 4,\ 0) = (5,\,5,\,0)$;
+          $\mathbf M(1,-1,0) = (4 - 1,\ 1 - 4,\ 0) = (3,\,-3,\,0)$; $\mathbf M(0,0,1) = (0,\,0,\,2)$.
+      - kind: reasoning
+        text: >-
+          $(4,\,1,\,0)$ אינו כפולה של $(1,\,0,\,0)$: הכיוון השתנה. שלושת האחרים הם כפולות של הווקטור שממנו יצאו. המכפלות
+          הסקלריות ביניהם: $(1,1,0)\cdot(1,-1,0) = 0$, ושניהם ניצבים ל-$(0,0,1)$, כמו שהמשפט מבטיח למטריצה סימטרית.
+      - kind: limit
+        text: >-
+          אילו האיבר $1$ מחוץ לאלכסון היה אפס, המטריצה הייתה אלכסונית, ו-$\hat x$, $\hat y$, $\hat z$ היו הווקטורים העצמיים.
+      - kind: result
+        text: >-
+          וקטורים עצמיים: $(1,1,0)$ עם $\lambda = 5$, $(1,-1,0)$ עם $\lambda = 3$, $(0,0,1)$ עם $\lambda = 2$; ניצבים זה לזה. $(1,0,0)$ לא.
+
+  - id: W-8.8-03
+    level: basic
+    objectives: [OBJ-8.8-2]
+    prompt: >-
+      סביבון צעצוע במסה $0.050\,\text{kg}$, שמרכז המסה שלו $0.025\,\text{m}$ מהעוקץ, מסתובב ב-$300\,\text{rad/s}$, ומומנט ההתמד
+      שלו סביב ציר הסימטריה $6.0\cdot10^{-6}\,\text{kg·m}^2$. מה קצב הנקיפה, וכמה זמן לוקח סיבוב נקיפה אחד? האם הקירוב של
+      סביבון מהיר סביר כאן?
+    answer: >-
+      $\Omega = 6.81\,\text{rad/s}$, נקיפה אחת ב-$0.923\,\text{s}$; $\omega_3/\Omega \approx 44$, ולכן הקירוב סביר.
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.050\,\text{kg}$, $d = 0.025\,\text{m}$, $I_3 = 6.0\cdot10^{-6}\,\text{kg·m}^2$, $\omega_3 = 300\,\text{rad/s}$. העוקץ לא זז.
+      - kind: law
+        text: >-
+          מומנט הכובד ביחס לעוקץ, $Mgd\sin\theta$, מסובב את הרכיב האופקי של $\vec L$, $I_3\omega_3\sin\theta$: $\Omega = \dfrac{Mgd}{I_3\omega_3}$.
+      - kind: limit
+        text: >-
+          כש-$\omega_3 \to \infty$, $\Omega \to 0$. הקירוב דורש $\omega_3 \gg \Omega$.
+      - kind: units
+        text: >-
+          $\text{N·m}/(\text{kg·m}^2/\text{s}) = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\Omega = \dfrac{0.050\cdot9.8\cdot0.025}{6.0\cdot10^{-6}\cdot300} = 6.81\,\text{rad/s}$; $2\pi/\Omega = 0.923\,\text{s}$; $\omega_3/\Omega = 44$.
+      - kind: result
+        text: >-
+          $6.81\,\text{rad/s}$, נקיפה אחת ב-$0.923\,\text{s}$.
+
+  - id: W-8.8-04
+    level: mid
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      ארבע מסות של $0.25\,\text{kg}$ מחוברות במוטות קלים לגוף צפיד אחד: שתיים ב-$\pm(0.10,\,0,\,0.10)\,\text{m}$ ושתיים
+      ב-$(0,\,\pm0.15,\,0)\,\text{m}$, ביחס לנקודה $O$ בראשית.
+
+      א. חשבו את טנזור ההתמד ביחס ל-$O$.
+
+      ב. מצאו את הצירים הראשיים ואת מומנטי ההתמד הראשיים ב-$O$.
+
+      ג. הגוף מסתובב סביב סרן לאורך ציר $z$ דרך $O$, ב-$8.0\,\text{rad/s}$. מה הזווית בין $\vec L$ לסרן, ומה המומנט שהסרן צריך לקבל?
+    answer: >-
+      א. $I_{xx} = I_{zz} = 0.01625$, $I_{yy} = 0.0100$, $I_{xz} = -0.0050\,\text{kg·m}^2$, השאר אפס. ב. $\hat y$ עם $0.0100$;
+      $(1,\,0,\,1)/\sqrt2$ עם $0.01125$; $(1,\,0,\,-1)/\sqrt2$ עם $0.02125\,\text{kg·m}^2$. ג. $17.1^\circ$; $0.320\,\text{N·m}$.
+    solution:
+      - kind: law
+        text: >-
+          $I_{xx} = \sum m(y^2 + z^2)$, $I_{xz} = -\sum mxz$ וכו'; הניצב למישור סימטריה הוא ציר ראשי; בתת-טנזור $2\times2$,
+          $\lambda^2 - (a + e)\lambda + (ae - b^2) = 0$.
+      - kind: manipulation
+        text: >-
+          א. $I_{xx} = 0.25\,(0.01 + 0.01 + 0.0225 + 0.0225) = 0.01625$; $I_{zz} = \sum m(x^2 + y^2)$ נותן אותו מספר;
+          $I_{yy} = 0.25\,(0.02 + 0.02) = 0.0100$; $I_{xz} = -0.25\,(0.01 + 0.01) = -0.0050$; $I_{xy} = I_{yz} = 0$, כי לכל מסה $xy = yz = 0$.
+      - kind: reasoning
+        text: >-
+          ב. המישור $xz$ הוא מישור סימטריה (המסות ב-$\pm0.15$ על $y$ תאומות, והאחרות בו), ולכן $\hat y$ ציר ראשי. בתת-טנזור של
+          $xz$, $a = e = 0.01625$ ו-$b = -0.0050$: $\lambda = a \pm |b|$. ל-$\lambda = a + b = 0.01125$, $(a - \lambda)v_x + bv_z = 0$
+          נותן $v_z = v_x$: הכיוון $(1,\,0,\,1)$, לאורך הקו של שתי המסות הראשונות.
+      - kind: manipulation
+        text: >-
+          ג. $\vec L = \omega\,(I_{xz},\,I_{yz},\,I_{zz}) = 8.0\,(-0.0050,\,0,\,0.01625) = (-0.040,\,0,\,0.130)\,\text{kg·m}^2/\text{s}$.
+          $\tan\alpha = 0.040/0.130$, ו-$\tau = \omega L_\perp = 8.0\cdot0.040$.
+      - kind: limit
+        text: >-
+          אילו המסות הראשונות היו על ציר $x$ ($z = 0$), $I_{xz} = 0$, והסרן היה ציר ראשי בלי צורך במומנט.
+      - kind: units
+        text: >-
+          $\text{kg·m}^2$; $\text{kg·m}^2\cdot\text{s}^{-2} = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          $\alpha = 17.1^\circ$, $\tau = 0.320\,\text{N·m}$.
+      - kind: result
+        text: >-
+          צירים ראשיים: $\hat y$ ($0.0100$), $(1,0,1)/\sqrt2$ ($0.01125$), $(1,0,-1)/\sqrt2$ ($0.02125\,\text{kg·m}^2$). סביב $z$: $\vec L$ נטוי $17.1^\circ$, והמומנט $0.320\,\text{N·m}$.
+
+  - id: W-8.8-05
+    level: mid
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      מודל לגלגל של מכונית: דסקה אחידה במסה $8.0\,\text{kg}$ וברדיוס $0.30\,\text{m}$, שמרכזה על הסרן, אבל מישורה נטוי
+      $1.0^\circ$ מהמישור הניצב לסרן. הגלגל מסתובב ב-$90\,\text{rad/s}$ (בערך $97\,\text{km/h}$). שני מסבים, $0.15\,\text{m}$ זה
+      מזה, מחזיקים את הסרן. מה המומנט שהסרן צריך, ומה הכוח של כל מסב? השוו למשקל הגלגל.
+    answer: >-
+      $\tau = 25.4\,\text{N·m}$; $F = 170\,\text{N}$ בכל מסב, יותר מפעמיים משקל הגלגל ($78.4\,\text{N}$), ומסתובב עם הגלגל.
+    solution:
+      - kind: given
+        text: >-
+          $M = 8.0\,\text{kg}$, $R = 0.30\,\text{m}$, זווית הנטייה $\alpha = 1.0^\circ$, $\omega = 90\,\text{rad/s}$, $D = 0.15\,\text{m}$.
+      - kind: law
+        text: >-
+          הצירים הראשיים של הדסקה במרכזה: הניצב לה, $I_3 = \tfrac12MR^2$, וכל קוטר, $I_1 = \tfrac14MR^2$. $\tau = \omega L_\perp$; זוג כוחות: $\tau = FD$.
+      - kind: manipulation
+        text: >-
+          רכיבי $\vec\omega$: $\omega\cos\alpha$ לאורך הניצב ו-$\omega\sin\alpha$ לאורך קוטר. $\vec L = (I_3\omega\cos\alpha,\ I_1\omega\sin\alpha)$.
+          הרכיב הניצב לסרן: $L_\perp = I_3\omega\cos\alpha\sin\alpha - I_1\omega\sin\alpha\cos\alpha = (I_3 - I_1)\,\omega\sin\alpha\cos\alpha$.
+      - kind: manipulation
+        text: >-
+          $\tau = \omega L_\perp = \tfrac14MR^2\omega^2\sin\alpha\cos\alpha$, ו-$F = \tau/D$.
+      - kind: limit
+        text: >-
+          ב-$\alpha = 0$ הסרן ציר ראשי ו-$\tau = 0$. אילו $I_1 = I_3$, כמו בכדור, גם $\tau = 0$ בכל נטייה. והמומנט גדל כמו $\omega^2$: נטייה זעירה מורגשת רק במהירות.
+      - kind: units
+        text: >-
+          $\text{kg·m}^2\cdot\text{s}^{-2} = \text{N·m}$; $\text{N·m}/\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $I_3 - I_1 = 0.360 - 0.180 = 0.180\,\text{kg·m}^2$; $L_\perp = 0.283\,\text{kg·m}^2/\text{s}$; $\tau = 25.4\,\text{N·m}$; $F = 25.4/0.15 = 170\,\text{N}$.
+      - kind: result
+        text: >-
+          $25.4\,\text{N·m}$, ו-$170\,\text{N}$ בכל מסב, כיוון שמסתובב 14 פעמים בשנייה: הנדנוד שמוסך מבטל באיזון דינמי.
+
+  - id: W-8.8-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.8-2]
+    prompt: >-
+      סביבון מהיר נוקף בקצב $\Omega$ על רצפה. קבעו ונמקו מה קורה לקצב הנקיפה (וכיוונה) בכל שינוי, כשכל השאר נשאר:
+
+      א. מטים את הסביבון יותר מהאנך.
+
+      ב. מסובבים אותו בכיוון ההפוך.
+
+      ג. מעבירים אותו לירח, שבו $g$ קטן פי 6.
+
+      ד. סביבון באותה צורה בדיוק, עשוי מחומר צפוף פי 2, באותו סיבוב עצמי.
+    answer: >-
+      א. לא משתנה. ב. הגודל לא משתנה, הכיוון מתהפך. ג. קטן פי 6. ד. לא משתנה.
+    solution:
+      - kind: law
+        text: >-
+          $\Omega = \dfrac{Mgd}{I_3\omega_3}$, והקצה של $\vec L$ זז בכיוון של $\vec\tau$.
+      - kind: reasoning
+        text: >-
+          א. גם המומנט, $Mgd\sin\theta$, וגם הרכיב האופקי של $\vec L$, $L\sin\theta$, גדלים יחד: $\sin\theta$ מצטמצם. ב. המומנט לא תלוי
+          בסיבוב, אבל $\vec L$ הפוך, והקצה שלו זז בכיוון $\vec\tau$ מהצד השני: הנקיפה בכיוון ההפוך. ג. $\Omega \propto g$.
+          ד. $M$ ו-$I_3$ גדלים שניהם פי 2, ו-$\Omega$ תלוי רק ביחס ביניהם.
+      - kind: limit
+        text: >-
+          ב-$g \to 0$, בחלל, אין מומנט ואין נקיפה: הציר שומר על כיוונו.
+      - kind: result
+        text: >-
+          א. אותו קצב. ב. אותו קצב בכיוון ההפוך. ג. $\Omega/6$. ד. אותו קצב.
+
+  - id: W-8.8-07
+    level: mid
+    objectives: [OBJ-8.8-2]
+    prompt: >-
+      גלגל אופניים, שנמדל כטבעת במסה $2.0\,\text{kg}$ וברדיוס $0.33\,\text{m}$ (הזניחו את מסת הסרן), תלוי בחבל שקשור לסרן
+      במרחק $0.15\,\text{m}$ ממרכז הגלגל. הסרן אופקי, והגלגל מסתובב 4.0 סיבובים בשנייה. מה קצב הנקיפה וזמן נקיפה אחד? מה
+      הרכיב האנכי של המתיחות, ומה הרכיב האופקי? בכמה מעלות נוטה החבל מהאנך?
+    answer: >-
+      $\Omega = 0.537\,\text{rad/s}$, $11.7\,\text{s}$; $T_z = 19.6\,\text{N}$, אופקית $0.0865\,\text{N}$ פנימה; החבל נוטה $0.253^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 2.0\,\text{kg}$, $R = 0.33\,\text{m}$, $d = 0.15\,\text{m}$, $\omega_3 = 4.0\cdot2\pi = 25.1\,\text{rad/s}$. הנקודה $P$, שבה החבל קשור, קבועה.
+      - kind: law
+        text: >-
+          $\Omega = \dfrac{Mgd}{I_3\omega_3}$ עם $I_3 = MR^2$. מרכז המסה נע במעגל אופקי ברדיוס $d$: $T_z = Mg$, והכוח השקול האופקי $M\Omega^2d$, אל החבל.
+      - kind: manipulation
+        text: >-
+          $\Omega = \dfrac{gd}{R^2\omega_3}$; הנטייה של החבל: $\tan\beta = \dfrac{M\Omega^2d}{Mg} = \dfrac{\Omega^2d}{g}$.
+      - kind: limit
+        text: >-
+          כש-$\omega_3 \to \infty$, $\Omega \to 0$ והחבל אנכי לגמרי. $M$ מצטמצם בקצב הנקיפה: גלגל כבד פי 2 באותה צורה נוקף באותו קצב.
+      - kind: units
+        text: >-
+          $gd/(R^2\omega_3)$: $\text{m}^2\text{s}^{-2}/(\text{m}^2\text{s}^{-1}) = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $I_3 = 0.218\,\text{kg·m}^2$, $L = 5.47\,\text{kg·m}^2/\text{s}$, $\tau = 2.94\,\text{N·m}$; $\Omega = 0.537\,\text{rad/s}$, $2\pi/\Omega = 11.7\,\text{s}$;
+          $T_z = 19.6\,\text{N}$; $M\Omega^2d = 0.0865\,\text{N}$; $\beta = 0.253^\circ$.
+      - kind: result
+        text: >-
+          $0.537\,\text{rad/s}$ (נקיפה ב-$11.7\,\text{s}$); $T_z = Mg = 19.6\,\text{N}$; $0.0865\,\text{N}$ אופקית; החבל כמעט אנכי.
+
+  - id: W-8.8-08
+    level: bagrut
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      טנזור ההתמד של גוף ביחס לנקודה $O$ הוא
+
+      $$\mathbf I = \begin{pmatrix}0.050&0&0.020\\0&0.080&0\\0.020&0&0.030\end{pmatrix}\ \text{kg·m}^2$$
+
+      א. מצאו את שלושת מומנטי ההתמד הראשיים ואת כיווני הצירים הראשיים.
+
+      ב. הגוף מסתובב סביב סרן לאורך $z$ דרך $O$, ב-$30\,\text{rad/s}$. מה הזווית בין $\vec L$ לסרן, ומה המומנט שהסרן צריך?
+
+      ג. סביב איזה כיוון במישור $xz$ אפשר לסובב את הגוף בלי מומנט?
+    answer: >-
+      א. $0.0800$ לאורך $\hat y$; $0.0624$ לאורך כיוון במישור $xz$ ב-$31.7^\circ$ מ-$x$ לעבר $z$; $0.0176\,\text{kg·m}^2$ בניצב לו (ב-$-58.3^\circ$).
+      ב. $33.7^\circ$; $18.0\,\text{N·m}$. ג. לאורך אחד משני הצירים הראשיים במישור $xz$.
+    solution:
+      - kind: given
+        text: >-
+          $a = I_{xx} = 0.050$, $b = I_{xz} = 0.020$, $e = I_{zz} = 0.030$, $I_{yy} = 0.080\,\text{kg·m}^2$, ו-$I_{xy} = I_{yz} = 0$.
+      - kind: reasoning
+        text: >-
+          העמודה השנייה היא $(0,\,0.080,\,0)$: $\hat y$ וקטור עצמי עם $0.080$. השניים האחרים במישור $xz$.
+      - kind: law
+        text: >-
+          $\lambda^2 - (a + e)\lambda + (ae - b^2) = 0$, ולכל $\lambda$ הכיוון מ-$(a - \lambda)v_x + bv_z = 0$.
+      - kind: manipulation
+        text: >-
+          $\lambda = \dfrac{a + e}2 \pm \sqrt{\left(\dfrac{a - e}2\right)^2 + b^2} = 0.040 \pm \sqrt{0.0001 + 0.0004}$. לכיוון, $\dfrac{v_z}{v_x} = \dfrac{\lambda - a}{b}$.
+      - kind: manipulation
+        text: >-
+          ב. $\vec L = \omega\,(I_{xz},\,0,\,I_{zz}) = 30\,(0.020,\,0,\,0.030)$; $\tan\alpha = I_{xz}/I_{zz}$; $\tau = \omega L_\perp = \omega^2I_{xz}$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$ הפתרונות $a$ ו-$e$, לאורך $x$ ו-$z$. בדיקה: סכום הערכים העצמיים, $0.0176 + 0.0624 = 0.080 = a + e$.
+      - kind: units
+        text: >-
+          $\omega^2I_{xz}$ ב-$\text{s}^{-2}\cdot\text{kg·m}^2 = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          $\lambda = 0.0624$ ו-$0.0176$. ל-$0.0624$: $v_z/v_x = 0.0124/0.020 = 0.618$, $31.7^\circ$ מ-$x$. ל-$0.0176$: $v_z/v_x = -1.62$, $-58.3^\circ$.
+          $\vec L = (0.60,\,0,\,0.90)\,\text{kg·m}^2/\text{s}$, $\alpha = \arctan(0.60/0.90) = 33.7^\circ$; $\tau = 900\cdot0.020 = 18.0\,\text{N·m}$.
+      - kind: result
+        text: >-
+          א. $0.080$ ($\hat y$), $0.0624$ ($31.7^\circ$), $0.0176\,\text{kg·m}^2$ ($-58.3^\circ$). ב. $33.7^\circ$, $18.0\,\text{N·m}$. ג. לאורך $31.7^\circ$ או $-58.3^\circ$ מציר $x$.
+
+  - id: W-8.8-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.8-2]
+    prompt: >-
+      למטוס קל יש מדחף במומנט התמד $2.2\,\text{kg·m}^2$, שמסתובב ב-2400 סיבובים לדקה, עם כיוון השעון במבט של הטייס, מאחור.
+      המטוס פונה שמאלה במישור אופקי, בקצב $3.0^\circ$ לשנייה. ציר $x$ קדימה, $y$ שמאלה, $z$ למעלה.
+
+      א. לאן פונה $\vec L$ של המדחף?
+
+      ב. איזה מומנט חייב המטוס להפעיל על המדחף בזמן הפנייה (גודל וכיוון)?
+
+      ג. לפי החוק השלישי, לאיזה כיוון נוטה האף של המטוס בגלל המדחף: למעלה או למטה?
+    answer: >-
+      א. קדימה. ב. $29.0\,\text{N·m}$, לאורך $+y$ (שמאלה). ג. למעלה.
+    solution:
+      - kind: given
+        text: >-
+          $I_3 = 2.2\,\text{kg·m}^2$, $\omega_3 = 2400\cdot2\pi/60 = 251\,\text{rad/s}$; הפנייה שמאלה במבט מלמעלה: $\vec\Omega = \Omega\hat z$, $\Omega = 0.0524\,\text{rad/s}$.
+      - kind: reasoning
+        text: >-
+          א. סיבוב עם כיוון השעון כשמסתכלים קדימה: לפי כלל יד ימין, האגודל פונה הרחק מהמסתכל, קדימה. $\vec L = I_3\omega_3\hat x$.
+      - kind: law
+        text: >-
+          $\vec L$ מסתובב עם המטוס בקצב $\vec\Omega$, ולכן $\dfrac{d\vec L}{dt} = \vec\Omega\times\vec L$, והמומנט על המדחף שווה לקצב הזה.
+      - kind: manipulation
+        text: >-
+          $\vec\tau = \Omega\hat z\times I_3\omega_3\hat x = \Omega I_3\omega_3\,\hat y$: שמאלה. מומנט לאורך $+y$ מסובב את $\hat x$ לעבר $-\hat z$: על המדחף הוא "מוריד את האף".
+      - kind: reasoning
+        text: >-
+          ג. המדחף מפעיל על המטוס (דרך המסבים) מומנט הפוך, לאורך $-y$, שמסובב את $\hat x$ לעבר $+\hat z$: האף עולה.
+      - kind: limit
+        text: >-
+          בטיסה ישרה, $\Omega = 0$, אין מומנט. מדחף שמסתובב הפוך, או פנייה ימינה, הופכים את הכיוון: האף יורד.
+      - kind: units
+        text: >-
+          $\text{s}^{-1}\cdot\text{kg·m}^2\cdot\text{s}^{-1} = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          $L = 553\,\text{kg·m}^2/\text{s}$; $\tau = 0.0524\cdot553 = 29.0\,\text{N·m}$.
+      - kind: result
+        text: >-
+          $\vec L$ קדימה; המטוס מפעיל על המדחף $29.0\,\text{N·m}$ לאורך $+y$; האף של המטוס נוטה למעלה.
+
+  - id: W-8.8-10
+    level: bagrut
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      מוט דק ואחיד באורך $\ell = 0.60\,\text{m}$ תלוי בקצהו העליון על ציר-פרק שמחובר לסרן אנכי. הפרק מאפשר למוט להתרומם רק
+      במישור האנכי שמכיל את הסרן, והוא מסתובב עם הסרן. הסרן מסתובב בקצב קבוע $\omega$, והמוט מסתובב איתו בזווית קבועה $\theta$
+      מהאנך כלפי מטה. עבדו במערכת אינרציאלית, ביחס לנקודת הפרק.
+
+      א. מצאו את $\cos\theta$ כפונקציה של $\omega$, $g$ ו-$\ell$.
+
+      ב. מה $\theta$ ב-$\omega = 6.0\,\text{rad/s}$, ומה הקצב הקטן ביותר שבו המוט עוזב את האנך?
+
+      ג. השוו למטוטלת קונית עם מסה נקודתית בקצה חוט באותו אורך.
+    answer: >-
+      א. $\cos\theta = \dfrac{3g}{2\ell\omega^2}$. ב. $47.1^\circ$; $\omega_{\min} = \sqrt{3g/(2\ell)} = 4.95\,\text{rad/s}$. ג. מסה נקודתית: $\cos\theta = g/(\ell\omega^2)$, $63.0^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בפרק $P$, $z$ כלפי מעלה; ברגע הנבחר המוט במישור $xz$, בכיוון $\hat u = (\sin\theta,\,0,\,-\cos\theta)$. ציר הפרק לאורך $y$:
+          הפרק יכול להפעיל מומנט בכל כיוון חוץ מ-$y$. $\vec\omega = \omega\hat z$.
+      - kind: law
+        text: >-
+          $\dfrac{d\vec L}{dt} = \vec\tau$ ביחס ל-$P$; ב-$\omega$ קבועה, $\dfrac{d\vec L}{dt} = \vec\omega\times\vec L$. הצירים הראשיים בקצה המוט:
+          לאורך המוט (מומנט אפס) וכל כיוון ניצב לו ($\tfrac13m\ell^2$).
+      - kind: manipulation
+        text: >-
+          רק הרכיב של $\vec\omega$ שניצב למוט, $\omega\sin\theta$, תורם: $\vec L = \tfrac13m\ell^2\,\omega\sin\theta\,(\cos\theta,\,0,\,\sin\theta)$.
+          לכן $\vec\omega\times\vec L = \tfrac13m\ell^2\omega^2\sin\theta\cos\theta\,\hat y$.
+      - kind: manipulation
+        text: >-
+          המומנט ביחס ל-$P$ לאורך $y$ בא רק מהכובד: $\tfrac{\ell}2\hat u\times(-mg\hat z) = mg\tfrac{\ell}2\sin\theta\,\hat y$.
+          משווים: $mg\tfrac{\ell}2\sin\theta = \tfrac13m\ell^2\omega^2\sin\theta\cos\theta$, ולכן $\cos\theta = \dfrac{3g}{2\ell\omega^2}$ (או $\sin\theta = 0$).
+      - kind: limit
+        text: >-
+          כש-$\omega \to \infty$, $\theta \to 90^\circ$. פתרון עם $\theta > 0$ קיים רק כש-$\cos\theta < 1$, כלומר $\omega^2 > 3g/(2\ell)$; מתחת לזה המוט תלוי אנכית.
+      - kind: units
+        text: >-
+          $g/(\ell\omega^2)$: $\text{m s}^{-2}/(\text{m s}^{-2})$, חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\cos\theta = \dfrac{3\cdot9.8}{2\cdot0.60\cdot36} = 0.681$, $\theta = 47.1^\circ$; $\omega_{\min} = \sqrt{3\cdot9.8/1.2} = 4.95\,\text{rad/s}$.
+          מסה נקודתית: $\cos\theta = 9.8/(0.60\cdot36) = 0.454$, $63.0^\circ$.
+      - kind: result
+        text: >-
+          $\cos\theta = 3g/(2\ell\omega^2)$; $47.1^\circ$ ב-$6.0\,\text{rad/s}$; המוט עוזב את האנך מעל $4.95\,\text{rad/s}$, ונטוי פחות ממסה נקודתית ($63.0^\circ$).
+
+challenge:
+  - id: W-8.8-c1
+    stars: 1
+    objectives: [OBJ-8.8-1]
+    prompt: >-
+      מולקולת מים, $\text{H}_2\text{O}$: אטום חמצן, במסה $16m_H$, קשור לשני אטומי מימן, כל אחד במסה $m_H = 1.66\cdot10^{-27}\,\text{kg}$.
+      אורך כל קשר $r = 9.6\cdot10^{-11}\,\text{m}$, והזווית בין שני הקשרים $104.5^\circ$. התייחסו לכל אטום כמסה נקודתית.
+
+      א. מצאו את מרכז המסה של המולקולה.
+
+      ב. מצאו את הצירים הראשיים שעוברים דרך מרכז המסה, ובדקו שבצירים האלה טנזור ההתמד אלכסוני.
+
+      ג. חשבו את שלושת מומנטי ההתמד הראשיים, בביטוי עם $r$ ו-$m_H$ ובמספרים.
+    answer: >-
+      א. על ציר הסימטריה, $\tfrac19r\cos52.25^\circ = 6.53\cdot10^{-12}\,\text{m}$ מהחמצן לעבר המימנים. ב. ציר הסימטריה, הניצב לו במישור
+      המולקולה, והניצב למישור. ג. $2m_Hr^2\sin^2 52.25^\circ = 1.91\cdot10^{-47}$, $\tfrac{16}9m_Hr^2\cos^2 52.25^\circ = 1.02\cdot10^{-47}$,
+      והסכום $2.93\cdot10^{-47}\,\text{kg·m}^2$ סביב הניצב למישור.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בחמצן; ציר $z$ לאורך ציר הסימטריה, לעבר המימנים; $x$ במישור המולקולה; $y$ ניצב לו. כל מימן ב-$\alpha = 52.25^\circ$
+          מציר $z$: $(\pm r\sin\alpha,\,0,\,r\cos\alpha)$. נסמן $h = r\cos\alpha$, $w = r\sin\alpha$.
+      - kind: manipulation
+        text: >-
+          א. $z_{\text{cm}} = \dfrac{2m_Hh}{18m_H} = \dfrac h9$, ו-$x_{\text{cm}} = y_{\text{cm}} = 0$ מהסימטריה.
+      - kind: reasoning
+        text: >-
+          ב. המולקולה כולה במישור $xz$, ולכן $y = 0$ לכל אטום: $I_{xy} = I_{yz} = 0$, ו-$\hat y$ ראשי. המישור $yz$ הוא מישור סימטריה
+          (המימנים תאומים ב-$\pm x$, והחמצן עליו): $I_{xz} = 0$. לכן גם $\hat x$ ו-$\hat z$ ראשיים, דרך מרכז המסה, והטנזור אלכסוני.
+      - kind: manipulation
+        text: >-
+          ג. סביב $z$: רק המימנים, במרחק $w$: $I_z = 2m_Hw^2$. סביב $x$: המרחקים לאורך $z$ ממרכז המסה, $h/9$ לחמצן ו-$8h/9$ לכל
+          מימן: $I_x = 16m_H\dfrac{h^2}{81} + 2m_H\dfrac{64h^2}{81} = \dfrac{16}9m_Hh^2$. סביב $y$: $I_y = I_x + I_z$, לפי משפט הצירים הניצבים.
+      - kind: limit
+        text: >-
+          אילו החמצן היה כבד לאין שיעור, מרכז המסה היה בחמצן ו-$I_x$ היה $2m_Hh^2$. עם $16m_H$ יוצא $\tfrac{16}9m_Hh^2$: בדיוק
+          המסה המצומצמת של החמצן ושל זוג המימנים, $2m_H\cdot16m_H/(18m_H) = \tfrac{16}9m_H$, כפול ריבוע המרחק ביניהם לאורך $z$.
+      - kind: units
+        text: >-
+          $m_Hr^2$ ב-$\text{kg·m}^2$.
+      - kind: substitution
+        text: >-
+          $h = 5.88\cdot10^{-11}\,\text{m}$, $w = 7.59\cdot10^{-11}\,\text{m}$; $z_{\text{cm}} = 6.53\cdot10^{-12}\,\text{m}$; $I_z = 1.91\cdot10^{-47}$,
+          $I_x = 1.02\cdot10^{-47}$, $I_y = 2.93\cdot10^{-47}\,\text{kg·m}^2$.
+      - kind: result
+        text: >-
+          צירים ראשיים: ציר הסימטריה ($1.91\cdot10^{-47}$), הניצב לו במישור ($1.02\cdot10^{-47}$) והניצב למישור ($2.93\cdot10^{-47}\,\text{kg·m}^2$).
+    source:
+      name: MIT 8.012 Physics I, Classical Mechanics, Problem Set 9
+      year: 2008
+      problem: Problem 10 (Moment of Inertia of a Water Molecule), part (a)
+      url: https://www.ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/6132ace92420940ffc961284f859a8eb_ps9.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.8-c2
+    stars: 2
+    objectives: [OBJ-8.8-2, OBJ-8.8-1]
+    prompt: >-
+      מטבע, דסקה אחידה במסה $M$ וברדיוס $b$, מתגלגל בלי החלקה על שולחן במעגל ברדיוס $R \gg b$ סביב נקודה $C$, נגד כיוון השעון
+      במבט מלמעלה, במהירות קבועה $v$ של מרכזו. המטבע נוטה בזווית קטנה $\varphi$ מהאנך, לעבר $C$.
+
+      א. מה קצב הסיבוב העצמי $S$ של המטבע, ומה הקצב $\Omega$ שבו הציר שלו מסתובב סביב האנך?
+
+      ב. מה הכוחות שהשולחן מפעיל על המטבע?
+
+      ג. בקירוב של סיבוב עצמי מהיר ($\Omega \ll S$) ו-$\varphi$ קטנה, הראו ש-$\varphi \approx \dfrac{3v^2}{2gR}$.
+
+      ד. חשבו את $\varphi$ ל-$b = 0.012\,\text{m}$, $v = 0.50\,\text{m/s}$, $R = 0.30\,\text{m}$.
+    answer: >-
+      א. $S = v/b$, $\Omega = v/R$. ב. $N = Mg$ כלפי מעלה וחיכוך $Mv^2/R$ אל $C$, שניהם בנקודת המגע. ג. ראו בפתרון. ד. $\varphi = 0.128\,\text{rad} = 7.31^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $z$ כלפי מעלה; $\hat\rho$ מ-$C$ החוצה, $\hat\phi$ בכיוון התנועה. מומנטים ותנע זוויתי ביחס למרכז המסה של המטבע, שמותר
+          גם כשהוא מאיץ (שיעור 3.8).
+      - kind: reasoning
+        text: >-
+          א. גלגול בלי החלקה: $S = v/b$. מרכז המטבע מקיף את $C$ בקצב $\Omega = v/R$, וגם הציר שלו מסתובב בקצב הזה. ב. מרכז המסה לא
+          עולה ולא יורד: $N = Mg$. הוא נע במעגל: הכוח השקול האופקי $Mv^2/R$ אל $C$, וזה החיכוך בנקודת המגע.
+      - kind: manipulation
+        text: >-
+          כיוון הסיבוב העצמי: גלגל שנע קדימה מסתובב סביב הכיוון שמשמאל לתנועה, $\hat z\times\hat\phi = -\hat\rho$, אל $C$. בקירוב מהיר
+          $\vec L \approx \tfrac12Mb^2S\,(-\hat\rho)$, והוא מסתובב עם $\Omega\hat z$: $\dfrac{d\vec L}{dt} = \Omega\hat z\times\vec L = -\tfrac12Mb^2S\Omega\,\hat\phi$.
+      - kind: manipulation
+        text: >-
+          המומנט ביחס למרכז המסה: נקודת המגע $b\sin\varphi$ החוצה ו-$b\cos\varphi$ למטה ממנו. $N$ נותן $-Mgb\sin\varphi\,\hat\phi$, והחיכוך
+          נותן $+\dfrac{Mv^2}{R}b\cos\varphi\,\hat\phi$. משווים עם $\varphi$ קטנה: $Mgb\varphi - \dfrac{Mv^2b}{R} = \tfrac12Mb^2\dfrac vb\dfrac vR$.
+      - kind: manipulation
+        text: >-
+          מחלקים ב-$Mb$: $g\varphi = \dfrac{v^2}R + \dfrac{v^2}{2R} = \dfrac{3v^2}{2R}$, ולכן $\varphi = \dfrac{3v^2}{2gR}$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $\varphi \to 0$: מטבע איטי מתגלגל זקוף (ונופל, כי הקירוב נשבר). כש-$R \to \infty$, בקו ישר, $\varphi \to 0$. בלי
+          הסיבוב העצמי (רק כוח צנטריפטלי) היה יוצא $v^2/(gR)$: הסיבוב תורם את החצי הנוסף.
+      - kind: units
+        text: >-
+          $v^2/(gR)$ חסר ממדים, כמו זווית ברדיאנים.
+      - kind: substitution
+        text: >-
+          $S = 41.7\,\text{rad/s}$, $\Omega = 1.67\,\text{rad/s}$, $\Omega/S = 0.04$; $\varphi = \dfrac{3\cdot0.25}{2\cdot9.8\cdot0.30} = 0.128\,\text{rad} = 7.31^\circ$.
+      - kind: result
+        text: >-
+          $\varphi = \dfrac{3v^2}{2gR} = 7.31^\circ$, לעבר מרכז המעגל.
+    source:
+      name: MIT 8.012 Physics I, Classical Mechanics (OCW Fall 2008), Exam 3 solutions (Fall 2007 Quiz 3)
+      year: 2007
+      problem: Problem 5 (Rolling a coin)
+      url: https://www.ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/d185f8235a1d0c007871675d5b41beaa_exam3sol.pdf
+      verified: '2026-11-12'
+      adapted: true

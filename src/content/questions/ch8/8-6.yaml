@@ -2,16 +2,29 @@
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
 # Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch8/q.ts:
+# Every number was computed in .scratch/ch8/q.ts and recomputed (review 2026-11-12, with the lesson) by
+# .scratch/ch8/8-6/bank.ts against src/physics/rigidbody.ts and rigidangular.ts; every key was right:
 #   skater I 4.0 → 1.6 kg·m², ω0 = 3.0 rad/s: ω = 7.5 rad/s (inverted 1.2, energy 4.74), K grows ×2.5;
 #   merry-go-round disc 100 kg, R = 2.0 m, child 25 kg rim → centre at 1.2 rad/s: ω = 1.8 rad/s (ring 1.5, inverted 0.8),
 #     K 216 → 324 J;
-#   stool I = 4.0 kg·m², wheel L = 0.20·20 = 4.0 kg·m²/s flipped: ω = 2L/I = 2.0 rad/s (forgot the 2: 1.0);
+#   stool I = 4.0 kg·m², wheel L = 4.0 kg·m²/s flipped: ω = 2L/I = 2.0 rad/s (forgot the 2: 1.0);
 #   rod M = 2.0 kg, L = 1.0 m, clay m = 0.20 kg at 10 m/s sticks at the end:
 #     pivoted at the other end: ω = mvL/(ML²/3 + mL²) = 2.31 rad/s (no clay I 3.0, I_cm 5.45, momentum 1.67);
 #     free on ice: v_cm = 0.909 m/s, CM shift 0.0455 m, I_sys = 0.212 kg·m², ω = 4.29 rad/s (no clay 6.0, no shift 4.62),
-#     K 10 J → 2.86 J;
+#     K 10 J → 2.86 J; the far end moves at v_cm − ω(L/2 + d) = −1.43 m/s (rod centre 0.714 m/s; wrong routes:
+#     at rest 0, with the CM 0.909, the light-puck limit −2mv/M = −2.0, no CM shift v_cm − ωL/2 = −1.23);
 #   free rod struck at an end by J: v_cm = J/M, ω = 6J/(ML), far end J/M − 3J/M = −2J/M.
+# Review 2026-11-12: Q-8.6-free-rod-ice asks for the far end's velocity, not ω: lesson 8.6 prints
+# ω = μvb/(I_cm + μb²) for a free rod, and an exam rung must not be a substitution into a printed formula.
+# Q-8.6-skater-energy and Q-8.6-free-rod-ice no longer lean on the question before them (each stands alone).
+# Review 2026-11-12 (pair reviewer, independent recompute .scratch/review/ch8/p56/check.ts, closed forms only): every
+# key and commonWrong above right. Q-8.6-struck-rod-far-end was answered by the lesson (the free-rod step and the
+# summary print "the far end moves backwards", example 5 prints v_c = J/M and ω = 6J/(ML)); it is replaced by
+# Q-8.6-struck-ring-far-side: a thin ring struck tangentially at its rim, v_cm = J/M, ω = J/(MR), the opposite point
+# is momentarily at rest (a disc would give −J/M, the struck point +2J/M). New mid rung before the free-rod exam rungs,
+# Q-8.6-free-rod-spin: rod 1.2 kg, 0.80 m, impulse 0.60 N·s at 0.25 m from the centre: I_cm = 0.0640, ω = 2.34 rad/s
+# (I about the end 0.586, arm L/2 3.75, v_c/b 2.00). Q-8.6-free-rod-ice's feedback now also gives the lesson's route
+# (μ = 0.182 kg, ω = 4.29, rod centre 0.714 m/s, far end −1.43).
 
 chapter: 8
 questions:
@@ -45,8 +58,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      המחליקה מהשאלה הקודמת הקטינה את מומנט ההתמד שלה מ-$4.0$ ל-$1.6\,\text{kg}\cdot\text{m}^2$, בלי מומנט חיצוני.
-      מה קרה לאנרגיה הקינטית שלה?
+      מחליקה על קרח מסתובבת סביב עצמה, ומקרבת את זרועותיה לגוף. מומנט ההתמד שלה יורד מ-$4.0$
+      ל-$1.6\,\text{kg}\cdot\text{m}^2$, והקרח החלק לא מפעיל עליה מומנט סביב הציר האנכי. מה קרה לאנרגיה הקינטית שלה?
     choices:
       - text: 'היא גדלה פי 2.5.'
         correct: true
@@ -101,14 +114,15 @@ questions:
     prompt: >-
       סטודנטית יושבת במנוחה על כיסא שמסתובב בלי חיכוך סביב ציר אנכי. בידיה גלגל אופניים שמסתובב סביב ציר אנכי,
       עם תנע זוויתי $4.0\,\text{kg}\cdot\text{m}^2/\text{s}$ כלפי מעלה. היא הופכת את הגלגל, כך שהוא מסתובב באותה
-      מהירות אבל עם התנע הזוויתי כלפי מטה. מומנט ההתמד של הסטודנטית, הכיסא והגלגל סביב ציר הכיסא הוא
-      $4.0\,\text{kg}\cdot\text{m}^2$ (בלי הסיבוב העצמי של הגלגל). באיזו מהירות זוויתית מסתובב הכיסא אחרי ההיפוך?
+      מהירות (ביחס לידיים שלה) אבל עם התנע הזוויתי כלפי מטה. כשהסטודנטית, הכיסא והגלגל מסתובבים יחד סביב ציר
+      הכיסא כגוף אחד, מומנט ההתמד שלהם סביב הציר הזה הוא $4.0\,\text{kg}\cdot\text{m}^2$; התנע הזוויתי של הסיבוב של
+      הגלגל סביב הציר שלו נוסף על זה. באיזו מהירות זוויתית מסתובב הכיסא אחרי ההיפוך?
     answer: 2.0
     unit: rad/s
     correctFeedback: >-
       נכון. אין מומנט חיצוני סביב הציר האנכי, ולכן התנע הזוויתי הכולל, $4.0$ כלפי מעלה, נשמר. אחרי ההיפוך הגלגל
       תורם $-4.0$, ולכן הכיסא צריך לשאת $+8.0$: $\omega = \dfrac{2L_w}{I} = \dfrac{8.0}{4.0} = 2.0\,\text{rad/s}$, באותו
-      כיוון שבו הגלגל הסתובב בהתחלה. מה שהופך את הכיסא הוא המומנט שהגלגל מפעיל על הידיים בזמן ההיפוך.
+      כיוון שבו הגלגל הסתובב בהתחלה. מה שמסובב את הכיסא הוא המומנט שהגלגל מפעיל על הידיים בזמן ההיפוך: כוח פנימי של המערכת.
     wrongFeedback: 'כתבו את התנע הזוויתי הכולל לפני ואחרי, עם סימנים: הגלגל עבר מ-$+L_w$ ל-$-L_w$.'
     commonWrong:
       - value: 1.0
@@ -170,62 +184,108 @@ questions:
     hints:
       - 'סביב איזו נקודה הכוח של הציר לא יוצר מומנט?'
 
+  - id: Q-8.6-free-rod-spin
+    type: numeric
+    objectives: [OBJ-8.6-2]
+    level: mid
+    prompt: >-
+      מוט אחיד במסה $1.2\,\text{kg}$ ובאורך $0.80\,\text{m}$ מונח חופשי על קרח חלק. דסקית פוגעת בו בניצב למוט, במרחק
+      $0.25\,\text{m}$ ממרכזו, וניתזת. המתקף שהדסקית נותנת למוט בפגיעה הוא $0.60\,\text{N}\cdot\text{s}$. מה המהירות
+      הזוויתית של המוט מיד אחרי הפגיעה?
+    answer: 2.34
+    unit: rad/s
+    correctFeedback: >-
+      נכון. בלי ציר, המוט מקבל את המתקף $J$ כולו: הוא משנה את התנע שלו, $Mv_c = J$, והמומנט שלו סביב מרכז המוט משנה
+      את התנע הזוויתי סביב המרכז, $I_{cm}\omega = Jb$. עם $I_{cm} = \tfrac{1}{12}ML^2 = \tfrac{1}{12}\cdot1.2\cdot0.80^2 = 0.0640\,\text{kg}\cdot\text{m}^2$:
+      $\omega = \dfrac{0.60\cdot0.25}{0.0640} = 2.34\,\text{rad/s}$. מרכז המוט נע ב-$v_c = J/M = 0.500\,\text{m/s}$.
+    wrongFeedback: 'במוט חופשי משתמשים במומנט ההתמד סביב מרכז המוט, ובזרוע של המתקף סביב המרכז.'
+    commonWrong:
+      - value: 0.586
+        feedback: 'השתמשתם ב-$\tfrac13ML^2$, מומנט ההתמד סביב הקצה. המוט חופשי, ואין ציר בקצה: הסיבוב הוא סביב מרכז המוט.'
+        misconception: MC-8-free-rod-pivots-at-end
+      - value: 3.75
+        feedback: 'השתמשתם בזרוע $\tfrac L2$, כאילו הפגיעה בקצה. הדסקית פוגעת $0.25\,\text{m}$ מהמרכז.'
+      - value: 2.0
+        feedback: 'זה $v_c/b$: הנחתם שמרכז המוט מסתובב סביב נקודת הפגיעה. את $\omega$ קובע המומנט של המתקף סביב המרכז, $I_{cm}\omega = Jb$.'
+    hints:
+      - 'מה המומנט של המתקף $J$ סביב מרכז המוט, ומה מומנט ההתמד סביבו?'
+
   - id: Q-8.6-free-rod-ice
     type: numeric
     objectives: [OBJ-8.6-2]
     level: bagrut
     prompt: >-
-      אותו מוט ($2.0\,\text{kg}$, $1.0\,\text{m}$) מונח עכשיו **חופשי** על קרח חלק. דסקית במסה $0.20\,\text{kg}$
-      מחליקה על הקרח במהירות $10\,\text{m/s}$ בניצב למוט, פוגעת בקצה שלו ונדבקת. מה המהירות הזוויתית של המערכת
-      מיד אחרי הפגיעה?
-    answer: 4.29
-    unit: rad/s
+      מוט אחיד במסה $2.0\,\text{kg}$ ובאורך $1.0\,\text{m}$ מונח **חופשי** על קרח חלק. דסקית במסה $0.20\,\text{kg}$
+      מחליקה על הקרח במהירות $10\,\text{m/s}$ בניצב למוט, פוגעת בקצה אחד שלו ונדבקת. מה מהירות הקצה **השני** של
+      המוט מיד אחרי הפגיעה? הכיוון שבו נעה הדסקית חיובי.
+    answer: -1.43
+    unit: m/s
     correctFeedback: >-
-      נכון. בלי ציר, גם תנע קווי נשמר וגם תנע זוויתי סביב כל נקודה. מרכז המסה של המערכת נע ב-$v_{cm} = \dfrac{0.20\cdot10}{2.2} = 0.909\,\text{m/s}$,
-      והוא נמצא $d = \dfrac{0.20\cdot0.50}{2.2} = 0.0455\,\text{m}$ ממרכז המוט לכיוון הדסקית. סביב מרכז המסה הזה:
-      $L = mv\left(\tfrac L2 - d\right) = 0.909\,\text{kg}\cdot\text{m}^2/\text{s}$, ו-
-      $I = \tfrac{1}{12}ML^2 + Md^2 + m\left(\tfrac L2 - d\right)^2 = 0.212\,\text{kg}\cdot\text{m}^2$. לכן
-      $\omega = 4.29\,\text{rad/s}$, כמעט פי 2 מאשר עם ציר. **בדיקת גבולות:** כש-$m \ll M$ התוצאה שואפת ל-$\dfrac{mvL/2}{ML^2/12} = \dfrac{6mv}{ML}$,
-      של מוט שמקבל מתקף קטן בקצהו. מהאנרגיה ההתחלתית, $10\,\text{J}$, נשארים $2.86\,\text{J}$.
-    wrongFeedback: 'שני שלבים: מצאו את מרכז המסה של מוט + דסקית ואת מהירותו, ואז השוו תנע זוויתי סביבו לפני ואחרי.'
+      נכון. בלי ציר, גם התנע נשמר וגם התנע הזוויתי סביב כל נקודה קבועה. מרכז המסה של מוט + דסקית נע
+      ב-$v_{cm} = \dfrac{0.20\cdot10}{2.2} = 0.909\,\text{m/s}$, והוא נמצא $d = \dfrac{0.20\cdot0.50}{2.2} = 0.0455\,\text{m}$
+      ממרכז המוט לכיוון הדסקית. סביב הנקודה הקבועה שבה הוא נמצא ברגע הפגיעה, התנע הזוויתי לפני הוא
+      $mv\left(\tfrac L2 - d\right) = 0.909\,\text{kg}\cdot\text{m}^2/\text{s}$, ואחרי $I\omega$ עם
+      $I = \tfrac{1}{12}ML^2 + Md^2 + m\left(\tfrac L2 - d\right)^2 = 0.212\,\text{kg}\cdot\text{m}^2$, ולכן
+      $\omega = 4.29\,\text{rad/s}$. הקצה השני נמצא $\tfrac L2 + d = 0.545\,\text{m}$ ממרכז המסה, בצד שמול הדסקית, ושם
+      הסיבוב פועל נגד $v_{cm}$: $0.909 - 4.29\cdot0.545 = -1.43\,\text{m/s}$. הקצה השני נע **אחורה**. **בדיקת גבולות:**
+      כש-$m \ll M$, $\omega \to \dfrac{6mv}{ML}$ ומהירות הקצה השני שואפת ל-$\dfrac{mv}{M} - \dfrac{6mv}{ML}\cdot\dfrac L2 = -\dfrac{2mv}{M}$.
+      **דרך שקולה, זו של השיעור:** סביב $O$, הנקודה שבה מרכז המוט נמצא ברגע הפגיעה, עם המסה המצומצמת
+      $\mu = \dfrac{mM}{m + M} = 0.182\,\text{kg}$ ו-$b = \tfrac L2$: $\omega = \dfrac{\mu vb}{I_{cm} + \mu b^2} = 4.29\,\text{rad/s}$,
+      מרכז המוט נע ב-$v_c = \dfrac{m(v - \omega b)}{m + M} = 0.714\,\text{m/s}$, והקצה השני ב-$v_c - \omega\tfrac L2 = -1.43\,\text{m/s}$.
+      שתי הדרכים נותנות אותה תשובה.
+    wrongFeedback: 'שלושה שלבים: מרכז המסה של מוט + דסקית ומהירותו; תנע זוויתי סביבו לפני ואחרי, שנותן את $\omega$; ומהירות הקצה, $v_{cm}$ ועוד מהירות הסיבוב שלו סביב מרכז המסה.'
     commonWrong:
-      - value: 2.31
-        feedback: 'זו התוצאה עם ציר בקצה השני. על הקרח אין ציר: המוט גם מתקדם וגם מסתובב, סביב מרכז המסה שלו, לא סביב הקצה.'
+      - value: 0
+        feedback: 'על הקרח אין ציר שמחזיק את הקצה השני. המוט גם מתקדם וגם מסתובב, סביב מרכז המסה שלו, והקצה השני זז.'
         misconception: MC-8-free-rod-pivots-at-end
-      - value: 6.0
-        feedback: 'זה $\dfrac{mvL/2}{ML^2/12}$: הזנחתם את הדסקית במומנט ההתמד ואת ההזזה של מרכז המסה. זה הגבול ל-$m \ll M$, אבל כאן $m/M = 0.1$.'
-      - value: 4.62
-        feedback: 'חישבתם סביב מרכז המוט, עם הדסקית בקצה, אבל המערכת מסתובבת סביב מרכז המסה **שלה**, שזז $0.0455\,\text{m}$ לכיוון הדסקית.'
+      - value: 0.909
+        feedback: 'זו מהירות מרכז המסה. גם המוט מסתובב, ובקצה השני מהירות הסיבוב, $\omega\left(\tfrac L2 + d\right)$, פונה אחורה וגדולה ממנה.'
+        misconception: MC-8-all-points-move-with-cm
+      - value: -2.0
+        feedback: 'זה $-2mv/M$, הגבול של דסקית קלה מאוד. כאן $m/M = 0.1$: הדסקית שנדבקה מוסיפה למומנט ההתמד ומזיזה את מרכז המסה.'
+      - value: -1.23
+        feedback: >-
+          חישבתם $v_{cm} - \omega\tfrac L2$ עם המהירות של מרכז המסה של מוט + דסקית. אבל הקצה השני רחוק $\tfrac L2$ ממרכז
+          **המוט**, לא ממרכז המסה של המערכת, שזז $0.0455\,\text{m}$ לכיוון הדסקית. השתמשו במהירות של מרכז המוט,
+          $0.714\,\text{m/s}$, או במרחק $\tfrac L2 + d$ ממרכז המסה.
     hints:
       - 'אחרי הפגיעה, תנועת המערכת היא הזזה של מרכז המסה שלה ועוד סיבוב סביבו.'
 
-  - id: Q-8.6-struck-rod-far-end
+  - id: Q-8.6-struck-ring-far-side
     type: twotier
     objectives: [OBJ-8.6-2]
     qualitative: true
     level: bagrut
     prompt: >-
-      מוט אחיד במסה $M$ ובאורך $L$ מונח חופשי על קרח חלק. נותנים לקצה אחד שלו מכה קצרה, מתקף $J$ בניצב למוט.
-      מה עושה הקצה **השני** של המוט מיד אחרי המכה?
+      טבעת דקה ואחידה במסה $M$ וברדיוס $R$ מונחת חופשית על קרח חלק. דסקית פוגעת בנקודה על השפה שלה ונותנת לה מכה
+      קצרה, מתקף $J$ בכיוון המשיק לטבעת בנקודה הזו. מה עושה הנקודה של הטבעת שנמצאת מול נקודת הפגיעה, בקצה השני של
+      הקוטר, מיד אחרי המכה?
     choices:
-      - text: 'הוא נע אחורה, נגד כיוון המכה, במהירות $2J/M$.'
+      - text: 'היא במנוחה רגעית.'
         correct: true
-        feedback: 'נכון. הנקודה שבמנוחה רגעית נמצאת בתוך המוט, במרחק $L/6$ מהמרכז לכיוון הקצה השני, כלומר $\tfrac23L$ מהקצה שהוכה.'
-      - text: 'הוא נע קדימה במהירות $J/M$, כמו מרכז המוט.'
-        feedback: 'במהירות $J/M$ נע רק המרכז. המוט גם מסתובב, והסיבוב מוסיף לקצה השני מהירות לאחור, גדולה יותר.'
+        feedback: >-
+          נכון. מרכז הטבעת נע קדימה ב-$J/M$, והסיבוב סביב המרכז נותן לנקודה שמול הפגיעה בדיוק $J/M$ אחורה. ברגע הזה
+          הטבעת מסתובבת סביב הנקודה הזו. במוט חופשי שנפגע בקצה, לעומת זאת, הקצה השני נע אחורה: התשובה תלויה באיך
+          המסה מפוזרת, דרך $I_{cm}$.
+      - text: 'היא נעה אחורה, נגד כיוון המכה, במהירות $J/M$.'
+        feedback: >-
+          זה היה נכון לדסקה אחידה, עם $I_{cm} = \tfrac12MR^2$, שמסתובבת מהר פי 2. בטבעת דקה כל המסה במרחק $R$ מהמרכז,
+          $I_{cm} = MR^2$. וגם לא כל "צד רחוק" נע אחורה, כמו בקצה של מוט חופשי: זה תלוי ב-$I_{cm}$.
+      - text: 'היא נעה קדימה במהירות $J/M$, כמו מרכז הטבעת.'
+        feedback: 'במהירות $J/M$ נע רק המרכז. הטבעת גם מסתובבת, ובנקודה שמול הפגיעה מהירות הסיבוב פונה אחורה.'
         misconception: MC-8-all-points-move-with-cm
-      - text: 'הוא נשאר במנוחה, והמוט מסתובב סביבו.'
-        feedback: 'בלי ציר שמחזיק אותו, הקצה השני לא מקובע. המוט מתקדם ומסתובב סביב מרכז המסה, והקצה השני זז.'
-        misconception: MC-8-free-rod-pivots-at-end
+      - text: 'היא נעה קדימה במהירות $2J/M$.'
+        feedback: 'זו המהירות של נקודת **הפגיעה**, $J/M + \omega R$. בנקודה שמולה מהירות הסיבוב פונה לכיוון ההפוך, ומחסירים אותה.'
     reasons:
-      - text: '$v_{cm} = \dfrac JM$ ו-$\omega = \dfrac{J\cdot L/2}{ML^2/12} = \dfrac{6J}{ML}$, ולכן מהירות הקצה השני היא $\dfrac JM - \omega\dfrac L2 = -\dfrac{2J}{M}$.'
+      - text: '$v_{cm} = \dfrac JM$, ו-$\omega = \dfrac{JR}{MR^2} = \dfrac{J}{MR}$ סביב המרכז. בנקודה שמול הפגיעה מהירות הסיבוב היא $\omega R = \dfrac JM$, ופונה נגד $v_{cm}$.'
         correct: true
-        feedback: 'זה הנימוק: מתקף קובע את התנע הקווי, המומנט של המתקף סביב המרכז קובע את התנע הזוויתי, ושני הגדלים יחד נותנים את מהירות כל נקודה.'
-      - text: 'המכה דוחפת קדימה, ולכן כל נקודה במוט נעה קדימה.'
-        feedback: 'המכה דוחפת את **מרכז המסה** קדימה, אבל גם מסובבת את המוט. בקצה הרחוק מהירות הסיבוב לאחור, $3J/M$, גדולה ממהירות המרכז.'
-        misconception: MC-8-all-points-move-with-cm
-      - text: 'אף כוח לא פעל על הקצה השני, ולכן מהירותו אפס.'
-        feedback: 'המוט צפיד: כוחות פנימיים מעבירים את ההשפעה של המכה לכל נקודה בו מיד. תנועת כל נקודה נקבעת מ-$\vec v_{cm}$ ומ-$\vec\omega$.'
+        feedback: 'זה הנימוק: המתקף קובע את התנע, המומנט שלו סביב המרכז קובע את התנע הזוויתי סביב המרכז, ושניהם יחד נותנים את המהירות של כל נקודה.'
+      - text: 'על הנקודה שמול הפגיעה לא פעל שום כוח, ולכן היא לא זזה.'
+        feedback: >-
+          התוצאה נכונה כאן, אבל הנימוק לא. בגוף צפיד כוחות פנימיים מעבירים את המכה לכל נקודה בו מיד. בקצה של מוט חופשי
+          שנפגע גם לא פעל שום כוח חיצוני, והוא נע אחורה במהירות $2J/M$.
         misconception: MC-8-free-rod-pivots-at-end
+      - text: 'הצד הרחוק של גוף חופשי שנפגע תמיד נע אחורה, כמו הקצה השני של מוט.'
+        feedback: 'זה תלוי ב-$I_{cm}$: ככל שהמסה רחוקה יותר מהמרכז, הסיבוב איטי יותר. בטבעת דקה מהירות הסיבוב בצד הרחוק שווה בדיוק למהירות המרכז.'
     hints:
-      - 'מצאו את $v_{cm}$ מהמתקף, ואת $\omega$ מהמתקף הזוויתי סביב המרכז, $J\cdot L/2$.'
+      - 'מצאו את $v_{cm}$ מהמתקף, ואת $\omega$ מהמומנט של המתקף סביב המרכז, $JR$. מה מומנט ההתמד של טבעת דקה סביב מרכזה?'

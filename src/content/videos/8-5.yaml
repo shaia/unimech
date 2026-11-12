@@ -1,0 +1,29 @@
+# Videos of lesson 8.5. Every id was checked against YouTube oEmbed on the `verified` date (HTTP 200, embeddable;
+# title and channel exactly as returned). Lengths come from the watch page's own data (lengthSeconds); the Hebrew
+# video has no chapter list and a one-line description, and no caption track was established for it, so `captions` is
+# empty for both. `why` claims only what the title and the description support.
+#   BXFaRQTjjKE: Dr. Ron Bessler (Hebrew), 27:00 (1620 s); title "איך לא ליפול מסולם?! מומנטים", description:
+#                "השאלה גם הופיעה בבחינה של 1מ - 22Sb7".
+#   Fal8QERtim0: Scott Yost, 3:44 (224 s); description: "This demonstration from a Princeton physics lecture illustrates
+#                a common text-book problem: How high can you climb before the ladder slips?"
+# Review 2026-11-12: both ids re-checked by oEmbed (titles and channels as below) and lengthSeconds (1620, 224).
+
+- id: v-8-5-hebrew-ladder
+  youtubeId: BXFaRQTjjKE
+  title: '(1m-22Sb7) פיזיקה 1 | איך לא ליפול מסולם?! מומנטים'
+  channel: '♥ ד"ר רון בסלר - מדע והנדסה'
+  lang: he
+  start: 0
+  minutes: 27
+  why: 'שיעור בעברית מקורס פיזיקה 1, על סולם ומומנטים. לפי התיאור שלו, השאלה שהוא פותר הופיעה בבחינה. פתרו אותה בעצמכם לפני הצפייה, לפי המתכון של השיעור: גוף אחד, כל כוח בנקודה שלו, ונקודה נוחה למומנטים.'
+  verified: '2026-11-12'
+
+- id: v-8-5-slippery-ladder
+  youtubeId: Fal8QERtim0
+  title: 'Slippery Ladder Demonstration'
+  channel: Scott Yost
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'הדגמה אמיתית מהרצאה בפרינסטון, לפי התיאור: כמה גבוה אפשר לטפס לפני שהסולם מחליק. זו בדיוק המשימה של איור 8.5א, עם סולם ואדם אמיתיים.'
+  verified: '2026-11-12'

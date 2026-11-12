@@ -1,0 +1,29 @@
+# Videos of lesson 8.7. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). The watch pages did not expose length, description or chapters to the
+# fetch, so `minutes` is a conservative guess (UNCONFIRMED) and `captions` is empty. `why` claims only what the title
+# (and, for the second, a search-engine summary of its page) supports: spot-check both.
+#   3rrMqenqZco: Dr. Ron Bessler (Hebrew), "Physics 1: a rod with a mass swinging; simple harmonic motion/torques".
+#   uOnShwXb060: LiteScience, Julius Sumner Miller's "The Professor" series, "Center of Percussion". Review 2026-11-12:
+#                oEmbed title re-checked; the watch page gave no description and a search found nothing tying the
+#                episode to a baseball bat, so the note now claims only the title.
+#   3rrMqenqZco: oEmbed title and channel re-checked 2026-11-12; the watch page gave no description or length.
+
+- id: v-8-7-rod-with-mass
+  youtubeId: 3rrMqenqZco
+  title: 'פיזיקה 1מ | מוט עם מסה מתנדנדים | תנועה הרמונית פשוטה/מומנטים'
+  channel: '♥ ד"ר רון בסלר - מדע והנדסה '
+  lang: he
+  start: 0
+  minutes: 15
+  why: 'פתרון בעברית, לפי הכותרת, של מוט עם מסה שמתנדנדים: מטוטלת פיזיקלית מורכבת, כמו מטוטלת השעון בחוברת העבודה. בדקו שהפתרון כותב משוואת מומנטים סביב הציר, ושמומנט ההתמד בה הוא סכום של המוט והמסה סביב הציר, כמו בסעיף "משוואת התנועה".'
+  verified: '2026-11-12'
+
+- id: v-8-7-percussion-demo
+  youtubeId: uOnShwXb060
+  title: 'The Professor - Center of Percussion'
+  channel: LiteScience
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'פרק מהסדרה "The Professor" של יוליוס סאמנר מילר, שכותרתו "מרכז ההקשה". את התוכן לא אימתנו מעבר לכותרת. אם הוא מראה מכות במקומות שונים בגוף שנאחז או תלוי בנקודה אחת, חפשו את המקום שבו נקודת האחיזה לא זזה, והשוו לאיור 8.7ב.'
+  verified: '2026-11-12'

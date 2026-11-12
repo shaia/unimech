@@ -1,0 +1,451 @@
+# Workbook, lesson 8.7 (the physical pendulum and the centre of percussion). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-7/workbook.ts with G = 9.8 and src/physics/rigidbody.ts, physpendulum.ts:
+#   W01 Moon g = 1.62: T × 2.46; twice the size: T × √2 = 1.41;  W02 rod 1.50 m at its end: ℓ = 1.00 m, T = 2.01 s;
+#   W03 free rod struck at an end: at rest L/6 beyond the CM, 2L/3 from the struck end;
+#   W04 disc R = 0.20 m, k = 0.141 m, T = 1.20 s: ℓ = 0.357 m, d = 0.0694 m (0.288 m is off the disc); T_min = 1.07 s;
+#   W05 light rod 0.80 m, disc bob r = 0.10 m: ℓ = 0.80625 m, T = 1.8022 s vs 1.7952 s (+0.390 %), slow 336 s a day;
+#   W06 rod at its end: J_P/J = −0.625, −0.25, 0, +0.5 at b = L/4, L/2, 2L/3, L;  W07 plate h = 0.60 m on its top edge:
+#   ℓ = 0.400 m, T = 1.27 s;  W08 rod 1.0 m pivoted L/4 from the top, from horizontal: ℓ = 7L/12 = 0.583 m, ω = 5.80 rad/s,
+#   lowest point 4.35 m/s;  W09 rod 0.40 kg × 1.0 m + disc bob 1.2 kg, r 0.10 m at 1.0 m: d = 0.875 m, I_P = 1.339,
+#   ℓ = 0.957 m, T = 1.96 s (simple 2.01 s, −2.2 %);  W10 rod 2.0 kg × 1.5 m, J = 4.0 N·s at the bottom: ω = 4.00 rad/s,
+#   J_P = +2.00 N·s, K = 12.0 J, θ = 79.4°;
+#   c1 (MIT 8.01 F16 PS11 #3): M_eff = 4m/3, ball back at v/7, ω = 12v/(7d), J = 8mv/7, J_P = −J/4 = −2mv/7;
+#   c2 (MIT 8.01L F05 practice final #11): ω = 55.4 rad/s (after 19.4), J = 13.5 N·s; adapted M = 0.90 kg, d = 0.55 m:
+#      ℓ = 0.606 m, J_P = 4.32 N·s.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.7'
+practice:
+  - id: W-8.7-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      שעון מטוטלת עם מטוטלת פיזיקלית (מוט ומשקולת רחבה) מתנודד בזוויות קטנות. קבעו ונמקו מה קורה לזמן המחזור בכל
+      אחד מהשינויים, ופי כמה.
+
+      א. בונים מטוטלת זהה בצורתה, מפלדה במקום מאלומיניום.
+
+      ב. בונים מטוטלת בדיוק באותה צורה, אבל גדולה פי $2$ בכל ממד.
+
+      ג. לוקחים את השעון לירח, שם $g = 1.62\,\text{m/s}^2$.
+    answer: >-
+      א. לא משתנה. ב. גדל פי $\sqrt2 = 1.41$. ג. גדל פי $2.46$.
+    solution:
+      - kind: law
+        text: >-
+          $T_0 = 2\pi\sqrt{\ell/g}$ עם $\ell = \dfrac{I_P}{md} = d + \dfrac{k^2}{d}$.
+      - kind: reasoning
+        text: >-
+          א. $I_P$ פרופורציוני למסה, והמסה מצטמצמת: $\ell$ תלוי רק בצורה ובמקום הציר. ב. כל האורכים, $d$ ו-$k$, גדלים פי $2$,
+          ולכן גם $\ell$, ו-$T_0 \propto \sqrt\ell$. ג. $\ell$ לא משתנה, ו-$T_0 \propto 1/\sqrt g$.
+      - kind: limit
+        text: >-
+          אותן תשובות כמו במטוטלת פשוטה, שהיא המקרה $k \to 0$: המטוטלת הפיזיקלית היא מטוטלת פשוטה באורך $\ell$.
+      - kind: substitution
+        text: >-
+          ג. $\sqrt{9.8/1.62} = 2.46$.
+      - kind: result
+        text: >-
+          א. אותו זמן מחזור. ב. פי $1.41$. ג. פי $2.46$, והשעון מפגר.
+
+  - id: W-8.7-02
+    level: basic
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      מוט אחיד באורך $1.50\,\text{m}$ תלוי על ציר אופקי בקצהו ומתנודד בזוויות קטנות. מה האורך השקול שלו, ומה זמן המחזור?
+    answer: >-
+      $\ell = 1.00\,\text{m}$, $T_0 = 2.01\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $L = 1.50\,\text{m}$, ציר בקצה: $d = L/2$, $I_P = \tfrac13mL^2$.
+      - kind: law
+        text: >-
+          $\ell = \dfrac{I_P}{md}$, $T_0 = 2\pi\sqrt{\ell/g}$.
+      - kind: manipulation
+        text: >-
+          $\ell = \dfrac{mL^2/3}{mL/2} = \tfrac23L$.
+      - kind: limit
+        text: >-
+          $\tfrac23L$ בין $L/2$ (כל המסה במרכז) ל-$L$ (כל המסה בקצה), כמו שצריך למסה שמפוזרת לאורך המוט.
+      - kind: units
+        text: >-
+          $\ell$ במטרים, $\sqrt{\ell/g}$ בשניות.
+      - kind: substitution
+        text: >-
+          $\ell = \tfrac23\cdot1.50 = 1.00\,\text{m}$, $T_0 = 2\pi\sqrt{1.00/9.8} = 2.01\,\text{s}$.
+      - kind: result
+        text: >-
+          $\ell = 1.00\,\text{m}$, $T_0 = 2.01\,\text{s}$: כמו מטוטלת פשוטה של מטר אחד.
+
+  - id: W-8.7-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.7-2]
+    prompt: >-
+      מוט אחיד באורך $L$ מונח במנוחה על קרח חלק. מכים אותו מכה קצרה בניצב למוט, באחד הקצוות. איזו נקודה של המוט
+      נחה מיד אחרי המכה? ומה הקשר בין התשובה למרכז ההקשה של מוט שתלוי על ציר?
+    answer: >-
+      הנקודה שבמרחק $\tfrac23L$ מהקצה שקיבל את המכה, כלומר $L/6$ מעבר למרכז המסה. אם תולים את המוט על ציר בנקודה הזו,
+      הקצה המוכה הוא מרכז ההקשה שלו: מכה שם לא מפעילה מתקף על הציר.
+    solution:
+      - kind: law
+        text: >-
+          מוט חופשי: $v_{cm} = J/m$, ו-$I_{cm}\omega = Js$ ביחס למרכז המסה, עם $s$ המרחק מהמכה למרכז המסה. הנקודה הנחה
+          נמצאת בצד השני של מרכז המסה, במרחק $k^2/s$ ממנו.
+      - kind: manipulation
+        text: >-
+          $s = L/2$ ו-$k^2 = L^2/12$, ולכן $k^2/s = L/6$. מהקצה שקיבל את המכה: $L/2 + L/6 = \tfrac23L$.
+      - kind: reasoning
+        text: >-
+          אם תולים את המוט על ציר בנקודה הזו, המוט החופשי היה מתחיל להסתובב סביבה מעצמו, ולכן הציר לא צריך להפעיל מתקף:
+          הקצה המוכה הוא מרכז ההקשה ביחס לציר הזה. ואכן $d = L/6$ ו-$\ell = d + k^2/d = L/6 + L/2 = \tfrac23L$.
+      - kind: limit
+        text: >-
+          מכה במרכז המסה, $s \to 0$: $k^2/s \to \infty$, אין נקודה נחה, וכל המוט זז יחד.
+      - kind: result
+        text: >-
+          $\tfrac23L$ מהקצה המוכה. המכה בקצה היא מכה במרכז ההקשה ביחס לנקודה הזו.
+
+  - id: W-8.7-04
+    level: mid
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      דסקה אחידה ברדיוס $0.20\,\text{m}$ תלויה על ציר אופקי, ניצב לדסקה, שעובר בחור במרחק $d$ ממרכזה.
+
+      א. באיזה $d$ זמן המחזור של תנודות קטנות הוא $1.20\,\text{s}$?
+
+      ב. האם אפשר לקבל כך זמן מחזור של $1.00\,\text{s}$? נמקו.
+    answer: >-
+      א. $d = 0.0694\,\text{m}$ (הפתרון השני, $0.288\,\text{m}$, מחוץ לדסקה). ב. לא: זמן המחזור הקצר ביותר $1.07\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $R = 0.20\,\text{m}$; לדסקה $k^2 = R^2/2 = 0.020\,\text{m}^2$, $k = 0.141\,\text{m}$.
+      - kind: law
+        text: >-
+          $T_0 = 2\pi\sqrt{\ell/g}$, $\ell = d + k^2/d$, ולכן $\ell = gT_0^2/(4\pi^2)$. זמן המחזור הקצר ביותר ב-$d = k$, $\ell = 2k$.
+      - kind: manipulation
+        text: >-
+          $d^2 - \ell d + k^2 = 0$, ולכן $d = \dfrac{\ell \pm \sqrt{\ell^2 - 4k^2}}{2}$. יש פתרון רק כש-$\ell \ge 2k$.
+      - kind: limit
+        text: >-
+          מכפלת שני השורשים $k^2$: זה הזוג $d$, $k^2/d$ עם אותו זמן מחזור. כש-$\ell = 2k$ הם מתלכדים ב-$d = k$.
+      - kind: units
+        text: >-
+          $gT^2$ במטרים.
+      - kind: substitution
+        text: >-
+          א. $\ell = 9.8\cdot1.20^2/(4\pi^2) = 0.357\,\text{m}$; $\sqrt{0.357^2 - 0.080} = 0.219\,\text{m}$; $d = 0.0694\,\text{m}$ או $0.288\,\text{m}$,
+          והשני גדול מ-$R$. ב. $\ell = 9.8\cdot1.00^2/(4\pi^2) = 0.248\,\text{m} < 2k = 0.283\,\text{m}$: אין פתרון.
+          $T_{min} = 2\pi\sqrt{2k/g} = 1.07\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $d = 0.0694\,\text{m}$, כ-$7\,\text{cm}$ מהמרכז. ב. לא, כי $1.00\,\text{s}$ קצר מ-$T_{min} = 1.07\,\text{s}$.
+
+  - id: W-8.7-05
+    level: mid
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      מטוטלת של שעון היא מוט קל מאוד (מסתו זניחה) באורך $0.80\,\text{m}$ מהציר עד מרכזה של משקולת, דסקה אחידה ברדיוס
+      $0.10\,\text{m}$ שמתנודדת במישור שלה. השען חישב את זמן המחזור כאילו המשקולת נקודה. בכמה אחוזים זמן המחזור
+      האמיתי ארוך יותר, וכמה שניות ביממה יפגר השעון?
+    answer: >-
+      ארוך ב-$0.390\%$; השעון מפגר כ-$336\,\text{s}$ ביממה.
+    solution:
+      - kind: given
+        text: >-
+          $d = 0.80\,\text{m}$ (מרכז המסה במרכז הדסקה), $r = 0.10\,\text{m}$, $I_{cm} = \tfrac12m r^2$, כלומר $k^2 = r^2/2$.
+      - kind: law
+        text: >-
+          $\ell = d + k^2/d$, $T_0 = 2\pi\sqrt{\ell/g}$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{T_0}{T_{\text{point}}} = \sqrt{\dfrac{\ell}{d}} = \sqrt{1 + \dfrac{r^2}{2d^2}} \approx 1 + \dfrac{r^2}{4d^2}$. שעון שסופר תנודות
+          מפגר בחלק $(T_0 - T_{\text{point}})/T_0$ מכל פרק זמן.
+      - kind: limit
+        text: >-
+          כש-$r \to 0$ היחס $1$: משקולת נקודתית. התיקון ריבועי ב-$r/d$, ולכן משקולת קטנה על מוט ארוך כמעט נקודתית.
+      - kind: units
+        text: >-
+          $r^2/d^2$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\ell = 0.80 + 0.0050/0.80 = 0.80625\,\text{m}$; $T_0 = 1.8022\,\text{s}$ לעומת $1.7952\,\text{s}$, ארוך ב-$0.390\%$.
+          ביממה, $86400\,\text{s}$, השעון מפגר $336\,\text{s}$.
+      - kind: result
+        text: >-
+          $0.390\%$, כ-$336\,\text{s}$ (כחמש וחצי דקות) ביממה: לשעון מדויק חובה לחשב את המשקולת כגוף.
+
+  - id: W-8.7-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.7-2]
+    prompt: >-
+      מוט אחיד באורך $L$ תלוי על ציר בקצהו העליון. מכים אותו מכה אופקית קצרה $J$ באחד מארבעה מקומות: $L/4$, $L/2$,
+      $\tfrac23L$ או $L$ מתחת לציר. דרגו את המקומות לפי גודל המתקף שהציר מפעיל על המוט, מהגדול לקטן, וקבעו בכל מקרה
+      אם הוא נגד כיוון המכה או איתו.
+    answer: >-
+      $L/4$ ($0.625J$, נגד) $>$ $L$ ($0.5J$, עם) $>$ $L/2$ ($0.25J$, נגד) $>$ $\tfrac23L$ (אפס).
+    solution:
+      - kind: law
+        text: >-
+          $J_P = J\left(\dfrac{mdb}{I_P} - 1\right)$, עם $d = L/2$ ו-$I_P = \tfrac13mL^2$: $J_P = J\left(\dfrac{3b}{2L} - 1\right)$.
+      - kind: manipulation
+        text: >-
+          $b = L/4$: $J_P = -0.625J$. $b = L/2$: $J_P = -0.25J$. $b = \tfrac23L$: $J_P = 0$. $b = L$: $J_P = +0.5J$.
+      - kind: reasoning
+        text: >-
+          בין הציר למרכז ההקשה, $\tfrac23L$, הגוף "רוצה" להזיז את הנקודה העליונה קדימה, והציר מושך אחורה. מעבר לו הקצה העליון
+          "רוצה" לזוז אחורה, והציר דוחף קדימה.
+      - kind: limit
+        text: >-
+          $b \to 0$: $J_P \to -J$, הציר סופג את כל המכה.
+      - kind: result
+        text: >-
+          $L/4 > L > L/2 > \tfrac23L$. נגד המכה ב-$L/4$ וב-$L/2$, איתה ב-$L$, ואפס במרכז ההקשה.
+
+  - id: W-8.7-07
+    level: mid
+    objectives: [OBJ-8.7-1, OBJ-8.7-2]
+    prompt: >-
+      שלט מלבני אחיד בגובה $0.60\,\text{m}$ תלוי על צירים לאורך הצלע העליונה שלו, וחופשי להתנדנד סביבם.
+
+      א. מה זמן המחזור של תנודות קטנות?
+
+      ב. כדור פוגע בשלט בניצב לו. באיזה עומק מתחת לצירים צריך הכדור לפגוע כדי שהצירים לא יפעילו מתקף?
+    answer: >-
+      א. $1.27\,\text{s}$. ב. $0.400\,\text{m}$ מתחת לצירים.
+    solution:
+      - kind: given
+        text: >-
+          $h = 0.60\,\text{m}$; הציר לאורך הצלע העליונה, מרכז המסה $d = h/2$ מתחתיו.
+      - kind: law
+        text: >-
+          סביב ציר לאורך צלע, כל רצועה אופקית של השלט נמצאת במרחק קבוע מהציר, ולכן השלט מתנהג כמו מוט באורך $h$ סביב הקצה:
+          $I_P = \tfrac13mh^2$. $\ell = I_P/(md)$, ומרכז ההקשה במרחק $\ell$.
+      - kind: manipulation
+        text: >-
+          $\ell = \dfrac{mh^2/3}{mh/2} = \tfrac23h$. רוחב השלט לא נכנס.
+      - kind: limit
+        text: >-
+          שלט רחב או צר, כבד או קל: אותה תשובה. רק הגובה קובע, כמו במוט.
+      - kind: units
+        text: >-
+          מטרים ושניות.
+      - kind: substitution
+        text: >-
+          $\ell = 0.400\,\text{m}$, $T_0 = 2\pi\sqrt{0.400/9.8} = 1.27\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $1.27\,\text{s}$. ב. $0.400\,\text{m}$ מתחת לצירים: מרכז ההקשה הוא מרכז התנודה.
+
+  - id: W-8.7-08
+    level: bagrut
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      מוט אחיד באורך $1.0\,\text{m}$ תלוי על ציר אופקי שעובר בנקודה שנמצאת $0.25\,\text{m}$ מקצהו העליון. מחזיקים אותו
+      אופקי ומשחררים ממנוחה.
+
+      א. מה האורך השקול שלו?
+
+      ב. באיזו מהירות עוברת הנקודה התחתונה של המוט כשהמוט אנכי?
+    answer: >-
+      א. $\ell = \tfrac{7}{12}L = 0.583\,\text{m}$. ב. $4.35\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $L = 1.0\,\text{m}$, $d = L/2 - 0.25 = 0.25\,\text{m}$; שחרור ממנוחה ב-$90^\circ$. הנקודה התחתונה $0.75\,\text{m}$ מהציר.
+      - kind: law
+        text: >-
+          $\ell\ddot\theta = -g\sin\theta$ בכל אמפליטודה: המוט נע כמו מטוטלת פשוטה באורך $\ell$, שמשוחררת מהאופק ומגיעה לתחתית
+          עם $\omega^2 = 2g/\ell$. מהירות נקודה במרחק $r$ מהציר: $\omega r$.
+      - kind: manipulation
+        text: >-
+          $\ell = d + \dfrac{L^2}{12d} = \dfrac L4 + \dfrac L3 = \dfrac{7L}{12}$. ובדיקה באנרגיה: $mgd = \tfrac12I_P\omega^2$ עם
+          $I_P = m\left(\tfrac{L^2}{12} + \tfrac{L^2}{16}\right) = \tfrac{7}{48}mL^2$ נותן $\omega^2 = \dfrac{24g}{7L} = \dfrac{2g}{\ell}$.
+      - kind: limit
+        text: >-
+          כשהציר בקצה ($d = L/2$) אותה דרך נותנת $\omega^2 = 3g/L$, כמו בדוגמה בשיעור.
+      - kind: units
+        text: >-
+          $g/L$ ב-$\text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\ell = 0.583\,\text{m}$, $\omega = \sqrt{2\cdot9.8/0.583} = 5.80\,\text{rad/s}$, $v = 5.80\cdot0.75 = 4.35\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $0.583\,\text{m}$. ב. $4.35\,\text{m/s}$.
+
+  - id: W-8.7-09
+    level: bagrut
+    objectives: [OBJ-8.7-1]
+    prompt: >-
+      מטוטלת של שעון גדול: מוט אחיד במסה $0.40\,\text{kg}$ ובאורך $1.0\,\text{m}$, תלוי בקצהו העליון, ובקצה התחתון מחוברת
+      במרכזה דסקה אחידה במסה $1.2\,\text{kg}$ וברדיוס $0.10\,\text{m}$, שמתנודדת במישור שלה. מה זמן המחזור של תנודות קטנות,
+      ובכמה אחוזים הוא שונה מזה של מטוטלת פשוטה באורך $1.0\,\text{m}$?
+    answer: >-
+      $T_0 = 1.96\,\text{s}$, קצר ב-$2.2\%$ מ-$2.01\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_r = 0.40\,\text{kg}$, $L = 1.0\,\text{m}$; $m_b = 1.2\,\text{kg}$, $r = 0.10\,\text{m}$, מרכז הדסקה $L$ מתחת לציר. $M = 1.6\,\text{kg}$.
+      - kind: law
+        text: >-
+          $T_0 = 2\pi\sqrt{I_P/(Mgd)}$; $I_P$ הוא סכום החלקים סביב הציר, כל אחד במשפט הצירים המקבילים; $d$ מרכז המסה של המערכת.
+      - kind: manipulation
+        text: >-
+          $d = \dfrac{m_rL/2 + m_bL}{M}$. $I_P = \tfrac13m_rL^2 + \tfrac12m_br^2 + m_bL^2$.
+      - kind: limit
+        text: >-
+          כש-$m_r \to 0$ ו-$r \to 0$, $I_P = m_bL^2$ ו-$d = L$: המטוטלת הפשוטה. המוט מקצר את זמן המחזור (מסתו קרובה לציר),
+          ורדיוס הדסקה מאריך אותו מעט.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2/(\text{kg}\cdot\text{m/s}^2\cdot\text{m}) = \text{s}^2$.
+      - kind: substitution
+        text: >-
+          $d = (0.20 + 1.2)/1.6 = 0.875\,\text{m}$; $I_P = 0.1333 + 0.0060 + 1.200 = 1.339\,\text{kg}\cdot\text{m}^2$;
+          $\ell = 1.339/(1.6\cdot0.875) = 0.957\,\text{m}$; $T_0 = 2\pi\sqrt{0.957/9.8} = 1.96\,\text{s}$, לעומת $2.01\,\text{s}$.
+      - kind: result
+        text: >-
+          $1.96\,\text{s}$, קצר ב-$2.2\%$ מהמטוטלת הפשוטה.
+
+  - id: W-8.7-10
+    level: bagrut
+    objectives: [OBJ-8.7-2, OBJ-8.7-1]
+    prompt: >-
+      מוט אחיד במסה $2.0\,\text{kg}$ ובאורך $1.5\,\text{m}$ תלוי במנוחה על ציר בקצהו העליון. מכים בקצה התחתון מכה אופקית
+      קצרה, $J = 4.0\,\text{N}\cdot\text{s}$.
+
+      א. מה המהירות הזוויתית של המוט מיד אחרי המכה?
+
+      ב. מה המתקף שהציר מפעיל על המוט בזמן המכה, ובאיזה כיוון?
+
+      ג. לאיזו זווית מהאנך יגיע המוט?
+    answer: >-
+      א. $4.00\,\text{rad/s}$. ב. $2.00\,\text{N}\cdot\text{s}$, בכיוון המכה. ג. $79.4^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 2.0\,\text{kg}$, $L = 1.5\,\text{m}$, $I_P = \tfrac13ML^2 = 1.50\,\text{kg}\cdot\text{m}^2$, $d = L/2$; $J$ ב-$b = L$. ציר $x$ בכיוון המכה.
+      - kind: law
+        text: >-
+          מתקף זוויתי ביחס לציר: $I_P\omega = Jb$. מתקף קווי: $J + J_P = M\omega d$. אחרי המכה, שימור אנרגיה: $\tfrac12I_P\omega^2 = Mgd(1 - \cos\theta)$.
+      - kind: manipulation
+        text: >-
+          $\omega = \dfrac{3J}{ML}$; $J_P = J\left(\dfrac{3b}{2L} - 1\right) = \tfrac12J$; $1 - \cos\theta = \dfrac{I_P\omega^2}{MgL}$.
+      - kind: limit
+        text: >-
+          מכה ב-$b = \tfrac23L$, מרכז ההקשה, הייתה נותנת $J_P = 0$. כאן $b > \tfrac23L$, ולכן הציר דוחף עם המכה.
+      - kind: units
+        text: >-
+          $J/(ML)$ ב-$\text{s}^{-1}$; $I_P\omega^2/(MgL)$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\omega = 3\cdot4.0/(2.0\cdot1.5) = 4.00\,\text{rad/s}$; $J_P = +2.00\,\text{N}\cdot\text{s}$; האנרגיה $\tfrac12\cdot1.50\cdot4.00^2 = 12.0\,\text{J}$,
+          $MgL/2 = 14.7\,\text{J}$, $\cos\theta = 1 - 12.0/14.7 = 0.184$, $\theta = 79.4^\circ$.
+      - kind: result
+        text: >-
+          א. $4.00\,\text{rad/s}$. ב. $2.00\,\text{N}\cdot\text{s}$ עם כיוון המכה. ג. $79.4^\circ$.
+
+challenge:
+  - id: W-8.7-c1
+    stars: 1
+    objectives: [OBJ-8.7-2]
+    prompt: >-
+      מוט צפיד אחיד במסה $m$ ובאורך $d$ מונח על שולחן אופקי חלק, ומחובר בקצה אחד, $P$, לציר אנכי קבוע. גוף נקודתי באותה
+      מסה $m$ נע על השולחן במהירות $v$ בניצב למוט, פוגע בו התנגשות אלסטית באמצע המוט, וניתר לאחור.
+
+      א. מה המהירות הזוויתית של המוט אחרי ההתנגשות, ומה מהירות הגוף?
+
+      ב. מה המתקף שהציר מפעיל על המוט בזמן ההתנגשות?
+
+      ג. באיזה מרחק מ-$P$ צריך הגוף לפגוע כדי שהציר לא יפעיל מתקף?
+    answer: >-
+      א. $\omega = \dfrac{12v}{7d}$; הגוף ניתר במהירות $v/7$. ב. $\tfrac27mv$, נגד כיוון התנועה של הגוף. ג. $\tfrac23d$.
+    solution:
+      - kind: given
+        text: >-
+          $I_P = \tfrac13md^2$, מרכז המסה $d/2$ מ-$P$, הפגיעה ב-$b = d/2$. ציר $x$ בכיוון התנועה של הגוף; $u$ מהירות הגוף אחרי.
+      - kind: law
+        text: >-
+          הכובד והנורמלי אנכיים ומתבטלים. ביחס ל-$P$ אין מומנט חיצוני בזמן ההתנגשות (לכוח של הציר אין זרוע), ולכן התנע הזוויתי
+          ביחס ל-$P$ נשמר; ההתנגשות אלסטית, ולכן גם האנרגיה הקינטית. ואחר כך, למוט: $J + J_P = m\omega\,\dfrac d2$.
+      - kind: manipulation
+        text: >-
+          $mvb = mub + I_P\omega$ ו-$v^2 = u^2 + \dfrac{I_P}{m}\omega^2$. הנקודה המוכה מתנהגת כמו גוף במסה $M = I_P/b^2 = \tfrac43m$
+          בהתנגשות חזיתית: $u = \dfrac{m - M}{m + M}v = -\dfrac v7$ ו-$\omega b = \dfrac{2m}{m + M}v = \dfrac67v$. המתקף על המוט
+          $J = m(v - u) = \tfrac87mv$, ו-$J_P = J\left(\dfrac{m(d/2)b}{I_P} - 1\right) = -\tfrac14J$.
+      - kind: limit
+        text: >-
+          אם המוט היה כבד מאוד, $M \gg m$, הגוף היה ניתר במהירות $v$ והמוט כמעט לא זז. ובדיקה: $\tfrac12mv^2 = \tfrac12m(v/7)^2 + \tfrac12I_P\omega^2$ מתקיים.
+      - kind: units
+        text: >-
+          $v/d$ ב-$\text{s}^{-1}$; $mv$ ב-$\text{N}\cdot\text{s}$.
+      - kind: reasoning
+        text: >-
+          ג. $J_P = 0$ כש-$b = \dfrac{I_P}{m(d/2)} = \tfrac23d$, מרכז ההקשה, בלי קשר לסוג ההתנגשות: המתקף של הגוף, יהיה אשר יהיה,
+          לא דורש מתקף מהציר כשהוא פועל שם.
+      - kind: result
+        text: >-
+          א. $\omega = 12v/(7d)$, הגוף חוזר במהירות $v/7$. ב. $|J_P| = \tfrac27mv$, נגד כיוון הגוף. ג. $\tfrac23d$ מ-$P$.
+    source:
+      name: MIT 8.01 Classical Mechanics (8.01x), Problem Set 11
+      year: 2016
+      problem: Problem 3 (Elastic Collision Between Ball and Pivoted Rod)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/8a7ebab932f259be07c4462d5fbc1a92_MIT8_01F16_pset11.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.7-c2
+    stars: 2
+    objectives: [OBJ-8.7-2]
+    prompt: >-
+      מבט מלמעלה: מחבט בייסבול מסתובב במישור אופקי סביב ציר בידיים, בלי שהשחקן מפעיל מומנט כוח. מומנט ההתמד של המחבט סביב
+      הציר $0.30\,\text{kg}\cdot\text{m}^2$, המסה שלו $0.90\,\text{kg}$, ומרכז המסה $0.55\,\text{m}$ מהציר. כדור במסה $0.15\,\text{kg}$
+      שנע אופקית במהירות $50\,\text{m/s}$ נגד כיוון התנועה של המחבט פוגע בו $0.80\,\text{m}$ מהציר, וחוזר בכיוון ההפוך
+      במהירות $40\,\text{m/s}$. אחרי הפגיעה המחבט ממשיך להסתובב באותו כיוון, במהירות זוויתית $0.35$ מזו שלפניה.
+
+      א. מה הייתה המהירות הזוויתית של המחבט לפני הפגיעה?
+
+      ב. מה המתקף שהידיים מפעילות על המחבט בזמן הפגיעה, ובאיזה כיוון?
+
+      ג. היכן היה צריך הכדור לפגוע כדי שהידיים לא ירגישו מכה?
+    answer: >-
+      א. $55.4\,\text{rad/s}$. ב. $4.32\,\text{N}\cdot\text{s}$, באותו כיוון כמו המתקף של הכדור על המחבט (נגד תנועת המחבט). ג. $0.606\,\text{m}$ מהציר.
+    solution:
+      - kind: given
+        text: >-
+          $I_P = 0.30\,\text{kg}\cdot\text{m}^2$, $M = 0.90\,\text{kg}$, $d = 0.55\,\text{m}$, $b = 0.80\,\text{m}$; כדור $m = 0.15\,\text{kg}$,
+          $50\,\text{m/s}$ נגד המחבט, אחר כך $40\,\text{m/s}$ חזרה. ציר $x$ בכיוון התנועה של נקודת הפגיעה במחבט; כיוון הסיבוב של המחבט חיובי.
+      - kind: law
+        text: >-
+          ביחס לציר אין מומנט חיצוני בזמן הפגיעה, ולכן התנע הזוויתי של המחבט והכדור ביחס אליו נשמר. למחבט לבדו: שינוי התנע
+          הזוויתי $I_P\Delta\omega = J b$, ושינוי התנע הקווי $J + J_P = Md\,\Delta\omega$, עם $J$ המתקף של הכדור על המחבט.
+      - kind: manipulation
+        text: >-
+          לפני: $I_P\omega - mv_1b$; אחרי: $0.35I_P\omega + mv_2b$. ולכן $0.65I_P\omega = m(v_1 + v_2)b$. המתקף על המחבט
+          $J = -m(v_1 + v_2)$ (נגד תנועת המחבט), ו-$J_P = J\left(\dfrac{Mdb}{I_P} - 1\right)$, שוב נגד תנועת המחבט כש-$\dfrac{Mdb}{I_P} > 1$.
+      - kind: limit
+        text: >-
+          $J_P = 0$ כש-$b = \dfrac{I_P}{Md} = \ell$. וכש-$b \to 0$ (פגיעה בידיים), $J_P \to -J$: הידיים בולעות הכול.
+      - kind: units
+        text: >-
+          $m v b/I_P$ ב-$\text{s}^{-1}$; $Mdb/I_P$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          א. $\omega = 0.15\cdot90\cdot0.80/(0.65\cdot0.30) = 55.4\,\text{rad/s}$. ב. $|J| = 13.5\,\text{N}\cdot\text{s}$;
+          $Mdb/I_P = 0.90\cdot0.55\cdot0.80/0.30 = 1.32$, ולכן $|J_P| = 0.32\cdot13.5 = 4.32\,\text{N}\cdot\text{s}$. ג. $\ell = 0.30/(0.90\cdot0.55) = 0.606\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $55.4\,\text{rad/s}$. ב. $4.32\,\text{N}\cdot\text{s}$ נגד תנועת המחבט: הפגיעה רחוקה ממרכז ההקשה, והידיים מרגישות
+          את הידית נמשכת קדימה מתוכן. ג. $0.606\,\text{m}$ מהציר.
+    source:
+      name: MIT 8.01L Physics I, Final Exam Sample Problems
+      year: 2005
+      problem: Problem 11 (The physics of baseball)
+      url: https://www.ocw.mit.edu/courses/8-01l-physics-i-classical-mechanics-fall-2005/afd4ee2483062af21065f3cd0b77d4c5_practice_final.pdf
+      verified: '2026-11-12'
+      adapted: true

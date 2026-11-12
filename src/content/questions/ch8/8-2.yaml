@@ -8,6 +8,15 @@
 #   disc M = 4.0 kg, R = 0.25 m about a rim point: (3/2)MR² = 0.375 (centre 0.125, MR² 0.25) kg·m²;
 #   rod about an axis L/4 from its end: 7ML²/48 (wrong 19/48 from the end axis);
 #   square plate a = 0.40 m, M = 1.5 kg: centre Ma²/6 = 0.04, corner (2/3)Ma² = 0.16 (d = a 0.28, edge 0.08) kg·m².
+# Recomputed independently on 2026-11-12 (lesson author) in .scratch/ch8/8-2/bank.ts against src/physics/rigidbody.ts
+# (the λ(x) rod by inertiaByIntegral): every answer, commonWrong and feedback number confirmed, every commonWrong
+# more than 3% from the answer and from the others; no key changed. The lesson's figure, steps and examples use other
+# bodies and numbers (the text's graded body is a thin cone, λ ∝ x², not the λ ∝ x rod; it never puts an axis at a
+# square plate's corner, a disc's rim or L/4 from a rod's end).
+# Reviewed 2026-11-12 (.scratch/review/ch8/p12/recompute.ts, independent): every key confirmed; Q-8.2-plate-corner
+# gained the commonWrong 0.10 (d = a/2: 0.04 + 1.5·0.04). Q-8.2-perpendicular-flat-only was rewritten: its old
+# answer ("the theorem holds only for flat bodies") is printed in the lesson's step "thick"; it now asks for Σmz² of a
+# solid sphere from I_x + I_y − I_z = 2Σmz²: MR²/5 (wrong: 0, 2/5 = I_z, 3/5 = Σmr²; checked by ∫z²dm = ⅓·⅗MR²).
 
 chapter: 8
 questions:
@@ -36,7 +45,7 @@ questions:
       - text: '$ML^2$, כי כל המסה במרחק של עד $L$ מהציר.'
         feedback: '$ML^2$ מתאים לגוף שכל מסתו בקצה הרחוק. במוט אחיד רוב המסה קרובה יותר לציר, ולכן $I$ קטן יותר.'
     hints:
-      - 'כתבו $dm = (M/L)\,dx$, ואינטגרלו $x^2\,dm$ מ-$0$ עד $L$.'
+      - 'כתבו $dm = (M/L)\,dx$, וחשבו את האינטגרל של $x^2\,dm$ מ-$0$ עד $L$.'
 
   - id: Q-8.2-disc-integral
     type: mc
@@ -44,7 +53,7 @@ questions:
     qualitative: true
     level: basic
     prompt: >-
-      רוצים לחשב את מומנט ההתמד של דסקה אחידה ברדיוס $R$, עם צפיפות שטחית $\sigma$ (מסה ליחידת שטח), סביב הציר
+      רוצים לחשב את מומנט ההתמד של דסקה אחידה ברדיוס $R$, עם צפיפות משטחית $\sigma$ (מסה ליחידת שטח), סביב הציר
       שניצב לה ועובר במרכזה. מחלקים את הדסקה לטבעות דקות ברדיוס $r$ וברוחב $dr$. איזה אינטגרל נותן את $I$?
     choices:
       - text: '$\displaystyle I = \int_0^R r^2\,\sigma\,2\pi r\,dr$'
@@ -77,7 +86,7 @@ questions:
       - text: לדסקה.
         feedback: 'בדסקה יש "יותר חומר" במובן של שטח, אבל לא יותר מסה: המסות שוות. מה שקובע הוא היכן המסה נמצאת.'
         misconception: MC-8-inertia-only-mass
-      - text: הם שווים, כי המסה והרדיוס שווים.
+      - text: מומנטי ההתמד שלהן שווים, כי המסה והרדיוס שווים.
         feedback: 'מסה ורדיוס לא מספיקים. $I = \int r^2\,dm$ תלוי בפיזור המסה סביב הציר.'
         misconception: MC-8-inertia-only-mass
     reasons:
@@ -103,8 +112,8 @@ questions:
     unit: kg·m²
     correctFeedback: >-
       נכון: $I = \tfrac23\cdot0.60\cdot0.12^2 = 5.76\cdot10^{-3}\,\text{kg}\cdot\text{m}^2$. מקור המקדם: בקליפה כל
-      המסה במרחק $R$ מהמרכז, אבל המרחק מ**ציר** של נקודה בזווית $\theta$ מהציר הוא $R\sin\theta$, והממוצע של
-      $\sin^2\theta$ על פני הכדור הוא $\tfrac23$.
+      המסה במרחק $R$ מהמרכז, אבל המרחק מ**ציר** של נקודה ליד הקטבים קטן מ-$R$. לכן $I < MR^2$, והאינטגרל על
+      טבעות הקליפה נותן $\tfrac23$.
     wrongFeedback: 'הציבו בנוסחה של קליפה: $\tfrac23MR^2$, עם $R$ במטרים.'
     commonWrong:
       - value: 0.00346
@@ -199,29 +208,41 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      סטודנטית מנסה להפעיל את משפט הצירים הניצבים, $I_z = I_x + I_y$, על כדור מלא סביב שלושה צירים ניצבים שעוברים
-      במרכזו. מסימטריה $I_x = I_y = I_z = I$, ולכן היא מקבלת $I = 2I$, כלומר $I = 0$. מה הטעות?
+      כדור מלא ואחיד במסה $M$ וברדיוס $R$, ומרכזו בראשית. סביב כל אחד משלושת הצירים $x$, $y$ ו-$z$ מומנט ההתמד הוא
+      $\tfrac25MR^2$. מה הסכום $\sum m_iz_i^2$ על פני כל חלקי הכדור, כאשר $z_i$ הוא הגובה של חלק מעל המישור $xy$
+      (חיובי או שלילי)?
     choices:
-      - text: 'המשפט נכון רק לגוף שטוח, שכל המסה שלו במישור $xy$.'
-        correct: true
-        feedback: 'נכון. הכדור אינו שטוח, ולכן המשפט לא חל עליו.'
-      - text: 'המשפט נכון לכל גוף, אבל לכדור $I_z$ גדול מ-$I_x$ ומ-$I_y$.'
-        feedback: 'בכדור אחיד כל הקטרים שקולים, ולכן שלושת מומנטי ההתמד שווים באמת. הטעות היא בשימוש במשפט, לא בסימטריה.'
-        misconception: MC-8-perpendicular-axis-any-body
-      - text: 'המשפט נכון רק לצירים שעוברים בשפת הגוף, לא במרכזו.'
-        feedback: 'משפט הצירים הניצבים מתייחס לשלושה צירים ניצבים זה לזה שנחתכים בנקודה אחת במישור הגוף, בכל מקום במישור. התנאי הוא שהגוף שטוח.'
-    reasons:
-      - text: '$I_x + I_y = \sum m(x^2 + y^2) + 2\sum mz^2$, ו-$\sum mz^2 = 0$ רק כשכל המסה במישור $z = 0$.'
+      - text: '$\tfrac15MR^2$'
         correct: true
         feedback: >-
-          זה הנימוק. $I_x = \sum m(y^2 + z^2)$ ו-$I_y = \sum m(x^2 + z^2)$, ולכן $I_x + I_y = I_z + 2\sum mz^2$. בכדור
-          האיבר האחרון לא אפס. ומאותה זהות יוצאת דרך יפה לכדור: $I_x + I_y + I_z = 2\sum mr^2$, ולכן
-          $I = \tfrac23\sum mr^2$, ובכדור מלא זה $\tfrac25MR^2$.
-      - text: 'בכדור המסה מפוזרת באופן לא אחיד, ולכן אי אפשר לסכם את הרכיבים.'
-        feedback: 'הכדור בשאלה אחיד. הבעיה היא ממד שלישי של מסה, $z \neq 0$, לא פיזור לא אחיד.'
-      - text: 'המשפט דורש שהצירים לא יעברו במרכז המסה.'
-        feedback: 'אין דרישה כזו. בדסקה, למשל, המשפט נותן נכון $I_{diameter} = \tfrac14MR^2$ מצירים שעוברים במרכז.'
+          נכון. $I_x + I_y - I_z = 2\sum mz^2$, ובכדור האגף השמאלי הוא $\tfrac25MR^2$. בדיקה בדרך אחרת: מסימטריה
+          $\sum mx^2 = \sum my^2 = \sum mz^2$, ו-$I_z = \sum m(x^2 + y^2)$ הוא שניים מהם: $2\sum mz^2 = \tfrac25MR^2$.
+      - text: '$0$, כי $I_z = I_x + I_y$.'
+        feedback: >-
+          $I_z = I_x + I_y$ נכון רק לגוף שטוח, שכל המסה שלו במישור $xy$. בכדור, $\tfrac25 \ne \tfrac25 + \tfrac25$:
+          הסכום $\sum mz^2$ הוא בדיוק מה שהמשפט מזניח.
         misconception: MC-8-perpendicular-axis-any-body
+      - text: '$\tfrac25MR^2$'
+        feedback: >-
+          זה $I_z$, סביב **ציר** $z$, שבו נכנס המרחק מהציר, $x^2 + y^2$. ב-$\sum mz^2$ נכנס המרחק מה**מישור** $xy$,
+          וזה גודל אחר.
+      - text: '$\tfrac35MR^2$'
+        feedback: >-
+          זה $\sum m(x^2 + y^2 + z^2)$, ריבוע המרחק מה**מרכז**, סכום של שלושה איברים שווים. $\sum mz^2$ הוא רק
+          אחד מהם.
+    reasons:
+      - text: '$I_x + I_y = I_z + 2\sum mz^2$, ובכדור שלושת מומנטי ההתמד שווים.'
+        correct: true
+        feedback: >-
+          זה הנימוק. $I_x = \sum m(y^2 + z^2)$ ו-$I_y = \sum m(x^2 + z^2)$, ולכן $I_x + I_y = I_z + 2\sum mz^2$. עם
+          $I_x = I_y = I_z = I$: $2I = I + 2\sum mz^2$, כלומר $\sum mz^2 = I/2$.
+      - text: 'משפט הצירים הניצבים, $I_z = I_x + I_y$, נכון לכל גוף ולכל שלושה צירים ניצבים.'
+        feedback: >-
+          אילו כך, בכדור היה יוצא $I = 2I$, כלומר $I = 0$. המשפט נכון רק כשכל המסה במישור $z = 0$, ואז
+          $\sum mz^2 = 0$.
+        misconception: MC-8-perpendicular-axis-any-body
+      - text: '$\sum mz^2$ הוא מומנט ההתמד סביב ציר $z$.'
+        feedback: 'מומנט ההתמד סביב ציר $z$ הוא $\sum m(x^2 + y^2)$: המרחק מהציר, לא הגובה מעל המישור.'
     hints:
       - 'כתבו את $I_x$, $I_y$ ו-$I_z$ כסכומים של $m$ כפול ריבועי קואורדינטות, וחברו את שני הראשונים.'
 
@@ -248,5 +269,9 @@ questions:
         feedback: 'השתמשתם ב-$d = a$. הפינה רחוקה מהמרכז חצי אלכסון, $d = a/\sqrt2$, ולכן $d^2 = a^2/2$.'
       - value: 0.08
         feedback: 'זה $\tfrac13Ma^2$, מומנט ההתמד סביב צלע של הלוח, ציר שבמישור הלוח. הציר בשאלה ניצב ללוח.'
+      - value: 0.10
+        feedback: >-
+          השתמשתם ב-$d = a/2$, המרחק מהמרכז לאמצע צלע. הפינה רחוקה יותר: חצי האלכסון, $d = a/\sqrt2$, ולכן
+          $d^2 = a^2/2$.
     hints:
       - 'הלוח שטוח: $I_z = I_x + I_y$ סביב שלושה צירים ניצבים שנחתכים במרכז.'

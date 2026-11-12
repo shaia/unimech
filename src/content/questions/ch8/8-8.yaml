@@ -2,13 +2,29 @@
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
 # Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch8/q.ts with src/physics/constants.ts (G = 9.8):
-#   tilted dumbbell, m = 0.50 kg at r = 0.20 m on each side, θ = 30° to the axle, ω = 10 rad/s:
-#     |L| = 2mωr² sin θ = 0.20, L_z = 0.10, L_⊥ = 2mωr² sin θ cos θ = 0.173 kg·m²/s; bearing torque ωL_⊥ = 1.73 N·m
-#     (no cos 2.0, no angles 4.0, one mass 0.866);
-#   top m = 0.20 kg, r = 0.050 m, I = 1.0e-4 kg·m², ω = 200 rad/s: Ω = mgr/(Iω) = 4.90 rad/s (inverted 0.204, no ω 980);
-#   toy gyroscope, disc rotor 0.15 kg, R = 0.030 m, r = 0.040 m, 3000 rpm (314 rad/s): Ω = 2.77 rad/s,
-#     precession period 2.27 s (ring rotor 4.53, rpm without 2π 0.361), ω/Ω = 113.
+# Every number was recomputed in .scratch/ch8/8-8/bank.ts with src/physics (G = 9.8; rigidbody.ts, top.ts):
+#   tensor-apply: I = [[0.20, 0, −0.06], [0, 0.25, 0], [−0.06, 0, 0.10]] kg·m², ω = 4.0 ẑ rad/s: L = (−0.24, 0, 0.40),
+#     angle 31.0° (complement 59.0°, radians 0.540);
+#   bearing-torque (mid): dumbbell m = 0.50 kg at r = 0.20 m each side, θ = 30° to the axle, ω = 10 rad/s:
+#     |L| = 2mωr² sin θ = 0.20, L_z = 0.10, L_⊥ = 0.173 kg·m²/s; τ = ωL_⊥ = 1.73 N·m (ω|L| 2.0, no angles 4.0,
+#     one mass 0.866);
+#   rod-bearings (bagrut): thin rod 0.90 kg, 0.50 m, θ = 25°, ω = 12 rad/s, bearings 0.40 m apart:
+#     I⊥ = mℓ²/12 = 0.01875, |L| = 0.0951, L_⊥ = 0.0862 kg·m²/s, τ = 1.03 N·m, F = τ/D = 2.59 N
+#     (ω|L|/D 2.85, rod about its end 10.3, two point masses at the ends 7.76, τ itself 1.03, τ/(D/2) 5.17);
+#   top-rate: M = 0.25 kg, d = 0.030 m, I₃ = 1.5e-4 kg·m², ω₃ = 220 rad/s: Ω = Mgd/(I₃ω₃) = 2.23 rad/s
+#     (inverted 0.449, no ω₃ 490), ω₃/Ω = 98.8;
+#   toy-gyroscope, REWRITTEN (review 2026-11-12: a disc rotor on a light axle at a tilt was figure 8.8ב's scene with
+#     new numbers): disc rotor 0.15 kg, R = 0.030 m, centre 0.040 m from the pivot, 3000 rpm (314 rad/s), on a thin
+#     uniform axle 0.050 kg × 0.12 m resting on the post at one end (its CM 0.060 m out), axle 20° above the horizontal
+#     (θ = 70°): I₃ = 6.75e-5, L = 0.0212 kg·m²/s, τ/sin θ = g(0.0060 + 0.0030) = 0.0882 N·m, τ = 0.0829 N·m,
+#     Ω = 4.16 rad/s, period 1.51 s, ω₃/Ω = 75.5 (axle ignored 2.27, axle mass at the rotor 1.70, ring rotor 3.02,
+#     rpm without 2π 0.240, Ω itself 4.16, sin θ only in τ 1.61). Recomputed by .scratch/review/ch8/pair-8-8.ts.
+#   bearing-torque adds the wrong r = 0.40 m (the whole rod): 6.93 N·m.
+# Review 2026-11-12 (lesson author): the numbers of top-rate (was M = 0.20 kg, ω = 200 rad/s, Ω = 4.90) changed so no
+# question repeats the figure's gyroscope (0.20 kg, 200 rad/s step); bearing-torque moved from bagrut to mid (the
+# lesson prints τ = ωL_⊥ for the dumbbell); new: tensor-apply, rod-bearings (the exam rung), support-force (the only
+# detector of MC-8-gyroscope-defies-gravity); toy-gyroscope got the 20° tilt; the notation follows the lesson
+# (d, I₃, ω₃ instead of r, I, ω for the top).
 
 chapter: 8
 questions:
@@ -19,8 +35,8 @@ questions:
     qualitative: true
     level: basic
     prompt: >-
-      משקולת: שתי מסות שוות בקצות מוט קל, שמרכזו מחובר לציר אנכי. המוט נטוי בזווית $30^\circ$ לציר, והכול
-      מסתובב סביב הציר במהירות זוויתית קבועה $\vec\omega$, כלפי מעלה. מה כיוון התנע הזוויתי $\vec L$ סביב המרכז?
+      משקולת: שתי מסות שוות בקצות מוט קל, שמרכזו מחובר לסרן אנכי. המוט נטוי בזווית $30^\circ$ לסרן, והכול
+      מסתובב סביב הסרן במהירות זוויתית קבועה $\vec\omega$, כלפי מעלה. מה כיוון התנע הזוויתי $\vec L$ ביחס למרכז המוט?
     choices:
       - text: 'ניצב למוט, במישור שמכיל את המוט ואת הציר, ולכן הוא מסתובב יחד עם המשקולת סביב הציר.'
         correct: true
@@ -39,6 +55,32 @@ questions:
     hints:
       - 'חשבו $\vec r\times m\vec v$ למסה העליונה: $\vec r$ לאורך המוט, ו-$\vec v$ אופקי ומשיק למעגל שלה.'
 
+  - id: Q-8.8-tensor-apply
+    type: numeric
+    objectives: [OBJ-8.8-1]
+    level: basic
+    prompt: >-
+      טנזור ההתמד של גוף צפיד, ביחס לנקודה קבועה $O$ ובצירים $x, y, z$, הוא
+
+      $$\mathbf I = \begin{pmatrix} 0.20 & 0 & -0.06\\ 0 & 0.25 & 0\\ -0.06 & 0 & 0.10 \end{pmatrix}\ \text{kg}\cdot\text{m}^2$$
+
+      הגוף מסתובב סביב ציר $z$ שעובר דרך $O$, במהירות זוויתית $\vec\omega = (0,\,0,\,4.0)\,\text{rad/s}$. מה הזווית
+      בין התנע הזוויתי $\vec L = \mathbf I\vec\omega$ לבין $\vec\omega$, במעלות?
+    answer: 31.0
+    unit: °
+    correctFeedback: >-
+      נכון. כל רכיב של $\vec L$ הוא שורה של המטריצה כפול $\vec\omega$. רק $\omega_z$ שונה מאפס, ולכן $\vec L$ הוא העמודה
+      השלישית כפול $4.0$: $\vec L = (-0.24,\,0,\,0.40)\,\text{kg}\cdot\text{m}^2/\text{s}$. הזווית מ-$z$:
+      $\tan\alpha = 0.24/0.40$, $\alpha = 31.0^\circ$. מכפלת ההתמד $I_{xz} = -0.06$ היא שנותנת ל-$\vec L$ רכיב $x$.
+    wrongFeedback: 'כפלו את המטריצה ב-$\vec\omega$, שורה אחרי שורה, ומצאו את הזווית של $\vec L$ מציר $z$.'
+    commonWrong:
+      - value: 59.0
+        feedback: 'זו הזווית של $\vec L$ מציר $x$, $\arctan(0.40/0.24)$. השאלה שואלת על הזווית מ-$\vec\omega$, שפונה לאורך $z$.'
+      - value: 0.540
+        feedback: 'זו התשובה ברדיאנים. השאלה מבקשת מעלות: $0.540\,\text{rad} = 31.0^\circ$.'
+    hints:
+      - 'כש-$\vec\omega$ לאורך $z$, כל רכיב של $\vec L$ הוא האיבר בעמודה השלישית של אותה שורה, כפול $\omega_z$.'
+
   - id: Q-8.8-principal-axes
     type: multi
     objectives: [OBJ-8.8-1]
@@ -50,7 +92,7 @@ questions:
     choices:
       - text: 'בתיבה אחידה עם צלעות שונות $a \ne b \ne c$: שלושת הצירים שעוברים במרכזה ומקבילים לצלעות.'
         correct: true
-        feedback: 'נכון. כל אחד מהם הוא ציר של סימטריית שיקוף: לכל מסה יש מסה תאומה שמבטלת את מכפלות ההתמד, למשל $\sum mxy = 0$.'
+        feedback: 'נכון. כל אחד מהם ניצב למישור סימטריה של התיבה, שעובר במרכזה ומקביל לפאות: לכל מסה יש מסה תאומה בצד השני של המישור, והתאומות מבטלות את מכפלות ההתמד, למשל $\sum mxz = 0$. הניצב למישור סימטריה הוא ציר ראשי.'
       - text: 'באותה תיבה: האלכסון הראשי, מפינה לפינה דרך המרכז.'
         feedback: >-
           בתיבה שצלעותיה שונות האלכסון אינו ציר ראשי. בבסיס של הצלעות $\vec L = (I_1\omega_1, I_2\omega_2, I_3\omega_3)$,
@@ -61,13 +103,15 @@ questions:
         feedback: 'נכון. בקובייה $I_1 = I_2 = I_3$, ולכן $\vec L = I\vec\omega$ לכל כיוון של $\vec\omega$, כמו בכדור.'
       - text: 'בדסקה דקה ואחידה: כל קוטר.'
         correct: true
-        feedback: 'נכון. בדסקה שני מומנטי ההתמד במישור שווים, $\tfrac14MR^2$, ולכן כל כיוון במישור הוא ציר ראשי, וגם הציר הניצב לה.'
+        feedback: 'נכון. כל קוטר ניצב למישור סימטריה של הדסקה: המישור שמכיל את ציר הדסקה ואת הקוטר שניצב לקוטר הזה. לכן כל קוטר הוא ציר ראשי, עם אותו מומנט התמד, $\tfrac14MR^2$. גם הציר הניצב לדסקה ראשי: הוא ציר הסימטריה שלה.'
       - text: 'בתיבה עם צלעות שונות: ציר שעובר בפינה ולאורך אחת הצלעות.'
         feedback: >-
-          סביב הפינה מכפלות ההתמד אינן אפס. למשל, אם הציר לאורך צלע $c$ (ציר $z$) והפינה בראשית,
-          $\sum mxz = M\dfrac a2\cdot\dfrac c2 \ne 0$, ולכן ל-$\vec L$ יש רכיב $x$, שניצב לציר.
+          לא. שימו את הפינה בראשית, ציר $z$ לאורך הצלע $c$, ו-$x$, $y$ לאורך שתי הצלעות האחרות. לכל חלקיק של התיבה
+          $x \ge 0$ ו-$z \ge 0$, ולכן כל התרומות ל-$\sum mxz$ חיוביות, ואין תאומים שמבטלים אותן: $I_{xz} \ne 0$, ול-$\vec L$
+          יש רכיב $x$, שניצב לציר. בלוח דק, כמו בדוגמה על הלוח המלבני בשיעור, המצב שונה: שם הציר ניצב ללוח, $z = 0$
+          לכל המסה, ולכן הציר הניצב בפינה כן ראשי.
     hints:
-      - 'ציר ראשי הוא כיוון שבו טנזור ההתמד פועל כמו מספר: $I\vec\omega = \lambda\vec\omega$. סימטריה עוזרת למצוא אותו.'
+      - 'ציר ראשי הוא כיוון שבו טנזור ההתמד פועל כמו מספר: $\mathbf I\vec\omega = \lambda\vec\omega$. סימטריה עוזרת למצוא אותו.'
 
   - id: Q-8.8-wheel-balance
     type: twotier
@@ -93,7 +137,7 @@ questions:
         correct: true
         feedback: 'זה הנימוק. גודל המומנט $\omega L_\perp$, כאשר $L_\perp$ הרכיב של $\vec L$ שניצב לסרן. הוא גדל כמו $\omega^2$, ולכן מורגש במהירות גבוהה.'
       - text: '$\vec L = I\vec\omega$ תמיד, ולכן $\vec L$ קבוע כש-$\vec\omega$ קבועה.'
-        feedback: '$\vec L = I\vec\omega$ עם $I$ מספר נכון רק לסיבוב סביב ציר ראשי. בכללי $\vec L = \mathbf{I}\vec\omega$, כאשר $\mathbf I$ טנזור, ו-$\vec L$ יכול לפנות לכיוון אחר.'
+        feedback: '$\vec L = I\vec\omega$ עם $I$ מספר נכון רק לסיבוב סביב ציר ראשי. באופן כללי $\vec L = \mathbf{I}\vec\omega$, כאשר $\mathbf I$ טנזור, ו-$\vec L$ יכול לפנות לכיוון אחר.'
         misconception: MC-8-L-parallel-omega
       - text: 'המשקל של הגלגל יוצר מומנט סביב הסרן.'
         feedback: 'מרכז המסה על הסרן, ולכן למשקל אין מומנט סביבו. המומנט נדרש בגלל ש-$\vec L$ משנה כיוון, לא בגלל הכובד.'
@@ -103,11 +147,11 @@ questions:
   - id: Q-8.8-bearing-torque
     type: numeric
     objectives: [OBJ-8.8-1]
-    level: bagrut
+    level: mid
     prompt: >-
-      משקולת: שתי מסות של $0.50\,\text{kg}$ בקצות מוט קל באורך $0.40\,\text{m}$, שמרכזו מחובר לציר אנכי. המוט
-      נטוי בזווית $30^\circ$ לציר, והמערכת מסתובבת במהירות זוויתית קבועה $10\,\text{rad/s}$. מה גודל המומנט שהמסבים
-      של הציר מפעילים?
+      משקולת: שתי מסות של $0.50\,\text{kg}$ בקצות מוט קל באורך $0.40\,\text{m}$, שמרכזו מחובר לסרן אנכי. המוט
+      נטוי בזווית $30^\circ$ לסרן, והמערכת מסתובבת במהירות זוויתית קבועה $10\,\text{rad/s}$. מה גודל המומנט שהמסבים
+      של הסרן מפעילים עליו?
     answer: 1.73
     unit: N·m
     correctFeedback: >-
@@ -124,8 +168,44 @@ questions:
         feedback: 'זה $2m\omega^2r^2$, בלי הזוויות. ב-$\theta = 0$ או $90^\circ$ הנוסחה הזו לא הייתה מתאפסת, אבל שם הציר ראשי ואין צורך במומנט.'
       - value: 0.866
         feedback: 'זה המומנט של מסה אחת. שתי המסות תורמות ל-$\vec L$ באותו כיוון, ולכן המומנט כפול.'
+      - value: 6.93
+        feedback: 'הצבתם $r = 0.40\,\text{m}$, את אורך המוט כולו. כל מסה נמצאת במרחק $r = 0.20\,\text{m}$ מהמרכז, ו-$\tau \propto r^2$.'
     hints:
       - 'המומנט שווה ל-$\vec\omega\times\vec L$, וגודלו $\omega L_\perp$.'
+
+  - id: Q-8.8-rod-bearings
+    type: numeric
+    objectives: [OBJ-8.8-1]
+    level: bagrut
+    prompt: >-
+      מוט דק ואחיד, במסה $0.90\,\text{kg}$ ובאורך $0.50\,\text{m}$, מחובר במרכזו לסרן אנכי, נטוי בזווית $25^\circ$
+      לסרן, ומסתובב איתו במהירות זוויתית קבועה $12\,\text{rad/s}$. הסרן מוחזק בשני מסבים, אחד מעל המוט ואחד מתחתיו,
+      במרחקים שווים ממרכזו, והמרחק בין המסבים $0.40\,\text{m}$. הזניחו את הכובד ואת מסת הסרן. מה גודל הכוח האופקי
+      שכל מסב מפעיל על הסרן?
+    answer: 2.59
+    unit: N
+    correctFeedback: >-
+      נכון. במרכז המוט הצירים הראשיים הם לאורך המוט, עם מומנט התמד אפס, וכל כיוון ניצב למוט, עם
+      $I_\perp = \tfrac1{12}m\ell^2 = 0.01875\,\text{kg}\cdot\text{m}^2$. רק הרכיב של $\vec\omega$ שניצב למוט, $\omega\sin\theta$,
+      תורם, ולכן $|\vec L| = I_\perp\omega\sin\theta = 0.0951\,\text{kg}\cdot\text{m}^2/\text{s}$, בניצב למוט. הרכיב שלו שניצב
+      לסרן, $L_\perp = |\vec L|\cos\theta = 0.0862$, מסתובב בקצב $\omega$, ולכן $\tau = \omega L_\perp = 1.03\,\text{N}\cdot\text{m}$.
+      שני המסבים מפעילים זוג כוחות, $F$ ו-$-F$, במרחק $D$ זה מזה, ולכן $\tau = FD$ ו-$F = 2.59\,\text{N}$.
+      **בדיקת גבולות:** ב-$\theta = 0$ וב-$\theta = 90^\circ$ הסרן ציר ראשי ו-$F = 0$.
+    wrongFeedback: 'מצאו את $\vec L$ בעזרת הצירים הראשיים של המוט במרכזו, את המומנט $\omega L_\perp$ שהסרן צריך, ואת זוג הכוחות של המסבים שנותן אותו.'
+    commonWrong:
+      - value: 2.85
+        feedback: 'השתמשתם ב-$\omega|\vec L|$. רק הרכיב של $\vec L$ שניצב לסרן מסתובב ומשתנה; הרכיב לאורך הסרן קבוע.'
+      - value: 10.3
+        feedback: 'זה מומנט ההתמד של מוט סביב **קצהו**, $\tfrac13m\ell^2$. המוט מחובר לסרן במרכזו, ושם $I_\perp = \tfrac1{12}m\ell^2$.'
+      - value: 7.76
+        feedback: 'חשבתם את המוט כשתי מסות נקודתיות בקצותיו, $\tfrac14m\ell^2$. המסה של מוט אחיד מפוזרת לאורכו, ו-$I_\perp = \tfrac1{12}m\ell^2$.'
+      - value: 1.03
+        feedback: 'זה המומנט, ב-$\text{N}\cdot\text{m}$. השאלה שואלת על הכוח של כל מסב: זוג כוחות במרחק $D$ זה מזה נותן $\tau = FD$.'
+      - value: 5.17
+        feedback: 'חילקתם את המומנט ב-$D/2$. שני הכוחות מפעילים יחד את המומנט: כל אחד בזרוע $D/2$, ולכן $\tau = 2F\cdot\dfrac D2 = FD$.'
+    hints:
+      - 'מה הצירים הראשיים של מוט דק במרכזו? פרקו את $\vec\omega$ לרכיב לאורך המוט ולרכיב שניצב לו.'
+      - 'זוג כוחות $\pm\vec F$ במרחק $D$ זה מזה נותן מומנט בגודל $FD$, ביחס לכל נקודה.'
 
   # ---------------------------------------------------------------- OBJ-8.8-2 precession rate of a fast top or gyroscope
   - id: Q-8.8-precession-direction
@@ -135,15 +215,15 @@ questions:
     level: basic
     allowOutIn: true
     prompt: >-
-      מבט מלמעלה על ג׳ירוסקופ: הציר האופקי שלו מונח בקצה אחד על עמוד, במרכז התמונה, ומשתרע ממנו מזרחה. הגלגל
-      בקצה המזרחי מסתובב מהר, עם תנע זוויתי $\vec L$ מזרחה (הרחק מהעמוד). "כלפי מעלה" פירושו מהדף אליכם (out).
-      לאיזה כיוון מתחיל לנוע הגלגל?
+      מבט מלמעלה על ג׳ירוסקופ, כמו על מפה: צפון למעלה בדף ומזרח ימינה. הסרן האופקי שלו מונח בקצה אחד על עמוד,
+      במרכז התמונה, ומשתרע ממנו מזרחה. הגלגל בקצה המזרחי מסתובב מהר, עם תנע זוויתי $\vec L$ מזרחה (הרחק מהעמוד).
+      "כלפי מעלה" במציאות פירושו מהדף אליכם. לאיזה כיוון מתחיל לנוע הגלגל?
     answer: n
     correctFeedback: >-
-      נכון. סביב העמוד, מומנט הכובד הוא $\vec\tau = \vec r\times m\vec g$, עם $\vec r$ מזרחה ו-$m\vec g$ כלפי מטה (לתוך
+      נכון. ביחס לעמוד, מומנט הכובד הוא $\vec\tau = \vec r\times M\vec g$, עם $\vec r$ מזרחה ו-$M\vec g$ כלפי מטה (לתוך
       הדף). כלל יד ימין נותן צפונה. $d\vec L = \vec\tau\,dt$ צפונה, ולכן $\vec L$, ואיתו הגלגל, פונה צפונה: הג׳ירוסקופ
       נוקף נגד כיוון השעון במבט מלמעלה, ולא נופל.
-    wrongFeedback: 'חשבו את מומנט הכובד סביב העמוד, $\vec r\times m\vec g$, וזכרו ש-$\vec L$ משתנה בכיוון של $\vec\tau$.'
+    wrongFeedback: 'חשבו את מומנט הכובד ביחס לעמוד, $\vec r\times M\vec g$, וזכרו ש-$\vec L$ משתנה בכיוון של $\vec\tau$.'
     wrong:
       - dir: in
         feedback: >-
@@ -162,21 +242,21 @@ questions:
     objectives: [OBJ-8.8-2]
     level: basic
     prompt: >-
-      סביבון במסה $0.20\,\text{kg}$ מסתובב מהר סביב ציר הסימטריה שלו במהירות זוויתית $200\,\text{rad/s}$, ומומנט
-      ההתמד שלו סביב הציר הזה $1.0\cdot10^{-4}\,\text{kg}\cdot\text{m}^2$. מרכז המסה שלו במרחק $0.050\,\text{m}$
-      מנקודת המגע עם הרצפה. מה קצב הנקיפה שלו?
-    answer: 4.9
+      סביבון במסה $0.25\,\text{kg}$ מסתובב מהר סביב ציר הסימטריה שלו, בסיבוב עצמי $\omega_3 = 220\,\text{rad/s}$, ומומנט
+      ההתמד שלו סביב הציר הזה $I_3 = 1.5\cdot10^{-4}\,\text{kg}\cdot\text{m}^2$. מרכז המסה שלו במרחק $d = 0.030\,\text{m}$
+      מנקודת המגע עם הרצפה, שאינה זזה. מה קצב הנקיפה שלו?
+    answer: 2.23
     unit: rad/s
     correctFeedback: >-
-      נכון. $\Omega = \dfrac{mgr}{I\omega} = \dfrac{0.20\cdot9.8\cdot0.050}{1.0\cdot10^{-4}\cdot200} = 4.90\,\text{rad/s}$.
+      נכון. $\Omega = \dfrac{Mgd}{I_3\omega_3} = \dfrac{0.25\cdot9.8\cdot0.030}{1.5\cdot10^{-4}\cdot220} = 2.23\,\text{rad/s}$.
       הקצב לא תלוי בזווית הנטייה של הסביבון: גם המומנט וגם הרכיב האופקי של $\vec L$ פרופורציוניים ל-$\sin\theta$.
-      הקירוב טוב כי $\omega = 200 \gg \Omega$.
-    wrongFeedback: 'מומנט הכובד סביב נקודת המגע הוא $mgr\sin\theta$, והוא מסובב את $\vec L$ בקצב $\Omega = \dfrac{\tau}{L\sin\theta}$.'
+      הקירוב טוב כי $\omega_3 = 220 \gg \Omega$.
+    wrongFeedback: 'מומנט הכובד סביב נקודת המגע הוא $Mgd\sin\theta$, והוא מסובב את $\vec L$ בקצב $\Omega = \dfrac{\tau}{L\sin\theta}$.'
     commonWrong:
-      - value: 0.204
-        feedback: 'הפכתם את המנה: $\dfrac{I\omega}{mgr}$ ביחידות שניות. קצב הנקיפה הוא המומנט חלקי התנע הזוויתי.'
-      - value: 980
-        feedback: 'שכחתם את $\omega$: חילקתם במומנט ההתמד, לא בתנע הזוויתי $I\omega$. בדקו יחידות: $\dfrac{\text{N}\cdot\text{m}}{\text{kg}\cdot\text{m}^2}$ הן $\text{s}^{-2}$.'
+      - value: 0.449
+        feedback: 'הפכתם את המנה: $\dfrac{I_3\omega_3}{Mgd}$ ביחידות שניות. קצב הנקיפה הוא המומנט חלקי התנע הזוויתי.'
+      - value: 490
+        feedback: 'שכחתם את $\omega_3$: חילקתם במומנט ההתמד, לא בתנע הזוויתי $I_3\omega_3$. בדקו יחידות: $\dfrac{\text{N}\cdot\text{m}}{\text{kg}\cdot\text{m}^2}$ הן $\text{s}^{-2}$.'
     hints:
       - 'מה גודל התנע הזוויתי של הסביבון, ומה גודל מומנט הכובד עליו?'
 
@@ -186,11 +266,12 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      חיכוך קטן בנקודת המגע מאט לאט את הסיבוב של סביבון מהיר. מה קורה לקצב הנקיפה שלו, כל עוד הסביבון עדיין מהיר?
+      חיכוך קטן בנקודת המגע מאט לאט את הסיבוב העצמי של סביבון מהיר. מה קורה לקצב הנקיפה שלו, כל עוד הסביבון עדיין
+      מהיר?
     choices:
       - text: 'הוא גדל.'
         correct: true
-        feedback: 'נכון. $\Omega = \dfrac{mgr}{I\omega}$, ולכן כש-$\omega$ קטנה, $\Omega$ גדלה. בסוף, כש-$\omega$ כבר לא גדולה בהרבה מ-$\Omega$, הקירוב נשבר והסביבון מתנדנד ונופל.'
+        feedback: 'נכון. $\Omega = \dfrac{Mgd}{I_3\omega_3}$, ולכן כש-$\omega_3$ קטנה, $\Omega$ גדלה. בסוף, כש-$\omega_3$ כבר לא גדולה בהרבה מ-$\Omega$, הקירוב נשבר והסביבון מתנדנד ונופל.'
       - text: 'הוא קטן, יחד עם הסיבוב.'
         feedback: 'נדמה שכל תנועה של הסביבון מאטה יחד, אבל הנקיפה נקבעת מהיחס בין המומנט לתנע הזוויתי, ותנע זוויתי קטן יותר מסתובב **מהר** יותר תחת אותו מומנט.'
         misconception: MC-8-precession-proportional-to-spin
@@ -206,7 +287,35 @@ questions:
       - text: 'החיכוך מפעיל מומנט שמאיץ את הנקיפה.'
         feedback: 'החיכוך מאט את הסיבוב העצמי. הנקיפה מואצת בגלל ש-$L$ קטן, לא בגלל מומנט נוסף שדוחף אותה.'
     hints:
-      - 'כתבו את $\Omega$ כפונקציה של $\omega$.'
+      - 'כתבו את $\Omega$ כפונקציה של $\omega_3$.'
+
+  - id: Q-8.8-support-force
+    type: mc
+    objectives: [OBJ-8.8-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      ג׳ירוסקופ שמסתו הכוללת $M$ מונח בקצה אחד של הסרן שלו על עמוד, והסרן אופקי. הרוטור מסתובב מהר, הג׳ירוסקופ
+      נוקף בקצב קבוע, והסרן נשאר אופקי. מה גודל הרכיב האנכי של הכוח שהעמוד מפעיל על הג׳ירוסקופ?
+    choices:
+      - text: 'בדיוק $Mg$.'
+        correct: true
+        feedback: >-
+          נכון. מרכז המסה נע במעגל אופקי ולא עולה ולא יורד, ולכן הרכיב האנכי של תאוצתו אפס. לפי החוק השני, הרכיב
+          האנכי של הכוח השקול אפס: העמוד דוחף כלפי מעלה ב-$Mg$. הסיבוב לא מחזיק את הגוף, הוא רק הופך את המומנט
+          לשינוי בכיוון של $\vec L$.
+      - text: 'פחות מ-$Mg$, כי הסיבוב המהיר נושא חלק מהמשקל.'
+        feedback: >-
+          אין כוח "ג׳ירוסקופי" שנושא משקל. על הג׳ירוסקופ פועלים רק הכובד והכוח של העמוד, ומרכז המסה לא מאיץ אנכית.
+          לכן הכוח האנכי של העמוד שווה ל-$Mg$, מהר ככל שהרוטור יסתובב.
+        misconception: MC-8-gyroscope-defies-gravity
+      - text: 'יותר מ-$Mg$, כי העמוד צריך גם לאזן את מומנט הכובד.'
+        feedback: 'מומנט הכובד סביב העמוד לא מתאזן: הוא משנה את $\vec L$ בכל רגע, וזו הנקיפה. ולכוח של העמוד אין מומנט סביב העמוד בכלל, כי הוא פועל בנקודה עצמה.'
+      - text: 'אפס, כי הג׳ירוסקופ מרחף.'
+        feedback: 'אילו העמוד לא היה דוחף, הכוח היחיד היה הכובד, ומרכז המסה היה נופל בתאוצה $g$. הוא לא נופל, ולכן העמוד דוחף כלפי מעלה.'
+        misconception: MC-8-gyroscope-defies-gravity
+    hints:
+      - 'כתבו את החוק השני בכיוון האנכי עבור מרכז המסה של הג׳ירוסקופ. האם הוא עולה או יורד?'
 
   - id: Q-8.8-toy-gyroscope
     type: numeric
@@ -214,23 +323,35 @@ questions:
     level: bagrut
     prompt: >-
       לג׳ירוסקופ צעצוע יש רוטור שהוא דסקה אחידה במסה $0.15\,\text{kg}$ וברדיוס $0.030\,\text{m}$, שמסתובבת
-      ב-3000 סיבובים לדקה. הציר שלו אופקי, ומונח על עמוד בנקודה שמרחקה ממרכז הרוטור $0.040\,\text{m}$. הזניחו את
-      מסת המסגרת. כמה זמן לוקח לג׳ירוסקופ להשלים סיבוב נקיפה אחד?
-    answer: 2.27
+      ב-3000 סיבובים לדקה על סרן. הסרן הוא מוט דק ואחיד במסה $0.050\,\text{kg}$ ובאורך $0.12\,\text{m}$. קצה אחד של
+      הסרן מונח על עמוד, ומרכז הרוטור על הסרן, $0.040\,\text{m}$ מהעמוד. הסרן נטוי $20^\circ$ מעל האופק. כמה זמן
+      לוקח לג׳ירוסקופ להשלים סיבוב נקיפה אחד?
+    answer: 1.51
     unit: s
     correctFeedback: >-
-      נכון. $\omega = 3000\cdot\dfrac{2\pi}{60} = 314\,\text{rad/s}$, $I = \tfrac12MR^2 = 6.75\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$, ולכן
-      $L = I\omega = 0.0212\,\text{kg}\cdot\text{m}^2/\text{s}$. המומנט $Mgr = 0.0588\,\text{N}\cdot\text{m}$, ו-
-      $\Omega = \dfrac{Mgr}{L} = 2.77\,\text{rad/s}$. זמן הנקיפה $\dfrac{2\pi}{\Omega} = 2.27\,\text{s}$. **בדיקת גבולות:**
-      הנוסחה דורשת $\omega \gg \Omega$, וכאן היחס כ-113. וכש-$\omega \to \infty$, זמן הנקיפה שואף לאינסוף: ג׳ירוסקופ מהיר
-      מאוד כמעט לא נוקף.
-    wrongFeedback: 'המירו סיבובים לדקה ל-$\text{rad/s}$, חשבו $L = I\omega$, ואז $\Omega = \dfrac{Mgr}{L}$ ואת הזמן $\dfrac{2\pi}{\Omega}$.'
+      נכון. הנקודה הקבועה $P$ היא קצה הסרן שעל העמוד, והמומנטים ביחס אליה. $\omega_3 = 3000\cdot\dfrac{2\pi}{60} = 314\,\text{rad/s}$,
+      $I_3 = \tfrac12MR^2 = 6.75\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$, ולכן $L = I_3\omega_3 = 0.0212\,\text{kg}\cdot\text{m}^2/\text{s}$.
+      לסרן הדק אין כמעט מומנט התמד סביב עצמו, ולכן הוא לא מוסיף ל-$L$, אבל המשקל שלו, במרכזו, $0.060\,\text{m}$ מ-$P$,
+      מוסיף למומנט. הסרן ב-$\theta = 70^\circ$ מהאנך, ושני המשקלים מסובבים לאותו צד:
+      $\tau = g\left(0.15\cdot0.040 + 0.050\cdot0.060\right)\sin\theta = 0.0829\,\text{N}\cdot\text{m}$. הוא מסובב את הרכיב
+      האופקי של $\vec L$, $L\sin\theta$, וה-$\sin\theta$ מצטמצם: $\Omega = \dfrac{0.0882}{0.0212} = 4.16\,\text{rad/s}$, וזמן הנקיפה
+      $\dfrac{2\pi}{\Omega} = 1.51\,\text{s}$. **בדיקת גבולות:** בלי מסת הסרן הזמן היה $2.27\,\text{s}$; הנוסחה דורשת
+      $\omega_3 \gg \Omega$, וכאן היחס כ-76.
+    wrongFeedback: 'המירו סיבובים לדקה ל-$\text{rad/s}$ וחשבו $L = I_3\omega_3$. אחר כך המומנט ביחס לנקודה שעל העמוד: המשקל של הרוטור ושל הסרן, כל אחד במרכז שלו. ואז $\Omega$ ואת הזמן $\dfrac{2\pi}{\Omega}$.'
     commonWrong:
-      - value: 4.53
-        feedback: 'השתמשתם ב-$I = MR^2$, של טבעת. הרוטור דסקה אחידה, $I = \tfrac12MR^2$, ולכן התנע הזוויתי חצי והנקיפה מהירה פי 2.'
-      - value: 0.361
+      - value: 2.27
+        feedback: 'שכחתם את המשקל של הסרן. הוא פועל במרכז הסרן, $0.060\,\text{m}$ מהעמוד, ומוסיף למומנט באותו כיוון כמו משקל הרוטור.'
+      - value: 1.7
+        feedback: 'שמתם את מסת הסרן במרכז הרוטור. המשקל של מוט אחיד פועל במרכזו, $0.060\,\text{m}$ מהעמוד, לא ב-$0.040\,\text{m}$.'
+      - value: 3.02
+        feedback: 'השתמשתם ב-$I = MR^2$, של טבעת. עם $MR^2$ התנע הזוויתי כפול, הנקיפה איטית פי 2 וזמן הנקיפה כפול. הרוטור דסקה אחידה, $I_3 = \tfrac12MR^2$.'
+      - value: 0.24
         feedback: 'המרתם $3000$ סיבובים לדקה ל-$50\,\text{rad/s}$, בלי $2\pi$. זה $50$ סיבובים **בשנייה**, כלומר $314\,\text{rad/s}$.'
-      - value: 2.77
+      - value: 4.16
         feedback: 'זה $\Omega$ עצמו, ב-$\text{rad/s}$. השאלה מבקשת את הזמן של סיבוב נקיפה שלם, $2\pi/\Omega$.'
+      - value: 1.61
+        feedback: 'הכנסתם את $\sin\theta$ למומנט וחילקתם בכל $L$. המומנט האופקי מסובב רק את הרכיב **האופקי** של $\vec L$, $L\sin\theta$, ובו ה-$\sin\theta$ מצטמצם.'
     hints:
       - 'כמה רדיאנים לשנייה הם 3000 סיבובים לדקה?'
+      - 'על הג׳ירוסקופ פועלים שני משקלים, של הרוטור ושל הסרן. איפה פועל כל אחד, ומה המומנט של כל אחד ביחס לעמוד?'
+      - 'האם קצב הנקיפה תלוי בזווית הנטייה של הסרן?'

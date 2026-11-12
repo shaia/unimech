@@ -1,0 +1,476 @@
+# Workbook, lesson 8.4 (rolling). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-4/workbook.ts and challenge.ts with G = 9.8 and src/physics/rigidbody.ts,
+# rolling.ts:
+#   W02 solid sphere from h = 1.2 m: v = √(2gh/1.4) = 4.10 m/s (a sliding block 4.85);
+#   W04 hollow sphere, 25°, L = 4.0 m, m = 0.60 kg: a = (3/5)g sin θ = 2.48 m/s², t = 1.79 s, v = 4.46 m/s, f = 0.994 N,
+#       μ_min = (2/5) tan θ = 0.187;
+#   W05 solid cylinder 3.0 kg at 2.0 m/s: K = 9.00 J, of which 3.00 J rotational;
+#   W06 hollow sphere, v0 = 5.0 m/s, no spin, μk = 0.10: v = (3/5)v0 = 3.00 m/s after 2.04 s and 8.16 m; K kept 3/5;
+#   W08 solid ball in a loop of radius 0.50 m: h_min = 2.7 r = 1.35 m (a point mass 1.25 m), v at the top √(gr) = 2.21 m/s;
+#   W09 elastic head-on hit of a rolling ball (2.0 m/s) on an identical one at rest, μk = 0.20: striker 0.571 m/s,
+#       target 1.43 m/s, both after 0.292 s; striker skids 0.0833 m, target 0.500 m; K kept 0.592;
+#   W10 disc 2.0 kg rolling, pulled at its axle by 0.50 kg over a pulley: a = 1.40 m/s², f = 1.40 N, T = 4.20 N,
+#       μ_min = 0.0714 (sliding block 1.96 m/s², a ring 1.09 m/s²);
+#   c1 (MIT 8.01x Fall 2016, PS 12, Problem 4) yo-yo, axle R/3, I = ½mR², string from the bottom of the axle along the
+#      slope: f = mg sin φ/3 − 5F/9, a = (4F/9 − (2/3)mg sin φ)/m; F_max = (9/5)mg(μs cos φ + sin φ/3); for
+#      m = 1 kg, φ = 20°, μs = 0.30 the check gives F_max = 6.98 N, |f| = μs N exactly; F that holds it still (3/2)mg sin φ;
+#   c2 (same, Problem 5) billiards: v_final = (5/7)v0(1 + h/R) = (9/7)v0 → h = 4R/5.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.4'
+practice:
+  - id: W-8.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      גלגל של אופניים, ברדיוס $R$, מתגלגל בלי החלקה על כביש אופקי, והמרכז שלו נע במהירות $v$ ימינה. מה המהירות
+      (גודל וכיוון) ביחס לכביש של הנקודה העליונה של הצמיג, של המרכז ושל נקודת המגע? הסבירו בלי חישוב ארוך: למה
+      הצמיג לא נשחק מהחלקה, אף שהוא נע?
+    answer: >-
+      העליונה $2v$ ימינה, המרכז $v$ ימינה, נקודת המגע אפס. נקודת המגע במנוחה ביחס לכביש בכל רגע, ולכן אין בה
+      החלקה.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה; גלגול בלי החלקה, $v = \omega R$, כש-$\omega$ נמדדת בכיוון הגלגול (עם כיוון השעון).
+      - kind: law
+        text: >-
+          מהירות נקודה בגוף צפיד היא מהירות המרכז ועוד מהירות הסיבוב סביבו, $\omega r$, בניצב לרדיוס.
+      - kind: manipulation
+        text: >-
+          בסיבוב עם כיוון השעון הנקודה העליונה נעה ביחס למרכז ימינה ב-$\omega R = v$, והתחתונה שמאלה ב-$\omega R = v$.
+          מוסיפים את $v$ של המרכז: למעלה $v + v$, למטה $v - v$.
+      - kind: reasoning
+        text: >-
+          בכל רגע נקודה אחרת של הצמיג נוגעת בכביש, וכל אחת מהן, ברגע המגע, במנוחה ביחס לכביש. כוח שפועל על נקודה
+          במנוחה לא מחליק עליה, ולכן אין שחיקה מהחלקה (השחיקה שכן יש באה מעיוות הצמיג).
+      - kind: limit
+        text: >-
+          כש-$v \to 0$ כל הנקודות במנוחה. וגלגל שמסתובב במקום ($v = 0$, $\omega \ne 0$) הוא בדיוק המקרה שבו נקודת
+          המגע מחליקה, ב-$\omega R$.
+      - kind: units
+        text: >-
+          $\omega R$ ב-$\text{rad/s}\cdot\text{m} = \text{m/s}$, כמו $v$.
+      - kind: result
+        text: >-
+          למעלה $2v$, במרכז $v$, ובנקודת המגע $0$: היא ציר הסיבוב הרגעי.
+
+  - id: W-8.4-02
+    level: basic
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      כדור מלא ואחיד מתגלגל בלי החלקה ממנוחה במורד מסלול, ויורד בגובה $1.2\,\text{m}$. מה מהירותו בתחתית? והשוו
+      לגוש שמחליק בלי חיכוך מאותו גובה.
+    answer: >-
+      $4.10\,\text{m/s}$; הגוש $4.85\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          כדור מלא, $\beta = \tfrac25$; $h = 1.2\,\text{m}$; ממנוחה, בלי החלקה.
+      - kind: law
+        text: >-
+          החיכוך הסטטי לא עושה עבודה, ולכן האנרגיה המכנית נשמרת: $mgh = \tfrac12mv^2 + \tfrac12I_{cm}\omega^2$, עם $\omega = v/R$.
+      - kind: manipulation
+        text: >-
+          $mgh = \tfrac12(1 + \beta)mv^2$, ולכן $v = \sqrt{\dfrac{2gh}{1 + \beta}}$. לגוש $\beta = 0$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ חוזרים ל-$\sqrt{2gh}$ של הגוש. התוצאה לא תלויה בצורת המסלול, רק בגובה.
+      - kind: units
+        text: >-
+          $\sqrt{gh}$ ב-$\sqrt{\text{m}^2/\text{s}^2} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $2gh = 23.5\,\text{m}^2/\text{s}^2$, ולכן $v = \sqrt{23.5/1.4} = 4.10\,\text{m/s}$; הגוש $\sqrt{23.5} = 4.85\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $4.10\,\text{m/s}$, כ-$0.845$ ממהירות הגוש, $4.85\,\text{m/s}$.
+
+  - id: W-8.4-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.4-2]
+    prompt: >-
+      שחקן טניס מכה כדור כך שהוא נוחת על המגרש ומסתובב **מהר מדי** בכיוון הגלגול: $\omega R > v$. בזמן שהכדור
+      מחליק על המגרש, לאן פונה החיכוך הקינטי? מה קורה למהירות המרכז ולמהירות הזוויתית עד שההחלקה נגמרת?
+    answer: >-
+      נקודת המגע מחליקה אחורה, ולכן החיכוך פונה קדימה: המרכז מאיץ והסיבוב מאט, עד ש-$v = \omega R$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ קדימה, $\omega$ חיובית בכיוון הגלגול קדימה. $\omega R > v > 0$.
+      - kind: law
+        text: >-
+          מהירות ההחלקה של נקודת המגע $u = v - \omega R$; החיכוך הקינטי פועל נגד $u$.
+      - kind: manipulation
+        text: >-
+          כאן $u < 0$: נקודת המגע מחליקה אחורה, והחיכוך פונה **קדימה**. מהחוק השני הוא מאיץ את המרכז קדימה. הוא פועל
+          מתחת למרכז וקדימה, ולכן המומנט שלו סביב המרכז נגד כיוון הגלגול: הוא מאט את $\omega$. שני השינויים מקטינים
+          את $|u|$.
+      - kind: limit
+        text: >-
+          אם $\omega R = v$ מההתחלה, $u = 0$ ואין חיכוך כלל. ואם $v = 0$ (כדור שמסתובב במקום), החיכוך מתחיל להזיז
+          אותו קדימה.
+      - kind: units
+        text: >-
+          $u$, $v$ ו-$\omega R$ כולן ב-$\text{m/s}$.
+      - kind: result
+        text: >-
+          החיכוך קדימה; $v$ עולה ו-$\omega$ יורדת, עד ש-$v = \omega R$, ואז החיכוך נעלם.
+
+  - id: W-8.4-04
+    level: mid
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      כדורסל (קליפה כדורית דקה, $I = \tfrac23mR^2$) במסה $0.60\,\text{kg}$ מתגלגל בלי החלקה ממנוחה במורד מדרון
+      בזווית $25^\circ$ ובאורך $4.0\,\text{m}$. מצאו את תאוצת המרכז, את זמן הירידה, את המהירות בתחתית, את כוח
+      החיכוך הסטטי ואת מקדם החיכוך הסטטי המינימלי.
+    answer: >-
+      $a = 2.48\,\text{m/s}^2$, $t = 1.79\,\text{s}$, $v = 4.46\,\text{m/s}$, $f = 0.994\,\text{N}$ במעלה המדרון,
+      $\mu_s \ge 0.187$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = \tfrac23$, $m = 0.60\,\text{kg}$, $\theta = 25^\circ$, $L = 4.0\,\text{m}$. ציר $x$ במורד, הסיבוב
+          חיובי בכיוון הגלגול במורד.
+      - kind: law
+        text: >-
+          $mg\sin\theta - f = ma$; סביב המרכז $fR = \beta mR^2\alpha$; $a = \alpha R$; $f \le \mu_smg\cos\theta$.
+      - kind: manipulation
+        text: >-
+          $f = \beta ma$, ולכן $a = \dfrac{g\sin\theta}{1 + \beta} = \tfrac35g\sin\theta$ ו-$f = \tfrac25mg\sin\theta$.
+          $t = \sqrt{2L/a}$, $v = at$, $\mu_s \ge \dfrac{f}{mg\cos\theta} = \tfrac25\tan\theta$.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$, $a \to 0$ ו-$f \to 0$. וכשהקליפה מתחלפת בגוש ($\beta = 0$), $f = 0$ ו-$a = g\sin\theta$.
+      - kind: units
+        text: >-
+          $\tfrac25mg\sin\theta$ בניוטון; $\tan\theta$ חסר ממדים, כמו $\mu_s$.
+      - kind: substitution
+        text: >-
+          $\sin25^\circ = 0.423$: $a = 0.6\cdot9.8\cdot0.423 = 2.48\,\text{m/s}^2$; $t = \sqrt{8.0/2.48} = 1.79\,\text{s}$;
+          $v = 4.46\,\text{m/s}$; $f = \tfrac25\cdot5.88\cdot0.423 = 0.994\,\text{N}$; $\mu_s \ge 0.4\cdot0.466 = 0.187$.
+      - kind: result
+        text: >-
+          $2.48\,\text{m/s}^2$, $1.79\,\text{s}$, $4.46\,\text{m/s}$, $0.994\,\text{N}$ במעלה המדרון, $\mu_s \ge 0.187$.
+
+  - id: W-8.4-05
+    level: mid
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      גליל מלא ואחיד במסה $3.0\,\text{kg}$ מתגלגל בלי החלקה על רצפה במהירות $2.0\,\text{m/s}$. מה האנרגיה
+      הקינטית שלו, וכמה ממנה סיבובית? כמה עבודה צריך לעשות כדי לעצור אותו?
+    answer: >-
+      $K = 9.00\,\text{J}$, מתוכה $3.00\,\text{J}$ סיבובית. עבודה של $-9.00\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = \tfrac12$, $m = 3.0\,\text{kg}$, $v = 2.0\,\text{m/s}$, $\omega = v/R$.
+      - kind: law
+        text: >-
+          משפט קניג: $K = \tfrac12mv^2 + \tfrac12I_{cm}\omega^2$. משפט עבודה-אנרגיה: העבודה הכוללת שווה לשינוי ב-$K$.
+      - kind: manipulation
+        text: >-
+          $\tfrac12I_{cm}\omega^2 = \tfrac12\beta mv^2$, ולכן $K = \tfrac12(1 + \beta)mv^2$, והחלק הסיבובי
+          $\dfrac{\beta}{1 + \beta}$. לעצור: $W = 0 - K$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ כל האנרגיה של תנועת המרכז, וכש-$\beta = 1$ (טבעת) חצי ממנה סיבובית.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\tfrac12\cdot3.0\cdot4.0 = 6.00\,\text{J}$ של תנועת המרכז, ועוד $\tfrac12\cdot6.00 = 3.00\,\text{J}$ סיבובית: $9.00\,\text{J}$.
+      - kind: result
+        text: >-
+          $9.00\,\text{J}$, שליש ממנה ($3.00\,\text{J}$) סיבובית; העבודה לעצירה $-9.00\,\text{J}$.
+
+  - id: W-8.4-06
+    level: mid
+    objectives: [OBJ-8.4-2]
+    prompt: >-
+      כדור כדורסל (קליפה כדורית דקה, $I = \tfrac23mR^2$) נזרק על רצפת אולם כך שהוא נוחת במהירות $5.0\,\text{m/s}$
+      בלי סיבוב, ומקדם החיכוך הקינטי $0.10$. מה מהירותו כשהוא מתחיל להתגלגל בלי החלקה? אחרי כמה זמן, ואחרי איזה
+      מרחק? איזה חלק מהאנרגיה הקינטית שלו נשאר?
+    answer: >-
+      $3.00\,\text{m/s}$, אחרי $2.04\,\text{s}$ ו-$8.16\,\text{m}$; נשארים $\tfrac35$ מהאנרגיה.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = \tfrac23$, $v_0 = 5.0\,\text{m/s}$, $\omega_0 = 0$, $\mu_k = 0.10$. ציר $x$ קדימה, $\omega$ בכיוון הגלגול.
+      - kind: law
+        text: >-
+          התנע הזוויתי סביב נקודה על הרצפה נשמר: $mR(v + \beta\omega R)$. בזמן ההחלקה $\dot v = -\mu_kg$ ו-$\dot u = -\mu_kg(1 + \beta)/\beta$.
+      - kind: manipulation
+        text: >-
+          $v_0 = v(1 + \beta)$, ולכן $v = \dfrac{v_0}{1 + \beta}$. $t = \dfrac{\beta v_0}{\mu_kg(1 + \beta)}$, והמרחק
+          $v_0t - \tfrac12\mu_kgt^2$. האנרגיה בסוף $\tfrac12(1 + \beta)mv^2 = \dfrac{\tfrac12mv_0^2}{1 + \beta}$.
+      - kind: limit
+        text: >-
+          כש-$\mu_k \to \infty$ הזמן והמרחק שואפים לאפס, אבל $v$ ואיבוד האנרגיה לא משתנים.
+      - kind: units
+        text: >-
+          $v_0/(\mu_kg)$ ב-$\text{s}$; $v_0^2/(\mu_kg)$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          $v = 5.0/(5/3) = 3.00\,\text{m/s}$. $\mu_kg = 0.98\,\text{m/s}^2$, ולכן $t = 2.00/0.98 = 2.04\,\text{s}$ (המהירות
+          ירדה ב-$2.00\,\text{m/s}$). המרחק: המהירות הממוצעת, $4.0\,\text{m/s}$, כפול $t$: $8.16\,\text{m}$.
+      - kind: result
+        text: >-
+          $3.00\,\text{m/s}$, אחרי $2.04\,\text{s}$ ו-$8.16\,\text{m}$; האנרגיה שנשארת $\tfrac35$, ו-$\tfrac25$ הפכו לחום.
+
+  - id: W-8.4-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      שני כדורים מלאים זהים משתחררים ממנוחה מאותו גובה, כל אחד במדרון אחר בעל אותה זווית. המדרון הראשון מחוספס,
+      והכדור מתגלגל בו בלי החלקה. השני חלק לגמרי, והכדור מחליק בו בלי להסתובב. קבעו ונמקו: מי מגיע ראשון לתחתית?
+      למי אנרגיה קינטית גדולה יותר בתחתית?
+    answer: >-
+      הכדור במדרון החלק מגיע ראשון. האנרגיה הקינטית של שניהם שווה, $mgh$.
+    solution:
+      - kind: given
+        text: >-
+          כדורים זהים, $\beta = \tfrac25$; אותו גובה ואותה זווית; אחד מתגלגל, אחד מחליק בלי חיכוך.
+      - kind: law
+        text: >-
+          בשני המקרים אף כוח לא עושה עבודה חוץ מהכובד: החיכוך הסטטי פועל על נקודה במנוחה, והכוח הנורמלי ניצב לתנועה.
+      - kind: reasoning
+        text: >-
+          לכן לשניהם $K = mgh$ בתחתית. אבל אצל המתגלגל $\tfrac27$ מהאנרגיה סיבובית, ולתנועת המרכז נשאר פחות: $v$ קטנה
+          יותר, ובאותה מידה התאוצה, $\tfrac57g\sin\theta$ מול $g\sin\theta$.
+      - kind: limit
+        text: >-
+          אילו לכדור לא היה מומנט התמד ($\beta \to 0$), שני המדרונות היו נותנים אותה תנועה.
+      - kind: units
+        text: >-
+          $mgh$ בג׳אול בשני המקרים.
+      - kind: result
+        text: >-
+          המחליק ראשון (מהיר פי $\sqrt{7/5} = 1.18$ בכל נקודה); האנרגיה הקינטית שווה, $mgh$.
+
+  - id: W-8.4-08
+    level: bagrut
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      כדור מלא קטן מתגלגל בלי החלקה במסלול שמסתיים בלולאה אנכית ברדיוס $r = 0.50\,\text{m}$. רדיוס הכדור זניח לעומת
+      $r$. מאיזה גובה מינימלי מעל תחתית הלולאה צריך לשחרר את הכדור ממנוחה כדי שיעבור את הלולאה בלי להתנתק ממנה?
+      השוו לחלקיק שמחליק בלי חיכוך.
+    answer: >-
+      $h = 2.7r = 1.35\,\text{m}$; לחלקיק $2.5r = 1.25\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = \tfrac25$, $r = 0.50\,\text{m}$, רדיוס הכדור זניח, כך שמרכז הכדור נע על מעגל ברדיוס $r$. הגובה $h$ נמדד מתחתית הלולאה.
+      - kind: law
+        text: >-
+          בנקודה העליונה הכוח השקול כלפי המרכז הוא הכובד ועוד הכוח הנורמלי, והוא שווה ל-$mv^2/r$; בסף הניתוק הכוח
+          הנורמלי אפס. ושימור אנרגיה בגלגול בלי החלקה: $mgh = mg\cdot2r + \tfrac12(1 + \beta)mv^2$.
+      - kind: manipulation
+        text: >-
+          בסף: $mg = mv^2/r$, כלומר $v^2 = gr$. מציבים: $gh = 2gr + \tfrac12(1 + \beta)gr$.
+      - kind: manipulation
+        text: >-
+          $h_{\min} = \left(2 + \dfrac{1 + \beta}{2}\right)r = 2.7r$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ מקבלים $2.5r$, התוצאה המוכרת לחלקיק מחליק. טבעת ($\beta = 1$) הייתה צריכה $3r$.
+      - kind: units
+        text: >-
+          $h$ ביחידות של $r$, מטרים.
+      - kind: substitution
+        text: >-
+          $h_{\min} = 2.7\cdot0.50 = 1.35\,\text{m}$; לחלקיק $1.25\,\text{m}$. בנקודה העליונה $v = \sqrt{9.8\cdot0.50} = 2.21\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $1.35\,\text{m}$, גבוה ב-$0.10\,\text{m}$ מחלקיק מחליק: האנרגיה הסיבובית לא עוזרת לטפס.
+
+  - id: W-8.4-09
+    level: bagrut
+    objectives: [OBJ-8.4-2]
+    prompt: >-
+      כדור ביליארד מתגלגל בלי החלקה במהירות $2.0\,\text{m/s}$ ופוגע חזיתית בכדור זהה שנח. ההתנגשות אלסטית וקצרה מאוד,
+      ובזמן הפגיעה החיכוך בין הכדורים ועם השולחן זניח, כך שהיא מעבירה תנע קווי בלבד: הכדור הפוגע נעצר במקומו
+      אבל ממשיך להסתובב, והכדור הנפגע יוצא במהירות $2.0\,\text{m/s}$ בלי סיבוב. מקדם החיכוך הקינטי עם השולחן $0.20$.
+
+      א. מה מהירותו של כל כדור כשהוא מתחיל להתגלגל בלי החלקה, ומתי?
+
+      ב. איזה חלק מהאנרגיה הקינטית ההתחלתית נשאר בסוף?
+    answer: >-
+      א. הפוגע $0.571\,\text{m/s}$ קדימה, הנפגע $1.43\,\text{m/s}$, שניהם אחרי $0.292\,\text{s}$. ב. $0.592$.
+    solution:
+      - kind: given
+        text: >-
+          כדורים מלאים זהים, $\beta = \tfrac25$. ציר $x$ בכיוון הפגיעה, $\omega$ בכיוון הגלגול קדימה. אחרי הפגיעה: הפוגע
+          $v = 0$, $\omega R = 2.0\,\text{m/s}$; הנפגע $v = 2.0\,\text{m/s}$, $\omega = 0$. $\mu_k = 0.20$.
+      - kind: law
+        text: >-
+          לכל כדור בנפרד, התנע הזוויתי סביב נקודה על השולחן נשמר: $v_f(1 + \beta) = v + \beta\omega R$. משך ההחלקה
+          $t = \dfrac{\beta|u_0|}{\mu_kg(1 + \beta)}$, עם $u_0 = v - \omega R$.
+      - kind: manipulation
+        text: >-
+          הפוגע: $u_0 = -2.0$, החיכוך קדימה, $v_f = \dfrac{\beta}{1 + \beta}\cdot2.0 = \tfrac27\cdot2.0$. הנפגע:
+          $u_0 = +2.0$, החיכוך אחורה, $v_f = \tfrac57\cdot2.0$. $|u_0|$ שווה, ולכן גם הזמן. האנרגיה בהתחלה
+          $\tfrac12(1 + \beta)m(2.0)^2$, ובסוף $\tfrac12(1 + \beta)m\left(v_1^2 + v_2^2\right)$.
+      - kind: limit
+        text: >-
+          סכום המהירויות הסופיות הוא $2.0\,\text{m/s}$, כמו לפני הפגיעה: בזמן ההחלקה החיכוך על שני הכדורים שווה בגודל
+          והפוך בכיוון, ולכן התנע הכולל נשמר גם בהחלקה. כש-$\beta \to 0$ הפוגע נשאר במקום והנפגע ממשיך ב-$2.0$, כמו
+          בהתנגשות של גושים.
+      - kind: units
+        text: >-
+          $|u_0|/(\mu_kg)$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $v_1 = 0.571\,\text{m/s}$, $v_2 = 1.43\,\text{m/s}$; $\mu_kg = 1.96\,\text{m/s}^2$, ולכן $t = (2.0 - 1.43)/1.96 = 0.292\,\text{s}$ (הנפגע מאבד $0.571\,\text{m/s}$).
+          היחס: $(0.571^2 + 1.43^2)/2.0^2 = 0.592$.
+      - kind: result
+        text: >-
+          א. $0.571\,\text{m/s}$ ו-$1.43\,\text{m/s}$, שניהם קדימה, אחרי $0.292\,\text{s}$ (הפוגע "ממשיך אחרי" הנפגע). ב. $0.592$ מהאנרגיה.
+
+  - id: W-8.4-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      דסקה (גליל מלא) במסה $2.0\,\text{kg}$ מונחת על שולחן אופקי. חוט קשור לציר שבמרכזה, עובר אופקית מעל גלגלת
+      חסרת מסה בקצה השולחן, ובקצהו השני תלויה משקולת במסה $0.50\,\text{kg}$. הדסקה מתגלגלת בלי החלקה.
+
+      א. קבעו ונמקו, בלי חישוב: לאן פונה החיכוך שהשולחן מפעיל על הדסקה?
+
+      ב. מצאו את התאוצה, את המתיחות ואת מקדם החיכוך הסטטי המינימלי.
+    answer: >-
+      א. אחורה, נגד המשיכה. ב. $a = 1.40\,\text{m/s}^2$, $T = 4.20\,\text{N}$, $f = 1.40\,\text{N}$, $\mu_s \ge 0.0714$.
+    solution:
+      - kind: given
+        text: >-
+          דסקה: $m_1 = 2.0\,\text{kg}$, $\beta = \tfrac12$. משקולת: $m_2 = 0.50\,\text{kg}$. ציר $x$ בכיוון המשיכה
+          (לדסקה) ולמטה (למשקולת), החוט לא נמתח, כך שלשתיהן אותה תאוצה $a$. הסיבוב חיובי בכיוון הגלגול קדימה.
+      - kind: reasoning
+        text: >-
+          א. החוט מושך במרכז, ולכן אין לו מומנט סביב המרכז. מה שמסובב את הדסקה הוא רק החיכוך, והסיבוב צריך לגדול
+          בכיוון הגלגול קדימה. חיכוך בנקודת המגע מתחת למרכז מסובב בכיוון הזה רק כשהוא פונה **אחורה**.
+      - kind: law
+        text: >-
+          משקולת: $m_2g - T = m_2a$. דסקה: $T - f = m_1a$; סביב המרכז $fR = \beta m_1R^2\alpha$; $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          $f = \beta m_1a$. מחברים את שתי משוואות התנועה: $m_2g = (m_2 + (1 + \beta)m_1)a$. ומקדם החיכוך: $f \le \mu_sm_1g$.
+      - kind: manipulation
+        text: >-
+          $a = \dfrac{m_2g}{m_2 + (1 + \beta)m_1}$, $T = m_2(g - a)$, $\mu_s \ge \dfrac{\beta a}{g}$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ (גוש בלי חיכוך) $a = m_2g/(m_1 + m_2)$, מכונת אטווד על שולחן. כש-$m_2 \to \infty$, $a \to g$.
+      - kind: units
+        text: >-
+          $m_2g$ חלקי מסה: $\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $a = 4.90/3.50 = 1.40\,\text{m/s}^2$; $T = 0.50\cdot8.4 = 4.20\,\text{N}$; $f = 0.5\cdot2.0\cdot1.40 = 1.40\,\text{N}$
+          (ובדיקה: $T - f = 2.80\,\text{N} = m_1a$); $\mu_s \ge 1.40/19.6 = 0.0714$.
+      - kind: result
+        text: >-
+          א. אחורה. ב. $a = 1.40\,\text{m/s}^2$, $T = 4.20\,\text{N}$, $\mu_s \ge 0.0714$ (גוש שמחליק בלי חיכוך היה מאיץ ב-$1.96\,\text{m/s}^2$).
+
+challenge:
+  - id: W-8.4-c1
+    stars: 2
+    objectives: [OBJ-8.4-1]
+    prompt: >-
+      יו-יו במסה $m$ עשוי משני גלגלים ברדיוס $R$ וציר ברדיוס $R/3$ ביניהם, ומומנט ההתמד שלו סביב המרכז $\tfrac12mR^2$.
+      הוא עומד על מדרון בזווית $\varphi$, ומקדם החיכוך הסטטי בינו לבין המדרון $\mu_s$. החוט כרוך על הציר, יוצא
+      מהנקודה **התחתונה** של הציר (הקרובה למדרון), ונמשך בכוח $F$ במקביל למדרון, כלפי מעלה.
+
+      א. מצאו את תאוצת המרכז ואת כוח החיכוך כפונקציה של $F$.
+
+      ב. מה הכוח $F$ הגדול ביותר שבו היו-יו עדיין מתגלגל בלי החלקה?
+
+      ג. קבעו ונמקו: באיזה כוח היו-יו נשאר במקום?
+    answer: >-
+      א. במעלה המדרון $a = \dfrac{4F/9 - \tfrac23mg\sin\varphi}{m}$; החיכוך במעלה המדרון $f = \tfrac13mg\sin\varphi - \tfrac59F$
+      (שלילי: במורד). ב. $F_{\max} = \tfrac95mg\left(\mu_s\cos\varphi + \tfrac13\sin\varphi\right)$. ג. $F = \tfrac32mg\sin\varphi$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ **במעלה** המדרון, הסיבוב חיובי בכיוון הגלגול במעלה המדרון. $I = \tfrac12mR^2$; $F$ פועל במרחק $R/3$
+          מתחת למרכז (בכיוון הניצב למדרון), במקביל למדרון; החיכוך $f$, במעלה המדרון אם הוא חיובי. $N = mg\cos\varphi$.
+      - kind: law
+        text: >-
+          $ma = F - mg\sin\varphi + f$. סביב המרכז: $F$ ו-$f$ פועלים שניהם מתחת למרכז ובמקביל למדרון, ולכן כשהם פונים
+          במעלה המדרון הם מסובבים **נגד** כיוון הגלגול במעלה: $I\alpha = -\tfrac{R}{3}F - Rf$. גלגול: $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          מהמומנט: $\tfrac12ma = -\tfrac13F - f$, כלומר $f = -\tfrac13F - \tfrac12ma$. מציבים בחוק השני:
+          $\tfrac32ma = \tfrac23F - mg\sin\varphi$, ולכן $a = \dfrac{\tfrac49F - \tfrac23mg\sin\varphi}{m}$ ו-$f = \tfrac13mg\sin\varphi - \tfrac59F$.
+          לכוח גדול $f$ שלילי, במורד, וגלגול בלי החלקה דורש $\tfrac59F - \tfrac13mg\sin\varphi \le \mu_smg\cos\varphi$.
+      - kind: reasoning
+        text: >-
+          ג. במנוחה $a = 0$: $F = \tfrac32mg\sin\varphi$. בדיקה במומנטים סביב נקודת המגע: הקו של $F$ נמצא $R - R/3 = \tfrac23R$
+          ממנה, והכובד יוצר מומנט $mgR\sin\varphi$; $F\cdot\tfrac23R = mgR\sin\varphi$.
+      - kind: limit
+        text: >-
+          כש-$F = 0$ חוזרים לדסקה במדרון: $a = -\tfrac23g\sin\varphi$ (במורד) ו-$f = \tfrac13mg\sin\varphi$ במעלה. כש-$\varphi = 0$,
+          $F_{\max} = \tfrac95\mu_smg$ והיו-יו נע לכיוון המשיכה.
+      - kind: units
+        text: >-
+          $mg\cos\varphi$ ו-$mg\sin\varphi$ בניוטון; $\mu_s$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          לדוגמה, $m = 1.0\,\text{kg}$, $\varphi = 20^\circ$, $\mu_s = 0.30$: $F_{\max} = 6.98\,\text{N}$, ובו $|f| = 2.76\,\text{N} = \mu_sN$
+          בדיוק; היו-יו עומד ב-$F = 5.03\,\text{N}$.
+      - kind: result
+        text: >-
+          ב. $F_{\max} = \tfrac35mg\left(3\mu_s\cos\varphi + \sin\varphi\right)$. ג. $\tfrac32mg\sin\varphi$.
+    source:
+      name: MIT 8.01x Classical Mechanics, Fall 2016, Problem Set 12
+      year: 2016
+      problem: Problem 4 (Yo-yo Rolling On Inclined Plane)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4f3af212f682f52a6151aef53415d5b2_MIT8_01F16_pset12.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.4-c2
+    stars: 1
+    objectives: [OBJ-8.4-2]
+    prompt: >-
+      כדור ביליארד מלא ואחיד, במסה $m$ וברדיוס $R$, נח על השולחן. מקל פוגע בו מכה אופקית קצרה מאוד, בגובה $h$ מעל
+      קו המרכז, ומקנה לו מהירות $v_0$ ומהירות זוויתית $\omega_0$. בזמן המכה אפשר להזניח את החיכוך עם השולחן.
+      הכדור מחליק, ומהירותו עולה עד $\tfrac97v_0$, ואז הוא מתגלגל בלי החלקה. מצאו את $h/R$.
+    answer: >-
+      $h/R = \tfrac45$.
+    solution:
+      - kind: given
+        text: >-
+          $\beta = \tfrac25$. ציר $x$ בכיוון המכה, $\omega$ חיובית בכיוון הגלגול קדימה. המתקף $J$ אופקי, בגובה $h$ מעל המרכז.
+      - kind: law
+        text: >-
+          במכה: $J = mv_0$, ומתקף זוויתי סביב המרכז $Jh = I_{cm}\omega_0$ (מכה מעל המרכז מסובבת בכיוון הגלגול). אחרי
+          המכה: התנע הזוויתי סביב נקודה על השולחן נשמר, $mR(v + \beta\omega R)$.
+      - kind: manipulation
+        text: >-
+          $\omega_0R = \dfrac{mv_0hR}{\beta mR^2} = \dfrac{v_0h}{\beta R}$, ולכן $v_0 + \beta\omega_0R = v_0\left(1 + \dfrac hR\right)$.
+          בסוף $v(1 + \beta) = v_0(1 + h/R)$, כלומר $v = \tfrac57v_0(1 + h/R)$. מציבים $v = \tfrac97v_0$: $1 + h/R = \tfrac95$.
+      - kind: limit
+        text: >-
+          כש-$h = 0$, $v = \tfrac57v_0$: כדור בלי סיבוב. כש-$h = \tfrac25R$, $\omega_0R = v_0$: הכדור מתגלגל מיד, $v = v_0$. ומעל
+          $\tfrac25R$ הכדור מסתובב מהר מדי, נקודת המגע מחליקה אחורה, והחיכוך **מאיץ** אותו, כמו כאן.
+      - kind: units
+        text: >-
+          $h/R$ חסר ממדים, כמו $v/v_0$.
+      - kind: substitution
+        text: >-
+          $h/R = \tfrac95 - 1 = 0.8$.
+      - kind: result
+        text: >-
+          $h = \tfrac45R$.
+    source:
+      name: MIT 8.01x Classical Mechanics, Fall 2016, Problem Set 12
+      year: 2016
+      problem: Problem 5 (Billiards)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/4f3af212f682f52a6151aef53415d5b2_MIT8_01F16_pset12.pdf
+      verified: '2026-11-12'
+      adapted: true

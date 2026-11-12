@@ -1,0 +1,7 @@
+---
+/** Rolling down a slope (a five-body race) and a skidding ball that starts to roll, for lesson MDX: <Spread figure={RollingRace} figureProps={{ mode: 'race', … }}>. */
+import RollingRace, { type RollingRaceProps } from './RollingRace';
+type Props = RollingRaceProps;
+---
+
+<RollingRace client:visible {...Astro.props} />

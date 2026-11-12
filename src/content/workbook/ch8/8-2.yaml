@@ -1,0 +1,461 @@
+# Workbook, lesson 8.2 (the moment of inertia). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-2/lesson.ts with src/physics/rigidbody.ts and inertia.ts:
+#   W02 M = 1.2 kg, L = 0.80 m: ML²/12 = 0.064, ML²/3 = 0.256 kg·m²;  W03 ring M = 0.50 kg, R = 0.30 m: 2MR² = 0.090;
+#   W05 hemisphere M = 2.0 kg, R = 0.10 m: 2MR²/5 = 0.0080;  W06 disc R = 0.20 m: d = R/√2 = 0.141 m;
+#   W07 ring M = 0.40 kg, R = 0.25 m, tangent in its plane: 3MR²/2 = 0.0375 (perpendicular tangent 2MR² = 0.050);
+#   W08 solid cone M = 1.5 kg, R = 0.20 m: 3MR²/10 = 0.018;  W09 rod 0.50 kg × 0.60 m + disc 0.80 kg, R = 0.10 m:
+#   0.060 + 0.004 + 0.392 = 0.456 kg·m² (point-mass disc 0.452, 0.877% low);  W10 triangle side 0.30 m, M = 1.2 kg:
+#   h² = 0.0675 m², Mh²/3 = 0.027 kg·m²;
+#   c1 (MIT 8.01 Fall 2016, PS 10, Problem 1b) rᵢ = 13.5 mm, rₒ = 31.0 mm, d = 4.0 mm, ρ = 7.8e3: M = 0.0763 kg,
+#      I = 4.36e-5 kg·m², a full disc of the same rₒ and d: M = 0.0942 kg, I = 4.53e-5 (ratio 0.964);
+#   c2 (MIT 8.012 Fall 2008, PS 8, Problem 8a) symbolic; check a = 0.30 m, b = 0.20 m, M = 1.2 kg:
+#      I_x = 0.004, I_y = 0.009, I_z = 0.013, diagonal Ma²b²/(6(a² + b²)) = 0.00554 kg·m² (also by a 600 × 600 grid sum).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.2'
+practice:
+  - id: W-8.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      לארבעה גופים אותה מסה $M$ ואותו רדיוס $R$: טבעת דקה, דסקה אחידה, קליפה כדורית דקה וכדור מלא ואחיד. כל אחד
+      מסתובב סביב ציר שעובר במרכזו (בטבעת ובדסקה, הציר שניצב למישור שלהן; בכדורים, קוטר). סדרו אותם לפי מומנט
+      ההתמד, מהגדול לקטן, ונמקו בלי לחשב.
+    answer: >-
+      טבעת ($MR^2$) > קליפה כדורית ($\tfrac23MR^2$) > דסקה ($\tfrac12MR^2$) > כדור מלא ($\tfrac25MR^2$).
+    solution:
+      - kind: law
+        text: >-
+          $I = \int r^2\,dm$, כש-$r$ המרחק מ**קו** הציר: מה שקובע הוא כמה מהמסה רחוקה מהציר.
+      - kind: reasoning
+        text: >-
+          בטבעת כל המסה במרחק $R$ מהציר: אי אפשר יותר מזה בגוף ברדיוס $R$. בקליפה כל המסה במרחק $R$ מהמרכז, אבל ליד
+          הקטבים היא קרובה לציר. בדסקה המסה מפוזרת מהציר ועד $R$. בכדור המלא חלק גדול מהמסה קרוב גם למרכז וגם לציר.
+      - kind: reasoning
+        text: >-
+          קליפה מול דסקה: בדסקה חצי מהמסה נמצא בטבעות הפנימיות עד $R/\sqrt2$, ובקליפה רק המסה שליד הקטבים קרובה לציר.
+          והכדור המלא מורכב מקליפות, שהפנימיות שבהן קטנות יותר, ולכן הוא מתחת לקליפה וגם מתחת לדסקה.
+      - kind: limit
+        text: >-
+          בכל הגופים $I \le MR^2$, השוויון רק בטבעת: אף חתיכה לא רחוקה מהציר יותר מ-$R$.
+      - kind: units
+        text: >-
+          כל הערכים ב-$MR^2$, $\text{kg}\cdot\text{m}^2$.
+      - kind: result
+        text: >-
+          טבעת $MR^2$, קליפה $\tfrac23MR^2$, דסקה $\tfrac12MR^2$, כדור מלא $\tfrac25MR^2$.
+
+  - id: W-8.2-02
+    level: basic
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      מוט אחיד במסה $1.2\,\text{kg}$ ובאורך $0.80\,\text{m}$. חשבו באינטגרל את מומנט ההתמד שלו סביב ציר ניצב
+      שעובר במרכזו, ואחר כך סביב ציר ניצב שעובר בקצה שלו.
+    answer: >-
+      $0.064\,\text{kg}\cdot\text{m}^2$ סביב המרכז, $0.256\,\text{kg}\cdot\text{m}^2$ סביב הקצה.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1.2\,\text{kg}$, $L = 0.80\,\text{m}$, $\lambda = M/L$; $x$ לאורך המוט, מהציר.
+      - kind: law
+        text: >-
+          $I = \int x^2\,dm$ עם $dm = \lambda\,dx$; הפונקציה שהנגזרת שלה $x^2$ היא $x^3/3$.
+      - kind: manipulation
+        text: >-
+          סביב המרכז: $\int_{-L/2}^{L/2}x^2\lambda\,dx = \lambda\dfrac{L^3}{12} = \dfrac{ML^2}{12}$. סביב הקצה:
+          $\int_0^Lx^2\lambda\,dx = \dfrac{ML^2}{3}$.
+      - kind: limit
+        text: >-
+          היחס 4: סביב הקצה המסה מגיעה עד $L$ ולא רק עד $L/2$, ובריבוע זה פי 4. ושניהם קטנים מ-$ML^2$, מסה שכולה בקצה הרחוק.
+      - kind: units
+        text: >-
+          $\lambda L^3$ ב-$(\text{kg/m})\cdot\text{m}^3 = \text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $1.2\cdot0.80^2/12 = 0.064$; $1.2\cdot0.80^2/3 = 0.256$.
+      - kind: result
+        text: >-
+          $0.064\,\text{kg}\cdot\text{m}^2$ ו-$0.256\,\text{kg}\cdot\text{m}^2$.
+
+  - id: W-8.2-03
+    level: basic
+    objectives: [OBJ-8.2-2]
+    prompt: >-
+      חישוק דק במסה $0.50\,\text{kg}$ וברדיוס $0.30\,\text{m}$ תלוי על מסמר, ומתנדנד במישור שלו סביב המסמר. מה
+      מומנט ההתמד של החישוק סביב המסמר?
+    answer: >-
+      $0.090\,\text{kg}\cdot\text{m}^2$ ($2MR^2$).
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.50\,\text{kg}$, $R = 0.30\,\text{m}$. הציר דרך המסמר ניצב למישור החישוק ועובר בנקודה על השפה.
+      - kind: law
+        text: >-
+          סביב הציר המקביל שעובר במרכז, $I_{cm} = MR^2$; משפט הצירים המקבילים $I = I_{cm} + Md^2$, עם $d = R$.
+      - kind: manipulation
+        text: >-
+          $I = MR^2 + MR^2 = 2MR^2$.
+      - kind: limit
+        text: >-
+          נקודות החישוק רחוקות מהמסמר בין $0$ ל-$2R$; $2MR^2$ קטן מ-$M(2R)^2 = 4MR^2$, כמו שצריך.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $2\cdot0.50\cdot0.30^2 = 0.090$.
+      - kind: result
+        text: >-
+          $0.090\,\text{kg}\cdot\text{m}^2$.
+
+  - id: W-8.2-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      תיל דק במסה $M$ מכופף לחצי מעגל ברדיוס $R$. מה מומנט ההתמד שלו סביב הציר שעובר במרכז המעגל וניצב למישורו?
+      ומה אם הוא מכופף לרבע מעגל באותו רדיוס, באותה מסה? קבעו ונמקו בלי אינטגרל.
+    answer: >-
+      בשני המקרים $MR^2$: כל המסה במרחק $R$ מהציר, בלי קשר לאורך הקשת.
+    solution:
+      - kind: law
+        text: >-
+          $I = \sum m_ir_i^2$, ו-$r_i$ המרחק מהציר.
+      - kind: reasoning
+        text: >-
+          כל חתיכה של התיל נמצאת על המעגל, במרחק $R$ מהמרכז, ולכן במרחק $R$ מהציר שניצב למישור. $I = \left(\sum m_i\right)R^2 = MR^2$.
+      - kind: reasoning
+        text: >-
+          המרכז אינו מרכז המסה של הקשת, אבל לא צריך את מרכז המסה: הציר נתון, ומחשבים ישירות מהגדרה.
+      - kind: limit
+        text: >-
+          אותה תוצאה כמו לטבעת שלמה: אם מחברים שני חצאים במסה $M/2$ כל אחד, מקבלים טבעת במסה $M$ עם $MR^2$, כמו שצריך.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2$.
+      - kind: result
+        text: >-
+          $MR^2$ לחצי מעגל ולרבע מעגל.
+
+  - id: W-8.2-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      חצי כדור מלא ואחיד, במסה $2.0\,\text{kg}$ וברדיוס $0.10\,\text{m}$, מסתובב סביב ציר הסימטריה שלו. נמקו בעזרת
+      הפרוסות של השיעור שמומנט ההתמד שלו הוא $\tfrac25MR^2$, כמו של כדור שלם, וחשבו אותו.
+    answer: >-
+      $0.0080\,\text{kg}\cdot\text{m}^2$.
+    solution:
+      - kind: given
+        text: >-
+          חצי כדור $M = 2.0\,\text{kg}$, $R = 0.10\,\text{m}$; הציר הוא ציר הסימטריה, ניצב לבסיס השטוח.
+      - kind: law
+        text: >-
+          כדור שלם במסה $2M$, חתוך לפרוסות שניצבות לציר: $I = \tfrac25(2M)R^2$.
+      - kind: reasoning
+        text: >-
+          הכדור השלם הוא שני חצאים זהים, כל אחד במסה $M$, משני צידי המישור $z = 0$. לכל פרוסה בגובה $z$ יש פרוסה זהה
+          בגובה $-z$, ולכן כל חצי תורם חצי מהאינטגרל: $I_{\text{half}} = \tfrac12\cdot\tfrac25(2M)R^2 = \tfrac25MR^2$.
+      - kind: limit
+        text: >-
+          מומנט ההתמד של חצי הוא חצי משל השלם, ומסתו חצי, ולכן המקדם לא משתנה. זה נכון רק לציר הסימטריה: סביב
+          קוטר שמקביל לבסיס החצאים כבר לא שקולים בצורה כזו.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $\tfrac25\cdot2.0\cdot0.10^2 = 0.0080$.
+      - kind: result
+        text: >-
+          $0.0080\,\text{kg}\cdot\text{m}^2$.
+
+  - id: W-8.2-06
+    level: mid
+    objectives: [OBJ-8.2-2]
+    prompt: >-
+      דסקה אחידה ברדיוס $0.20\,\text{m}$ מסתובבת סביב ציר שניצב לה. באיזה מרחק מהמרכז צריך לעבור הציר כדי שמומנט
+      ההתמד יהיה פי 2 מאשר סביב הציר שעובר במרכז?
+    answer: >-
+      $d = R/\sqrt2 = 0.141\,\text{m}$, בתוך הדסקה.
+    solution:
+      - kind: given
+        text: >-
+          $R = 0.20\,\text{m}$; $I_{cm} = \tfrac12MR^2$ סביב הציר הניצב שעובר במרכז.
+      - kind: law
+        text: >-
+          משפט הצירים המקבילים: $I = I_{cm} + Md^2$.
+      - kind: manipulation
+        text: >-
+          $I = 2I_{cm}$ פירושו $Md^2 = I_{cm} = \tfrac12MR^2$, ולכן $d = R/\sqrt2$. המסה מצטמצמת.
+      - kind: limit
+        text: >-
+          לטבעת, $I_{cm} = MR^2$, היה יוצא $d = R$: הציר על השפה. בדסקה המסה קרובה יותר למרכז, ולכן מספיק מרחק קטן יותר.
+      - kind: units
+        text: >-
+          $d$ במטרים.
+      - kind: substitution
+        text: >-
+          $0.20/\sqrt2 = 0.141\,\text{m}$.
+      - kind: result
+        text: >-
+          $0.141\,\text{m}$ מהמרכז.
+
+  - id: W-8.2-07
+    level: mid
+    objectives: [OBJ-8.2-2]
+    prompt: >-
+      טבעת דקה במסה $0.40\,\text{kg}$ וברדיוס $0.25\,\text{m}$ מסתובבת סביב ציר שנמצא **במישור** הטבעת ומשיק לה
+      (נוגע בה בנקודה אחת). מה מומנט ההתמד?
+    answer: >-
+      $\tfrac32MR^2 = 0.0375\,\text{kg}\cdot\text{m}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.40\,\text{kg}$, $R = 0.25\,\text{m}$. הציר במישור הטבעת, מקביל לקוטר ובמרחק $R$ ממנו.
+      - kind: law
+        text: >-
+          משפט הצירים הניצבים לטבעת השטוחה: $I_z = I_x + I_y$, עם $I_z = MR^2$; משפט הצירים המקבילים.
+      - kind: manipulation
+        text: >-
+          מסימטריה $I_x = I_y$, ולכן סביב קוטר $I = \tfrac12MR^2$. הקוטר עובר במרכז המסה, והמשיק מקביל לו במרחק $R$:
+          $I = \tfrac12MR^2 + MR^2 = \tfrac32MR^2$.
+      - kind: limit
+        text: >-
+          המרחק של נקודות הטבעת מהמשיק בין $0$ ל-$2R$, ולכן $I$ בין $0$ ל-$4MR^2$. וזה פחות מ-$2MR^2$ של ציר דרך
+          נקודה על השפה שניצב למישור, כי שם נכנס גם המרחק במישור לאורך המשיק.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $1.5\cdot0.40\cdot0.25^2 = 0.0375$.
+      - kind: result
+        text: >-
+          $0.0375\,\text{kg}\cdot\text{m}^2$.
+
+  - id: W-8.2-08
+    level: bagrut
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      חרוט מלא ואחיד, במסה $M$, ברדיוס בסיס $R$ ובגובה $H$, מסתובב סביב ציר הסימטריה שלו. חתכו אותו לדסקות דקות
+      שניצבות לציר, והראו ש-$I = \tfrac{3}{10}MR^2$. חשבו אותו עבור $M = 1.5\,\text{kg}$ ו-$R = 0.20\,\text{m}$.
+    answer: >-
+      $I = \tfrac{3}{10}MR^2 = 0.018\,\text{kg}\cdot\text{m}^2$, בלי תלות ב-$H$.
+    solution:
+      - kind: given
+        text: >-
+          $M$, $R$, $H$; צפיפות אחידה $\rho$. $z$ נמדד לאורך הציר מהחוד, מ-$0$ עד $H$.
+      - kind: law
+        text: >-
+          דסקה דקה סביב הציר שלה: $\tfrac12\,dm\,s^2$; $dm = \rho\,\pi s^2\,dz$; נפח החרוט $\tfrac13\pi R^2H$.
+      - kind: manipulation
+        text: >-
+          הרדיוס של הדסקה בגובה $z$ גדל ליניארית: $s = Rz/H$. אז
+          $$\begin{aligned} I &= \int_0^H\tfrac12\rho\pi s^4\,dz \\ &= \tfrac12\rho\pi\frac{R^4}{H^4}\cdot\frac{H^5}{5} = \frac{\rho\pi R^4H}{10} \end{aligned}$$
+          עם $M = \tfrac13\rho\pi R^2H$, $I = \tfrac{3}{10}MR^2$.
+      - kind: limit
+        text: >-
+          $\tfrac{3}{10} < \tfrac12$: גליל מאותו רדיוס ואותה מסה, $\tfrac12MR^2$, גדול יותר, כי בחרוט רוב הדסקות צרות
+          מ-$R$. והגובה $H$ לא נכנס, כמו שהאורך של גליל לא נכנס ל-$\tfrac12MR^2$.
+      - kind: units
+        text: >-
+          $\rho R^4H$ ב-$(\text{kg/m}^3)\cdot\text{m}^5 = \text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $0.3\cdot1.5\cdot0.20^2 = 0.018$.
+      - kind: result
+        text: >-
+          $\tfrac{3}{10}MR^2 = 0.018\,\text{kg}\cdot\text{m}^2$.
+
+  - id: W-8.2-09
+    level: bagrut
+    objectives: [OBJ-8.2-1, OBJ-8.2-2]
+    prompt: >-
+      מטוטלת עשויה ממוט אחיד במסה $0.50\,\text{kg}$ ובאורך $0.60\,\text{m}$, שבקצה התחתון שלו מרותכת דסקה אחידה
+      במסה $0.80\,\text{kg}$ וברדיוס $0.10\,\text{m}$. הדסקה במישור התנודה, והמרכז שלה בהמשך המוט, במרחק
+      $0.70\,\text{m}$ מהציר. הציר ניצב למישור ועובר בקצה העליון של המוט.
+
+      א. מה מומנט ההתמד של המטוטלת סביב הציר?
+
+      ב. בכמה אחוזים טועים אם מתייחסים לדסקה כאל מסה נקודתית במרכזה?
+    answer: >-
+      א. $0.456\,\text{kg}\cdot\text{m}^2$. ב. $0.452\,\text{kg}\cdot\text{m}^2$, נמוך ב-$0.877\%$.
+    solution:
+      - kind: given
+        text: >-
+          מוט $M = 0.50\,\text{kg}$, $L = 0.60\,\text{m}$; דסקה $m = 0.80\,\text{kg}$, $R = 0.10\,\text{m}$, מרכזה במרחק
+          $D = L + R = 0.70\,\text{m}$ מהציר.
+      - kind: law
+        text: >-
+          מומנטי ההתמד של חלקים סביב אותו ציר מתחברים (הסכום $\sum m_ir_i^2$ מתחלק לחלקים). מוט סביב קצהו $\tfrac13ML^2$;
+          דסקה סביב הציר הניצב שעובר במרכזה $\tfrac12mR^2$, ומשם משפט הצירים המקבילים.
+      - kind: manipulation
+        text: >-
+          $I = \tfrac13ML^2 + \tfrac12mR^2 + mD^2$. בקירוב הנקודתי חסר האיבר $\tfrac12mR^2$.
+      - kind: limit
+        text: >-
+          כש-$R \to 0$ הדסקה נקודה, והאיבר $\tfrac12mR^2$ נעלם. השגיאה היחסית בערך $\tfrac12mR^2/I$: קטנה כש-$R \ll D$.
+      - kind: units
+        text: >-
+          כל האיברים ב-$\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $\tfrac13\cdot0.50\cdot0.36 = 0.060$; $\tfrac12\cdot0.80\cdot0.01 = 0.004$; $0.80\cdot0.49 = 0.392$. סכום $0.456$; בלי
+          האיבר האמצעי $0.452$, נמוך ב-$0.877\%$.
+      - kind: result
+        text: >-
+          א. $0.456\,\text{kg}\cdot\text{m}^2$. ב. $0.452\,\text{kg}\cdot\text{m}^2$, שגיאה של $0.877\%$.
+
+  - id: W-8.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.2-2]
+    prompt: >-
+      לוח דק ואחיד בצורת משולש שווה צלעות, במסה $1.2\,\text{kg}$ ובאורך צלע $0.30\,\text{m}$. משווים שני צירים שניצבים
+      ללוח: אחד דרך קודקוד, ואחד דרך אמצע הצלע שמול הקודקוד. קבעו ונמקו בלי לחשב את $I_{cm}$: סביב איזה מהם מומנט
+      ההתמד גדול יותר, ובכמה?
+    answer: >-
+      סביב הקודקוד, ב-$\tfrac13Mh^2 = 0.027\,\text{kg}\cdot\text{m}^2$ ($h$ גובה המשולש).
+    solution:
+      - kind: given
+        text: >-
+          משולש שווה צלעות, $M = 1.2\,\text{kg}$, צלע $a = 0.30\,\text{m}$, גובה $h = \tfrac{\sqrt3}{2}a$. מרכז המסה על
+          הגובה, במרחק $h/3$ מהבסיס (כמו בשיעור 3.4), כלומר $2h/3$ מהקודקוד.
+      - kind: law
+        text: >-
+          משפט הצירים המקבילים מכל אחד מהצירים אל הציר המקביל שעובר במרכז המסה: $I = I_{cm} + Md^2$.
+      - kind: manipulation
+        text: >-
+          $I_{\text{vertex}} - I_{\text{mid}} = M\left(\tfrac{4h^2}{9} - \tfrac{h^2}{9}\right)$, כלומר $\tfrac13Mh^2$. $I_{cm}$ מצטמצם:
+          לא צריך לדעת אותו.
+      - kind: reasoning
+        text: >-
+          מומנט ההתמד תלוי רק במרחק של הציר ממרכז המסה, ומרכז המסה קרוב יותר לבסיס. זו אותה פרבולה של איור 8.2א, הפעם
+          על פני המישור כולו: כל הצירים שבאותו מרחק ממרכז המסה שקולים.
+      - kind: limit
+        text: >-
+          לציר שעובר במרכז המסה עצמו, $d = 0$, ההפרש מול הקודקוד הוא $M\left(\tfrac{2h}{3}\right)^2$, גדול מ-$\tfrac13Mh^2$:
+          המרכז קטן מכולם, כמו שצריך.
+      - kind: units
+        text: >-
+          $Mh^2$ ב-$\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $h^2 = \tfrac34\cdot0.30^2 = 0.0675\,\text{m}^2$; $\tfrac13\cdot1.2\cdot0.0675 = 0.027$.
+      - kind: result
+        text: >-
+          סביב הקודקוד גדול יותר, ב-$0.027\,\text{kg}\cdot\text{m}^2$.
+
+challenge:
+  - id: W-8.2-c1
+    stars: 1
+    objectives: [OBJ-8.2-1]
+    prompt: >-
+      דסקית פלדה (שייבה) תקנית בגודל אינץ' אחד היא טבעת שטוחה עבה: רדיוס פנימי $r_i = 13.5\,\text{mm}$, רדיוס חיצוני
+      $r_o = 31.0\,\text{mm}$, עובי $d = 4.0\,\text{mm}$ וצפיפות $\rho = 7.8\cdot10^3\,\text{kg/m}^3$.
+
+      א. חשבו באינטגרל את מומנט ההתמד של דסקית כזו (מסה $M$, רדיוסים $r_i$ ו-$r_o$) סביב הציר שניצב למישורה ועובר
+      במרכז המסה, ובטאו אותו בעזרת $M$.
+
+      ב. מה המסה ומה מומנט ההתמד של הדסקית הזו?
+
+      ג. החור מוציא כמעט חמישית מהמסה. בכמה אחוזים בלבד הוא מקטין את מומנט ההתמד, לעומת דסקה מלאה באותו רדיוס
+      חיצוני ובאותו עובי? למה כל כך מעט?
+    answer: >-
+      א. $I = \tfrac12M\left(r_i^2 + r_o^2\right)$. ב. $M = 0.0763\,\text{kg}$, $I = 4.36\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$.
+      ג. דסקה מלאה: $4.53\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$; החור מקטין את $I$ רק בכ-$3.6\%$, כי המסה שהוצאה הייתה קרובה לציר.
+    solution:
+      - kind: given
+        text: >-
+          $r_i = 0.0135\,\text{m}$, $r_o = 0.031\,\text{m}$, $d = 0.0040\,\text{m}$, $\rho = 7.8\cdot10^3\,\text{kg/m}^3$; הציר ניצב למישור,
+          דרך המרכז.
+      - kind: law
+        text: >-
+          $I = \int r^2\,dm$. חותכים לטבעות (צינוריות) ברדיוס $r$, ברוחב $dr$ ובעובי $d$: $dm = \rho\,2\pi r\,d\,dr$.
+      - kind: manipulation
+        text: >-
+          $$\begin{aligned} I &= 2\pi\rho d\int_{r_i}^{r_o}r^3\,dr \\ &= \tfrac12\pi\rho d\left(r_o^4 - r_i^4\right) \end{aligned}$$
+          ו-$M = \pi\rho d\left(r_o^2 - r_i^2\right)$.
+          מכיוון ש-$r_o^4 - r_i^4 = \left(r_o^2 - r_i^2\right)\left(r_o^2 + r_i^2\right)$, $I = \tfrac12M\left(r_i^2 + r_o^2\right)$.
+      - kind: limit
+        text: >-
+          כש-$r_i \to 0$, דסקה מלאה, $\tfrac12Mr_o^2$. כש-$r_i \to r_o$, טבעת דקה, $Mr_o^2$. והעובי $d$ לא נכנס לתוצאה
+          כשהיא כתובה בעזרת $M$, כמו בגליל.
+      - kind: units
+        text: >-
+          $\rho d\,r^4$ ב-$(\text{kg/m}^3)\cdot\text{m}^5 = \text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $M = \rho\pi\left(r_o^2 - r_i^2\right)d$ עם $r_o^2 - r_i^2 = 7.79\cdot10^{-4}\,\text{m}^2$, כלומר $M = 0.0763\,\text{kg}$;
+          $I = \tfrac12\cdot0.0763\left(0.0135^2 + 0.031^2\right)$, כלומר $I = 4.36\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$. דסקה מלאה:
+          $M = 0.0942\,\text{kg}$ ו-$I = \tfrac12\cdot0.0942\cdot0.031^2$, כלומר $4.53\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$; היחס $0.964$.
+      - kind: result
+        text: >-
+          א. $\tfrac12M\left(r_i^2 + r_o^2\right)$. ב. $0.0763\,\text{kg}$, $4.36\cdot10^{-5}\,\text{kg}\cdot\text{m}^2$. ג. כ-$3.6\%$ בלבד:
+          החור מוציא את המסה הקרובה ביותר לציר, שתורמת ל-$I$ מעט מאוד, כי המרחק נכנס בריבוע.
+    source:
+      name: MIT 8.01SC Classical Mechanics, Problem Set 10
+      year: 2016
+      problem: Problem 1(b) (Moment of Inertia, Disc and Washer)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/878cc2b018e6280e47318e3659631d4b_MIT8_01F16_pset10.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.2-c2
+    stars: 2
+    objectives: [OBJ-8.2-2]
+    prompt: >-
+      לוח שטוח ואחיד בצורת מלבן, במסה $M$, באורך $a$ לאורך ציר $x$ וברוחב $b$ לאורך ציר $y$; מרכז המסה בראשית, והציר
+      $z$ ניצב ללוח.
+
+      א. חשבו את $I_x$ ואת $I_y$, מומנטי ההתמד סביב הצירים $x$ ו-$y$ שבמישור הלוח, ואת $I_z$. הראו שהם מקיימים את
+      משפט הצירים הניצבים.
+
+      ב. מצאו את מומנט ההתמד סביב האלכסון של המלבן (ציר במישור הלוח, דרך מרכז המסה). בדקו את התוצאה במקרה $a = b$.
+    answer: >-
+      א. $I_x = \tfrac{1}{12}Mb^2$, $I_y = \tfrac{1}{12}Ma^2$, $I_z = \tfrac{1}{12}M\left(a^2 + b^2\right) = I_x + I_y$.
+      ב. $I_{\text{diag}} = \dfrac{Ma^2b^2}{6\left(a^2 + b^2\right)}$; בריבוע $\tfrac{1}{12}Ma^2$.
+    solution:
+      - kind: given
+        text: >-
+          מלבן $a \times b$, מסה $M$, צפיפות משטחית $\sigma = M/(ab)$; ראשית במרכז המסה.
+      - kind: law
+        text: >-
+          $I_x = \sum m\,y^2$, $I_y = \sum m\,x^2$ (גוף שטוח, $z = 0$), $I_z = \sum m\left(x^2 + y^2\right)$. המרחק של נקודה
+          $(x, y)$ מקו במישור שעובר בראשית בכיוון הווקטור היחידה $(\cos\varphi, \sin\varphi)$ הוא $\left|x\sin\varphi - y\cos\varphi\right|$.
+      - kind: manipulation
+        text: >-
+          סביב ציר $x$, כל רצועה שמקבילה ל-$x$ נמצאת כולה במרחק $|y|$, והלוח הוא כמו מוט באורך $b$: $I_x = \tfrac{1}{12}Mb^2$.
+          באותו אופן $I_y = \tfrac{1}{12}Ma^2$. ו-$I_z = \int\left(x^2 + y^2\right)dm = I_y + I_x$.
+      - kind: manipulation
+        text: >-
+          ב. ציר בזווית $\varphi$:
+          $$\begin{aligned} I_\varphi &= \sin^2\varphi\textstyle\sum mx^2 + \cos^2\varphi\sum my^2 \\ &\quad - 2\sin\varphi\cos\varphi\textstyle\sum mxy \end{aligned}$$
+          מסימטריה
+          (לכל נקודה $(x, y)$ יש נקודה $(-x, y)$) $\sum mxy = 0$. לאלכסון $\tan\varphi = b/a$, כלומר
+          $\sin^2\varphi = \dfrac{b^2}{a^2 + b^2}$ ו-$\cos^2\varphi = \dfrac{a^2}{a^2 + b^2}$:
+          $$\begin{aligned} I_{\text{diag}} &= \frac{M}{12}\cdot\frac{b^2a^2 + a^2b^2}{a^2 + b^2} \\ &= \frac{Ma^2b^2}{6\left(a^2 + b^2\right)} \end{aligned}$$
+      - kind: limit
+        text: >-
+          כש-$a = b$, $I_{\text{diag}} = \tfrac{1}{12}Ma^2 = I_x$: בריבוע האלכסון והציר המקביל לצלע שווים, כמו בשיעור.
+          כש-$b \to 0$ (מוט לאורך $x$), האלכסון נצמד למוט ו-$I_{\text{diag}} \to 0$.
+      - kind: units
+        text: >-
+          $Ma^2b^2/(a^2 + b^2)$ ב-$\text{kg}\cdot\text{m}^2$.
+      - kind: substitution
+        text: >-
+          למשל $a = 0.30\,\text{m}$, $b = 0.20\,\text{m}$, $M = 1.2\,\text{kg}$: $I_x = 0.004$, $I_y = 0.009$, $I_z = 0.013$,
+          $I_{\text{diag}} = 0.00554\,\text{kg}\cdot\text{m}^2$, בין $I_x$ ל-$I_y$.
+      - kind: result
+        text: >-
+          א. $I_x = \tfrac{1}{12}Mb^2$, $I_y = \tfrac{1}{12}Ma^2$, $I_z = I_x + I_y$. ב. $\dfrac{Ma^2b^2}{6\left(a^2 + b^2\right)}$.
+    source:
+      name: MIT 8.012 Physics I, Classical Mechanics, Problem Set 8
+      year: 2008
+      problem: Problem 8(a) (Rectangular Symmetry); part ב added
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/beb75f47b0625ad80652a57e54161a5b_ps8.pdf
+      verified: '2026-11-12'
+      adapted: true

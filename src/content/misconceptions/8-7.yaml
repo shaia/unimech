@@ -1,26 +1,27 @@
 # Misconceptions first detected in lesson 8.7. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. The anchors point at
+# the lesson's Explain sections and steps.
 
 - id: MC-8-equivalent-length-is-cm-distance
   title: האורך השקול הוא המרחק למרכז המסה
   belief: מטוטלת פיזיקלית מתנודדת כמו מטוטלת פשוטה שאורכה המרחק מהציר למרכז המסה.
-  truth: האורך השקול הוא I/(md) = d + I_cm/(md), תמיד ארוך מ-d. מוט שתלוי בקצהו מתנודד כמו מטוטלת פשוטה באורך 2L/3, לא L/2.
-  remedy: { lesson: '8.7', label: 'שיעור 8.7: האורך השקול של מטוטלת פיזיקלית' }
+  truth: האורך השקול הוא ℓ = I_P/(md) = d + k²/d, תמיד ארוך מ-d. מוט שתלוי בקצהו מתנודד כמו מטוטלת פשוטה באורך 2L/3, לא L/2.
+  remedy: { lesson: '8.7', anchor: ell-formula, label: 'שיעור 8.7: האורך השקול של מטוטלת פיזיקלית' }
 
 - id: MC-8-shorter-arm-shorter-period
   title: ציר קרוב יותר למרכז נותן זמן מחזור קצר יותר
   belief: כמו בקיצור החוט של מטוטלת פשוטה, הזזת הציר אל מרכז המסה מקצרת את זמן המחזור.
-  truth: T² ∝ (I_cm/m + d²)/d. כש-d קטן, מומנט הכובד נעלם ו-I לא, ולכן זמן המחזור גדל בלי גבול. למוט יש זמן מחזור מינימלי ב-d = L/√12.
-  remedy: { lesson: '8.7', label: 'שיעור 8.7: זמן המחזור כפונקציה של מקום הציר' }
+  truth: T² ∝ (k² + d²)/d. כש-d קטן, מומנט הכובד נעלם ומומנט ההתמד לא, ולכן זמן המחזור גדל בלי גבול. זמן המחזור הקצר ביותר ב-d = k; במוט k = L/√12.
+  remedy: { lesson: '8.7', anchor: vs-d, label: 'שיעור 8.7: זמן המחזור כפונקציה של מקום הציר' }
 
 - id: MC-8-sweet-spot-is-cm
   title: הנקודה המתוקה היא מרכז המסה
   belief: מכה במרכז המסה של מחבט לא מעבירה מכה לידיים, כי היא לא מסובבת אותו.
-  truth: מכה במרכז המסה מזיזה את כל המחבט קדימה, כולל הידית. הידיים לא מרגישות מכה במרכז ההקשה, במרחק I/(md) מהן, רחוק יותר ממרכז המסה.
-  remedy: { lesson: '8.7', label: 'שיעור 8.7: מרכז ההקשה של מחבט' }
+  truth: מכה במרכז המסה מזיזה את כל המחבט קדימה, כולל הידית. הידיים לא מרגישות מכה במרכז ההקשה, במרחק I_P/(md) מהן, רחוק יותר ממרכז המסה.
+  remedy: { lesson: '8.7', anchor: free-blow, label: 'שיעור 8.7: מכה במרכז המסה של מוט חופשי' }
 
 - id: MC-8-pivot-absorbs-blow
   title: הציר בולע את כל המכה
   belief: כשמכים גוף שתלוי על ציר, הציר מפעיל מתקף שווה ומנוגד למכה.
-  truth: הגוף מקבל תנע, ולכן הציר מספק רק את ההפרש P = mv_cm − J. במוט שתלוי בקצהו P = J(3b/(2L) − 1), אפס במרכז ההקשה, b = 2L/3.
-  remedy: { lesson: '8.7', label: 'שיעור 8.7: המתקף של הציר כפונקציה של מקום המכה' }
+  truth: הגוף מקבל תנע, ולכן הציר מספק רק את ההפרש J_P = mv_cm − J = J(mdb/I_P − 1). במוט שתלוי בקצהו J_P = J(3b/(2L) − 1), אפס במרכז ההקשה, b = 2L/3.
+  remedy: { lesson: '8.7', anchor: blow-equations, label: 'שיעור 8.7: המתקף של הציר כפונקציה של מקום המכה' }

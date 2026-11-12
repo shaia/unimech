@@ -1,0 +1,492 @@
+# Workbook, lesson 8.3 (rotation about a fixed axis). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch8/8-3/workbook.ts with G = 9.8 and src/physics/rigidbody.ts:
+#   W01 τ = 25·0.40 = 10 N·m, I = 0.80: α = 12.5 rad/s², 50 rad/s after 4.00 s, θ = 100 rad = 15.9 rev;
+#   W02 force ratio 0.80/0.20 = 4;  W03 ring 1.5 kg, R 0.35, 300 rpm = 31.4 rad/s: K = 90.7 J (disc 45.3 J);
+#   W04 m 0.50 on a disc wheel 3.0 kg, R 0.20: a = 2.45 m/s², T = 3.68 N, 1.5 m in 1.11 s;
+#   W05 m 0.80 on a ring wheel 1.2 kg, R 0.10, h 0.90: v = 2.66 m/s, ω = 26.6 rad/s, the wheel 60% = 4.23 J of 7.06 J;
+#   W06 I 0.10, m 2.0, R 0.20: pulled with mg α = 39.2, hanging α = 21.8 rad/s², ratio 1 + mR²/I = 1.80;
+#   W07 disc 3.0 kg, R 0.10, 2400 rpm = 251 rad/s, stops in 12 s: τ = 0.314 N·m, 240 rev, K₀ = 474 J;
+#   W08 m1 2.5, m2 1.5, disc 1.0 kg R 0.08, axle friction 0.20 N·m: a = 1.62 m/s² (2.18 without), T1 = 20.4 N,
+#       T2 = 17.1 N, after 1.0 m: 9.80 J released, 7.30 J kinetic, 2.50 J heat; moves only if τ_f < 0.784 N·m;
+#   W09 m 0.40, R 0.050, 1.20 m in 2.6 s: a = 0.355 m/s², I = mR²(g/a − 1) = 0.0266 kg·m²;
+#   W10 disc 50 kg, R 0.30, 2.0 kW, 0 → 600 rad/s: I = 2.25, K = 4.05·10⁵ J, t = 202.5 s, τ(600) = 3.33 N·m,
+#       τ(300) = 6.67 N·m, 300 rad/s after 50.6 s;
+#   c1 (MIT 8.01 Fall 2016, Problem Set 10, Problem 2) M1 2.0, M2 1.0, Mb 0.50, R 0.20, d 1.0: I = 0.0450 kg·m²,
+#      I/(R/2)² = 4.50 kg, a = 0.980 m/s², t = 1.43 s (rope on the big disc: 3.02 m/s², 0.814 s);
+#   c2 (MIT 8.01 Fall 2016, Problem Set 10, Problem 6) m 2.0, mp 3.0, θ 30° (the source's β; θ here, because β is
+#      I_cm/(mR²) in chapter 8), d 1.5: a = 2.80 m/s², t = 1.04 s,
+#      T = 4.20 N, the pulley's share 3/7.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.3'
+practice:
+  - id: W-8.3-01
+    level: basic
+    objectives: [OBJ-8.3-1]
+    prompt: >-
+      גלגל שמומנט ההתמד שלו $0.80\,\text{kg·m}^2$ נמצא במנוחה על ציר קבוע בלי חיכוך. מפעילים עליו כוח קבוע של
+      $25\,\text{N}$, משיקי, במרחק $0.40\,\text{m}$ מהציר. מה התאוצה הזוויתית? אחרי כמה זמן יגיע הגלגל ל-$50\,\text{rad/s}$,
+      וכמה סיבובים יעשה עד אז?
+    answer: >-
+      $\alpha = 12.5\,\text{rad/s}^2$; $4.00\,\text{s}$; $100\,\text{rad}$, כלומר $15.9$ סיבובים.
+    solution:
+      - kind: given
+        text: >-
+          $I = 0.80\,\text{kg·m}^2$, $F = 25\,\text{N}$ משיקי, $r = 0.40\,\text{m}$; ממנוחה, עד $\omega = 50\,\text{rad/s}$.
+          כיוון חיובי: הכיוון שבו הכוח מסובב.
+      - kind: law
+        text: >-
+          $\tau = I\alpha$ סביב הציר, עם $\tau = rF$ לכוח משיקי. בתאוצה זוויתית קבועה: $\omega = \alpha t$, $\theta = \tfrac12\alpha t^2$.
+      - kind: manipulation
+        text: >-
+          $\alpha = rF/I$; $t = \omega/\alpha$; $\theta = \tfrac12\alpha t^2 = \omega^2/(2\alpha)$; מספר הסיבובים $\theta/(2\pi)$.
+      - kind: limit
+        text: >-
+          כוח באותו גודל שפועל קרוב יותר לציר נותן $\alpha$ קטנה יותר, ובציר עצמו אפס.
+      - kind: units
+        text: >-
+          $\text{N·m}/(\text{kg·m}^2) = \text{s}^{-2}$; $(\text{rad/s})/(\text{rad/s}^2) = \text{s}$.
+      - kind: substitution
+        text: >-
+          $\tau = 0.40\cdot25 = 10.0\,\text{N·m}$, $\alpha = 10.0/0.80 = 12.5\,\text{rad/s}^2$, $t = 50/12.5 = 4.00\,\text{s}$,
+          $\theta = \tfrac12\cdot12.5\cdot4.00^2 = 100\,\text{rad}$, ו-$100/(2\pi) = 15.9$ סיבובים.
+      - kind: result
+        text: >-
+          $\alpha = 12.5\,\text{rad/s}^2$, $t = 4.00\,\text{s}$, $15.9$ סיבובים.
+
+  - id: W-8.3-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.3-1]
+    prompt: >-
+      ידית של דלת נמצאת במרחק $0.80\,\text{m}$ מקו הצירים. סטודנט דוחף את הדלת בכוח ניצב לה, פעם בידית ופעם בנקודה
+      במרחק $0.20\,\text{m}$ מהצירים, ורוצה לתת לה בשני המקרים אותה תאוצה זוויתית. קבעו ונמקו: באיזה מקרה הוא צריך
+      כוח גדול יותר, ופי כמה? ומה יקרה אם ידחוף בידית לאורך הדלת, ישר אל הצירים?
+    answer: >-
+      ליד הצירים, פי $4$. דחיפה לאורך הדלת אל הצירים לא מסובבת אותה כלל.
+    solution:
+      - kind: law
+        text: >-
+          לאותה דלת $\alpha = \tau/I$, ו-$I$ סביב הצירים לא תלוי במקום הדחיפה. לכן אותה $\alpha$ פירושה אותו מומנט כוח
+          $\tau = Fd_F$, כאשר $d_F$ הזרוע.
+      - kind: reasoning
+        text: >-
+          כוח ניצב לדלת בנקודה במרחק $r$ מהצירים: הזרוע $r$. כדי ש-$F_1r_1 = F_2r_2$, $F_2/F_1 = r_1/r_2$.
+      - kind: reasoning
+        text: >-
+          כוח לאורך הדלת אל הצירים: הקו שלו עובר דרך הציר, הזרוע אפס, וגם המומנט. הדלת לא תסתובב, כמה חזק שידחוף:
+          את הכוח הזה מקבלים הצירים.
+      - kind: limit
+        text: >-
+          ככל שהנקודה מתקרבת לצירים, $F \propto 1/r$ גדל בלי גבול: אי אפשר לסובב דלת בדחיפה על הצירים עצמם.
+      - kind: units
+        text: >-
+          היחס $r_1/r_2$ חסר ממדים, כמו שצריך ליחס בין כוחות.
+      - kind: result
+        text: >-
+          ליד הצירים צריך כוח גדול פי $0.80/0.20 = 4$. דחיפה ישר אל הצירים לא נותנת מומנט ולא מסובבת.
+
+  - id: W-8.3-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.3-2]
+    prompt: >-
+      גלגל תנופה שהוא טבעת דקה במסה $1.5\,\text{kg}$ וברדיוס $0.35\,\text{m}$ מסתובב ב-300 סיבובים לדקה. כמה אנרגיה
+      קינטית אגורה בו? קבעו ונמקו: אילו היה דסקה אחידה באותה מסה ובאותו רדיוס, ובאותה מהירות זוויתית, כמה אנרגיה
+      הייתה בו? ובאיזו מהירות זוויתית הדסקה הייתה צריכה להסתובב כדי לאגור אותה אנרגיה כמו הטבעת?
+    answer: >-
+      $90.7\,\text{J}$. הדסקה: חצי, $45.3\,\text{J}$. כדי להשתוות היא צריכה $\sqrt2$ פעמים יותר, $44.4\,\text{rad/s}$.
+    solution:
+      - kind: given
+        text: >-
+          טבעת, $M = 1.5\,\text{kg}$, $R = 0.35\,\text{m}$; $300$ סיבובים בדקה, כלומר $\omega = 300\cdot2\pi/60\,\text{rad/s}$.
+      - kind: law
+        text: >-
+          $K = \tfrac12I\omega^2$; טבעת $I = MR^2$, דסקה $I = \tfrac12MR^2$.
+      - kind: reasoning
+        text: >-
+          בטבעת כל המסה ברדיוס $R$ ונעה במהירות $\omega R$; בדסקה רוב המסה קרובה יותר לציר ונעה לאט יותר. באותה $\omega$
+          האנרגיה פרופורציונית ל-$I$: לדסקה חצי. כדי להשוות, $\omega^2$ צריך לגדול פי $2$, כלומר $\omega$ פי $\sqrt2$.
+      - kind: limit
+        text: >-
+          אילו כל המסה הייתה על הציר, $I = 0$ ו-$K = 0$: גוף שמסתובב "במקום" בלי שחלקיו נעים לא אוגר אנרגיה.
+      - kind: units
+        text: >-
+          $\text{kg·m}^2\cdot\text{s}^{-2} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\omega = 31.4\,\text{rad/s}$; $I = 1.5\cdot0.35^2 = 0.184\,\text{kg·m}^2$; $K = \tfrac12\cdot0.184\cdot31.4^2 = 90.7\,\text{J}$.
+          הדסקה: $45.3\,\text{J}$; $\sqrt2\cdot31.4 = 44.4\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          $K = 90.7\,\text{J}$; לדסקה באותה $\omega$ חצי, $45.3\,\text{J}$; היא צריכה $44.4\,\text{rad/s}$ כדי להשתוות.
+
+  - id: W-8.3-04
+    level: mid
+    objectives: [OBJ-8.3-1]
+    prompt: >-
+      גוף במסה $0.50\,\text{kg}$ תלוי על חוט שכרוך על גלגל: דסקה אחידה במסה $3.0\,\text{kg}$ וברדיוס $0.20\,\text{m}$, על ציר
+      קבוע בלי חיכוך. משחררים ממנוחה. מה תאוצת הגוף, מה המתיחות בחוט, וכמה זמן לוקח לגוף לרדת $1.5\,\text{m}$?
+    answer: >-
+      $a = 2.45\,\text{m/s}^2$, $T = 3.68\,\text{N}$, $t = 1.11\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.50\,\text{kg}$; דסקה $M = 3.0\,\text{kg}$, $R = 0.20\,\text{m}$; $h = 1.5\,\text{m}$. ציר לגוף כלפי מטה; הגלגל
+          חיובי בכיוון שבו הוא מסתובב כשהגוף יורד.
+      - kind: law
+        text: >-
+          לגוף: $mg - T = ma$. לגלגל סביב הציר: $TR = I\alpha$, עם $I = \tfrac12MR^2$. החוט לא מחליק: $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          מהגלגל $T = (I/R^2)a = \tfrac12Ma$. נציב בגוף: $mg = (m + \tfrac12M)a$, כלומר $a = \dfrac{mg}{m + M/2}$,
+          $T = m(g - a)$, $t = \sqrt{2h/a}$.
+      - kind: limit
+        text: >-
+          כש-$M \to 0$, $a \to g$ ו-$T \to 0$: נפילה חופשית. כש-$M \to \infty$, $a \to 0$ ו-$T \to mg$.
+      - kind: units
+        text: >-
+          $mg/(m + M/2)$ ב-$\text{m/s}^2$; $\sqrt{h/a}$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $a = 0.50\cdot9.8/(0.50 + 1.5) = 2.45\,\text{m/s}^2$; $T = 0.50\cdot(9.8 - 2.45) = 3.68\,\text{N}$;
+          $t = \sqrt{2\cdot1.5/2.45} = 1.11\,\text{s}$.
+      - kind: result
+        text: >-
+          $a = 2.45\,\text{m/s}^2$, $T = 3.68\,\text{N}$ (פחות מהמשקל, $4.90\,\text{N}$), $t = 1.11\,\text{s}$.
+
+  - id: W-8.3-05
+    level: mid
+    objectives: [OBJ-8.3-2]
+    prompt: >-
+      גוף במסה $0.80\,\text{kg}$ תלוי על חוט שכרוך על גלגל שהוא טבעת דקה במסה $1.2\,\text{kg}$ וברדיוס $0.10\,\text{m}$, על ציר
+      קבוע בלי חיכוך. הגוף יורד ממנוחה $0.90\,\text{m}$. מצאו בשימור אנרגיה את מהירותו ואת המהירות הזוויתית של הגלגל.
+      איזה חלק מהאנרגיה שהשתחררה נמצא בגלגל?
+    answer: >-
+      $v = 2.66\,\text{m/s}$, $\omega = 26.6\,\text{rad/s}$; $60\%$ מהאנרגיה ($4.23\,\text{J}$ מתוך $7.06\,\text{J}$) בגלגל.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.80\,\text{kg}$; טבעת $M = 1.2\,\text{kg}$, $R = 0.10\,\text{m}$, $I = MR^2$; $h = 0.90\,\text{m}$, ממנוחה.
+      - kind: law
+        text: >-
+          הציר לא עושה עבודה ואין חיכוך: $mgh = \tfrac12mv^2 + \tfrac12I\omega^2$, עם $\omega = v/R$ (החוט לא מחליק).
+      - kind: manipulation
+        text: >-
+          $\tfrac12I\omega^2 = \tfrac12(I/R^2)v^2 = \tfrac12Mv^2$, ולכן $mgh = \tfrac12(m + M)v^2$ ו-$v = \sqrt{\dfrac{2mgh}{m + M}}$.
+          החלק של הגלגל: $\dfrac{M}{m + M}$.
+      - kind: limit
+        text: >-
+          כש-$M \to 0$, $v \to \sqrt{2gh}$, נפילה חופשית. ככל ש-$M$ גדלה, חלק גדל מהאנרגיה הולך לסיבוב.
+      - kind: units
+        text: >-
+          $\sqrt{\text{kg·(m/s}^2)\text{·m}/\text{kg}} = \text{m/s}$; $v/R$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $mgh = 0.80\cdot9.8\cdot0.90 = 7.06\,\text{J}$; $v = \sqrt{2\cdot7.056/2.0} = 2.66\,\text{m/s}$; $\omega = 26.6\,\text{rad/s}$;
+          לגלגל $\tfrac12\cdot1.2\cdot2.66^2 = 4.23\,\text{J}$, $60\%$.
+      - kind: result
+        text: >-
+          $v = 2.66\,\text{m/s}$ (בנפילה חופשית $4.20\,\text{m/s}$), $\omega = 26.6\,\text{rad/s}$; $60\%$ מהאנרגיה בגלגל.
+
+  - id: W-8.3-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.3-1]
+    prompt: >-
+      חוט כרוך על גלגל שמומנט ההתמד שלו $I$ וברדיוס $R$, על ציר קבוע בלי חיכוך. בניסוי אחד תולים על החוט גוף במסה
+      $m$. בניסוי שני לא תולים דבר, ומושכים את החוט ביד בכוח קבוע ששווה למשקל של אותו גוף, $mg$. קבעו ונמקו: באיזה
+      ניסוי התאוצה הזוויתית גדולה יותר? מצאו את היחס בין שתי התאוצות הזוויתיות, וחשבו אותו עבור
+      $I = 0.10\,\text{kg·m}^2$, $m = 2.0\,\text{kg}$ ו-$R = 0.20\,\text{m}$.
+    answer: >-
+      במשיכה ביד; היחס $1 + mR^2/I = 1.80$.
+    solution:
+      - kind: reasoning
+        text: >-
+          כשהגוף תלוי, הוא מאיץ כלפי מטה, ולכן $mg - T = ma > 0$: המתיחות **קטנה** מ-$mg$. ביד המתיחות היא $mg$ בדיוק.
+          המומנט על הגלגל, $TR$, גדול יותר במשיכה ביד.
+      - kind: law
+        text: >-
+          ביד: $mgR = I\alpha_1$. עם הגוף: $TR = I\alpha_2$, $mg - T = m\alpha_2R$.
+      - kind: manipulation
+        text: >-
+          $\alpha_1 = \dfrac{mgR}{I}$, $\alpha_2 = \dfrac{mgR}{I + mR^2}$, ו-$\dfrac{\alpha_1}{\alpha_2} = 1 + \dfrac{mR^2}{I}$.
+          הגוף התלוי צריך להאיץ גם את עצמו: הוא מוסיף $mR^2$ למכנה.
+      - kind: limit
+        text: >-
+          כש-$mR^2 \ll I$, הגוף כמעט לא מאיץ, $T \approx mg$, והיחס $\to 1$. כש-$I \to 0$, היחס גדל בלי גבול: על גלגל חסר
+          מסה הגוף נופל חופשית, $T \to 0$.
+      - kind: units
+        text: >-
+          $mR^2/I$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $mR^2 = 2.0\cdot0.04 = 0.080\,\text{kg·m}^2$, והיחס $1 + 0.80 = 1.80$: $\alpha_1 = 39.2\,\text{rad/s}^2$ ו-$\alpha_2 = 21.8\,\text{rad/s}^2$.
+      - kind: result
+        text: >-
+          במשיכה ביד התאוצה הזוויתית גדולה יותר, פי $1 + mR^2/I$, כאן פי $1.80$: המתיחות עם גוף תלוי קטנה מהמשקל שלו.
+
+  - id: W-8.3-07
+    level: mid
+    objectives: [OBJ-8.3-2]
+    prompt: >-
+      דסקת השחזה אחידה במסה $3.0\,\text{kg}$ וברדיוס $0.10\,\text{m}$ מסתובבת ב-2400 סיבובים לדקה. מכבים את המנוע, והיא
+      נעצרת אחרי $12\,\text{s}$ בגלל מומנט חיכוך קבוע בציר. מה גודל מומנט החיכוך? כמה סיבובים עשתה עד העצירה, ומה העבודה
+      שעשה עליה החיכוך?
+    answer: >-
+      $\tau = 0.314\,\text{N·m}$; $240$ סיבובים; $W = -474\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          דסקה, $M = 3.0\,\text{kg}$, $R = 0.10\,\text{m}$; $\omega_0 = 2400\cdot2\pi/60\,\text{rad/s}$; עוצרת אחרי $t = 12\,\text{s}$.
+          כיוון חיובי: כיוון הסיבוב.
+      - kind: law
+        text: >-
+          $\tau = I\alpha$; בתאוצה זוויתית קבועה $\theta = \tfrac12(\omega_0 + 0)t$; משפט עבודה-אנרגיה: $W = \Delta(\tfrac12I\omega^2)$.
+      - kind: manipulation
+        text: >-
+          $\alpha = -\omega_0/t$, ולכן $|\tau| = I\omega_0/t$. $\theta = \tfrac12\omega_0t$. $W = -\tfrac12I\omega_0^2$, ובדיקה: $-|\tau|\theta$
+          נותן אותו דבר.
+      - kind: limit
+        text: >-
+          כש-$t \to \infty$ (בלי חיכוך) $\tau \to 0$. העבודה לא תלויה בזמן העצירה: כל האנרגיה הקינטית הופכת לחום בכל מקרה.
+      - kind: units
+        text: >-
+          $\text{kg·m}^2\cdot\text{s}^{-1}/\text{s} = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          $I = 0.0150\,\text{kg·m}^2$, $\omega_0 = 251\,\text{rad/s}$; $|\tau| = 0.0150\cdot251.3/12 = 0.314\,\text{N·m}$;
+          $\theta = \tfrac12\cdot251.3\cdot12 = 1508\,\text{rad} = 240$ סיבובים; $W = -\tfrac12\cdot0.0150\cdot251.3^2 = -474\,\text{J}$.
+      - kind: result
+        text: >-
+          $|\tau| = 0.314\,\text{N·m}$, $240$ סיבובים, והחיכוך עשה $-474\,\text{J}$.
+
+  - id: W-8.3-08
+    level: bagrut
+    objectives: [OBJ-8.3-1, OBJ-8.3-2]
+    prompt: >-
+      במכונת אטווד תלויים $m_1 = 2.5\,\text{kg}$ ו-$m_2 = 1.5\,\text{kg}$ על חוט שעובר על גלגלת: דסקה אחידה במסה
+      $1.0\,\text{kg}$ וברדיוס $0.080\,\text{m}$. בציר הגלגלת יש חיכוך, שמפעיל עליה מומנט קבוע של $0.20\,\text{N·m}$ נגד
+      הסיבוב. החוט לא מחליק. משחררים ממנוחה.
+
+      א. מצאו את התאוצה ואת שתי המתיחויות.
+
+      ב. כש-$m_1$ ירד $1.0\,\text{m}$: כמה אנרגיה פוטנציאלית השתחררה, כמה הפכה לאנרגיה קינטית, וכמה לחום?
+
+      ג. מה מומנט החיכוך הגדול ביותר שבו המערכת עוד יכולה להתחיל לנוע?
+    answer: >-
+      א. $a = 1.62\,\text{m/s}^2$, $T_1 = 20.4\,\text{N}$, $T_2 = 17.1\,\text{N}$. ב. $9.80\,\text{J}$; $7.30\,\text{J}$ קינטית; $2.50\,\text{J}$ חום.
+      ג. $(m_1 - m_2)gR = 0.784\,\text{N·m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 2.5\,\text{kg}$ יורד, $m_2 = 1.5\,\text{kg}$ עולה; דסקה $M = 1.0\,\text{kg}$, $R = 0.080\,\text{m}$; $\tau_f = 0.20\,\text{N·m}$.
+          $a > 0$ כש-$m_1$ יורד; הגלגלת חיובית בכיוון הסיבוב אז.
+      - kind: law
+        text: >-
+          $m_1g - T_1 = m_1a$; $T_2 - m_2g = m_2a$; לגלגלת סביב הציר: $(T_1 - T_2)R - \tau_f = I\alpha$; $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          מהגלגלת $T_1 - T_2 = \tau_f/R + \tfrac12Ma$. חיבור שלוש המשוואות:
+          $a = \dfrac{(m_1 - m_2)g - \tau_f/R}{m_1 + m_2 + \tfrac12M}$. באנרגיה: העבודה של החיכוך היא $-\tau_f\theta$, עם $\theta = x/R$.
+          המערכת זזה רק אם המונה חיובי: $\tau_f < (m_1 - m_2)gR$.
+      - kind: limit
+        text: >-
+          כש-$\tau_f \to 0$ חוזרים לאטווד עם גלגלת בעלת מסה, $a = 2.18\,\text{m/s}^2$. כש-$\tau_f \to (m_1 - m_2)gR$, $a \to 0$.
+      - kind: units
+        text: >-
+          $\tau_f/R$ ב-$\text{N}$, כמו $(m_1 - m_2)g$; $\tau_f\theta$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $\tau_f/R = 2.50\,\text{N}$; $a = (9.80 - 2.50)/4.5 = 1.62\,\text{m/s}^2$; $T_1 = 2.5\cdot(9.8 - 1.62) = 20.4\,\text{N}$,
+          $T_2 = 1.5\cdot(9.8 + 1.62) = 17.1\,\text{N}$; ההפרש $3.31\,\text{N} = 2.50 + 0.5\cdot1.62$. ב. $(m_1 - m_2)gx = 9.80\,\text{J}$;
+          $\theta = 12.5\,\text{rad}$, חום $0.20\cdot12.5 = 2.50\,\text{J}$; קינטית $\tfrac12\cdot4.5\cdot(2\cdot1.62\cdot1.0) = 7.30\,\text{J}$.
+          ג. $1.0\cdot9.8\cdot0.080 = 0.784\,\text{N·m}$.
+      - kind: result
+        text: >-
+          א. $a = 1.62\,\text{m/s}^2$, $T_1 = 20.4\,\text{N}$, $T_2 = 17.1\,\text{N}$. ב. $9.80\,\text{J} = 7.30\,\text{J} + 2.50\,\text{J}$.
+          ג. $0.784\,\text{N·m}$.
+
+  - id: W-8.3-09
+    level: bagrut
+    objectives: [OBJ-8.3-1, OBJ-8.3-2]
+    prompt: >-
+      כדי למדוד את מומנט ההתמד של גלגל, כורכים חוט על הסרן שלו, שרדיוסו $5.0\,\text{cm}$, ותולים בקצה גוף במסה
+      $0.40\,\text{kg}$. הגוף משוחרר ממנוחה ויורד $1.20\,\text{m}$ ב-$2.6\,\text{s}$. הגלגל מסתובב על ציר קבוע.
+
+      א. בהנחה שאין חיכוך בציר, מה מומנט ההתמד של הגלגל?
+
+      ב. בדקו את התשובה בשימור אנרגיה: איזה חלק מהאנרגיה נמצא בגלגל בסוף?
+
+      ג. קבעו ונמקו: אם בציר יש בכל זאת חיכוך, האם הערך שמצאתם גדול מהאמיתי או קטן ממנו?
+    answer: >-
+      א. $I = mR^2(g/a - 1) = 0.0266\,\text{kg·m}^2$. ב. $4.53\,\text{J}$ מתוך $4.70\,\text{J}$, כ-$96\%$. ג. גדול מהאמיתי.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.40\,\text{kg}$, $R = 0.050\,\text{m}$, $h = 1.20\,\text{m}$, $t = 2.6\,\text{s}$, ממנוחה. ציר לגוף כלפי מטה.
+      - kind: law
+        text: >-
+          בתאוצה קבועה $h = \tfrac12at^2$. לגוף $mg - T = ma$; לגלגל $TR = I\alpha$, $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          $a = 2h/t^2$. מהגלגל $T = Ia/R^2$; נציב: $mg = ma + Ia/R^2$, כלומר $I = mR^2\left(\dfrac{g}{a} - 1\right)$.
+          באנרגיה: $v = at$, $\omega = v/R$, ו-$mgh = \tfrac12mv^2 + \tfrac12I\omega^2$.
+      - kind: reasoning
+        text: >-
+          ג. חיכוך בציר מאט את הנפילה: $a$ הנמדדת קטנה יותר, ו-$g/a$ גדל. הנוסחה, שלא יודעת על החיכוך, מייחסת את ההאטה
+          להתמד, ולכן נותנת $I$ גדול מהאמיתי.
+      - kind: limit
+        text: >-
+          כש-$a \to g$ (נפילה חופשית), $I \to 0$; כש-$a \to 0$, $I \to \infty$.
+      - kind: units
+        text: >-
+          $mR^2$ ב-$\text{kg·m}^2$, ו-$g/a$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $a = 2\cdot1.20/2.6^2 = 0.355\,\text{m/s}^2$, $g/a = 27.6$; $I = 0.40\cdot0.050^2\cdot26.6 = 0.0266\,\text{kg·m}^2$.
+          ב. $v = 0.923\,\text{m/s}$, $\omega = 18.5\,\text{rad/s}$: לגלגל $4.53\,\text{J}$, לגוף $0.170\,\text{J}$, וביחד $mgh = 4.70\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $I = 0.0266\,\text{kg·m}^2$. ב. כ-$96\%$ מהאנרגיה בגלגל, והסכום מתאים ל-$4.70\,\text{J}$. ג. חיכוך היה מנפח את התוצאה.
+
+  - id: W-8.3-10
+    level: bagrut
+    objectives: [OBJ-8.3-2]
+    prompt: >-
+      מאגר אנרגיה הוא גלגל תנופה: דסקה אחידה במסה $50\,\text{kg}$ וברדיוס $0.30\,\text{m}$. מנוע מאיץ אותו ממנוחה עד
+      $600\,\text{rad/s}$ בהספק קבוע של $2.0\,\text{kW}$.
+
+      א. כמה אנרגיה אגורה בסוף, וכמה זמן לקחה ההאצה?
+
+      ב. מה מומנט הכוח של המנוע ב-$300\,\text{rad/s}$ וב-$600\,\text{rad/s}$? אחרי כמה זמן הגלגל מגיע ל-$300\,\text{rad/s}$?
+
+      ג. קבעו ונמקו: למה המודל "הספק קבוע" לא יכול להיות נכון ממש בהתחלה?
+    answer: >-
+      א. $4.05\cdot10^5\,\text{J}$, $202.5\,\text{s}$. ב. $6.67\,\text{N·m}$ ו-$3.33\,\text{N·m}$; $50.6\,\text{s}$.
+      ג. $\tau = P/\omega \to \infty$ כש-$\omega \to 0$.
+    solution:
+      - kind: given
+        text: >-
+          דסקה, $M = 50\,\text{kg}$, $R = 0.30\,\text{m}$; $P = 2.0\cdot10^3\,\text{W}$ קבוע; ממנוחה עד $\omega_f = 600\,\text{rad/s}$.
+      - kind: law
+        text: >-
+          $K = \tfrac12I\omega^2$; $P = dK/dt = \tau\omega$.
+      - kind: manipulation
+        text: >-
+          הספק קבוע: $K = Pt$, ולכן $t = \tfrac12I\omega^2/P$ ו-$\omega(t) = \sqrt{2Pt/I}$. המומנט $\tau = P/\omega$ קטן ככל שהגלגל מהיר.
+      - kind: reasoning
+        text: >-
+          ג. ב-$\omega \to 0$ המומנט $P/\omega$ צריך להיות אינסופי. למנוע אמיתי יש מומנט מרבי, ולכן בהתחלה הוא עובד במומנט
+          קבוע (וההספק גדל), ורק אחר כך בהספק קבוע.
+      - kind: limit
+        text: >-
+          חצי מהמהירות הזוויתית דורש רבע מהאנרגיה, ולכן רבע מהזמן: $t(300) = t(600)/4$.
+      - kind: units
+        text: >-
+          $\text{J}/\text{W} = \text{s}$; $\text{W}/(\text{rad/s}) = \text{N·m}$.
+      - kind: substitution
+        text: >-
+          $I = \tfrac12\cdot50\cdot0.09 = 2.25\,\text{kg·m}^2$; $K = \tfrac12\cdot2.25\cdot600^2 = 4.05\cdot10^5\,\text{J}$; $t = 202.5\,\text{s}$.
+          $\tau(300) = 2000/300 = 6.67\,\text{N·m}$, $\tau(600) = 3.33\,\text{N·m}$; $t(300) = 202.5/4 = 50.6\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $4.05\cdot10^5\,\text{J}$ (כ-$0.11$ קילוואט-שעה) ב-$202.5\,\text{s}$. ב. $6.67$ ו-$3.33\,\text{N·m}$; $50.6\,\text{s}$.
+          ג. בהספק קבוע המומנט היה אינסופי במנוחה.
+
+challenge:
+  - id: W-8.3-c1
+    stars: 1
+    objectives: [OBJ-8.3-1]
+    prompt: >-
+      גלגל קבוע בנוי משתי דסקות אחידות שמודבקות זו לזו על אותו מרכז: דסקה גדולה ברדיוס $R$ ובמסה $M_1$, ודסקה קטנה
+      ברדיוס $R/2$ ובמסה $M_2$. הגלגל מסתובב בלי חיכוך סביב ציר במרכזו. חבל כרוך על הדסקה הקטנה, עובר על יתד קטנה בלי
+      חיכוך, ובקצהו תלוי גוף במסה $M_b$. משחררים ממנוחה.
+
+      א. כמה זמן לוקח לגוף לרדת מרחק $d$? בטאו בעזרת $R$, $M_1$, $M_2$, $M_b$, $g$ ו-$d$.
+
+      ב. חשבו עבור $M_1 = 2.0\,\text{kg}$, $M_2 = 1.0\,\text{kg}$, $M_b = 0.50\,\text{kg}$, $R = 0.20\,\text{m}$ ו-$d = 1.0\,\text{m}$.
+
+      ג. קבעו ונמקו: אילו החבל היה כרוך על הדסקה הגדולה, הגוף היה יורד מהר יותר או לאט יותר?
+    answer: >-
+      א. $t = \sqrt{\dfrac{2d\left(M_b + 2M_1 + M_2/2\right)}{M_bg}}$. ב. $a = 0.980\,\text{m/s}^2$, $t = 1.43\,\text{s}$. ג. מהר יותר
+      ($3.02\,\text{m/s}^2$, $0.814\,\text{s}$): הזרוע גדלה פי $2$, ו"המסה האפקטיבית" של הגלגל, $I/r^2$, קטנה פי $4$.
+    solution:
+      - kind: given
+        text: >-
+          שתי דסקות על ציר אחד; החבל ברדיוס $r = R/2$; ממנוחה; ציר לגוף כלפי מטה.
+      - kind: law
+        text: >-
+          $I = \tfrac12M_1R^2 + \tfrac12M_2(R/2)^2$. לגוף $M_bg - T = M_ba$; לגלגל $Tr = I\alpha$; $a = \alpha r$.
+      - kind: manipulation
+        text: >-
+          $T = (I/r^2)a$, ו-$I/r^2 = 2M_1 + \tfrac12M_2$. לכן $a = \dfrac{M_bg}{M_b + 2M_1 + M_2/2}$ ו-$t = \sqrt{2d/a}$.
+      - kind: limit
+        text: >-
+          כש-$M_1, M_2 \to 0$, $a \to g$. דסקה גדולה שהחבל לא עליה מכבידה הרבה: היא תורמת $2M_1$, פי $4$ ממסה שהייתה
+          ברדיוס של החבל ובאותה צורה.
+      - kind: units
+        text: >-
+          $d\cdot\text{kg}/(\text{kg}\cdot\text{m/s}^2)$ ב-$\text{s}^2$.
+      - kind: substitution
+        text: >-
+          $I = 0.040 + 0.0050 = 0.0450\,\text{kg·m}^2$, $I/r^2 = 4.50\,\text{kg}$; $a = 4.90/5.0 = 0.980\,\text{m/s}^2$,
+          $t = \sqrt{2/0.980} = 1.43\,\text{s}$. ג. $I/R^2 = 1.125\,\text{kg}$, $a = 4.90/1.625 = 3.02\,\text{m/s}^2$, $t = 0.814\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $t = \sqrt{2d(M_b + 2M_1 + M_2/2)/(M_bg)}$. ב. $1.43\,\text{s}$. ג. מהר יותר: $0.814\,\text{s}$.
+    source:
+      name: MIT 8.01 Classical Mechanics (OCW 8.01SC), Fall 2016
+      year: 2016
+      problem: Problem Set 10, Problem 2 (Compound Pulley)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/878cc2b018e6280e47318e3659631d4b_MIT8_01F16_pset10.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.3-c2
+    stars: 2
+    objectives: [OBJ-8.3-1, OBJ-8.3-2]
+    prompt: >-
+      גלגלת במסה $m_p$ וברדיוס $R$, עם מומנט התמד $\tfrac12m_pR^2$, מסתובבת בלי חיכוך סביב ציר קבוע במרכזה. חוט חסר
+      מסה כרוך עליה, וקצהו השני קשור לגוף במסה $m$ שמוחזק במנוחה על מדרון חלק בזווית $\theta$ לאופק; החוט מקביל
+      למדרון. משחררים את הגוף.
+
+      א. כמה זמן לוקח לגוף לנוע מרחק $d$ במורד המדרון? בטאו בעזרת $R$, $m$, $g$, $d$, $m_p$ ו-$\theta$.
+
+      ב. חשבו את הזמן ואת המתיחות עבור $m = 2.0\,\text{kg}$, $m_p = 3.0\,\text{kg}$, $\theta = 30^\circ$ ו-$d = 1.5\,\text{m}$.
+
+      ג. בדקו את התשובה בשימור אנרגיה, ומצאו איזה חלק מהאנרגיה הקינטית נמצא בגלגלת.
+    answer: >-
+      א. $t = \sqrt{\dfrac{2d\left(m + m_p/2\right)}{mg\sin\theta}}$, בלי תלות ב-$R$. ב. $a = 2.80\,\text{m/s}^2$, $t = 1.04\,\text{s}$, $T = 4.20\,\text{N}$.
+      ג. $\dfrac{m_p/2}{m + m_p/2} = \tfrac37$.
+    solution:
+      - kind: given
+        text: >-
+          גלגלת $I = \tfrac12m_pR^2$; גוף $m$ על מדרון חלק בזווית $\theta$; ציר לאורך המדרון, חיובי במורד; ממנוחה.
+      - kind: law
+        text: >-
+          לגוף לאורך המדרון: $mg\sin\theta - T = ma$ (הנורמלי ניצב למדרון). לגלגלת $TR = I\alpha$; $a = \alpha R$.
+      - kind: manipulation
+        text: >-
+          $T = \tfrac12m_pa$; לכן $a = \dfrac{mg\sin\theta}{m + m_p/2}$ ו-$t = \sqrt{2d/a}$. באנרגיה: $mgd\sin\theta = \tfrac12mv^2 + \tfrac12I\omega^2
+          = \tfrac12(m + m_p/2)v^2$, אותה $v^2 = 2ad$.
+      - kind: limit
+        text: >-
+          כש-$m_p \to 0$, $a \to g\sin\theta$: גוף על מדרון חלק. כש-$\theta = 90^\circ$: גוף שתלוי על גלגל. $R$ לא מופיע.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}\cdot\text{kg}/(\text{kg}\cdot\text{m/s}^2)} = \text{s}$.
+      - kind: substitution
+        text: >-
+          $a = 2.0\cdot9.8\cdot0.5/3.5 = 2.80\,\text{m/s}^2$; $t = \sqrt{3.0/2.80} = 1.04\,\text{s}$; $T = 1.5\cdot2.80 = 4.20\,\text{N}$,
+          פחות מ-$mg\sin\theta = 9.80\,\text{N}$; חלק הגלגלת $1.5/3.5 = \tfrac37$.
+      - kind: result
+        text: >-
+          א. $t = \sqrt{2d(m + m_p/2)/(mg\sin\theta)}$. ב. $1.04\,\text{s}$, $T = 4.20\,\text{N}$. ג. $\tfrac37$ מהאנרגיה הקינטית בגלגלת.
+    source:
+      name: MIT 8.01 Classical Mechanics (OCW 8.01SC), Fall 2016
+      year: 2016
+      problem: Problem Set 10, Problem 6 (A Massive Pulley and a Block on an Incline)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/878cc2b018e6280e47318e3659631d4b_MIT8_01F16_pset10.pdf
+      verified: '2026-11-12'
+      adapted: true

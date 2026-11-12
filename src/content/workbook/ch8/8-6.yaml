@@ -1,0 +1,453 @@
+# Workbook, lesson 8.6 (angular momentum of a rigid body and its conservation). Format: CLAUDE.md, "The solution
+# format". Every number was recomputed by .scratch/ch8/8-6/examples.ts with G = 9.8 and src/physics/rigidbody.ts,
+# rigidangular.ts:
+#   W01 disc 5.0 kg, R = 0.30 m (I = 0.225), ω = 6.0, clay 2.0 kg at 0.20 m: I₂ = 0.305, ω₂ = 4.43 rad/s,
+#       K 4.05 → 2.99 J, lost 1.06 J (26.2%);  W03 0.020 at 50 rad/s + 0.030 at rest: ω_f = 20, K 25 → 10 J (60% lost);
+#   W04 disc 150 kg, R = 1.5 m (I = 168.75), runner 30 kg at 4.0 m/s: L = 180, I = 236.25, ω = 0.762 rad/s,
+#       K 240 → 68.6 J;  W06 rod 4.0 kg, 1.5 m (I_P = 3.0), bullet 20 g at 400 m/s into the bottom: I = 3.045,
+#       ω = 3.94 rad/s, K = 23.6 J, (MgL/2 + mgL) = 29.69 J, cos θ = 0.204, θ = 78.2°;
+#   W07 rod 0.90 kg, 1.2 m (I_cm = 0.108), puck 0.30 kg at 3.0 m/s, b = 0.30 m: μ = 0.225, ω = 1.58 rad/s,
+#       V_cm = 0.750 m/s, rod centre 0.632 m/s;  W08 rod 2.4 kg, 0.90 m (I_P = 0.648), puck 0.15 kg at 8.0 m/s:
+#       s = 0.90: ω = 1.40, J_P = +0.505 N·s; s = 0.30: J_P = −0.588 N·s; zero at 2L/3 = 0.60 m;
+#   W09 light-puck limit ω_free/ω_pinned = 2;  W10 I_t = 120, person 60 kg at R = 2.0 m: θ_t = −2π·240/360 = −4.19 rad
+#       (−240°), the person turns +120° relative to the ground;
+#   c1 (MIT 8.01 Fall 2016, PS 11, Problem 2) ω = 3v/(8d), ΔK/K = −15/16;
+#   c2 (MIT 8.01 Fall 2016, PS 11, Problem 1) ω = −m₂v/((m₁ + 2m₂)R) k̂ halfway, 0 back at the pivot.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '8.6'
+practice:
+  - id: W-8.6-01
+    level: basic
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      אובניים של קדר הם דסקה אחידה במסה $5.0\,\text{kg}$ וברדיוס $0.30\,\text{m}$, שמסתובבת בלי חיכוך ב-$6.0\,\text{rad/s}$.
+      הקדר מפיל עליה גוש חמר של $2.0\,\text{kg}$, במנוחה, במרחק $0.20\,\text{m}$ מהציר, והגוש נדבק. התייחסו לגוש
+      כמסה נקודתית. מה המהירות הזוויתית אחרי, ואיזה חלק מהאנרגיה הקינטית הלך לאיבוד?
+    answer: >-
+      $4.43\,\text{rad/s}$; $26.2\%$ מהאנרגיה ($1.06\,\text{J}$ מתוך $4.05\,\text{J}$).
+    solution:
+      - kind: given
+        text: >-
+          $I_1 = \tfrac12MR^2 = \tfrac12\cdot5.0\cdot0.30^2 = 0.225\,\text{kg}\cdot\text{m}^2$, $\omega_1 = 6.0\,\text{rad/s}$, $m = 2.0\,\text{kg}$ ב-$r = 0.20\,\text{m}$.
+          ציר אנכי, בלי חיכוך.
+      - kind: law
+        text: >-
+          הגוש נופל אנכית: הכובד והכוח הנורמלי מקבילים לציר, ואין מומנט חיצוני סביבו. לכן $L_z = I\omega$ נשמר. $K = L^2/(2I)$.
+      - kind: manipulation
+        text: >-
+          $I_1\omega_1 = \left(I_1 + mr^2\right)\omega_2$, ולכן $\omega_2 = \dfrac{I_1}{I_1 + mr^2}\,\omega_1$, ו-$\dfrac{K_2}{K_1} = \dfrac{I_1}{I_1 + mr^2}$.
+      - kind: limit
+        text: >-
+          כש-$r \to 0$ הגוש על הציר ולא משנה דבר. כש-$m \to \infty$ האובניים נעצרים, וכל האנרגיה הולכת לאיבוד.
+      - kind: units
+        text: >-
+          $I/(I + mr^2)$ חסר ממדים, ו-$\omega_2$ ביחידות של $\omega_1$.
+      - kind: substitution
+        text: >-
+          $I_2 = 0.225 + 2.0\cdot0.20^2 = 0.305\,\text{kg}\cdot\text{m}^2$, $\omega_2 = \dfrac{0.225}{0.305}\cdot6.0 = 4.43\,\text{rad/s}$.
+          $K_1 = \tfrac12\cdot0.225\cdot36 = 4.05\,\text{J}$, $K_2 = 2.99\,\text{J}$, הפסד $1.06\,\text{J}$, כלומר $1 - \dfrac{0.225}{0.305} = 26.2\%$.
+      - kind: result
+        text: >-
+          $\omega_2 = 4.43\,\text{rad/s}$. $26.2\%$ מהאנרגיה הקינטית הפכו לחום ולעיוות, בזמן שהחמר החליק על האובניים עד שנדבק.
+
+  - id: W-8.6-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      דסקית מחליקה על קרח חלק ופוגעת בניצב במוט שמונח עליו, **בדיוק במרכזו**, ונדבקת. קבעו ונמקו:
+
+      א. האם המוט יסתובב?
+
+      ב. מה נשמר בפגיעה: התנע, התנע הזוויתי סביב מרכז המוט, האנרגיה הקינטית?
+
+      ג. ואילו המוט היה נעוץ בציר שעובר במרכזו?
+    answer: >-
+      א. לא, הוא רק יחליק קדימה. ב. התנע והתנע הזוויתי (שנשאר אפס) נשמרים; האנרגיה הקינטית לא. ג. המוט והדסקית נעצרים: הציר
+      קולט את כל התנע.
+    solution:
+      - kind: given
+        text: >-
+          המערכת: מוט + דסקית. על הקרח אין כוח חיצוני אופקי. הקו של הדסקית עובר דרך מרכז המוט.
+      - kind: law
+        text: >-
+          בלי מתקף חיצוני התנע נשמר, והתנע הזוויתי סביב כל נקודה קבועה. מוט חופשי: $I_{cm}\omega = Jb$, כאשר $b$ המרחק ממרכז המוט לקו של המכה.
+      - kind: reasoning
+        text: >-
+          כאן $b = 0$: למתקף אין מומנט סביב מרכז המוט, ו-$\omega = 0$. התנע הזוויתי סביב הנקודה הזו היה אפס לפני (הדסקית נעה על קו שעובר בה) ונשאר אפס.
+          הדסקית נדבקה, ולכן זו התנגשות פלסטית בקו ישר, כמו בשיעור 4.1, ואנרגיה קינטית הולכת לאיבוד.
+      - kind: reasoning
+        text: >-
+          עם ציר במרכז, נקודת הפגיעה היא הציר עצמו: היא לא יכולה לזוז. הדסקית שנדבקה נעצרת, והציר נותן מתקף שעוצר את כל התנע.
+      - kind: limit
+        text: >-
+          כשהפגיעה זזה קצת מהמרכז, $b \ne 0$, והמוט מתחיל להסתובב לאט, $\omega \propto b$: אין קפיצה בהתנהגות.
+      - kind: result
+        text: >-
+          א. לא. ב. התנע והתנע הזוויתי סביב מרכז המוט נשמרים, האנרגיה הקינטית לא. ג. הכול נעצר, והציר קולט את התנע.
+
+  - id: W-8.6-03
+    level: basic
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      גלגל תנופה עם מומנט התמד $0.020\,\text{kg}\cdot\text{m}^2$ מסתובב ב-$50\,\text{rad/s}$. מצמד מחבר אותו, באותו ציר,
+      לדסקה עם מומנט התמד $0.030\,\text{kg}\cdot\text{m}^2$ שעומדת במנוחה, ואחרי זמן קצר הם מסתובבים יחד. מה המהירות
+      הזוויתית המשותפת, ואיזה חלק מהאנרגיה הקינטית הופך לחום?
+    answer: >-
+      $20\,\text{rad/s}$; $60\%$ מהאנרגיה ($15\,\text{J}$ מתוך $25\,\text{J}$).
+    solution:
+      - kind: given
+        text: >-
+          $I_1 = 0.020\,\text{kg}\cdot\text{m}^2$, $\omega_1 = 50\,\text{rad/s}$; $I_2 = 0.030\,\text{kg}\cdot\text{m}^2$, $\omega_2 = 0$. ציר משותף, בלי מומנט חיצוני.
+      - kind: law
+        text: >-
+          הכוחות במצמד פנימיים: $I_1\omega_1 + I_2\omega_2 = \left(I_1 + I_2\right)\omega_f$.
+      - kind: manipulation
+        text: >-
+          $\omega_f = \dfrac{I_1\omega_1}{I_1 + I_2}$, ו-$\dfrac{K_f}{K_1} = \dfrac{I_1}{I_1 + I_2}$, כי $K = L^2/(2I)$ ו-$L$ לא השתנה.
+      - kind: limit
+        text: >-
+          כש-$I_2 \to 0$ אין הפסד. כש-$I_2 \gg I_1$ כמעט כל האנרגיה הולכת לאיבוד, כמו כדור פלסטלינה שנדבק לקיר.
+      - kind: units
+        text: >-
+          $\tfrac12I\omega^2$ ב-$\text{kg}\cdot\text{m}^2\cdot\text{s}^{-2} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\omega_f = \dfrac{0.020\cdot50}{0.050} = 20\,\text{rad/s}$. $K_1 = \tfrac12\cdot0.020\cdot2500 = 25\,\text{J}$, $K_f = \tfrac12\cdot0.050\cdot400 = 10\,\text{J}$.
+      - kind: result
+        text: >-
+          $20\,\text{rad/s}$; $15\,\text{J}$, כלומר $60\%$, הופכים לחום במצמד בזמן שהוא מחליק.
+
+  - id: W-8.6-04
+    level: mid
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      קרוסלה היא דסקה אחידה במסה $150\,\text{kg}$ וברדיוס $1.5\,\text{m}$, במנוחה, על ציר בלי חיכוך. ילד במסה $30\,\text{kg}$
+      רץ ב-$4.0\,\text{m/s}$ בכיוון המשיק לשפת הקרוסלה, וקופץ עליה בשפה. מה המהירות הזוויתית של הקרוסלה עם הילד, וכמה
+      אנרגיה קינטית הלכה לאיבוד?
+    answer: >-
+      $0.762\,\text{rad/s}$; $171\,\text{J}$ מתוך $240\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $I_d = \tfrac12\cdot150\cdot1.5^2 = 168.75\,\text{kg}\cdot\text{m}^2$, $m = 30\,\text{kg}$, $v = 4.0\,\text{m/s}$, $R = 1.5\,\text{m}$. ציר אנכי דרך המרכז,
+          והכיוון שבו הילד רץ סביבו חיובי.
+      - kind: law
+        text: >-
+          בזמן הקפיצה, הכוח של הציר על הקרוסלה פועל בציר, ואין לו מומנט סביבו. לכן התנע הזוויתי של ילד + קרוסלה סביב הציר נשמר.
+          לפני: הילד נע בקו ישר במרחק $R$ מהציר, $L = mvR$ (שיעור 3.7).
+      - kind: manipulation
+        text: >-
+          $mvR = \left(I_d + mR^2\right)\omega$, ולכן $\omega = \dfrac{mvR}{I_d + mR^2}$.
+      - kind: limit
+        text: >-
+          כש-$I_d \to 0$, $\omega = v/R$: הילד ממשיך במהירותו ורק מסובב קרוסלה חסרת מסה.
+      - kind: units
+        text: >-
+          $mvR/I$ ב-$\text{kg}\cdot\text{m/s}\cdot\text{m}/(\text{kg}\cdot\text{m}^2) = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $L = 30\cdot4.0\cdot1.5 = 180\,\text{kg}\cdot\text{m}^2/\text{s}$, $I = 168.75 + 67.5 = 236.25\,\text{kg}\cdot\text{m}^2$, $\omega = 0.762\,\text{rad/s}$.
+          $K$: לפני $\tfrac12\cdot30\cdot16 = 240\,\text{J}$, אחרי $\dfrac{180^2}{2\cdot236.25} = 68.6\,\text{J}$.
+      - kind: result
+        text: >-
+          $\omega = 0.762\,\text{rad/s}$; $171\,\text{J}$ הלכו לאיבוד, ברגלי הילד ובחיכוך עם הקרוסלה כשנחת. התנע **לא** נשמר: הציר עצר את התנע של הילד.
+
+  - id: W-8.6-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      מחליקה מסתובבת כשזרועותיה צמודות לגוף, ופורשת אותן לאט. קבעו ונמקו: מה קורה למהירות הזוויתית, לתנע הזוויתי ולאנרגיה
+      הקינטית? ואם האנרגיה משתנה, לאן היא הולכת?
+    answer: >-
+      $\omega$ קטנה, $L$ לא משתנה, ו-$K = L^2/(2I)$ קטנה. השרירים עושים עבודה שלילית: הם מרסנים את הזרועות שנוטות לעוף
+      החוצה, והאנרגיה הופכת בשרירים לחום.
+    solution:
+      - kind: law
+        text: >-
+          הקרח לא מפעיל מומנט סביב הציר האנכי, ולכן $L = I\omega$ נשמר. $K = L^2/(2I)$.
+      - kind: reasoning
+        text: >-
+          בפרישה $I$ גדל, ולכן $\omega = L/I$ קטנה ו-$K$ קטנה.
+      - kind: reasoning
+        text: >-
+          כדי שזרוע תנוע במעגל, משהו צריך למשוך אותה פנימה בכוח $m\omega^2r$. בפרישה איטית השרירים עדיין מושכים פנימה, אבל הזרוע
+          זזה החוצה: הכוח נגד התנועה, והעבודה שלו שלילית. כמו כשמורידים משא לאט, השרירים קולטים את האנרגיה והופכים אותה לחום.
+      - kind: limit
+        text: >-
+          אילו היא הייתה משחררת את הזרועות לגמרי (כמו המשקולות שנשמטות בדוגמה 1 של השיעור), $\omega$ שלה לא הייתה משתנה, והזרועות
+          היו לוקחות את האנרגיה שלהן איתן.
+      - kind: result
+        text: >-
+          $\omega$ ו-$K$ קטנות, $L$ קבוע; האנרגיה החסרה היא העבודה השלילית של השרירים, שהפכה לחום בגוף.
+
+  - id: W-8.6-06
+    level: mid
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      מוט אחיד במסה $4.0\,\text{kg}$ ובאורך $1.5\,\text{m}$ תלוי במנוחה מציר אופקי בקצהו העליון. קליע במסה $20\,\text{g}$
+      נורה אופקית ב-$400\,\text{m/s}$ ונתקע בקצה התחתון.
+
+      א. מה המהירות הזוויתית של המוט מיד אחרי הפגיעה?
+
+      ב. עד איזו זווית מהאנך יתרומם המוט?
+    answer: >-
+      א. $3.94\,\text{rad/s}$. ב. $78.2^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 4.0\,\text{kg}$, $L = 1.5\,\text{m}$, $I_P = \tfrac13ML^2 = 3.0\,\text{kg}\cdot\text{m}^2$; $m = 0.020\,\text{kg}$, $v = 400\,\text{m/s}$, נתקע ב-$s = L$.
+          $g = 9.8\,\text{m/s}^2$. ציר $y$ כלפי מעלה.
+      - kind: law
+        text: >-
+          שני שלבים. בפגיעה הקצרה: תנע זוויתי סביב הציר נשמר (לכוח הציר אין מומנט סביבו, והכובד לא נותן מתקף). אחריה: אנרגיה מכנית
+          נשמרת, כי הציר בלי חיכוך והכובד משמר.
+      - kind: manipulation
+        text: >-
+          $\omega = \dfrac{mvL}{I_P + mL^2}$. בהתרוממות לזווית $\theta$, מרכז המסה של המוט עולה $\tfrac L2(1 - \cos\theta)$ והקליע $L(1 - \cos\theta)$:
+          $\tfrac12\left(I_P + mL^2\right)\omega^2 = \left(Mg\tfrac L2 + mgL\right)(1 - \cos\theta)$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$, $\theta \to 0$. ואם התוצאה הייתה נותנת $1 - \cos\theta > 2$, המוט היה מסתובב סיבוב שלם.
+      - kind: units
+        text: >-
+          $\tfrac12I\omega^2$ ו-$MgL$ שניהם ב-$\text{J}$; היחס ביניהם חסר ממדים, כמו $1 - \cos\theta$.
+      - kind: substitution
+        text: >-
+          $I = 3.0 + 0.020\cdot2.25 = 3.045\,\text{kg}\cdot\text{m}^2$, $\omega = \dfrac{0.020\cdot400\cdot1.5}{3.045} = 3.94\,\text{rad/s}$,
+          $K = \tfrac12\cdot3.045\cdot3.94^2 = 23.6\,\text{J}$. $Mg\tfrac L2 + mgL = 29.4 + 0.294 = 29.7\,\text{J}$, $1 - \cos\theta = 0.796$, $\cos\theta = 0.204$.
+      - kind: result
+        text: >-
+          א. $3.94\,\text{rad/s}$. ב. $\theta = 78.2^\circ$. מתוך $1600\,\text{J}$ של הקליע נשארים למוט רק $23.6\,\text{J}$; השאר הפך לחום ולעיוות.
+
+  - id: W-8.6-07
+    level: mid
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      מוט אחיד במסה $0.90\,\text{kg}$ ובאורך $1.2\,\text{m}$ מונח חופשי על שולחן אופקי חלק. דסקית במסה $0.30\,\text{kg}$
+      מחליקה ב-$3.0\,\text{m/s}$ בניצב למוט, פוגעת בו במרחק $0.30\,\text{m}$ ממרכזו ונדבקת. מצאו את מהירות מרכז המסה של
+      מוט + דסקית ואת המהירות הזוויתית מיד אחרי הפגיעה.
+    answer: >-
+      $0.750\,\text{m/s}$ ו-$1.58\,\text{rad/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 0.90\,\text{kg}$, $L = 1.2\,\text{m}$, $I_{cm} = \tfrac1{12}ML^2 = 0.108\,\text{kg}\cdot\text{m}^2$; $m = 0.30\,\text{kg}$, $v = 3.0\,\text{m/s}$, $b = 0.30\,\text{m}$.
+          $O$: הנקודה הקבועה שבה מרכז המוט נמצא ברגע הפגיעה.
+      - kind: law
+        text: >-
+          בלי כוח חיצוני אופקי: התנע נשמר, ומרכז המסה נע ב-$V = \dfrac{mv}{m + M}$; התנע הזוויתי סביב $O$ נשמר.
+      - kind: manipulation
+        text: >-
+          משימור התנע, שימור התנע הזוויתי סביב $O$ והתנאי שהדסקית נעה עם נקודת המוט שבמרחק $b$, יוצא (כמו בשיעור)
+          $\omega = \dfrac{\mu vb}{I_{cm} + \mu b^2}$, עם $\mu = \dfrac{mM}{m + M}$.
+      - kind: limit
+        text: >-
+          $b = 0$ נותן $\omega = 0$. כש-$m \ll M$, $\omega \to mvb/I_{cm}$, ו-$V \to 0$.
+      - kind: units
+        text: >-
+          $\mu vb/I$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $V = \dfrac{0.30\cdot3.0}{1.2} = 0.750\,\text{m/s}$. $\mu = \dfrac{0.30\cdot0.90}{1.2} = 0.225\,\text{kg}$,
+          $\omega = \dfrac{0.225\cdot3.0\cdot0.30}{0.108 + 0.225\cdot0.090} = \dfrac{0.2025}{0.128} = 1.58\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          $V = 0.750\,\text{m/s}$ בכיוון הדסקית, ו-$\omega = 1.58\,\text{rad/s}$.
+
+  - id: W-8.6-08
+    level: bagrut
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      מוט אחיד במסה $M$ ובאורך $L$ מונח על שולחן אופקי חלק, נעוץ בציר $P$ בקצה אחד. דסקית במסה $m$ מחליקה במהירות $v$
+      בניצב למוט, פוגעת בו במרחק $s$ מ-$P$ ונדבקת.
+
+      א. מצאו את המתקף $J_P$ שהציר מפעיל על המוט בזמן הפגיעה, כביטוי ב-$m$, $v$, $M$, $L$ ו-$s$.
+
+      ב. באיזה $s$ הוא מתאפס? האם התשובה תלויה ב-$m$?
+
+      ג. חשבו את $J_P$ ל-$M = 2.4\,\text{kg}$, $L = 0.90\,\text{m}$, $m = 0.15\,\text{kg}$, $v = 8.0\,\text{m/s}$, בפגיעה בקצה ($s = 0.90\,\text{m}$)
+      ובפגיעה ב-$s = 0.30\,\text{m}$, וקבעו את כיוונו בכל מקרה.
+    answer: >-
+      א. $J_P = mv\,\dfrac{M\frac L2s - I_P}{I_P + ms^2}$, $I_P = \tfrac13ML^2$. ב. $s = \tfrac23L$, לא תלוי ב-$m$.
+      ג. $+0.505\,\text{N}\cdot\text{s}$ (בכיוון הדסקית) ו-$-0.588\,\text{N}\cdot\text{s}$ (נגדה).
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ בכיוון הדסקית. $I_P = \tfrac13ML^2$, ומרכז המוט במרחק $\tfrac L2$ מ-$P$.
+      - kind: law
+        text: >-
+          תנע זוויתי סביב $P$ נשמר: $mvs = \left(I_P + ms^2\right)\omega$. התנע לא נשמר: המתקף של הציר הוא השינוי בתנע, $J_P = p_{\text{after}} - mv$.
+      - kind: manipulation
+        text: >-
+          אחרי: מרכז המוט נע ב-$\omega\tfrac L2$ והדסקית ב-$\omega s$, ולכן $J_P = \omega\left(M\tfrac L2 + ms\right) - mv$. עם $\omega$ מהשורה הקודמת:
+          $J_P = mv\,\dfrac{s\left(M\frac L2 + ms\right) - I_P - ms^2}{I_P + ms^2} = mv\,\dfrac{M\frac L2s - I_P}{I_P + ms^2}$.
+      - kind: reasoning
+        text: >-
+          המונה מתאפס ב-$s = \dfrac{I_P}{ML/2} = \tfrac23L$, ו-$m$ לא מופיע בו. רחוק יותר מ-$P$ הציר דוחף בכיוון הדסקית, וקרוב יותר הוא דוחף נגדה.
+      - kind: limit
+        text: >-
+          $s = 0$: $J_P = -mv$, הציר עוצר את כל התנע. כש-$M \to 0$ גם $I_P \to 0$, המונה מתאפס ו-$J_P \to 0$: מוט חסר מסה לא צריך שום דבר מהציר.
+      - kind: units
+        text: >-
+          $mv$ ב-$\text{N}\cdot\text{s}$, והשבר חסר ממדים ($MLs$ ו-$I_P$ שניהם ב-$\text{kg}\cdot\text{m}^2$).
+      - kind: substitution
+        text: >-
+          $I_P = \tfrac13\cdot2.4\cdot0.81 = 0.648\,\text{kg}\cdot\text{m}^2$, $mv = 1.2\,\text{N}\cdot\text{s}$. ב-$s = 0.90\,\text{m}$: $M\tfrac L2s = 2.4\cdot0.45\cdot0.90 = 0.972$ ו-$ms^2 = 0.1215\,\text{kg}\cdot\text{m}^2$, ולכן
+          $J_P = 1.2\cdot\dfrac{0.972 - 0.648}{0.770} = 0.505\,\text{N}\cdot\text{s}$. ב-$s = 0.30$: $1.2\cdot\dfrac{0.324 - 0.648}{0.6615} = -0.588\,\text{N}\cdot\text{s}$.
+      - kind: result
+        text: >-
+          א. $J_P = mv\,\dfrac{M\frac L2s - I_P}{I_P + ms^2}$. ב. $s = \tfrac23L = 0.60\,\text{m}$, בלי תלות ב-$m$. ג. $+0.505\,\text{N}\cdot\text{s}$ בקצה, $-0.588\,\text{N}\cdot\text{s}$ ב-$0.30\,\text{m}$.
+
+  - id: W-8.6-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      דסקית קלה מאוד ($m \ll M$) פוגעת בניצב בקצה של מוט אחיד ונדבקת, פעם כשהמוט חופשי על קרח, ופעם כשהוא נעוץ בציר בקצה
+      השני. הראו שהמוט החופשי מסתובב מהר פי 2, ונמקו בלי חישוב למה הציר מאט את הסיבוב.
+    answer: >-
+      נעוץ: $\omega = \dfrac{3mv}{ML}$; חופשי: $\omega = \dfrac{6mv}{ML}$. הציר דוחף את הקצה שלו בכיוון הדסקית, ודחיפה כזו מסובבת את המוט סביב מרכזו נגד
+      הסיבוב.
+    solution:
+      - kind: law
+        text: >-
+          נעוץ: $\omega = \dfrac{mvL}{I_P + mL^2}$. חופשי: $\omega = \dfrac{\mu vb}{I_{cm} + \mu b^2}$ עם $b = \tfrac L2$.
+      - kind: manipulation
+        text: >-
+          כש-$m \ll M$: נעוץ $\omega \to \dfrac{mvL}{ML^2/3} = \dfrac{3mv}{ML}$; חופשי, $\mu \to m$, $\omega \to \dfrac{mvL/2}{ML^2/12} = \dfrac{6mv}{ML}$. היחס $2$.
+      - kind: reasoning
+        text: >-
+          הפגיעה במרחק $L$ מהציר, רחוק יותר מ-$\tfrac23L$, ושם הציר דוחף את קצהו של המוט בכיוון הדסקית (לולא הציר, הקצה הזה היה נע אחורה).
+          סביב מרכז המוט, דחיפה כזו בקצה העליון מסובבת את המוט בכיוון ההפוך לסיבוב שהדסקית נותנת.
+      - kind: limit
+        text: >-
+          בפגיעה ב-$\tfrac23L$ מהציר, הציר לא נותן מתקף, ושני המקרים נותנים אותה תנועה.
+      - kind: result
+        text: >-
+          המוט החופשי מסתובב פי 2 מהר יותר; ההבדל הוא המתקף של הציר, שמומנט שלו סביב מרכז המוט פועל נגד הסיבוב.
+
+  - id: W-8.6-10
+    level: bagrut
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      במה מסתובבת עם מומנט התמד $120\,\text{kg}\cdot\text{m}^2$, על ציר בלי חיכוך, עומדת במנוחה. אדם במסה $60\,\text{kg}$ עומד
+      בשפתה, $2.0\,\text{m}$ מהציר, והולך לאורך השפה סיבוב שלם ביחס לבמה, עד שהוא חוזר לסימן שממנו יצא. התייחסו לאדם כמסה
+      נקודתית. בכמה מעלות הסתובבה הבמה, ובאיזה כיוון? ובכמה מעלות הסתובב האדם ביחס לקרקע?
+    answer: >-
+      הבמה: $240^\circ$ נגד כיוון ההליכה. האדם: $120^\circ$ בכיוון ההליכה.
+    solution:
+      - kind: given
+        text: >-
+          $I_b = 120\,\text{kg}\cdot\text{m}^2$, $m = 60\,\text{kg}$, $R = 2.0\,\text{m}$. ציר אנכי; כיוון ההליכה חיובי. $\theta_b$ ו-$\theta_a$: הזוויות שבהן הסתובבו הבמה והאדם ביחס לקרקע.
+      - kind: law
+        text: >-
+          אין מומנט חיצוני סביב הציר, והכול התחיל במנוחה: $L = I_b\omega_b + mR^2\omega_a = 0$ בכל רגע.
+      - kind: manipulation
+        text: >-
+          מכפילים ב-$dt$ ומסכמים: $I_b\theta_b + mR^2\theta_a = 0$. האדם השלים סיבוב **ביחס לבמה**: $\theta_a - \theta_b = 2\pi$. מכאן
+          $\theta_b = -\dfrac{2\pi mR^2}{I_b + mR^2}$.
+      - kind: limit
+        text: >-
+          כש-$I_b \to \infty$, $\theta_b \to 0$: הבמה לא זזה, והאדם מסתובב $2\pi$. כש-$I_b \to 0$, $\theta_b \to -2\pi$: הבמה מסתובבת מתחת לרגליו, והוא נשאר במקום.
+      - kind: units
+        text: >-
+          $mR^2/(I_b + mR^2)$ חסר ממדים, ולכן $\theta_b$ ברדיאנים.
+      - kind: substitution
+        text: >-
+          $mR^2 = 240\,\text{kg}\cdot\text{m}^2$, $\theta_b = -2\pi\cdot\dfrac{240}{360} = -4.19\,\text{rad} = -240^\circ$, $\theta_a = 2\pi - 4.19 = 2.09\,\text{rad} = 120^\circ$.
+      - kind: result
+        text: >-
+          הבמה הסתובבה $240^\circ$ נגד כיוון ההליכה, והאדם $120^\circ$ בכיוון ההליכה. כשהאדם נעצר, שניהם שוב במנוחה, והאנרגיה הקינטית שוב אפס:
+          היא לא נשמרה בדרך, השרירים יצרו אותה ופיזרו אותה.
+
+challenge:
+  - id: W-8.6-c1
+    stars: 1
+    objectives: [OBJ-8.6-2]
+    prompt: >-
+      מוט אחיד במסה $m$ ובאורך $d$ מונח במנוחה על שולחן אופקי חלק, נעוץ בציר $P$ בקצה אחד. שני גופים נקודתיים, כל אחד במסה
+      $m$, פוגעים בו באותו רגע בניצב למוט, בכיוונים הפוכים, ונדבקים: הראשון נע ב-$v$ ופוגע במרחק $\tfrac23d$ מ-$P$, והשני נע
+      ב-$v$ בכיוון ההפוך ופוגע במרחק $\tfrac13d$ מ-$P$.
+
+      א. מה המהירות הזוויתית של המוט מיד אחרי הפגיעה? באיזה כיוון הוא מסתובב?
+
+      ב. מה היחס $\dfrac{K_f - K_i}{K_i}$ בין השינוי באנרגיה הקינטית לאנרגיה ההתחלתית?
+    answer: >-
+      א. $\omega = \dfrac{3v}{8d}$, בכיוון שבו מסובב הגוף הראשון. ב. $-\tfrac{15}{16}$.
+    solution:
+      - kind: given
+        text: >-
+          מוט $m$, $d$, נעוץ ב-$P$: $I_P = \tfrac13md^2$. ציר $z$ בניצב לשולחן; הכיוון החיובי הוא הכיוון שבו הגוף הראשון מסובב את המוט סביב $P$.
+      - kind: law
+        text: >-
+          לכוח הציר אין מומנט סביב $P$, ולכן התנע הזוויתי של המוט ושני הגופים סביב $P$ נשמר. גוף בקו ישר במרחק $r$ מ-$P$: $L = \pm mvr$.
+      - kind: manipulation
+        text: >-
+          לפני: $mv\cdot\tfrac23d - mv\cdot\tfrac13d = \tfrac13mvd$. אחרי: $\left(\tfrac13md^2 + m\left(\tfrac23d\right)^2 + m\left(\tfrac13d\right)^2\right)\omega = \tfrac89md^2\,\omega$.
+          לכן $\omega = \dfrac{mvd/3}{8md^2/9} = \dfrac{3v}{8d}$. $K_i = 2\cdot\tfrac12mv^2 = mv^2$, $K_f = \tfrac12\cdot\tfrac89md^2\cdot\dfrac{9v^2}{64d^2} = \dfrac{mv^2}{16}$.
+      - kind: limit
+        text: >-
+          אילו שני הגופים פגעו באותו מרחק מ-$P$, התנעים הזוויתיים שלהם היו מתבטלים, $\omega = 0$, וכל האנרגיה הייתה הולכת לאיבוד: היחס $-1$.
+      - kind: units
+        text: >-
+          $v/d$ ב-$\text{s}^{-1}$; יחס האנרגיות חסר ממדים.
+      - kind: result
+        text: >-
+          א. $\omega = \dfrac{3v}{8d}$, בכיוון שבו הגוף הרחוק מסובב. ב. $\dfrac{K_f - K_i}{K_i} = -\dfrac{15}{16}$: כמעט כל האנרגיה הלכה לאיבוד. התנע לא נשמר (לפני הוא אפס,
+          אחרי לא), כי הציר נותן מתקף.
+    source:
+      name: MIT 8.01 Classical Mechanics (Fall 2016, OCW 8.01SC), Problem Set 11
+      year: 2016
+      problem: Problem 2 (A Rigid Rod)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/8a7ebab932f259be07c4462d5fbc1a92_MIT8_01F16_pset11.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-8.6-c2
+    stars: 2
+    objectives: [OBJ-8.6-1]
+    prompt: >-
+      טבעת דקה ברדיוס $R$ ובמסה $m_1$ שוכבת על שולחן אופקי חלק, נעוצה לשולחן בציר $P$ בנקודה על השפה שלה. חרק במסה $m_2$
+      מתחיל ללכת מ-$P$ לאורך הטבעת, במהירות קבועה $v$ **ביחס לטבעת**, כשהטבעת במנוחה.
+
+      א. מה המהירות הזוויתית של הטבעת כשהחרק בדיוק באמצע הדרך, בנקודה שמול $P$? באיזה כיוון?
+
+      ב. מה המהירות הזוויתית שלה כשהחרק חוזר ל-$P$?
+    answer: >-
+      א. $\omega = \dfrac{m_2v}{\left(m_1 + 2m_2\right)R}$, נגד כיוון ההליכה של החרק. ב. אפס.
+    solution:
+      - kind: given
+        text: >-
+          מומנט ההתמד של הטבעת סביב $P$, ממשפט הצירים המקבילים: $I_P = m_1R^2 + m_1R^2 = 2m_1R^2$. ציר $z$ בניצב לשולחן; הכיוון שבו החרק
+          הולך סביב מרכז הטבעת חיובי.
+      - kind: law
+        text: >-
+          לכוח הציר אין מומנט סביב $P$, והשולחן חלק: התנע הזוויתי של טבעת + חרק סביב $P$ נשמר, והוא אפס, כי בהתחלה הכול במנוחה.
+      - kind: manipulation
+        text: >-
+          באמצע הדרך החרק במרחק $2R$ מ-$P$. הנקודה של הטבעת שתחתיו נעה ב-$2R\omega$, בניצב לקו מ-$P$, וכך גם המהירות היחסית $v$ של החרק.
+          לכן מהירות החרק $v + 2R\omega$, והתנע הזוויתי שלו סביב $P$ הוא $m_2\cdot2R\left(v + 2R\omega\right)$:
+          $2m_1R^2\omega + 2m_2R\left(v + 2R\omega\right) = 0$, ולכן $\omega = -\dfrac{m_2v}{\left(m_1 + 2m_2\right)R}$.
+      - kind: reasoning
+        text: >-
+          כשהחרק חוזר ל-$P$, המרחק שלו מ-$P$ אפס, והוא לא תורם לתנע הזוויתי סביב $P$. לכן $I_P\omega = 0$, והטבעת עומדת, אף שהחרק עדיין הולך.
+      - kind: limit
+        text: >-
+          כש-$m_2 \ll m_1$, $\omega \to 0$: חרק קל לא מזיז טבעת כבדה. כש-$m_1 \to 0$, $\omega \to -\dfrac{v}{2R}$: הנקודה של החרק נעה ב-$v - 2R\cdot\dfrac{v}{2R} = 0$, החרק עומד במקום והטבעת זזה מתחתיו.
+      - kind: units
+        text: >-
+          $v/R$ ב-$\text{s}^{-1}$, והשבר במסות חסר ממדים.
+      - kind: result
+        text: >-
+          א. $\omega = \dfrac{m_2v}{\left(m_1 + 2m_2\right)R}$, נגד כיוון ההליכה. ב. $\omega = 0$. מומנט ההתמד של המערכת סביב $P$ משתנה כשהחרק זז, והטבעת מסתובבת
+          בדיוק כך שהתנע הזוויתי הכולל נשאר אפס.
+    source:
+      name: MIT 8.01 Classical Mechanics (Fall 2016, OCW 8.01SC), Problem Set 11
+      year: 2016
+      problem: Problem 1 (Bug Walking on Pivoted Ring)
+      url: https://www.ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/8a7ebab932f259be07c4462d5fbc1a92_MIT8_01F16_pset11.pdf
+      verified: '2026-11-12'
+      adapted: true

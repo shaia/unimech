@@ -2,14 +2,22 @@
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
 # Strings may hold $inline$ / $$display$$ TeX and **bold**. Never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch8/q.ts with src/physics/constants.ts (G = 9.8):
+# Every number was computed in .scratch/ch8/q.ts, and recomputed independently by the lesson's author in
+# .scratch/ch8/8-4/bank.ts against src/physics/rigidbody.ts and rolling.ts (G = 9.8, 2026-11-12):
 #   rolling from rest down a height h: v/√(2gh) = 1/√(1 + I/(mR²)): block 1, solid sphere 0.845, disc 0.816,
 #     hollow sphere 0.775, ring 0.707;
 #   solid cylinder on 30°: a = g sin θ/(3/2) = 3.27 m/s² (no rotation 4.90, ring 2.45, sphere 3.50);
-#   solid sphere on 40°: μ_min = (2/7) tan θ = 0.240 (tan θ 0.839, disc 0.280, ring 0.420, (5/7) tan θ 0.599);
+#   hollow sphere on 30° (Q-8.4-min-friction-shell, mid, added by the review): μ_min = (2/5) tan 30° = 0.231
+#     (tan θ 0.577, β tan θ 0.385, the disc's 0.192);
+#   solid sphere on 40°, μs = 0.20, μk = 0.15 (Q-8.4-incline-regime, rewritten by the review 2026-11-12: its old key,
+#     a = 5.17 m/s², was the scene of the lesson's example 5): μ_min = (2/7) tan θ = 0.240 > 0.20, so it slips;
+#     a = g(sin θ − μk cos θ) = 5.17 m/s², αR = (5/2)μk g cos θ = 2.82 m/s², rotational share of K
+#     (2/5)(αR)²/(a² + (2/5)(αR)²) = 0.106 at every instant (rolling 2/7 = 0.286, μs in place of μk 0.197, K_rot/K_trans 0.118);
 #   bowling ball v0 = 8.0 m/s, no spin, μk = 0.20: v = (5/7)v0 = 5.71 m/s (energy 6.76), t = 2v0/(7μg) = 1.17 s,
 #     s = 12v0²/(49μg) = 8.00 m (to a stop 16.3, v0·t 9.33), K kept 5/7;
-#   backspin Rω0 = 3v0: v_final = (5/7)(v0 − (2/5)Rω0) = −v0/7.
+#   backspin (rewritten by the review: the old Rω0 = −3v0 was the lesson's backspin scene and returned the ball):
+#     rim speed 2v0 backward, Rω0 = −2v0 in the rolling sense: L0/(mR) = v0 − (4/5)v0 = v0/5 > 0, v_final = v0/7
+#     forward; it returns only when R|ω0| > (5/2)v0 (a hoop would return). Recomputed in .scratch/review/ch8/.
 
 chapter: 8
 questions:
@@ -21,7 +29,7 @@ questions:
     level: basic
     prompt: >-
       כדור מתגלגל בלי החלקה ימינה (מזרחה) על רצפה אופקית, במהירות קבועה. מזניחים את התנגדות האוויר ואת עיוות
-      הכדור והרצפה. מה כיוון כוח החיכוך שהרצפה מפעילה על הכדור? למעלה בדף הוא כלפי מעלה.
+      הכדור והרצפה. מה כיוון כוח החיכוך שהרצפה מפעילה על הכדור? (התרשים הוא מבט מהצד: ימינה בדף היא מזרח, ולמעלה בדף הוא כלפי מעלה.)
     answer: zero
     correctFeedback: >-
       נכון: אין חיכוך. מהירות המרכז קבועה, ולכן הכוח האופקי השקול אפס. גם המהירות הזוויתית קבועה, ולכן גם המומנט
@@ -49,7 +57,7 @@ questions:
     unit: m/s²
     correctFeedback: >-
       נכון. לאורך המדרון $mg\sin\theta - f = ma$, סביב המרכז $fR = I\alpha$, ובגלגול $a = \alpha R$. מכאן
-      $a = \dfrac{g\sin\theta}{1 + I/(mR^2)} = \dfrac{9.8\cdot0.5}{1.5} = 3.27\,\text{m/s}^2$. החיכוך הסטטי לוקח
+      $a = \dfrac{g\sin\theta}{1 + I/(mR^2)}$, כאן $\dfrac{9.8\cdot0.5}{1.5} = 3.27\,\text{m/s}^2$. החיכוך הסטטי לוקח
       שליש מרכיב הכובד, $f = \tfrac13mg\sin\theta$, כדי לסובב את הגליל.
     wrongFeedback: 'השתמשו ב-$a = \dfrac{g\sin\theta}{1 + I/(mR^2)}$, או גזרו אותו מהחוק השני, ממשוואת המומנט ומ-$a = \alpha R$.'
     commonWrong:
@@ -112,38 +120,69 @@ questions:
         correct: true
         feedback: 'זה הנימוק. העבודה של כוח היא הכוח כפול **ההעתק של הנקודה שעליה הוא פועל**, ונקודת המגע לא זזה בזמן שהכוח פועל עליה.'
       - text: 'החיכוך מתנגד לתנועה, ולכן העבודה שלו שלילית.'
-        feedback: 'החיכוך מאט את תנועת המרכז, אבל מאיץ את הסיבוב באותה מידה בדיוק: העבודה שלו על תנועת המרכז, $-fs$, מתקזזת עם העבודה של המומנט שלו, $+fR\theta = +fs$.'
+        feedback: 'החיכוך מאט את תנועת המרכז, אבל מאיץ את הסיבוב באותה מידה בדיוק: העבודה שלו על תנועת המרכז, $-fs$, מתקזזת עם העבודה של המומנט שלו, $+fR\varphi = +fs$, כאשר $\varphi$ זווית הסיבוב של הדסקה.'
         misconception: MC-8-static-friction-does-work
       - text: 'החיכוך קטן, ולכן אפשר להזניח את העבודה שלו.'
         feedback: 'החיכוך כאן לא קטן: הוא שליש מרכיב הכובד לאורך המדרון. העבודה שלו אפס בדיוק, לא קטנה.'
     hints:
       - 'מה המהירות של הנקודה שעליה פועל כוח החיכוך?'
 
-  - id: Q-8.4-min-friction
+  - id: Q-8.4-min-friction-shell
     type: numeric
     objectives: [OBJ-8.4-1]
-    level: bagrut
+    level: mid
     prompt: >-
-      כדור מלא ואחיד ($I = \tfrac25mR^2$) מונח על מדרון בזווית $40^\circ$ ומשתחרר ממנוחה. מה מקדם החיכוך הסטטי
-      המינימלי שמאפשר לו להתגלגל בלי החלקה?
-    answer: 0.24
+      קליפה כדורית דקה ($I = \tfrac23mR^2$) משתחררת ממנוחה על מדרון בזווית $30^\circ$. מה מקדם החיכוך הסטטי
+      הקטן ביותר שמאפשר לה להתגלגל בלי החלקה?
+    answer: 0.231
     unit: ''
     correctFeedback: >-
-      נכון. מהחוק השני, ממשוואת המומנט ומ-$a = \alpha R$: $f = \dfrac{I}{R^2}\cdot a = \dfrac{2/5}{1 + 2/5}mg\sin\theta = \tfrac27mg\sin\theta$.
-      התנאי $f \le \mu_sN = \mu_smg\cos\theta$ נותן $\mu_s \ge \tfrac27\tan\theta = \tfrac27\cdot0.839 = 0.240$.
-      **בדיקת גבולות:** כש-$\theta \to 0$ לא צריך חיכוך כלל, וכש-$I \to 0$ (מסה נקודתית) גם $f \to 0$, כי אין מה לסובב.
-    wrongFeedback: 'מצאו את $f$ הדרוש לגלגול (מהחוק השני ומשוואת המומנט), ודרשו $f \le \mu_smg\cos\theta$.'
+      נכון. בגלגול בלי החלקה $a = \dfrac{g\sin\theta}{1 + \beta}$ ו-$f = \beta ma = \dfrac{\beta}{1 + \beta}mg\sin\theta$,
+      עם $\beta = \tfrac23$. התנאי $f \le \mu_smg\cos\theta$ נותן $\mu_s \ge \dfrac{\beta}{1 + \beta}\tan\theta = \tfrac25\tan30^\circ = 0.231$.
+      המסה והרדיוס לא משנים דבר.
+    wrongFeedback: 'כמה חיכוך סטטי צריך גלגול בלי החלקה, ומה הכי הרבה שהמדרון יכול לתת, $\mu_sN$?'
     commonWrong:
-      - value: 0.839
-        feedback: 'זה $\tan\theta$, המקדם שמחזיק קובייה **במנוחה** על המדרון. כדור מתגלגל לא צריך לעצור: החיכוך רק צריך לסובב אותו.'
-      - value: 0.28
-        feedback: 'זה $\tfrac13\tan\theta$, של גליל מלא. לכדור מלא $\dfrac{I/(mR^2)}{1 + I/(mR^2)} = \dfrac{2/5}{7/5} = \tfrac27$.'
-      - value: 0.42
-        feedback: 'זה $\tfrac12\tan\theta$, של טבעת. לכדור מלא, עם $I$ קטן יותר, צריך פחות חיכוך.'
-      - value: 0.599
-        feedback: 'זה $\tfrac57\tan\theta$: השתמשתם במקדם של התאוצה, $a = \tfrac57g\sin\theta$, במקום בזה של החיכוך. החיכוך הוא מה שנשאר, $mg\sin\theta - ma = \tfrac27mg\sin\theta$.'
+      - value: 0.577
+        feedback: 'זה $\tan30^\circ$, המקדם שמחזיק גוש **במנוחה** על המדרון. הקליפה לא במנוחה: היא מאיצה במורד, והחיכוך צריך רק לסובב אותה.'
+      - value: 0.385
+        feedback: 'זה $\beta\tan\theta$. מהחוק השני $f = \beta ma$, ו-$a = \dfrac{g\sin\theta}{1 + \beta}$, לא $g\sin\theta$: חסר המכנה $1 + \beta$.'
+      - value: 0.192
+        feedback: 'זה $\tfrac13\tan30^\circ$, הסף של דסקה ($\beta = \tfrac12$). לקליפה כדורית $\beta = \tfrac23$, ו-$\dfrac{\beta}{1 + \beta} = \tfrac25$.'
     hints:
-      - 'אחרי שמצאתם $a = \tfrac57g\sin\theta$, החיכוך הוא $mg\sin\theta - ma$.'
+      - 'מצאו קודם את החיכוך הסטטי $f$ שהגלגול צריך, והשוו ל-$\mu_smg\cos\theta$.'
+
+  - id: Q-8.4-incline-regime
+    type: numeric
+    objectives: [OBJ-8.4-1, OBJ-8.4-2]
+    level: bagrut
+    prompt: >-
+      כדור מלא ואחיד ($I = \tfrac25mR^2$) משתחרר ממנוחה על מדרון בזווית $40^\circ$. מקדם החיכוך הסטטי בין הכדור
+      למדרון $\mu_s = 0.20$, והקינטי $\mu_k = 0.15$. איזה חלק מהאנרגיה הקינטית של הכדור במורד המדרון הוא אנרגיה
+      קינטית סיבובית? (מספר בין $0$ ל-$1$.)
+    answer: 0.106
+    unit: ''
+    correctFeedback: >-
+      נכון. קודם בודקים אם הכדור יכול להתגלגל בלי החלקה: זה דורש $\mu_s \ge \tfrac27\tan40^\circ = 0.240$, ויש רק
+      $0.20$. לכן הכדור מחליק מההתחלה, והחיכוך קינטי, $\mu_kmg\cos\theta$, במעלה המדרון. החוק השני:
+      $a = g(\sin\theta - \mu_k\cos\theta) = 5.17\,\text{m/s}^2$. המומנט סביב המרכז:
+      $\mu_kmg\cos\theta\,R = \tfrac25mR^2\alpha$, כלומר $\alpha R = \tfrac52\mu_kg\cos\theta = 2.82\,\text{m/s}^2$. שתיהן
+      קבועות, ולכן ממנוחה $v = at$ ו-$\omega R = \alpha Rt$, והחלק הסיבובי לא תלוי בזמן:
+      $$\frac{\tfrac25(\alpha R)^2}{a^2 + \tfrac25(\alpha R)^2} = 0.106$$
+      בגלגול בלי החלקה הוא היה $\tfrac27 = 0.286$: הכדור שמחליק מסתובב לאט מדי.
+    wrongFeedback: 'קודם בדקו אם $\mu_s$ מספיק לגלגול בלי החלקה. אחר כך מצאו את $a$ מהחוק השני ואת $\alpha R$ ממשוואת המומנט סביב המרכז.'
+    commonWrong:
+      - value: 0.286
+        feedback: >-
+          זה $\tfrac27$, החלק הסיבובי בגלגול בלי החלקה. אבל גלגול כזה צריך $\mu_s \ge \tfrac27\tan40^\circ = 0.240$, ויש
+          רק $0.20$: הכדור מחליק, והסיבוב שלו מפגר אחרי התנועה של המרכז.
+      - value: 0.197
+        feedback: 'השתמשתם ב-$\mu_s$. ברגע שנקודת המגע מחליקה, החיכוך קינטי: $\mu_kN$, עם $\mu_k = 0.15$, גם בחוק השני וגם במומנט.'
+      - value: 0.118
+        feedback: >-
+          זה היחס בין האנרגיה הסיבובית לאנרגיה של תנועת המרכז, $\dfrac{\tfrac25(\alpha R)^2}{a^2}$. השאלה שואלת על
+          החלק מכל האנרגיה הקינטית: חלקו בסכום של שתיהן.
+    hints:
+      - 'האם $\mu_s$ מספיק לגלגול? אם לא, החיכוך הוא $\mu_kN$, והוא קובע גם את $a$ וגם את $\alpha$.'
 
   # ---------------------------------------------------------------- OBJ-8.4-2 rolling with slipping
   - id: Q-8.4-slide-friction
@@ -191,7 +230,7 @@ questions:
           מהאנרגיה ההתחלתית. האנרגיה לא נשמרת כאן, התנע הזוויתי סביב נקודה על המסלול כן.
         misconception: MC-8-slipping-energy-conserved
       - value: 8.0
-        feedback: 'החיכוך פועל אחורה כל זמן ההחלקה, ולכן המרכז מאט. חלק מהתנע עובר לסיבוב.'
+        feedback: 'החיכוך פועל אחורה כל זמן ההחלקה, ולכן המרכז מאט: החיכוך הוא כוח חיצוני, והתנע הקווי לא נשמר. במקביל המומנט שלו מגביר את הסיבוב.'
         misconception: MC-8-friction-only-slows
       - value: 2.29
         feedback: 'זו המהירות שהכדור **מאבד**, $\tfrac27v_0$. מה שנשאר הוא $\tfrac57v_0$.'
@@ -203,14 +242,15 @@ questions:
     objectives: [OBJ-8.4-2]
     level: bagrut
     prompt: >-
-      אותו כדור באולינג נוחת במהירות $v_0 = 8.0\,\text{m/s}$ בלי סיבוב, ומקדם החיכוך הקינטי עם המסלול הוא
-      $\mu_k = 0.20$. איזה מרחק הוא עובר עד שהוא מפסיק להחליק?
+      כדור באולינג (כדור מלא ואחיד, $I = \tfrac25mR^2$) נוחת על מסלול אופקי במהירות $v_0 = 8.0\,\text{m/s}$ בלי
+      סיבוב, ומקדם החיכוך הקינטי עם המסלול הוא $\mu_k = 0.20$. הוא מחליק עד שהוא מתחיל להתגלגל בלי החלקה. איזה
+      מרחק עובר המרכז שלו עד אז?
     answer: 8.0
     unit: m
     correctFeedback: >-
       נכון. בזמן ההחלקה $a = -\mu_kg$ ו-$\alpha = \dfrac{\mu_kmgR}{\tfrac25mR^2} = \dfrac{5\mu_kg}{2R}$. כלומר
       $v = v_0 - \mu_kgt$ ו-$\omega R = \tfrac52\mu_kgt$. ההחלקה נגמרת כשהם שווים:
-      $t = \dfrac{2v_0}{7\mu_kg} = 1.17\,\text{s}$. המרחק: $s = v_0t - \tfrac12\mu_kgt^2 = \dfrac{12v_0^2}{49\mu_kg} = 8.00\,\text{m}$
+      $t = \dfrac{2v_0}{7\mu_kg} = 1.17\,\text{s}$. המרחק: $s = v_0t - \tfrac12\mu_kgt^2$, כלומר $s = \dfrac{12v_0^2}{49\mu_kg} = 8.00\,\text{m}$
       (שהוא גם המהירות הממוצעת, $\tfrac{8.0 + 5.71}{2}$, כפול $t$). **בדיקת גבולות:** כש-$\mu_k \to \infty$ המרחק
       והזמן שואפים לאפס, והמהירות הסופית נשארת $\tfrac57v_0$.
     wrongFeedback: 'כתבו את $v(t)$ מהחוק השני ואת $\omega(t)$ ממשוואת המומנט, מצאו את הזמן שבו $v = \omega R$, ואז את המרחק.'
@@ -229,32 +269,38 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      כדור מלא ואחיד נוחת על שולחן אופקי במהירות $v_0$ קדימה, ועם סיבוב **לאחור** (נגד כיוון הגלגול), כך ש-$R\omega_0 = 3v_0$.
-      הוא מחליק עד שהוא מתגלגל בלי החלקה. מה מצבו בסוף?
+      כדור מלא ואחיד ($I = \tfrac25mR^2$) נוחת על שולחן אופקי במהירות $v_0$ קדימה, ועם סיבוב **לאחור** שמהירות
+      השפה שלו $2v_0$, כפולה ממהירות המרכז. במוסכמה של השיעור, $\omega$ חיובית בכיוון הגלגול קדימה, ולכן
+      $R\omega_0 = -2v_0$. הכדור מחליק עד שהוא מתגלגל בלי החלקה. מה מצבו בסוף?
     choices:
-      - text: 'הוא מתגלגל **אחורה**, לכיוון שממנו בא.'
+      - text: 'הוא מתגלגל **קדימה**, ב-$\tfrac17v_0$.'
         correct: true
-        feedback: 'נכון. המהירות הסופית היא $\tfrac57\left(v_0 - \tfrac25R\omega_0\right) = -\tfrac17v_0$: לאחור. כך כדור ביליארד עם "סיבוב לאחור" חוזר.'
-      - text: 'הוא ממשיך קדימה, לאט יותר, כי החיכוך רק מאט.'
-        feedback: 'החיכוך פועל אחורה כל עוד נקודת המגע מחליקה קדימה. הוא מאט את המרכז עד אפס וממשיך להאיץ אותו אחורה, עד שהגלגול מתחיל.'
-        misconception: MC-8-friction-only-slows
+        feedback: >-
+          נכון. $v = \dfrac{v_0 + \tfrac25R\omega_0}{1 + \tfrac25} = \dfrac{v_0 - \tfrac45v_0}{\tfrac75} = \tfrac17v_0$.
+          הסיבוב לאחור מהיר מהתנועה קדימה, ובכל זאת הוא לא מספיק כדי להחזיר את הכדור: זה דורש
+          $R|\omega_0| > \tfrac52v_0$.
+      - text: 'הוא מתגלגל **אחורה**, כי הסיבוב לאחור מהיר מהתנועה קדימה.'
+        feedback: >-
+          ההשוואה הנכונה היא לא בין $R|\omega_0|$ ל-$v_0$, אלא הסימן של התנע הזוויתי סביב נקודה על השולחן,
+          $mR\left(v_0 + \tfrac25R\omega_0\right) = mR\left(v_0 - \tfrac45v_0\right)$, וזה חיובי. בכדור מלא הסיבוב לאחור
+          "שוקל" רק $\tfrac25$ מהמהירות שלו. (לחישוק, $\beta = 1$, אותו סיבוב היה מחזיר אותו.)
       - text: 'הוא נעצר ונשאר במנוחה.'
-        feedback: 'בנקודה שבה $v = 0$ הכדור עדיין מסתובב לאחור, ונקודת המגע עדיין מחליקה. החיכוך ממשיך לפעול.'
+        feedback: 'כדור נעצר לגמרי רק כשהתנע הזוויתי סביב נקודה על השולחן אפס, כלומר כש-$R\omega_0 = -\tfrac52v_0$. כאן הוא חיובי.'
       - text: 'הוא מתגלגל קדימה ב-$\tfrac57v_0$, כמו כדור בלי סיבוב.'
         feedback: 'זו התוצאה ל-$\omega_0 = 0$. הסיבוב ההתחלתי נכנס לתנע הזוויתי, ולכן משנה את התוצאה.'
     reasons:
-      - text: 'התנע הזוויתי סביב נקודה על השולחן נשמר, ובהתחלה הוא $mv_0R - \tfrac25mR^2\omega_0 = -\tfrac15mv_0R$, שלילי.'
+      - text: 'התנע הזוויתי סביב נקודה על השולחן נשמר, ובהתחלה הוא $mR\left(v_0 + \tfrac25R\omega_0\right) = \tfrac15mv_0R$, חיובי.'
         correct: true
         feedback: >-
-          זה הנימוק. בסוף $L = \tfrac75mvR$, ולכן $v = -\tfrac17v_0$. הסימן של $L$ ההתחלתי קובע את כיוון הגלגול
-          הסופי: הכדור חוזר כש-$R\omega_0 > \tfrac52v_0$.
-      - text: 'החיכוך תמיד פועל נגד התנועה, ולכן הוא לא יכול להפוך את כיוונה.'
+          זה הנימוק. בסוף $L = mRv\left(1 + \tfrac25\right) = \tfrac75mRv$, ולכן $v = \tfrac17v_0$. הסימן של $L$
+          ההתחלתי קובע את כיוון הגלגול הסופי.
+      - text: 'החיכוך פועל נגד תנועת המרכז, ולכן הוא רק מאט אותו ולא יכול להפוך את כיוונו.'
         feedback: >-
-          חיכוך קינטי פועל נגד ההחלקה של נקודת המגע, לא נגד תנועת המרכז. כאן נקודת המגע מחליקה קדימה כל הזמן,
-          גם אחרי שהמרכז כבר נע אחורה, ולכן החיכוך דוחף אחורה עד שההחלקה נגמרת.
+          חיכוך קינטי פועל נגד ההחלקה של נקודת המגע, לא נגד תנועת המרכז. כאן הכדור אמנם ממשיך קדימה, אבל לא מהסיבה
+          הזו: עם סיבוב לאחור של יותר מ-$\tfrac52v_0$ אותו חיכוך היה ממשיך לדחוף אחורה אחרי שהמרכז נעצר, ומחזיר את הכדור.
         misconception: MC-8-friction-only-slows
-      - text: 'שימור אנרגיה: האנרגיה של הסיבוב לאחור הופכת לתנועה לאחור.'
+      - text: 'שימור אנרגיה: האנרגיה של הסיבוב גדולה מזו של תנועת המרכז, ולכן הסיבוב לאחור "מנצח".'
         feedback: 'בזמן ההחלקה החיכוך הקינטי הופך אנרגיה לחום, ולכן האנרגיה לא נשמרת. את התוצאה קובע התנע הזוויתי.'
         misconception: MC-8-slipping-energy-conserved
     hints:
-      - 'חשבו את התנע הזוויתי ההתחלתי סביב נקודה על השולחן: $mv_0R$ פחות $\tfrac25mR^2\omega_0$.'
+      - 'חשבו את התנע הזוויתי ההתחלתי סביב נקודה על השולחן, $mR\left(v + \beta\omega R\right)$, עם הסימן של $\omega_0$.'

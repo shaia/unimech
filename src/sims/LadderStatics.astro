@@ -1,0 +1,7 @@
+---
+/** Rigid-body statics figure for lesson MDX: <Spread figure={LadderStatics} figureProps={{ scene: 'ladder', … }}>. */
+import LadderStatics, { type LadderStaticsProps } from './LadderStatics';
+type Props = LadderStaticsProps;
+---
+
+<LadderStatics client:visible {...Astro.props} />

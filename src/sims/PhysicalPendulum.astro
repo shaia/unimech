@@ -1,0 +1,7 @@
+---
+/** A body on a pin through one of its holes, swinging (with its T(d) chart) or struck, for lesson MDX: <Spread figure={PhysicalPendulum} figureProps={{ mode: 'blow', … }}>. */
+import PhysicalPendulum, { type PhysicalPendulumProps } from './PhysicalPendulum';
+type Props = PhysicalPendulumProps;
+---
+
+<PhysicalPendulum client:visible {...Astro.props} />

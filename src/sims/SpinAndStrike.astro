@@ -1,0 +1,7 @@
+---
+/** Lesson 8.6 figure for lesson MDX: <Spread figure={SpinAndStrike} figureProps={{ mode: 'spin', … }}>. */
+import SpinAndStrike, { type SpinAndStrikeProps } from './SpinAndStrike';
+type Props = SpinAndStrikeProps;
+---
+
+<SpinAndStrike client:visible {...Astro.props} />

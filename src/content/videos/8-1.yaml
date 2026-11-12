@@ -1,0 +1,30 @@
+# Videos of lesson 8.1. Every id was checked against YouTube oEmbed through WebFetch on the `verified` date (exists,
+# embeddable; title and channel exactly as returned). The watch pages came back without their player data, so the
+# lengths, chapters and caption tracks were NOT established: `minutes` is a conservative guess and `captions` is
+# empty. `why` claims only what the title supports (both are Hebrew lessons on rolling without slipping); the user
+# should spot-check both.
+#   XCEbfkXRbHg: "גלגול ללא החלקה - נוסחה ודוגמאות", channel "פיזיקה 1 ו-2 לסטודנטים".
+#   d4SMka7hXZc: "גלגול ללא החלקה", channel "Meny Gabbay".
+# Review 2026-11-12: both ids re-checked by oEmbed (title and channel as above); the watch pages again came back
+# without player data, so the content is still unseen and the notes keep to the titles. Lesson 8.4's record gives
+# d4SMka7hXZc a length of 7:17, so its `minutes` is 7 here too (was a guess of 15).
+
+- id: v-8-1-rolling-formula
+  youtubeId: XCEbfkXRbHg
+  title: 'גלגול ללא החלקה - נוסחה ודוגמאות'
+  channel: 'פיזיקה 1 ו-2 לסטודנטים'
+  lang: he
+  start: 0
+  minutes: 15
+  why: 'שיעור בעברית, מערוץ לסטודנטים בפיזיקה 1, על תנאי הגלגול בלי החלקה, עם דוגמאות. השוו לסעיף "גלגול בלי החלקה" בשיעור: מהירות נקודה על הגלגל כסכום של מהירות המרכז ומהירות הסיבוב.'
+  verified: '2026-11-12'
+
+- id: v-8-1-rolling-gabbay
+  youtubeId: d4SMka7hXZc
+  title: 'גלגול ללא החלקה'
+  channel: 'Meny Gabbay'
+  lang: he
+  start: 0
+  minutes: 7
+  why: 'הסבר נוסף בעברית על גלגול בלי החלקה. בדקו בעצמכם אם הוא מגיע לשתי התוצאות של השיעור: נקודת המגע במנוחה והנקודה העליונה במהירות כפולה ממהירות המרכז.'
+  verified: '2026-11-12'

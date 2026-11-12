@@ -1,0 +1,30 @@
+# Videos of lesson 8.4. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch page's lengthSeconds; caption tracks from the
+# watch page's caption list (manual tracks only; the Hebrew track of jaqS5dJlrjY is automatic, so it is not listed).
+# `why` claims only what the title, the description and the chapter list support.
+#   d4SMka7hXZc: Meny Gabbay (Hebrew), 7:17; description: "הסבר על גלגול ללא החלקה, פיזיקה, מכניקה". No chapters.
+#   jaqS5dJlrjY: Flipping Physics, 5:52; chapters 0:00 the problem, 0:46 conservation of energy, 2:22 the general
+#                solution, 3:55 the order of the objects, 5:20 the demonstration. The description: a hollow sphere, a
+#                solid sphere and a thin hoop released together roll without slipping; the solid sphere wins, then the
+#                hollow sphere, then the hoop, tested with a live demonstration.
+
+- id: v-8-4-hebrew-intro
+  youtubeId: d4SMka7hXZc
+  title: 'גלגול ללא החלקה'
+  channel: Meny Gabbay
+  lang: he
+  start: 0
+  minutes: 7
+  why: 'הסבר בעברית על גלגול בלי החלקה (לפי התיאור שלו; אין לו רשימת פרקים). השוו לסעיף "תנאי הגלגול": מהירות נקודת המגע אפס, ולכן v = ωR ו-a = αR.'
+  verified: '2026-11-12'
+
+- id: v-8-4-race-demo
+  youtubeId: jaqS5dJlrjY
+  title: 'Which Will Be First? (Rolling Down an Incline)'
+  channel: Flipping Physics
+  lang: en
+  captions: [en]
+  start: 0
+  minutes: 6
+  why: 'קליפה כדורית, כדור מלא וטבעת דקה משתחררים יחד במדרון. לפי רשימת הפרקים: שימור אנרגיה (0:46), הפתרון הכללי (2:22), סדר ההגעה (3:55), והדגמה אמיתית (5:20). זה המרוץ של איור 8.4א, עם גופים אמיתיים.'
+  verified: '2026-11-12'
