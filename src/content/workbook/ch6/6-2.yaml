@@ -1,0 +1,451 @@
+# Workbook, lesson 6.2 (from two bodies to one). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-2/lesson.ts with src/physics/constants.ts and src/physics/twobody.ts:
+#   W02 two 1.00 M_S stars 1.00 AU apart: T = 0.710 yr = 259 days (one fixed Sun: 1.00 yr), each star 21.0 km/s;
+#   W03 Earth–Moon: μ = 7.26e22 kg; period with G(M_E + M_M) shorter by 0.610 % than with the Earth fixed;
+#   W06 2.00 + 1.00 M_S, T = 10.0 yr: a = 1.00e12 m = 6.68 AU, light star 4.45 AU and 13.3 km/s, heavy 2.23 AU and
+#       6.65 km/s (one fixed 2 M_S star: 5.83 AU);
+#   W07 skaters 60 + 90 kg, rope 4.0 m, 0.50 rev/s: μ = 36 kg, tension 1420 N, radii 2.40 and 1.60 m, speeds 7.54
+#       and 5.03 m/s (m₁ω²d instead: 2370 N);
+#   W08 contact binary, ρ = 2000 kg/m³: T = 2π√(3/(πGρ)) = 1.68e4 s = 4.67 h (ρ = 3000: 3.81 h);
+#   W10 2.00 + 1.00 M_S, heavy star 10.0 km/s: v_rel = 30.0 km/s, light 20.0 km/s, a = 4.42e11 m = 2.95 AU,
+#       T = 9.27e7 s = 2.94 yr, E = −5.97e38 J (a from the heavy star's speed alone: 26.5 AU);
+#   c1 Sirius (MIT 8.282J PS 6, problem 3): 7.12″/0.95 = 7.49″, p = 0.379″: a = 19.8 AU = 2.97e12 m, T = 50.0 yr:
+#       M = 6.20e30 kg = 3.12 M_S, ratio 2.4: M_A = 4.38e30 kg = 2.20 M_S, M_B = 1.82e30 kg = 0.917 M_S;
+#   c2 PSR 1913+16 (MIT 8.282J PS 6, problem 7): pulsar 3.74e8 / 1.58e9 m from the CM: a_p = 9.77e8 m, e = 0.617;
+#       T = 7.8 h, M = 2.8 M_S: a = 1.95e9 m; companion M a_p/a = 1.40 M_S, pulsar 1.40 M_S.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.2'
+practice:
+  - id: W-6.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.2-1]
+    prompt: >-
+      $\mu = \dfrac{m_1m_2}{m_1 + m_2}$ היא המסה המצומצמת של שני גופים. קבעו ונמקו לכל טענה אם היא נכונה.
+
+      א. $\mu$ תמיד קטנה מהמסה הקטנה מבין השתיים.
+
+      ב. אם מחליפים בין $m_1$ ל-$m_2$, המסה המצומצמת משתנה.
+
+      ג. אם $m_2$ גדלה פי 1000 ו-$m_1$ לא משתנה, $\mu$ כמעט שווה ל-$m_1$.
+
+      ד. כששתי המסות שוות ל-$m$, $\mu = m/2$.
+
+      ה. במשוואת התנועה היחסית של שני גופים בכבידה, גודל הכוח הוא $G\mu^2/r^2$.
+    answer: >-
+      א. נכונה. ב. לא נכונה. ג. נכונה. ד. נכונה. ה. לא נכונה: הכוח הוא $Gm_1m_2/r^2$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{1}{\mu} = \dfrac{1}{m_1} + \dfrac{1}{m_2}$, ומשוואת התנועה היחסית היא $\mu\ddot{\vec r} = \vec F$, כאשר $\vec F$ הכוח האמיתי בין הגופים.
+      - kind: reasoning
+        text: >-
+          א: $\dfrac1\mu$ גדול מ-$\dfrac1{m_1}$ וגם מ-$\dfrac1{m_2}$, ולכן $\mu$ קטנה משתיהן. ב: הביטוי סימטרי במסות. ג: $\mu = \dfrac{m_1}{1 + m_1/m_2}$,
+          ו-$m_1/m_2$ קטן פי 1000 מקודם, ולכן $\mu \to m_1$. ד: $\dfrac{m^2}{2m} = \dfrac m2$. ה: $\mu$ מחליפה רק את המסה שכופלת את התאוצה.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$, $\mu = m_1$ בדיוק, והתנועה היחסית היא תנועה של $m_1$ סביב גוף קבוע.
+      - kind: units
+        text: >-
+          $\text{kg}^2/\text{kg} = \text{kg}$: $\mu$ היא מסה.
+      - kind: result
+        text: >-
+          א, ג, ד נכונות; ב ו-ה לא נכונות.
+
+  - id: W-6.2-02
+    level: basic
+    objectives: [OBJ-6.2-2]
+    prompt: >-
+      שני כוכבים, כל אחד בעל מסת השמש, $M_S = 1.99\cdot10^{30}\,\text{kg}$, נעים במסלולים מעגליים סביב מרכז המסה, והמרחק
+      ביניהם $1.00\,\text{AU}$ ($1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$). מה זמן המחזור, בשנים (שנה היא $3.156\cdot10^{7}\,\text{s}$), ומה
+      המהירות של כל כוכב?
+    answer: >-
+      $T = 0.710$ שנים (כ-259 ימים); כל כוכב נע במהירות $21.0\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = m_2 = M_S$, $a = 1.5\cdot10^{11}\,\text{m}$, מסלולים מעגליים.
+      - kind: law
+        text: >-
+          $T^2 = \dfrac{4\pi^2a^3}{G\left(m_1 + m_2\right)}$, כאשר $a$ המרחק בין הכוכבים; כל כוכב רחוק $a/2$ ממרכז המסה.
+      - kind: manipulation
+        text: >-
+          $T = 2\pi\sqrt{\dfrac{a^3}{2GM_S}}$, ומהירות כל כוכב $v = \dfrac{2\pi(a/2)}{T} = \dfrac{\pi a}{T}$.
+      - kind: limit
+        text: >-
+          אילו אחד הכוכבים היה קל מאוד, $T = 2\pi\sqrt{a^3/(GM_S)}$, שנה אחת בערך. עם מסה כפולה במכנה, זמן המחזור קטן פי $\sqrt2$.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^3/(\text{m}^3\text{s}^{-2})} = \text{s}$.
+      - kind: substitution
+        text: >-
+          $T = 2.24\cdot10^{7}\,\text{s} = 0.710$ שנים; $v = \pi\cdot1.5\cdot10^{11}/2.24\cdot10^{7} = 2.10\cdot10^{4}\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $T = 0.710$ שנים, ו-$21.0\,\text{km/s}$ לכל כוכב.
+
+  - id: W-6.2-03
+    level: basic
+    objectives: [OBJ-6.2-1]
+    prompt: >-
+      מסת כדור הארץ $5.97\cdot10^{24}\,\text{kg}$ ומסת הירח $7.35\cdot10^{22}\,\text{kg}$.
+
+      א. מה המסה המצומצמת של הזוג?
+
+      ב. תלמיד מחשב את זמן המחזור של הירח כאילו כדור הארץ קבוע, עם $GM_E$ בלבד. בכמה אחוזים זמן המחזור האמיתי, באותו מרחק, קצר יותר?
+    answer: >-
+      א. $7.26\cdot10^{22}\,\text{kg}$. ב. ב-$0.610\%$.
+    solution:
+      - kind: law
+        text: >-
+          $\mu = \dfrac{m_1m_2}{m_1 + m_2}$; התנועה היחסית היא תנועה סביב גוף קבוע שמסתו $m_1 + m_2$, ולכן $T \propto \left(m_1 + m_2\right)^{-1/2}$ באותו מרחק.
+      - kind: manipulation
+        text: >-
+          $\dfrac{T_{\text{true}}}{T_{\text{fixed}}} = \sqrt{\dfrac{M_E}{M_E + M_M}}$.
+      - kind: limit
+        text: >-
+          כש-$M_M/M_E \to 0$ היחס שואף ל-1 והתיקון נעלם; בקירוב $\sqrt{1/(1 + x)} \approx 1 - x/2$, והתיקון הוא כמחצית מיחס המסות, $\tfrac12\cdot0.0123$.
+      - kind: units
+        text: >-
+          $\mu$ בקילוגרמים; היחס חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\mu = \dfrac{5.97\cdot10^{24}\cdot7.35\cdot10^{22}}{6.04\cdot10^{24}} = 7.26\cdot10^{22}\,\text{kg}$. $\sqrt{5.97/6.0435} = 0.99390$, כלומר קצר ב-$0.610\%$.
+      - kind: result
+        text: >-
+          א. $7.26\cdot10^{22}\,\text{kg}$, קצת פחות ממסת הירח. ב. קצר ב-$0.610\%$.
+
+  - id: W-6.2-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.2-1, OBJ-6.2-2]
+    prompt: >-
+      כוכב כפול נע כולו דרך הגלקסיה: מרכז המסה שלו נע במהירות קבועה, בקו ישר, ביחס למערכת ייחוס אינרציאלית. הכוכבים
+      מקיפים זה את זה במסלולים מעגליים, והכוכב הכבד כבד פי 2 מהקל. תארו ונמקו את הדרך של כל כוכב במערכת הזו: איזו צורה
+      יש לה, מה ההבדל בין שני הכוכבים, ומה הקשר לסיריוס, שנע על פני השמים בקו גלי?
+    answer: >-
+      כל כוכב עובר בקו גלי סביב הקו הישר של מרכז המסה, משני צדדיו ובכיוונים מנוגדים בכל רגע; הגלים של הכבד קטנים פי 2, ולשניהם אותו מחזור.
+    solution:
+      - kind: law
+        text: >-
+          $\vec r_i = \vec R(t) + \left(\vec r_i - \vec R\right)$: מקום של כוכב הוא מקום מרכז המסה ועוד המקום במערכת מרכז המסה, $\dfrac{m_2}{M}\vec r$ או $-\dfrac{m_1}{M}\vec r$.
+      - kind: reasoning
+        text: >-
+          $\vec R(t)$ הוא קו ישר במהירות קבועה. מעליו כל כוכב מסתובב במעגל, ולכן הדרך היא תנועה מעגלית "מוסעת" לאורך קו: קו גלי
+          (כשהמהירות במעגל קטנה מהמהירות של מרכז המסה) או קו עם לולאות (כשהיא גדולה ממנה). שני הכוכבים תמיד משני צדי הקו הישר, ולכן הגלים
+          שלהם הפוכים: כשאחד מעל הקו, השני מתחתיו. הרדיוס של הכבד קטן פי $m_2/m_1 = 2$, ולכן גם הגלים שלו. סיריוס הוא הכוכב הכבד בזוג כזה:
+          הקו הגלי שבסל ראה הוא בדיוק הדרך הזו, ובן הזוג החיוור עושה גלים גדולים פי 2 בערך, בכיוון ההפוך.
+      - kind: limit
+        text: >-
+          כש-$m_1 \to 0$ הכוכב הכבד נע בקו ישר בדיוק, ואי אפשר לגלות את בן הזוג מהתנועה שלו. כשמרכז המסה עומד, כל דרך היא מעגל.
+      - kind: units
+        text: >-
+          האמפליטודה של כל גל היא רדיוס המעגל, במטרים, והמחזור שלה הוא $T$ של הזוג.
+      - kind: result
+        text: >-
+          שני קווים גליים סביב הקו של מרכז המסה, בכיוונים מנוגדים, באותו מחזור; האמפליטודה של הכבד קטנה פי 2.
+
+  - id: W-6.2-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.2-2]
+    prompt: >-
+      בכוכב כפול שמישור המסלול שלו נראה מהצד, אפקט דופלר מראה שהמהירות של כוכב A לאורך קו הראייה משתנה בצורת סינוס עם
+      אמפליטודה $30\,\text{km/s}$, ושל כוכב B עם אמפליטודה $90\,\text{km/s}$, באותו מחזור. כשאחד מתקרב אלינו, השני מתרחק. המסלולים
+      מעגליים. קבעו ונמקו:
+
+      א. איזה כוכב כבד יותר, ופי כמה?
+
+      ב. למה העקומות הפוכות זו לזו?
+
+      ג. מה היחס בין הרדיוסים של שני המסלולים?
+
+      ד. אילו רק העקומה של A הייתה נמדדת, ו-B לא נראה כלל, מה עוד צריך לדעת כדי למצוא את מסת B?
+    answer: >-
+      א. A, פי 3. ב. התנע הכולל במערכת מרכז המסה אפס. ג. $r_B/r_A = 3$. ד. את מסת A (וזמן המחזור, שנמדד).
+    solution:
+      - kind: law
+        text: >-
+          במערכת מרכז המסה $m_A\vec v_A = -m_B\vec v_B$, ולשני הכוכבים זמן מחזור משותף, ולכן $v = 2\pi r/T$ פרופורציונית ל-$r$.
+      - kind: reasoning
+        text: >-
+          א: $m_A/m_B = v_B/v_A = 3$. ב: המהירויות תמיד מנוגדות, ולכן גם הרכיבים שלהן לאורך קו הראייה. ג: $r_B/r_A = v_B/v_A = 3$, והכבד קרוב
+          למרכז המסה. ד: מהעקומה של A בלבד יודעים $v_A$ ו-$T$. עם מסת A (למשל מסוג הכוכב) מחשבים את המרחק ביניהם מהחוק של זמן המחזור, את המהירות
+          היחסית, ומ-$m_B = M\,v_A/v$ את מסת B, כמו בדוגמה 5 של השיעור.
+      - kind: limit
+        text: >-
+          במסות שוות שתי האמפליטודות שוות. כש-$m_B \to 0$ האמפליטודה של A שואפת לאפס, ואי אפשר לגלות את B.
+      - kind: units
+        text: >-
+          יחסי מהירויות ויחסי מסות חסרי ממדים.
+      - kind: result
+        text: >-
+          A כבד פי 3; העקומות הפוכות כי התנע הכולל אפס; המסלול של B גדול פי 3; צריך את מסת A.
+
+  - id: W-6.2-06
+    level: mid
+    objectives: [OBJ-6.2-2]
+    prompt: >-
+      שני כוכבים, בעלי מסות $2.00\,M_S$ ו-$1.00\,M_S$ ($M_S = 1.99\cdot10^{30}\,\text{kg}$), מקיפים זה את זה במסלולים מעגליים, וזמן
+      המחזור $10.0$ שנים (שנה היא $3.156\cdot10^{7}\,\text{s}$). מה המרחק ביניהם, ומה הרדיוס והמהירות של כל כוכב? תנו את המרחקים
+      ביחידות AU ($1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$).
+    answer: >-
+      $a = 1.00\cdot10^{12}\,\text{m} = 6.68\,\text{AU}$; הקל: $4.45\,\text{AU}$ ו-$13.3\,\text{km/s}$; הכבד: $2.23\,\text{AU}$ ו-$6.65\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 1.00\,M_S$ (הקל), $m_2 = 2.00\,M_S$, $M = 3.00\,M_S$, $T = 3.156\cdot10^{8}\,\text{s}$.
+      - kind: law
+        text: >-
+          $T^2 = \dfrac{4\pi^2a^3}{GM}$; $d_1 = \dfrac{m_2}{M}\,a$, $d_2 = \dfrac{m_1}{M}\,a$; $v_i = 2\pi d_i/T$.
+      - kind: manipulation
+        text: >-
+          $a = \left(\dfrac{GMT^2}{4\pi^2}\right)^{1/3}$, $d_1 = \tfrac23\,a$, $d_2 = \tfrac13\,a$.
+      - kind: limit
+        text: >-
+          אילו הכוכב הקל היה חסר מסה, עם $M = 2.00\,M_S$, המרחק היה $5.83\,\text{AU}$: המסה של הקל מגדילה את $GM$, ובאותו זמן מחזור המרחק גדל.
+      - kind: units
+        text: >-
+          $\left(\text{m}^3\text{s}^{-2}\cdot\text{s}^2\right)^{1/3} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $a = 1.00\cdot10^{12}\,\text{m} = 6.68\,\text{AU}$; $d_1 = 4.45\,\text{AU}$, $v_1 = \dfrac{2\pi\cdot6.68\cdot10^{11}}{3.156\cdot10^{8}} = 1.33\cdot10^{4}\,\text{m/s}$; $d_2 = 2.23\,\text{AU}$, $v_2 = 6.65\cdot10^{3}\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $6.68\,\text{AU}$ ביניהם; $4.45\,\text{AU}$ ו-$13.3\,\text{km/s}$ לקל, $2.23\,\text{AU}$ ו-$6.65\,\text{km/s}$ לכבד.
+
+  - id: W-6.2-07
+    level: mid
+    objectives: [OBJ-6.2-1]
+    prompt: >-
+      שני מחליקים על קרח חלק, בעלי מסות $60\,\text{kg}$ ו-$90\,\text{kg}$, מחזיקים בשני הקצוות של חבל קל באורך $4.0\,\text{m}$ ומסתובבים
+      זה סביב זה, חצי סיבוב בשנייה. החבל מתוח וישר. מה המתיחות בחבל? באילו רדיוסים ובאילו מהירויות נע כל מחליק?
+    answer: >-
+      $1420\,\text{N}$; המחליק הקל ברדיוס $2.40\,\text{m}$ ובמהירות $7.54\,\text{m/s}$, הכבד ברדיוס $1.60\,\text{m}$ ובמהירות $5.03\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 60\,\text{kg}$, $m_2 = 90\,\text{kg}$, $r = 4.0\,\text{m}$ קבוע, $\omega = 2\pi\cdot0.50 = \pi\,\text{rad/s}$. הכוח היחיד בכיוון האופקי
+          הוא המתיחות $T_s$, שפועלת על כל מחליק לאורך החבל, אל המחליק השני.
+      - kind: law
+        text: >-
+          התנועה היחסית: $\mu\ddot{\vec r} = \vec F$. כאן $\vec r$ מסתובב במעגל ברדיוס $r$, ולכן $|\ddot{\vec r}| = \omega^2r$ ו-$T_s = \mu\omega^2r$.
+      - kind: manipulation
+        text: >-
+          $\mu = \dfrac{m_1m_2}{m_1 + m_2}$; הרדיוסים $d_1 = \dfrac{m_2}{M}\,r$ ו-$d_2 = \dfrac{m_1}{M}\,r$, והמהירויות $\omega d_i$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to \infty$ המחליק הכבד הוא עמוד קבוע, $\mu \to m_1$ ו-$T_s = m_1\omega^2r$. בדיקה עקבית: $m_1\omega^2d_1 = m_2\omega^2d_2 = \mu\omega^2r$, כל מחליק לחוד.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{s}^{-2}\cdot\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $\mu = 36\,\text{kg}$; $T_s = 36\cdot\pi^2\cdot4.0 = 1.42\cdot10^{3}\,\text{N}$. $d_1 = 2.40\,\text{m}$, $d_2 = 1.60\,\text{m}$; $v_1 = 7.54\,\text{m/s}$, $v_2 = 5.03\,\text{m/s}$.
+          (מי שכותב $m_1\omega^2r$ מקבל $2370\,\text{N}$: זו המתיחות אילו המחליק הכבד היה עמוד.)
+      - kind: result
+        text: >-
+          $1420\,\text{N}$; $2.40\,\text{m}$ ו-$7.54\,\text{m/s}$ למחליק הקל, $1.60\,\text{m}$ ו-$5.03\,\text{m/s}$ לכבד.
+
+  - id: W-6.2-08
+    level: bagrut
+    objectives: [OBJ-6.2-2]
+    prompt: >-
+      אסטרואיד כפול "צמוד" בנוי משני כדורים אחידים זהים, בעלי צפיפות $\rho$ ורדיוס $R$, שנוגעים זה בזה ומקיפים את מרכז המסה
+      המשותף. הניחו שהכבידה ביניהם היא הכוח היחיד שמחזיק אותם במסלול (בלי כוח מגע).
+
+      א. הראו שזמן המחזור לא תלוי ב-$R$, ומצאו אותו כפונקציה של $\rho$.
+
+      ב. חשבו אותו בשעות עבור $\rho = 2000\,\text{kg/m}^3$.
+    answer: >-
+      א. $T = 2\pi\sqrt{\dfrac{3}{\pi G\rho}}$. ב. $1.68\cdot10^{4}\,\text{s}$, כ-$4.67$ שעות.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = m_2 = m = \tfrac43\pi R^3\rho$; המרחק בין המרכזים $a = 2R$.
+      - kind: law
+        text: >-
+          משפט הקליפה: כל כדור מושך כמסה נקודתית במרכזו. $T^2 = \dfrac{4\pi^2a^3}{G\left(m_1 + m_2\right)}$.
+      - kind: manipulation
+        text: >-
+          $T^2 = \dfrac{4\pi^2\left(2R\right)^3}{G\cdot2\cdot\tfrac43\pi R^3\rho} = \dfrac{4\pi^2\cdot8R^3}{\tfrac83\pi G\rho R^3} = \dfrac{12\pi}{G\rho}$, כלומר $T = 2\pi\sqrt{\dfrac{3}{\pi G\rho}}$: ה-$R^3$ מצטמצם.
+      - kind: limit
+        text: >-
+          כש-$\rho$ גדלה $T$ קטן כמו $\rho^{-1/2}$: בצפיפות $3000\,\text{kg/m}^3$ יוצא $3.81$ שעות. סיבוב מהיר מזה אי אפשר להחזיק בכבידה בלבד.
+      - kind: units
+        text: >-
+          $\dfrac{1}{G\rho}$: $\dfrac{1}{(\text{m}^3\text{kg}^{-1}\text{s}^{-2})(\text{kg}\,\text{m}^{-3})} = \text{s}^2$.
+      - kind: substitution
+        text: >-
+          $$\begin{aligned} T &= 2\pi\sqrt{\frac{3}{\pi\cdot6.67\cdot10^{-11}\cdot2000}}\,\text{s} \\ &= 1.68\cdot10^{4}\,\text{s} \end{aligned}$$
+          כלומר $4.67\,\text{h}$.
+      - kind: result
+        text: >-
+          $T = 2\pi\sqrt{3/(\pi G\rho)}$, $4.67$ שעות, בכל גודל.
+
+  - id: W-6.2-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-6.2-1]
+    prompt: >-
+      שני גופים נקודתיים, $m_1$ ו-$m_2$, משוחררים ממנוחה במרחק $d_0$ זה מזה, רחוק מכל גוף אחר, ונופלים זה אל זה.
+
+      א. הראו שהזמן עד ההתנגשות שווה לזמן שבו גוף קל מאוד נופל ממרחק $d_0$ אל גוף **קבוע** שמסתו $m_1 + m_2$.
+
+      ב. במקרה אחר מחזיקים את $m_2$ במקום (בכוח חיצוני) ומשחררים רק את $m_1$. איזה זמן קצר יותר, ופי כמה, כש-$m_1 = m_2$?
+    answer: >-
+      א. המרחק $r(t)$ מקיים $\ddot r = -G(m_1 + m_2)/r^2$ בשני המקרים. ב. כששניהם חופשיים הזמן קצר יותר, פי $\sqrt{(m_1 + m_2)/m_2} = \sqrt2 \approx 1.41$.
+    solution:
+      - kind: law
+        text: >-
+          התנועה היחסית: $\ddot{\vec r} = -\dfrac{G\left(m_1 + m_2\right)}{r^2}\,\hat r$. התנאי ההתחלתי: $r = d_0$, $\dot{\vec r} = 0$.
+      - kind: reasoning
+        text: >-
+          א: גוף קל שנופל אל גוף קבוע בעל מסה $M = m_1 + m_2$ מקיים בדיוק את אותה משוואה עם אותם תנאי התחלה, ולכן $r(t)$ זהה, וגם הזמן עד $r = 0$.
+          ב: כש-$m_2$ מוחזק, $m_1$ לבדו מאיץ: $\ddot r = -Gm_2/r^2$. במשוואה $\ddot r = -k/r^2$ מחליפים זמן $t = \tau/\sqrt k$ ומקבלים משוואה בלי $k$,
+          ולכן כל זמן פרופורציוני ל-$k^{-1/2}$. היחס בין הזמנים הוא $\sqrt{\dfrac{G(m_1 + m_2)}{Gm_2}}$.
+      - kind: limit
+        text: >-
+          כש-$m_1 \ll m_2$ שני הזמנים כמעט שווים, כי $m_2$ כמעט לא זז גם כשהוא חופשי.
+      - kind: units
+        text: >-
+          $k = GM$ ב-$\text{m}^3/\text{s}^2$, ו-$\sqrt{d_0^3/k}$ בשניות: זה סולם הזמן היחיד שאפשר לבנות.
+      - kind: result
+        text: >-
+          א. אותה משוואה ואותם תנאי התחלה. ב. החופשיים מתנגשים מהר יותר, פי $\sqrt2 \approx 1.41$ במסות שוות.
+
+  - id: W-6.2-10
+    level: bagrut
+    objectives: [OBJ-6.2-1, OBJ-6.2-2]
+    prompt: >-
+      בכוכב כפול מסות הכוכבים $2.00\,M_S$ ו-$1.00\,M_S$ ($M_S = 1.99\cdot10^{30}\,\text{kg}$), והמסלולים מעגליים. אפקט דופלר מראה
+      שהכוכב הכבד נע סביב מרכז המסה במהירות $10.0\,\text{km/s}$. מצאו את מהירות הכוכב הקל, את המרחק בין הכוכבים, את זמן המחזור
+      ואת האנרגיה של הזוג במערכת מרכז המסה.
+    answer: >-
+      $20.0\,\text{km/s}$; $4.42\cdot10^{11}\,\text{m}$ (כ-$2.95\,\text{AU}$); $9.27\cdot10^{7}\,\text{s}$ (כ-$2.94$ שנים); $-5.97\cdot10^{38}\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 1.00\,M_S$ (הקל), $m_2 = 2.00\,M_S$, $M = 3.00\,M_S$; $v_2 = 1.00\cdot10^{4}\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $v_2 = \dfrac{m_1}{M}\,v$ ו-$v_1 = \dfrac{m_2}{M}\,v$; התנועה היחסית במעגל: $\mu\dfrac{v^2}{a} = \dfrac{Gm_1m_2}{a^2}$, כלומר $v^2 = \dfrac{GM}{a}$;
+          $E = -\dfrac{Gm_1m_2}{2a}$.
+      - kind: manipulation
+        text: >-
+          $v = \dfrac{M}{m_1}\,v_2$, $a = \dfrac{GM}{v^2}$, $T = \dfrac{2\pi a}{v}$.
+      - kind: limit
+        text: >-
+          כש-$m_1 \to 0$ מהירות הכבד שואפת לאפס בכל $a$. ושגיאה נפוצה: להציב $v_2$ במקום $v$ ב-$a = GM/v^2$ נותן $26.5\,\text{AU}$, כאילו הכבד מקיף גוף קבוע במרכז המסה.
+      - kind: units
+        text: >-
+          $\dfrac{\text{m}^3\text{s}^{-2}}{\text{m}^2\text{s}^{-2}} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $v = 3\cdot10.0 = 30.0\,\text{km/s}$, $v_1 = 20.0\,\text{km/s}$. $a = \dfrac{6.67\cdot10^{-11}\cdot5.97\cdot10^{30}}{\left(3.00\cdot10^{4}\right)^2} = 4.42\cdot10^{11}\,\text{m}$.
+          $T = 2\pi a/v = 9.27\cdot10^{7}\,\text{s}$, ו-
+          $$\begin{aligned} Gm_1m_2 &= 5.28\cdot10^{50}\,\text{J}\cdot\text{m} \\ E &= -\frac{5.28\cdot10^{50}}{8.85\cdot10^{11}}\,\text{J} \\ &= -5.97\cdot10^{38}\,\text{J} \end{aligned}$$
+      - kind: result
+        text: >-
+          $20.0\,\text{km/s}$, $4.42\cdot10^{11}\,\text{m}$, $2.94$ שנים, $-5.97\cdot10^{38}\,\text{J}$.
+
+challenge:
+  - id: W-6.2-c1
+    stars: 2
+    objectives: [OBJ-6.2-2]
+    prompt: >-
+      סיריוס הוא כוכב כפול שרואים את שני הכוכבים שלו. ציור של המקום של סיריוס B ביחס לסיריוס A לאורך עשרות שנים נותן זמן מחזור
+      של $50.0$ שנים וחצי ציר ראשי נראה של $7.12$ שניות קשת ($1'' = 1/3600$ של מעלה); כדי לתקן את הנטייה של מישור המסלול מחלקים
+      אותו ב-$0.95$. זווית הפרלקסה של מרכז המסה היא $p = 0.379''$, ולכן המרחק אלינו הוא $D = (1\,\text{AU})/p$, עם $p$ ברדיאנים:
+      אורך שנראה בזווית $\theta$ הוא $\theta D = (\theta/p)\,\text{AU}$. כשמציירים את שני המסלולים סביב מרכז המסה, המסלול של B גדול פי
+      $2.4$ מזה של A. חוק זמן המחזור, $T^2 = 4\pi^2a^3/(G(m_A + m_B))$, נכון גם במסלול אליפטי, כש-$a$ חצי הציר הראשי של המסלול
+      היחסי (שיעור 6.5).
+
+      א. מה חצי הציר הראשי האמיתי, ב-AU ובמטרים ($1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$)?
+
+      ב. מה סכום המסות, בקילוגרמים ובמסות שמש ($M_S = 1.99\cdot10^{30}\,\text{kg}$; שנה היא $3.156\cdot10^{7}\,\text{s}$)?
+
+      ג. מה המסה של כל כוכב?
+    answer: >-
+      א. $19.8\,\text{AU} = 2.97\cdot10^{12}\,\text{m}$. ב. $6.20\cdot10^{30}\,\text{kg}$, $3.12\,M_S$. ג. $M_A = 2.20\,M_S$, $M_B = 0.917\,M_S$.
+    solution:
+      - kind: given
+        text: >-
+          $\theta = 7.12''/0.95 = 7.49''$, $p = 0.379''$, $T = 50.0\cdot3.156\cdot10^{7} = 1.578\cdot10^{9}\,\text{s}$; $a_B/a_A = 2.4$.
+      - kind: law
+        text: >-
+          $a = (\theta/p)\,\text{AU}$ (שתי הזוויות באותן יחידות, והיחס לא תלוי בהן); $m_A + m_B = \dfrac{4\pi^2a^3}{GT^2}$; במערכת מרכז המסה $m_Aa_A = m_Ba_B$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{m_A}{m_B} = \dfrac{a_B}{a_A} = 2.4$, ולכן $m_A = \dfrac{2.4}{3.4}\,M$ ו-$m_B = \dfrac{1}{3.4}\,M$.
+      - kind: limit
+        text: >-
+          אילו B היה קל מאוד, A היה עומד, והמסלול של B סביב A היה המסלול סביב מרכז המסה: הסכום היה מסת A לבד. ובלי התיקון $0.95$ יוצא $18.8\,\text{AU}$ וסכום של $2.67\,M_S$ בלבד, כי $M \propto a^3$ מגדיל כל שגיאה יחסית ב-$a$ פי 3.
+      - kind: units
+        text: >-
+          $\dfrac{\text{m}^3}{(\text{N}\,\text{m}^2/\text{kg}^2)\,\text{s}^2} = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $a = 7.49/0.379 = 19.8\,\text{AU} = 2.97\cdot10^{12}\,\text{m}$, ו-
+          $$\begin{aligned} a^3 &= 2.61\cdot10^{37}\,\text{m}^3 \\ T^2 &= 2.49\cdot10^{18}\,\text{s}^2 \\ M &= \frac{4\pi^2a^3}{GT^2} = 6.20\cdot10^{30}\,\text{kg} \end{aligned}$$
+          כלומר $3.12\,M_S$.
+          $m_A = 4.38\cdot10^{30}\,\text{kg} = 2.20\,M_S$, $m_B = 1.82\cdot10^{30}\,\text{kg} = 0.917\,M_S$.
+      - kind: result
+        text: >-
+          סיריוס A כ-$2.2$ מסות שמש וסיריוס B, ננס לבן, כ-$0.92$. (הערכים המקובלים היום הם כ-$2.06$ ו-$1.02$; ההפרש בא בעיקר מהיחס $2.4$, שנקרא מתוך ציור.)
+    source:
+      name: MIT 8.282J Introduction to Astronomy, Problem Set 6
+      year: 2006
+      problem: Problem 3 (The Visual and Spectroscopic Binary Sirius A and B), parts c–f
+      url: https://ocw.mit.edu/courses/8-282j-introduction-to-astronomy-spring-2006/dd75ee9c328c56def95c7ea794170ec5_ps6.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.2-c2
+    stars: 2
+    objectives: [OBJ-6.2-2, OBJ-6.2-1]
+    prompt: >-
+      הפולסר PSR 1913+16 הוא כוכב נייטרונים במסלול אליפטי סביב בן זוג שלא רואים. זמן המחזור $7.8$ שעות. הפולסר מגיע הכי קרוב
+      למרכז המסה של הזוג למרחק $3.74\cdot10^{8}\,\text{m}$, והכי רחוק $1.58\cdot10^{9}\,\text{m}$. מדידה אחרת נותנת את המסה הכוללת של
+      הזוג, $2.8\,M_S$ ($M_S = 1.99\cdot10^{30}\,\text{kg}$). חוק זמן המחזור, $T^2 = 4\pi^2a^3/(GM)$, נכון גם במסלול אליפטי, כש-$a$ חצי
+      הציר הראשי של המסלול היחסי (שיעור 6.5).
+
+      א. מה חצי הציר הראשי של המסלול של הפולסר סביב מרכז המסה?
+
+      ב. מה האקסצנטריות של המסלול שלו? (באליפסה, היחס בין המרחק הקטן לגדול מהמוקד הוא $(1 - e)/(1 + e)$.)
+
+      ג. מה חצי הציר הראשי של המסלול היחסי, כלומר של המרחק בין שני הכוכבים?
+
+      ד. מה המסה של הפולסר ומה המסה של בן הזוג?
+    answer: >-
+      א. $9.77\cdot10^{8}\,\text{m}$. ב. $0.617$. ג. $1.95\cdot10^{9}\,\text{m}$. ד. שניהם כ-$1.40\,M_S$.
+    solution:
+      - kind: given
+        text: >-
+          $r_{\min} = 3.74\cdot10^{8}\,\text{m}$, $r_{\max} = 1.58\cdot10^{9}\,\text{m}$ (מרחקי הפולסר ממרכז המסה); $T = 7.8\cdot3600 = 2.81\cdot10^{4}\,\text{s}$; $M = 2.8\,M_S = 5.57\cdot10^{30}\,\text{kg}$.
+      - kind: law
+        text: >-
+          המסלול של הפולסר הוא עותק מוקטן של המסלול היחסי, $\vec r_p = \dfrac{m_c}{M}\,\vec r$, עם אותה אקסצנטריות ומרכז המסה במוקד; $T^2 = \dfrac{4\pi^2a^3}{GM}$.
+      - kind: manipulation
+        text: >-
+          $a_p = \tfrac12\left(r_{\min} + r_{\max}\right)$; $e = \dfrac{r_{\max} - r_{\min}}{r_{\max} + r_{\min}}$; $a = \left(\dfrac{GMT^2}{4\pi^2}\right)^{1/3}$; $m_c = M\,\dfrac{a_p}{a}$, $m_p = M - m_c$.
+      - kind: limit
+        text: >-
+          אילו בן הזוג היה כבד מאוד, הפולסר היה נע על המסלול היחסי כולו, $a_p \to a$. כאן $a_p \approx a/2$: שני הכוכבים כבדים כמעט באותה מידה, ושניהם מקיפים את מרכז המסה במסלולים כמעט שווים.
+      - kind: units
+        text: >-
+          $a_p/a$ חסר ממדים, ולכן $m_c$ ביחידות של $M$.
+      - kind: substitution
+        text: >-
+          $a_p = 9.77\cdot10^{8}\,\text{m}$; $e = \dfrac{1.206\cdot10^{9}}{1.954\cdot10^{9}} = 0.617$; $a = 1.95\cdot10^{9}\,\text{m}$; $m_c = 2.8\cdot\dfrac{9.77\cdot10^{8}}{1.95\cdot10^{9}}\,M_S = 1.40\,M_S$, $m_p = 1.40\,M_S$.
+      - kind: result
+        text: >-
+          א. $9.77\cdot10^{8}\,\text{m}$. ב. $0.617$. ג. $1.95\cdot10^{9}\,\text{m}$. ד. כ-$1.40\,M_S$ כל אחד: שני כוכבי נייטרונים כמעט שווים.
+    source:
+      name: MIT 8.282J Introduction to Astronomy, Problem Set 6
+      year: 2006
+      problem: Problem 7 (Binary Radio Pulsar)
+      url: https://ocw.mit.edu/courses/8-282j-introduction-to-astronomy-spring-2006/dd75ee9c328c56def95c7ea794170ec5_ps6.pdf
+      verified: '2026-11-11'
+      adapted: true

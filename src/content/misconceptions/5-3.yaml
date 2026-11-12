@@ -1,33 +1,34 @@
 # Misconceptions first detected in lesson 5.3. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 5.3
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. Lesson 5.3 is written:
+# each remedy now carries the anchor of the section or step that refutes it.
 
 - id: MC-5-critical-at-gamma-omega0
   title: ריסון קריטי כש-γ שווה ל-ω₀
   belief: בצורה ẍ + γẋ + ω₀²x = 0 הריסון קריטי כש-γ = ω₀, ומעליו המתנד על-מרוסן.
   truth: השורשים הם −γ/2 ± √(γ²/4 − ω₀²), ולכן הגבול הוא γ = 2ω₀, כלומר b = 2√(km). בין ω₀ ל-2ω₀ המתנד עדיין בתת-ריסון ומתנודד.
-  remedy: { lesson: '5.3', label: 'שיעור 5.3: השורשים של המשוואה האופיינית' }
+  remedy: { lesson: '5.3', anchor: roots, label: 'שיעור 5.3: השורשים של המשוואה האופיינית, והגבול γ = 2ω₀' }
 
 - id: MC-5-damping-keeps-frequency
   title: הריסון לא משנה את התדירות
   belief: הריסון רק מקטין את האמפליטודה, והמתנד ממשיך להתנודד בתדירות ω₀.
   truth: בתת-ריסון התדירות היא ω_d = √(ω₀² − γ²/4), קטנה מ-ω₀. בריסון חלש ההבדל זניח, אבל הוא גדל עד שבריסון קריטי התנודה נעלמת.
-  remedy: { lesson: '5.3', label: 'שיעור 5.3: התדירות של המתנד המרוסן' }
+  remedy: { lesson: '5.3', anchor: underdamped, label: 'שיעור 5.3: תת-ריסון, התדירות המרוסנת קטנה מ-ω₀' }
 
 - id: MC-5-more-damping-faster
   title: ריסון חזק יותר מחזיר מהר יותר
   belief: ככל שהריסון חזק יותר, הגוף חוזר מהר יותר לשיווי המשקל.
   truth: מעל הריסון הקריטי ריסון חזק יותר מאט את החזרה, כי השורש האיטי מתקרב לאפס, בערך −ω₀²/γ. הריסון הקריטי מחזיר הכי מהר בלי לעבור את שיווי המשקל.
-  remedy: { lesson: '5.3', label: 'שיעור 5.3: השוואה בין תת-ריסון, ריסון קריטי ועל-ריסון' }
+  remedy: { lesson: '5.3', anchor: plane, label: 'שיעור 5.3: מי חוזר הכי מהר, והשורש האיטי' }
 
 - id: MC-5-overdamped-never-crosses
   title: מתנד על-מרוסן אף פעם לא עובר את שיווי המשקל
   belief: בעל-ריסון הגוף תמיד זוחל לשיווי המשקל מצד אחד ולא עובר אותו.
   truth: הפתרון הוא סכום של שני אקספוננטים, והוא יכול להתאפס פעם אחת. עם מהירות התחלתית גדולה לכיוון שיווי המשקל הגוף עובר אותו פעם אחת וחוזר מהצד השני.
-  remedy: { lesson: '5.3', label: 'שיעור 5.3: פתרון המתנד העל-מרוסן' }
+  remedy: { lesson: '5.3', anchor: overdamped, label: 'שיעור 5.3: על-ריסון, לכל היותר מעבר אחד' }
 
 - id: MC-5-energy-decays-like-amplitude
   title: האנרגיה דועכת באותו קצב כמו האמפליטודה
   belief: אם האמפליטודה דועכת כמו e^(−γt/2), גם האנרגיה דועכת כך.
   truth: האנרגיה פרופורציונית לריבוע האמפליטודה, ולכן היא דועכת כמו e^(−γt), פי 2 מהר יותר. כשהאמפליטודה יורדת לחצי, האנרגיה יורדת לרבע.
-  remedy: { lesson: '5.3', label: 'שיעור 5.3: דעיכת האמפליטודה ודעיכת האנרגיה' }
+  remedy: { lesson: '5.3', anchor: amp-energy, label: 'שיעור 5.3: האמפליטודה לחצי, האנרגיה לרבע' }

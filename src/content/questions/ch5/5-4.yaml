@@ -4,7 +4,10 @@
 # x = A cos(ωt − δ) with A = (F0/m)/√((ω0² − ω²)² + γ²ω²) and tan δ = γω/(ω0² − ω²), 0 ≤ δ ≤ π (the lag behind the force).
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch5/q.ts:
+# Every number was computed in .scratch/ch5/q.ts and recomputed (all keys, wrongs and feedback numbers) in
+# .scratch/ch5/5-4/bank.ts against src/physics/oscillator.ts and resonance.ts. Changed when lesson 5.4 was written:
+# Q-5.4-peak-frequency now gives the measured peak and asks for Q (the lesson derives ω_max, so the exam rung inverts
+# it); Q-5.4-double-q now asks for the stored energy (×4), not the amplitude printed in the lesson; "אותו מתנד" removed.
 #   m = 0.20 kg, k = 80 N/m, b = 0.40 kg/s, F0 = 0.50 N: ω0 = 20 rad/s, γ = 2.0 s⁻¹, Q = 10;
 #     at ω = 18 rad/s: A = 2.97 cm (no damping 3.29, ω0 − ω for the squares 6.93, F0 instead of F0/m 0.595),
 #     δ = 25.3° (inverted 64.7°, other branch 154.7°);
@@ -12,7 +15,9 @@
 #   moving support, Y = 1.0 cm, same oscillator, ω = 22 rad/s: A = ω0²Y/√(…) = 4.22 cm, δ = 152°
 #     (no damping 4.76, Y/√(…) = 0.0105);
 #   ω0 = 20 rad/s, Q = 50: Δω ≈ γ = 0.40 rad/s (half width 0.20, Qω0 = 1000, Q/ω0 = 2.5);
-#   ω0 = 20 rad/s, γ = 12 s⁻¹: amplitude peak at √(ω0² − γ²/2) = 18.1 rad/s (ω_d = 19.1, √(ω0² − γ²) = 16.0).
+#   ω0 = 20 rad/s, amplitude peak measured at 18.0 rad/s: γ = √(2(ω0² − ω²)) = 12.3 s⁻¹, Q = 1.62
+#     (peak taken at ω_d: γ = √(4(ω0² − ω²)), Q = 1.15; ω_max = √(ω0² − γ²): Q = 2.29; the shift as the width: Q = 10);
+#   halving γ at ω = ω0: A = QF0/k doubles, the stored energy ½kA² grows ×4, Δω ≈ γ halves.
 
 chapter: 5
 questions:
@@ -32,7 +37,7 @@ questions:
         feedback: >-
           נכון. כל גזירה של $e^{i\omega t}$ כופלת ב-$i\omega$: $\dot z = i\omega z$ ו-$\ddot z = -\omega^2z$. המשוואה
           הדיפרנציאלית הופכת למשוואה אלגברית, ו-$\tilde X = \dfrac{F_0/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$: הגודל שלו
-          הוא האמפליטודה, והארגומנט שלו מינוס הפאזה.
+          הוא האמפליטודה, והארגומנט שלו מינוס הפיגור, $-\delta$.
       - text: '$\left(\omega_0^2 + \omega^2 + i\gamma\omega\right)\tilde X = \dfrac{F_0}{m}$'
         feedback: '$\dfrac{d^2}{dt^2}e^{i\omega t} = (i\omega)^2e^{i\omega t} = -\omega^2e^{i\omega t}$: $i^2 = -1$ נותן את הסימן מינוס לפני $\omega^2$.'
       - text: '$\left(\omega_0^2 - \omega^2 + \gamma\omega\right)\tilde X = \dfrac{F_0}{m}$'
@@ -76,7 +81,7 @@ questions:
     objectives: [OBJ-5.4-1]
     level: mid
     prompt: >-
-      באותו מתנד ($\omega_0 = 20\,\text{rad/s}$, $\gamma = 2.0\,\text{s}^{-1}$, $\omega = 18\,\text{rad/s}$, בצורה
+      במתנד מאולץ ($\omega_0 = 20\,\text{rad/s}$, $\gamma = 2.0\,\text{s}^{-1}$, $\omega = 18\,\text{rad/s}$, בצורה
       $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$) כותבים את המצב היציב $x = A\cos(\omega t - \delta)$. בכמה
       מעלות ההעתק מפגר אחרי הכוח, כלומר מה $\delta$?
     answer: 25.3
@@ -200,7 +205,7 @@ questions:
     objectives: [OBJ-5.4-2]
     level: basic
     prompt: >-
-      אותו מתנד ($m = 0.20\,\text{kg}$, $k = 80\,\text{N/m}$, $b = 0.40\,\text{kg/s}$, $F_0 = 0.50\,\text{N}$) מאולץ עכשיו
+      מתנד שבו $m = 0.20\,\text{kg}$, $k = 80\,\text{N/m}$, $b = 0.40\,\text{kg/s}$ ו-$F_0 = 0.50\,\text{N}$ מאולץ
       בדיוק בתדירות העצמית, $\omega = \omega_0 = 20\,\text{rad/s}$. מה האמפליטודה של המצב היציב, בסנטימטרים?
     answer: 6.25
     unit: cm
@@ -282,30 +287,33 @@ questions:
     objectives: [OBJ-5.4-2]
     level: bagrut
     prompt: >-
-      במתנד בריסון חזק יחסית, $\omega_0 = 20\,\text{rad/s}$ ו-$\gamma = 12\,\text{s}^{-1}$ (בצורה
-      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$), באיזו תדירות מאלצת $\omega$ האמפליטודה של המצב היציב
-      מרבית?
-    answer: 18.1
-    unit: rad/s
+      למתנד מרוסן התדירות העצמית $\omega_0 = 20\,\text{rad/s}$ (בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$). מאלצים אותו בתדירויות שונות, ומוצאים שהאמפליטודה
+      של המצב היציב מרבית כש-$\omega = 18.0\,\text{rad/s}$. מה מקדם האיכות $Q = \omega_0/\gamma$ של המתנד?
+    answer: 1.62
+    unit: ''
     correctFeedback: >-
-      נכון. האמפליטודה מרבית כשהמכנה $D(u) = \left(\omega_0^2 - u\right)^2 + \gamma^2u$, עם $u = \omega^2$, מינימלי:
-      $D'(u) = -2\left(\omega_0^2 - u\right) + \gamma^2 = 0$, ולכן
-      $$\omega_{\max} = \sqrt{\omega_0^2 - \frac{\gamma^2}{2}} = \sqrt{400 - 72} = 18.1\,\text{rad/s}$$
-      **בדיקת גבולות:** כש-$\gamma \to 0$, $\omega_{\max} \to \omega_0$; בריסון חלש השיא כמעט בתדירות העצמית. וכש-$\gamma \ge \sqrt2\,\omega_0$
-      אין שיא בכלל: האמפליטודה הכי גדולה ב-$\omega = 0$.
-    wrongFeedback: 'מצאו את המינימום של המכנה. נוח לגזור לפי $u = \omega^2$ במקום לפי $\omega$.'
+      נכון. שיא האמפליטודה הוא במינימום של $D(u) = \left(\omega_0^2 - u\right)^2 + \gamma^2u$, עם $u = \omega^2$:
+      $\omega_{\max}^2 = \omega_0^2 - \gamma^2/2$. הופכים את הקשר:
+      $$\gamma = \sqrt{2\left(\omega_0^2 - \omega_{\max}^2\right)} = \sqrt{2\cdot76} = 12.3\,\text{s}^{-1}$$
+      ולכן $Q = 20/12.3 = 1.62$. זה ריסון חזק: רק כשהריסון חזק השיא מתרחק מ-$\omega_0$ בעשרה אחוזים. **בדיקת
+      גבולות:** כש-$\omega_{\max} \to \omega_0$, $\gamma \to 0$ ו-$Q \to \infty$; וכש-$\omega_{\max} \to 0$, $Q \to 1/\sqrt2$, הריסון
+      שמעליו אין שיא בכלל.
+    wrongFeedback: 'השתמשו במקום של שיא האמפליטודה, $\omega_{\max}^2 = \omega_0^2 - \gamma^2/2$, ובודדו את $\gamma$.'
     commonWrong:
-      - value: 20
-        feedback: 'זו $\omega_0$. בתדירות העצמית הפאזה בדיוק $90^\circ$, אבל שיא האמפליטודה מעט מתחתיה כשיש ריסון. כאן ההבדל כ-10%.'
-      - value: 19.1
+      - value: 1.15
         feedback: >-
-          זו $\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$, התדירות של התנודות **החופשיות** המרוסנות. שיא האמפליטודה של
-          המצב היציב נמוך ממנה: $\sqrt{\omega_0^2 - \gamma^2/2}$.
+          הנחתם שהשיא נמצא ב-$\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$, התדירות של התנודות **החופשיות** המרוסנות. שיא
+          האמפליטודה של המצב היציב נמוך ממנה: $\omega_{\max}^2 = \omega_0^2 - \gamma^2/2$.
         misconception: MC-5-peak-at-damped-frequency
-      - value: 16.0
-        feedback: 'קיבלתם $\sqrt{\omega_0^2 - \gamma^2}$. בגזירה לפי $u$ האיבר $\gamma^2u$ נותן $\gamma^2$, ו-$2\left(\omega_0^2 - u\right) = \gamma^2$: המקדם $\tfrac12$.'
+      - value: 2.29
+        feedback: 'השתמשתם ב-$\omega_{\max}^2 = \omega_0^2 - \gamma^2$. בגזירה של $D(u)$ לפי $u$ יוצא $2\left(\omega_0^2 - u\right) = \gamma^2$: המקדם $\tfrac12$.'
+      - value: 10
+        feedback: >-
+          חילקתם את $\omega_0$ בהפרש $\omega_0 - \omega_{\max} = 2\,\text{rad/s}$, כאילו ההזזה של השיא היא רוחב התהודה. הרוחב
+          הוא בערך $\gamma$, וההזזה קטנה ממנו בהרבה בריסון חלש: היא בערך $\gamma^2/(4\omega_0)$.
     hints:
-      - 'הגדירו $u = \omega^2$ וגזרו את $\left(\omega_0^2 - u\right)^2 + \gamma^2u$ לפי $u$.'
+      - 'איפה נמצא שיא האמפליטודה, בעזרת $\omega_0$ ו-$\gamma$? הפכו את הקשר.'
 
   - id: Q-5.4-double-q
     type: mc
@@ -313,23 +321,27 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      במתנד מאולץ בריסון חלש מקטינים את הריסון לחצי, כך ש-$Q = \omega_0/\gamma$ גדל פי 2. $\omega_0$ ו-$F_0$ לא משתנים.
-      מה קורה לשיא האמפליטודה בתהודה ולרוחב התהודה?
+      מתנד בריסון חלש מאולץ בתדירות העצמית שלו, $\omega = \omega_0$ (בצורה
+      $\ddot x + \gamma\dot x + \omega_0^2x = (F_0/m)\cos\omega t$). מקטינים את הריסון לחצי, כך ש-$Q = \omega_0/\gamma$ גדל
+      פי 2; $\omega_0$, $F_0$ ו-$\omega$ לא משתנים. פי כמה משתנה האנרגיה המכנית של המתנד במצב היציב, ומה קורה לרוחב
+      התהודה?
     choices:
-      - text: 'השיא גדל פי 2, והרוחב קטן פי 2.'
+      - text: 'האנרגיה גדלה פי 4, והרוחב קטן פי 2.'
         correct: true
         feedback: >-
-          נכון. $A_{\max} \approx \dfrac{F_0}{m\gamma\omega_0}$ ו-$\Delta\omega \approx \gamma$: שניהם תלויים ב-$\gamma$, בכיוונים
-          הפוכים. התהודה גבוהה וצרה יותר. ועוד דבר משתנה: התגובה המעברית דועכת לאט פי 2, ולכן לוקח פי 2 זמן להגיע
-          לשיא החדש.
-      - text: 'השיא גדל פי 2, והרוחב לא משתנה.'
+          נכון. בתהודה $A = \dfrac{F_0}{m\gamma\omega_0}$ גדלה פי 2, והאנרגיה $\tfrac12kA^2$ פי 4. הרוחב $\Delta\omega \approx \gamma$
+          קטן פי 2: התהודה גבוהה וצרה יותר. שימו לב שהכוח מכניס רק פי 2 הספק, $\dfrac{F_0^2}{2m\gamma}$; האנרגיה גדלה פי 4
+          כי היא גם נשמרת זמן כפול, $E = Q\bar P/\omega_0$. ולכן גם לוקח פי 2 זמן להגיע למצב היציב החדש.
+      - text: 'האנרגיה גדלה פי 2, והרוחב קטן פי 2.'
+        feedback: 'פי 2 גדלה האמפליטודה. האנרגיה של מתנד פרופורציונית לריבוע האמפליטודה, $\tfrac12kA^2$.'
+      - text: 'האנרגיה גדלה פי 4, והרוחב לא משתנה.'
         feedback: >-
           הרוחב נקבע מהריסון: בתהודה האיבר $\gamma\omega$ במכנה הוא מה שעוצר את הגדילה, ורחוק ממנה $\omega_0^2 - \omega^2$
-          שולט. כשהריסון קטן, כבר הרחק קטן מהתהודה $\omega_0^2 - \omega^2$ מנצח, והעקומה נעשית צרה.
+          שולט. כשהריסון קטן, כבר במרחק קטן מהתהודה $\omega_0^2 - \omega^2$ מנצח, והעקומה נעשית צרה: $\Delta\omega \approx \gamma$.
         misconception: MC-5-width-independent-of-damping
-      - text: 'השיא גדל פי 4, והרוחב קטן פי 2.'
-        feedback: 'פי 4 גדל ריבוע האמפליטודה, כלומר האנרגיה של המתנד בשיא. האמפליטודה עצמה גדלה פי 2.'
-      - text: 'שום דבר לא משתנה, כי השיא נקבע רק מ-$F_0$ ומ-$k$.'
-        feedback: '$F_0/k$ הוא ההעתק הסטטי. בתהודה האמפליטודה גדולה ממנו פי $Q$, ולכן היא כן תלויה בריסון.'
+      - text: 'האנרגיה לא משתנה, כי הכוח המאלץ לא השתנה, והוא מכניס אותה כמות אנרגיה.'
+        feedback: >-
+          במצב היציב ההספק של הכוח שווה להספק שהריסון מפזר, וזה תלוי ב-$\gamma$: בתהודה $\bar P = \dfrac{F_0^2}{2m\gamma}$.
+          פחות ריסון פירושו מהירות גדולה יותר בפאזה עם הכוח, ולכן יותר הספק.
     hints:
-      - 'כתבו את השיא ואת הרוחב בעזרת $\gamma$.'
+      - 'כתבו את האמפליטודה בתהודה ואת הרוחב בעזרת $\gamma$. האנרגיה פרופורציונית ל-$A^2$.'

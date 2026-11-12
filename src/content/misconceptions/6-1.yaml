@@ -1,39 +1,39 @@
 # Misconceptions first detected in lesson 6.1. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 6.1
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it. The anchors point at
+# elements of lesson 6.1 (2026-11-11).
 
 - id: MC-6-gravity-inverse-r
   title: כוח הכבידה הפוך למרחק
   belief: כשהמרחק בין שני גופים גדל פי 3, כוח הכבידה ביניהם קטן פי 3.
   truth: כוח הכבידה הפוך לריבוע המרחק, F = Gm₁m₂/r². מרחק פי 3 נותן כוח קטן פי 9.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: חוק הכבידה של ניוטון' }
+  remedy: { lesson: '6.1', anchor: law, label: 'שיעור 6.1: חוק הכבידה של ניוטון' }
 
 - id: MC-6-negative-u-magnitude
   title: אנרגיה פוטנציאלית שגודלה קטן היא אנרגיה שקטנה
   belief: כשמרחיקים גוף מכדור הארץ, U = −GMm/r נחלשת, ולכן האנרגיה הפוטנציאלית קטנה.
   truth: U שלילית, וכשהגודל שלה קטן היא מתקרבת לאפס מלמטה, כלומר גדלה. הכבידה עושה עבודה שלילית בהרחקה, ולכן U גדלה.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: האנרגיה הפוטנציאלית הכבידתית והאפס באינסוף' }
+  remedy: { lesson: '6.1', anchor: potential, label: 'שיעור 6.1: האנרגיה הפוטנציאלית הכבידתית והאפס באינסוף' }
 
 - id: MC-6-mgh-everywhere
   title: האנרגיה הפוטנציאלית היא תמיד mgh
   belief: גם בגבהים של מסלולי לוויינים, האנרגיה הפוטנציאלית היא mgh עם g של פני הקרקע.
   truth: mgh הוא קירוב לגבהים קטנים בהרבה מרדיוס כדור הארץ. בגבהים גדולים g קטן, והאנרגיה הפוטנציאלית היא −GMm/r.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: mgh כגבול של −GMm/r בגובה קטן' }
+  remedy: { lesson: '6.1', anchor: mgh, label: 'שיעור 6.1: mgh כגבול של −GMm/r בגובה קטן' }
 
 - id: MC-6-shell-zero-only-center
   title: בתוך קליפה הכוח מתאפס רק במרכז
   belief: בתוך קליפה כדורית הכוח מתאפס רק במרכז, ובכל נקודה אחרת הדופן הקרובה מושכת חזק יותר.
   truth: לפי משפט הקליפה, הכוח של קליפה כדורית אחידה על גוף שבתוכה הוא אפס בכל נקודה בתוכה. הדופן הקרובה מושכת חזק יותר, אבל לרחוקה יש יותר מסה, והן מתאזנות בדיוק.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: משפט הקליפה בתוך הקליפה' }
+  remedy: { lesson: '6.1', anchor: inside, label: 'שיעור 6.1: משפט הקליפה בתוך הקליפה' }
 
 - id: MC-6-inside-full-mass
   title: בתוך כדור כל המסה מושכת מהמרכז
   belief: בתוך כדור הארץ כל המסה מושכת כאילו היא במרכז, ולכן הכבידה גדלה ככל שיורדים פנימה.
   truth: בתוך כדור מושכת רק המסה שבתוך הרדיוס של הגוף; השכבות שמעליו לא מושכות. בכדור אחיד g גדל בקו ישר עם המרחק מהמרכז, ובמרכז הוא אפס.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: הכבידה בתוך כדור אחיד' }
+  remedy: { lesson: '6.1', anchor: inside-sphere, label: 'שיעור 6.1: הכבידה בתוך כדור אחיד' }
 
 - id: MC-6-shorter-tunnel-faster
   title: מנהרה קצרה יותר מקצרת את התנועה
   belief: כדור במנהרה ישרה וקצרה בין שתי ערים יגיע לצד השני מהר יותר מאשר במנהרה דרך המרכז.
   truth: הרכיב של הכבידה לאורך כל מנהרה ישרה פרופורציוני למרחק מאמצעה באותו מקדם, ולכן זמן המחזור זהה, כ-84 דקות, לכל מנהרה.
-  remedy: { lesson: '6.1', label: 'שיעור 6.1: מנהרה דרך כדור הארץ' }
+  remedy: { lesson: '6.1', anchor: tunnel, label: 'שיעור 6.1: מנהרה ישרה דרך כדור אחיד' }

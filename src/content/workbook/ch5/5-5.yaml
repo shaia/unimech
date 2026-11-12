@@ -1,0 +1,461 @@
+# Workbook, lesson 5.5 (coupled oscillators, normal modes, beats). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch5/5-5/numbers.ts against src/physics/coupled.ts, with G = 9.8:
+#   W01 L = 0.80 m, m = 0.40 kg, k_c = 0.30 N/m: g/L = 12.25 s⁻², ω1 = 3.50, ω2 = √13.75 = 3.71 rad/s (T 1.80, 1.69 s);
+#   W03 440 Hz with 3 beats/s, then 5 beats/s after tightening: B was 443 Hz, then 445 Hz;
+#   W04 ω2/ω1 = 1.20: k_c/k = (1.44 − 1)/2 = 0.220, with k = 25 N/m k_c = 5.50 N/m (linear mistake 2.50);
+#   W06 m = 0.30 kg, L = 0.90 m, T2 = 0.90 T1: k_c = (mg/2L)(1/0.81 − 1) = 0.383 N/m (linear 0.181);
+#   W07 m = 0.40 kg, k = 36 N/m, k_c = 1.8 N/m, v0 = 0.50 m/s: ω1 = 9.49, ω2 = 9.95 rad/s, Δω = 0.463 rad/s,
+#       T_s = 6.78 s (weak 6.62 s); body 2 reaches 0.0515 m ≈ v0/ω̄ = 0.0514 m, 95 % of the energy at T_s;
+#   W08 ceiling–k–2m–k–m, m = 0.25 kg, k = 20 N/m: λ = 1 ∓ 1/√2, ω = 4.84, 11.7 rad/s, a2/a1 = ±√2;
+#       static stretches 3mg/k = 0.368 m and mg/k = 0.123 m;
+#   W09 fast period 0.50 s, envelope zeros 12.0 s apart: ω̄ = 12.6, Δω = 0.524 rad/s, ω1 = 12.3, ω2 = 12.8 rad/s,
+#       k_c/k = 0.0435 (weak 0.0426; taking 12 s as π/Δω: 0.0213);
+#   W10 L = 0.60 m, m1 = 0.20 kg, m2 = 0.40 kg, k_c = 0.40 N/m: ω1 = √(g/L) = 4.04 (1, 1),
+#       ω2 = √(g/L + 3k_c/(2m1)) = √19.33 = 4.40 rad/s (1, −½); from (a, 0): a/3 and 2a/3 of the modes,
+#       x2 reaches 2a/3, pendulum 2 at most 86 % of the energy;
+#   c1 (8.03SC HW3, 3.1) double pendulum, L = 0.40 m: ω0 = 4.95 rad/s; α = 1: ω = 3.79, 9.15 rad/s;
+#   c2 (8.03 Exam 1 2016, P3) pendulums L = 0.40 m, m = 0.50 kg, frame springs K = 3.0 N/m, coupling 0.10K:
+#      ω1 = √30.5 = 5.52, ω2 = √31.7 = 5.63 rad/s, Δω = 0.108 rad/s, T_s = 29.2 s (weak 28.9 s).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '5.5'
+practice:
+  - id: W-5.5-01
+    level: basic
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      שתי מטוטלות זהות, כל אחת משקולת בעלת מסה $0.40\,\text{kg}$ על חוט באורך $0.80\,\text{m}$, תלויות זו לצד זו, וקפיץ רך
+      $k_c = 0.30\,\text{N/m}$ מחבר את המשקולות. הקפיץ רפוי כששתיהן במנוחה. בזוויות קטנות כל מטוטלת לבדה מתנהגת כגוף על קפיץ
+      בקבוע $mg/L$ (שיעור 5.2). מצאו את התדירויות הזוויתיות ואת זמני המחזור של שני אופני התנודה.
+    answer: >-
+      יחד: $\omega_1 = 3.50\,\text{rad/s}$, $T_1 = 1.80\,\text{s}$. הפוך: $\omega_2 = 3.71\,\text{rad/s}$, $T_2 = 1.69\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.40\,\text{kg}$, $L = 0.80\,\text{m}$, $k_c = 0.30\,\text{N/m}$; $x_1$, $x_2$ ההעתקים האופקיים של המשקולות, חיוביים ימינה.
+      - kind: law
+        text: >-
+          שני גופים זהים עם "קפיץ חיצוני" $k = mg/L$ וקפיץ צימוד: $\omega_1^2 = k/m$ באופן $(1, 1)$ ו-$\omega_2^2 = (k + 2k_c)/m$ באופן $(1, -1)$.
+      - kind: manipulation
+        text: >-
+          $\omega_1^2 = g/L$ ו-$\omega_2^2 = g/L + 2k_c/m$.
+      - kind: limit
+        text: >-
+          כש-$k_c \to 0$ שתי התדירויות שוות ל-$\sqrt{g/L}$, כל מטוטלת לבדה. באופן המשותף הקפיץ לא נמתח, ולכן $\omega_1$ לא תלויה בו בכלל.
+      - kind: units
+        text: >-
+          $g/L$ ו-$k_c/m$ ב-$\text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $g/L = 9.8/0.80 = 12.25\,\text{s}^{-2}$, $\omega_1 = 3.50\,\text{rad/s}$; $\omega_2^2 = 12.25 + 2\cdot0.30/0.40 = 13.75\,\text{s}^{-2}$, $\omega_2 = 3.71\,\text{rad/s}$.
+          $T = 2\pi/\omega$: $1.80\,\text{s}$ ו-$1.69\,\text{s}$.
+      - kind: result
+        text: >-
+          $\omega_1 = 3.50\,\text{rad/s}$ ($T_1 = 1.80\,\text{s}$) ו-$\omega_2 = 3.71\,\text{rad/s}$ ($T_2 = 1.69\,\text{s}$).
+
+  - id: W-5.5-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      שני גופים זהים, קפיץ $k$ מכל גוף לקיר שלידו וקפיץ צימוד $k_c$ ביניהם, מתנודדים באופן שבו הם נעים יחד, $x_1 = x_2$.
+
+      א. האם קפיץ הצימוד עושה עבודה על גוף 1 בתנועה הזו? נמקו.
+
+      ב. ברגע מסוים חותכים את קפיץ הצימוד. מה משתנה בתנועה של כל גוף?
+
+      ג. אותה שאלה, כשהגופים מתנודדים באופן ההפוך, $x_2 = -x_1$, וחותכים את הקפיץ ברגע שבו שניהם עוברים בנקודות שיווי המשקל.
+    answer: >-
+      א. לא: הקפיץ לא משנה את אורכו ולא מפעיל כוח. ב. כלום. ג. כל גוף ממשיך לבדו באותה מהירות מרבית, אבל בתדירות הנמוכה $\sqrt{k/m}$, ולכן באמפליטודה גדולה יותר.
+    solution:
+      - kind: law
+        text: >-
+          הכוח של קפיץ הצימוד על גוף 1 הוא $k_c(x_2 - x_1)$; קפיץ שאורכו לא משתנה לא מפעיל כוח ולא עושה עבודה.
+      - kind: reasoning
+        text: >-
+          א: ב-$x_1 = x_2$ ההתארכות $x_2 - x_1 = 0$ כל הזמן, ולכן הכוח אפס, וגם העבודה. ב: בלי כוח, אין מה שישתנה: כל גוף נשאר מתנד
+          על הקפיץ שלו, באותה תדירות $\sqrt{k/m}$ ובאותה אמפליטודה. ג: באופן ההפוך הקפיץ מפעיל כוח. ברגע החיתוך כל גוף בנקודת שיווי
+          המשקל עם מהירות מרבית $v_0 = A\omega_2$, וקפיץ הצימוד באורכו הרפוי (אין בו אנרגיה). מכאן כל גוף ממשיך לבד, בתדירות העצמית שלו $\omega_0 = \sqrt{k/m} = \omega_1$,
+          והאמפליטודה $v_0/\omega_0 = A\,\omega_2/\omega_1 > A$.
+      - kind: limit
+        text: >-
+          כש-$k_c \to 0$, $\omega_2 \to \omega_1$, וגם ב-ג שום דבר לא משתנה: הקפיץ שנחתך כמעט לא עשה דבר.
+      - kind: units
+        text: >-
+          ב-ג: $A\omega_2/\omega_1$ ב-$\text{m}\cdot\dfrac{\text{rad/s}}{\text{rad/s}} = \text{m}$.
+      - kind: result
+        text: >-
+          באופן המשותף קפיץ הצימוד "מיותר", ולכן התדירות שלו $\sqrt{k/m}$; באופן ההפוך חיתוך הקפיץ מאט כל גוף ל-$\sqrt{k/m}$ ומגדיל את האמפליטודה פי $\omega_2/\omega_1$.
+
+  - id: W-5.5-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.5-2]
+    prompt: >-
+      גיטריסט מכוון מיתר B לפי מיתר A שמנגן ב-$440\,\text{Hz}$. כששני המיתרים מנגנים יחד הוא שומע את הצליל מתחזק ונחלש 3 פעמים בשנייה.
+      הוא מותח מעט את מיתר B (מתיחה מגדילה את התדירות), ועכשיו הוא שומע 5 פעימות בשנייה.
+
+      א. למה מספר הפעימות בשנייה שווה להפרש התדירויות $|f_A - f_B|$?
+
+      ב. האם B היה גבוה או נמוך מ-A לפני המתיחה? מה התדירות שלו לפני ואחרי? ומה עליו לעשות כדי לכוון?
+    answer: >-
+      א. המעטפת $\left|\cos\tfrac12\Delta\omega t\right|$ חוזרת על עצמה כל $2\pi/\Delta\omega$, ולכן מספר הפעימות בשנייה $\Delta\omega/2\pi = |f_A - f_B|$. ב. גבוה: $443\,\text{Hz}$ ואחר כך $445\,\text{Hz}$. עליו לרפות את המיתר עד שהפעימות נעלמות.
+    solution:
+      - kind: law
+        text: >-
+          סכום של שתי תנודות שוות אמפליטודה: $\cos\omega_At + \cos\omega_Bt = 2\cos\tfrac12\Delta\omega t\,\cos\bar\omega t$, עם $\Delta\omega = \omega_B - \omega_A$.
+      - kind: reasoning
+        text: >-
+          א: עוצמת הצליל תלויה בגודל המעטפת, $\left|\cos\tfrac12\Delta\omega t\right|$, שיש לה מקסימום פעם ב-$\pi/\left(\tfrac12|\Delta\omega|\right) = 2\pi/|\Delta\omega|$.
+          לכן מספר הפעימות בשנייה $|\Delta\omega|/2\pi = |f_A - f_B|$. ב: לפני המתיחה $f_B = 437$ או $443\,\text{Hz}$. המתיחה הגדילה את $f_B$ והפעימות התרבו,
+          כלומר $f_B$ התרחק מ-$440$: הוא היה **מעל** $440$, ב-$443\,\text{Hz}$, ועכשיו ב-$445\,\text{Hz}$. (אילו היה ב-$437$, המתיחה הייתה מקרבת אותו ומפחיתה את הפעימות.)
+      - kind: limit
+        text: >-
+          כש-$f_B \to f_A$, זמן הפעימה שואף לאינסוף: הצליל לא משתנה בכלל, וזה סימן הכיוון.
+      - kind: units
+        text: >-
+          הפרש תדירויות ב-$\text{Hz} = \text{s}^{-1}$, כלומר פעימות בשנייה.
+      - kind: result
+        text: >-
+          B היה $443\,\text{Hz}$ ועכשיו $445\,\text{Hz}$; צריך לרפות אותו ב-$5\,\text{Hz}$, עד שהפעימות נעלמות.
+
+  - id: W-5.5-04
+    level: mid
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      שני גופים זהים, קפיץ $k = 25\,\text{N/m}$ מכל גוף לקיר שלידו, וקפיץ צימוד $k_c$ ביניהם. מודדים שהתדירות של האופן שבו הגופים נעים
+      הפוך גדולה פי $1.20$ מהתדירות של האופן שבו הם נעים יחד. מה $k_c$?
+    answer: >-
+      $k_c = 5.50\,\text{N/m}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_2/\omega_1 = 1.20$, $k = 25\,\text{N/m}$, גופים זהים.
+      - kind: law
+        text: >-
+          $\omega_1^2 = k/m$, $\omega_2^2 = (k + 2k_c)/m$.
+      - kind: manipulation
+        text: >-
+          מחלקים: $\left(\omega_2/\omega_1\right)^2 = 1 + 2k_c/k$, ולכן $k_c = \tfrac12k\left[\left(\omega_2/\omega_1\right)^2 - 1\right]$. המסה לא נחוצה.
+      - kind: limit
+        text: >-
+          כש-$\omega_2/\omega_1 \to 1$, $k_c \to 0$. מי שמחליף את הריבוע ביחס עצמו מקבל $\tfrac12k\cdot0.20 = 2.50\,\text{N/m}$, טעות: הקבועים מתחברים כמו ריבועי התדירויות.
+      - kind: units
+        text: >-
+          היחס בלי יחידות, ו-$k_c$ ביחידות של $k$, $\text{N/m}$.
+      - kind: substitution
+        text: >-
+          $k_c = \tfrac12\cdot25\cdot\left(1.44 - 1\right) = 5.50\,\text{N/m}$.
+      - kind: result
+        text: >-
+          $k_c = 5.50\,\text{N/m}$, כלומר $0.220k$.
+
+  - id: W-5.5-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-5.5-2, OBJ-5.5-1]
+    prompt: >-
+      שני גופים זהים בעלי מסה $m$, קפיץ $k$ מכל גוף לקיר שלידו וקפיץ צימוד $k_c$ ביניהם. מזיזים את גוף 1 ב-$a$, משאירים את גוף 2 במקומו
+      ומשחררים ממנוחה, והגופים נעים בפעימות.
+
+      א. כתבו את התנע הכולל של שני הגופים, $P = mv_1 + mv_2$, כפונקציה של הזמן. באילו תדירויות הוא משתנה?
+
+      ב. הקירות מפעילים כוח דרך הקפיצים החיצוניים. הראו שהכוח החיצוני הכולל משנה את $P$ בדיוק כפי שמצאתם, ושקפיץ הצימוד לא משנה אותו.
+    answer: >-
+      א. $P = -ma\omega_1\sin\omega_1t$: רק בתדירות של האופן המשותף, אף שבתנועה של כל גוף יש שתי תדירויות. ב. $\dot P = -k(x_1 + x_2) = -2kq_1$; הכוחות של קפיץ הצימוד מתבטלים בסכום.
+    solution:
+      - kind: law
+        text: >-
+          $x_1 = q_1 + q_2$, $x_2 = q_1 - q_2$ עם $q_1 = \tfrac a2\cos\omega_1t$, $q_2 = \tfrac a2\cos\omega_2t$. החוק השני לשני הגופים יחד: $\dot P = F_{\text{ext}}$.
+      - kind: manipulation
+        text: >-
+          $v_1 + v_2 = 2\dot q_1$, ולכן $P = 2m\dot q_1 = -ma\omega_1\sin\omega_1t$: האופן ההפוך, $q_2$, לא תורם. ב: הכוחות החיצוניים על הזוג הם של
+          שני הקפיצים החיצוניים, $-kx_1 - kx_2 = -2kq_1$. ואכן $\dot P = 2m\ddot q_1 = -2kq_1$ ממשוואת $q_1$. קפיץ הצימוד מפעיל על שני הגופים כוחות
+          שווים והפוכים, ולכן לא מופיע ב-$F_{\text{ext}}$.
+      - kind: limit
+        text: >-
+          באופן ההפוך טהור ($q_1 = 0$) התנע הכולל אפס כל הזמן: הגופים נעים תמיד במהירויות הפוכות. בלי קירות ($k = 0$) $P$ קבוע, ו-$\omega_1 = 0$.
+      - kind: units
+        text: >-
+          $ma\omega_1$ ב-$\text{kg}\cdot\text{m}\cdot\text{s}^{-1}$, יחידות של תנע.
+      - kind: result
+        text: >-
+          $P = -ma\omega_1\sin\omega_1t$, בתדירות $\omega_1$ בלבד. רק אופן 1 נושא תנע, ורק הקירות משנים אותו.
+
+  - id: W-5.5-06
+    level: mid
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      שתי מטוטלות זהות, משקולות בעלות מסה $0.30\,\text{kg}$ על חוטים באורך $0.90\,\text{m}$, מחוברות בקפיץ רך שרפוי כשהן במנוחה. מה צריך להיות
+      קבוע הקפיץ כדי שזמן המחזור של האופן שבו המטוטלות נעות הפוך יהיה קצר ב-$10\%$ מזמן המחזור של האופן שבו הן נעות יחד?
+    answer: >-
+      $k_c = 0.383\,\text{N/m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.30\,\text{kg}$, $L = 0.90\,\text{m}$, $T_2 = 0.90\,T_1$. בזוויות קטנות כל מטוטלת היא גוף על "קפיץ" $mg/L$.
+      - kind: law
+        text: >-
+          $\omega_1^2 = g/L$, $\omega_2^2 = g/L + 2k_c/m$, ו-$T \propto 1/\omega$.
+      - kind: manipulation
+        text: >-
+          $\omega_2/\omega_1 = T_1/T_2 = 1/0.90$, ולכן $1 + \dfrac{2k_cL}{mg} = \dfrac{1}{0.81}$ ו-$k_c = \dfrac{mg}{2L}\left(\dfrac{1}{0.81} - 1\right)$.
+      - kind: limit
+        text: >-
+          כש-$T_2 \to T_1$, $k_c \to 0$. וכש-$L \to \infty$ (מטוטלת "רכה" מאוד) גם $k_c$ הדרוש שואף לאפס: קפיץ קטן כבר משנה הרבה.
+      - kind: units
+        text: >-
+          $mg/L$ ב-$\text{N/m}$.
+      - kind: substitution
+        text: >-
+          $mg/L = 0.30\cdot9.8/0.90 = 3.27\,\text{N/m}$, $k_c = \tfrac12\cdot3.27\cdot\left(1.2346 - 1\right) = 0.383\,\text{N/m}$.
+      - kind: result
+        text: >-
+          $k_c = 0.383\,\text{N/m}$ (מי שמשתמש ב-$1/0.90$ במקום בריבוע שלו מקבל $0.181\,\text{N/m}$, טעות).
+
+  - id: W-5.5-07
+    level: mid
+    objectives: [OBJ-5.5-2]
+    prompt: >-
+      שני גופים זהים, $m = 0.40\,\text{kg}$, קפיץ $k = 36\,\text{N/m}$ מכל גוף לקיר שלידו וקפיץ צימוד $k_c = 1.8\,\text{N/m}$. שני הגופים
+      בנקודות שיווי המשקל, ומכה נותנת לגוף 1 מהירות $v_0 = 0.50\,\text{m/s}$ ימינה.
+
+      א. כתבו את $x_1(t)$ ואת $x_2(t)$ כסופרפוזיציה של אופני התנודה.
+
+      ב. אחרי כמה זמן גוף 2 מתנודד לראשונה באמפליטודה הגדולה ביותר שלו, ומה בערך האמפליטודה?
+    answer: >-
+      א. $x_{1,2} = \dfrac{v_0}{2}\left(\dfrac{\sin\omega_1t}{\omega_1} \pm \dfrac{\sin\omega_2t}{\omega_2}\right)$. ב. כ-$6.78\,\text{s}$; כ-$0.051\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ ימינה. $x_1(0) = x_2(0) = 0$, $v_1(0) = v_0$, $v_2(0) = 0$.
+      - kind: law
+        text: >-
+          $q_1 = \tfrac12\left(x_1 + x_2\right)$ מתנודד ב-$\omega_1 = \sqrt{k/m}$ ו-$q_2 = \tfrac12\left(x_1 - x_2\right)$ ב-$\omega_2 = \sqrt{(k + 2k_c)/m}$.
+      - kind: manipulation
+        text: >-
+          שניהם מתחילים ב-0 עם מהירות $v_0/2$, ולכן $q_i = \dfrac{v_0}{2\omega_i}\sin\omega_it$, ו-$x_{1,2} = q_1 \pm q_2$. בצימוד חלש $\omega_1 \approx \omega_2 \approx \bar\omega$,
+          ואז $x_2 \approx \dfrac{v_0}{\bar\omega}\sin\tfrac12\Delta\omega t\,\cos\bar\omega t$ (בסימן ובפאזה עד כדי שינוי קטן): המעטפת מרבית ב-$\tfrac12\Delta\omega t = \pi/2$.
+      - kind: limit
+        text: >-
+          כש-$k_c \to 0$: $x_2 \to 0$ וגוף 1 מתנודד לבד, $x_1 = (v_0/\omega_1)\sin\omega_1t$. שתי האמפליטודות $v_0/2\omega_1$ ו-$v_0/2\omega_2$ לא שוות בדיוק, ולכן ההעברה כמעט, לא בדיוק, מלאה.
+      - kind: units
+        text: >-
+          $v_0/\omega$ ב-$\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\omega_1 = \sqrt{90} = 9.49$, $\omega_2 = \sqrt{99} = 9.95\,\text{rad/s}$, $\Delta\omega = 0.463\,\text{rad/s}$, $T_s = \pi/\Delta\omega = 6.78\,\text{s}$. האמפליטודה
+          $\approx v_0/\bar\omega = 0.50/9.72 = 0.0514\,\text{m}$; בזמן הזה גוף 2 מחזיק $95\%$ מהאנרגיה.
+      - kind: result
+        text: >-
+          א. $x_{1,2} = \dfrac{v_0}{2}\left(\dfrac{\sin\omega_1t}{\omega_1} \pm \dfrac{\sin\omega_2t}{\omega_2}\right)$. ב. אחרי $6.78\,\text{s}$, באמפליטודה של כ-$5.1\,\text{cm}$.
+
+  - id: W-5.5-08
+    level: bagrut
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      קפיץ $k = 20\,\text{N/m}$ תלוי מהתקרה, ובקצה שלו גוף בעל מסה $2m$. מתחת לגוף תלוי קפיץ זהה, ובקצהו גוף בעל מסה $m$, עם
+      $m = 0.25\,\text{kg}$. הגופים נעים רק לאורך הקו האנכי.
+
+      א. הראו שהכובד רק מזיז את נקודות שיווי המשקל ולא משנה את משוואות התנועה של ההעתקים מהן.
+
+      ב. מצאו את התדירויות העצמיות ואת הצורות של שני אופני התנודה.
+    answer: >-
+      ב. $\omega^2 = \left(1 \mp \tfrac{1}{\sqrt2}\right)\dfrac km$: $4.84$ ו-$11.7\,\text{rad/s}$; $a_2/a_1 = \sqrt2$ באופן הנמוך ו-$(-\sqrt2)$ בגבוה.
+    solution:
+      - kind: given
+        text: >-
+          הציר כלפי מטה; $y_1$, $y_2$ ההעתקים מנקודות שיווי המשקל. $m_1 = 2m$, $m_2 = m$, $k_1 = k_c = k$, $k_2 = 0$ (לגוף התחתון אין קפיץ נוסף).
+      - kind: law
+        text: >-
+          החוק השני לכל גוף; ניחוש $y_i = a_i\cos\omega t$ ואיפוס הדטרמיננטה.
+      - kind: manipulation
+        text: >-
+          א: בשיווי המשקל הקפיץ העליון מתוח ב-$3mg/k$ והתחתון ב-$mg/k$. כשמוסיפים העתקים, הכובד ($2mg$, $mg$) מתבטל בדיוק עם המתיחות האלה, ונשאר
+          $2m\ddot y_1 = -ky_1 + k\left(y_2 - y_1\right)$ ו-$m\ddot y_2 = -k\left(y_2 - y_1\right)$. ב: עם $\lambda = m\omega^2/k$:
+          $\left(2 - 2\lambda\right)a_1 = a_2$ ו-$a_1 = \left(1 - \lambda\right)a_2$. מציבים: $2\left(1 - \lambda\right)^2 = 1$, ולכן $\lambda = 1 \mp 1/\sqrt2$, ו-$a_2/a_1 = 2\left(1 - \lambda\right) = \pm\sqrt2$.
+      - kind: limit
+        text: >-
+          בדיקת הסכום: $\lambda_1 + \lambda_2 = 2$, ואכן $\tfrac{k_1 + k_c}{m_1} + \tfrac{k_2 + k_c}{m_2} = \tfrac{2k}{2m} + \tfrac km = 2\tfrac km$. ובגבול שבו הגוף התחתון קל מאוד: הוא כמעט לא משפיע על העליון, והאופן הנמוך שואף ל-$\omega^2 = k/(2m)$, גוף $2m$ על קפיץ אחד.
+      - kind: units
+        text: >-
+          $k/m$ ב-$\text{s}^{-2}$, $\lambda$ בלי יחידות.
+      - kind: substitution
+        text: >-
+          $k/m = 80\,\text{s}^{-2}$; $\lambda = 0.293$ ו-$1.71$; $\omega = \sqrt{23.4} = 4.84\,\text{rad/s}$ ו-$\sqrt{137} = 11.7\,\text{rad/s}$. המתיחות הסטטיות: $0.368\,\text{m}$ ו-$0.123\,\text{m}$.
+      - kind: result
+        text: >-
+          $4.84\,\text{rad/s}$ עם $(1, \sqrt2)$, שני הגופים לאותו כיוון; $11.7\,\text{rad/s}$ עם $(1, -\sqrt2)$, הפוך.
+
+  - id: W-5.5-09
+    level: bagrut
+    objectives: [OBJ-5.5-2, OBJ-5.5-1]
+    prompt: >-
+      במערכת של שני גופים זהים, קפיץ $k$ מכל גוף לקיר שלידו וקפיץ צימוד $k_c$, מקליטים את $x_1(t)$ אחרי שגוף 1 בלבד הוזז ושוחרר ממנוחה.
+      בהקלטה רואים תנודות מהירות שזמן המחזור שלהן $0.50\,\text{s}$, בתוך מעטפת שמתאפסת כל $12.0\,\text{s}$. מצאו את שתי התדירויות העצמיות
+      ואת היחס $k_c/k$.
+    answer: >-
+      $\omega_1 = 12.3\,\text{rad/s}$, $\omega_2 = 12.8\,\text{rad/s}$, $k_c/k = 0.0435$.
+    solution:
+      - kind: given
+        text: >-
+          זמן המחזור המהיר $0.50\,\text{s}$; המרחק בין אפסים של המעטפת $12.0\,\text{s}$.
+      - kind: law
+        text: >-
+          $x_1 = a\cos\tfrac12\Delta\omega t\,\cos\bar\omega t$; $\omega_1^2 = k/m$, $\omega_2^2 = (k + 2k_c)/m$.
+      - kind: manipulation
+        text: >-
+          התנודה המהירה: $\bar\omega = 2\pi/0.50$. המעטפת $\left|\cos\tfrac12\Delta\omega t\right|$ מתאפסת כל $\pi/\left(\tfrac12\Delta\omega\right) = 2\pi/\Delta\omega$, ולכן $\Delta\omega = 2\pi/12.0$.
+          $\omega_{1,2} = \bar\omega \mp \tfrac12\Delta\omega$, ו-$k_c/k = \tfrac12\left[\left(\omega_2/\omega_1\right)^2 - 1\right]$.
+      - kind: limit
+        text: >-
+          אם המעטפת מתאפסת לעתים רחוקות יותר ויותר, $\Delta\omega \to 0$ ו-$k_c/k \to 0$. בצימוד חלש $k_c/k \approx \Delta\omega/\omega_1 = 0.0426$, קרוב. מי שמשווה את $12.0\,\text{s}$ ל-$\pi/\Delta\omega$ מקבל חצי מהיחס, $0.0213$: בין שני אפסים עוברים $2T_s$.
+      - kind: units
+        text: >-
+          כל התדירויות ב-$\text{rad/s}$; היחס בלי יחידות.
+      - kind: substitution
+        text: >-
+          $\bar\omega = 12.57$, $\Delta\omega = 0.524\,\text{rad/s}$, $\omega_1 = 12.30$, $\omega_2 = 12.83\,\text{rad/s}$, $k_c/k = \tfrac12\left(1.0869 - 1\right) = 0.0435$.
+      - kind: result
+        text: >-
+          $\omega_1 = 12.3\,\text{rad/s}$, $\omega_2 = 12.8\,\text{rad/s}$, $k_c/k = 0.0435$.
+
+  - id: W-5.5-10
+    level: bagrut
+    objectives: [OBJ-5.5-1, OBJ-5.5-2]
+    prompt: >-
+      שתי מטוטלות באותו אורך, $L = 0.60\,\text{m}$, אבל במסות שונות: $m_1 = 0.20\,\text{kg}$ ו-$m_2 = 0.40\,\text{kg}$. קפיץ $k_c = 0.40\,\text{N/m}$ מחבר את
+      המשקולות, והוא רפוי כשהן במנוחה. זוויות קטנות.
+
+      א. הראו בלי חישוב דטרמיננטה שהאופן שבו המשקולות נעות יחד, $(1, 1)$, הוא אופן תנודה, ומצאו את התדירות שלו.
+
+      ב. מצאו את האופן השני ואת התדירות שלו.
+
+      ג. מסיטים רק את משקולת 1 למרחק $a$ ומשחררים ממנוחה. האם האנרגיה עוברת כולה למשקולת 2? נמקו.
+    answer: >-
+      א. $\omega_1 = \sqrt{g/L} = 4.04\,\text{rad/s}$. ב. $(1, -\tfrac12)$, $\omega_2 = \sqrt{g/L + 3k_c/(2m_1)} = 4.40\,\text{rad/s}$. ג. לא: $x_1 = \tfrac a3\cos\omega_1t + \tfrac{2a}{3}\cos\omega_2t$, ומשקולת 1 לא יורדת מתחת ל-$a/3$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ ימינה; לכל מטוטלת "קפיץ" $m_ig/L$. $m_1\ddot x_1 = -\tfrac{m_1g}{L}x_1 + k_c\left(x_2 - x_1\right)$, $m_2\ddot x_2 = -\tfrac{m_2g}{L}x_2 - k_c\left(x_2 - x_1\right)$.
+      - kind: law
+        text: >-
+          אופן תנודה: אותה תדירות לשני הגופים ויחס קבוע. כל תנועה היא סופרפוזיציה של האופנים; החלק של כל אופן נקבע מתנאי ההתחלה.
+      - kind: manipulation
+        text: >-
+          א: ב-$x_1 = x_2$ הקפיץ לא נמתח, וכל משוואה היא $\ddot x_i = -(g/L)x_i$, אותה תדירות לשתיהן: אופן, עם $\omega_1^2 = g/L$. ב: מנחשים $(1, b)$ בתדירות $\omega$.
+          מהמשוואה הראשונה $m_1\omega^2 = m_1g/L + k_c(1 - b)$, ומהשנייה $m_2b\,\omega^2 = m_2bg/L + k_c(b - 1)$. מחסירים $g/L$: $m_1\left(\omega^2 - g/L\right) = k_c(1 - b)$ ו-$m_2b\left(\omega^2 - g/L\right) = -k_c(1 - b)$.
+          מחלקים (כש-$b \ne 1$): $m_2b/m_1 = -1$, כלומר $b = -m_1/m_2 = -\tfrac12$, ו-$\omega_2^2 = g/L + \tfrac{3k_c}{2m_1}$. ג: $(a, 0) = c_1(1, 1) + c_2(1, -\tfrac12)$: $c_1 + c_2 = a$, $c_1 - \tfrac12c_2 = 0$, ולכן $c_1 = a/3$, $c_2 = 2a/3$.
+      - kind: limit
+        text: >-
+          כש-$m_2 \to m_1$: $b \to -1$ ו-$\omega_2^2 \to g/L + 2k_c/m$, המקרה הסימטרי, ואז $c_1 = c_2 = a/2$ וההעברה מלאה. כש-$m_2 \to \infty$: $b \to 0$, משקולת 2 היא קיר, ו-$\omega_2^2 \to g/L + k_c/m_1$.
+      - kind: units
+        text: >-
+          $k_c/m_1$ ב-$\text{s}^{-2}$, כמו $g/L$.
+      - kind: substitution
+        text: >-
+          $g/L = 16.3\,\text{s}^{-2}$, $\omega_1 = 4.04\,\text{rad/s}$; $3k_c/(2m_1) = 3.0\,\text{s}^{-2}$, $\omega_2 = \sqrt{19.3} = 4.40\,\text{rad/s}$. ב-ג: המעטפת של $x_1$ בין $a/3$ ל-$a$,
+          ושל $x_2$ ($\tfrac a3\cos\omega_1t - \tfrac a3\cos\omega_2t$) עד $2a/3$; משקולת 2 מגיעה לכל היותר ל-$86\%$ מהאנרגיה.
+      - kind: result
+        text: >-
+          א. $4.04\,\text{rad/s}$. ב. $(1, -\tfrac12)$ ב-$4.40\,\text{rad/s}$. ג. לא: מרכז המסה של האופן השני לא זז, ולכן המשקולת הקלה נעה פי שניים, והאופנים לא מתבטלים במשקולת 1.
+
+challenge:
+  - id: W-5.5-c1
+    stars: 2
+    objectives: [OBJ-5.5-1]
+    prompt: >-
+      מטוטלת כפולה: משקולת $M_1$ תלויה ממסמר על מוט חסר מסה באורך $L$, ומשקולת $M_2$ תלויה מ-$M_1$ על מוט נוסף חסר מסה באורך $L$. הצירים בלי חיכוך,
+      והתנודות קטנות. $X_1$ ו-$X_2$ הם ההעתקים האופקיים של המשקולות מהקו האנכי דרך המסמר. סמנו $\omega_0^2 = g/L$ ו-$\alpha = M_2/M_1$.
+
+      א. כתבו את משוואות התנועה של $X_1$ ושל $X_2$. (רמז: בזוויות קטנות המתיחות במוט העליון $(M_1 + M_2)g$ ובתחתון $M_2g$.)
+
+      ב. מצאו את התדירויות העצמיות כפונקציה של $\omega_0$ ושל $\alpha$, וחשבו אותן עבור $L = 0.40\,\text{m}$ ו-$\alpha = 1$.
+
+      ג. מה קורה לשתי התדירויות כש-$\alpha \to \infty$ וכש-$\alpha \to 0$? האם התוצאות הגיוניות?
+    answer: >-
+      ב. $\omega^2 = \omega_0^2\left[(1 + \alpha) \mp \sqrt{\alpha(1 + \alpha)}\right]$; עם $L = 0.40\,\text{m}$, $\alpha = 1$: $3.79$ ו-$9.15\,\text{rad/s}$. ג. $\alpha \to \infty$: $\omega_0/\sqrt2$ ו-$\infty$; $\alpha \to 0$: שתיהן $\omega_0$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $X$ ימינה. זווית המוט העליון $\sin\theta_1 \approx X_1/L$, של התחתון $\sin\theta_2 \approx \left(X_2 - X_1\right)/L$. בזוויות קטנות התנועה אופקית, והמתיחויות $T_1 = (M_1 + M_2)g$, $T_2 = M_2g$.
+      - kind: law
+        text: >-
+          החוק השני לכיוון האופקי לכל משקולת: על $M_1$ פועלים הרכיבים האופקיים של שתי המתיחויות, ועל $M_2$ רק של התחתונה.
+      - kind: manipulation
+        text: >-
+          $M_1\ddot X_1 = -T_1\dfrac{X_1}{L} + T_2\dfrac{X_2 - X_1}{L}$ ו-$M_2\ddot X_2 = -T_2\dfrac{X_2 - X_1}{L}$. אחרי חלוקה: $\ddot X_1 = -\omega_0^2\left[(1 + 2\alpha)X_1 - \alpha X_2\right]$,
+          $\ddot X_2 = -\omega_0^2\left(X_2 - X_1\right)$. ניחוש $X_i = a_i\cos\omega t$ עם $\lambda = \omega^2/\omega_0^2$: $\left(1 + 2\alpha - \lambda\right)\left(1 - \lambda\right) - \alpha = 0$, כלומר
+          $\lambda^2 - 2(1 + \alpha)\lambda + (1 + \alpha) = 0$, ו-$\lambda = (1 + \alpha) \mp \sqrt{(1 + \alpha)^2 - (1 + \alpha)} = (1 + \alpha) \mp \sqrt{\alpha(1 + \alpha)}$.
+          (זו בדיוק המערכת של השיעור, עם $k_1 = (M_1 + M_2)g/L$, $k_c = M_2g/L$ ו-$k_2 = 0$.)
+      - kind: limit
+        text: >-
+          $\alpha \to \infty$: $\sqrt{\alpha^2 + \alpha} \approx \alpha + \tfrac12$, ולכן $\lambda_1 \to \tfrac12$ ו-$\lambda_2 \approx 2\alpha \to \infty$. משקולת עליונה קלה מאוד: האופן הנמוך הוא
+          מטוטלת אחת באורך $2L$, $\omega^2 = g/(2L)$; בגבוה המשקולת הקלה רוטטת מהר בין שני מוטות מתוחים מאוד. $\alpha \to 0$: $\lambda \to 1 \mp \sqrt\alpha \to 1$: המשקולת העליונה
+          לא מרגישה את התחתונה (מטוטלת באורך $L$), והתחתונה היא מטוטלת באורך $L$ תלויה ממנה, ושתיהן ב-$\omega_0$.
+      - kind: units
+        text: >-
+          $\lambda$ ו-$\alpha$ בלי יחידות, ו-$\omega_0$ ב-$\text{rad/s}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{9.8/0.40} = 4.95\,\text{rad/s}$; $\alpha = 1$: $\lambda = 2 \mp \sqrt2 = 0.586$ ו-$3.41$, ולכן $\omega = 3.79$ ו-$9.15\,\text{rad/s}$.
+      - kind: result
+        text: >-
+          $\omega^2 = \omega_0^2\left[(1 + \alpha) \mp \sqrt{\alpha(1 + \alpha)}\right]$; $3.79$ ו-$9.15\,\text{rad/s}$ במקרה המספרי; הגבולות $\omega_0/\sqrt2$ ו-$\infty$, ושתיהן $\omega_0$.
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 3
+      year: 2016
+      problem: Problem 3.1 (double pendulum, parts a–d)
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/e3da8bedda3b17964eabcf48c920c58a_MIT8_03SCF16_ProblemSet3.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-5.5-c2
+    stars: 1
+    objectives: [OBJ-5.5-1, OBJ-5.5-2]
+    prompt: >-
+      מסגרת קבועה נושאת שתי מטוטלות זהות, כל אחת גוף בעל מסה $m$ על מוט חסר מסה באורך $L$. כל גוף מחובר בקפיץ $K$ לדופן הקרובה של המסגרת,
+      וקפיץ $\alpha K$ מחבר את שני הגופים. $x_1$ ו-$x_2$ הם ההעתקים האופקיים מנקודות שיווי המשקל (שבהן הקפיצים רפויים והמוטות אנכיים); התנודות קטנות,
+      והגופים נעים בקירוב רק אופקית.
+
+      א. כתבו את משוואות התנועה של $x_1$ ושל $x_2$.
+
+      ב. מצאו את התדירויות העצמיות ואת צורות אופני התנודה.
+
+      ג. כתבו את התנועה הכללית בעזרת התדירויות העצמיות וארבעה קבועים.
+
+      ד. עם $L = 0.40\,\text{m}$, $m = 0.50\,\text{kg}$, $K = 3.0\,\text{N/m}$ ו-$\alpha = 0.10$, מסיטים רק את גוף 1 ומשחררים ממנוחה. אחרי כמה זמן כמעט כל האנרגיה בגוף 2?
+    answer: >-
+      ב. $(1, 1)$ ב-$\omega_1^2 = \dfrac gL + \dfrac Km$; $(1, -1)$ ב-$\omega_2^2 = \dfrac gL + \dfrac{(1 + 2\alpha)K}{m}$. ד. $\omega_1 = 5.52$, $\omega_2 = 5.63\,\text{rad/s}$, $T_s = 29.2\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ ימינה. לכל גוף שלושה כוחות אופקיים: הרכיב האופקי של המתיחות במוט ($-\tfrac{mg}{L}x_i$ בזוויות קטנות, שיעור 5.2), הקפיץ $K$ לדופן, וקפיץ הצימוד $\alpha K$.
+      - kind: law
+        text: >-
+          החוק השני לכל גוף; אופני התנודה לשני גופים זהים בעזרת הסכום וההפרש; סופרפוזיציה.
+      - kind: manipulation
+        text: >-
+          $m\ddot x_1 = -\left(\tfrac{mg}{L} + K\right)x_1 + \alpha K\left(x_2 - x_1\right)$ ו-$m\ddot x_2 = -\left(\tfrac{mg}{L} + K\right)x_2 - \alpha K\left(x_2 - x_1\right)$: המשוואות של השיעור,
+          עם קפיץ חיצוני אפקטיבי $k = mg/L + K$ וקפיץ צימוד $k_c = \alpha K$. לכן $\omega_1^2 = k/m$ ב-$(1, 1)$ ו-$\omega_2^2 = (k + 2\alpha K)/m$ ב-$(1, -1)$. הכללי:
+          $x_{1,2} = A_1\cos\left(\omega_1t + \varphi_1\right) \pm A_2\cos\left(\omega_2t + \varphi_2\right)$. ד: מגוף 1 בלבד, $T_s = \pi/\left(\omega_2 - \omega_1\right)$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 0$ שתי התדירויות שוות ו-$T_s \to \infty$. כש-$K \to 0$ ו-$\alpha K$ נשאר, זה זוג המטוטלות של השיעור. כש-$L \to \infty$ (בלי כובד) נשארת המערכת של שלושה
+          קפיצים בלבד. בצימוד חלש $T_s \approx \pi m\omega_1/(\alpha K) = 28.9\,\text{s}$, קרוב לתוצאה המדויקת.
+      - kind: units
+        text: >-
+          $g/L$ ו-$K/m$ ב-$\text{s}^{-2}$; $\pi/\Delta\omega$ בשניות.
+      - kind: substitution
+        text: >-
+          $g/L = 24.5\,\text{s}^{-2}$, $K/m = 6.0\,\text{s}^{-2}$: $\omega_1 = \sqrt{30.5} = 5.52\,\text{rad/s}$, $\omega_2 = \sqrt{24.5 + 7.2} = 5.63\,\text{rad/s}$, $\Delta\omega = 0.108\,\text{rad/s}$, $T_s = 29.2\,\text{s}$.
+      - kind: result
+        text: >-
+          $\omega_1^2 = g/L + K/m$ עם $(1, 1)$, $\omega_2^2 = g/L + (1 + 2\alpha)K/m$ עם $(1, -1)$; במספרים $5.52$ ו-$5.63\,\text{rad/s}$, והאנרגיה עוברת לגוף 2 אחרי $29.2\,\text{s}$.
+    source:
+      name: MIT 8.03 Physics III, Vibrations and Waves, Exam 1
+      year: 2016
+      problem: Problem 3, parts a–e (coupled pendulum and ideal spring oscillators, the frame held fixed)
+      url: https://www.ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/bb747516d5ca5d639a4dad828a6afc81_MIT8_03SCF16_Exam1.pdf
+      verified: '2026-11-11'
+      adapted: true

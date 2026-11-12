@@ -1,0 +1,7 @@
+---
+/** Shell theorem figure for lesson MDX: <Spread fig="fig-6-1a" figure={ShellTheorem} figureProps={{ body: 'shell', r: 1.6, … }}>. */
+import ShellTheorem, { type ShellTheoremProps } from './ShellTheorem';
+type Props = ShellTheoremProps;
+---
+
+<ShellTheorem client:visible {...Astro.props} />

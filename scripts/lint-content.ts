@@ -437,11 +437,12 @@ for (const { file, data } of workbooks) {
     }
     if (item.source) {
       // two agents writing lessons in parallel once picked the same olympiad problem
-      // In one paper, "Q27", "Question 27" and "Section 2, Q.9 and Q.10" are compared by their question numbers
-      const bare = /^\s*\d+[a-z]?\s*$/i.test(item.source.problem) ? [item.source.problem.trim().toLowerCase()] : [];
+      // In one paper, "Q27", "Question 27" and "Section 2, Q.9 and Q.10" are compared by their question numbers;
+      // a dotted number ("Problem 2.3") is one number, not problem 2
+      const bare = /^\s*\d+(?:\.\d+)*[a-z]?\s*$/i.test(item.source.problem) ? [item.source.problem.trim().toLowerCase()] : [];
       const numbers = [
         ...bare,
-        ...[...item.source.problem.matchAll(/\b(?:question|problem|q)\.?\s*(\d+[a-z]?(?:\([a-z0-9]+\))*)/gi)].map((m) => m[1].toLowerCase()),
+        ...[...item.source.problem.matchAll(/\b(?:question|problem|q)\.?\s*(\d+(?:\.\d+)*[a-z]?(?:\([a-z0-9]+\))*)/gi)].map((m) => m[1].toLowerCase()),
       ];
       const keys = (numbers.length ? numbers : [item.source.problem.toLowerCase().replace(/[^a-z0-9()]/g, '')]).map((n) => `${item.source!.url} ${n}`);
       // one exam is often hosted at several URLs (4.4 and 4.10 cited two PDFs of PhysicsBowl 2018 for Q37):

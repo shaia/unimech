@@ -1,0 +1,7 @@
+---
+/** Kepler's-laws figure for lesson MDX: <Spread figure={KeplerLaws} figureProps={{ view: 'areas', e: 0.6, … }}>. */
+import KeplerLaws, { type KeplerLawsProps } from './KeplerLaws';
+type Props = KeplerLawsProps;
+---
+
+<KeplerLaws client:visible {...Astro.props} />

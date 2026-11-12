@@ -1,0 +1,463 @@
+# Workbook, lesson 6.1 (the law of gravitation and the shell theorem). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-1/more.ts (2026-11-11) with src/physics/constants.ts, orbit.ts and
+# shell.ts:
+#   W02 158 kg and 0.73 kg at 0.23 m: F = 1.45e-7 N; weight of 0.73 kg 7.15 N; ratio 2.03e-8;
+#   W04 m = 500 kg from R_E + 400 km to 4.22e7 m: ΔU = 2.47e10 J (mgh with g = 9.8: 1.74e11 J);
+#   W05 uniform Earth: g(300 km up)/g_s = 0.912; the same g at depth d = 5.60e5 m (d/h = 1.87; small-h rule 2h);
+#   W07 F_sun/F_moon on the Earth = 177 (3.52e22 N, 1.98e20 N; the mass ratio alone 2.71e7);
+#   W08 four 2.0 kg masses on a square of side 0.40 m: U = −(4 + √2)Gm²/a = −3.61e-9 J (sides only −2.67e-9 J);
+#   W09 ρ = C/r, M = 6.4e23 kg, R = 3.4e6 m: C = M/(2πR²) = 8.81e9 kg/m², g = GM/R² = 3.69 m/s² everywhere inside,
+#       U/m at the centre −2GM/R = −2.51e7 J/kg;
+#   W10 rod M = 4.0 kg, L = 1.2 m, m = 0.50 kg at d = 0.30 m from its near end: F = GMm/(d(d + L)) = 2.96e-10 N
+#       (point mass at the rod's centre 1.65e-10 N; at its near end 1.48e-9 N);
+#   c1 (MIT 8.012 2006 final, P8) rope from R to 2R: Ω² = GM/(3R³); greatest tension at r = 3^(1/3) R = 1.44R,
+#       T_max = 0.127 mGM/R²; for R = R_E: Ω = 7.17e-4 rad/s, period 146 min (√3 × that of a grazing orbit);
+#   c2 (F=ma 2021, Q19) cavity of radius R/2 touching the surface: |g| at the surface point above the centre
+#       0.912 GM/R² (components 0.0447 and 0.911), 2.81° from the vertical; in the cavity a uniform GM/(2R²);
+#       at the planet's centre GM/(2R²); at the surface point opposite the cavity 0.944 GM/R².
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.1'
+practice:
+  - id: W-6.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      השמש מושכת את כדור הארץ בכוח $\vec F_{SE}$, וכדור הארץ מושך את השמש בכוח $\vec F_{ES}$. המסה של השמש גדולה
+      מזו של כדור הארץ פי כ-$3\cdot10^{5}$.
+
+      א. איזה מהכוחות גדול יותר?
+
+      ב. לאיזה מהגופים תאוצה גדולה יותר בגלל הכוח הזה, ופי כמה?
+    answer: >-
+      א. הכוחות שווים בגודלם והפוכים בכיוונם. ב. לכדור הארץ, פי כ-$3\cdot10^{5}$.
+    solution:
+      - kind: law
+        text: >-
+          חוק הכבידה: $F = Gm_1m_2/r^2$, סימטרי בשתי המסות. החוק השלישי: שני הכוחות הם זוג. החוק השני: $a = F/m$.
+      - kind: reasoning
+        text: >-
+          הביטוי $GM_SM_E/r^2$ זהה לשני הכוחות, ולכן הגדלים שווים, וכל כוח פונה אל הגוף שמפעיל אותו. התאוצות שונות כי
+          המסות שונות: $a_E/a_S = M_S/M_E$.
+      - kind: limit
+        text: >-
+          אם שתי המסות היו שוות, גם התאוצות היו שוות. וכשמסה אחת גדולה מאוד, התאוצה שלה זניחה: לכן מתייחסים לשמש
+          כעומדת (לשיעור 6.2 נשאיר את התיקון).
+      - kind: units
+        text: >-
+          $a = F/m$ ביחידות $\text{N/kg} = \text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. שווים בגודלם. ב. התאוצה של כדור הארץ גדולה פי $M_S/M_E \approx 3\cdot10^{5}$.
+
+  - id: W-6.1-02
+    level: basic
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      במאזני פיתול כמו של קוונדיש, כדור עופרת במסה $158\,\text{kg}$ נמצא כך שהמרחק בין מרכזו למרכז כדור עופרת קטן,
+      במסה $0.73\,\text{kg}$, הוא $0.23\,\text{m}$. מה גודל כוח הכבידה בין הכדורים? השוו אותו למשקל של הכדור הקטן,
+      עם $g = 9.8\,\text{m/s}^2$.
+    answer: >-
+      $1.45\cdot10^{-7}\,\text{N}$, כ-$2\cdot10^{-8}$ ממשקל הכדור הקטן.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = 158\,\text{kg}$, $m_2 = 0.73\,\text{kg}$, $r = 0.23\,\text{m}$ בין המרכזים.
+      - kind: law
+        text: >-
+          חוק הכבידה, $F = Gm_1m_2/r^2$. הכדורים אחידים, ולכן לפי משפט הקליפה כל אחד מושך כמו מסה נקודתית במרכזו, ו-$r$
+          הוא המרחק בין המרכזים.
+      - kind: limit
+        text: >-
+          אם מקרבים את הכדורים עד שהם נוגעים, $r$ קטן לסכום הרדיוסים, ולא לאפס: הכוח לא שואף לאינסוף.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m}^2/\text{kg}^2\cdot\text{kg}^2/\text{m}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          $F = 6.67\cdot10^{-11}\cdot158\cdot0.73/0.23^2 = 1.45\cdot10^{-7}\,\text{N}$. המשקל $0.73\cdot9.8 = 7.15\,\text{N}$,
+          והיחס $2.03\cdot10^{-8}$.
+      - kind: result
+        text: >-
+          $1.45\cdot10^{-7}\,\text{N}$, פחות ממיליונית של המשקל: לכן המאזניים צריכים להיות כל כך רגישים.
+
+  - id: W-6.1-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.1-2]
+    prompt: >-
+      שני כוכבי לכת באותה מסה $M$ ובאותו רדיוס $R$: האחד כדור מלא ואחיד, השני קליפה דקה ואחידה, חלולה בפנים. קבעו
+      ונמקו:
+
+      א. האם תאוצת הכבידה במרחק $2R$ מהמרכז שונה בין השניים?
+
+      ב. האם תאוצת הכבידה על פני השטח שונה?
+
+      ג. ובמרחק $R/3$ מהמרכז (בפיר צר בכדור המלא, ובחלל של הקליפה)?
+    answer: >-
+      א. לא. ב. לא (ממש מחוץ לפני השטח). ג. כן: בכדור המלא $GM/(3R^2)$, בקליפה אפס.
+    solution:
+      - kind: law
+        text: >-
+          משפט הקליפה: מבחוץ כל גוף כדורי מושך כמו מסה נקודתית במרכזו; בפנים מושכת רק המסה שבתוך הרדיוס של הנקודה.
+      - kind: reasoning
+        text: >-
+          מבחוץ, $g = GM/r^2$ לשניהם, כי רק $M$ ו-$r$ נכנסים. בפנים, בכדור המלא המסה שבתוך $R/3$ היא $M/27$, ולכן
+          $g = G(M/27)/(R/3)^2 = GM/(3R^2)$; בקליפה אין מסה בתוך $R/3$, ו-$g = 0$.
+      - kind: limit
+        text: >-
+          בכדור המלא, כש-$r \to R$ מבפנים, $g \to GM/R^2$, ערך פני השטח. בקליפה $g$ קופץ על פני השטח מאפס ל-$GM/R^2$.
+      - kind: units
+        text: >-
+          $GM/R^2$ ביחידות $\text{m/s}^2$.
+      - kind: result
+        text: >-
+          מבחוץ אי אפשר להבחין בין שני כוכבי הלכת בעזרת הכבידה; רק מבפנים.
+
+  - id: W-6.1-04
+    level: mid
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      לוויין במסה $500\,\text{kg}$ עובר ממסלול במרחק $R_E + 400\,\text{km}$ ממרכז כדור הארץ למסלול במרחק
+      $4.22\cdot10^{7}\,\text{m}$ מהמרכז. בכמה גדלה האנרגיה הפוטנציאלית הכבידתית שלו? מה הייתה מקבלים מ-$mgh$ עם
+      $g = 9.8\,\text{m/s}^2$? ($G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$,
+      $M_E = 5.97\cdot10^{24}\,\text{kg}$, $R_E = 6.37\cdot10^{6}\,\text{m}$.)
+    answer: >-
+      $\Delta U = 2.47\cdot10^{10}\,\text{J}$; $mgh$ היה נותן $1.74\cdot10^{11}\,\text{J}$, פי $7$ בערך.
+    solution:
+      - kind: given
+        text: >-
+          $m = 500\,\text{kg}$, $r_1 = 6.77\cdot10^{6}\,\text{m}$, $r_2 = 4.22\cdot10^{7}\,\text{m}$.
+      - kind: law
+        text: >-
+          $U(r) = -GM_Em/r$, עם האפס באינסוף.
+      - kind: manipulation
+        text: >-
+          $\Delta U = U(r_2) - U(r_1) = GM_Em\left(\dfrac{1}{r_1} - \dfrac{1}{r_2}\right)$.
+      - kind: limit
+        text: >-
+          כש-$r_2 - r_1 = h \ll r_1$, $\Delta U \approx (GM_E/r_1^2)\,mh$: $mgh$ עם $g$ בגובה המסלול. כאן $h$ גדול פי $5$ מ-$r_1$,
+          והקירוב חסר משמעות. וכש-$r_2 \to \infty$, $\Delta U \to GM_Em/r_1$, חסם עליון.
+      - kind: units
+        text: >-
+          $GM_Em/r$ ביחידות $\text{J}$.
+      - kind: substitution
+        text: >-
+          $U_1 = -2.94\cdot10^{10}\,\text{J}$, $U_2 = -4.72\cdot10^{9}\,\text{J}$, $\Delta U = 2.47\cdot10^{10}\,\text{J}$.
+          $mgh = 500\cdot9.8\cdot(4.22\cdot10^{7} - 6.77\cdot10^{6}) = 1.74\cdot10^{11}\,\text{J}$.
+      - kind: result
+        text: >-
+          $2.47\cdot10^{10}\,\text{J}$. $mgh$ מגזים פי $7$, כי $g$ בדרך קטן פי עשרות.
+
+  - id: W-6.1-05
+    level: mid
+    objectives: [OBJ-6.1-2]
+    prompt: >-
+      מודל: כדור הארץ כדור אחיד ברדיוס $R_E = 6.37\cdot10^{6}\,\text{m}$. לוויין נמצא בגובה $h = 300\,\text{km}$ מעל פני
+      הקרקע. באיזה עומק $d$ מתחת לפני הקרקע תאוצת הכבידה שווה לזו שבגובה הלוויין? השוו לכלל המקורב $d \approx 2h$.
+    answer: >-
+      $d = 5.60\cdot10^{5}\,\text{m}$ (כ-$560\,\text{km}$); הכלל המקורב נותן $600\,\text{km}$.
+    solution:
+      - kind: given
+        text: >-
+          $h = 3.0\cdot10^{5}\,\text{m}$, $R_E$. $g_s = GM_E/R_E^2$ על פני הקרקע.
+      - kind: law
+        text: >-
+          מבחוץ $g = g_s\left(\dfrac{R_E}{R_E + h}\right)^2$. בפנים, בכדור אחיד, $g = g_s\,\dfrac{r}{R_E}$ עם $r = R_E - d$.
+      - kind: manipulation
+        text: >-
+          משווים: $1 - \dfrac{d}{R_E} = \dfrac{1}{(1 + h/R_E)^2}$, ולכן $d = R_E\left[1 - \dfrac{1}{(1 + h/R_E)^2}\right]$.
+      - kind: limit
+        text: >-
+          כש-$h \ll R_E$, $(1 + h/R_E)^{-2} \approx 1 - 2h/R_E$, ו-$d \approx 2h$: מעל פני הקרקע $g$ יורד פי שניים מהר יותר
+          מאשר מתחתם. כש-$h \to \infty$, $d \to R_E$: רק במרכז $g$ אפס כמו באינסוף.
+      - kind: units
+        text: >-
+          $h/R_E$ חסר ממדים; $d$ במטרים.
+      - kind: substitution
+        text: >-
+          $1/(1 + 3.0\cdot10^{5}/6.37\cdot10^{6})^2 = 0.912$, ולכן $d = 6.37\cdot10^{6}\cdot0.0879 = 5.60\cdot10^{5}\,\text{m}$.
+      - kind: result
+        text: >-
+          $5.60\cdot10^{5}\,\text{m}$, כ-$560\,\text{km}$. הכלל $2h = 600\,\text{km}$ טוב לגבהים קטנים בהרבה מ-$R_E$.
+
+  - id: W-6.1-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.1-2, OBJ-6.1-1]
+    prompt: >-
+      גוף קטן במסה $m$ נמצא במרכז של קליפה כדורית דקה ואחידה במסה $M$ וברדיוס $R$. קבעו ונמקו:
+
+      א. כמה עבודה צריך כדי להזיז אותו לאט מהמרכז לנקודה במרחק $0.9R$ מהמרכז?
+
+      ב. כמה עבודה צריך, לכל הפחות, כדי להוציא אותו מהקליפה (דרך פתח קטן) ולהרחיק אותו עד אינסוף?
+    answer: >-
+      א. אפס. ב. $GMm/R$.
+    solution:
+      - kind: law
+        text: >-
+          העבודה המינימלית (מנוחה למנוחה) היא $\Delta U$. משפט הקליפה: בפנים $U = -GMm/R$ קבועה; מבחוץ $U = -GMm/r$.
+      - kind: reasoning
+        text: >-
+          א. $U$ זהה במרכז וב-$0.9R$, ולכן $\Delta U = 0$: בתוך הקליפה אין כוח, ואין נגד מה לעבוד. ב. מ-$U = -GMm/R$ עד
+          $U(\infty) = 0$: $\Delta U = GMm/R$. כל העבודה נעשית מחוץ לקליפה.
+      - kind: limit
+        text: >-
+          אם הפתח קטן, ההשפעה שלו על הכוח זניחה. וכש-$R \to \infty$ (קליפה רחבה מאוד), העבודה ב-ב שואפת לאפס.
+      - kind: units
+        text: >-
+          $GMm/R$ ביחידות $\text{J}$.
+      - kind: result
+        text: >-
+          א. אפס. ב. $GMm/R$, כמו להוציא את הגוף מפני השטח של מסה נקודתית $M$ במרחק $R$.
+
+  - id: W-6.1-07
+    level: mid
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      מי מושך את כדור הארץ חזק יותר, השמש או הירח, ופי כמה? השתמשו ב-$M_S = 1.99\cdot10^{30}\,\text{kg}$,
+      $M_M = 7.35\cdot10^{22}\,\text{kg}$, המרחק לשמש $1.5\cdot10^{11}\,\text{m}$ והמרחק לירח $3.84\cdot10^{8}\,\text{m}$.
+    answer: >-
+      השמש, פי $177$.
+    solution:
+      - kind: given
+        text: >-
+          המסות והמרחקים כנתון. כל הגופים כדוריים, ולכן כל אחד מושך כמו מסה נקודתית במרכזו.
+      - kind: law
+        text: >-
+          $F = GMM_E/r^2$ לכל גוף.
+      - kind: manipulation
+        text: >-
+          ביחס, $G$ ו-$M_E$ מצטמצמים: $\dfrac{F_S}{F_M} = \dfrac{M_S}{M_M}\left(\dfrac{r_M}{r_S}\right)^2$.
+      - kind: limit
+        text: >-
+          אם שני הגופים היו באותו מרחק, היחס היה יחס המסות, $2.71\cdot10^{7}$. המרחק בריבוע מקטין אותו פי כ-$1.5\cdot10^{5}$.
+      - kind: units
+        text: >-
+          היחס חסר ממדים.
+      - kind: substitution
+        text: >-
+          $F_S = 3.52\cdot10^{22}\,\text{N}$, $F_M = 1.98\cdot10^{20}\,\text{N}$, והיחס $177$.
+      - kind: result
+        text: >-
+          השמש מושכת את כדור הארץ חזק פי $177$ מהירח.
+
+  - id: W-6.1-08
+    level: bagrut
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      ארבעה כדורים קטנים, כל אחד במסה $m = 2.0\,\text{kg}$, נמצאים בקדקודים של ריבוע שצלעו $a = 0.40\,\text{m}$.
+
+      א. מה האנרגיה הפוטנציאלית הכבידתית של המערכת (כל הזוגות)?
+
+      ב. כמה עבודה צריך, לכל הפחות, כדי לפזר את הכדורים עד מרחקים אינסופיים זה מזה?
+    answer: >-
+      א. $U = -(4 + \sqrt2)\,Gm^2/a = -3.61\cdot10^{-9}\,\text{J}$. ב. $3.61\cdot10^{-9}\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          ארבע מסות $m$; ארבעה זוגות במרחק $a$ (צלעות) ושני זוגות במרחק $\sqrt2\,a$ (אלכסונים).
+      - kind: law
+        text: >-
+          לכל זוג $U = -Gm_im_j/r_{ij}$, ובסופרפוזיציה מחברים את כל הזוגות, כל זוג פעם אחת.
+      - kind: manipulation
+        text: >-
+          $U = -Gm^2\left(\dfrac{4}{a} + \dfrac{2}{\sqrt2\,a}\right) = -\left(4 + \sqrt2\right)\dfrac{Gm^2}{a}$.
+          העבודה המינימלית לפיזור היא $0 - U$.
+      - kind: limit
+        text: >-
+          כש-$a \to \infty$, $U \to 0$. מספר הזוגות של $N$ גופים הוא $N(N-1)/2$, כאן $6$: מי ששוכח את האלכסונים סופר רק
+          $4$ זוגות ומקבל $(-2.67\cdot10^{-9}\,\text{J})$.
+      - kind: units
+        text: >-
+          $Gm^2/a$ ביחידות $\text{J}$.
+      - kind: substitution
+        text: >-
+          $U = -5.414\cdot6.67\cdot10^{-11}\cdot2.0^2/0.40 = -3.61\cdot10^{-9}\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $(-3.61\cdot10^{-9}\,\text{J})$. ב. $3.61\cdot10^{-9}\,\text{J}$.
+
+  - id: W-6.1-09
+    level: bagrut
+    objectives: [OBJ-6.1-2]
+    prompt: >-
+      בכוכב לכת במסה $M = 6.4\cdot10^{23}\,\text{kg}$ וברדיוס $R = 3.4\cdot10^{6}\,\text{m}$, הצפיפות יורדת עם המרחק מהמרכז
+      לפי $\rho(r) = C/r$.
+
+      א. מצאו את $C$.
+
+      ב. הראו שתאוצת הכבידה **זהה** בכל נקודה בתוך כוכב הלכת, וחשבו אותה.
+
+      ג. מה $U/m$ במרכז, עם האפס באינסוף?
+    answer: >-
+      א. $C = M/(2\pi R^2) = 8.81\cdot10^{9}\,\text{kg/m}^2$. ב. $g = GM/R^2 = 3.69\,\text{m/s}^2$. ג. $(-2GM/R = -2.51\cdot10^{7}\,\text{J/kg})$.
+    solution:
+      - kind: given
+        text: >-
+          $\rho = C/r$ כש-$r < R$; $M$ ו-$R$ כנתון.
+      - kind: law
+        text: >-
+          $M(r) = \int_0^r 4\pi r'^2\rho\,dr'$ ו-$g = GM(r)/r^2$ (משפט הקליפה); $U(r) - U(R) = \int_R^r g\,dr'$ (כוח פנימה בגודל $mg$).
+      - kind: manipulation
+        text: >-
+          $M(r) = 4\pi C\int_0^r r'\,dr' = 2\pi Cr^2$. ב-$r = R$: $C = M/(2\pi R^2)$. לכן $g = G\cdot2\pi Cr^2/r^2 = 2\pi GC = GM/R^2$,
+          לא תלוי ב-$r$. ג: $U(0)/m = -GM/R + \int_R^0 g\,dr' = -GM/R - gR = -2GM/R$.
+      - kind: limit
+        text: >-
+          ב-$r = R$, $g = GM/R^2$, כמו מבחוץ: רציף. הצפיפות אינסופית במרכז, אבל המסה בתוך רדיוס קטן היא $2\pi Cr^2 \to 0$,
+          והכול סופי.
+      - kind: units
+        text: >-
+          $C$ ביחידות $\text{kg/m}^3\cdot\text{m} = \text{kg/m}^2$; $GC$ ביחידות $\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $C = 6.4\cdot10^{23}/(2\pi\cdot(3.4\cdot10^{6})^2) = 8.81\cdot10^{9}\,\text{kg/m}^2$. $g = 6.67\cdot10^{-11}\cdot6.4\cdot10^{23}/(3.4\cdot10^{6})^2 = 3.69\,\text{m/s}^2$.
+          $(-2GM/R = -2.51\cdot10^{7}\,\text{J/kg})$.
+      - kind: result
+        text: >-
+          א. $8.81\cdot10^{9}\,\text{kg/m}^2$. ב. $3.69\,\text{m/s}^2$ בכל נקודה בפנים. ג. $(-2.51\cdot10^{7}\,\text{J/kg})$.
+
+  - id: W-6.1-10
+    level: bagrut
+    objectives: [OBJ-6.1-1]
+    prompt: >-
+      מוט דק ואחיד במסה $M = 4.0\,\text{kg}$ ובאורך $L = 1.2\,\text{m}$. כדור קטן במסה $m = 0.50\,\text{kg}$ נמצא על
+      הקו של המוט, במרחק $d = 0.30\,\text{m}$ מהקצה הקרוב שלו. מצאו ביטוי לכוח הכבידה בין המוט לכדור, וחשבו אותו.
+      השוו לכוח שהיה אילו כל מסת המוט הייתה במרכזו.
+    answer: >-
+      $F = \dfrac{GMm}{d(d + L)} = 2.96\cdot10^{-10}\,\text{N}$; מסה נקודתית במרכז המוט הייתה נותנת $1.65\cdot10^{-10}\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ לאורך המוט, הראשית בכדור; המוט מ-$x = d$ עד $x = d + L$; צפיפות קווית $\lambda = M/L$.
+      - kind: law
+        text: >-
+          חוק הכבידה לכל פיסה $dM = \lambda\,dx$, וסופרפוזיציה: כל הפיסות מושכות באותו כיוון, ולכן מחברים גדלים.
+      - kind: manipulation
+        text: >-
+          $F = \displaystyle\int_d^{d+L}\frac{Gm\lambda\,dx}{x^2} = Gm\lambda\left(\frac1d - \frac{1}{d+L}\right) = \frac{GMm}{d(d+L)}$.
+      - kind: limit
+        text: >-
+          כש-$d \gg L$, $F \to GMm/d^2$: מרחוק המוט נראה כנקודה. כש-$d \to 0$, $F \to \infty$, כי הקצה של המוט נוגע בכדור.
+          ושימו לב: המוט **אינו** מושך כמו מסה נקודתית במרכזו; משפט הקליפה הוא תכונה של כדור, לא של כל גוף.
+      - kind: units
+        text: >-
+          $GMm/d^2$ ביחידות $\text{N}$.
+      - kind: substitution
+        text: >-
+          $F = 6.67\cdot10^{-11}\cdot4.0\cdot0.50/(0.30\cdot1.50) = 2.96\cdot10^{-10}\,\text{N}$. במרכז: $GMm/0.90^2 = 1.65\cdot10^{-10}\,\text{N}$.
+      - kind: result
+        text: >-
+          $2.96\cdot10^{-10}\,\text{N}$, פי $1.80$ מהקירוב של מסה נקודתית במרכז, כי החלק הקרוב של המוט מושך חזק בהרבה.
+
+challenge:
+  - id: W-6.1-c1
+    stars: 2
+    objectives: [OBJ-6.1-1, OBJ-6.1-2]
+    prompt: >-
+      חבל דק ואחיד במסה $m$ ובאורך $R$ מקיף כוכב לכת במסה $M \gg m$ וברדיוס $R$, בלי אוויר. החבל ישר ומכוון לאורך
+      הרדיוס: הקצה הפנימי שלו ממש מעל פני השטח, ב-$r = R$, והקצה החיצוני ב-$r = 2R$. כל החבל מסתובב סביב מרכז כוכב
+      הלכת במהירות זוויתית קבועה $\Omega$, כך שכל פיסה שלו נעה במעגל, וצורתו לא משתנה. תארו את התנועה ממערכת
+      אינרציאלית.
+
+      א. מצאו את $\Omega$ בעזרת $G$, $M$ ו-$R$.
+
+      ב. באיזו נקודה של החבל המתיחות הגדולה ביותר, ומה היא?
+
+      ג. מה זמן הסיבוב של חבל כזה סביב כדור הארץ ($R = R_E$), ובאיזה יחס הוא עומד לזמן המחזור של לוויין במסלול מעגלי
+      צמוד לפני השטח?
+    answer: >-
+      א. $\Omega = \sqrt{GM/(3R^3)}$. ב. ב-$r = 3^{1/3}R = 1.44R$, ושם $T_{\max} = 0.127\,GMm/R^2$. ג. $146\,\text{min}$, פי
+      $\sqrt3$ מהלוויין.
+    solution:
+      - kind: given
+        text: >-
+          צפיפות קווית $\lambda = m/R$; פיסה $dm = \lambda\,dr$ ב-$r$ נעה במעגל ברדיוס $r$ במהירות זוויתית $\Omega$. ציר
+          רדיאלי, חיובי החוצה. בשני הקצוות המתיחות אפס.
+      - kind: law
+        text: >-
+          החוק השני לכל פיסה: הכוח השקול עליה פונה אל המרכז, בגודל $dm\,\Omega^2r$. הכוחות עליה: הכבידה, $GM\,dm/r^2$ פנימה
+          (משפט הקליפה), והמתיחות משני צדיה. הזניחו את הכבידה של החבל על עצמו ($m \ll M$).
+      - kind: manipulation
+        text: >-
+          הפיסה בין $r$ ל-$r + dr$: $T(r + dr)$ מושכת החוצה ו-$T(r)$ פנימה. לכן $\dfrac{GM\lambda\,dr}{r^2} + T(r) - T(r + dr) = \lambda\,dr\,\Omega^2r$,
+          כלומר $\dfrac{dT}{dr} = \lambda\left(\dfrac{GM}{r^2} - \Omega^2r\right)$. מחברים מ-$R$ עד $2R$, עם $T(R) = T(2R) = 0$:
+          $GM\left(\dfrac1R - \dfrac{1}{2R}\right) = \Omega^2\dfrac{(2R)^2 - R^2}{2}$, ולכן $\Omega^2 = \dfrac{GM}{3R^3}$.
+          המתיחות מקסימלית כש-$dT/dr = 0$: $GM/r^2 = \Omega^2r$, $r^3 = 3R^3$. מציבים ב-$T(r) = \lambda\left[GM\left(\dfrac1R - \dfrac1r\right) - \dfrac{\Omega^2(r^2 - R^2)}{2}\right]$.
+      - kind: limit
+        text: >-
+          בנקודה $r = 3^{1/3}R$ המהירות הזוויתית של החבל שווה לזו של מסלול מעגלי חופשי באותו רדיוס: שם החבל לא צריך
+          מתיחות נטו, וזה המקום שבו המתיחות מפסיקה לגדול. מתחת לה החלק הפנימי מסתובב לאט מדי בשביל מסלול חופשי ו"נופל",
+          ומעליה החלק החיצוני מהיר מדי ו"בורח": החבל מחזיק את שניהם. וחבל קצר מאוד, מ-$R$ עד $R + \ell$ עם $\ell \to 0$,
+          היה מסתובב כמו לוויין צמוד, $\Omega^2 \to GM/R^3$.
+      - kind: units
+        text: >-
+          $GM/R^3$ ביחידות $\text{s}^{-2}$; $\lambda GM/R$ ביחידות $\text{kg/m}\cdot\text{m}^3/\text{s}^2/\text{m} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $T_{\max} = \lambda\dfrac{GM}{R}\left[\left(1 - 3^{-1/3}\right) - \dfrac{3^{2/3} - 1}{6}\right] = 0.127\,\dfrac{GMm}{R^2}$.
+          לכדור הארץ: $\Omega = \sqrt{3.98\cdot10^{14}/(3\cdot(6.37\cdot10^{6})^3)} = 7.17\cdot10^{-4}\,\text{rad/s}$, וזמן הסיבוב
+          $2\pi/\Omega = 8.77\cdot10^{3}\,\text{s} = 146\,\text{min}$. ללוויין צמוד $\Omega_0^2 = GM/R^3$, ולכן היחס $\sqrt3$.
+      - kind: result
+        text: >-
+          א. $\Omega = \sqrt{GM/(3R^3)}$. ב. ב-$1.44R$, $T_{\max} = 0.127\,GMm/R^2$. ג. $146\,\text{min}$, פי $\sqrt3$ מלוויין צמוד.
+    source:
+      name: MIT 8.012 Physics I (Classical Mechanics), Fall 2006 Final Exam, from the Fall 2008 OCW course
+      year: 2006
+      problem: Problem 8 (Orbiting Rope)
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/6472a8a7677008d74cecfee8c4ec4f17_2006_final_sol.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.1-c2
+    stars: 2
+    objectives: [OBJ-6.1-2, OBJ-6.1-1]
+    prompt: >-
+      בכוכב לכת אחיד במסה $M$ וברדיוס $R$ (לפני החפירה) חופרים חלל כדורי ברדיוס $R/2$, שנוגע מבפנים בפני השטח: המרכז
+      שלו באמצע הדרך בין מרכז כוכב הלכת לפני השטח. ציר $x$ ממרכז כוכב הלכת $O$ אל מרכז החלל, וציר $y$ ניצב לו.
+
+      א. מה גודל תאוצת הכבידה בנקודה $P$ על פני השטח שבה $y = R$ (מעל $O$, על הציר $y$), ובאיזו זווית מהאנך היא פונה?
+
+      ב. הראו שבתוך החלל תאוצת הכבידה **אחידה**: אותו גודל ואותו כיוון בכל נקודה. מה היא?
+
+      ג. מה תאוצת הכבידה במרכז $O$?
+    answer: >-
+      א. $0.912\,GM/R^2$, $2.81^\circ$ מהאנך, מוטה הרחק מהחלל. ב. $GM/(2R^2)$ לכיוון $(-x)$, בכל נקודה בחלל. ג. $GM/(2R^2)$ לכיוון $(-x)$.
+    solution:
+      - kind: given
+        text: >-
+          צפיפות $\rho = M/\left(\tfrac43\pi R^3\right)$; החלל ברדיוס $R/2$, מרכזו ב-$\vec d = (R/2)\,\hat x$; מסת החומר שהוצא $M/8$.
+      - kind: law
+        text: >-
+          סופרפוזיציה: כוכב לכת עם חלל = כוכב מלא + כדור קטן ב"מסה שלילית" $(-M/8)$ במקום החלל. לכל אחד משפט הקליפה; בפנים
+          כדור אחיד $\vec g = -\tfrac43\pi G\rho\,\vec r$ (מהמרכז שלו).
+      - kind: manipulation
+        text: >-
+          א. הכדור המלא: $GM/R^2$ לכיוון $(-y)$. הכדור השלילי: מרכזו במרחק $\sqrt5R/2$ מ-$P$, והוא "דוחה" בגודל
+          $\dfrac{G(M/8)}{5R^2/4} = \dfrac{GM}{10R^2}$, בכיוון מהחלל אל $P$: $\left(-\tfrac{1}{\sqrt5}, \tfrac{2}{\sqrt5}\right)$.
+          ב. בנקודה $\vec r$ בתוך החלל: $\vec g = -\tfrac43\pi G\rho\,\vec r + \tfrac43\pi G\rho\left(\vec r - \vec d\right) = -\tfrac43\pi G\rho\,\vec d$,
+          ועם $\tfrac43\pi\rho = M/R^3$ ו-$|\vec d| = R/2$: $|\vec g| = \dfrac{GM}{R^3}\cdot\dfrac{R}{2} = \dfrac{GM}{2R^2}$.
+          ג. ב-$O$ הכדור המלא נותן אפס; הכדור השלילי, במרחק $R/2$, נותן $\dfrac{G(M/8)}{(R/2)^2} = \dfrac{GM}{2R^2}$, הרחק מהחלל.
+      - kind: limit
+        text: >-
+          חלל קטן מאוד: התיקון ב-א שואף לאפס ו-$g \to GM/R^2$. ב-ב, כש-$d \to 0$ (חלל במרכז), $\vec g \to 0$ בכל החלל: זו
+          קליפה עבה, ומשפט הקליפה נותן אפס בפנים. וב-ג התוצאה זהה ל-ב, כי $O$ נמצא על דופן החלל.
+      - kind: units
+        text: >-
+          $G\rho d$ ביחידות $\text{N}\cdot\text{m}^2/\text{kg}^2\cdot\text{kg/m}^3\cdot\text{m} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          א. רכיבים, ביחידות $GM/R^2$: $g_x = -\tfrac{1}{10\sqrt5} = -0.0447$, $g_y = -1 + \tfrac{1}{5\sqrt5} = -0.911$. הגודל $0.912$,
+          והזווית $\arctan(0.0447/0.911) = 2.81^\circ$. (בנקודה שעל פני השטח מול החלל, $(-R, 0)$, יוצא $1 - \tfrac{1/8}{(3/2)^2} = 0.944$.)
+      - kind: result
+        text: >-
+          א. $0.912\,GM/R^2$, מוטה $2.81^\circ$ מהאנך הרחק מהחלל. ב. אחידה, $GM/(2R^2)$ לכיוון $(-x)$. ג. $GM/(2R^2)$ לכיוון $(-x)$.
+    source:
+      name: AAPT F=ma Exam
+      year: 2021
+      problem: Question 19
+      url: https://www.aapt.org/physicsteam/upload/F-ma-2021-Solutions.pdf
+      verified: '2026-11-11'
+      adapted: true

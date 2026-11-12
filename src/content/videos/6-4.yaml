@@ -1,0 +1,28 @@
+# Videos of lesson 6.4. Both ids were checked against YouTube oEmbed on the `verified` date (HTTP 200, embeddable;
+# title and channel exactly as returned). Length and caption tracks come from each watch page's player data
+# (lengthSeconds, captionTracks), read in the same session; `why` claims only what the title and description support.
+#   zWDfJSNS2aA: 500 s; description: "חוק ראשון של קפלר. איך לצייר אליפסה. מה זה אליפסה." — video 6 of the
+#     Schwartz/Reisman teacher-training series on gravitation, taught by Eli Shalev. No caption tracks.
+#   wLYZsO6lk0E: 1237 s; description: Newton's derivation of the Earth's orbit, "step by step". Caption tracks include
+#     en and iw (Hebrew, listed as `he` here).
+
+- id: v-6-4-kepler-first-law
+  youtubeId: zWDfJSNS2aA
+  title: 'חוק ראשון של קפלר'
+  channel: 'מרכז שוורץ/רייסמן הדרכות למורי פיזיקה'
+  lang: he
+  start: 0
+  minutes: 8
+  why: 'סרטון בעברית על החוק הראשון של קפלר: מה זו אליפסה ואיך מציירים אותה בחוט ושתי נקודות קבועות. הנקודות הן המוקדים, ואורך החוט הוא 2a; בשיעור גזרנו את החוק מהחוק השני של ניוטון.'
+  verified: '2026-11-11'
+
+- id: v-6-4-elliot-orbit
+  youtubeId: wLYZsO6lk0E
+  title: "Deriving the Orbit of Our Home Planet from Newton's Law of Gravity: Physics Mini Lesson"
+  channel: Physics with Elliot
+  lang: en
+  captions: [en, he]
+  start: 0
+  minutes: 21
+  why: 'לפי התיאור, גזירה צעד אחר צעד של המסלול של כדור הארץ מחוק הכבידה של ניוטון, אותה דרך שעשינו בשיעור. השוו את הסימונים שלו לשלנו, ובדקו שהוא מגיע ל-u″ + u = μk/L².'
+  verified: '2026-11-11'

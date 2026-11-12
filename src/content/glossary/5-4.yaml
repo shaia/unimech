@@ -28,7 +28,45 @@
 - id: c5-resonance-width
   term: רוחב התהודה
   en: resonance width
-  symbol: Δω
+  symbol: '\Delta\omega'
   unit: rad/s
   definition: הרוחב המלא של עקומת A²(ω), או של ההספק הממוצע, בגובה חצי מהשיא. בריסון חלש Δω ≈ γ = ω₀/Q.
+  lesson: '5.4'
+
+- id: c5-homogeneous-equation
+  term: משוואה הומוגנית
+  en: homogeneous equation
+  definition: משוואת התנועה בלי הכוח המאלץ, ẍ + γẋ + ω₀²x = 0. הפתרונות שלה הם התנועות החופשיות המרוסנות של שיעור 5.3, וכל פתרון של המשוואה המאולצת הוא פתרון אחד שלה ועוד פתרון של ההומוגנית.
+  lesson: '5.4'
+
+- id: c5-argument
+  term: ארגומנט
+  en: argument (of a complex number)
+  symbol: '\arg z'
+  unit: rad
+  definition: הזווית של מספר מרוכב z במישור המרוכב, נמדדת מהציר הממשי החיובי נגד כיוון השעון. z = |z|e^(i arg z). בכפל מספרים מרוכבים הארגומנטים מתחברים, ובחילוק הם מתחסרים.
+  lesson: '5.4'
+
+- id: c5-complex-amplitude
+  term: אמפליטודה מרוכבת
+  en: complex amplitude
+  symbol: '\tilde X'
+  unit: m
+  definition: המספר המרוכב הקבוע X̃ בפתרון z = X̃e^(iωt). הגודל שלו הוא האמפליטודה, |X̃| = A, והארגומנט שלו מינוס הפיגור, arg X̃ = −δ, ולכן x = Re z = A cos(ωt − δ). במתנד המאולץ X̃ = (F₀/m)/(ω₀² − ω² + iγω).
+  lesson: '5.4'
+
+- id: c5-phase-lag
+  term: פיגור
+  en: phase lag
+  symbol: '\delta'
+  unit: rad
+  definition: הזווית δ במצב היציב x = A cos(ωt − δ) של מתנד שמאולץ בכוח F₀ cos ωt, בין 0 ל-π. ההעתק מגיע לשיא שלו זמן δ/ω אחרי הכוח. tan δ = γω/(ω₀² − ω²); δ = 0 בתדירות נמוכה, π/2 בתדירות העצמית, ו-π בתדירות גבוהה.
+  lesson: '5.4'
+
+- id: c5-average-power
+  term: הספק ממוצע
+  en: average power
+  symbol: '\bar P'
+  unit: W
+  definition: ההספק של הכוח המאלץ, F·v, בממוצע על מחזור שלם. במצב היציב P̄ = ½F₀Aω sin δ = ½bω²A², כלומר בדיוק ההספק שהריסון מפזר. הוא מרבי בתדירות העצמית, F₀²/(2b), ויורד לחצי ב-|ω₀² − ω²| = γω, שתי תדירויות שהמרחק ביניהן γ בדיוק.
   lesson: '5.4'

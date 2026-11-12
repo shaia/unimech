@@ -1,39 +1,39 @@
 # Misconceptions first detected in lesson 6.6. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 6.6
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it, an Explain block of
+# lesson 6.6 (its `anchor`).
 
 - id: MC-6-escape-vertical
   title: כדי לברוח צריך לירות אנכית
   belief: מהירות המילוט היא הקטנה ביותר בירי אנכי, ובירי משופע צריך יותר.
   truth: תנאי הבריחה הוא E ≥ 0, והאנרגיה תלויה רק בגודל המהירות. כל גוף במהירות המילוט בורח, באיזה כיוון שנורה, כל עוד המסלול לא פוגע בכוכב.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: מהירות המילוט מתוך שימור אנרגיה' }
+  remedy: { lesson: '6.6', anchor: escape-speed, label: 'שיעור 6.6: מהירות המילוט מתוך שימור אנרגיה' }
 
 - id: MC-6-escape-depends-on-mass
   title: גוף כבד צריך מהירות מילוט גדולה יותר
   belief: גוף כבד נמשך חזק יותר, ולכן צריך מהירות גדולה יותר כדי לברוח מכדור הארץ.
   truth: האנרגיה הקינטית והאנרגיה הפוטנציאלית שתיהן פרופורציוניות למסה, והיא מצטמצמת. מהירות המילוט, √(2GM/R), זהה לכל גוף.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: מהירות המילוט מתוך שימור אנרגיה' }
+  remedy: { lesson: '6.6', anchor: escape-speed, label: 'שיעור 6.6: מהירות המילוט מתוך שימור אנרגיה' }
 
 - id: MC-6-speed-from-circular-formula
   title: המהירות בכל מסלול היא √(GM/r)
   belief: את המהירות של גוף במרחק r מכוכב מחשבים תמיד לפי v = √(GM/r).
   truth: √(GM/r) היא המהירות של מסלול מעגלי בלבד. באליפסה המהירות תלויה גם בחצי הציר הראשי, v² = GM(2/r − 1/a). בנקודת הקרבה היא גדולה ממנה, ובנקודת הריחוק קטנה ממנה.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: משוואת vis-viva' }
+  remedy: { lesson: '6.6', anchor: vis-viva, label: 'שיעור 6.6: משוואת vis-viva' }
 
 - id: MC-6-delta-v-from-rest
   title: לברוח ממסלול צריך את כל מהירות המילוט
   belief: חללית במסלול צריכה לקבל ממנוע את כל מהירות המילוט כדי לברוח.
   truth: החללית כבר נעה במהירות המעגלית. בדחיפה בכיוון התנועה חסר רק ההפרש, (√2 − 1)v_c, כ-41% מהמהירות שכבר יש לה.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: בריחה ממסלול מעגלי' }
+  remedy: { lesson: '6.6', anchor: escape-from-circle, label: 'שיעור 6.6: בריחה ממסלול מעגלי' }
 
 - id: MC-6-outer-orbit-slower-so-brake
   title: כדי לעלות למסלול גבוה צריך בסוף להאט
   belief: המהירות המעגלית במסלול הגבוה קטנה, ולכן בסוף מסלול הוהמן צריך להאט כדי להיכנס אליו.
   truth: בעלייה החללית מאטה בלי מנוע, ובנקודת הריחוק היא איטית מהמהירות המעגלית שם. גם הדחיפה השנייה מאיצה, ושתי הדחיפות מוסיפות אנרגיה.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: שתי הדחיפות של מסלול הוהמן' }
+  remedy: { lesson: '6.6', anchor: two-pushes, label: 'שיעור 6.6: שתי הדחיפות של מסלול הוהמן' }
 
 - id: MC-6-dv-is-speed-difference
   title: שינוי המהירות הכולל הוא ההפרש בין המהירויות המעגליות
   belief: במעבר בין שני מסלולים מעגליים, שינוי המהירות הכולל הוא ההפרש בין שתי המהירויות המעגליות.
   truth: במסלול הוהמן שתי הדחיפות מאיצות, ובין שתיהן החללית מאטה בעלייה בלי מנוע. שינוי המהירות הכולל הוא הסכום של שתי הדחיפות, Δv₁ + Δv₂, ולא v₁ − v₂.
-  remedy: { lesson: '6.6', label: 'שיעור 6.6: חישוב שינויי המהירות במסלול הוהמן' }
+  remedy: { lesson: '6.6', anchor: total-dv, label: 'שיעור 6.6: המחיר של מסלול הוהמן הוא סכום, לא הפרש' }

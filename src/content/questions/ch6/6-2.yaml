@@ -8,11 +8,17 @@
 #   2.0 kg + 6.0 kg at 0.50 m: F = 3.20e-9 N, a_rel = G(m₁+m₂)/d² = 2.13e-9 m/s² (one body fixed: 1.60e-9);
 #   asteroids 1e12 + 3e12 kg from 10 km to 1 km: v_rel = √(2G(m₁+m₂)(1/d − 1/d₀)) = 0.693 m/s
 #     (heavy one fixed 0.600, from infinity 0.730, the lighter one's speed 0.520);
-#   Earth–Moon CM: D·M_M/(M_E+M_M) = 4670 km from the Earth's centre (midpoint 192000, from the Moon 379000);
+#   Pluto–Charon CM (NASA Pluto fact sheet, opened 2026-11-11: 1.303e22 kg, Charon 1.586e21 kg, 19,596 km,
+#     radius 1188 km): D·m_C/(m_P+m_C) = 2140 km from Pluto's centre, outside Pluto (midpoint 9800, from Charon
+#     17500). It replaced an Earth–Moon question (4670 km), because the lesson computes the Earth–Moon number.
+#   Re-verified for lesson 6.2 by .scratch/ch6/6-2/bank.ts: every key and commonWrong below matched.
 #   Sun–Jupiter (m_J = 1.90e27 kg, a = 7.78e11 m, T = 11.9 yr): r_S = 7.42e8 m, v_S = 12.4 m/s (Jupiter 1.30e4,
 #     without 2π 1.98);
-#   binary a = 2.0 AU, T = 2.0 yr: M = 4π²a³/(GT²) = 4.01e30 kg, heavier (2:1) = 2.67e30 kg (lighter 1.34e30,
-#     with the heavier star's own radius a/3 instead of a: 9.90e28).
+#   Q-6.2-binary-masses (rewritten in review, 2026-11-11, so that a is not given and the rung climbs above the lesson's
+#     two printed formulas; .scratch/review/ch6/r62.ts): v_A = 12.0, v_B = 24.0 km/s, T = 1.50 yr: v = 36.0 km/s,
+#     a = vT/2π = 2.71e11 m, M = 4π²a³/(GT²) = 5.27e30 kg, heavier (2:1) = 3.51e30 kg (lighter 1.76e30; a from v_B
+#     alone → 1.04e30; v = v_B − v_A → 1.30e29).
+#   Independent review recompute (.scratch/review/ch6/r62.ts, 2026-11-11): every other key and commonWrong confirmed.
 
 chapter: 6
 questions:
@@ -63,8 +69,8 @@ questions:
         feedback: 'זו המסה הכוללת, $M = m_1 + m_2 = 4M_S$, שמופיעה בתנועת מרכז המסה. בתנועה היחסית מופיעה $\mu = m_1m_2/M$.'
       - value: 1.99e30
         feedback: >-
-          זו מסת הכוכב הקל. $\mu \approx m_2$ רק כש-$m_1 \gg m_2$, כמו שמש וכוכב לכת. כאן הכוכב הכבד רק פי 3 כבד יותר,
-          והוא נע בעצמו.
+          זו מסת הכוכב הקל. המסה המצומצמת שווה בקירוב למסה הקלה רק כשהכבדה גדולה ממנה בהרבה, כמו שמש וכוכב לכת. כאן
+          הכוכב הכבד רק פי 3 כבד יותר, והוא נע בעצמו.
         misconception: MC-6-heavy-body-fixed
     hints:
       - '$\mu = \dfrac{m_1m_2}{m_1 + m_2}$. כתבו את שתי המסות כמכפלות של $M_S$.'
@@ -76,7 +82,7 @@ questions:
     level: mid
     prompt: >-
       שני גופים, $m_1$ במקום $\vec r_1$ ו-$m_2$ במקום $\vec r_2$, מושכים רק זה את זה. המקום היחסי הוא
-      $\vec r = \vec r_1 - \vec r_2$, $\hat r$ הוא וקטור היחידה בכיוונו, ו-$\mu = \dfrac{m_1m_2}{m_1 + m_2}$. איזו
+      $\vec r = \vec r_1 - \vec r_2$, $r = |\vec r|$ המרחק ביניהם, $\hat r$ הוא וקטור היחידה בכיוון $\vec r$, ו-$\mu = \dfrac{m_1m_2}{m_1 + m_2}$. איזו
       משוואה מקיים $\vec r$?
     choices:
       - text: '$\mu\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$'
@@ -155,7 +161,7 @@ questions:
     correctFeedback: >-
       נכון. במערכת מרכז המסה התנע אפס, והאנרגיה הקינטית כולה היא $\tfrac12\mu v^2$, כאשר $v$ המהירות היחסית. שימור
       אנרגיה:
-      $$\tfrac12\mu v^2 = Gm_1m_2\left(\frac{1}{d} - \frac{1}{d_0}\right)\ \Rightarrow\ v = \sqrt{2G(m_1 + m_2)\left(\frac{1}{d} - \frac{1}{d_0}\right)} = 0.693\,\text{m/s}$$
+      $$\begin{aligned} \tfrac12\mu v^2 &= Gm_1m_2\left(\frac{1}{d} - \frac{1}{d_0}\right) \\ v &= \sqrt{2G(m_1 + m_2)\left(\frac{1}{d} - \frac{1}{d_0}\right)} \\ &= 0.693\,\text{m/s} \end{aligned}$$
       **בדיקת גבולות:** כש-$m_1 \to 0$ מתקבלת המהירות של גוף קטן שנופל על גוף קבוע, $\sqrt{2Gm_2(1/d - 1/d_0)}$. וכש-$d \to d_0$, $v \to 0$.
     wrongFeedback: >-
       עבדו במערכת מרכז המסה, ושם האנרגיה הקינטית היא $\tfrac12\mu v^2$. השוו אותה לירידה באנרגיה הפוטנציאלית
@@ -177,28 +183,29 @@ questions:
       - 'האנרגיה הפוטנציאלית של הזוג היא $-Gm_1m_2/r$.'
 
   # ---------------------------------------------------------------- OBJ-6.2-2 both bodies orbit the common CM
-  - id: Q-6.2-earth-moon-cm
+  - id: Q-6.2-pluto-charon-cm
     type: numeric
     objectives: [OBJ-6.2-2]
     level: basic
     prompt: >-
-      מסת כדור הארץ $M_E = 5.97\cdot10^{24}\,\text{kg}$, מסת הירח $M_M = 7.35\cdot10^{22}\,\text{kg}$, והמרחק בין המרכזים
-      $D = 3.84\cdot10^{8}\,\text{m}$. כמה רחוק ממרכז כדור הארץ נמצא מרכז המסה של שניהם? ענו בקילומטרים.
-    answer: 4670
+      מסת כוכב הלכת הננסי פלוטו היא $m_P = 1.30\cdot10^{22}\,\text{kg}$, ומסת הירח שלו, כארון, היא
+      $m_C = 1.59\cdot10^{21}\,\text{kg}$. המרחק בין המרכזים שלהם $D = 1.96\cdot10^{7}\,\text{m}$. כמה רחוק ממרכז פלוטו
+      נמצא מרכז המסה של שניהם? ענו בקילומטרים.
+    answer: 2140
     unit: km
     correctFeedback: >-
-      נכון. $x = D\,\dfrac{M_M}{M_E + M_M} = 3.84\cdot10^{8}\cdot\dfrac{7.35\cdot10^{22}}{6.04\cdot10^{24}} = 4.67\cdot10^{6}\,\text{m}$,
-      כ-$4670\,\text{km}$. זה פחות מרדיוס כדור הארץ, $6370\,\text{km}$: מרכז המסה נמצא בתוך כדור הארץ, וכדור הארץ
-      "מתנדנד" סביבו פעם בחודש.
-    wrongFeedback: 'מרכז המסה מחלק את המרחק ביחס הפוך למסות. מדדו ממרכז כדור הארץ: $x = D\,M_M/(M_E + M_M)$.'
+      נכון. $x = D\,\dfrac{m_C}{m_P + m_C} = 1.96\cdot10^{7}\cdot\dfrac{1.59\cdot10^{21}}{1.46\cdot10^{22}} = 2.14\cdot10^{6}\,\text{m}$,
+      כ-$2140\,\text{km}$. הרדיוס של פלוטו הוא כ-$1190\,\text{km}$, ולכן מרכז המסה נמצא **מחוץ** לפלוטו, בחלל שבין
+      שני הגופים: פלוטו עצמו מקיף נקודה ריקה.
+    wrongFeedback: 'מרכז המסה מחלק את המרחק ביחס הפוך למסות. מדדו ממרכז פלוטו: $x = D\,m_C/(m_P + m_C)$.'
     commonWrong:
-      - value: 192000
-        feedback: 'זה אמצע הדרך. מרכז המסה קרוב לגוף הכבד, ויחס המרחקים אליו הפוך ליחס המסות, כאן כ-81.'
+      - value: 9800
+        feedback: 'זה אמצע הדרך. מרכז המסה קרוב לגוף הכבד, ויחס המרחקים אליו הפוך ליחס המסות, כאן כ-8.2.'
         misconception: MC-6-cm-midpoint
-      - value: 379000
-        feedback: 'זה המרחק של מרכז המסה ממרכז הירח. השאלה שואלת על המרחק ממרכז כדור הארץ.'
+      - value: 17500
+        feedback: 'זה המרחק של מרכז המסה ממרכז כארון. השאלה שואלת על המרחק ממרכז פלוטו.'
     hints:
-      - 'שימו את הראשית במרכז כדור הארץ: $x_{cm} = \dfrac{M_E\cdot0 + M_M D}{M_E + M_M}$.'
+      - 'שימו את הראשית במרכז פלוטו: $x_{cm} = \dfrac{m_P\cdot0 + m_C D}{m_P + m_C}$.'
 
   - id: Q-6.2-binary-statements
     type: multi
@@ -262,30 +269,37 @@ questions:
     objectives: [OBJ-6.2-2]
     level: bagrut
     prompt: >-
-      אסטרונומים מודדים כוכב כפול: שני הכוכבים נעים במסלולים מעגליים סביב מרכז המסה המשותף, המרחק ביניהם קבוע,
-      $a = 2.0\,\text{AU}$ (כאשר $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$), וזמן המחזור $T = 2.0$ שנים (שנה היא
-      $3.156\cdot10^{7}\,\text{s}$). המהירות של כוכב אחד חצי מהמהירות של השני. מה מסת הכוכב הכבד? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
-    answer: 2.67e30
+      אסטרונומים מודדים כוכב כפול שאת שני כוכביו אי אפשר להפריד בטלסקופ, ולכן המרחק ביניהם לא נמדד. מישור המסלול נראה
+      מהצד, ושני הכוכבים נעים במסלולים מעגליים סביב מרכז המסה המשותף. אפקט דופלר מראה שכוכב A נע סביב מרכז המסה במהירות
+      $12.0\,\text{km/s}$ וכוכב B במהירות $24.0\,\text{km/s}$, וזמן המחזור $1.50$ שנים (שנה היא $3.156\cdot10^{7}\,\text{s}$).
+      מה מסת הכוכב הכבד? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    answer: 3.51e30
     unit: kg
     correctFeedback: >-
-      נכון. בתנועה היחסית, $\mu\omega^2a = \dfrac{Gm_1m_2}{a^2}$, ואחרי חלוקה ב-$\mu$:
-      $$\omega^2a^3 = G(m_1 + m_2)\ \Rightarrow\ m_1 + m_2 = \frac{4\pi^2a^3}{GT^2} = 4.01\cdot10^{30}\,\text{kg}$$
-      יחס המהירויות הוא יחס הרדיוסים, והוא הפוך ליחס המסות: הכוכב האיטי כבד פי 2. לכן הכבד הוא $\tfrac23$ מהסכום,
-      $2.67\cdot10^{30}\,\text{kg}$, כ-$1.3$ מסות שמש. **בדיקת גבולות:** כש-$m_2 \to 0$ מתקבל $T^2 = 4\pi^2a^3/(Gm_1)$, החוק
-      של כוכב לכת קל סביב כוכב.
+      נכון. במערכת מרכז המסה הכוכבים תמיד משני צדי מרכז המסה, ולכן המהירויות שלהם הפוכות, והמהירות היחסית היא הסכום:
+      $v = v_A + v_B = 36.0\,\text{km/s}$. המרחק ביניהם קבוע, ו-$\vec r$ מקיף מעגל בזמן $T$: $a = vT/(2\pi) = 2.71\cdot10^{11}\,\text{m}$.
+      מהתנועה היחסית, $\mu\omega^2a = \dfrac{Gm_Am_B}{a^2}$, ואחרי חלוקה ב-$\mu$:
+      $$\begin{aligned} m_A + m_B &= \frac{4\pi^2a^3}{GT^2} \\ &= 5.27\cdot10^{30}\,\text{kg} \end{aligned}$$
+      התנעים שווים בגודלם, $m_Av_A = m_Bv_B$, ולכן הכוכב האיטי, A, כבד פי 2, ומסתו $\tfrac23$ מהסכום: $3.51\cdot10^{30}\,\text{kg}$,
+      כ-$1.8$ מסות שמש. **בדיקת גבולות:** כש-$v_B \to 0$ גם $m_A \to 0$: כוכב שבן זוגו לא זז הוא קל לעומתו.
     wrongFeedback: >-
-      כתבו את משוואת התנועה היחסית למסלול מעגלי ברדיוס $a$. המסה המצומצמת מצטמצמת ומשאירה את הסכום $m_1 + m_2$. אחר כך
-      חלקו את הסכום לפי יחס המהירויות.
+      שלושה צעדים: המהירות היחסית מהמהירויות, המרחק $a$ מהמהירות היחסית ומזמן המחזור, ואז $m_A + m_B$ מחוק זמן המחזור.
+      בסוף חלקו את הסכום לפי יחס המהירויות.
     commonWrong:
-      - value: 4.01e30
+      - value: 5.27e30
         feedback: 'זה סכום המסות, $4\pi^2a^3/(GT^2)$. נשאר לחלק אותו: הכוכב האיטי כבד פי 2, ולכן מסתו $\tfrac23$ מהסכום.'
-      - value: 1.34e30
+      - value: 1.76e30
         feedback: >-
           זה הכוכב הקל: $\tfrac13$ מהסכום. הכוכב הכבד הוא האיטי, כי הוא קרוב יותר למרכז המסה ונע במעגל הקטן.
-      - value: 9.9e28
+      - value: 1.04e30
         feedback: >-
-          הצבתם את רדיוס המסלול של הכוכב הכבד, $a/3$, במקום המרחק בין הכוכבים. בכוח הכבידה ובתנועה היחסית מופיע המרחק
-          ביניהם, $a$.
+          חישבתם את המרחק מהמהירות של כוכב B בלבד, $v_BT/(2\pi)$, וזה הרדיוס של המסלול שלו סביב מרכז המסה. בחוק זמן המחזור
+          מופיע המרחק בין הכוכבים, והוא נקבע מהמהירות היחסית, $v_A + v_B$.
+        misconception: MC-6-heavy-body-fixed
+      - value: 1.3e29
+        feedback: >-
+          לקחתם את המהירות היחסית כהפרש, $v_B - v_A$. אבל הכוכבים נעים תמיד בכיוונים הפוכים, משני צדי מרכז המסה, ולכן
+          המהירות היחסית היא הסכום.
     hints:
-      - 'משוואת התנועה היחסית: $\mu\ddot{\vec r} = -\dfrac{Gm_1m_2}{r^2}\hat r$, עם $r = a$ ו-$|\ddot{\vec r}| = \omega^2a$.'
-      - 'איזה כוכב קרוב יותר למרכז המסה, האיטי או המהיר?'
+      - 'הכוכבים תמיד משני צדי מרכז המסה. מה המהירות של B ביחס ל-A, ובאיזה מעגל נע הווקטור $\vec r$ ביניהם?'
+      - 'משוואת התנועה היחסית: $\mu\ddot{\vec r} = -\dfrac{Gm_Am_B}{r^2}\hat r$, עם $r = a$ ו-$|\ddot{\vec r}| = \omega^2a$.'

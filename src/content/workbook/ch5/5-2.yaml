@@ -1,0 +1,457 @@
+# Workbook, lesson 5.2 (energy of the oscillator, the harmonic approximation). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch5/5-2/wb.ts with G = 9.8 and src/physics/smallosc.ts:
+#   W02 m = 2.0 kg, k = 800 N/m, E = 1.0 J: A = 5.00 cm, ω = 20.0 rad/s, v_max = 1.00 m/s, a_max = 20.0 m/s²;
+#   W03 u = 0.2: √1.2 = 1.0954 (2nd order 1.0950, 1st 1.100); 1/1.2 = 0.8333 (0.8400); e^(−0.2) = 0.8187 (0.8200);
+#   W04 v = 0.40 m/s at 3.0 cm, 0.30 m/s at 4.0 cm: ω = 10.0 rad/s, A = 5.00 cm, v_max = 0.500 m/s;
+#   W05 U = U₀(x/a + a/x), U₀ = 0.30 J, a = 0.20 m, m = 0.15 kg: minimum at a, U″ = 2U₀/a² = 15.0 N/m, ω = 10.0 rad/s,
+#       T = 0.628 s;
+#   W07 Morse D = 4.0·10⁻¹⁹ J, w = 5.0·10⁻¹¹ m, μ = 1.6·10⁻²⁷ kg: k = 320 N/m, ω = 4.47·10¹⁴ rad/s, f = 7.12·10¹³ Hz;
+#   W08 bowl R = 0.40 m: ω = 4.95 rad/s, T₀ = 1.27 s; from 25°: v exact 0.857 m/s, harmonic 0.864 m/s (+0.80 %),
+#       T exact 1.285 s (+1.2 %);
+#   W09 U = −U₀/cosh²(x/a), U₀ = 0.50 J, a = 0.10 m, m = 0.40 kg: ω₀ = 15.8 rad/s, T₀ = 0.397 s; the exact
+#       T = T₀/√(−E/U₀) checked by the energy integral at E = −0.45, −0.25, −0.10 J; +10 % at E = −0.413 J
+#       (0.0868 J above the bottom); escape from the bottom 1.58 m/s;
+#   c1 (MIT 8.03SC 2016, PS1 1.4) E₀ = 5.0·10⁻³ J, a = 0.050 m, m = 0.10 kg: U″(a) = 20E₀/a² = 40.0 N/m, ω = 20.0 rad/s;
+#       U″(−4a) = 80E₀/a² = 160 N/m, ω = 40.0 rad/s; U‴ = 48E₀/a³ and −72E₀/a³, so |u| ≪ 1.25a = 6.25 cm and
+#       (10/3)a = 16.7 cm; the hump at 0 is 3E₀ = 0.0150 J above the minimum at a;
+#   c2 (MIT 8.03SC 2016, PS1 1.5) L = 0.60 m: ω₀ = 4.04 rad/s, T₀ = 1.55 s (1.5547; review 2026-11-11, was 1.56); 1 % in the period at 22.8° (0.398 rad,
+#       x = 0.233 m); in x, U = mgL(1 − √(1 − x²/L²)) ≈ mgx²/(2L) + mgx⁴/(8L³).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '5.2'
+practice:
+  - id: W-5.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.2-1]
+    prompt: >-
+      גוף על קפיץ אופקי מתנודד בלי חיכוך. מגדילים את האמפליטודה פי 2, בלי לשנות את הגוף ואת הקפיץ. פי כמה משתנים: האנרגיה
+      הכוללת, המהירות המרבית, התאוצה המרבית, וזמן המחזור? קבעו ונמקו.
+    answer: >-
+      האנרגיה פי 4; המהירות המרבית פי 2; התאוצה המרבית פי 2; זמן המחזור לא משתנה.
+    solution:
+      - kind: law
+        text: >-
+          $E = \tfrac12kA^2$, $v_{\max} = A\omega_0$, $a_{\max} = A\omega_0^2$, ו-$\omega_0 =\sqrt{k/m}$ לא תלוי ב-$A$.
+      - kind: reasoning
+        text: >-
+          $E$ ריבועית ב-$A$, ולכן פי 4. $v_{\max}$ ו-$a_{\max}$ ליניאריות ב-$A$, פי 2. הגוף עובר דרך כפולה במהירות כפולה,
+          ולכן זמן המחזור, $2\pi/\omega_0$, זהה.
+      - kind: limit
+        text: >-
+          כש-$A \to 0$, כל הארבעה חוץ מזמן המחזור שואפים לאפס: גוף במנוחה בשיווי משקל. זמן המחזור נשאר $2\pi\sqrt{m/k}$.
+      - kind: units
+        text: >-
+          $kA^2$ ב-$\text{J}$, $A\omega_0$ ב-$\text{m/s}$, $A\omega_0^2$ ב-$\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $E$ פי 4, $v_{\max}$ ו-$a_{\max}$ פי 2, $T$ ללא שינוי (בקפיץ אידאלי, שהכוח שלו ליניארי בכל אמפליטודה).
+
+  - id: W-5.2-02
+    level: basic
+    objectives: [OBJ-5.2-1]
+    prompt: >-
+      גוף בעל מסה $2.0\,\text{kg}$ על קפיץ בעל קבוע $800\,\text{N/m}$ מתנודד בלי חיכוך, והאנרגיה הכוללת שלו $1.0\,\text{J}$. מה
+      האמפליטודה, ומה המהירות המרבית?
+    answer: >-
+      $A = 5.00\,\text{cm}$, $v_{\max} = 1.00\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 2.0\,\text{kg}$, $k = 800\,\text{N/m}$, $E = 1.0\,\text{J}$.
+      - kind: law
+        text: >-
+          $E = \tfrac12kA^2 = \tfrac12mv_{\max}^2$.
+      - kind: manipulation
+        text: >-
+          $A = \sqrt{2E/k}$ ו-$v_{\max} = \sqrt{2E/m}$.
+      - kind: limit
+        text: >-
+          היחס $v_{\max}/A = \sqrt{k/m} = \omega_0$, כמו שצריך. וכש-$k \to \infty$, $A \to 0$: קפיץ קשיח מאוד כמעט לא מתכווץ.
+      - kind: units
+        text: >-
+          $E/k$ ב-$\text{J}/(\text{N/m}) = \text{m}^2$; $E/m$ ב-$\text{m}^2/\text{s}^2$.
+      - kind: substitution
+        text: >-
+          $A = \sqrt{2\cdot1.0/800} = 0.0500\,\text{m}$, $v_{\max} = \sqrt{2\cdot1.0/2.0} = 1.00\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $A = 5.00\,\text{cm}$, $v_{\max} = 1.00\,\text{m/s}$.
+
+  - id: W-5.2-03
+    level: basic
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      כתבו פיתוח טיילור עד סדר שני סביב $u = 0$ לכל אחת מהפונקציות, ובדקו אותו ב-$u = 0.2$ מול הערך המדויק.
+
+      א. $\sqrt{1 + u}$
+
+      ב. $\dfrac{1}{1 + u}$
+
+      ג. $e^{-u}$
+    answer: >-
+      א. $1 + \tfrac12u - \tfrac18u^2$ ($1.0950$ מול $1.0954$). ב. $1 - u + u^2$ ($0.8400$ מול $0.8333$). ג. $1 - u + \tfrac12u^2$ ($0.8200$ מול $0.8187$).
+    solution:
+      - kind: law
+        text: >-
+          $f(u) \approx f(0) + f'(0)u + \tfrac12f''(0)u^2$.
+      - kind: manipulation
+        text: >-
+          א: $f' = \tfrac12(1 + u)^{-1/2}$, $f'' = -\tfrac14(1 + u)^{-3/2}$; ב-$0$: $1$, $\tfrac12$, $-\tfrac14$. ב: $f' = -(1 + u)^{-2}$,
+          $f'' = 2(1 + u)^{-3}$; ב-$0$: $1$, $-1$, $2$. ג: $f' = -e^{-u}$, $f'' = e^{-u}$; ב-$0$: $1$, $-1$, $1$.
+      - kind: limit
+        text: >-
+          כש-$u \to 0$ שלושת הקירובים שואפים ל-$1$, הערך המדויק. ב-$u = 0.2$ השגיאה בגודל האיבר הבא, $\sim u^3 = 0.008$
+          כפול מקדם: הגדולה היא ב-ב, שבו המקדם של $u^3$ הוא $(-1)$.
+      - kind: units
+        text: >-
+          $u$ חסר ממדים, וכל איבר חסר ממדים.
+      - kind: substitution
+        text: >-
+          א: $1 + 0.1 - 0.005 = 1.0950$ (מדויק $1.0954$). ב: $1 - 0.2 + 0.04 = 0.8400$ (מדויק $0.8333$). ג: $1 - 0.2 + 0.02 = 0.8200$ (מדויק $0.8187$).
+      - kind: result
+        text: >-
+          א. $1 + \tfrac12u - \tfrac18u^2$. ב. $1 - u + u^2$. ג. $1 - u + \tfrac12u^2$. בכולם הסטייה ב-$u = 0.2$ קטנה מ-$1\%$.
+
+  - id: W-5.2-04
+    level: mid
+    objectives: [OBJ-5.2-1]
+    prompt: >-
+      גוף על קפיץ מתנודד בלי חיכוך. כשהוא במרחק $3.0\,\text{cm}$ מנקודת שיווי המשקל גודל המהירות שלו $0.40\,\text{m/s}$, וכשהוא
+      במרחק $4.0\,\text{cm}$ ממנה, $0.30\,\text{m/s}$. מצאו את התדירות הזוויתית, את האמפליטודה ואת המהירות המרבית.
+    answer: >-
+      $\omega_0 =10.0\,\text{rad/s}$, $A = 5.00\,\text{cm}$, $v_{\max} = 0.500\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $x_1 = 0.030\,\text{m}$, $v_1 = 0.40\,\text{m/s}$; $x_2 = 0.040\,\text{m}$, $v_2 = 0.30\,\text{m/s}$.
+      - kind: law
+        text: >-
+          משימור האנרגיה, $v^2 = \omega_0^2\left(A^2 - x^2\right)$ בכל נקודה.
+      - kind: manipulation
+        text: >-
+          מחסרים את שתי המשוואות: $v_1^2 - v_2^2 = \omega_0^2\left(x_2^2 - x_1^2\right)$, ולכן
+          $\omega_0 =\sqrt{\dfrac{v_1^2 - v_2^2}{x_2^2 - x_1^2}}$. מהראשונה, $A = \sqrt{x_1^2 + v_1^2/\omega_0^2}$, ו-$v_{\max} = A\omega_0$.
+      - kind: limit
+        text: >-
+          אם שתי המדידות היו באותו מקום, המכנה והמונה מתאפסים יחד ואין מידע על $\omega_0$: צריך שתי נקודות שונות. וב-$x_1 = 0$
+          מקבלים $A = v_1/\omega_0$, כמו שצריך.
+      - kind: units
+        text: >-
+          $(\text{m/s})^2/\text{m}^2 = \text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\omega_0^2 = \dfrac{0.16 - 0.09}{0.0016 - 0.0009} = 100\,\text{s}^{-2}$, $\omega_0 =10.0\,\text{rad/s}$. $A = \sqrt{0.0009 + 0.0016} = 0.0500\,\text{m}$, $v_{\max} = 0.500\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $10.0\,\text{rad/s}$, $5.00\,\text{cm}$, $0.500\,\text{m/s}$.
+
+  - id: W-5.2-05
+    level: mid
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      חלקיק בעל מסה $m = 0.15\,\text{kg}$ נע על ציר $x > 0$ באנרגיה פוטנציאלית $U(x) = U_0\left(\dfrac{x}{a} + \dfrac{a}{x}\right)$,
+      עם $U_0 = 0.30\,\text{J}$ ו-$a = 0.20\,\text{m}$. מצאו את נקודת שיווי המשקל, הראו שהיא יציבה, וחשבו את זמן המחזור של
+      תנודות קטנות סביבה.
+    answer: >-
+      $x_0 = a = 0.20\,\text{m}$, $U''(a) = 2U_0/a^2 = 15.0\,\text{N/m}$, $T = 0.628\,\text{s}$.
+    solution:
+      - kind: law
+        text: >-
+          שיווי משקל ב-$U' = 0$; יציב כש-$U'' > 0$; $\omega_0^2 = U''(x_0)/m$.
+      - kind: manipulation
+        text: >-
+          $U' = U_0\left(\dfrac1a - \dfrac{a}{x^2}\right) = 0$ כש-$x = a$. $U'' = \dfrac{2U_0a}{x^3}$, וב-$x = a$: $\dfrac{2U_0}{a^2} > 0$.
+          לכן $\omega_0 = \sqrt{\dfrac{2U_0}{ma^2}}$.
+      - kind: limit
+        text: >-
+          כש-$U_0 \to 0$ הבור נעלם ו-$\omega_0 \to 0$. כש-$a$ גדל הבור רחב יותר ו-$\omega_0$ קטנה. וההוספה של קבוע ל-$U$ (למשל
+          $U(a) = 2U_0$ בתחתית) לא משנה דבר.
+      - kind: units
+        text: >-
+          $U_0/(ma^2)$ ב-$\text{J}/(\text{kg}\cdot\text{m}^2) = \text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $U'' = 2\cdot0.30/0.040 = 15.0\,\text{N/m}$, $\omega_0 = \sqrt{15.0/0.15} = 10.0\,\text{rad/s}$, $T = 2\pi/10.0 = 0.628\,\text{s}$.
+      - kind: result
+        text: >-
+          $x_0 = 0.20\,\text{m}$, יציב, $T = 0.628\,\text{s}$.
+
+  - id: W-5.2-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-5.2-1]
+    prompt: >-
+      גוף בעל מסה $m$ תלוי על קפיץ אנכי בעל קבוע $k$. נמדוד את $y$ כלפי מטה מנקודת שיווי המשקל של הגוף התלוי. הראו בעזרת
+      שיטת האנרגיה (בלי תרשים כוחות) שתדירות התנודות האנכיות היא $\sqrt{k/m}$, אותה תדירות כמו בלי כובד, והסבירו מה הכובד
+      כן משנה.
+    answer: >-
+      האנרגיה הכוללת היא $\tfrac12m\dot y^2 + \tfrac12ky^2$ ועוד קבוע, ולכן $\omega_0^2 = k/m$. הכובד רק מזיז את נקודת שיווי המשקל
+      ב-$mg/k$.
+    solution:
+      - kind: given
+        text: >-
+          בשיווי משקל הקפיץ מתוח ב-$d = mg/k$ (שם $kd = mg$). בהעתק $y$ מתחת לשם, המתיחה $d + y$, והגובה של הגוף נמוך ב-$y$.
+      - kind: law
+        text: >-
+          שיטת האנרגיה: אם $E = \tfrac12m_{\text{eff}}\dot y^2 + \tfrac12k_{\text{eff}}y^2 + \text{const}$, אז $\omega_0^2 = k_{\text{eff}}/m_{\text{eff}}$.
+      - kind: manipulation
+        text: >-
+          $U = \tfrac12k(d + y)^2 - mgy = \tfrac12kd^2 + kdy + \tfrac12ky^2 - mgy$. עם $kd = mg$ שני האיברים הליניאריים מתבטלים:
+          $U = \tfrac12ky^2 + \tfrac12kd^2$. הקבוע לא משנה כלום, ולכן $m_{\text{eff}} = m$, $k_{\text{eff}} = k$.
+      - kind: limit
+        text: >-
+          כש-$g \to 0$, $d \to 0$ וחוזרים לקפיץ אופקי, עם אותה תדירות. זה עקבי: התדירות לא הייתה תלויה ב-$g$ מלכתחילה.
+      - kind: units
+        text: >-
+          $kd$ ו-$mg$ שניהם בניוטונים; $k/m$ ב-$\text{s}^{-2}$.
+      - kind: result
+        text: >-
+          $\omega_0 =\sqrt{k/m}$. הכובד הוא כוח קבוע: הוא מזיז את נקודת שיווי המשקל ב-$mg/k$ ומוסיף קבוע לאנרגיה, אבל לא משנה את
+          העקמומיות של $U$, ולכן לא את התדירות.
+
+  - id: W-5.2-07
+    level: mid
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      במודל של מולקולה דו-אטומית, האנרגיה הפוטנציאלית כפונקציה של המרחק $r$ בין האטומים היא בור מורס,
+      $U(r) = D\left[\left(1 - e^{-(r - r_0)/w}\right)^2 - 1\right]$, עם $D = 4.0\cdot10^{-19}\,\text{J}$ ו-$w = 5.0\cdot10^{-11}\,\text{m}$.
+      המרחק מקיים $\mu\ddot r = -dU/dr$, עם מסה מצומצמת $\mu = 1.6\cdot10^{-27}\,\text{kg}$. מה התדירות הזוויתית של התנודות הקטנות,
+      ומה התדירות $f$?
+    answer: >-
+      $U''(r_0) = 2D/w^2 = 320\,\text{N/m}$; $\omega_0 =4.47\cdot10^{14}\,\text{rad/s}$; $f = 7.12\cdot10^{13}\,\text{Hz}$.
+    solution:
+      - kind: law
+        text: >-
+          הקירוב ההרמוני: $\omega_0^2 = U''(r_0)/\mu$.
+      - kind: manipulation
+        text: >-
+          עם $q = e^{-(r - r_0)/w}$: $U' = \dfrac{2D}{w}q(1 - q)$ ו-$U'' = \dfrac{2D}{w^2}q(2q - 1)$. ב-$r = r_0$, $q = 1$:
+          $U''(r_0) = \dfrac{2D}{w^2}$.
+      - kind: limit
+        text: >-
+          כש-$w$ גדל הבור רחב, העקמומיות קטנה, ו-$\omega_0 \to 0$. והעומק $D$ נכנס רק דרך היחס $D/w^2$: בור עמוק פי 4 ורחב
+          פי 2 נותן אותה תדירות.
+      - kind: units
+        text: >-
+          $D/w^2$ ב-$\text{J/m}^2 = \text{N/m}$; חלקי $\text{kg}$ נותן $\text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $U'' = 2\cdot4.0\cdot10^{-19}/(5.0\cdot10^{-11})^2 = 320\,\text{N/m}$. $\omega_0 =\sqrt{320/1.6\cdot10^{-27}} = 4.47\cdot10^{14}\,\text{rad/s}$, $f = \omega_0/(2\pi) = 7.12\cdot10^{13}\,\text{Hz}$.
+      - kind: result
+        text: >-
+          $\omega_0 =4.47\cdot10^{14}\,\text{rad/s}$, $f = 7.12\cdot10^{13}\,\text{Hz}$: אור אינפרה-אדום.
+
+  - id: W-5.2-08
+    level: bagrut
+    objectives: [OBJ-5.2-1, OBJ-5.2-2]
+    prompt: >-
+      כדור קטן מחליק בלי חיכוך בתוך קערה בצורת חצי כדור ברדיוס $R = 0.40\,\text{m}$. משחררים אותו ממנוחה כשהרדיוס אליו
+      יוצר זווית $25^\circ$ עם האנך.
+
+      א. מה זמן המחזור של תנודות קטנות?
+
+      ב. מה המהירות בתחתית, בחישוב מדויק משימור אנרגיה ובקירוב ההרמוני? מה הסטייה היחסית?
+
+      ג. חישוב מדויק נותן לתנודה הזו זמן מחזור $1.285\,\text{s}$. בכמה אחוזים הוא שונה מתשובת א, ולאיזה כיוון? הסבירו.
+    answer: >-
+      א. $1.27\,\text{s}$. ב. $0.857\,\text{m/s}$ מדויק, $0.864\,\text{m/s}$ בקירוב (גבוה ב-$0.8\%$). ג. ארוך ב-$1.2\%$.
+    solution:
+      - kind: given
+        text: >-
+          $R = 0.40\,\text{m}$, $\theta_0 = 25^\circ = 0.436\,\text{rad}$. הגובה מעל התחתית $R(1 - \cos\theta)$; הנורמלי ניצב לתנועה ולא עושה עבודה.
+      - kind: law
+        text: >-
+          שימור אנרגיה; ובקירוב ההרמוני $U \approx \tfrac12(mg/R)s^2$ עם $s = R\theta$, כלומר $\omega_0^2 = g/R$ (כמו מטוטלת באורך $R$).
+      - kind: manipulation
+        text: >-
+          מדויק: $v = \sqrt{2gR(1 - \cos\theta_0)}$. בקירוב: $v = \omega_0R\theta_0 = \theta_0\sqrt{gR}$.
+      - kind: limit
+        text: >-
+          כש-$\theta_0 \to 0$, $1 - \cos\theta_0 \to \tfrac12\theta_0^2$ ושני הביטויים מתלכדים. בזווית סופית $1 - \cos\theta \lt \tfrac12\theta^2$:
+          הבור האמיתי רדוד מהפרבולה, ולכן המהירות המדויקת קטנה מהקירוב, וזמן המחזור ארוך יותר.
+      - kind: units
+        text: >-
+          $gR$ ב-$\text{m}^2/\text{s}^2$; $\sqrt{R/g}$ בשניות.
+      - kind: substitution
+        text: >-
+          א: $T_0 = 2\pi\sqrt{0.40/9.8} = 1.27\,\text{s}$. ב: מדויק $\sqrt{2\cdot9.8\cdot0.40\cdot(1 - \cos25^\circ)} = 0.857\,\text{m/s}$; קירוב
+          $0.436\cdot\sqrt{3.92} = 0.864\,\text{m/s}$. ג: $1.285/1.269 = 1.012$.
+      - kind: result
+        text: >-
+          א. $1.27\,\text{s}$. ב. $0.857$ ו-$0.864\,\text{m/s}$, הקירוב גבוה ב-$0.8\%$. ג. ארוך ב-$1.2\%$, כי הכוח המחזיר $mg\sin\theta$ חלש מ-$mg\theta$.
+
+  - id: W-5.2-09
+    level: bagrut
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      חלקיק בעל מסה $m = 0.40\,\text{kg}$ נע על ציר $x$ בבור $U(x) = -\dfrac{U_0}{\cosh^2(x/a)}$, עם $U_0 = 0.50\,\text{J}$ ו-$a = 0.10\,\text{m}$.
+
+      א. מצאו את תדירות התנודות הקטנות סביב $x = 0$. (היעזרו ב-$\cosh u \approx 1 + \tfrac12u^2$.)
+
+      ב. אפשר להראות שזמן המחזור המדויק, באנרגיה $-U_0 \lt E \lt 0$, הוא $T = T_0/\sqrt{-E/U_0}$, כאשר $T_0$ הוא זמן המחזור
+      של סעיף א. בדקו שהנוסחה מסכימה עם א בגבול המתאים, ומצאו באיזו אנרגיה $T$ ארוך מ-$T_0$ ב-$10\%$.
+
+      ג. מה המהירות הקטנה ביותר בתחתית שבה החלקיק לא חוזר?
+    answer: >-
+      א. $\omega_0 = \sqrt{2U_0/(ma^2)} = 15.8\,\text{rad/s}$, $T_0 = 0.397\,\text{s}$. ב. $E = -U_0/1.21 = -0.413\,\text{J}$. ג. $1.58\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          הקירוב ההרמוני, $\omega_0^2 = U''(0)/m$; בריחה כש-$E \ge 0$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{1}{\cosh^2u} \approx \dfrac{1}{1 + u^2} \approx 1 - u^2$, ולכן $U \approx -U_0 + \dfrac{U_0}{a^2}x^2$: $U''(0) = \dfrac{2U_0}{a^2}$.
+          ב: $T/T_0 = 1.10$ פירושו $-E/U_0 = 1/1.10^2$. ג: $\tfrac12mv^2 - U_0 \ge 0$.
+      - kind: limit
+        text: >-
+          ב-$E \to -U_0$ (התחתית), $\sqrt{-E/U_0} \to 1$ ו-$T \to T_0$: הנוסחה המדויקת חוזרת לקירוב. כש-$E \to 0^-$, $T \to \infty$:
+          החלקיק כמעט בורח, ומבלה זמן ארוך מאוד רחוק מהבור.
+      - kind: units
+        text: >-
+          $U_0/(ma^2)$ ב-$\text{s}^{-2}$; $U_0/m$ ב-$\text{m}^2/\text{s}^2$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{2\cdot0.50/(0.40\cdot0.010)} = 15.8\,\text{rad/s}$, $T_0 = 0.397\,\text{s}$. $E = -0.50/1.21 = -0.413\,\text{J}$, רק $0.087\,\text{J}$
+          מעל התחתית. $v = \sqrt{2\cdot0.50/0.40} = 1.58\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $15.8\,\text{rad/s}$. ב. $-0.413\,\text{J}$. ג. $1.58\,\text{m/s}$.
+
+  - id: W-5.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      שני אטומים במולקולה מתנודדים סביב המרחק $r_0$, שבו האנרגיה הפוטנציאלית מינימלית. ליד $r_0$,
+      $U(r) \approx U(r_0) + \tfrac12k(r - r_0)^2 + c(r - r_0)^3$.
+
+      א. אם $c = 0$, מה המרחק הממוצע בזמן בין האטומים, בכל אמפליטודה קטנה? נמקו.
+
+      ב. בבור של מולקולה אמיתית הדופן הפנימית (מרחק קטן) תלולה והחיצונית מתונה. מה הסימן של $c$? נמקו.
+
+      ג. הסבירו בעזרת ב למה המרחק הממוצע בין האטומים גדל כשהמולקולה מתנודדת חזק יותר, ולמה זה קשור להתרחבות של גופים בחימום.
+    answer: >-
+      א. $r_0$ בדיוק: התנועה סימטרית. ב. $c \lt 0$. ג. נקודת המפנה החיצונית רחוקה יותר מהפנימית, והאטומים מבלים יותר זמן בצד החיצוני.
+    solution:
+      - kind: law
+        text: >-
+          בקירוב ההרמוני ($c = 0$) $r - r_0 = A\cos(\omega_0t + \varphi)$, וממוצע הקוסינוס על מחזור אפס.
+      - kind: reasoning
+        text: >-
+          ב: האיבר $c(r - r_0)^3$ מוסיף ל-$U$ בצד אחד ומוריד בצד השני. כדי שהדופן הפנימית ($r \lt r_0$) תהיה **תלולה** מהפרבולה,
+          צריך $c(r - r_0)^3 > 0$ שם, כלומר $c \lt 0$; ואז בצד החיצוני הוא מוריד מ-$U$, והדופן מתונה.
+          ג: באותה אנרגיה, הקו $E$ פוגש את הדופן המתונה רחוק יותר מ-$r_0$ מאשר את התלולה. בצד החיצוני גם הכוח המחזיר חלש
+          יותר, והחלקיק מבלה שם יותר זמן. לכן הממוצע של $r$ גדול מ-$r_0$, והפער גדל עם האנרגיה. חימום מגדיל את אנרגיית
+          התנודה של האטומים, ולכן את המרחק הממוצע ביניהם.
+      - kind: limit
+        text: >-
+          כש-$A \to 0$, האיבר $c(r - r_0)^3$ זניח לעומת הריבועי והממוצע חוזר ל-$r_0$: אין התרחבות בלי תנודה. וכש-$c \to 0$ אין
+          התרחבות בכל אמפליטודה (בקירוב הזה).
+      - kind: units
+        text: >-
+          $c$ ב-$\text{J/m}^3$, ו-$c(r - r_0)^3$ ב-$\text{J}$, כמו $k(r - r_0)^2$.
+      - kind: result
+        text: >-
+          א. $r_0$. ב. $c \lt 0$. ג. האסימטריה של הבור, האיבר מסדר שלישי, מזיזה את המרחק הממוצע החוצה ככל שהאנרגיה גדלה:
+          זו התרחבות תרמית. בור הרמוני לבדו לא היה מתרחב.
+
+challenge:
+  - id: W-5.2-c1
+    stars: 2
+    objectives: [OBJ-5.2-2]
+    prompt: >-
+      חלקיק בעל מסה $m$ נע על ציר $x$ באנרגיה פוטנציאלית $U(x) = \dfrac{E_0}{a^4}\left(x^4 + 4ax^3 - 8a^2x^2\right)$, עם $E_0, a > 0$.
+
+      א. מצאו את נקודות שיווי המשקל וקבעו לכל אחת אם היא יציבה.
+
+      ב. מצאו את תדירות התנודות הקטנות סביב כל נקודה יציבה.
+
+      ג. מה פירוש "תנודות קטנות" סביב כל אחת מהן? תנו תנאי כמותי.
+
+      ד. חשבו את ב ואת ג עבור $E_0 = 5.0\cdot10^{-3}\,\text{J}$, $a = 0.050\,\text{m}$ ו-$m = 0.10\,\text{kg}$.
+    answer: >-
+      א. $x = 0$ (לא יציב), $x = a$ ו-$x = -4a$ (יציבים). ב. $\omega_a = \sqrt{20E_0/(ma^2)}$, $\omega_{-4a} = \sqrt{80E_0/(ma^2)} = 2\omega_a$.
+      ג. $|x - a| \ll 1.25a$ ו-$|x + 4a| \ll \tfrac{10}{3}a$ (וגם מתחת למחסום ב-$x = 0$). ד. $20.0$ ו-$40.0\,\text{rad/s}$; $6.25$ ו-$16.7\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $U(x)$ כנתון; ציר $x$ ימינה.
+      - kind: law
+        text: >-
+          שיווי משקל ב-$U' = 0$, יציב כש-$U'' > 0$; $\omega_0^2 = U''/m$; הקירוב טוב כשהאיבר השלישי קטן מהשני,
+          $\tfrac16|U'''|\,|u|^3 \ll \tfrac12U''u^2$.
+      - kind: manipulation
+        text: >-
+          $U' = \dfrac{4E_0}{a^4}\,x\left(x^2 + 3ax - 4a^2\right) = \dfrac{4E_0}{a^4}\,x(x - a)(x + 4a)$: שיווי משקל ב-$0$, $a$, $-4a$.
+          $U'' = \dfrac{E_0}{a^4}\left(12x^2 + 24ax - 16a^2\right)$: ב-$0$ זה $-16E_0/a^2$, ב-$a$ זה $20E_0/a^2$, ב-$-4a$ זה $80E_0/a^2$.
+          $U''' = \dfrac{E_0}{a^4}(24x + 24a)$: ב-$a$, $48E_0/a^3$; ב-$-4a$, $-72E_0/a^3$. התנאי $|u| \ll 3U''/|U'''|$ נותן $1.25a$ ו-$\tfrac{10}{3}a$.
+      - kind: limit
+        text: >-
+          המינימום ב-$-4a$ עמוק יותר ($U = -128E_0$ מול $-3E_0$) וגם מעוקל יותר: שם התדירות כפולה. סביב $x = a$ יש מגבלה
+          נוספת: המקסימום ב-$x = 0$ נמצא רק $a$ משם, ו-$3E_0$ מעל המינימום; תנודה שמגיעה אליו כבר לא הרמונית בכלל.
+      - kind: units
+        text: >-
+          $E_0/(ma^2)$ ב-$\text{s}^{-2}$; $3U''/|U'''|$ ב-$(\text{J/m}^2)/(\text{J/m}^3) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $U''(a) = 20\cdot5.0\cdot10^{-3}/0.0025 = 40.0\,\text{N/m}$, $\omega_a = \sqrt{40.0/0.10} = 20.0\,\text{rad/s}$; $U''(-4a) = 160\,\text{N/m}$,
+          $\omega_{-4a} = 40.0\,\text{rad/s}$. $1.25a = 6.25\,\text{cm}$, $\tfrac{10}{3}a = 16.7\,\text{cm}$.
+      - kind: result
+        text: >-
+          יציבים ב-$a$ (תדירות $20.0\,\text{rad/s}$, קטנה כש-$|x - a| \ll 6.25\,\text{cm}$) וב-$-4a$ ($40.0\,\text{rad/s}$, כש-$|x + 4a| \ll 16.7\,\text{cm}$).
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 1
+      year: 2016
+      problem: Homework 1, P1.4
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/ba437a6236bc47b5675d8ec88ef5234b_MIT8_03SCF16_ProblemSet1.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-5.2-c2
+    stars: 1
+    objectives: [OBJ-5.2-2, OBJ-5.2-1]
+    prompt: >-
+      מטוטלת פשוטה: משקולת בעלת מסה $m$ על חוט חסר מסה באורך $L = 0.60\,\text{m}$, במישור אנכי.
+
+      א. כתבו את האנרגיה הפוטנציאלית המדויקת כפונקציה של הזווית $\theta$ מהאנך, פתחו אותה עד סדר שני, ומצאו בשיטת האנרגיה את
+      זמן המחזור של תנודות קטנות.
+
+      ב. עכשיו תארו את המקום של המשקולת בקואורדינטה האופקית $x$, מנקודת שיווי המשקל. כתבו את $U(x)$ המדויקת, ופתחו אותה עד סדר
+      רביעי. האם האיבר הריבועי נותן את אותה תדירות?
+
+      ג. עד איזו זווית אפשר לראות בתנועה תנודה הרמונית, אם דורשים שזמן המחזור יסטה מ-$T_0$ בפחות מ-$1\%$? היעזרו ב-$T \approx T_0(1 + \theta_0^2/16)$.
+    answer: >-
+      א. $U = mgL(1 - \cos\theta) \approx \tfrac12mgL\theta^2$, $T_0 = 2\pi\sqrt{L/g} = 1.55\,\text{s}$. ב. $U = mgL\left(1 - \sqrt{1 - x^2/L^2}\right) \approx \dfrac{mg}{2L}x^2 + \dfrac{mg}{8L^3}x^4$; כן. ג. כ-$23^\circ$ ($0.40\,\text{rad}$).
+    solution:
+      - kind: law
+        text: >-
+          שיטת האנרגיה: $E = \tfrac12m_{\text{eff}}\dot q^2 + \tfrac12k_{\text{eff}}q^2$ נותן $\omega_0^2 = k_{\text{eff}}/m_{\text{eff}}$; פיתוח טיילור עד הסדר הנדרש.
+      - kind: manipulation
+        text: >-
+          א: האנרגיה הקינטית $\tfrac12mL^2\dot\theta^2$, ו-$U = mgL(1 - \cos\theta) \approx \tfrac12mgL\theta^2$, ולכן $m_{\text{eff}} = mL^2$, $k_{\text{eff}} = mgL$, $\omega_0^2 = g/L$.
+          ב: $x = L\sin\theta$, והגובה $L - \sqrt{L^2 - x^2}$. עם $\sqrt{1 - u} \approx 1 - \tfrac12u - \tfrac18u^2$ ו-$u = x^2/L^2$:
+          $U \approx \dfrac{mg}{2L}x^2 + \dfrac{mg}{8L^3}x^4$. האנרגיה הקינטית ליד התחתית $\approx \tfrac12m\dot x^2$, ולכן $\omega_0^2 = g/L$ שוב.
+          ג: $\theta_0^2/16 \lt 0.01$, כלומר $\theta_0 \lt 0.40\,\text{rad}$.
+      - kind: limit
+        text: >-
+          ב-ב האיבר הרביעי חיובי: ב-$x$ הבור נראה "מתקשה". אבל הגורם $1/(1 - x^2/L^2)$ באנרגיה הקינטית מאט יותר, ובסך הכול
+          זמן המחזור גדל עם האמפליטודה, כמו שמצאנו בזווית. בקואורדינטה שבה האנרגיה הקינטית לא $\tfrac12m\dot q^2$, צריך לבדוק את שני
+          החלקים.
+      - kind: units
+        text: >-
+          $g/L$ ב-$\text{s}^{-2}$; $mg x^2/L$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $T_0 = 2\pi\sqrt{0.60/9.8} = 1.55\,\text{s}$, $\omega_0 = 4.04\,\text{rad/s}$. $\theta_0 = 4\sqrt{0.01} = 0.40\,\text{rad} = 22.9^\circ$
+          (החישוב המדויק: $22.8^\circ$).
+      - kind: result
+        text: >-
+          א. $1.55\,\text{s}$. ב. אותה תדירות, $\omega_0^2 = g/L$. ג. עד כ-$23^\circ$.
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 1
+      year: 2016
+      problem: Homework 1, P1.5
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/ba437a6236bc47b5675d8ec88ef5234b_MIT8_03SCF16_ProblemSet1.pdf
+      verified: '2026-11-11'
+      adapted: true

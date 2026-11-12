@@ -1,0 +1,30 @@
+# Videos of lesson 6.2. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date:
+# exists, embeddable, title and channel exactly as returned. The watch pages gave neither length nor caption
+# tracks to the fetch tool, so `minutes` are estimates (UNCONFIRMED) and `captions` lists nothing.
+#   -M8swpL-Ij8: MIT OCW 8.01SC Fall 2016, "Deep Dive: Center of Mass Reference Frame", clip DD.2.1. The id is the
+#     one in the file name of the transcript OCW publishes (…0058da0cdf29d73d8f27d2a6e3cace28_-M8swpL-Ij8.pdf),
+#     read in full: r₁′ = (m₂/(m₁+m₂)) r₁,₂ and r₂′ = −(m₁/(m₁+m₂)) r₁,₂ with r₁,₂ = r₁ − r₂, then μ and
+#     1/μ = 1/m₁ + 1/m₂. The transcript is about 3 minutes of speech.
+#   KBcxuM-qXec: minutephysics; content from a transcript/chapter summary on a mirror page (rosetta.to), not from
+#     YouTube itself: the Earth–Moon centre of mass is inside the Earth; 40 % farther or heavier and it would be
+#     outside; the Moon's path around the Sun never loops. A listing gave 5 min 29 s (unconfirmed).
+
+- id: v-6-2-cm-position
+  youtubeId: -M8swpL-Ij8
+  title: 'DD.2.1 Position in the CM Frame'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'לפי התמליל: המרצה מגדיר את המקום היחסי r₁ − r₂, מוצא את המקום של כל גוף ביחס למרכז המסה, ומקבל את הנוסחאות של השיעור, עם המסה המצומצמת. בסרטון התג מסמן מקום ביחס למרכז המסה.'
+  verified: '2026-11-11'
+
+- id: v-6-2-moon-orbit
+  youtubeId: KBcxuM-qXec
+  title: "The Moon's Orbit is WEIRD"
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי התיאור שלו: כדור הארץ והירח מקיפים יחד את מרכז המסה שלהם, שנמצא בתוך כדור הארץ, והסרטון שואל מתי זוג כזה הוא כוכב לכת וירח ומתי כוכב לכת כפול. השוו לחלון המוגדל של איור 6.2א.'
+  verified: '2026-11-11'

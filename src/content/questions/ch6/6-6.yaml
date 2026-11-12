@@ -3,16 +3,25 @@
 # (exam level). Notation: vis-viva v² = GM(2/r − 1/a); a Hohmann transfer between circles r₁ < r₂ is half
 # an ellipse with a = (r₁ + r₂)/2. YAML note: never "…" for TeX.
 #
-# Every number was computed with src/physics/constants.ts (.scratch/ch6/q.ts, q4.ts), GM_E = 3.982e14,
-# GM_S = 1.327e20 m³/s²:
-#   Earth's surface: v_esc = √(2GM/R) = 11.2 km/s (v_c 7.91, 2GM/R without the root 125);
-#   r = 2.0 AU, a = 4.0 AU: v = 25.8 km/s (v_c(r) 21.0, v_c(a) 14.9, v_esc(r) 29.7);
+# Every number is computed from the values the prompt states (GM_E = 3.98e14, GM_S = 1.33e20 m³/s²,
+# 1 AU = 1.5e11 m), as the learner computes it; recomputed for lesson 6.6 by .scratch/ch6/6-6/bank.ts and
+# perigee.ts (src/physics/orbit.ts, transfer.ts):
+#   Earth's surface: v_esc = √(2GM/R) = 11.2 km/s (v_c 7.90, 2GM/R without the root 125);
+#   r = 2.0 AU, a = 4.0 AU: v = 25.8 km/s (v_c(r) 21.1, v_c(a) 14.9, v_esc(r) 29.8);
 #   circular orbit 400 km up (r = 6.77e6 m): v_c = 7.67 km/s, Δv = (√2 − 1)v_c = 3.18 km/s (v_esc(r) 10.8,
 #     surface v_esc − v_c 3.51, surface v_esc 11.2);
-#   Earth → Mars (1.00 → 1.52 AU): a = 1.26 AU, t = T/2 = 259 days (full ellipse 519, half Mars year 344,
+#   ellipse r_p = 7.0e6 m, r_a = 3.0e7 m: v_p = 9.60 km/s, v_esc(r_p) = 10.7 km/s, Δv at perigee 1.06 km/s
+#     (at apogee 2.91, v_esc − v_c at r_p 3.12, all of v_esc 10.7);
+#   Earth → Mars (1.00 → 1.52 AU): a = 1.26 AU, t = T/2 = 259 days (full ellipse 518, half Mars year 343,
 #     half Earth year 183);
-#   LEO 300 km (r₁ = 6.67e6 m) → GEO (r₂ = 4.22e7 m): v₁ = 7.73, v_p = 10.15, v_a = 1.60, v₂ = 3.07 km/s;
-#     Δv₁ = 2.43, Δv₂ = 1.47, total 3.89 km/s (v₁ − v₂ 4.65, Δv₁ − Δv₂ 0.961); transfer time 5.28 h.
+#   LEO 300 km (r₁ = 6.67e6 m) → GEO (r₂ = 4.22e7 m): v₁ = 7.72, v_p = 10.15, v_a = 1.60, v₂ = 3.07 km/s;
+#     Δv₁ = 2.43, Δv₂ = 1.47, total 3.89 km/s (v₁ − v₂ 4.65, Δv₁ − Δv₂ 0.960); transfer time 5.28 h;
+#   Hohmann r₁ → 5r₁ against escape from r₁, in units of v₁: Δv₁ 0.291, Δv₂ 0.189, total 0.480, escape
+#     √2 − 1 = 0.414, ratio 1.16 (v₁ − v₂ gives 1.33, Δv₁ alone 0.703, total/(√2 v₁) 0.339).
+# Review for lesson 6.6 (2026-11-11): v_c(2 AU) 21.0 → 21.1 and v_esc(2 AU) 29.7 → 29.8, full ellipse 519 → 518
+# and half Mars year 344 → 343 (the keys had used GM_S = 1.327e20, not the prompt's 1.33e20); 10.85 → 10.8 and
+# 0.961 → 0.960 in feedback. Q-6.6-escape-from-orbit and Q-6.6-leo-geo move to mid, because the lesson prints the
+# formulas that answer them; two new exam rungs (escape-from-perigee, hohmann-vs-escape) climb above the text.
 
 chapter: 6
 questions:
@@ -57,7 +66,7 @@ questions:
     correctFeedback: 'נכון: $v_{\text{esc}} = \sqrt{\dfrac{2GM_E}{R_E}} = \sqrt{1.25\cdot10^{8}}\,\text{m/s} = 11.2\,\text{km/s}$.'
     wrongFeedback: 'השוו את האנרגיה הכוללת לאפס: $\tfrac12v^2 = GM_E/R_E$ ליחידת מסה.'
     commonWrong:
-      - value: 7.91
+      - value: 7.90
         feedback: 'זו המהירות של מסלול מעגלי צמוד לקרקע, $\sqrt{GM_E/R_E}$. בה הגוף מקיף ולא בורח: מהירות המילוט גדולה ממנה פי $\sqrt2$.'
       - value: 125
         feedback: 'זה $2GM_E/R_E$ ביחידות $\text{km}^2/\text{s}^2$, כלומר $v^2$. הוציאו שורש.'
@@ -76,11 +85,11 @@ questions:
     correctFeedback: >-
       נכון. משימור אנרגיה עם $E = -GM_Sm/(2a)$:
       $$v^2 = GM_S\left(\frac{2}{r} - \frac{1}{a}\right) = 1.33\cdot10^{20}\left(\frac{2}{3.0\cdot10^{11}} - \frac{1}{6.0\cdot10^{11}}\right)$$
-      ולכן $v = 25.8\,\text{km/s}$. זה יותר מהמהירות המעגלית ב-$2.0\,\text{AU}$, $21.0\,\text{km/s}$, כי $a > r$: האסטרואיד
-      בדרך החוצה, לכיוון נקודת הריחוק.
+      ולכן $v = 25.8\,\text{km/s}$. זה יותר מהמהירות המעגלית ב-$2.0\,\text{AU}$, $21.1\,\text{km/s}$, כי $r < a$: במרחק
+      הזה $2/r - 1/a > 1/r$. אותה מהירות בדרך החוצה ובדרך פנימה; vis-viva נותן רק את הגודל.
     wrongFeedback: 'כתבו את שימור האנרגיה בין הנקודה הזו לבין האנרגיה של המסלול כולו, $-GM_Sm/(2a)$, ובודדו את $v$.'
     commonWrong:
-      - value: 21.0
+      - value: 21.1
         feedback: >-
           זו המהירות של מסלול **מעגלי** ברדיוס $2.0\,\text{AU}$, $\sqrt{GM_S/r}$. באליפסה המהירות במרחק נתון תלויה גם ב-$a$,
           לפי $v^2 = GM_S(2/r - 1/a)$.
@@ -88,7 +97,7 @@ questions:
       - value: 14.9
         feedback: 'זו המהירות המעגלית ברדיוס $a$, $\sqrt{GM_S/a}$. היא שווה למהירות באליפסה רק בנקודה שבה $r = a$.'
         misconception: MC-6-speed-from-circular-formula
-      - value: 29.7
+      - value: 29.8
         feedback: 'זו מהירות המילוט ב-$2.0\,\text{AU}$, $\sqrt{2GM_S/r}$: שכחתם את האיבר $-1/a$. האסטרואיד קשור, ולכן מהירותו קטנה ממנה.'
     hints:
       - 'ליחידת מסה, $\tfrac12v^2 - \dfrac{GM_S}{r} = -\dfrac{GM_S}{2a}$.'
@@ -99,7 +108,7 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      לוויין נע באליפסה בעלת חצי ציר ראשי $a$ סביב כוכב לכת. בקצה הציר הקטן של האליפסה המרחק של הלוויין מהמוקד, שבו
+      לוויין נע באליפסה בעלת חצי ציר ראשי $a$ סביב כוכב לכת. בקצה הציר המשני של האליפסה המרחק של הלוויין מהמוקד, שבו
       כוכב הלכת, הוא בדיוק $a$ (תכונה גיאומטרית של כל אליפסה). איך משווה מהירותו שם למהירות של לוויין במסלול מעגלי ברדיוס $a$?
     choices:
       - text: שווה.
@@ -122,24 +131,24 @@ questions:
           התשובה יוצאת נכונה במקרה. $\sqrt{GM/r}$ נכון רק במסלול מעגלי: בנקודת הקרבה של אליפסה המהירות גדולה ממנו,
           ובנקודת הריחוק קטנה ממנו.
         misconception: MC-6-speed-from-circular-formula
-      - text: 'בקצה הציר הקטן הלוויין נמצא באמצע הדרך בזמן בין נקודת הקרבה לנקודת הריחוק.'
-        feedback: 'לפי החוק השני, הלוויין מגיע לקצה הציר הקטן לפני שעבר חצי מהזמן שבין נקודת הקרבה לנקודת הריחוק, כי בצד הקרוב הוא מהיר. ובכל מקרה, הזמן לא קובע את המהירות; האנרגיה כן.'
+      - text: 'בקצה הציר המשני הלוויין נמצא באמצע הדרך בזמן בין נקודת הקרבה לנקודת הריחוק.'
+        feedback: 'לפי החוק השני, הלוויין מגיע לקצה הציר המשני לפני שעבר חצי מהזמן שבין נקודת הקרבה לנקודת הריחוק, כי בצד הקרוב הוא מהיר. ובכל מקרה, הזמן לא קובע את המהירות; האנרגיה כן.'
     hints:
       - 'כתבו את vis-viva בנקודה שבה $r = a$.'
 
   - id: Q-6.6-escape-from-orbit
     type: numeric
     objectives: [OBJ-6.6-1]
-    level: bagrut
+    level: mid
     prompt: >-
       חללית נמצאת במסלול מעגלי בגובה $400\,\text{km}$ מעל פני כדור הארץ ($R_E = 6.37\cdot10^{6}\,\text{m}$,
       $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$). המנוע שלה פועל לזמן קצר מאוד. מה שינוי המהירות המינימלי
-      $\Delta v$ שיוציא אותה מהשדה של כדור הארץ?
+      $\Delta v$ שיוציא אותה מהשדה של כדור הארץ? ענו ב-$\text{km/s}$.
     answer: 3.18
     unit: km/s
     correctFeedback: >-
       נכון. ב-$r = 6.77\cdot10^{6}\,\text{m}$ המהירות המעגלית $v_c = \sqrt{GM_E/r} = 7.67\,\text{km/s}$, ומהירות המילוט
-      $\sqrt2\,v_c = 10.85\,\text{km/s}$. הדחיפה הזולה ביותר היא בכיוון התנועה, ואז $\Delta v = (\sqrt2 - 1)v_c = 3.18\,\text{km/s}$.
+      $\sqrt2\,v_c = 10.8\,\text{km/s}$. הדחיפה הזולה ביותר היא בכיוון התנועה, ואז $\Delta v = (\sqrt2 - 1)v_c = 3.18\,\text{km/s}$.
       **בדיקת גבולות:** כש-$r \to \infty$ גם $v_c$ וגם $\Delta v$ שואפים לאפס: רחוק מכדור הארץ קל לברוח ממנו.
     wrongFeedback: >-
       החללית כבר נעה במהירות המעגלית. מצאו את מהירות המילוט ב-$r = R_E + 400\,\text{km}$, ובדקו כמה חסר לה כשהדחיפה
@@ -155,6 +164,45 @@ questions:
         misconception: MC-6-delta-v-from-rest
     hints:
       - 'במסלול מעגלי, $v_{\text{esc}} = \sqrt2\,v_c$ באותו רדיוס.'
+
+  - id: Q-6.6-escape-from-perigee
+    type: numeric
+    objectives: [OBJ-6.6-1]
+    level: bagrut
+    prompt: >-
+      לוויין נע סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) באליפסה: נקודת הקרבה במרחק
+      $7.0\cdot10^{6}\,\text{m}$ ממרכז כדור הארץ, ונקודת הריחוק במרחק $3.0\cdot10^{7}\,\text{m}$. בנקודת הקרבה המנוע
+      פועל לזמן קצר מאוד, בכיוון התנועה. מה שינוי המהירות $\Delta v$ הקטן ביותר שבו הלוויין יוצא מהשדה של כדור
+      הארץ ולא חוזר? ענו ב-$\text{km/s}$.
+    answer: 1.06
+    unit: km/s
+    correctFeedback: >-
+      נכון. חצי הציר הראשי $a = \tfrac12\left(r_p + r_a\right) = 1.85\cdot10^{7}\,\text{m}$, ו-vis-viva בנקודת הקרבה נותן
+      $v_p = \sqrt{GM_E\left(2/r_p - 1/a\right)} = 9.60\,\text{km/s}$. מהירות המילוט שם $\sqrt{2GM_E/r_p} = 10.7\,\text{km/s}$,
+      ולכן
+      $$\Delta v = \sqrt{\frac{2GM_E}{r_p}} - \sqrt{GM_E\left(\frac{2}{r_p} - \frac{1}{a}\right)} = 1.06\,\text{km/s}$$
+      **בדיקת גבולות:** כש-$r_a \to r_p$ המסלול מעגלי, ו-$\Delta v \to (\sqrt2 - 1)v_c$; כש-$r_a \to \infty$, $a \to \infty$
+      ו-$\Delta v \to 0$: מסלול שכבר כמעט פרבולה צריך רק דחיפה קטנה. (בנקודת הריחוק אותה בריחה הייתה עולה $2.91\,\text{km/s}$:
+      הלוויין איטי שם, אבל גם מהירות המילוט קטנה, וההפרש גדול יותר.)
+    wrongFeedback: >-
+      מצאו קודם את המהירות של הלוויין בנקודת הקרבה מתוך $a$ (vis-viva), ואחר כך את מהירות המילוט באותו מרחק. הדחיפה
+      בכיוון התנועה צריכה להשלים רק את ההפרש.
+    commonWrong:
+      - value: 3.12
+        feedback: >-
+          חישבתם את מהירות הלוויין בנקודת הקרבה כמהירות מעגלית, $\sqrt{GM_E/r_p} = 7.54\,\text{km/s}$. אבל הלוויין באליפסה,
+          ובנקודת הקרבה שלה הוא מהיר יותר: $v_p = 9.60\,\text{km/s}$ לפי vis-viva.
+        misconception: MC-6-speed-from-circular-formula
+      - value: 2.91
+        feedback: >-
+          זה שינוי המהירות שהיה נדרש **בנקודת הריחוק**, $\sqrt{2GM_E/r_a} - v_a$ עם $v_a = 2.24\,\text{km/s}$. השאלה על דחיפה
+          בנקודת הקרבה, ושם הוא קטן בהרבה.
+      - value: 10.7
+        feedback: 'זו מהירות המילוט כולה בנקודת הקרבה. אבל הלוויין כבר נע שם ב-$9.60\,\text{km/s}$, וחסר רק ההפרש.'
+        misconception: MC-6-delta-v-from-rest
+    hints:
+      - 'vis-viva בנקודת הקרבה: $v_p^2 = GM_E\left(2/r_p - 1/a\right)$ עם $a = \tfrac12\left(r_p + r_a\right)$.'
+      - 'בורחים כשהאנרגיה ליחידת מסה מגיעה ל-$0$, כלומר כשהמהירות מגיעה ל-$\sqrt{2GM_E/r}$ באותו מרחק.'
 
   # ---------------------------------------------------------------- OBJ-6.6-2 Hohmann transfers
   - id: Q-6.6-transfer-a
@@ -174,7 +222,7 @@ questions:
       - text: '$r_2 - r_1$'
         feedback: 'זה המרחק בין המעגלים לאורך רדיוס אחד. אבל אליפסת המעבר עוברת סביב כוכב הלכת: נקודת הקרבה בצד אחד, ונקודת הריחוק בצד השני.'
       - text: '$\sqrt{r_1r_2}$'
-        feedback: 'הממוצע הגיאומטרי מופיע בחצי הציר **הקטן** של האליפסה, $b = \sqrt{r_pr_a}$. הציר הראשי הוא סכום המרחקים בשני קצותיו.'
+        feedback: 'זה הממוצע הגיאומטרי של שני המרחקים. אבל הציר הראשי עובר מנקודת הקרבה, דרך כוכב הלכת, אל נקודת הריחוק: אורכו סכום המרחקים, $r_1 + r_2$, וחצי ממנו הוא הממוצע הרגיל.'
       - text: '$r_2$, כי החללית מגיעה עד המעגל החיצוני.'
         feedback: '$r_2$ הוא מרחק נקודת הריחוק, ולא חצי הציר. חצי הציר הוא הממוצע של מרחקי נקודת הקרבה ונקודת הריחוק.'
     hints:
@@ -231,9 +279,9 @@ questions:
       כלומר 259 ימים, כשמונה וחצי חודשים.
     wrongFeedback: 'חשבו את $a$ של אליפסת המעבר ואת זמן המחזור שלה מהחוק השלישי. החללית עוברת רק חצי ממנה.'
     commonWrong:
-      - value: 519
+      - value: 518
         feedback: 'זה זמן המחזור של כל אליפסת המעבר. החללית עוברת רק חצי ממנה, מנקודת הקרבה לנקודת הריחוק.'
-      - value: 344
+      - value: 343
         feedback: 'זה חצי מזמן המחזור של מאדים, עם $a = 1.52\,\text{AU}$. אליפסת המעבר קטנה יותר: $a = 1.26\,\text{AU}$.'
       - value: 183
         feedback: 'זו חצי שנה, חצי מזמן המחזור של כדור הארץ. אליפסת המעבר גדולה יותר: $a = 1.26\,\text{AU}$.'
@@ -243,15 +291,15 @@ questions:
   - id: Q-6.6-leo-geo
     type: numeric
     objectives: [OBJ-6.6-2]
-    level: bagrut
+    level: mid
     prompt: >-
       לוויין עובר ממסלול מעגלי נמוך בגובה $300\,\text{km}$ (רדיוס $r_1 = 6.67\cdot10^{6}\,\text{m}$ ממרכז כדור הארץ) למסלול
       גאוסטציונרי ברדיוס $r_2 = 4.22\cdot10^{7}\,\text{m}$, במסלול הוהמן. $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$.
-      מה הסכום של גדלי שני שינויי המהירות?
+      מה הסכום של גדלי שני שינויי המהירות? ענו ב-$\text{km/s}$.
     answer: 3.89
     unit: km/s
     correctFeedback: >-
-      נכון. המהירויות המעגליות: $v_1 = 7.73$ ו-$v_2 = 3.07\,\text{km/s}$. על אליפסת המעבר, עם $a = (r_1 + r_2)/2 = 2.44\cdot10^{7}\,\text{m}$,
+      נכון. המהירויות המעגליות: $v_1 = 7.72$ ו-$v_2 = 3.07\,\text{km/s}$. על אליפסת המעבר, עם $a = (r_1 + r_2)/2 = 2.44\cdot10^{7}\,\text{m}$,
       vis-viva נותן $v_p = 10.15$ בנקודת הקרבה ו-$v_a = 1.60\,\text{km/s}$ בנקודת הריחוק. לכן
       $$\Delta v_1 = v_p - v_1 = 2.43\,\text{km/s},\qquad \Delta v_2 = v_2 - v_a = 1.47\,\text{km/s}$$
       והסכום $3.89\,\text{km/s}$; הדרך נמשכת $5.3$ שעות. **בדיקת גבולות:** כש-$r_2 \to r_1$, $v_p$ ו-$v_a$ שואפים שניהם ל-$v_1$,
@@ -267,10 +315,47 @@ questions:
         misconception: MC-6-dv-is-speed-difference
       - value: 2.43
         feedback: 'זה רק $\Delta v_1$, ביציאה מהמסלול הנמוך. בנקודת הריחוק צריך דחיפה שנייה כדי להישאר במעגל: $v_2 - v_a = 1.47\,\text{km/s}$.'
-      - value: 0.961
+      - value: 0.960
         feedback: >-
           חישבתם את הדחיפה השנייה כהאטה, $\Delta v_1 - \Delta v_2$. בנקודת הריחוק החללית איטית מהמהירות המעגלית ב-$r_2$,
           ולכן גם שם מאיצים, ושני הגדלים מתחברים.
         misconception: MC-6-outer-orbit-slower-so-brake
     hints:
       - 'vis-viva: $v^2 = GM_E(2/r - 1/a)$, בכל אחד משני הקצוות של אליפסת המעבר.'
+
+  - id: Q-6.6-hohmann-vs-escape
+    type: numeric
+    objectives: [OBJ-6.6-2, OBJ-6.6-1]
+    level: bagrut
+    prompt: >-
+      לוויין נע במסלול מעגלי ברדיוס $r_1$ סביב כוכב לכת. למפעילים שתי אפשרויות: (א) להעביר אותו במסלול הוהמן למסלול מעגלי
+      ברדיוס $5r_1$; (ב) להוציא אותו מהשדה של כוכב הלכת לגמרי, בדחיפה אחת בכיוון התנועה. מה היחס בין סכום הגדלים של שינויי
+      המהירות באפשרות (א) לשינוי המהירות באפשרות (ב)?
+    answer: 1.16
+    unit: ''
+    correctFeedback: >-
+      נכון, והמעבר ל-$5r_1$ **יקר** יותר מבריחה. ביחידות של $v_1 = \sqrt{GM/r_1}$, עם $x = r_2/r_1 = 5$:
+      $$\frac{\Delta v_1}{v_1} = \sqrt{\frac{2x}{1 + x}} - 1 = 0.291$$
+      $$\frac{\Delta v_2}{v_1} = \frac{1}{\sqrt x}\left(1 - \sqrt{\frac{2}{1 + x}}\right) = 0.189$$
+      הסכום $0.480\,v_1$, והבריחה $(\sqrt2 - 1)v_1 = 0.414\,v_1$; היחס $1.16$. דחיפת הבריחה גדולה מ-$\Delta v_1$ רק
+      ב-$0.123\,v_1$, ובבריחה אין דחיפה שנייה; במעבר הוהמן הדחיפה השנייה מוסיפה $0.189\,v_1$, יותר מזה. זה גם הרעיון של
+      המעבר בשלוש דחיפות שבשיעור: לעלות רחוק מאוד זול כמעט כמו לברוח. **בדיקת גבולות:** כש-$x \to 1$ היחס שואף ל-$0$; כש-$x \to \infty$, $\Delta v_1 \to (\sqrt2 - 1)v_1$
+      ו-$\Delta v_2 \to 0$, והיחס שואף ל-$1$ מלמעלה.
+    wrongFeedback: >-
+      כתבו את שתי הדחיפות של הוהמן ואת דחיפת הבריחה כולן ביחידות של $v_1$; $GM$ ו-$r_1$ מצטמצמים ביחס. השתמשו ב-vis-viva בשני
+      הקצוות של אליפסת המעבר, עם $a = 3r_1$.
+    commonWrong:
+      - value: 1.33
+        feedback: >-
+          חישבתם את המעבר כהפרש בין המהירויות המעגליות, $v_1 - v_2 = (1 - 1/\sqrt5)v_1$. אבל שתי הדחיפות מגדילות את המהירות,
+          ובאמצע החללית מאטה בלי מנוע: הסכום הוא $\Delta v_1 + \Delta v_2 = 0.480\,v_1$.
+        misconception: MC-6-dv-is-speed-difference
+      - value: 0.703
+        feedback: 'זה רק $\Delta v_1$ חלקי הבריחה. בלי הדחיפה השנייה, $\Delta v_2 = 0.189\,v_1$, החללית חוזרת אל $r_1$.'
+      - value: 0.339
+        feedback: >-
+          חילקתם במהירות המילוט כולה, $\sqrt2\,v_1$. אבל הלוויין כבר נע ב-$v_1$, ולבריחה חסר רק $(\sqrt2 - 1)v_1$.
+        misconception: MC-6-delta-v-from-rest
+    hints:
+      - 'במסלול הוהמן $a = \tfrac12\left(r_1 + 5r_1\right) = 3r_1$; כתבו כל מהירות כמכפלה של $v_1$.'
+      - 'לבריחה ממסלול מעגלי צריך להגיע למהירות $\sqrt2\,v_1$.'

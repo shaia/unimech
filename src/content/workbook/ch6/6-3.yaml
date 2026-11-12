@@ -1,0 +1,453 @@
+# Workbook, lesson 6.3 (central force and the effective potential). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-3/workbook.ts with src/physics/constants.ts and src/physics/orbit.ts,
+# centralforce.ts (GM_S = 1.33e20, GM_E = 3.98e14 m³/s², AU = 1.5e11 m):
+#   W02 r = 2.0 AU, v_r = 5.0, v_θ = 20 km/s: h = 6.00e15, barrier 2.00e8, −GM/r = −4.42e8, u_eff = −2.42e8,
+#       ½ṙ² = 1.25e7, ε = −2.30e8 J/kg;
+#   W04 h = 8.0e10: r₀ = 1.61e7 m (2.52 R_E), v = 4.98 km/s, u_eff(r₀) = −1.24e7 J/kg, u_eff = 0 at 8.04e6 m;
+#   W05 two Suns 1.0 AU apart: μ = 9.95e29 kg, k = 2.64e50 J·m, L = 6.28e45 kg·m²/s, E = −8.80e38 J, relative speed
+#       42.1 km/s, each star 21.0 km/s, period 0.710 yr;
+#   W07 v∞ = 10 km/s, b = 1.0 AU: ε = 5.00e7, h = 1.50e15, r_p = 8.45e9 m = 0.0563 AU, v_p = 178 km/s;
+#   W08 r_p = 0.60, r_a = 30 AU: h = 4.84e15, ε = −2.89e7, v_p = 53.8 km/s (escape there 54.3), v_a = 1.08 km/s;
+#   W09 h = 6.5e10: u_eff,min = −1.8746e7 = −1.87e7 (was −1.88e7; review r63.ts) > −2.2e7 (impossible); at ε = −2.2e7 the largest h is 6.00e10 (r = 9.05e6 m);
+#   W10 m = 0.20, M = 0.50 kg, r = 0.40 m, v = 1.5 m/s: L = 0.120, E = 2.19 J, turning points 0.160 and 0.400 m,
+#       circle at 0.245 m, the circle at 0.40 m needs 3.13 m/s, speed at 0.160 m is 3.74 m/s;
+#   c1, c2 are symbolic.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.3'
+practice:
+  - id: W-6.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.3-1]
+    prompt: >-
+      בכל מצב, קבעו ונמקו אם התנע הזוויתי של הגוף ביחס לנקודה הנתונה נשמר.
+
+      א. כוכב לכת במסלול אליפטי סביב השמש, ביחס לשמש.
+
+      ב. אותו כוכב לכת, ביחס למרכז האליפסה (נקודה קבועה שאיננה השמש).
+
+      ג. דיסקית על שולחן חלק, קשורה בחוט שעובר דרך חור בשולחן. מושכים את החוט מלמטה לאט, והדיסקית מסתובבת במעגלים הולכים וקטנים. ביחס לחור.
+
+      ד. אלקטרון בשדה חשמלי אחיד, ביחס לנקודה קבועה כלשהי.
+    answer: >-
+      א. נשמר. ב. לא נשמר. ג. נשמר, אף שהמתיחות משתנה. ד. לא נשמר (חוץ ממקרה מיוחד שבו הנקודה על קו התנועה).
+    solution:
+      - kind: law
+        text: >-
+          $d\vec L_O/dt = \vec r_O\times\vec F$: התנע הזוויתי ביחס ל-$O$ נשמר אם המומנט של הכוח השקול ביחס ל-$O$ אפס בכל רגע.
+      - kind: reasoning
+        text: >-
+          א: הכבידה פועלת לאורך הקו אל השמש, ולכן המומנט שלה ביחס לשמש אפס, בכל מקום באליפסה. ב: ביחס למרכז האליפסה, הקו
+          שלאורכו פועל הכוח (דרך השמש) לא עובר דרך הנקודה, והמומנט שונה מאפס, חוץ מבנקודות הקצה של הציר הראשי. ג: המתיחות
+          פונה תמיד אל החור, כלומר כוח מרכזי ביחס לחור, בכל גודל שהוא; הכובד והנורמלי אנכיים ומאזנים זה את זה. ד: הכוח
+          החשמלי קבוע בכיוון, ולכן הוא לא פונה אל נקודה קבועה אחת, והמומנט שלו ביחס לנקודה כללית שונה מאפס.
+      - kind: limit
+        text: >-
+          ב-ג, כש-$r$ קטן פי 2, $L = mrv_\theta$ קבוע מחייב $v_\theta$ גדול פי 2: הדיסקית מאיצה, והעבודה של היד שמושכת היא שמגדילה את האנרגיה הקינטית.
+      - kind: units
+        text: >-
+          $\vec r\times\vec F$ ב-$\text{N}\cdot\text{m}$, ו-$\vec L$ ב-$\text{kg}\cdot\text{m}^2/\text{s}$.
+      - kind: result
+        text: >-
+          נשמר ב-א וב-ג (כוח מרכזי ביחס לנקודה הזו, בכל גודל ובכל צורת מסלול); לא נשמר ב-ב וב-ד.
+
+  - id: W-6.3-02
+    level: basic
+    objectives: [OBJ-6.3-1]
+    prompt: >-
+      גוף קטן נמצא במרחק $2.0\,\text{AU}$ מהשמש ($GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$, $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$).
+      רכיב המהירות שלו לאורך הקו מהשמש, החוצה, הוא $5.0\,\text{km/s}$, והרכיב הניצב לקו הזה $20\,\text{km/s}$. חשבו ליחידת
+      מסה את התנע הזוויתי $h$, את שני האיברים של $u_{\text{eff}}$, את $u_{\text{eff}}$, ואת $\varepsilon$.
+    answer: >-
+      $h = 6.00\cdot10^{15}\,\text{m}^2/\text{s}$; $h^2/(2r^2) = 2.00\cdot10^{8}$, $-GM_S/r = -4.42\cdot10^{8}$,
+      $u_{\text{eff}} = -2.42\cdot10^{8}$, $\varepsilon = -2.30\cdot10^{8}\,\text{J/kg}$.
+    solution:
+      - kind: given
+        text: >-
+          $r = 3.0\cdot10^{11}\,\text{m}$, $v_r = \dot r = 5.0\cdot10^{3}\,\text{m/s}$, $v_\theta = 2.0\cdot10^{4}\,\text{m/s}$. הראשית בשמש. מסת הגוף זניחה.
+      - kind: law
+        text: >-
+          $h = rv_\theta$; $u_{\text{eff}} = \dfrac{h^2}{2r^2} - \dfrac{GM_S}{r}$; $\varepsilon = \tfrac12\dot r^2 + u_{\text{eff}}$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{h^2}{2r^2} = \tfrac12v_\theta^2$: המחסום הוא בדיוק האנרגיה הקינטית של הרכיב הניצב. האנרגיה הקינטית של הרכיב הרדיאלי, $\tfrac12\dot r^2$, היא ההפרש בין $\varepsilon$ ל-$u_{\text{eff}}$.
+      - kind: limit
+        text: >-
+          אילו $v_r = 0$, הגוף היה בנקודת מפנה ו-$\varepsilon = u_{\text{eff}}(r)$. ואילו $v_\theta = 0$, $h = 0$ והמחסום נעלם.
+      - kind: units
+        text: >-
+          $rv_\theta$ ב-$\text{m}^2/\text{s}$; כל איבר אנרגיה ב-$\text{m}^2/\text{s}^2 = \text{J/kg}$.
+      - kind: substitution
+        text: >-
+          $h = 3.0\cdot10^{11}\cdot2.0\cdot10^{4} = 6.00\cdot10^{15}$. המחסום $\tfrac12(2.0\cdot10^{4})^2 = 2.00\cdot10^{8}$; המשיכה
+          $-1.33\cdot10^{20}/3.0\cdot10^{11} = -4.42\cdot10^{8}$; $u_{\text{eff}} = -2.42\cdot10^{8}$; $\tfrac12\dot r^2 = 1.25\cdot10^{7}$, ולכן $\varepsilon = -2.30\cdot10^{8}\,\text{J/kg}$.
+      - kind: result
+        text: >-
+          $h = 6.00\cdot10^{15}\,\text{m}^2/\text{s}$, $u_{\text{eff}} = -2.42\cdot10^{8}\,\text{J/kg}$, $\varepsilon = -2.30\cdot10^{8}\,\text{J/kg}$: שלילית, ולכן המסלול קשור.
+
+  - id: W-6.3-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      בגרף של $u_{\text{eff}}(r) = h^2/(2r^2) - GM/r$, עבור $h$ נתון, משרטטים ארבעה קווים אופקיים: $\varepsilon_1$ בדיוק בתחתית
+      הבור, $\varepsilon_2$ מעט מעליה אבל שלילית, $\varepsilon_3 = 0$, ו-$\varepsilon_4 > 0$. לכל קו, קבעו כמה נקודות מפנה יש,
+      אם המסלול קשור, ואיך הוא נראה במישור. ובאיזה מהמסלולים הגוף הכי מהיר בנקודה הקרובה ביותר למרכז?
+    answer: >-
+      $\varepsilon_1$: נקודה אחת שבה $r$ קבוע, מעגל. $\varepsilon_2$: שתיים, קשור, אליפסה. $\varepsilon_3$ ו-$\varepsilon_4$: אחת, לא קשור.
+      הכי מהיר ב-$\varepsilon_4$.
+    solution:
+      - kind: law
+        text: >-
+          $\tfrac12\dot r^2 = \varepsilon - u_{\text{eff}}(r) \ge 0$: מותר רק איפה שהעקומה מתחת לקו. בנקודות מפנה $u_{\text{eff}} = \varepsilon$.
+      - kind: reasoning
+        text: >-
+          $\varepsilon_1$: הקו נוגע בעקומה רק בתחתית, $\dot r = 0$ כל הזמן, מעגל ברדיוס $h^2/GM$. $\varepsilon_2$: הקו חותך את
+          הבור משני צדיו, $r$ מתנודד בין $r_p$ ל-$r_a$; בכבידה זו אליפסה. $\varepsilon_3$ ו-$\varepsilon_4$: ב-$r$ גדול הקו תמיד מעל
+          העקומה, כי $u_{\text{eff}} \to 0^-$, ולכן יש רק נקודת מפנה פנימית והגוף בורח. ככל שהקו גבוה יותר, הוא חותך את הדופן
+          הפנימית קרוב יותר למרכז, $r_p$ קטן, ו-$v = h/r_p$ גדל.
+      - kind: limit
+        text: >-
+          כש-$\varepsilon \to 0^-$, נקודת הריחוק $r_a \to \infty$: הגבול בין אליפסה ארוכה מאוד למסלול שבורח.
+      - kind: units
+        text: >-
+          כל הקווים והעקומה ב-$\text{J/kg}$.
+      - kind: result
+        text: >-
+          מעגל, אליפסה, ושני מסלולים לא קשורים (ב-$\varepsilon = 0$ הגבולי). בנקודה הקרובה ביותר, $v = h/r_p$ הכי גדול ב-$\varepsilon_4$.
+
+  - id: W-6.3-04
+    level: mid
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      ללוויין סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) יש תנע זוויתי ליחידת מסה $h = 8.0\cdot10^{10}\,\text{m}^2/\text{s}$.
+
+      א. מה הרדיוס של המסלול המעגלי בעל ה-$h$ הזה, ומה המהירות בו?
+
+      ב. מה הערך של $u_{\text{eff}}$ במינימום? הסבירו מדוע אין ללוויין עם ה-$h$ הזה מסלול שבו האנרגיה ליחידת מסה נמוכה ממנו.
+    answer: >-
+      א. $r_0 = 1.61\cdot10^{7}\,\text{m}$, $v = 4.98\,\text{km/s}$. ב. $-1.24\cdot10^{7}\,\text{J/kg}$; מתחתיו $\tfrac12\dot r^2$ הייתה שלילית בכל $r$.
+    solution:
+      - kind: given
+        text: >-
+          $h = 8.0\cdot10^{10}\,\text{m}^2/\text{s}$, $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$. הראשית במרכז כדור הארץ.
+      - kind: law
+        text: >-
+          $u_{\text{eff}} = \dfrac{h^2}{2r^2} - \dfrac{GM_E}{r}$; מעגל במינימום, $du_{\text{eff}}/dr = 0$.
+      - kind: manipulation
+        text: >-
+          $-h^2/r^3 + GM_E/r^2 = 0$ נותן $r_0 = h^2/GM_E$. המהירות $v = h/r_0 = GM_E/h$. מציבים: $u_{\text{eff}}(r_0) = \dfrac{(GM_E)^2}{2h^2} - \dfrac{(GM_E)^2}{h^2} = -\dfrac{(GM_E)^2}{2h^2}$.
+      - kind: limit
+        text: >-
+          $v = GM_E/h$ שווה ל-$\sqrt{GM_E/r_0}$, המהירות המעגלית. וכש-$h$ גדל, $r_0$ גדל כמו $h^2$ והבור רדוד יותר.
+      - kind: units
+        text: >-
+          $h^2/GM_E$ ב-$\dfrac{\text{m}^4/\text{s}^2}{\text{m}^3/\text{s}^2} = \text{m}$; $GM_E/h$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $r_0 = (8.0\cdot10^{10})^2/3.98\cdot10^{14} = 1.61\cdot10^{7}\,\text{m}$, כ-$2.52$ רדיוסים של כדור הארץ. $v = 4.98\,\text{km/s}$.
+          $u_{\text{eff}}(r_0) = -1.24\cdot10^{7}\,\text{J/kg}$.
+      - kind: result
+        text: >-
+          א. $1.61\cdot10^{7}\,\text{m}$, $4.98\,\text{km/s}$. ב. $-1.24\cdot10^{7}\,\text{J/kg}$: זה הערך הקטן ביותר של $u_{\text{eff}}$, ו-$\varepsilon \ge u_{\text{eff}}(r)$ בכל רגע.
+
+  - id: W-6.3-05
+    level: mid
+    objectives: [OBJ-6.3-1, OBJ-6.3-2]
+    prompt: >-
+      שני כוכבים, לכל אחד מסה כמסת השמש, $M_S = 1.99\cdot10^{30}\,\text{kg}$, מקיפים זה את זה במעגל, והמרחק ביניהם
+      $1.0\,\text{AU}$. כתבו את הפוטנציאל האפקטיבי של התנועה היחסית, ומצאו את התנע הזוויתי $L$ של התנועה היחסית, את
+      האנרגיה שלה, ואת המהירות של כל כוכב.
+    answer: >-
+      $L = 6.28\cdot10^{45}\,\text{kg}\cdot\text{m}^2/\text{s}$; $E = -8.80\cdot10^{38}\,\text{J}$; כל כוכב $21.0\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m_1 = m_2 = M_S$, $r_0 = 1.5\cdot10^{11}\,\text{m}$, מסלול מעגלי. $\mu = M_S/2 = 9.95\cdot10^{29}\,\text{kg}$, $k = GM_S^2 = 2.64\cdot10^{50}\,\text{J}\cdot\text{m}$.
+          התנע הזוויתי ביחס למרכז המסה.
+      - kind: law
+        text: >-
+          $U_{\text{eff}}(r) = \dfrac{L^2}{2\mu r^2} - \dfrac{k}{r}$; מעגל במינימום; מערכת מרכז המסה (שיעור 6.2): $r_1 = r_2 = r/2$.
+      - kind: manipulation
+        text: >-
+          $dU_{\text{eff}}/dr = 0$ נותן $L^2 = \mu kr_0$. במינימום $E = U_{\text{eff}}(r_0) = \dfrac{k}{2r_0} - \dfrac{k}{r_0} = -\dfrac{k}{2r_0}$.
+          המהירות היחסית $v = L/(\mu r_0)$, וכל כוכב נע במחציתה סביב מרכז המסה.
+      - kind: limit
+        text: >-
+          $v^2 = \dfrac{L^2}{\mu^2r_0^2} = \dfrac{k}{\mu r_0} = \dfrac{G(m_1 + m_2)}{r_0}$: אותה נוסחה כמו לגוף קל סביב גוף כבד, עם המסה הכוללת. כש-$m_1 \ll m_2$, $\mu \to m_1$ והכול חוזר לכוכב לכת סביב שמש.
+      - kind: units
+        text: >-
+          $\mu kr_0$ ב-$\text{kg}\cdot\text{J}\cdot\text{m}\cdot\text{m} = (\text{kg}\cdot\text{m}^2/\text{s})^2$; $k/r_0$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $L = \sqrt{9.95\cdot10^{29}\cdot2.64\cdot10^{50}\cdot1.5\cdot10^{11}} = 6.28\cdot10^{45}\,\text{kg}\cdot\text{m}^2/\text{s}$. $E = -8.80\cdot10^{38}\,\text{J}$.
+          $v = 42.1\,\text{km/s}$, ולכל כוכב $21.0\,\text{km/s}$. זמן מחזור $2\pi r_0/v = 0.710$ שנים.
+      - kind: result
+        text: >-
+          $U_{\text{eff}} = L^2/(2\mu r^2) - GM_S^2/r$ עם $\mu = M_S/2$; $L = 6.28\cdot10^{45}\,\text{kg}\cdot\text{m}^2/\text{s}$, $E = -8.80\cdot10^{38}\,\text{J}$, $21.0\,\text{km/s}$ לכל כוכב.
+
+  - id: W-6.3-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      לוויין נע במסלול מעגלי. המנוע שלו פועל לזמן קצר **בכיוון התנועה**, ומגדיל את מהירותו מעט. מה קורה לעקומה $u_{\text{eff}}$
+      ולקו $\varepsilon$ בגרף? האם המקום שבו הופעל המנוע הוא עכשיו נקודת הקרבה או נקודת הריחוק של המסלול החדש? נמקו
+      מהגרף.
+    answer: >-
+      $h$ גדל, ולכן העקומה משתנה: הבור זז החוצה ונעשה רדוד יותר. $\varepsilon$ עולה. המקום שבו הופעל המנוע הוא נקודת הקרבה.
+    solution:
+      - kind: law
+        text: >-
+          $h = rv_\theta$, $\varepsilon = \tfrac12v^2 - GM/r$; $u_{\text{eff}} = h^2/(2r^2) - GM/r$, עם מינימום ב-$r_0 = h^2/GM$.
+      - kind: reasoning
+        text: >-
+          הדחיפה משיקית וקצרה, והלוויין לא זז בזמנה. לכן $r$ לא השתנה, $\dot r$ נשאר אפס, ו-$v_\theta$ גדל: $h$ גדל, והמינימום
+          של העקומה החדשה, $h^2/GM$, רחוק יותר מהרדיוס הנוכחי. $\varepsilon$ גדלה, כי $v$ גדל. ברדיוס הנוכחי $\dot r = 0$, ולכן
+          הוא נקודת מפנה של המסלול החדש. הוא נמצא **פנימה** מהמינימום החדש, כלומר על הדופן הפנימית של הבור: נקודת הקרבה.
+      - kind: limit
+        text: >-
+          אם הדחיפה זעירה, המינימום החדש כמעט במקום הישן והקו כמעט בתחתית: האליפסה כמעט מעגל. ואם היא מביאה את $\varepsilon$ לאפס, נקודת הריחוק בורחת לאינסוף.
+          השוו לדחיפה רדיאלית (דוגמה 6 בשיעור), שבה העקומה לא משתנה כלל.
+      - kind: units
+        text: >-
+          $h^2/GM$ במטרים, $\varepsilon$ ב-$\text{J/kg}$.
+      - kind: result
+        text: >-
+          העקומה זזה החוצה (כי $h$ גדל), הקו עולה (כי $\varepsilon$ גדלה), והמקום של הדחיפה הופך לנקודת הקרבה של אליפסה חדשה.
+
+  - id: W-6.3-07
+    level: mid
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      שביט מגיע מרחוק מאוד לעבר השמש ($GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$) במהירות $10\,\text{km/s}$. אילו לא הייתה
+      כבידה, הוא היה עובר במרחק $1.0\,\text{AU}$ מהשמש. מה המרחק הקטן ביותר שלו מהשמש באמת, ומה מהירותו שם?
+    answer: >-
+      $r_p = 8.45\cdot10^{9}\,\text{m}$ ($0.0563\,\text{AU}$), $v_p = 178\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          רחוק מהשמש: $v_\infty = 1.0\cdot10^{4}\,\text{m/s}$, ומרחק הקו מהשמש $b = 1.5\cdot10^{11}\,\text{m}$. הראשית בשמש.
+      - kind: law
+        text: >-
+          $h$ ו-$\varepsilon$ נשמרים; בנקודת מפנה $\varepsilon = u_{\text{eff}}(r)$.
+      - kind: manipulation
+        text: >-
+          רחוק מאוד $GM_S/r \to 0$, ולכן $\varepsilon = \tfrac12v_\infty^2$; ו-$h = bv_\infty$ (כמו בדוגמה 1 בשיעור). המשוואה
+          $\varepsilon r^2 + GM_Sr - \tfrac12h^2 = 0$, עם $\varepsilon > 0$, נותנת שורש חיובי אחד:
+          $$r_p = \frac{-GM_S + \sqrt{(GM_S)^2 + 2\varepsilon h^2}}{2\varepsilon}$$
+      - kind: limit
+        text: >-
+          כש-$GM_S \to 0$, $r_p \to h/\sqrt{2\varepsilon} = b$: בלי כבידה, הקו הישר. הכבידה מקרבת את השביט פנימה ממה שהקו הישר מראה.
+      - kind: units
+        text: >-
+          $GM_S/\varepsilon$ ב-$\text{m}$, ו-$h^2/\varepsilon$ ב-$\text{m}^2$.
+      - kind: substitution
+        text: >-
+          $\varepsilon = 5.00\cdot10^{7}\,\text{J/kg}$, $h = 1.50\cdot10^{15}\,\text{m}^2/\text{s}$. $r_p = 8.45\cdot10^{9}\,\text{m}$, ו-$v_p = h/r_p = 178\,\text{km/s}$.
+      - kind: result
+        text: >-
+          $8.45\cdot10^{9}\,\text{m}$, פחות משישית מהמרחק בלי כבידה; שם $178\,\text{km/s}$.
+
+  - id: W-6.3-08
+    level: bagrut
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      שביט נע סביב השמש ($GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$) במסלול שנקודת הקרבה שלו $0.60\,\text{AU}$ ונקודת
+      הריחוק שלו $30\,\text{AU}$. מסת השביט זניחה. מצאו ביטוי ל-$h$ ול-$\varepsilon$ בעזרת $r_p$ ו-$r_a$ בלבד, וחשבו את המהירות
+      בשתי נקודות המפנה.
+    answer: >-
+      $h^2 = \dfrac{2GM_Sr_pr_a}{r_p + r_a}$, $\varepsilon = -\dfrac{GM_S}{r_p + r_a}$; $v_p = 53.8\,\text{km/s}$, $v_a = 1.08\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_p = 9.0\cdot10^{10}\,\text{m}$, $r_a = 4.5\cdot10^{12}\,\text{m}$. הראשית בשמש.
+      - kind: law
+        text: >-
+          בשתי נקודות המפנה $\dot r = 0$ ו-$\varepsilon = u_{\text{eff}}$: $\varepsilon = \dfrac{h^2}{2r_p^2} - \dfrac{GM_S}{r_p} = \dfrac{h^2}{2r_a^2} - \dfrac{GM_S}{r_a}$.
+      - kind: manipulation
+        text: >-
+          מחסירים את שתי המשוואות: $\dfrac{h^2}{2}\left(\dfrac{1}{r_p^2} - \dfrac{1}{r_a^2}\right) = GM_S\left(\dfrac{1}{r_p} - \dfrac{1}{r_a}\right)$.
+          מחלקים ב-$\left(\dfrac1{r_p} - \dfrac1{r_a}\right)$, ונשאר $\dfrac{h^2}{2}\left(\dfrac1{r_p} + \dfrac1{r_a}\right) = GM_S$. מציבים חזרה באחת המשוואות.
+          (או: שני השורשים של $\varepsilon r^2 + GM_Sr - \tfrac12h^2 = 0$ הם $r_p$ ו-$r_a$, וסכומם $-GM_S/\varepsilon$.)
+      - kind: limit
+        text: >-
+          כש-$r_a = r_p = r$: $h^2 = GM_Sr$ ו-$\varepsilon = -GM_S/(2r)$, המעגל. וכש-$r_a \to \infty$: $h^2 \to 2GM_Sr_p$ ו-$\varepsilon \to 0$, ו-$v_p$ שואפת למהירות המילוט.
+      - kind: units
+        text: >-
+          $GM_Sr$ ב-$\text{m}^4/\text{s}^2$, ושורשו ב-$\text{m}^2/\text{s}$; $GM_S/r$ ב-$\text{J/kg}$.
+      - kind: substitution
+        text: >-
+          $h = 4.84\cdot10^{15}\,\text{m}^2/\text{s}$, $\varepsilon = -2.89\cdot10^{7}\,\text{J/kg}$. $v_p = h/r_p = 53.8\,\text{km/s}$ (מהירות המילוט שם $54.3\,\text{km/s}$:
+          המסלול בקושי קשור), $v_a = h/r_a = 1.08\,\text{km/s}$.
+      - kind: result
+        text: >-
+          $h^2 = 2GM_Sr_pr_a/(r_p + r_a)$, $\varepsilon = -GM_S/(r_p + r_a)$; $53.8\,\text{km/s}$ ו-$1.08\,\text{km/s}$, ביחס $r_a/r_p = 50$.
+
+  - id: W-6.3-09
+    level: bagrut
+    objectives: [OBJ-6.3-2]
+    prompt: >-
+      בדוח של תלמיד נכתב שללוויין סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) יש תנע זוויתי ליחידת מסה
+      $h = 6.5\cdot10^{10}\,\text{m}^2/\text{s}$ ואנרגיה ליחידת מסה $\varepsilon = -2.2\cdot10^{7}\,\text{J/kg}$. הראו שאין לוויין כזה.
+      אם $\varepsilon$ נכונה, מה ה-$h$ הגדול ביותר שאפשרי, ובאיזה מסלול?
+    answer: >-
+      $u_{\text{eff}}$ לא יורד מתחת ל-$-1.87\cdot10^{7}\,\text{J/kg}$, ו-$\varepsilon$ נמוכה ממנו. $h_{\max} = 6.00\cdot10^{10}\,\text{m}^2/\text{s}$, במסלול מעגלי ברדיוס $9.05\cdot10^{6}\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $h = 6.5\cdot10^{10}\,\text{m}^2/\text{s}$, $\varepsilon = -2.2\cdot10^{7}\,\text{J/kg}$. הראשית במרכז כדור הארץ.
+      - kind: law
+        text: >-
+          $\tfrac12\dot r^2 = \varepsilon - u_{\text{eff}}(r) \ge 0$, ולכן $\varepsilon \ge \min u_{\text{eff}} = -\dfrac{(GM_E)^2}{2h^2}$.
+      - kind: manipulation
+        text: >-
+          התנאי $\varepsilon \ge -\dfrac{(GM_E)^2}{2h^2}$, עם $\varepsilon \lt 0$, שקול ל-$h^2 \le \dfrac{(GM_E)^2}{2|\varepsilon|}$. השוויון הוא המעגל, ברדיוס $h^2/GM_E = GM_E/(2|\varepsilon|)$.
+      - kind: limit
+        text: >-
+          כש-$\varepsilon \to 0^-$, $h_{\max} \to \infty$: גוף בקושי קשור יכול להיות בעל כל תנע זוויתי. ובאנרגיה נתונה, ה-$h$ הגדול ביותר שייך למעגל, וכל $h$ קטן יותר נותן אליפסה.
+      - kind: units
+        text: >-
+          $(GM_E)^2/|\varepsilon|$ ב-$\dfrac{\text{m}^6/\text{s}^4}{\text{m}^2/\text{s}^2} = \text{m}^4/\text{s}^2$, ושורשו ב-$\text{m}^2/\text{s}$.
+      - kind: substitution
+        text: >-
+          $-\dfrac{(3.98\cdot10^{14})^2}{2(6.5\cdot10^{10})^2} = -1.87\cdot10^{7}\,\text{J/kg}$, גבוה מ-$-2.2\cdot10^{7}$. $h_{\max} = 3.98\cdot10^{14}/\sqrt{2\cdot2.2\cdot10^{7}} = 6.00\cdot10^{10}\,\text{m}^2/\text{s}$, רדיוס $9.05\cdot10^{6}\,\text{m}$.
+      - kind: result
+        text: >-
+          אין לוויין כזה: הקו $\varepsilon$ מתחת לתחתית הבור. באנרגיה הזו $h \le 6.00\cdot10^{10}\,\text{m}^2/\text{s}$, והשוויון הוא מסלול מעגלי ב-$9.05\cdot10^{6}\,\text{m}$.
+
+  - id: W-6.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-6.3-1, OBJ-6.3-2]
+    prompt: >-
+      דיסקית במסה $m = 0.20\,\text{kg}$ מחליקה בלי חיכוך על שולחן אופקי. חוט קשור אליה, עובר דרך חור קטן במרכז השולחן, ובקצהו
+      התחתון תלויה משקולת במסה $M = 0.50\,\text{kg}$, שנעה רק אנכית. ברגע מסוים הדיסקית במרחק $r = 0.40\,\text{m}$ מהחור, והמהירות
+      שלה $1.5\,\text{m/s}$ בניצב לחוט; המשקולת ברגע זה במנוחה.
+
+      א. הראו שהתנע הזוויתי של הדיסקית ביחס לחור נשמר, וכתבו את האנרגיה של המערכת בעזרת פוטנציאל אפקטיבי ב-$r$.
+
+      ב. האם כל המסלולים של הדיסקית קשורים? נמקו מהגרף.
+
+      ג. מצאו את נקודות המפנה, ואת הרדיוס של המסלול המעגלי בעל אותו תנע זוויתי.
+    answer: >-
+      א. $E = \tfrac12(m + M)\dot r^2 + \dfrac{L^2}{2mr^2} + Mgr$. ב. כן: $U_{\text{eff}} \to \infty$ בשני הקצוות. ג. $0.160\,\text{m}$ ו-$0.400\,\text{m}$; מעגל ב-$0.245\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.20\,\text{kg}$, $M = 0.50\,\text{kg}$, $r_1 = 0.40\,\text{m}$, $v_\theta = 1.5\,\text{m/s}$, $\dot r = 0$ ברגע הנתון. החוט לא נמתח ולא מתרפה, ולכן
+          כשהדיסקית מתרחקת ב-$dr$ המשקולת עולה ב-$dr$; את הגובה של המשקולת מודדים כך שהאנרגיה הפוטנציאלית שלה היא $Mgr$ (בתוספת קבוע שאינו משנה דבר).
+      - kind: law
+        text: >-
+          המתיחות פונה אל החור, ולכן המומנט שלה ביחס לחור אפס, והכובד והנורמלי על הדיסקית מאזנים זה את זה: $L = mr^2\dot\theta$ קבוע. האנרגיה של הדיסקית והמשקולת נשמרת,
+          כי החוט רק מעביר אנרגיה ביניהן.
+      - kind: manipulation
+        text: >-
+          האנרגיה הקינטית: $\tfrac12m(\dot r^2 + r^2\dot\theta^2) + \tfrac12M\dot r^2$, כי המשקולת נעה במהירות $\dot r$. מחליפים $\dot\theta = L/(mr^2)$:
+          $$E = \tfrac12(m + M)\dot r^2 + U_{\text{eff}}(r)$$
+          עם $U_{\text{eff}} = \dfrac{L^2}{2mr^2} + Mgr$. נקודות מפנה: $U_{\text{eff}}(r) = E$, וכפל ב-$2mr^2$ נותן $2mMg\,r^3 - 2mE\,r^2 + L^2 = 0$.
+          $r_1$ הוא שורש (שם $\dot r = 0$), ולכן מחלקים ב-$(r - r_1)$ ונשארת משוואה ריבועית. המעגל: $dU_{\text{eff}}/dr = 0$, כלומר $r_0^3 = \dfrac{L^2}{mMg}$.
+      - kind: limit
+        text: >-
+          $U_{\text{eff}} \to \infty$ גם כש-$r \to 0$ (המחסום) וגם כש-$r \to \infty$ (המשקולת עולה), ולכן כל מסלול קשור. ואם $M \to 0$, אין כוח, $U_{\text{eff}} = L^2/(2mr^2)$, והדיסקית נעה בקו ישר ובורחת.
+      - kind: units
+        text: >-
+          $L^2/(mr^2)$ ב-$\text{J}$, $Mgr$ ב-$\text{J}$; $L^2/(mMg)$ ב-$\dfrac{\text{kg}^2\text{m}^4/\text{s}^2}{\text{kg}^2\,\text{m/s}^2} = \text{m}^3$.
+      - kind: substitution
+        text: >-
+          $L = 0.20\cdot0.40\cdot1.5 = 0.120\,\text{kg}\cdot\text{m}^2/\text{s}$, $E = \tfrac12\cdot0.20\cdot1.5^2 + 0.50\cdot9.8\cdot0.40 = 2.19\,\text{J}$. נקודת המפנה השנייה $0.160\,\text{m}$,
+          ושם מהירות הדיסקית $L/(mr) = 3.74\,\text{m/s}$. $r_0 = \left(0.0144/(0.20\cdot0.50\cdot9.8)\right)^{1/3} = 0.245\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $L$ נשמר; $U_{\text{eff}} = L^2/(2mr^2) + Mgr$, והאינרציה הרדיאלית היא $m + M$. ב. כן. ג. בין $0.160$ ל-$0.400\,\text{m}$; המעגל ב-$0.245\,\text{m}$ (ב-$0.40\,\text{m}$ הוא היה דורש $3.13\,\text{m/s}$).
+
+challenge:
+  - id: W-6.3-c1
+    stars: 1
+    objectives: [OBJ-6.3-1, OBJ-6.3-2]
+    prompt: >-
+      על חלקיק במסה $m$ פועל כוח מרכזי $\vec F = -Ar^3\,\hat r$, עם $A > 0$. ברגע ההתחלה החלקיק במרחק $r_0$ ממרכז הכוח,
+      ומהירותו $v_0$ בניצב לרדיוס.
+
+      א. כתבו את הפוטנציאל האפקטיבי ושרטטו אותו. האם החלקיק יכול לעבור דרך מרכז הכוח?
+
+      ב. מה צריכה להיות $v_0$ כדי שהמסלול יהיה מעגל ברדיוס $r_0$?
+
+      ג. מה התדירות של תנודות רדיאליות קטנות סביב המסלול המעגלי הזה? השוו את זמן המחזור שלהן לזמן הסיבוב.
+    answer: >-
+      א. $U_{\text{eff}} = \dfrac{L^2}{2mr^2} + \tfrac14Ar^4$ עם $L = mr_0v_0$; לא, אם $v_0 \neq 0$. ב. $v_0 = r_0^2\sqrt{A/m}$. ג. $\omega_r = r_0\sqrt{6A/m}$; זמן הסיבוב ארוך פי $\sqrt6$ מזמן מחזור התנודה.
+    solution:
+      - kind: given
+        text: >-
+          $\vec F = -Ar^3\hat r$; $r(0) = r_0$, $\dot r(0) = 0$, $v_\theta(0) = v_0$. הראשית במרכז הכוח.
+      - kind: law
+        text: >-
+          כוח מרכזי: $L = mr^2\dot\theta = mr_0v_0$ קבוע. $F = -dU/dr$, ולכן $U = \tfrac14Ar^4$ (עם $U(0) = 0$). $E = \tfrac12m\dot r^2 + U_{\text{eff}}$, ותנודות קטנות סביב מינימום בתדירות $\omega^2 = U_{\text{eff}}''/m$ (שיעור 3.3).
+      - kind: manipulation
+        text: >-
+          $U_{\text{eff}} = \dfrac{L^2}{2mr^2} + \tfrac14Ar^4$: שואף לאינסוף בשני הקצוות, עם מינימום יחיד, שבו $-\dfrac{L^2}{mr^3} + Ar^3 = 0$, כלומר $r_{\min}^6 = \dfrac{L^2}{mA}$.
+          מעגל ב-$r_0$: $L^2 = mAr_0^6$, ועם $L = mr_0v_0$: $v_0^2 = Ar_0^4/m$. הנגזרת השנייה: $U_{\text{eff}}'' = \dfrac{3L^2}{mr^4} + 3Ar^2$, ובמינימום $= 6Ar_0^2$.
+          לכן $\omega_r^2 = 6Ar_0^2/m$, ותדירות הסיבוב $\dot\theta = v_0/r_0 = r_0\sqrt{A/m}$.
+      - kind: limit
+        text: >-
+          אם $v_0 \to 0$, $L \to 0$ והמחסום נעלם: החלקיק נופל דרך המרכז. היחס $\omega_r/\dot\theta = \sqrt6$ לא תלוי ב-$r_0$, ולכן הזווית בין שתי נקודות קרבה סמוכות קבועה,
+          $2\pi/\sqrt6$, ואינה כפולה רציונלית של $2\pi$: המסלול הכמעט-מעגלי הוא רוזטה שאינה נסגרת. (בכבידה היחס $1$, ובקפיץ $2$.)
+      - kind: units
+        text: >-
+          $A$ ב-$\text{N/m}^3$; $Ar_0^4/m$ ב-$\dfrac{\text{N}\cdot\text{m}}{\text{kg}} = \text{m}^2/\text{s}^2$; $Ar_0^2/m$ ב-$\text{s}^{-2}$.
+      - kind: result
+        text: >-
+          א. $U_{\text{eff}} = L^2/(2mr^2) + Ar^4/4$; כל עוד $L \neq 0$ החלקיק לא מגיע למרכז. ב. $v_0 = r_0^2\sqrt{A/m}$. ג. $\omega_r = r_0\sqrt{6A/m} = \sqrt6\,\dot\theta$: זמן הסיבוב ארוך פי $\sqrt6 \approx 2.45$.
+    source:
+      name: MIT 8.012 Physics I (Classical Mechanics), Final Exam
+      year: 2008
+      problem: Problem 7 (Central Potential)
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/15cdb14e63ed07c47115ce18c73917bf_final.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.3-c2
+    stars: 2
+    objectives: [OBJ-6.3-1, OBJ-6.3-2]
+    prompt: >-
+      חלקיק נע במישור תחת כוח מרכזי שגודלו ליחידת מסה $\dfrac{\beta}{r^3} + \dfrac{K}{r^2}$, מושך, עם $\beta, K > 0$. משגרים אותו
+      מהמרחק $r_0$ במהירות $V$ בניצב לרדיוס.
+
+      א. כתבו את $u_{\text{eff}}$ ליחידת מסה. הראו שאם $\beta \lt V^2r_0^2 \lt 2Kr_0 + \beta$, המסלול קשור והחלקיק לא נופל למרכז. מה המשמעות של כל אחד משני האי-שוויונים?
+
+      ב. הראו שבין נקודת הקרבה לנקודת הריחוק, הרדיוס מסתובב בזווית $\pi\left(1 - \beta/(V^2r_0^2)\right)^{-1/2}$. (רמז: השוו את התנועה הרדיאלית לתנועה בכבידה בלבד.)
+
+      ג. מתי המסלול נסגר?
+    answer: >-
+      א. $u_{\text{eff}} = \dfrac{h^2 - \beta}{2r^2} - \dfrac{K}{r}$ עם $h = Vr_0$; $h^2 > \beta$: יש מחסום; $h^2 \lt 2Kr_0 + \beta$: $\varepsilon \lt 0$. ב. $\Delta\theta = \pi h/\sqrt{h^2 - \beta}$. ג. כש-$\sqrt{1 - \beta/h^2}$ רציונלי.
+    solution:
+      - kind: given
+        text: >-
+          כוח ליחידת מסה $-\left(\beta/r^3 + K/r^2\right)\hat r$; $r(0) = r_0$, $\dot r(0) = 0$, $v_\theta(0) = V$. הראשית במרכז הכוח.
+      - kind: law
+        text: >-
+          $h = r^2\dot\theta = Vr_0$ קבוע; $u(r) = -\dfrac{\beta}{2r^2} - \dfrac{K}{r}$ (כי $-du/dr$ הוא הכוח ליחידת מסה); $\varepsilon = \tfrac12\dot r^2 + u_{\text{eff}}$.
+      - kind: manipulation
+        text: >-
+          $u_{\text{eff}} = \dfrac{h^2}{2r^2} - \dfrac{\beta}{2r^2} - \dfrac{K}{r} = \dfrac{h^2 - \beta}{2r^2} - \dfrac{K}{r}$. זה בדיוק הפוטנציאל האפקטיבי של כבידה עם
+          תנע זוויתי $h' = \sqrt{h^2 - \beta}$, אם $h^2 > \beta$. אז יש מחסום, והחלקיק לא נופל. $\varepsilon = \tfrac12V^2 - \dfrac{\beta}{2r_0^2} - \dfrac{K}{r_0}$, ו-$\varepsilon \lt 0$ שקול
+          ל-$V^2r_0^2 \lt 2Kr_0 + \beta$: המסלול קשור. (ב) התנועה הרדיאלית, $r(t)$, זהה לזו של מסלול כבידה עם $h'$, ושם הזווית מנקודת הקרבה לנקודת הריחוק היא $\pi$.
+          אבל כאן $\dot\theta = h/r^2 = (h/h')\cdot h'/r^2$: בכל רגע הזווית גדלה פי $h/h'$ ממה שהייתה גדלה במסלול הכבידה, ולכן $\Delta\theta = \pi h/h'$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $h' \to h$ ו-$\Delta\theta \to \pi$: אליפסה של קפלר שנסגרת. כש-$h^2 \to \beta^+$, $h' \to 0$ ו-$\Delta\theta \to \infty$: המחסום נעלם, והחלקיק מסתחרר אל המרכז.
+      - kind: units
+        text: >-
+          $\beta$ ב-$\text{m}^4/\text{s}^2$, כמו $h^2$, ולכן $\beta/h^2$ חסר ממדים; $Kr_0$ ב-$\text{m}^4/\text{s}^2$.
+      - kind: result
+        text: >-
+          א. $u_{\text{eff}} = (h^2 - \beta)/(2r^2) - K/r$; האי-שוויון השמאלי מבטיח מחסום, הימני מבטיח $\varepsilon \lt 0$. ב. $\Delta\theta = \pi(1 - \beta/h^2)^{-1/2}$, $h = Vr_0$.
+          ג. המסלול נסגר כש-$\sqrt{1 - \beta/h^2}$ הוא מספר רציונלי, $p/q$: אחרי $p$ תנודות רדיאליות הרדיוס השלים $q$ סיבובים. אחרת זו רוזטה.
+    source:
+      name: Cambridge Mathematical Tripos Part IA, Dynamics and Relativity, Example Sheet 3 (D. Tong)
+      year: 2012
+      problem: Question 3
+      url: https://www.damtp.cam.ac.uk/user/tong/relativity/htl3.pdf
+      verified: '2026-11-11'
+      adapted: true

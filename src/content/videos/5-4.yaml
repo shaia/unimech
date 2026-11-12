@@ -1,0 +1,28 @@
+# Videos of lesson 5.4. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable; title
+# and channel exactly as returned). Lengths and chapters come from a listing page (rosetta.to) that mirrors the
+# YouTube metadata, not from the watch page itself: treat them as UNCONFIRMED. `captions` lists nothing confirmed.
+#   FCFpaKcpuXQ: MIT OCW 8.03SC (Fall 2016) lecture 3, Prof. Yen-Jie Lee, about 1 h 17 min. Listed chapters: 17:53
+#     "Complex Equation", 26:09 "Homogeneous Solution", 29:43 "Steady State Solution", 58:33 "Phase Difference",
+#     1:10:26 "Experiment".
+#   v0YEaeIClKY: 3Blue1Brown, DE5; the title says 3.14 minutes. Summary from the listing's transcript: e^t as a motion
+#     whose velocity equals its position; with i the velocity is the position turned by 90°, so the point circles.
+
+- id: v-5-4-mit-driven
+  youtubeId: FCFpaKcpuXQ
+  title: '3. Driven Oscillators, Transient Phenomena, Resonance'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 77
+  why: 'הרצאה מלאה של קורס 8.03 של MIT על המתנד המאולץ, ארוכה. לפי רשימת הפרקים שלה: המשוואה המרוכבת בערך בדקה 18, הפתרון ההומוגני והמצב היציב בדקות 26 עד 30, הפרש הפאזה בדקה 58, וניסוי בדקה 70. בחרו את החלקים שאתם צריכים, והשוו את הניסוי לאיור 5.4א.'
+  verified: '2026-11-11'
+
+- id: v-5-4-euler-dynamics
+  youtubeId: v0YEaeIClKY
+  title: 'e^(iπ) in 3.14 minutes, using dynamics | DE5'
+  channel: 3Blue1Brown
+  lang: en
+  start: 0
+  minutes: 4
+  why: 'סרטון קצר על נוסחת אוילר דרך תנועה: נקודה שהמהירות שלה היא המקום שלה מסובב ב-90°, בדיוק הנגזרת של e בחזקת iωt שראיתם באיור 5.4ב. שימו לב למה הנקודה נעה על מעגל, ולמה אחרי זמן π היא מגיעה למינוס 1.'
+  verified: '2026-11-11'

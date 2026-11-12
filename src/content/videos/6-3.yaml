@@ -1,0 +1,27 @@
+# Videos of lesson 6.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch pages' lengthSeconds; caption tracks were
+# not confirmed, so `captions` lists nothing. `why` claims only what the title and the description support.
+#   gWnnPcvwBWw: Bar-Ilan physics department, a help video of its course "מכניקה" (16:57, published 2025-01-05);
+#     the description says the series summarises the material and shows techniques for solving exercises.
+#   pNh40VySYzY: Physics Demos (19:42); the description: "I use the effective potential to identify the basic
+#     properties of circular, elliptical, parabolic, and hyperbolic planetary orbits."
+
+- id: v-6-3-barilan-kepler
+  youtubeId: gWnnPcvwBWw
+  title: 'תנועת קפלר ואנרגיה פוטנציאלית אפקטיבית'
+  channel: Physics Department Bar Ilan
+  lang: he
+  start: 0
+  minutes: 17
+  why: 'סרטון עזר של קורס המכניקה של אוניברסיטת בר-אילן, בעברית. לפי התיאור, הסדרה מסכמת את החומר ומראה טכניקות לפתרון תרגילים. השוו את הסימונים שם לסימונים שלנו, ובדקו שאתם מזהים את המעבר מהאנרגיה בשני ממדים לאנרגיה בממד אחד עם הפוטנציאל האפקטיבי.'
+  verified: '2026-11-11'
+
+- id: v-6-3-orbits-from-ueff
+  youtubeId: pNh40VySYzY
+  title: 'Effective Potential (8.7)'
+  channel: Physics Demos
+  lang: en
+  start: 0
+  minutes: 20
+  why: 'לפי התיאור, הסרטון משתמש בפוטנציאל האפקטיבי כדי לזהות את התכונות של מסלולים מעגליים, אליפטיים, פרבוליים והיפרבוליים. זה סעיף "קריאת מסלולים מהגרף" בשיעור. הסרטון באנגלית.'
+  verified: '2026-11-11'

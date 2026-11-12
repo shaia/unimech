@@ -1,21 +1,20 @@
 # Misconceptions first detected in lesson 6.5. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 6.5
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in the course that refutes it (an anchor in lesson 6.5).
 
 - id: MC-6-period-depends-on-planet-mass
   title: כוכב לכת כבד מקיף בזמן מחזור אחר
   belief: כוכב לכת כבד יותר מקיף את השמש בזמן מחזור שונה מאוד, כי הכוח עליו גדול יותר, או כי קשה יותר להזיז אותו.
   truth: הכוח והאינרציה פרופורציוניים שניהם למסה של כוכב הלכת, והיא נכנסת לחוק השלישי רק דרך הסכום M + m. כשהיא זניחה, זמן המחזור לא תלוי בה.
-  remedy: { lesson: '6.5', label: 'שיעור 6.5: גזירת החוק השלישי של קפלר' }
+  remedy: { lesson: '6.5', anchor: third-law, label: 'שיעור 6.5: גזירת החוק השלישי של קפלר' }
 
 - id: MC-6-period-depends-on-e
   title: זמן המחזור והאנרגיה תלויים בצורת המסלול
   belief: באותו חצי ציר ראשי, מסלול מוארך הוא בעל זמן מחזור ארוך יותר, או אנרגיה גדולה יותר, ממסלול מעגלי.
   truth: גם זמן המחזור, T² = 4π²a³/(G(M + m)), וגם האנרגיה, E = −k/(2a), תלויים רק בחצי הציר הראשי. האקסצנטריות לא משנה אותם.
-  remedy: { lesson: '6.5', label: 'שיעור 6.5: זמן המחזור והאנרגיה תלויים רק ב-a' }
+  remedy: { lesson: '6.5', anchor: energy, label: 'שיעור 6.5: זמן המחזור והאנרגיה תלויים רק ב-a' }
 
 - id: MC-6-altitude-for-radius
   title: הגובה מעל הקרקע במקום המרחק מהמרכז
   belief: ברדיוס של מסלול, ובחצי הציר הראשי, מציבים את הגובה של הלוויין מעל פני הקרקע.
   truth: כל המרחקים בחוק הכבידה ובחוקי קפלר נמדדים ממרכז כדור הארץ, r = R_E + h.
-  remedy: { lesson: '6.5', label: 'שיעור 6.5: חישוב מסלולי לוויינים' }
+  remedy: { lesson: '6.5', anchor: ex-6-5-3, label: 'שיעור 6.5: חישוב מסלולי לוויינים' }

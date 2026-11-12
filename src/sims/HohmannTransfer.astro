@@ -1,0 +1,7 @@
+---
+/** Escape and Hohmann transfers around the Earth, for lesson MDX: <Spread fig="fig-6-6a" figure={HohmannTransfer} figureProps={{ … }}>. */
+import HohmannTransfer, { type HohmannTransferProps } from './HohmannTransfer';
+type Props = HohmannTransferProps;
+---
+
+<HohmannTransfer client:visible {...Astro.props} />

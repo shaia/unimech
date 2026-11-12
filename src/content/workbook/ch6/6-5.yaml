@@ -1,0 +1,443 @@
+# Workbook, lesson 6.5 (Kepler's laws). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-5/wb.ts with src/physics/constants.ts and src/physics/kepler.ts:
+#   W02 T = 4.0 yr (compared with the Earth): a = 4^(2/3) = 2.52 AU (wrong 4^(3/2) = 8.00);
+#   W03 E = −G M_S M_E/(2 AU) = −2.64e33 J (K = 2.64e33, U = −5.28e33);
+#   W04 r_p = 1.2, r_a = 3.6 AU: a = 2.40 AU, e = 0.500, b = 2.08 AU, ae = 1.20 AU, v_p/v_a = 3.00, T = 3.73 yr;
+#   W05 Earth, e = 0.017, T = 3.156e7 s: dA/dt = πab/T = 2.24e15 m²/s, L = 2 M_E dA/dt = 2.67e40 kg·m²/s;
+#   W07 a = 9.38e6 m, T = 7.65 h: M = 4π²a³/(GT²) = 6.44e23 kg (T in hours 8.35e30, no 4π² 1.63e22);
+#   W08 two Suns 10 AU apart: T = 22.4 yr (one held fixed 31.7 yr, ratio √2);
+#   W09 e = 0.6: closer than a for 1/2 − e/π = 0.309 of the period;
+#   W10 1000 kg at 400 km, drag removes 1.0e8 J (GM_E = 3.98e14 as stated, .scratch/ch6/6-5/given.ts): r falls 23.0 km,
+#       v rises 13.0 m/s (7667 → 7680), T 92.46 → 91.99 min,
+#       ΔK = +1.00e8 J, ΔU = −2.00e8 J;
+#   c1 S0-2: T = 15.2 yr, r_p = 119.5 AU, r_a = 1812 AU: a = 965.8 AU = 1.45e14 m, M = 7.82e36 kg = 3.93e6 M_S
+#      (the source prints 7.79·10³⁴ kg, an exponent slip: its own ratio 3.91·10⁶ M_S and its own v_p = 7.38·10⁶ m/s
+#      both need 10³⁶, and its own data, 1 au = 1.50e11 m, 1 yr = 3.16e7 s, a = 1.45e14 m, give 7.82e36 kg;
+#      review 2026-11-11, PDF opened, .scratch/review/ch6/s02.ts), v_p = 7.39e6 m/s,
+#      v_a = 4.87e5 m/s, e = 0.876;
+#   c2 r₀ = 2R, v₀² = 2GM/(3R): a = 3R, r_a = 4R, e = 1/3, v_a = v₀/2, T/T_circ(2R) = 1.5^1.5 = 1.84; with R = R_E:
+#      T = 7.31 h (circle 3.98 h); farther than a for 1/2 + e/π = 0.606 of the period, 4.43 h.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.5'
+practice:
+  - id: W-6.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.5-1]
+    prompt: >-
+      לכל אחת מהעובדות הבאות, קבעו איזה מחוקי קפלר היא מבטאת, ומאיזה עיקרון או תכונה של כוח הכבידה החוק הזה נובע.
+
+      א. כדור הארץ נע בתחילת ינואר מהר יותר מאשר בתחילת יולי.
+
+      ב. המרחק של מאדים מהשמש משתנה במהלך השנה המאדימית שלו בין שני ערכים, ושוב ושוב חוזר לאותם ערכים.
+
+      ג. צדק רחוק מהשמש פי 5.2 מכדור הארץ, והשנה שלו ארוכה פי 12 בערך.
+    answer: >-
+      א. החוק השני, משימור התנע הזוויתי בכוח מרכזי. ב. החוק הראשון, המסלול אליפסה סגורה, מכוח שהולך בדיוק כמו $1/r^2$. ג. החוק השלישי, $T^2 \propto a^3$, מכוח $1/r^2$ (ו-$5.2^{3/2} = 11.9$).
+    solution:
+      - kind: law
+        text: >-
+          החוק השני: $dA/dt = L/(2\mu)$, ו-$L$ נשמר בכל כוח מרכזי. החוק הראשון: משוואת המסלול בכוח $1/r^2$ נותנת $r = p/(1 + e\cos\theta)$. החוק השלישי: $T = \pi ab/(L/2\mu)$ עם $b^2 = ap$ ו-$p = L^2/(\mu k)$.
+      - kind: reasoning
+        text: >-
+          א. מהירות שונה בנקודות שונות של אותו מסלול: $r_pv_p = r_av_a$, ובתחילת ינואר כדור הארץ קרוב לשמש. ב. מרחק שמשתנה בין מינימום למקסימום וחוזר, כלומר מסלול סגור שהשמש לא במרכזו: אליפסה, והשמש במוקד. ג. קשר בין זמני המחזור של כוכבי לכת שונים: $T \propto a^{3/2}$.
+      - kind: limit
+        text: >-
+          אילו המסלולים היו מעגלים בדיוק, (א) ו-(ב) היו נעלמים: מהירות קבועה ומרחק קבוע. (ג) נשאר נכון גם במעגלים.
+      - kind: units
+        text: >-
+          ב-(ג) יחס של זמנים מול יחס של מרחקים: $(T_2/T_1)^2 = (a_2/a_1)^3$, חסר יחידות.
+      - kind: result
+        text: >-
+          א. השני (תנע זוויתי, כל כוח מרכזי). ב. הראשון (כוח $1/r^2$). ג. השלישי (כוח $1/r^2$).
+
+  - id: W-6.5-02
+    level: basic
+    objectives: [OBJ-6.5-2]
+    prompt: >-
+      טלסקופ מגלה כוכב לכת שמקיף כוכב בעל מסה שווה למסת השמש, בזמן מחזור של $4.0$ שנים. מסת כוכב הלכת זניחה. מה חצי
+      הציר הראשי של המסלול, ב-$\text{AU}$? השוו לכדור הארץ, שמקיף את השמש בשנה אחת במרחק $1\,\text{AU}$.
+    answer: >-
+      $a = 4.0^{2/3}\,\text{AU} = 2.52\,\text{AU}$.
+    solution:
+      - kind: given
+        text: >-
+          $T = 4.0\,\text{yr}$; אותה מסה מרכזית כמו השמש. לכדור הארץ $T_E = 1\,\text{yr}$ ו-$a_E = 1\,\text{AU}$.
+      - kind: law
+        text: >-
+          החוק השלישי: $T^2 = \dfrac{4\pi^2}{GM}a^3$, עם אותו $M$ לשני המסלולים.
+      - kind: manipulation
+        text: >-
+          מחלקים את החוק לשני המסלולים: $\left(\dfrac{T}{T_E}\right)^2 = \left(\dfrac{a}{a_E}\right)^3$, ולכן $a = a_E\left(T/T_E\right)^{2/3}$.
+      - kind: limit
+        text: >-
+          כש-$T = T_E$ יוצא $a = a_E$. וזמן מחזור ארוך פי 4 נותן מרחק גדול רק פי $2.52$: $a$ גדל לאט מ-$T$.
+      - kind: units
+        text: >-
+          יחס של זמנים בחזקת $2/3$ חסר יחידות, ו-$a$ ביחידות של $a_E$.
+      - kind: substitution
+        text: >-
+          $a = 4.0^{2/3} = 2.52\,\text{AU}$. (בחזקה $3/2$ במקום $2/3$ היה יוצא $8.0\,\text{AU}$: זה $T$ מתוך $a$, לא $a$ מתוך $T$.)
+      - kind: result
+        text: >-
+          $a = 2.52\,\text{AU}$.
+
+  - id: W-6.5-03
+    level: basic
+    objectives: [OBJ-6.5-2]
+    prompt: >-
+      מה האנרגיה המכנית של כדור הארץ במסלולו סביב השמש? חצי הציר הראשי $1.5\cdot10^{11}\,\text{m}$, מסת השמש
+      $1.99\cdot10^{30}\,\text{kg}$, מסת כדור הארץ $5.97\cdot10^{24}\,\text{kg}$ ו-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+      האפס של האנרגיה הפוטנציאלית כשהגופים רחוקים מאוד זה מזה. מה האנרגיה הקינטית הממוצעת שלו, בערך, אם המסלול כמעט מעגלי?
+    answer: >-
+      $E = -2.64\cdot10^{33}\,\text{J}$; $K \approx 2.64\cdot10^{33}\,\text{J}$ (ו-$U \approx -5.28\cdot10^{33}\,\text{J}$).
+    solution:
+      - kind: given
+        text: >-
+          $a = 1.5\cdot10^{11}\,\text{m}$, $m_1 = 5.97\cdot10^{24}\,\text{kg}$ (כדור הארץ, גוף 1), $m_2 = 1.99\cdot10^{30}\,\text{kg}$ (השמש, גוף 2).
+      - kind: law
+        text: >-
+          $E = -\dfrac{Gm_1m_2}{2a}$. במסלול מעגלי $K = \dfrac{Gm_1m_2}{2a}$ ו-$U = -\dfrac{Gm_1m_2}{a}$.
+      - kind: manipulation
+        text: >-
+          $E = K + U$, ובמעגל $K = -E$ ו-$U = 2E$.
+      - kind: limit
+        text: >-
+          כש-$a \to \infty$, $E \to 0$ מלמטה: כדור ארץ רחוק מאוד בקושי קשור לשמש.
+      - kind: units
+        text: >-
+          $Gm_1m_2/a$ ב-$\text{N}\cdot\text{m}^2/\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $E = -\dfrac{6.67\cdot10^{-11}\cdot1.99\cdot10^{30}\cdot5.97\cdot10^{24}}{2\cdot1.5\cdot10^{11}} = -2.64\cdot10^{33}\,\text{J}$.
+      - kind: result
+        text: >-
+          $E = -2.64\cdot10^{33}\,\text{J}$, $K \approx 2.64\cdot10^{33}\,\text{J}$.
+
+  - id: W-6.5-04
+    level: mid
+    objectives: [OBJ-6.5-1]
+    prompt: >-
+      אסטרואיד מקיף את השמש. בנקודת הקרבה הוא במרחק $1.2\,\text{AU}$ מהשמש, ובנקודת הריחוק במרחק $3.6\,\text{AU}$.
+
+      א. מצאו את חצי הציר הראשי, את האקסצנטריות, את חצי הציר המשני ואת המרחק בין השמש למרכז האליפסה.
+
+      ב. פי כמה מהיר האסטרואיד בנקודת הקרבה מאשר בנקודת הריחוק?
+
+      ג. מה זמן המחזור שלו? ($GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$, $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$, $1\,\text{yr} = 3.156\cdot10^{7}\,\text{s}$.)
+    answer: >-
+      א. $a = 2.40\,\text{AU}$, $e = 0.500$, $b = 2.08\,\text{AU}$, $ae = 1.20\,\text{AU}$. ב. פי $3.00$. ג. $3.73\,\text{yr}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_p = 1.2\,\text{AU}$, $r_a = 3.6\,\text{AU}$; השמש במוקד.
+      - kind: law
+        text: >-
+          $r_p = a(1 - e)$, $r_a = a(1 + e)$, $b = a\sqrt{1 - e^2}$; החוק השני בנקודות המפנה, $r_pv_p = r_av_a$; החוק השלישי.
+      - kind: manipulation
+        text: >-
+          חיבור וחיסור: $a = \tfrac12\left(r_p + r_a\right)$, $e = \dfrac{r_a - r_p}{r_a + r_p}$. המרחק בין המרכז למוקד $ae = \tfrac12\left(r_a - r_p\right)$. היחס $v_p/v_a = r_a/r_p$.
+      - kind: limit
+        text: >-
+          כש-$r_a = r_p$: $e = 0$, $b = a$, $ae = 0$ ויחס המהירויות 1, מעגל. בדיקה נוספת: $b^2 + (ae)^2 = 2.08^2 + 1.20^2 = 5.76 = a^2$.
+      - kind: units
+        text: >-
+          $a$, $b$ ו-$ae$ ב-$\text{AU}$; $e$ ויחס המהירויות חסרי יחידות; $\sqrt{a^3/(GM_S)}$ בשניות.
+      - kind: substitution
+        text: >-
+          $a = 2.40\,\text{AU}$, $e = 2.4/4.8 = 0.500$, $b = 2.40\sqrt{0.75} = 2.08\,\text{AU}$, $ae = 1.20\,\text{AU}$. $v_p/v_a = 3.6/1.2 = 3.00$.
+          $T = 2\pi\sqrt{\left(3.6\cdot10^{11}\right)^3/\left(1.33\cdot10^{20}\right)} = 3.73\,\text{yr}$.
+      - kind: result
+        text: >-
+          א. $2.40\,\text{AU}$, $0.500$, $2.08\,\text{AU}$, $1.20\,\text{AU}$. ב. פי $3.00$. ג. $3.73\,\text{yr}$.
+
+  - id: W-6.5-05
+    level: mid
+    objectives: [OBJ-6.5-1]
+    prompt: >-
+      חשבו את המהירות השטחית של כדור הארץ סביב השמש, ומתוכה את התנע הזוויתי של התנועה המסלולית שלו ביחס לשמש. חצי
+      הציר הראשי $1.5\cdot10^{11}\,\text{m}$, האקסצנטריות $0.017$, זמן המחזור $3.156\cdot10^{7}\,\text{s}$, ומסת כדור הארץ
+      $5.97\cdot10^{24}\,\text{kg}$ (זניחה לעומת מסת השמש). האם הייתם יכולים להזניח את האקסצנטריות?
+    answer: >-
+      $dA/dt = 2.24\cdot10^{15}\,\text{m}^2/\text{s}$, $L = 2.67\cdot10^{40}\,\text{kg}\cdot\text{m}^2/\text{s}$. כן: $b/a = 0.99986$.
+    solution:
+      - kind: given
+        text: >-
+          $a = 1.5\cdot10^{11}\,\text{m}$, $e = 0.017$, $T = 3.156\cdot10^{7}\,\text{s}$, $m = 5.97\cdot10^{24}\,\text{kg}$; $\mu \approx m$.
+      - kind: law
+        text: >-
+          החוק השני: $dA/dt$ קבוע, ולכן הוא שטח האליפסה חלקי זמן המחזור. $dA/dt = L/(2\mu)$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{dA}{dt} = \dfrac{\pi ab}{T}$ עם $b = a\sqrt{1 - e^2}$, ו-$L = 2\mu\,\dfrac{dA}{dt}$.
+      - kind: limit
+        text: >-
+          כש-$e = 0$, $\pi ab/T = \pi a^2/T = \tfrac12a\cdot\dfrac{2\pi a}{T} = \tfrac12av$, ו-$L = \mu av$, התנע הזוויתי של תנועה מעגלית. כאן $\sqrt{1 - e^2} = 0.99986$: ההבדל מהמעגל $0.014\%$.
+      - kind: units
+        text: >-
+          $\text{m}^2/\text{s}$; $\text{kg}\cdot\text{m}^2/\text{s}$, יחידות של תנע זוויתי.
+      - kind: substitution
+        text: >-
+          $dA/dt = \pi\cdot\left(1.5\cdot10^{11}\right)^2\cdot0.99986/\left(3.156\cdot10^{7}\right) = 2.24\cdot10^{15}\,\text{m}^2/\text{s}$, ו-$L = 2\cdot5.97\cdot10^{24}\cdot2.24\cdot10^{15} = 2.67\cdot10^{40}\,\text{kg}\cdot\text{m}^2/\text{s}$.
+      - kind: result
+        text: >-
+          $2.24\cdot10^{15}\,\text{m}^2/\text{s}$ ו-$2.67\cdot10^{40}\,\text{kg}\cdot\text{m}^2/\text{s}$; האקסצנטריות משנה רק בספרה הרביעית.
+
+  - id: W-6.5-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.5-2]
+    prompt: >-
+      חללית ותחנת חלל נעות באותו מסלול מעגלי סביב כדור הארץ, באותו כיוון. התחנה נמצאת מעט לפני החללית. החללית רוצה להשיג
+      את התחנה, ויכולה להפעיל את המנוע לזמן קצר מאוד, קדימה או אחורה. קבעו ונמקו: כדי להגיע אל התחנה מהר יותר, האם
+      להגביר את המהירות או להאט? מה יקרה לחללית אחרי ההפעלה?
+    answer: >-
+      להאט. האנרגיה קטנה, $a$ קטן וזמן המחזור מתקצר: החללית עוברת מסלול אליפטי פנימי וחוזרת לנקודת ההפעלה מוקדם יותר מהתחנה, כלומר מתקרבת אליה בכל הקפה.
+    solution:
+      - kind: law
+        text: >-
+          $E = -\dfrac{GM_Em}{2a}$ ו-$T^2 \propto a^3$. ההפעלה קצרה, ולכן המקום לא משתנה בזמנה.
+      - kind: reasoning
+        text: >-
+          האטה מקטינה את $K$ בלי לשנות את $U$, ולכן $E$ קטנה (שלילית יותר), $a$ קטן, ו-$T$ קטן. נקודת ההפעלה נשארת על המסלול החדש, והיא נקודת הריחוק שלו (שם המהירות ניצבת לרדיוס, והיא האיטית מבין שתי נקודות המפנה). אחרי הקפה אחת, בזמן $T' \lt T$, החללית חוזרת אליה, והתחנה עוד לא: הפער קטן. הגברת המהירות הייתה עושה ההפך: מסלול חיצוני, זמן מחזור ארוך, והחללית מפגרת יותר.
+      - kind: limit
+        text: >-
+          כשהשינוי במהירות שואף לאפס, $T' \to T$ והפער לא משתנה. ובזמן קצר מהקפה, לפני שהמסלולים נפרדים, החללית המואטת אכן איטית יותר: היתרון מצטבר רק אחרי הקפות.
+      - kind: units
+        text: >-
+          $T \propto a^{3/2}$: שינוי יחסי קטן $\delta a/a$ משנה את $T$ ב-$\tfrac32\,\delta a/a$, חסר יחידות.
+      - kind: result
+        text: >-
+          להאט: מסלול פנימי בעל זמן מחזור קצר יותר, שבכל הקפה מקרב את החללית אל התחנה.
+
+  - id: W-6.5-07
+    level: mid
+    objectives: [OBJ-6.5-2]
+    prompt: >-
+      ירח מקיף כוכב לכת במסלול כמעט מעגלי ברדיוס $9.38\cdot10^{6}\,\text{m}$, וזמן המחזור שלו $7.65\,\text{h}$. מסת הירח זניחה.
+      מה מסת כוכב הלכת? $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+    answer: >-
+      $M = 6.44\cdot10^{23}\,\text{kg}$.
+    solution:
+      - kind: given
+        text: >-
+          $a = 9.38\cdot10^{6}\,\text{m}$, $T = 7.65\,\text{h} = 2.754\cdot10^{4}\,\text{s}$, $m \ll M$.
+      - kind: law
+        text: >-
+          החוק השלישי: $T^2 = \dfrac{4\pi^2a^3}{G\left(M + m\right)} \approx \dfrac{4\pi^2a^3}{GM}$.
+      - kind: manipulation
+        text: >-
+          $M = \dfrac{4\pi^2a^3}{GT^2}$.
+      - kind: limit
+        text: >-
+          אם המסה של הירח לא הייתה זניחה, החוק היה נותן את $M + m$: מזמן מחזור ומרחק מודדים תמיד את **סכום** המסות. ובאותו $a$, זמן מחזור קצר יותר פירושו מסה גדולה יותר.
+      - kind: units
+        text: >-
+          $\text{m}^3/\left(\left(\text{N}\cdot\text{m}^2/\text{kg}^2\right)\text{s}^2\right) = \text{m}^3/\left(\text{m}^3/(\text{kg}\cdot\text{s}^2)\cdot\text{s}^2\right) = \text{kg}$. הזמן חייב להיות בשניות: בשעות היה יוצא $8.35\cdot10^{30}$.
+      - kind: substitution
+        text: >-
+          $M = \dfrac{4\pi^2\left(9.38\cdot10^{6}\right)^3}{6.67\cdot10^{-11}\cdot\left(2.754\cdot10^{4}\right)^2} = 6.44\cdot10^{23}\,\text{kg}$.
+      - kind: result
+        text: >-
+          $6.44\cdot10^{23}\,\text{kg}$, כעשירית ממסת כדור הארץ.
+
+  - id: W-6.5-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-6.5-1]
+    prompt: >-
+      שני כוכבים זהים, כל אחד בעל מסה $m$, מקיפים זה את זה במסלולים מעגליים, במרחק קבוע $d$ זה מזה.
+
+      א. בלי להשתמש בנוסחה של החוק השלישי, כתבו את החוק השני של ניוטון לאחד הכוכבים, ומצאו את זמן המחזור.
+
+      ב. הראו שהתוצאה מתאימה ל-$T^2 = 4\pi^2a^3/\left(G(m_1 + m_2)\right)$, וקבעו מה $a$ כאן.
+
+      ג. חשבו את זמן המחזור לשני כוכבים במסת השמש ($1.99\cdot10^{30}\,\text{kg}$) במרחק $1.5\cdot10^{12}\,\text{m}$ זה מזה, והשוו לזמן המחזור שהיה מתקבל אילו אחד מהם היה מוחזק במקומו.
+    answer: >-
+      א. $T = 2\pi\sqrt{\dfrac{d^3}{2Gm}}$. ב. $a = d$, המרחק בין הכוכבים, ו-$m_1 + m_2 = 2m$. ג. $22.4\,\text{yr}$; עם כוכב מוחזק $31.7\,\text{yr}$, פי $\sqrt2$.
+    solution:
+      - kind: given
+        text: >-
+          שתי מסות $m$ במרחק $d$; מרכז המסה באמצע. ציר רדיאלי מכל כוכב אל מרכז המסה.
+      - kind: law
+        text: >-
+          על כל כוכב פועל רק כוח הכבידה של השני, $Gm^2/d^2$, לכיוון השני, כלומר לכיוון מרכז המסה. הוא הכוח השקול הרדיאלי של תנועה מעגלית ברדיוס $d/2$: $Gm^2/d^2 = m\omega^2(d/2)$.
+      - kind: manipulation
+        text: >-
+          $\omega^2 = \dfrac{2Gm}{d^3}$, ו-$T = 2\pi/\omega$. ב: עם $m_1 + m_2 = 2m$ ו-$a = d$, $4\pi^2d^3/(2Gm)$ הוא בדיוק $T^2$ של סעיף א. $a$ הוא חצי הציר הראשי של המסלול **היחסי**, מכוכב לכוכב, ולא הרדיוס $d/2$ של מסלול כל אחד סביב מרכז המסה.
+      - kind: limit
+        text: >-
+          אילו כוכב אחד היה מוחזק במקומו, השני היה מקיף אותו ברדיוס $d$ עם $\omega^2 = Gm/d^3$: זמן מחזור ארוך פי $\sqrt2$. ואילו הצבנו $a = d/2$ בחוק השלישי, היינו מקבלים זמן מחזור קצר פי $2^{3/2}$ מהנכון.
+      - kind: units
+        text: >-
+          $d^3/(Gm)$ ב-$\text{m}^3/\left(\text{m}^3/\text{s}^2\right) = \text{s}^2$.
+      - kind: substitution
+        text: >-
+          $T = 2\pi\sqrt{\left(1.5\cdot10^{12}\right)^3/\left(2\cdot6.67\cdot10^{-11}\cdot1.99\cdot10^{30}\right)} = 22.4\,\text{yr}$; עם כוכב מוחזק $22.4\cdot\sqrt2 = 31.7\,\text{yr}$.
+      - kind: result
+        text: >-
+          $T = 2\pi\sqrt{d^3/(2Gm)}$, החוק השלישי עם $a = d$ וסכום המסות; $22.4\,\text{yr}$.
+
+  - id: W-6.5-09
+    level: bagrut
+    objectives: [OBJ-6.5-1]
+    prompt: >-
+      שביט מקיף את השמש באליפסה בעלת אקסצנטריות $e = 0.60$. איזה חלק מזמן המחזור הוא נמצא **קרוב** לשמש יותר מחצי הציר
+      הראשי $a$? רמז: היכן על האליפסה המרחק מהשמש שווה בדיוק ל-$a$?
+    answer: >-
+      $\dfrac12 - \dfrac e\pi = 0.309$ מזמן המחזור.
+    solution:
+      - kind: given
+        text: >-
+          $e = 0.60$; השמש במוקד, במרחק $ae$ ממרכז האליפסה; ציר $x$ מהמרכז אל נקודת הקרבה.
+      - kind: law
+        text: >-
+          החוק השני: $t = T\cdot A/(\pi ab)$. מהחוק הראשון: $r = p - e\,x_S$, כאשר $x_S$ המרחק מהשמש לאורך הציר הראשי.
+      - kind: manipulation
+        text: >-
+          בקצה של הציר המשני, $B$, $x_S = -ae$, ולכן $r = p + ae^2 = a(1 - e^2) + ae^2 = a$. מכיוון ש-$r = p - e\,x_S$ קטן כש-$x_S$ גדל, $r \lt a$ בדיוק בחלק שבין שני הקצוות של הציר המשני, דרך נקודת הקרבה.
+          השטח שהקו מהשמש מכסה מנקודת הקרבה עד $B$: רבע אליפסה פחות המשולש של המרכז, השמש ו-$B$, $\tfrac14\pi ab - \tfrac12abe$. פי שניים לשני הצדדים, וחלקי $\pi ab$.
+      - kind: limit
+        text: >-
+          כש-$e = 0$ החלק הוא $1/2$: במעגל $r = a$ בכל מקום, והגבול הוא פשוט חצי מעגל, בין שני הקצוות של קוטר. כש-$e \to 1$ החלק שואף ל-$1/2 - 1/\pi = 0.18$: גם שביט מוארך מאוד נמצא קרוב מ-$a$ כחמישית מהזמן.
+      - kind: units
+        text: >-
+          יחס של שטחים, חסר יחידות.
+      - kind: substitution
+        text: >-
+          $\dfrac12 - \dfrac{0.60}{\pi} = 0.309$.
+      - kind: result
+        text: >-
+          כ-$31\%$ מזמן המחזור קרוב יותר מ-$a$, ו-$69\%$ רחוק יותר.
+
+  - id: W-6.5-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-6.5-2]
+    prompt: >-
+      לוויין בעל מסה $1000\,\text{kg}$ נע במסלול מעגלי בגובה $400\,\text{km}$ מעל פני כדור הארץ ($R_E = 6.37\cdot10^{6}\,\text{m}$,
+      $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$). שרידי האוויר מאבדים לו במשך כמה ימים $1.0\cdot10^{8}\,\text{J}$ מהאנרגיה המכנית,
+      לאט, כך שהמסלול נשאר כמעט מעגלי.
+
+      א. קבעו ונמקו: האם המהירות שלו גדלה או קטנה? ומה קורה לזמן המחזור?
+
+      ב. חשבו את השינוי ברדיוס, במהירות ובזמן המחזור, ואת השינויים באנרגיה הקינטית ובאנרגיה הפוטנציאלית.
+    answer: >-
+      א. המהירות **גדלה** וזמן המחזור מתקצר. ב. הרדיוס יורד ב-$23.0\,\text{km}$, המהירות עולה ב-$13.0\,\text{m/s}$, זמן המחזור יורד מ-$92.46$ ל-$91.99$ דקות; $\Delta K = +1.0\cdot10^{8}\,\text{J}$, $\Delta U = -2.0\cdot10^{8}\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 1000\,\text{kg}$, $r = R_E + 4.0\cdot10^{5}\,\text{m} = 6.77\cdot10^{6}\,\text{m}$, $\Delta E = -1.0\cdot10^{8}\,\text{J}$. המסלול מעגלי לפני ואחרי.
+      - kind: law
+        text: >-
+          במסלול מעגלי $E = -\dfrac{GM_Em}{2r}$, $K = \dfrac{GM_Em}{2r} = -E$, $U = 2E$, $v = \sqrt{GM_E/r}$, $T \propto r^{3/2}$.
+      - kind: manipulation
+        text: >-
+          $E$ קטנה, ולכן $r = -GM_Em/(2E)$ קטן, ו-$K = -E$ **גדלה** בדיוק ב-$|\Delta E|$: $\Delta K = -\Delta E$, $\Delta U = 2\Delta E$. כוח הגרר מאט, אבל בזמן שהלוויין יורד, הכבידה עושה עליו עבודה חיובית כפולה מהעבודה של הגרר, והוא מואץ.
+      - kind: limit
+        text: >-
+          כש-$\Delta E \to 0$ אין שינוי. ולשינוי קטן: $\Delta r/r = -\Delta E/E$ ו-$\Delta v/v = -\tfrac12\Delta r/r$, $\Delta T/T = \tfrac32\Delta r/r$, סימנים הפוכים בין $v$ ל-$r$.
+      - kind: units
+        text: >-
+          $GM_Em/E$ ב-$\left(\text{m}^3/\text{s}^2\right)\text{kg}/\text{J} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $E_0 = -2.94\cdot10^{10}\,\text{J}$, $E_1 = -2.95\cdot10^{10}\,\text{J}$, $r_1 = 6.75\cdot10^{6}\,\text{m}$ (ירידה של $23.0\,\text{km}$). $v$: $7667 \to 7680\,\text{m/s}$. $T$: $92.46 \to 91.99$ דקות.
+      - kind: result
+        text: >-
+          א. המהירות גדלה וזמן המחזור קטן. ב. $\Delta r = -23.0\,\text{km}$, $\Delta v = +13.0\,\text{m/s}$, $T$ קטן ב-$0.47$ דקה; $\Delta K = +1.0\cdot10^{8}\,\text{J}$, $\Delta U = -2.0\cdot10^{8}\,\text{J}$.
+
+challenge:
+  - id: W-6.5-c1
+    stars: 1
+    objectives: [OBJ-6.5-2, OBJ-6.5-1]
+    prompt: >-
+      במרכז הגלקסיה שלנו נמצא גוף קומפקטי כבד מאוד, שאי אפשר לראות ישירות. אסטרונומים עקבו במשך שנים אחרי כוכב שמקיף
+      אותו, S0-2, ומצאו שזמן המחזור שלו $15.2\,\text{yr}$, ושהמרחק שלו מהגוף המרכזי משתנה בין $119.5\,\text{AU}$ ל-$1812\,\text{AU}$
+      ($1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$, $1\,\text{yr} = 3.156\cdot10^{7}\,\text{s}$). מסת הכוכב זניחה לעומת מסת הגוף המרכזי.
+
+      א. מה מסת הגוף המרכזי, בקילוגרמים ובמסות שמש ($1.99\cdot10^{30}\,\text{kg}$)?
+
+      ב. מה המהירות של S0-2 בנקודת הקרבה ובנקודת הריחוק? השוו את הראשונה למהירות האור.
+    answer: >-
+      א. $7.82\cdot10^{36}\,\text{kg}$, כ-$3.93\cdot10^{6}$ מסות שמש. ב. $v_p = 7.39\cdot10^{6}\,\text{m/s}$ (כ-$2.5\%$ ממהירות האור), $v_a = 4.87\cdot10^{5}\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $T = 15.2\,\text{yr} = 4.80\cdot10^{8}\,\text{s}$, $r_p = 119.5\,\text{AU}$, $r_a = 1812\,\text{AU}$, $m \ll M$.
+      - kind: law
+        text: >-
+          החוק השלישי, $T^2 = 4\pi^2a^3/(GM)$ עם $a = \tfrac12\left(r_p + r_a\right)$; החוק השני, $r_pv_p = r_av_a$; והאנרגיה, $\tfrac12v^2 - GM/r = -GM/(2a)$.
+      - kind: manipulation
+        text: >-
+          $M = \dfrac{4\pi^2a^3}{GT^2}$. בנקודת הקרבה, מהאנרגיה: $v_p^2 = GM\left(\dfrac2{r_p} - \dfrac1a\right) = \dfrac{GM}{a}\cdot\dfrac{2a - r_p}{r_p} = \dfrac{GM}{a}\cdot\dfrac{r_a}{r_p}$. ו-$v_a = v_pr_p/r_a$.
+      - kind: limit
+        text: >-
+          כש-$r_a = r_p = a$, $v_p = v_a = \sqrt{GM/a}$, המהירות במעגל. ומכיוון ש-$v_p/c \approx 0.025$, הזנחת תורת היחסות סבירה, אבל לא בגבול: מדידות של S0-2 משמשות לבדיקת תורת היחסות הכללית.
+      - kind: units
+        text: >-
+          $a^3/(GT^2)$ ב-$\text{m}^3/\left(\left(\text{m}^3/(\text{kg}\cdot\text{s}^2)\right)\text{s}^2\right) = \text{kg}$; $\sqrt{GM/a}$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $a = 965.8\,\text{AU} = 1.45\cdot10^{14}\,\text{m}$. $M = \dfrac{4\pi^2\left(1.45\cdot10^{14}\right)^3}{6.67\cdot10^{-11}\left(4.80\cdot10^{8}\right)^2} = 7.82\cdot10^{36}\,\text{kg} = 3.93\cdot10^{6}M_S$.
+          $v_p = \sqrt{\dfrac{GM}{a}\cdot\dfrac{1812}{119.5}} = 7.39\cdot10^{6}\,\text{m/s}$, $v_a = 7.39\cdot10^{6}\cdot\dfrac{119.5}{1812} = 4.87\cdot10^{5}\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. כארבעה מיליון מסות שמש, $7.82\cdot10^{36}\,\text{kg}$. ב. $7.39\cdot10^{6}$ ו-$4.87\cdot10^{5}\,\text{m/s}$.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics, Chapter 25 (Celestial Mechanics)
+      year: 2016
+      problem: 'Example 25.2, The Motion of the Star S0-2 around the Black Hole at the Galactic Center (its printed mass, 7.79·10³⁴ kg, has an exponent slip: its own ratio, 3.91·10⁶ solar masses, its own periapse speed, 7.38·10⁶ m/s, and its own data all need 10³⁶)'
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/mit8_01scs22_chapter25new.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.5-c2
+    stars: 2
+    objectives: [OBJ-6.5-2, OBJ-6.5-1]
+    prompt: >-
+      גוף נמצא במרחק $R$ מעל פני כוכב לכת שמסתו $M$ ורדיוסו $R$, כלומר במרחק $2R$ ממרכזו, ונע בניצב לקו אל המרכז
+      במהירות $v_0 = \sqrt{\dfrac{2GM}{3R}}$. אין אוויר.
+
+      א. האם המסלול מעגל, אליפסה או מסלול פתוח? היכן נמצאת הנקודה הנתונה במסלול?
+
+      ב. מצאו את חצי הציר הראשי, את המרחק הגדול ביותר מהמרכז ואת האקסצנטריות, ואת המהירות בנקודה הרחוקה ביותר, בעזרת $v_0$.
+
+      ג. פי כמה ארוך זמן המחזור מזמן המחזור של מסלול מעגלי ברדיוס $2R$?
+
+      ד. איזה חלק מזמן המחזור הגוף נמצא במרחק גדול מ-$3R$ ממרכז כוכב הלכת? חשבו את התשובות של (ג) ו-(ד) בשעות לכוכב לכת בגודל ובמסה של כדור הארץ ($R_E = 6.37\cdot10^{6}\,\text{m}$, $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$).
+    answer: >-
+      א. אליפסה; הנקודה הנתונה היא נקודת הקרבה. ב. $a = 3R$, $r_a = 4R$, $e = 1/3$, $v_a = v_0/2$. ג. פי $1.5^{3/2} = 1.84$ ($7.31\,\text{h}$ מול $3.98\,\text{h}$). ד. $\dfrac12 + \dfrac1{3\pi} = 0.606$ מהמחזור, $4.43\,\text{h}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_0 = 2R$ מהמרכז, $v_0^2 = \dfrac{2GM}{3R} = \dfrac43\cdot\dfrac{GM}{r_0}$, בניצב לרדיוס.
+      - kind: law
+        text: >-
+          האנרגיה ליחידת מסה $\tfrac12v^2 - GM/r = -GM/(2a)$; החוק השני, $r_pv_p = r_av_a$; החוק השלישי; והזמן בין שתי נקודות, $t = T\cdot A/(\pi ab)$.
+      - kind: manipulation
+        text: >-
+          א: $GM/r_0 \lt v_0^2 \lt 2GM/r_0$: מהיר מהמהירות המעגלית ואיטי ממהירות המילוט, ולכן אליפסה. המהירות ניצבת לרדיוס, ולכן זו נקודת מפנה, והיא המהירה מבין השתיים: נקודת הקרבה.
+          ב: $\tfrac12v_0^2 - \dfrac{GM}{2R} = \dfrac{GM}{3R} - \dfrac{GM}{2R} = -\dfrac{GM}{6R}$, ולכן $a = 3R$, $r_a = 2a - r_p = 4R$, $e = \dfrac{4R - 2R}{4R + 2R} = \dfrac13$, $v_a = v_0\cdot\dfrac{2R}{4R} = \dfrac{v_0}2$.
+          ג: $T/T_c = \left(a/r_0\right)^{3/2} = 1.5^{3/2}$.
+          ד: המרחק מהמוקד שווה ל-$a$ בדיוק בקצוות של הציר המשני, ולכן $r > a = 3R$ בחלק הרחוק, מקצה לקצה של הציר המשני דרך נקודת הריחוק. בחלק הקרוב הקו מהמוקד מכסה $2\left(\tfrac14\pi ab - \tfrac12abe\right)$, ובחלק הרחוק את השאר: $\tfrac12\pi ab + abe$.
+      - kind: limit
+        text: >-
+          אילו $v_0^2 = GM/r_0$, היה יוצא $a = r_0$ ו-$e = 0$, מעגל, והחלק של (ד) היה בדיוק חצי. אילו $v_0^2 \to 2GM/r_0$, $a \to \infty$: המסלול נפתח.
+      - kind: units
+        text: >-
+          $GM/R$ ב-$\text{m}^2/\text{s}^2$, ולכן $a$ ב-$\text{m}$; היחסים חסרי יחידות.
+      - kind: substitution
+        text: >-
+          $T_c = 2\pi\sqrt{\left(2R_E\right)^3/(GM_E)} = 3.98\,\text{h}$, $T = 1.84\cdot3.98 = 7.31\,\text{h}$. החלק של (ד): $\dfrac12 + \dfrac{1}{3\pi} = 0.606$, כלומר $0.606\cdot7.31 = 4.43\,\text{h}$.
+      - kind: result
+        text: >-
+          א. אליפסה, והנקודה הנתונה היא נקודת הקרבה. ב. $3R$, $4R$, $1/3$, $v_0/2$. ג. פי $1.84$. ד. $0.606$ מהמחזור, $4.43\,\text{h}$.
+    source:
+      name: AAPT F=ma Exam A
+      year: 2019
+      problem: Question 8 (the orbit's shape; parts ב–ד added)
+      url: https://www.aapt.org/physicsteam/2019/upload/2019_Fma_A_solution.pdf
+      verified: '2026-11-11'
+      adapted: true

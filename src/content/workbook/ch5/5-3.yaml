@@ -1,0 +1,462 @@
+# Workbook, lesson 5.3 (the damped oscillator). Format: CLAUDE.md, "The solution format".
+# Notation throughout: ẍ + γẋ + ω0²x = 0, γ = b/m, ω0 = √(k/m), Q = ω0/γ, ω_d = √(ω0² − γ²/4), Λ = γT_d/2.
+# Every number was recomputed by .scratch/ch5/5-3/workbook.ts against src/physics/damping.ts and oscillator.ts (G = 9.8):
+#   W01 s² + 2s + 10: −1 ± 3i; s² + 6s + 9: −3 (double); s² + 8s + 7: −1, −7.
+#   W02 m = 0.30 kg, k = 120 N/m: ω0 = 20 rad/s, b_c = 12 kg/s; b = 2.4: γ = 8.0, ω_d = 19.6 rad/s (2.0 % below ω0), Q = 2.5.
+#   W03 ω0 = 50, γ = 0.50: Q = 100, energy half 1.39 s, amplitude half 2.77 s, 22.1 cycles.
+#   W04 ω0 = 2.0 rad/s: slow rate γ = 20 → 0.202, γ = 40 → 0.100 s⁻¹ (times ratio 2.02).
+#   W05 ω0 = 5.0, γ = 2.0, x0 = 3.0 cm from rest: ω_d = 4.90 rad/s, C2 = 0.612 cm, first zero 0.362 s (undamped 0.314 s),
+#       x(1.0 s) = −0.0166 cm.
+#   W06 peaks 8.0, 7.2 cm: Λ = 0.105, Q ≈ π/Λ = 29.8, amplitude below 1.0 cm after 19.7 → 20 cycles, ΔE/E = 0.190 per cycle.
+#   W07 660 Hz, energy ÷ 10⁶ in 2.5 s: γ = 5.53 s⁻¹, Q = 750 (amplitude law 1.50e3, f/γ = 119).
+#   W08 car 1200 kg, k = 6.0e4 N/m: ω0 = 7.07 rad/s (1.13 Hz), b_c = 1.70e4 kg/s; worn b = 0.2 b_c: γ = 2.83 s⁻¹, Q = 2.50,
+#       ω_d = 6.93 rad/s, T_d = 0.907 s, successive maxima ratio 0.277, first overshoot 52.7 % of x0, amplitude to 5 % in
+#       2.12 s (2.34 cycles).
+#   W09 Q = 5: γT_d = 1.26, fraction lost in the first cycle 0.717 (2π/Q = 1.26).
+#   W10 ω_d = 6.0 rad/s, amplitude halves every 2 cycles: T_d = 1.05 s, Λ = 0.347, γ = 0.662 s⁻¹, ω0 = 6.01 rad/s, Q = 9.08,
+#       critical needs γ × 18.2; energy lost per cycle exactly 0.500.
+#   c1 (MIT 8.03SC 2016 HW2 P2.3) Δy = 0.10 m: ω0 = √(g/Δy) = 9.90 rad/s, f0 = 1.58 Hz; γ before = 0.50, after = 1.0 s⁻¹,
+#       amplitude e-time 2.0 s; ω_d = 9.89 rad/s, y = −0.10 e^(−0.50t)(cos 9.89t + 0.0506 sin 9.89t) m; Q 14 → 9.90.
+#   c2 (MIT RES.8-005 2012, damping P2; .scratch/ch5/5-3/c2.ts) L = 10 mH, C = 1.0 µF: √(L/C) = 100 Ω; energy ÷ e in 10 cycles:
+#       R = √(L/C)/(20π) = 1.59 Ω (exact correction factor 1 + 3.2e-5), Q = 20π = 62.8; critical R = 200 Ω.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '5.3'
+practice:
+  - id: W-5.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.3-1]
+    prompt: >-
+      שלושה גופים על קפיצים, כל אחד עם בולם אחר. קבעו ונמקו, לכל אחד, אם השורשים של המשוואה האופיינית
+      $s^2 + \gamma s + \omega_0^2 = 0$ ממשיים ושונים, ממשיים ושווים או מרוכבים, ואם החלק הממשי שלהם שלילי.
+
+      א. אחרי מכה, הגוף עובר את שיווי המשקל שוב ושוב, וכל מעבר בתנופה קטנה מקודמו.
+
+      ב. הגוף משוחרר ממנוחה, זוחל לשיווי המשקל בלי לעבור אותו, וכל בולם חלש יותר כבר היה גורם לו לעבור את שיווי המשקל.
+
+      ג. הגוף משוחרר ממנוחה וזוחל לשיווי המשקל, אבל עם בולם חלש יותר הוא היה חוזר מהר יותר, עדיין בלי לעבור.
+
+      ד. בדקו את מה שקבעתם בשלוש המשוואות $s^2 + 2s + 10 = 0$, $s^2 + 6s + 9 = 0$ ו-$s^2 + 8s + 7 = 0$ (הזמן בשניות): איזו מתאימה לאיזה תיאור?
+    answer: >-
+      א. מרוכבים, חלק ממשי שלילי (תת-ריסון). ב. ממשיים ושווים, שליליים (ריסון קריטי). ג. ממשיים ושונים, שליליים (על-ריסון).
+      ד. $-1 \pm 3i$ ל-א, $-3$ כפול ל-ב, $-1$ ו-$-7$ ל-ג.
+    solution:
+      - kind: law
+        text: >-
+          $x \propto e^{st}$: חלק מדומה שונה מאפס נותן תנודה, וחלק ממשי שלילי נותן דעיכה. שורש כפול הוא הגבול בין השניים.
+      - kind: reasoning
+        text: >-
+          א: מעברים חוזרים דורשים קוסינוס, כלומר חלק מדומה; התנופה קטנה, ולכן החלק הממשי שלילי. ב: בלי מעבר, ובכל ריסון חלש יותר
+          כבר יש מעבר: זה הגבול, ריסון קריטי, שורש כפול. ג: בלי מעבר, ויש ריסון חלש יותר שעדיין בלי מעבר: על-ריסון, ושני שורשים
+          ממשיים שליליים שונים.
+      - kind: manipulation
+        text: >-
+          $s = -\gamma/2 \pm \sqrt{\gamma^2/4 - \omega_0^2}$: ב-$s^2 + 2s + 10$, $1 - 10 = -9$ ו-$s = -1 \pm 3i$; ב-$s^2 + 6s + 9$, $9 - 9 = 0$
+          ו-$s = -3$; ב-$s^2 + 8s + 7$, $16 - 7 = 9$ ו-$s = -4 \pm 3$.
+      - kind: limit
+        text: >-
+          אם $\gamma = 0$, השורשים $\pm i\omega_0$, על הציר המדומה: תנודה שלא דועכת. זה הקצה של א.
+      - kind: units
+        text: >-
+          $s$ ב-$\text{s}^{-1}$, כמו $\gamma$ ו-$\omega_0$.
+      - kind: result
+        text: >-
+          א: מרוכבים ($-1 \pm 3i$). ב: כפול ($-3$). ג: ממשיים שונים ($-1$, $-7$). בכל המקרים החלק הממשי שלילי.
+
+  - id: W-5.3-02
+    level: basic
+    objectives: [OBJ-5.3-1]
+    prompt: >-
+      גוף במסה $0.30\,\text{kg}$ על קפיץ עם $k = 120\,\text{N/m}$. מה מקדם הריסון $b$ שנותן ריסון קריטי? אם מחברים בולם עם $b = 2.4\,\text{kg/s}$,
+      מה התדירות הזוויתית של התנודות, ובכמה אחוזים היא קטנה מ-$\omega_0$?
+    answer: >-
+      $b_c = 12\,\text{kg/s}$; $\omega_d = 19.6\,\text{rad/s}$, כ-$2.0\%$ מתחת ל-$\omega_0 = 20\,\text{rad/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.30\,\text{kg}$, $k = 120\,\text{N/m}$, $b = 2.4\,\text{kg/s}$.
+      - kind: law
+        text: >-
+          ריסון קריטי ב-$\gamma = 2\omega_0$, כלומר $b_c = 2\sqrt{km}$. בתת-ריסון $\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$.
+      - kind: manipulation
+        text: >-
+          $\omega_0 = \sqrt{k/m}$, $\gamma = b/m$; משווים את $b$ ל-$b_c$, ואם הוא קטן ממנו, מציבים ב-$\omega_d$.
+      - kind: limit
+        text: >-
+          כש-$b \to 0$, $\omega_d \to \omega_0$; כש-$b \to b_c$, $\omega_d \to 0$.
+      - kind: units
+        text: >-
+          $\sqrt{km}$ ב-$\text{kg/s}$; $\omega_d$ ב-$\text{rad/s}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{120/0.30} = 20\,\text{rad/s}$, $b_c = 2\sqrt{120\cdot0.30} = 12\,\text{kg/s}$. $b = 2.4\,\text{kg/s} \lt b_c$: $\gamma = 8.0\,\text{s}^{-1}$,
+          $\omega_d = \sqrt{400 - 16} = 19.6\,\text{rad/s}$, נמוכה מ-$\omega_0$ ב-$2.0\%$.
+      - kind: result
+        text: >-
+          $b_c = 12\,\text{kg/s}$; $\omega_d = 19.6\,\text{rad/s}$, כ-$2.0\%$ פחות מ-$\omega_0$.
+
+  - id: W-5.3-03
+    level: basic
+    objectives: [OBJ-5.3-2]
+    prompt: >-
+      למתנד מרוסן $\omega_0 = 50\,\text{rad/s}$ ו-$\gamma = 0.50\,\text{s}^{-1}$. מה מקדם האיכות שלו? אחרי כמה זמן יורדת האנרגיה שלו לחצי, ואחרי כמה
+      זמן יורדת האמפליטודה לחצי? כמה תנודות הוא מבצע בזמן השני?
+    answer: >-
+      $Q = 100$; האנרגיה לחצי אחרי $1.39\,\text{s}$, האמפליטודה לחצי אחרי $2.77\,\text{s}$, כ-$22$ תנודות.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 50\,\text{rad/s}$, $\gamma = 0.50\,\text{s}^{-1}$.
+      - kind: law
+        text: >-
+          $Q = \omega_0/\gamma$; $E \approx E_0e^{-\gamma t}$; $A = A_0e^{-\gamma t/2}$.
+      - kind: manipulation
+        text: >-
+          $e^{-\gamma t} = \tfrac12$ נותן $t_E = \ln2/\gamma$; $e^{-\gamma t/2} = \tfrac12$ נותן $t_A = 2\ln2/\gamma$. מספר התנודות $\omega_dt_A/(2\pi)$, ו-$\omega_d \approx \omega_0$.
+      - kind: limit
+        text: >-
+          כש-$\gamma \to 0$ שני הזמנים שואפים לאין-סוף, ו-$Q \to \infty$. בכל $\gamma$, $t_A = 2t_E$.
+      - kind: units
+        text: >-
+          $\ln2/\gamma$ בשניות; $Q$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $Q = 50/0.50 = 100$. $t_E = 0.693/0.50 = 1.39\,\text{s}$, $t_A = 2.77\,\text{s}$, ו-$50\cdot2.77/(2\pi) = 22.1$ תנודות.
+      - kind: result
+        text: >-
+          $Q = 100$; $1.39\,\text{s}$ לאנרגיה, $2.77\,\text{s}$ לאמפליטודה, כ-$22$ תנודות.
+
+  - id: W-5.3-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-5.3-1]
+    prompt: >-
+      מחזיר דלת עובד כמתנד על-מרוסן מאוד ($\gamma \gg \omega_0$). טכנאי מכפיל את הצמיגות של השמן בבוכנה, ובכך מכפיל את $b$. סטודנט אומר:
+      "הדלת תיסגר מהר פי שניים, כי הבולם חזק פי שניים". קבעו ונמקו אם הוא צודק, והעריכו פי כמה ישתנה זמן הסגירה. בדקו את ההערכה עבור
+      $\omega_0 = 2.0\,\text{rad/s}$ ו-$\gamma$ שעולה מ-$20$ ל-$40\,\text{s}^{-1}$.
+    answer: >-
+      לא: זמן הסגירה **מוכפל**, כי הקצב של השורש האיטי $|s_1| \approx \omega_0^2/\gamma = k/b$. בדוגמה $|s_1|$ יורד מ-$0.202$ ל-$0.100\,\text{s}^{-1}$, פי $2.02$.
+    solution:
+      - kind: law
+        text: >-
+          $s_{1,2} = -\gamma/2 \pm \sqrt{\gamma^2/4 - \omega_0^2}$; החזרה נקבעת בשורש האיטי, $s_1$.
+      - kind: manipulation
+        text: >-
+          כופלים ומחלקים בצמוד: $s_1 = -\omega_0^2\big/\left(\gamma/2 + \sqrt{\gamma^2/4 - \omega_0^2}\right) \approx -\omega_0^2/\gamma = -k/b$ כש-$\gamma \gg \omega_0$.
+      - kind: reasoning
+        text: >-
+          הבולם חזק פי שניים מתנגד פי שניים לכל מהירות, גם למהירות **אל** שיווי המשקל. הקפיץ דוחף בכוח $-kx$ נגד $b\dot x$, ולכן $\dot x \approx -kx/b$:
+          פי שניים $b$, חצי מהירות, פי שניים זמן. האינרציה לא משחקת תפקיד.
+      - kind: limit
+        text: >-
+          כש-$b \to \infty$ הדלת לא נסגרת בכלל. וכש-$\gamma$ יורד אל $2\omega_0$, הקירוב נשבר: הקצב המדויק שם $\omega_0$, לא $\omega_0/2$.
+      - kind: units
+        text: >-
+          $\omega_0^2/\gamma$ ב-$\text{s}^{-2}/\text{s}^{-1} = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\gamma = 20\,\text{s}^{-1}$: $s_1 = -10 + \sqrt{100 - 4} = -0.202\,\text{s}^{-1}$. $\gamma = 40\,\text{s}^{-1}$: $s_1 = -20 + \sqrt{400 - 4} = -0.100\,\text{s}^{-1}$. היחס $2.02$.
+      - kind: result
+        text: >-
+          הסטודנט טועה: הסגירה איטית פי שניים בערך (כאן פי $2.02$).
+
+  - id: W-5.3-05
+    level: mid
+    objectives: [OBJ-5.3-1]
+    prompt: >-
+      מתנד עם $\omega_0 = 5.0\,\text{rad/s}$ ו-$\gamma = 2.0\,\text{s}^{-1}$ מוסט ל-$x_0 = 3.0\,\text{cm}$ ומשוחרר ממנוחה. כתבו את $x(t)$. מתי הוא עובר
+      לראשונה את שיווי המשקל, ואיך זה משתווה למתנד בלי ריסון?
+    answer: >-
+      $x = e^{-t}\left(3.0\cos4.90t + 0.612\sin4.90t\right)\,\text{cm}$; מעבר ראשון ב-$t = 0.362\,\text{s}$, מאוחר מ-$0.314\,\text{s}$ בלי ריסון.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 5.0\,\text{rad/s}$, $\gamma = 2.0\,\text{s}^{-1}$, $x(0) = 3.0\,\text{cm}$, $\dot x(0) = 0$.
+      - kind: law
+        text: >-
+          תת-ריסון ($\gamma \lt 2\omega_0$): $x = e^{-\gamma t/2}\left(C_1\cos\omega_dt + C_2\sin\omega_dt\right)$, עם $C_1 = x_0$ ו-$C_2 = (v_0 + \gamma x_0/2)/\omega_d$.
+      - kind: manipulation
+        text: >-
+          $x = 0$ כש-$C_1\cos\omega_dt + C_2\sin\omega_dt = 0$, כלומר $\tan\omega_dt = -C_1/C_2$. הפתרון החיובי הראשון: $\omega_dt = \pi - \arctan(C_1/C_2)$.
+      - kind: limit
+        text: >-
+          כש-$\gamma \to 0$, $C_2 \to 0$ ו-$\arctan(C_1/C_2) \to \pi/2$: המעבר הראשון ב-$\pi/(2\omega_0)$, רבע מחזור, כמו בשיעור 5.1.
+      - kind: units
+        text: >-
+          $C_2$ ב-$(\text{s}^{-1}\cdot\text{cm})/(\text{rad/s}) = \text{cm}$.
+      - kind: substitution
+        text: >-
+          $\omega_d = \sqrt{25 - 1.0} = 4.90\,\text{rad/s}$, $C_2 = 1.0\cdot3.0/4.90 = 0.612\,\text{cm}$. $\arctan(3.0/0.612) = 1.37$, ולכן $t = (3.14 - 1.37)/4.90 = 0.362\,\text{s}$.
+          בלי ריסון: $\pi/(2\cdot5.0) = 0.314\,\text{s}$.
+      - kind: result
+        text: >-
+          $x(t) = e^{-t}\left(3.0\cos4.90t + 0.612\sin4.90t\right)\,\text{cm}$; מעבר ראשון ב-$0.362\,\text{s}$, מאוחר מרבע המחזור בלי ריסון.
+
+  - id: W-5.3-06
+    level: mid
+    objectives: [OBJ-5.3-2]
+    prompt: >-
+      במתנד בריסון חלש מודדים שני שיאים עוקבים: $8.0\,\text{cm}$ ואחריו $7.2\,\text{cm}$. מצאו את הדקרמנט הלוגריתמי, הערכה של מקדם האיכות,
+      ואת החלק של האנרגיה שאובד בכל מחזור. אחרי כמה מחזורים מהשיא הראשון יירדו השיאים מתחת ל-$1.0\,\text{cm}$?
+    answer: >-
+      $\Lambda = 0.105$, $Q \approx 29.8$, $19\%$ מהאנרגיה במחזור; אחרי $20$ מחזורים.
+    solution:
+      - kind: given
+        text: >-
+          $x_n = 8.0\,\text{cm}$, $x_{n+1} = 7.2\,\text{cm}$.
+      - kind: law
+        text: >-
+          $\Lambda = \ln(x_n/x_{n+1})$, ובריסון חלש $Q \approx \pi/\Lambda$. כל מחזור כופל את האמפליטודה ב-$e^{-\Lambda}$ ואת האנרגיה ב-$e^{-2\Lambda}$.
+      - kind: manipulation
+        text: >-
+          החלק שאובד במחזור: $1 - (x_{n+1}/x_n)^2$. אחרי $N$ מחזורים השיא $8.0e^{-N\Lambda}$; הוא יורד מתחת ל-$1.0\,\text{cm}$ כש-$N > \ln8/\Lambda$.
+      - kind: limit
+        text: >-
+          כש-$\Lambda \to 0$, $Q \to \infty$, והחלק שאובד $\approx 2\Lambda = 2\pi/Q \to 0$.
+      - kind: units
+        text: >-
+          כל הגדלים חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $\Lambda = \ln(8.0/7.2) = 0.105$; $Q \approx \pi/0.105 = 29.8$; $1 - 0.9^2 = 0.190$ (ו-$2\pi/Q = 0.211$); $\ln8/0.105 = 19.7$, ולכן השיא העשרים הוא הראשון מתחת ל-$1.0\,\text{cm}$.
+      - kind: result
+        text: >-
+          $\Lambda = 0.105$, $Q \approx 29.8$, $19\%$ במחזור, $20$ מחזורים.
+
+  - id: W-5.3-07
+    level: mid
+    objectives: [OBJ-5.3-2]
+    prompt: >-
+      מקישים על כוס זכוכית, והיא מצלצלת בתדירות $660\,\text{Hz}$. עוצמת הצליל פרופורציונית לאנרגיית התנודה של הכוס, והיא יורדת פי $10^{6}$
+      תוך $2.5\,\text{s}$. נניח שהכוס היא מתנד מרוסן. מה מקדם האיכות שלה?
+    answer: >-
+      $Q = 750$.
+    solution:
+      - kind: given
+        text: >-
+          $f = 660\,\text{Hz}$; $E$ יורדת פי $10^6$ ב-$t = 2.5\,\text{s}$.
+      - kind: law
+        text: >-
+          $E \approx E_0e^{-\gamma t}$; $Q = \omega_0/\gamma$ עם $\omega_0 = 2\pi f$ (בריסון חלש $\omega_d \approx \omega_0$).
+      - kind: manipulation
+        text: >-
+          $\gamma = \ln(10^6)/t$, ולכן $Q = 2\pi ft/\ln(10^6)$.
+      - kind: limit
+        text: >-
+          אם הצליל נמשך יותר ($t \to \infty$), $Q \to \infty$. ואם היינו משתמשים בחוק של האמפליטודה, $e^{-\gamma t/2}$, היינו מקבלים $Q$ גדול פי 2: אותה טעות כמו לבלבל אנרגיה עם אמפליטודה.
+      - kind: units
+        text: >-
+          $ft$ חסר ממדים (מספר תנודות), וכך גם $Q$.
+      - kind: substitution
+        text: >-
+          $\ln(10^6) = 13.8$; $\gamma = 13.8/2.5 = 5.53\,\text{s}^{-1}$; $Q = 2\pi\cdot660/5.53 = 750$.
+      - kind: result
+        text: >-
+          $Q = 750$: הכוס מבצעת $1650$ תנודות עד שהצליל כמעט נדם.
+
+  - id: W-5.3-08
+    level: bagrut
+    objectives: [OBJ-5.3-1, OBJ-5.3-2]
+    prompt: >-
+      מכונית במסה $1200\,\text{kg}$ נשענת על ארבעה קפיצים, שיחד שקולים לקפיץ אחד עם $k = 6.0\cdot10^{4}\,\text{N/m}$ (תנועה אנכית בלבד).
+
+      א. מה התדירות העצמית שלה, בהרץ, ומה מקדם הריסון הכולל $b_c$ שהבולמים צריכים לספק לריסון קריטי?
+
+      ב. הבולמים שחוקים ונותנים רק $b = 0.20\,b_c$. מה מקדם האיכות, ומה היחס בין שני שיאים עוקבים של התנודה?
+
+      ג. המכונית נלחצת מטה ומשתחררת ממנוחה. לאיזה חלק מההעתק ההתחלתי היא עוברת את שיווי המשקל בחצי המחזור הראשון, ואחרי כמה זמן המעטפת יורדת ל-$5\%$?
+    answer: >-
+      א. $1.13\,\text{Hz}$, $b_c = 1.70\cdot10^{4}\,\text{kg/s}$. ב. $Q = 2.50$, יחס $0.277$. ג. $52.7\%$; $2.12\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1200\,\text{kg}$, $k = 6.0\cdot10^4\,\text{N/m}$, $b = 0.20\,b_c$; ציר $x$ אנכי, חיובי כלפי מטה, משיווי המשקל.
+      - kind: law
+        text: >-
+          $\omega_0 = \sqrt{k/M}$, $b_c = 2\sqrt{kM}$, $Q = \omega_0/\gamma$; $x = A_0e^{-\gamma t/2}\cos(\omega_dt + \varphi)$; שני שיאים עוקבים ביחס $e^{-\gamma T_d/2}$.
+      - kind: manipulation
+        text: >-
+          $b = 0.20b_c$ פירושו $\gamma = 0.20\cdot2\omega_0$, ולכן $Q = 1/0.40 = 2.5$. ממנוחה, אחרי חצי מחזור מרוסן הקוסינוס מתהפך והמעטפת ירדה פי $e^{-\gamma T_d/4}$,
+          ולכן ההעתק בצד השני $x_0e^{-\pi\gamma/(2\omega_d)}$. המעטפת יורדת ל-$5\%$ כש-$e^{-\gamma t/2} = 0.05$.
+      - kind: limit
+        text: >-
+          כש-$b \to b_c$, $\omega_d \to 0$ והמעבר לצד השני $e^{-\pi\gamma/(2\omega_d)} \to 0$: אין מעבר. כש-$b \to 0$ הוא שואף ל-$1$: המכונית מגיעה לנקודה הסימטרית.
+      - kind: units
+        text: >-
+          $\sqrt{kM}$ ב-$\text{kg/s}$; $\gamma/\omega_d$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{6.0\cdot10^4/1200} = 7.07\,\text{rad/s}$, $f_0 = 1.13\,\text{Hz}$; $b_c = 2\sqrt{6.0\cdot10^4\cdot1200} = 1.70\cdot10^4\,\text{kg/s}$. $\gamma = 2.83\,\text{s}^{-1}$,
+          $\omega_d = \sqrt{50 - 2.0} = 6.93\,\text{rad/s}$, $T_d = 0.907\,\text{s}$, יחס השיאים $e^{-2.83\cdot0.907/2} = 0.277$. מעבר: $e^{-\pi\cdot2.83/(2\cdot6.93)} = 0.527$.
+          $t = 2\ln20/2.83 = 2.12\,\text{s}$, כ-$2.3$ מחזורים.
+      - kind: result
+        text: >-
+          א. $1.13\,\text{Hz}$, $1.70\cdot10^4\,\text{kg/s}$. ב. $Q = 2.50$, יחס $0.277$. ג. $52.7\%$ מההעתק ההתחלתי, ו-$2.12\,\text{s}$ עד $5\%$.
+
+  - id: W-5.3-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-5.3-2]
+    prompt: >-
+      גוף על קפיץ עם $k$ מוסט ל-$x_0$ ומשוחרר ממנוחה, ופועל עליו ריסון ליניארי כלשהו.
+
+      א. הראו שהעבודה הכוללת של כוח הריסון, מהשחרור ועד שהגוף נח, היא $-\tfrac12kx_0^2$, בכל סוג ריסון. למה היא לא תלויה ב-$b$?
+
+      ב. במתנד עם $Q = 5$, איזה חלק מהאנרגיה (הממוצעת) אובד במחזור המרוסן הראשון? השוו לקירוב $2\pi/Q$ והסבירו את הפער.
+    answer: >-
+      א. $W = \Delta E = 0 - \tfrac12kx_0^2$. ב. $0.717$, לעומת $2\pi/Q = 1.26$: הקירוב תקף רק כש-$2\pi/Q \ll 1$.
+    solution:
+      - kind: law
+        text: >-
+          $W_{\text{nc}} = \Delta E$ (שיעור 3.3), ו-$dE/dt = -b\dot x^2$. במחזור אחד הממוצע של האנרגיה יורד פי $e^{\gamma T_d}$.
+      - kind: reasoning
+        text: >-
+          א: בהתחלה $E = \tfrac12kx_0^2$ (ממנוחה), ובסוף הגוף נח בשיווי המשקל, $E = 0$. רק כוח הריסון אינו משמר, ולכן העבודה שלו $\Delta E$. $b$ קובע
+          **כמה מהר** האנרגיה מתפזרת, לא כמה: בסוף כולה מתפזרת.
+      - kind: manipulation
+        text: >-
+          ב: $\gamma = \omega_0/Q$, $\omega_d = \omega_0\sqrt{1 - 1/(4Q^2)}$, ולכן $\gamma T_d = \dfrac{2\pi}{Q\sqrt{1 - 1/(4Q^2)}}$, והחלק שאובד $1 - e^{-\gamma T_d}$.
+      - kind: limit
+        text: >-
+          כש-$Q \gg 1$, $\gamma T_d \to 2\pi/Q$ ו-$1 - e^{-y} \approx y$: חוזרים לקירוב. כש-$Q$ קטן, $y$ כבר לא קטן, והקירוב הליניארי של האקספוננט נותן יותר מכל האנרגיה.
+      - kind: units
+        text: >-
+          $\tfrac12kx_0^2$ ב-$\text{J}$; $\gamma T_d$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $Q = 5$: $\gamma T_d = 2\pi/(5\cdot0.995) = 1.26$, $1 - e^{-1.26} = 0.717$; $2\pi/5 = 1.26$.
+      - kind: result
+        text: >-
+          א. $-\tfrac12kx_0^2$, בלי תלות ב-$b$. ב. $71.7\%$ אובד במחזור הראשון; הקירוב $2\pi/Q$ נותן $1.26$, חסר משמעות כש-$Q$ קטן.
+
+  - id: W-5.3-10
+    level: bagrut
+    objectives: [OBJ-5.3-1, OBJ-5.3-2]
+    prompt: >-
+      גוף על קפיץ טבול בשמן מתנודד בתדירות זוויתית $\omega_d = 6.0\,\text{rad/s}$, והאמפליטודה שלו יורדת לחצי כל שתי תנודות. מצאו את $\gamma$, את
+      $\omega_0$ ואת $Q$. פי כמה צריך להגדיל את הצמיגות של השמן (כלומר את $b$) כדי שהריסון יהיה קריטי? איזה חלק מהאנרגיה אובד בכל מחזור?
+    answer: >-
+      $\gamma = 0.662\,\text{s}^{-1}$, $\omega_0 = 6.01\,\text{rad/s}$, $Q = 9.08$; פי $18.2$; חצי מהאנרגיה בכל מחזור.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_d = 6.0\,\text{rad/s}$; $A(t + 2T_d) = \tfrac12A(t)$.
+      - kind: law
+        text: >-
+          $A \propto e^{-\gamma t/2}$; $T_d = 2\pi/\omega_d$; $\omega_0^2 = \omega_d^2 + \gamma^2/4$; ריסון קריטי ב-$\gamma = 2\omega_0$, ו-$\gamma \propto b$.
+      - kind: manipulation
+        text: >-
+          $e^{-\gamma T_d} = \tfrac12$, ולכן $\gamma = \ln2/T_d = \omega_d\ln2/(2\pi)$. היחס הדרוש $2\omega_0/\gamma$. בכל מחזור האמפליטודה כופלת ב-$2^{-1/2}$, ולכן האנרגיה ב-$\tfrac12$.
+      - kind: limit
+        text: >-
+          אם האמפליטודה הייתה יורדת לחצי רק אחרי מספר רב מאוד של תנודות, $\gamma \to 0$ ו-$\omega_0 \to \omega_d$, ו-$Q \to \infty$.
+      - kind: units
+        text: >-
+          $\omega_d\ln2/(2\pi)$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $T_d = 2\pi/6.0 = 1.05\,\text{s}$; $\gamma = 0.693/1.05 = 0.662\,\text{s}^{-1}$; $\omega_0 = \sqrt{36 + 0.110} = 6.01\,\text{rad/s}$; $Q = 6.01/0.662 = 9.08$;
+          $2\omega_0/\gamma = 18.2$.
+      - kind: result
+        text: >-
+          $\gamma = 0.662\,\text{s}^{-1}$, $\omega_0 = 6.01\,\text{rad/s}$, $Q = 9.08$; צמיגות גדולה פי $18.2$; $50\%$ מהאנרגיה בכל מחזור.
+
+challenge:
+  - id: W-5.3-c1
+    stars: 2
+    objectives: [OBJ-5.3-1, OBJ-5.3-2]
+    prompt: >-
+      רמזור תלוי על כבלים מעל צומת, ובסערה הוא מתנודד למעלה ולמטה. אפשר לתאר אותו כמסה על קפיץ עם ריסון ליניארי, כשהכבלים הם הקפיץ וכל הריסון
+      נמצא בהם. מתבוננת רואה שהאמפליטודה של התנודות יורדת פי $e$ תוך $4.0\,\text{s}$. פתאום החצי התחתון של הרמזור (חצי מהמסה) ניתק ונפל, וקו שיווי
+      המשקל של החצי שנשאר עלה ב-$0.10\,\text{m}$. ברגע הניתוק הרמזור נח בשיווי המשקל הקודם.
+
+      א. מה התדירות העצמית של החצי שנשאר, בהרץ?
+
+      ב. אחרי כמה זמן יורדת עכשיו האמפליטודה פי $e$?
+
+      ג. כתבו את $y(t)$, ההעתק משיווי המשקל החדש (חיובי כלפי מעלה), עם ערכים מספריים לכל הקבועים.
+    answer: >-
+      א. $1.58\,\text{Hz}$. ב. $2.0\,\text{s}$. ג. $y = -0.10\,e^{-0.50t}\left(\cos9.89t + 0.0506\sin9.89t\right)\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          לפני: מסה $2m$, זמן $e$ של האמפליטודה $4.0\,\text{s}$. אחרי: מסה $m$, שיווי המשקל עלה ב-$\Delta = 0.10\,\text{m}$; $y$ כלפי מעלה משיווי המשקל החדש; $y(0) = -\Delta$, $\dot y(0) = 0$; $g = 9.8\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          שיווי משקל של קפיץ אנכי: $ky_{\text{st}} = Mg$ (שיעור 5.1). אמפליטודה $\propto e^{-\gamma t/2}$ עם $\gamma = b/M$. תת-ריסון: $y = e^{-\gamma t/2}\left(C_1\cos\omega_dt + C_2\sin\omega_dt\right)$.
+      - kind: manipulation
+        text: >-
+          א: ההפרש במתיחה הסטטית $(2m - m)g/k = \Delta$, ולכן $k/m = g/\Delta$ ו-$\omega_0 = \sqrt{g/\Delta}$. ב: לפני, $2/\gamma_{\text{before}} = 4.0\,\text{s}$ עם $\gamma_{\text{before}} = b/(2m)$, ולכן
+          $b/m = 1.0\,\text{s}^{-1}$; אחרי, $\gamma = b/m$ (אותו $b$, חצי מסה), וזמן ה-$e$ של האמפליטודה $2/\gamma$. ג: $C_1 = -\Delta$, $C_2 = \gamma C_1/(2\omega_d)$.
+      - kind: limit
+        text: >-
+          $b$ לא השתנה, אבל $\gamma = b/M$ הוכפל: מסה קטנה יותר נבלמת מהר יותר. ו-$Q$ ירד מ-$14$ ל-$9.90$. כש-$\gamma \to 0$, $C_2 \to 0$ ו-$y = -\Delta\cos\omega_0t$, תנודה סביב שיווי המשקל החדש באמפליטודה $\Delta$.
+      - kind: units
+        text: >-
+          $g/\Delta$ ב-$\text{s}^{-2}$; $C_2$ במטרים.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{9.8/0.10} = 9.90\,\text{rad/s}$, $f_0 = 1.58\,\text{Hz}$. $\gamma = 1.0\,\text{s}^{-1}$, זמן $e$ של האמפליטודה $2.0\,\text{s}$. $\omega_d = \sqrt{98 - 0.25} = 9.89\,\text{rad/s}$,
+          $C_2/C_1 = 0.50/9.89 = 0.0506$.
+      - kind: result
+        text: >-
+          א. $1.58\,\text{Hz}$. ב. $2.0\,\text{s}$. ג. $y = -0.10\,e^{-0.50t}\left(\cos9.89t + 0.0506\sin9.89t\right)\,\text{m}$.
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 2
+      year: 2016
+      problem: Problem 2.3 (the traffic signal in a hurricane)
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/0b2a29348074da9445a2878b4196afbb_MIT8_03SCF16_ProblemSet2.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-5.3-c2
+    stars: 1
+    objectives: [OBJ-5.3-1, OBJ-5.3-2]
+    prompt: >-
+      אותה מתמטיקה במעגל חשמלי; לא צריך לדעת חשמל מעבר למה שכתוב כאן. קבל $C$, סליל $L$ ונגד $R$ מחוברים בטור דרך מפסק. המטען $q(t)$ על הקבל
+      מקיים, מחוק הלולאה של קירכהוף, $L\ddot q + R\dot q + q/C = 0$, והזרם הוא $I = \dot q$. האנרגיה במעגל היא $\tfrac12LI^2 + q^2/(2C)$. השוו
+      למסה על קפיץ עם ריסון, $m\ddot x + b\dot x + kx = 0$, שהאנרגיה שלה $\tfrac12m\dot x^2 + \tfrac12kx^2$: המטען $q$ משחק את תפקיד ההעתק $x$,
+      הזרם את תפקיד המהירות, $L$ את תפקיד המסה $m$, $R$ את תפקיד מקדם הריסון $b$, ו-$1/C$ את תפקיד קבוע הקפיץ $k$. כל עוד המפסק פתוח, המטען
+      $q_0$ והזרם אפס; ב-$t = 0$ סוגרים אותו.
+
+      א. לאילו ערכים של $R$ הסימן של המטען מתהפך מתישהו אחרי $t = 0$?
+
+      ב. בתנאי של (א), מצאו את $q(t)$ ואת $I(t)$ במונחי $q_0$, $R$, $L$ ו-$C$. מה קורה לשניהם סמוך ל-$t = 0$?
+
+      ג. האנרגיה במעגל יורדת פי $e$ אחרי $10$ מחזורים. מצאו את $R$ במונחי $L$ ו-$C$, וחשבו אותו עבור $L = 10\,\text{mH}$ ו-$C = 1.0\,\mu\text{F}$.
+    answer: >-
+      א. $R \lt 2\sqrt{L/C}$ (כמו $b \lt 2\sqrt{km}$). ב. $q = q_0e^{-\gamma t/2}\left(\cos\omega_dt + \dfrac{\gamma}{2\omega_d}\sin\omega_dt\right)$,
+      $I = -\dfrac{q_0}{LC\,\omega_d}e^{-\gamma t/2}\sin\omega_dt$, עם $\gamma = R/L$. ג. $R \approx \dfrac{1}{20\pi}\sqrt{L/C} = 1.59\,\Omega$.
+    solution:
+      - kind: given
+        text: >-
+          $q(0) = q_0$, $\dot q(0) = I(0) = 0$. מחלקים ב-$L$: $\ddot q + \gamma\dot q + \omega_0^2q = 0$ עם $\gamma = R/L$ ו-$\omega_0 = 1/\sqrt{LC}$.
+      - kind: law
+        text: >-
+          זו משוואת המתנד המרוסן: $L$ במקום $m$, $R$ במקום $b$ ו-$1/C$ במקום $k$. הסימן מתהפך רק בתת-ריסון, $\gamma \lt 2\omega_0$; הממוצע של האנרגיה דועך כמו $e^{-\gamma t}$.
+      - kind: manipulation
+        text: >-
+          (א) $R/L \lt 2/\sqrt{LC}$, כלומר $R \lt 2\sqrt{L/C}$ (כמו $b \lt 2\sqrt{km}$). (ב) $C_1 = q_0$, $C_2 = \gamma q_0/(2\omega_d)$; גוזרים, והאיברים עם $\cos\omega_dt$ מתקזזים:
+          $I = -q_0\dfrac{\omega_0^2}{\omega_d}e^{-\gamma t/2}\sin\omega_dt$, ו-$\omega_0^2 = 1/(LC)$. (ג) עשרה מחזורים: $\gamma\cdot10T_d = 1$ עם $T_d = 2\pi/\omega_d$,
+          כלומר $\gamma/\omega_d = 1/(20\pi)$. בריסון חלש $\omega_d \approx \omega_0$, ולכן $R = L\gamma \approx \dfrac{L\omega_0}{20\pi} = \dfrac{1}{20\pi}\sqrt{\dfrac LC}$.
+      - kind: limit
+        text: >-
+          סמוך ל-$t = 0$: $\dot q = 0$, והגרף של $q$ מתחיל אופקי; $I$ מתחיל מאפס, בשיפוע $-q_0/(LC)$, כי הסליל לא מרשה לזרם לקפוץ (כמו שגוף לא משנה מהירות בבת אחת). כש-$R \to 0$, מעגל $LC$ שמתנודד לנצח. ובג׳,
+          מקדם האיכות $Q = \omega_0/\gamma = 20\pi \approx 63$: גבוה, ולכן הקירוב $\omega_d \approx \omega_0$ מצדיק את עצמו (התיקון המדויק בגורם $\sqrt{1 + 1/(1600\pi^2)}$, כ-$3\cdot10^{-5}$).
+      - kind: units
+        text: >-
+          $\sqrt{L/C}$ ב-$\sqrt{\text{H}/\text{F}} = \Omega$; $q_0/(LC\omega_d)$ ב-$\text{C}\cdot\text{s}^{-2}\cdot\text{s} = \text{A}$.
+      - kind: substitution
+        text: >-
+          $\sqrt{L/C} = \sqrt{0.010/1.0\cdot10^{-6}} = 100\,\Omega$; $R = 100/(20\pi) = 1.59\,\Omega$. לשם השוואה, הנגד הקריטי $2\sqrt{L/C} = 200\,\Omega$.
+      - kind: result
+        text: >-
+          א. $R \lt 2\sqrt{L/C}$. ב. $q = q_0e^{-\gamma t/2}\left(\cos\omega_dt + \tfrac{\gamma}{2\omega_d}\sin\omega_dt\right)$, $I = -\tfrac{q_0}{LC\omega_d}e^{-\gamma t/2}\sin\omega_dt$. ג. $R = \tfrac{1}{20\pi}\sqrt{L/C} = 1.59\,\Omega$.
+    source:
+      name: MIT RES.8-005 Vibrations and Waves Problem Solving, Harmonic Oscillators with Damping
+      year: 2012
+      problem: Problem 2 (the RLC circuit closed at t = 0)
+      url: https://ocw.mit.edu/courses/res-8-005-vibrations-and-waves-problem-solving-fall-2012/pages/problem-solving-videos/harmonic-oscillators-with-damping-1/problems/
+      verified: '2026-11-11'
+      adapted: true

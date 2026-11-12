@@ -1,12 +1,13 @@
 # Terms first defined in lesson 6.3. One spelling per concept, course-wide. Periapsis and apoapsis are
-# defined here, as the two turning points of a bound orbit, and named again in 6.4–6.6.
+# defined here, as the two turning points of a bound orbit, and named again in 6.4–6.6. The quantities per unit
+# mass (ε, h) are the notation of src/physics/orbit.ts and of the banks of 6.4–6.6; they get their names here.
 
 - id: effective-potential
   term: פוטנציאל אפקטיבי
   en: effective potential
-  symbol: U_eff
+  symbol: 'U_{\text{eff}}'
   unit: J
-  definition: בתנועה תחת כוח מרכזי, האנרגיה הפוטנציאלית ועוד האנרגיה הקינטית של התנועה המשיקית, כתובה בעזרת התנע הזוויתי הקבוע, U_eff(r) = L²/(2μr²) + U(r). האנרגיה היא אז E = ½μṙ² + U_eff(r), כמו של גוף שנע בממד אחד, ומהגרף שלו קוראים את נקודות המפנה, את המסלול המעגלי ואם המסלול קשור.
+  definition: בתנועה תחת כוח מרכזי, האנרגיה הפוטנציאלית ועוד האנרגיה הקינטית של התנועה המשיקית, כתובה בעזרת התנע הזוויתי הקבוע, U_eff(r) = L²/(2μr²) + U(r). האנרגיה היא אז E = ½μṙ² + U_eff(r), כמו של גוף שנע בממד אחד, ומהגרף שלו קוראים את נקודות המפנה, את המסלול המעגלי ואם המסלול קשור. ליחידת מסה כותבים u_eff = U_eff/μ.
   lesson: '6.3'
 
 - id: periapsis
@@ -23,4 +24,32 @@
   symbol: r_a
   unit: m
   definition: הנקודה במסלול קשור שבה הגוף הכי רחוק ממרכז הכוח. זו נקודת המפנה השנייה של התנועה הרדיאלית, ṙ = 0, ושם המהירות הקטנה ביותר במסלול. סביב השמש היא נקראת גם אפהליון, וסביב כדור הארץ אפוגיאה.
+  lesson: '6.3'
+
+- id: c6-specific-energy
+  term: אנרגיה ליחידת מסה
+  en: specific orbital energy
+  symbol: '\varepsilon'
+  unit: J/kg
+  definition: האנרגיה של התנועה היחסית חלקי המסה המצומצמת, ε = E/μ = ½v² − GM/r, כש-M = m₁ + m₂. לגוף קל סביב גוף כבד היא האנרגיה של הגוף הקל חלקי המסה שלו. היא לא תלויה במסה של הגוף המקיף, ולכן לוויין כבד ולוויין קל באותו מקום ובאותה מהירות נעים באותו מסלול.
+  lesson: '6.3'
+
+- id: c6-specific-angular-momentum
+  term: תנע זוויתי ליחידת מסה
+  en: specific angular momentum
+  symbol: h
+  unit: m²/s
+  definition: התנע הזוויתי של התנועה היחסית חלקי המסה המצומצמת, h = L/μ = |r × v| = r²θ̇ = rv_θ, כש-v_θ = rθ̇ רכיב המהירות הניצב לרדיוס. בכוח מרכזי הוא קבוע, ולכן כשגוף מתקרב למרכז המהירות הניצבת שלו, h/r, גדלה.
+  lesson: '6.3'
+
+- id: c6-bound-orbit
+  term: מסלול קשור
+  en: bound orbit
+  definition: מסלול שבו המרחק בין הגופים נשאר תמיד בין שני ערכים סופיים, נקודת הקרבה ונקודת הריחוק, כך שהגופים לא מתרחקים לאינסוף. בכבידה המסלול קשור כש-E < 0; כש-E ≥ 0 הוא לא קשור, ויש לו רק נקודת מפנה אחת.
+  lesson: '6.3'
+
+- id: c6-rosette
+  term: רוזטה
+  en: rosette orbit
+  definition: מסלול קשור שאינו נסגר. המרחק מתנודד בין נקודת הקרבה לנקודת הריחוק, אבל בכל סיבוב נקודת הקרבה זזה בזווית מסוימת, והמסלול מצייר צורה של פרח. זו התנועה הקשורה הרגילה בכוח מרכזי. בכוח שהולך כמו 1/r², ובכוח של קפיץ, המסלול נסגר.
   lesson: '6.3'

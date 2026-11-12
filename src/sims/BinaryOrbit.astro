@@ -1,0 +1,7 @@
+---
+/** Two bodies around their common centre of mass, for lesson MDX: <Spread fig="fig-6-2a" figure={BinaryOrbit} figureProps={{ … }}>. */
+import BinaryOrbit, { type BinaryOrbitProps } from './BinaryOrbit';
+type Props = BinaryOrbitProps;
+---
+
+<BinaryOrbit client:visible {...Astro.props} />

@@ -1,0 +1,7 @@
+---
+/** Driven-oscillator figure for lesson MDX: <Spread figure={ResonanceLab} figureProps={{ omega: 6, Q: 8, tasks: […] }}>. */
+import ResonanceLab, { type ResonanceLabProps } from './ResonanceLab';
+type Props = ResonanceLabProps;
+---
+
+<ResonanceLab client:visible {...Astro.props} />

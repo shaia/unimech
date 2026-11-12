@@ -1,27 +1,26 @@
 # Misconceptions first detected in lesson 6.2. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 6.2
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 6.2 that refutes it (its anchor).
 
 - id: MC-6-heavy-body-fixed
   title: הגוף הכבד עומד במקום
   belief: בזוג גופים שמושכים זה את זה, הגוף הכבד עומד, ורק הקל נע סביבו.
   truth: שני הגופים מקיפים את מרכז המסה המשותף. הגוף הכבד נע במעגל קטן יותר, אבל הוא נע; הוא קבוע רק בגבול שבו המסה של השני זניחה. התנועה היחסית מדויקת עם המסה המצומצמת μ.
-  remedy: { lesson: '6.2', label: 'שיעור 6.2: שני גופים סביב מרכז המסה' }
+  remedy: { lesson: '6.2', anchor: both-bodies, label: 'שיעור 6.2: שני גופים סביב מרכז המסה' }
 
 - id: MC-6-mu-in-force
   title: במשוואה היחסית גם הכוח נכתב עם μ
   belief: במעבר לבעיה של גוף אחד מחליפים את כל המסות במסה המצומצמת, גם בחוק הכבידה.
   truth: המסה המצומצמת מחליפה רק את האינרציה, μr̈. הכוח הוא הכוח האמיתי בין שני הגופים, Gm₁m₂/r².
-  remedy: { lesson: '6.2', label: 'שיעור 6.2: גזירת משוואת התנועה היחסית' }
+  remedy: { lesson: '6.2', anchor: relative-motion, label: 'שיעור 6.2: גזירת משוואת התנועה היחסית' }
 
 - id: MC-6-cm-midpoint
   title: מרכז המסה באמצע
   belief: מרכז המסה של שני גופים נמצא באמצע הדרך ביניהם.
   truth: מרכז המסה מחלק את המרחק ביחס הפוך למסות. בזוג כדור הארץ והירח הוא נמצא בתוך כדור הארץ.
-  remedy: { lesson: '6.2', label: 'שיעור 6.2: מרכז המסה של כדור הארץ והירח' }
+  remedy: { lesson: '6.2', anchor: earth-moon, label: 'שיעור 6.2: מרכז המסה של כדור הארץ והירח' }
 
 - id: MC-6-binary-different-periods
   title: לשני הכוכבים בכוכב כפול זמני מחזור שונים
   belief: בכוכב כפול הכוכב הכבד מקיף את מרכז המסה לאט יותר, בזמן מחזור ארוך יותר.
   truth: מרכז המסה תמיד על הקו שבין הכוכבים, ולכן שניהם מסתובבים סביבו באותו זמן מחזור. הכבד נע במעגל קטן יותר ובמהירות קטנה יותר.
-  remedy: { lesson: '6.2', label: 'שיעור 6.2: כוכב כפול' }
+  remedy: { lesson: '6.2', anchor: same-period, label: 'שיעור 6.2: כוכב כפול' }

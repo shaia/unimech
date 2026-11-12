@@ -1,0 +1,31 @@
+# Videos of lesson 5.3. Every id was checked against YouTube oEmbed through WebFetch on the `verified` date (exists,
+# embeddable; title and channel exactly as returned).
+#   T2n6fVybLcU: MIT OpenCourseWare, 8.03SC Fall 2016 Lecture 2 (Prof. Yen-Jie Lee). The OCW lecture page says it
+#     introduces the damped oscillator and has an in-class demo comparing damped and undamped oscillators. The OCW
+#     subtitle file (opened this session) gives the length (1:16:26), the demo of the two masses on springs at
+#     48:49 ("oscillating slower" at 49:31), critical damping at 56:22-56:43, overdamped at 1:04:09, and the end of
+#     the damping demos near 1:13. Hence start 2925 s, end 4380 s, 24 minutes. No caption track checked on YouTube.
+#   p_di4Zn4wz4: 3Blue1Brown, "Differential equations, a tourist's guide | DE1". Length about 27 minutes and the
+#     content (the pendulum equation with air resistance, phase space, the damped pendulum spiralling in) come from
+#     third-party summaries of the transcript, not from the watch page: SPOT-CHECK.
+
+- id: v-5-3-mit-damped
+  youtubeId: T2n6fVybLcU
+  title: '2. Damped Free Oscillators'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 2925
+  end: 4380
+  minutes: 24
+  why: 'קטע מהרצאה 2 של קורס 8.03 של MIT: הדגמה בכיתה של גוף על קפיץ בלי ריסון ליד גוף עם ריסון, ואחריה התנאי לריסון קריטי ועל-ריסון. שימו לב שהגוף המרוסן מתנודד לאט יותר, ω_d קטנה מ-ω₀.'
+  verified: '2026-11-11'
+
+- id: v-5-3-de-guide
+  youtubeId: p_di4Zn4wz4
+  title: "Differential equations, a tourist's guide | DE1"
+  channel: 3Blue1Brown
+  lang: en
+  start: 0
+  minutes: 27
+  why: 'משוואת המטוטלת עם התנגדות אוויר, והמצב של המטוטלת כנקודה במישור של זווית ומהירות זוויתית. מטוטלת מרוסנת היא שם ספירלה שנכנסת אל הראשית: מבט שלישי על אותה דעיכה.'
+  verified: '2026-11-11'

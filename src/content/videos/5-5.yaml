@@ -1,0 +1,31 @@
+# Videos of lesson 5.5. Every id was checked against YouTube oEmbed through WebFetch on the `verified` date (exists,
+# embeddable; title and channel exactly as returned). Neither video was watched: `why` rests on the chapter lists
+# (from a public index page of MIT OCW's YouTube uploads, rosetta.to) and on the OCW lecture page's description.
+#   BX4QPdP7fT8: 8.03SC Fall 2016, lecture 4, 1 h 17 min; chapters "Normal Modes" 18:51, "General Solution" 39:10,
+#     "Wilberforce Pendulum" (auto-titled "Wilberforce a Pendulum") 13:31. Start at 18:51, end at 39:10.
+#   I0YACDaY-ww: 8.03SC Fall 2016, lecture 5, 1 h 20 min; chapters "Animation" 48:16, "Disable One of the Normal Modes"
+#     50:13, "Equation of Motion" 1:16:18. OCW: "shows the solution of two coupled pendula", beats "could be identified
+#     in the motion of the pendula". Start at 48:16, end at 1:16:18.
+# Captions: not confirmed by the fetch tool (OCW publishes transcripts for the course), so `captions` lists nothing.
+
+- id: v-5-5-normal-modes
+  youtubeId: BX4QPdP7fT8
+  title: '4. Coupled Oscillators, Normal Modes'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 1131
+  end: 2350
+  minutes: 20
+  why: 'הרצאה של קורס 8.03 של MIT, מהפרק "Normal Modes" ועד "General Solution" (לפי רשימת הפרקים). השוו את כתיבת המשוואות בצורת מטריצה לשיטת הניחוש והדטרמיננטה של השיעור.'
+  verified: '2026-11-11'
+
+- id: v-5-5-beats
+  youtubeId: I0YACDaY-ww
+  title: '5. Beat Phenomena'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 2896
+  end: 4578
+  minutes: 28
+  why: 'ההרצאה הבאה באותו קורס. לפי תיאור ההרצאה באתר הקורס, המרצה מראה את הפתרון של שתי מטוטלות מצומדות ואת הפעימות בתנועתן; לפי רשימת הפרקים, הקטע מתחיל באנימציה וממשיך בהתחלה שבה רק אופן אחד מתנודד.'
+  verified: '2026-11-11'

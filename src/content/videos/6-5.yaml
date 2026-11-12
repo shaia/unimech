@@ -1,0 +1,30 @@
+# Videos of lesson 6.5. Every id was checked against YouTube oEmbed (through WebFetch) on the `verified` date
+# (exists, embeddable; title and channel exactly as returned). The watch pages did not give length, chapters or
+# caption tracks to the fetch tool, so `minutes` come from search listings (UNCONFIRMED) and `captions` lists nothing.
+#   9wDAm-dlht4: Lewin's own channel, 8.01x lecture 22; a mirror listing gave 49:09. What `why` says about the
+#     contents rests on a public transcript of the 1999 lecture (github.com/leeyt/Physics, "22. Kepler's Laws,
+#     Elliptical Orbits, and Change of Orbits"): the three laws, E = −mMG/2a and T² = 4π²a³/MG for ellipses, "the
+#     period is the same and the energy is the same" for orbits of one a, an orbit from r₀, v₀, φ₀, then changes of
+#     orbit and the ham sandwich. The 8.01x recording may differ in detail from the 1999 one (spot-check).
+#   xdIjYBtnvZU: minutephysics with Grant Sanderson (3Blue1Brown); search listings give 21:43 and describe it as
+#     Feynman's elementary geometric demonstration of why the orbits are ellipses (3blue1brown.com/lessons page).
+
+- id: v-6-5-lewin-kepler
+  youtubeId: 9wDAm-dlht4
+  title: "8.01x - Lect 22 - Kepler's Laws, Elliptical Orbits, Satellites, Orbital Changes"
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  start: 0
+  minutes: 49
+  why: 'הרצאה שלמה של קורס 8.01 של MIT. לפי תמליל ההרצאה: שלושת החוקים והנתונים של קפלר, ואז האנרגיה וזמן המחזור של מסלול אליפטי, ש"אותו דבר" לכל המסלולים בעלי אותו חצי ציר ראשי, כמו המעגל והאליפסה של איור 6.5ב. אחר כך מסלול שלם מתוך מקום ומהירות אחד, ושינויי מסלול.'
+  verified: '2026-11-11'
+
+- id: v-6-5-feynman-ellipse
+  youtubeId: xdIjYBtnvZU
+  title: "Feynman's Lost Lecture (ft. 3Blue1Brown)"
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 22
+  why: 'ההוכחה הגיאומטרית של פיינמן, בלי חשבון אינפיניטסימלי, לכך שהמסלול בכוח ריבועי הפוך הוא אליפסה. זו דרך אחרת לחוק הראשון, שאצלנו נגזר ממשוואת המסלול של שיעור 6.4. הסרטון ארוך ותובעני; צפו בו אחרי השיעור.'
+  verified: '2026-11-11'

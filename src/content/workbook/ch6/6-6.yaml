@@ -1,0 +1,444 @@
+# Workbook, lesson 6.6 (escape and transfer orbits). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-6/workbook.ts and workbook2.ts with src/physics/orbit.ts and
+# transfer.ts, from the values each prompt states (GM_E = 3.98e14, GM_S = 1.33e20, G = 6.67e-11, 1 AU = 1.5e11 m):
+#   W02 Mercury M = 3.30e23 kg, R = 2.44e6 m: GM = 2.20e13, v_esc = 4.25 km/s, v_c = 3.00 km/s;
+#   W03 8.0e6 → 2.4e7 m: a = 1.60e7 m, t = 1.01e4 s = 2.80 h (half circle periods 0.990 and 5.14 h);
+#   W04 comet 0.60 → 30 AU: a = 15.3 AU, v_p = 53.8, v_a = 1.08 km/s, r v = 4.84e15 m²/s at both, v_esc(r_p) 54.4,
+#       v_c(r_p) 38.4, period 60.0 yr;
+#   W06 Earth → Venus 1.00 → 0.723 AU: v₁ 29.8, on the ellipse 27.3 and 37.7, v₂ 35.0 km/s; Δv₁ = −2.50,
+#       Δv₂ = −2.71, total 5.21 km/s; t = 146 days; v₂ − v₁ = 5.24;
+#   W07 r = 7.5e6 m, v = 12.0 km/s: v_esc = 10.3 km/s, v_∞ = 6.15 km/s (12.0 − 10.3 = 1.70 is wrong), ε = 18.9 MJ/kg;
+#   W08 r₁ = 7.2e6 m, T = 2T₁: a = 2^{2/3} r₁ = 1.14e7 m, r_a = 1.57e7 m, v₁ = 7.435, v_p = 8.702, Δv = 1.27 km/s
+#       (0.170 v₁), T₁ = 101 min, T = 203 min;
+#   W09 Δv₁ − Δv₂ = v₁[√(2(1 + k²)) − (1 + k)], k = √(r₁/r₂) (checked at r₂ = 4r₁: 0.0811 v₁ both ways);
+#   W10 Moon (M = 7.35e22 kg, R = 1.74e6 m), r₀ = R + 200 km = 1.94e6 m: v_min = 1.55, v_c(r₀) = 1.59,
+#       v_esc(r₀) = 2.25 km/s;
+#   W05 small push Δv on a circle (checked at Δv = 0.001 v_c): r_a − r = 4.00 rΔv/v_c, v_c − v_a = 3.00 Δv;
+#   c1 (MIT 8.01SC Example 25.4, workbook3.ts) m = 3.00e3 kg, 2R_E → 4R_E, GM_E = 3.98e14: ΔE = 2.34e10 J; v_A 5.59 → 6.45,
+#       v_B 3.23 → 3.95 km/s; Δv_A = 0.865, Δv_B = 0.725 km/s; ΔK at the burns 1.56e10 + 7.81e9 = 2.34e10 J;
+#       overall ΔK = −2.34e10 J, ΔU = +4.69e10 J;
+#   c2 (USAPhO 2015 B1) α = 1/1.52 = 0.658, v_E = 29.8 km/s: Δv₁ = 2.93, Δv₂ = 2.64, total 5.57 km/s; phase 44.1°;
+#       with exhaust speed 4.5 km/s the mass ratio is e^{5.57/4.5} = 3.45, fuel 71.0% of the launch mass; transfer
+#       half of 1.26^{3/2} = 1.41 yr = 258 d (review 2026-11-11: total 5.56 → 5.57, mass ratio 3.44 → 3.45, 259 → 258 d,
+#       since c2 states no GM_S and the year is the clock).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.6'
+practice:
+  - id: W-6.6-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.6-1]
+    prompt: >-
+      שני כוכבי לכת כדוריים עשויים מאותו חומר, באותה צפיפות, והרדיוס של השני גדול פי $2$ מהרדיוס של הראשון.
+
+      א. פי כמה גדולה מהירות המילוט מפני השטח של השני?
+
+      ב. מפני השטח של הראשון יורים שני קליעים, של $1\,\text{g}$ ושל $1\,\text{kg}$. קבעו ונמקו: לאיזה מהם דרושה מהירות מילוט גדולה יותר?
+    answer: >-
+      א. פי $2$. ב. לאף אחד: מהירות המילוט לא תלויה במסה של הקליע.
+    solution:
+      - kind: law
+        text: >-
+          $v_{\text{esc}} = \sqrt{2GM/R}$, מהתנאי $\varepsilon = \tfrac12v^2 - GM/R \ge 0$ ליחידת מסה.
+      - kind: manipulation
+        text: >-
+          באותה צפיפות $\rho$, $M = \tfrac43\pi\rho R^3$, ולכן $v_{\text{esc}} = \sqrt{\tfrac83\pi G\rho}\,R$: פרופורציונית ל-$R$.
+      - kind: reasoning
+        text: >-
+          ב: בשימור האנרגיה גם האנרגיה הקינטית וגם האנרגיה הפוטנציאלית פרופורציוניות למסה של הקליע, והיא מצטמצמת. הקליע הכבד
+          נמשך חזק יותר, אבל באותה מהירות יש לו גם יותר אנרגיה קינטית, באותו יחס.
+      - kind: limit
+        text: >-
+          כש-$R \to 0$ באותה צפיפות, $v_{\text{esc}} \to 0$: מאבן קטנה בחלל אפשר לקפוץ החוצה.
+      - kind: units
+        text: >-
+          $\sqrt{G\rho}$ ב-$\sqrt{\text{m}^3\text{kg}^{-1}\text{s}^{-2}\cdot\text{kg}\,\text{m}^{-3}} = \text{s}^{-1}$, וכפול $R$: $\text{m/s}$.
+      - kind: result
+        text: >-
+          א. פי $2$. ב. אותה מהירות לשניהם.
+
+  - id: W-6.6-02
+    level: basic
+    objectives: [OBJ-6.6-1]
+    prompt: >-
+      המסה של כוכב חמה $3.30\cdot10^{23}\,\text{kg}$ והרדיוס שלו $2.44\cdot10^{6}\,\text{m}$; $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+      מה מהירות המילוט מפני השטח שלו, ומה המהירות של מסלול מעגלי צמוד לפני השטח?
+    answer: >-
+      $v_{\text{esc}} = 4.25\,\text{km/s}$, $v_c = 3.00\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 3.30\cdot10^{23}\,\text{kg}$, $R = 2.44\cdot10^{6}\,\text{m}$, $r = R$.
+      - kind: law
+        text: >-
+          $v_{\text{esc}} = \sqrt{2GM/R}$; במסלול מעגלי הכבידה היא הכוח השקול הרדיאלי, $GM/R^2 = v_c^2/R$.
+      - kind: manipulation
+        text: >-
+          $v_c = \sqrt{GM/R} = v_{\text{esc}}/\sqrt2$.
+      - kind: limit
+        text: >-
+          היחס $v_{\text{esc}}/v_c = \sqrt2$ לא תלוי בכוכב: בכל מרחק, מהירות המילוט גדולה פי $\sqrt2$ מהמעגלית.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^3\text{s}^{-2}/\text{m}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $GM = 2.20\cdot10^{13}\,\text{m}^3/\text{s}^2$, $2GM/R = 1.80\cdot10^{7}\,\text{m}^2/\text{s}^2$, $v_{\text{esc}} = 4.25\,\text{km/s}$ ו-$v_c = 3.00\,\text{km/s}$.
+      - kind: result
+        text: >-
+          $4.25\,\text{km/s}$ ו-$3.00\,\text{km/s}$.
+
+  - id: W-6.6-03
+    level: basic
+    objectives: [OBJ-6.6-2]
+    prompt: >-
+      לוויין עובר במסלול הוהמן ממסלול מעגלי ברדיוס $8.0\cdot10^{6}\,\text{m}$ למסלול מעגלי ברדיוס $2.4\cdot10^{7}\,\text{m}$ סביב כדור הארץ,
+      $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$. מה חצי הציר הראשי של אליפסת המעבר, וכמה זמן נמשך המעבר?
+    answer: >-
+      $a_t = 1.60\cdot10^{7}\,\text{m}$, $t_H = 1.01\cdot10^{4}\,\text{s} = 2.80$ שעות.
+    solution:
+      - kind: law
+        text: >-
+          $a_t = \tfrac12\left(r_1 + r_2\right)$; המעבר הוא חצי אליפסה: $t_H = \pi\sqrt{a_t^3/GM_E}$.
+      - kind: limit
+        text: >-
+          $t_H$ נמצא בין חצאי זמני המחזור של שני המעגלים, $0.990$ ו-$5.14$ שעות, כי $r_1 < a_t < r_2$.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^3/(\text{m}^3\text{s}^{-2})} = \text{s}$.
+      - kind: substitution
+        text: >-
+          $a_t = \tfrac12\left(8.0 + 24\right)\cdot10^{6} = 1.60\cdot10^{7}\,\text{m}$; $t_H = \pi\sqrt{(1.60\cdot10^{7})^3/3.98\cdot10^{14}} = 1.01\cdot10^{4}\,\text{s}$.
+      - kind: result
+        text: >-
+          $1.60\cdot10^{7}\,\text{m}$ ו-$2.80$ שעות.
+
+  - id: W-6.6-04
+    level: mid
+    objectives: [OBJ-6.6-1]
+    prompt: >-
+      שביט מגיע עד $0.60\,\text{AU}$ מהשמש בנקודת הקרבה ועד $30\,\text{AU}$ בנקודת הריחוק. $GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$
+      ו-$1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$. מצאו את מהירותו בשתי הנקודות, ובדקו את התשובה בעזרת שימור התנע הזוויתי.
+    answer: >-
+      $v_p = 53.8\,\text{km/s}$, $v_a = 1.08\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_p = 0.60\,\text{AU} = 9.0\cdot10^{10}\,\text{m}$, $r_a = 30\,\text{AU} = 4.5\cdot10^{12}\,\text{m}$.
+      - kind: law
+        text: >-
+          vis-viva, $v^2 = GM_S\left(2/r - 1/a\right)$ עם $a = \tfrac12\left(r_p + r_a\right)$; ובנקודות הקרבה והריחוק $h = rv$.
+      - kind: manipulation
+        text: >-
+          $a = 15.3\,\text{AU} = 2.30\cdot10^{12}\,\text{m}$; מציבים $r = r_p$ ו-$r = r_a$.
+      - kind: limit
+        text: >-
+          $r_a \gg r_p$, ולכן $v_p$ קרובה למהירות המילוט ב-$r_p$, $54.4\,\text{km/s}$: ליד השמש אליפסה ארוכה מאוד נראית כמעט כמו פרבולה.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^3\text{s}^{-2}/\text{m}} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v_p = 53.8\,\text{km/s}$, $v_a = 1.08\,\text{km/s}$. בדיקה: $r_pv_p = r_av_a = 4.84\cdot10^{15}\,\text{m}^2/\text{s}$.
+      - kind: result
+        text: >-
+          $53.8\,\text{km/s}$ בנקודת הקרבה ו-$1.08\,\text{km/s}$ בנקודת הריחוק, יחס של $50$, כמו היחס בין המרחקים.
+
+  - id: W-6.6-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.6-1, OBJ-6.6-2]
+    prompt: >-
+      לוויין במסלול מעגלי מקבל דחיפה קצרה וקטנה בכיוון התנועה. קבעו ונמקו:
+
+      א. איפה על המסלול החדש נמצאת נקודת הדחיפה: בנקודת הקרבה, בנקודת הריחוק, או במקום אחר?
+
+      ב. האם זמן המחזור גדל או קטן?
+
+      ג. בצד השני של כדור הארץ, האם הלוויין מהיר יותר או איטי יותר מהמהירות שהייתה לו במסלול המעגלי?
+    answer: >-
+      א. בנקודת הקרבה. ב. גדל. ג. איטי יותר.
+    solution:
+      - kind: law
+        text: >-
+          $\varepsilon = -GM/(2a)$; vis-viva; החוק השלישי $T \propto a^{3/2}$; ושימור התנע הזוויתי, $h = rv$ בנקודות הקרבה והריחוק.
+      - kind: reasoning
+        text: >-
+          א: מיד אחרי הדחיפה המהירות עדיין ניצבת לרדיוס, ולכן זו נקודת קרבה או ריחוק. המהירות גדולה מהמעגלית באותו מרחק,
+          ולפי vis-viva $a > r$: הנקודה קרובה מ-$a$, כלומר נקודת הקרבה. ב: $\varepsilon$ גדלה, ולכן $a$ גדל, ו-$T$ גדל.
+          ג: בצד השני, בנקודת הריחוק, $r_a > a$, ולכן לפי vis-viva $v_a^2 = GM\left(2/r_a - 1/a\right) < GM/r_a$. וגם $r_a > r$,
+          ולכן $GM/r_a < GM/r = v_c^2$. כלומר $v_a < v_c$. (לדחיפה קטנה החישוב נותן $v_a \approx v_c - 3\Delta v$.)
+      - kind: limit
+        text: >-
+          כש-$\Delta v \to 0$ המסלול חוזר להיות המעגל, ו-$v_a \to v_c$. וכל דחיפה, גם קטנה, משנה את $a$ ואת זמן המחזור: זו הסיבה שבג׳מיני 4 דחיפה לעבר המטרה הרחיקה ממנה.
+      - kind: units
+        text: >-
+          ב-vis-viva $GM/r_a$ ו-$GM/a$ שניהם ב-$\text{m}^2/\text{s}^2$, ריבוע של מהירות.
+      - kind: result
+        text: >-
+          א. בנקודת הקרבה. ב. זמן המחזור גדל. ג. איטי יותר, לדחיפה קטנה בערך ב-$3\Delta v$, אף שהדחיפה הייתה קדימה.
+
+  - id: W-6.6-06
+    level: mid
+    objectives: [OBJ-6.6-2]
+    prompt: >-
+      חללית יוצאת ממסלול כדור הארץ סביב השמש, $1.00\,\text{AU}$, אל מסלול נוגה, $0.723\,\text{AU}$, במסלול הוהמן. הזניחו את הכבידה של שני כוכבי הלכת.
+      $GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$ ו-$1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$. מה שתי הדחיפות (גודל וכיוון), מה המחיר הכולל,
+      וכמה ימים נמשך המעבר?
+    answer: >-
+      $\Delta v_1 = -2.50\,\text{km/s}$ ו-$\Delta v_2 = -2.71\,\text{km/s}$ (שתיהן נגד כיוון התנועה), מחיר $5.21\,\text{km/s}$, $146$ ימים.
+    solution:
+      - kind: given
+        text: >-
+          $r_1 = 1.00\,\text{AU}$, $r_2 = 0.723\,\text{AU}$. הכיוון החיובי של כל מהירות: כיוון התנועה.
+      - kind: law
+        text: >-
+          $a_t = \tfrac12\left(r_1 + r_2\right)$; vis-viva בשני הקצוות; $\Delta v_1 = v_{t1} - v_1$, $\Delta v_2 = v_2 - v_{t2}$; $t_H = \pi\sqrt{a_t^3/GM_S}$.
+      - kind: manipulation
+        text: >-
+          $a_t = 0.862\,\text{AU}$. כאן $r_2 < r_1$: נקודת הריחוק של אליפסת המעבר ב-$r_1$ ונקודת הקרבה ב-$r_2$.
+      - kind: limit
+        text: >-
+          הגדלים הם בדיוק הגדלים של המעבר ההפוך, מנוגה לכדור הארץ, בסדר הפוך. וכש-$r_2 \to r_1$ שניהם שואפים לאפס.
+      - kind: units
+        text: >-
+          כל מהירות ב-$\text{m/s}$; $t_H$ בשניות.
+      - kind: substitution
+        text: >-
+          $v_1 = 29.8$, $v_{t1} = 27.3$, $v_{t2} = 37.7$, $v_2 = 35.0\,\text{km/s}$; $\Delta v_1 = -2.50$, $\Delta v_2 = -2.71\,\text{km/s}$; $t_H = 146$ ימים.
+      - kind: result
+        text: >-
+          שתי דחיפות אחורה, $2.50$ ו-$2.71\,\text{km/s}$, סך הכול $5.21\,\text{km/s}$, ולא $v_2 - v_1 = 5.24\,\text{km/s}$, אף שהמספרים קרובים במקרה. $146$ ימים.
+
+  - id: W-6.6-07
+    level: mid
+    objectives: [OBJ-6.6-1]
+    prompt: >-
+      גשושית נמצאת במרחק $7.5\cdot10^{6}\,\text{m}$ ממרכז כדור הארץ ונעה במהירות $12.0\,\text{km/s}$, כשהמנוע כבוי. $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$.
+      האם היא בורחת? אם כן, באיזו מהירות היא תנוע רחוק מאוד מכדור הארץ (אבל עדיין קרוב לו ביחס למרחק מהשמש)?
+    answer: >-
+      בורחת; $v_\infty = 6.15\,\text{km/s}$.
+    solution:
+      - kind: law
+        text: >-
+          שימור אנרגיה ליחידת מסה: $\tfrac12v^2 - GM_E/r = \tfrac12v_\infty^2$, כי רחוק מאוד $GM_E/r \to 0$.
+      - kind: manipulation
+        text: >-
+          $v_\infty = \sqrt{v^2 - 2GM_E/r} = \sqrt{v^2 - v_{\text{esc}}^2}$.
+      - kind: limit
+        text: >-
+          כש-$v = v_{\text{esc}}$, $v_\infty = 0$: פרבולה. כש-$v \gg v_{\text{esc}}$, $v_\infty \to v$: הכבידה כמעט לא מאטה גוף מהיר מאוד.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^2/\text{s}^2} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $v_{\text{esc}} = \sqrt{2\cdot3.98\cdot10^{14}/7.5\cdot10^{6}} = 10.3\,\text{km/s} < 12.0\,\text{km/s}$; $v_\infty = \sqrt{12.0^2 - 10.3^2} = 6.15\,\text{km/s}$.
+      - kind: result
+        text: >-
+          בורחת, ורחוק מכדור הארץ נעה ב-$6.15\,\text{km/s}$. לא $12.0 - 10.3 = 1.70\,\text{km/s}$: מחסירים ריבועים, כי האנרגיה ריבועית במהירות.
+
+  - id: W-6.6-08
+    level: bagrut
+    objectives: [OBJ-6.6-2, OBJ-6.6-1]
+    prompt: >-
+      לוויין נע במסלול מעגלי ברדיוס $r_1 = 7.2\cdot10^{6}\,\text{m}$ סביב כדור הארץ, $GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$. רוצים שיקבל
+      דחיפה אחת בכיוון התנועה, כך שזמן המחזור שלו יגדל פי $2$ בדיוק (אז הוא יחזור לנקודת הדחיפה בכל סיבוב שני של המסלול המקורי).
+
+      א. מה חצי הציר הראשי של המסלול החדש, ומה המרחק של נקודת הריחוק שלו?
+
+      ב. מה גודל הדחיפה?
+    answer: >-
+      א. $a = 2^{2/3}r_1 = 1.14\cdot10^{7}\,\text{m}$, $r_a = 1.57\cdot10^{7}\,\text{m}$. ב. $\Delta v = 1.27\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_1 = 7.2\cdot10^{6}\,\text{m}$; $T = 2T_1$. נקודת הדחיפה היא נקודת הקרבה של המסלול החדש (המהירות ניצבת לרדיוס, וגדלה).
+      - kind: law
+        text: >-
+          החוק השלישי, $T \propto a^{3/2}$; $r_p + r_a = 2a$; vis-viva.
+      - kind: manipulation
+        text: >-
+          $\left(a/r_1\right)^{3/2} = 2$, ולכן $a = 2^{2/3}r_1 = 1.587\,r_1$, ו-$r_a = 2a - r_1 = 2.175\,r_1$. ב-$r_1$:
+          $v_p = \sqrt{GM_E\left(2/r_1 - 1/a\right)} = v_1\sqrt{2 - 2^{-2/3}}$, ו-$\Delta v = v_p - v_1 = v_1\left(\sqrt{2 - 2^{-2/3}} - 1\right) = 0.170\,v_1$.
+      - kind: limit
+        text: >-
+          אילו דרשנו $T \to \infty$, $a \to \infty$ ו-$\Delta v \to (\sqrt2 - 1)v_1 = 0.414\,v_1$, דחיפת הבריחה. ואילו $T = T_1$, $\Delta v = 0$.
+      - kind: units
+        text: >-
+          $v_1$ ב-$\text{m/s}$ כפול מספר טהור.
+      - kind: substitution
+        text: >-
+          $v_1 = \sqrt{3.98\cdot10^{14}/7.2\cdot10^{6}} = 7.435\,\text{km/s}$, $v_p = 8.702\,\text{km/s}$, $\Delta v = 1.27\,\text{km/s}$; $T_1 = 101\,\text{min}$, $T = 203\,\text{min}$.
+      - kind: result
+        text: >-
+          א. $1.14\cdot10^{7}\,\text{m}$; נקודת הריחוק ב-$1.57\cdot10^{7}\,\text{m}$. ב. $1.27\,\text{km/s}$.
+
+  - id: W-6.6-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-6.6-2]
+    prompt: >-
+      הוכיחו שבכל מסלול הוהמן כלפי חוץ ($r_2 > r_1$) הדחיפה הראשונה גדולה מהשנייה, $\Delta v_1 > \Delta v_2$. רמז: סמנו
+      $k = \sqrt{r_1/r_2}$ וכתבו את שתי הדחיפות ביחידות של $v_1$.
+    answer: >-
+      $\Delta v_1 - \Delta v_2 = v_1\left[\sqrt{2\left(1 + k^2\right)} - \left(1 + k\right)\right] > 0$, כי $2\left(1 + k^2\right) - \left(1 + k\right)^2 = \left(1 - k\right)^2 > 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\Delta v_1 = v_{t1} - v_1$, $\Delta v_2 = v_2 - v_{t2}$; שימור התנע הזוויתי על אליפסת המעבר, $r_1v_{t1} = r_2v_{t2}$; $v_2 = v_1\sqrt{r_1/r_2}$.
+      - kind: manipulation
+        text: >-
+          עם $k = \sqrt{r_1/r_2}$: $v_2 = kv_1$ ו-$v_{t2} = k^2v_{t1}$. מ-vis-viva, $v_{t1} = v_1\sqrt{2r_2/(r_1 + r_2)} = v_1\sqrt{2/(1 + k^2)}$.
+          לכן $\Delta v_1 - \Delta v_2 = v_{t1}\left(1 + k^2\right) - v_1\left(1 + k\right) = v_1\left[\sqrt{2\left(1 + k^2\right)} - \left(1 + k\right)\right]$.
+      - kind: reasoning
+        text: >-
+          שני המספרים בסוגריים חיוביים, ולכן משווים את הריבועים: $2\left(1 + k^2\right) - \left(1 + k\right)^2 = 1 - 2k + k^2 = \left(1 - k\right)^2$,
+          שחיובי לכל $k \ne 1$. לכן $\sqrt{2\left(1 + k^2\right)} > 1 + k$, ו-$\Delta v_1 > \Delta v_2$.
+      - kind: limit
+        text: >-
+          כש-$k \to 1$ ($r_2 \to r_1$) ההפרש מתאפס, ושתי הדחיפות שוות ושואפות לאפס. כש-$k \to 0$, ההפרש שואף ל-$(\sqrt2 - 1)v_1$: $\Delta v_2 \to 0$ ו-$\Delta v_1$ לדחיפת הבריחה.
+      - kind: units
+        text: >-
+          הסוגריים מספר טהור, וההפרש ב-$\text{m/s}$.
+      - kind: result
+        text: >-
+          $\Delta v_1 > \Delta v_2$ תמיד; בדיקה ב-$r_2 = 4r_1$: $\Delta v_1 = 0.265\,v_1$, $\Delta v_2 = 0.184\,v_1$, וההפרש $0.0811\,v_1$ בשתי הדרכים.
+
+  - id: W-6.6-10
+    level: bagrut
+    objectives: [OBJ-6.6-1]
+    prompt: >-
+      גשושית מרחפת $200\,\text{km}$ מעל פני הירח, שאין לו אטמוספרה (המסה של הירח $7.35\cdot10^{22}\,\text{kg}$, הרדיוס $1.74\cdot10^{6}\,\text{m}$,
+      $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$). היא משגרת מטען אופקית, כלומר בניצב לרדיוס.
+
+      א. מה המהירות הקטנה ביותר שבה המטען לא פוגע בפני הירח?
+
+      ב. באיזה תחום של מהירויות המטען מקיף את הירח ולא בורח ממנו?
+    answer: >-
+      א. $1.55\,\text{km/s}$. ב. מ-$1.55$ עד (לא כולל) $2.25\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_0 = R + 2.0\cdot10^{5} = 1.94\cdot10^{6}\,\text{m}$, המהירות ניצבת לרדיוס, ולכן נקודת השיגור היא נקודת קרבה או נקודת ריחוק.
+      - kind: law
+        text: >-
+          vis-viva; $r_p + r_a = 2a$; תנאי הבריחה $v \ge \sqrt{2GM/r_0}$.
+      - kind: manipulation
+        text: >-
+          מתחת למהירות המעגלית נקודת השיגור היא נקודת הריחוק, $r_a = r_0$. המטען לא פוגע אם $r_p \ge R$; במקרה הגבולי $a = \tfrac12\left(R + r_0\right)$, ו-vis-viva
+          ב-$r_0$ נותן $v_{\min}^2 = GM\left(\dfrac{2}{r_0} - \dfrac{2}{R + r_0}\right) = \dfrac{2GMR}{r_0\left(R + r_0\right)}$.
+      - kind: limit
+        text: >-
+          כש-$r_0 \to R$ (שיגור מפני השטח), $v_{\min} \to \sqrt{GM/R}$, המהירות המעגלית הצמודה: מתחתיה כל שיגור אופקי פוגע.
+          כש-$r_0 \gg R$, $v_{\min} \to \sqrt{2GMR}/r_0 \ll v_c(r_0)$: ממרחק גדול גם מסלול צר מאוד מחטיא את הירח.
+      - kind: units
+        text: >-
+          $\sqrt{\text{m}^3\text{s}^{-2}\cdot\text{m}/\text{m}^2} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $GM = 4.90\cdot10^{12}\,\text{m}^3/\text{s}^2$; $v_{\min} = 1.55\,\text{km/s}$, $v_c(r_0) = 1.59\,\text{km/s}$, $v_{\text{esc}}(r_0) = 2.25\,\text{km/s}$.
+      - kind: result
+        text: >-
+          א. $1.55\,\text{km/s}$, קצת מתחת למהירות המעגלית שם. ב. $1.55 \le v < 2.25\,\text{km/s}$.
+
+challenge:
+  - id: W-6.6-c1
+    stars: 1
+    objectives: [OBJ-6.6-2, OBJ-6.6-1]
+    prompt: >-
+      חללית במסה $3.00\cdot10^{3}\,\text{kg}$ נעה במסלול מעגלי ברדיוס $2R_E$ סביב כדור הארץ, ורוצים להעביר אותה למסלול מעגלי ברדיוס
+      $4R_E$, עם $R_E = 6.37\cdot10^{6}\,\text{m}$ ו-$GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$.
+
+      א. מה שינוי האנרגיה המכנית הנדרש?
+
+      ב. המעבר נעשה במסלול הוהמן, מנקודה A על המעגל הפנימי לנקודה B על החיצוני. מצאו בצורה סימבולית את המהירויות לפני ואחרי כל דחיפה,
+      ביחידות של $\sqrt{GM_E/R_E}$, ואת שתי הדחיפות.
+
+      ג. הראו שהאנרגיה הקינטית שהמנוע מוסיף בשתי הדחיפות שווה בדיוק לתשובה של (א), אף שהאנרגיה הקינטית של החללית בסוף **קטנה**
+      מזו שבהתחלה. לאן הלכה האנרגיה?
+    answer: >-
+      א. $\Delta E = GM_Em/(8R_E) = 2.34\cdot10^{10}\,\text{J}$. ב. ב-A: $\sqrt{1/2} \to \sqrt{2/3}$; ב-B: $\sqrt{1/6} \to \sqrt{1/4}$ (ביחידות של $\sqrt{GM_E/R_E}$);
+      $\Delta v_A = 0.865\,\text{km/s}$, $\Delta v_B = 0.725\,\text{km/s}$. ג. $1.56\cdot10^{10} + 7.81\cdot10^{9} = 2.34\cdot10^{10}\,\text{J}$; האנרגיה הקינטית
+      ירדה ב-$2.34\cdot10^{10}\,\text{J}$ והפוטנציאלית עלתה ב-$4.69\cdot10^{10}\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 3.00\cdot10^{3}\,\text{kg}$, $r_A = 2R_E$, $r_B = 4R_E$. הכיוון החיובי של כל מהירות: כיוון התנועה. $u \equiv \sqrt{GM_E/R_E} = 7.90\,\text{km/s}$.
+      - kind: law
+        text: >-
+          במסלול מעגלי $E = -GM_Em/(2r)$; vis-viva עם $a_t = 3R_E$; בין הדחיפות האנרגיה נשמרת, ובדחיפה עצמה המקום לא משתנה, ולכן משתנה רק האנרגיה הקינטית.
+      - kind: manipulation
+        text: >-
+          א: $\Delta E = -\dfrac{GM_Em}{8R_E} + \dfrac{GM_Em}{4R_E} = \dfrac{GM_Em}{8R_E}$. ב: $v_{A,i} = u\sqrt{1/2}$, $v_{A,f}^2 = u^2\left(2/2 - 1/3\right) = \tfrac23u^2$;
+          $v_{B,i}^2 = u^2\left(2/4 - 1/3\right) = \tfrac16u^2$, $v_{B,f} = u\sqrt{1/4}$. ג: $\Delta K_A + \Delta K_B = \tfrac12mu^2\left(\tfrac23 - \tfrac12 + \tfrac14 - \tfrac16\right) = \tfrac12mu^2\cdot\tfrac14 = \dfrac{GM_Em}{8R_E}$.
+      - kind: limit
+        text: >-
+          אילו $r_B \to r_A$, שתי הדחיפות ו-$\Delta E$ היו מתאפסות. ובכל מעבר כלפי חוץ, $\Delta K$ הכולל הוא $-\Delta E$ ו-$\Delta U = 2\Delta E$: אותו יחס כמו במעגלים עצמם, $K = -E$ ו-$U = 2E$.
+      - kind: units
+        text: >-
+          $GM_Em/R_E$ ב-$\text{m}^3\text{s}^{-2}\cdot\text{kg}/\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $\Delta E = 2.34\cdot10^{10}\,\text{J}$. $v_{A,i} = 5.59$, $v_{A,f} = 6.45$, $v_{B,i} = 3.23$, $v_{B,f} = 3.95\,\text{km/s}$; $\Delta v_A = 0.865$, $\Delta v_B = 0.725\,\text{km/s}$.
+          $\Delta K_A = 1.56\cdot10^{10}\,\text{J}$, $\Delta K_B = 7.81\cdot10^{9}\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $2.34\cdot10^{10}\,\text{J}$. ב. $0.865$ ו-$0.725\,\text{km/s}$, שתיהן קדימה. ג. המנוע הוסיף $2.34\cdot10^{10}\,\text{J}$ של אנרגיה קינטית; בעלייה הכבידה העבירה
+          אותה, ועוד $2.34\cdot10^{10}\,\text{J}$ מהאנרגיה הקינטית ההתחלתית, לאנרגיה פוטנציאלית.
+    source:
+      name: MIT OpenCourseWare 8.01SC Classical Mechanics, Chapter 25 (Celestial Mechanics)
+      year: 2016
+      problem: Example 25.4 (Transfer Orbit)
+      url: https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/mit8_01scs22_chapter25new.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.6-c2
+    stars: 2
+    objectives: [OBJ-6.6-2]
+    prompt: >-
+      חללית נעה סביב השמש במסלול מעגלי צמוד למסלול כדור הארץ, ברדיוס $R_E$ ובמהירות $v_E$, ועוברת במסלול הוהמן למסלול מעגלי צמוד למסלול מאדים,
+      ברדיוס $R_M = R_E/\alpha$ ($\alpha < 1$). הדחיפות קצרות; הזניחו את שינוי המסה בדחיפות ואת הכבידה של כדור הארץ ושל מאדים, אבל לא של השמש.
+
+      א. בטאו את שתי הדחיפות, $\Delta v_1$ ו-$\Delta v_2$, באמצעות $v_E$ ו-$\alpha$.
+
+      ב. מה הזווית בין כדור הארץ למאדים, כפי שהיא נראית מהשמש, ברגע היציאה, כדי שהחללית תגיע לנקודת הריחוק יחד עם מאדים? בטאו באמצעות $\alpha$.
+
+      ג. חשבו את (א) ואת (ב) עבור $\alpha = 1/1.52$ ו-$v_E = 29.8\,\text{km/s}$. המנוע פולט גזים במהירות $4.5\,\text{km/s}$ ביחס לחללית. איזה חלק ממסת החללית בתחילת המעבר הוא דלק שנשרף בשתי הדחיפות?
+    answer: >-
+      א. $\Delta v_1 = v_E\left(\sqrt{\dfrac{2}{1 + \alpha}} - 1\right)$, $\Delta v_2 = v_E\sqrt\alpha\left(1 - \sqrt{\dfrac{2\alpha}{1 + \alpha}}\right)$. ב. $\theta = \pi\left[1 - \left(\dfrac{1 + \alpha}{2}\right)^{3/2}\right]$, מאדים לפני כדור הארץ.
+      ג. $2.93$ ו-$2.64\,\text{km/s}$; $\theta = 44.1^\circ$; כ-$71\%$ מהמסה.
+    solution:
+      - kind: given
+        text: >-
+          $r_1 = R_E$, $r_2 = R_M = R_E/\alpha$; $v_E = \sqrt{GM_S/R_E}$ ו-$v_M = \sqrt{GM_S/R_M} = \sqrt\alpha\,v_E$. הכיוון החיובי: כיוון התנועה.
+      - kind: law
+        text: >-
+          vis-viva עם $a_t = \tfrac12\left(R_E + R_M\right)$; החוק השלישי לזמן המעבר; ומשוואת הרקטה (שיעור 3.6), $\Delta v = u\ln\left(m_i/m_f\right)$.
+      - kind: manipulation
+        text: >-
+          א: $v_{t1} = v_E\sqrt{2R_M/(R_E + R_M)} = v_E\sqrt{2/(1 + \alpha)}$, ו-$v_{t2} = v_M\sqrt{2R_E/(R_E + R_M)} = v_M\sqrt{2\alpha/(1 + \alpha)}$.
+          ב: $t_H = \pi\sqrt{a_t^3/GM_S}$, ובזמן הזה מאדים עובר $\omega_Mt_H = \pi\left(a_t/R_M\right)^{3/2} = \pi\left((1 + \alpha)/2\right)^{3/2}$ והחללית $\pi$.
+          ג: $m_i/m_f = e^{(\Delta v_1 + \Delta v_2)/u}$, וחלק הדלק $1 - m_f/m_i$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 1$, שתי הדחיפות והזווית מתאפסות. כש-$\alpha \to 0$, $\Delta v_1 \to (\sqrt2 - 1)v_E$, בריחה מהשמש, ו-$\theta \to \pi(1 - 2^{-3/2}) = 116^\circ$.
+      - kind: units
+        text: >-
+          $\Delta v$ ב-$\text{m/s}$; $\theta$ מספר טהור (רדיאנים); $\Delta v/u$ מספר טהור, כפי שמעריך של אקספוננט חייב להיות.
+      - kind: substitution
+        text: >-
+          $\alpha = 0.658$: $\Delta v_1 = 2.93\,\text{km/s}$, $\Delta v_2 = 2.64\,\text{km/s}$, סך הכול $5.57\,\text{km/s}$; $\theta = 44.1^\circ$.
+          $m_i/m_f = e^{5.57/4.5} = 3.45$, ולכן הדלק $1 - 1/3.45 = 0.710$ מהמסה ההתחלתית. המעבר נמשך חצי מ-$\left((1 + \alpha)/(2\alpha)\right)^{3/2} = 1.41$ שנים, כ-$258$ ימים.
+      - kind: result
+        text: >-
+          א. כמו בתשובה. ב. מאדים לפני כדור הארץ ב-$\theta = \pi\left[1 - \left((1 + \alpha)/2\right)^{3/2}\right]$. ג. $2.93$ ו-$2.64\,\text{km/s}$, $44.1^\circ$, ו-$71\%$ מהמסה היא דלק.
+    source:
+      name: USA Physics Olympiad (AAPT)
+      year: 2015
+      problem: Question B1 (parts a and b)
+      url: https://www.aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf
+      verified: '2026-11-11'
+      adapted: true

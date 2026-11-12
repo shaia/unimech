@@ -1,13 +1,21 @@
 # Lesson 6.4 question bank: the comprehension ladder of "משוואת המסלול וחתכי חרוט".
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
-# (exam level). Notation: k = Gm₁m₂, μ the reduced mass, L the angular momentum, u = 1/r,
+# (exam level). Notation: k = Gm₁m₂, μ the reduced mass, L the angular momentum, u = 1/r (per unit mass, as in 6.3:
+# ε = E/μ, h = L/μ, GM = k/μ), body 2 the attracting centre and r the vector from body 2 to body 1 (lesson 6.2),
 # r = p/(1 + e cos θ) with p = L²/(μk) and e² = 1 + 2EL²/(μk²). YAML note: never "…" for TeX.
 #
-# Every number was computed with src/physics/constants.ts (.scratch/ch6/q.ts), GM_E = 3.982e14, GM_S = 1.327e20 m³/s²:
+# Every number was computed with src/physics/constants.ts (.scratch/ch6/q.ts; recomputed by lesson 6.4's author in
+# .scratch/ch6/6-4/numbers.ts), GM_E = 3.982e14, GM_S = 1.327e20 m³/s²:
 #   p = 1.2e7 m, e = 0.40: r_a = p/(1 − e) = 2.00e7 m (r_p 8.57e6, p(1 + e) 1.68e7, a = p/(1 − e²) 1.43e7);
 #   u'' + (1 − δ)u = C, δ = 0.010: periapsis every 360°/√(1 − δ) = 361.81°, advance 1.81° (360δ = 3.6);
-#   ε = −1.5e7 J/kg, h = 6.5e10 m²/s: e² = 0.201, e = 0.448 (sign flipped 1.34, factor 2 dropped 0.775);
-#   comet r_p = 0.50 AU, v_p = 55 km/s: e = r_p v_p²/(GM_S) − 1 = 0.709 (without −1: 1.71, e² = 0.503).
+#   ε = −1.5e7 J/kg, h = 6.5e10 m²/s with GM_E = 3.98e14 as printed: e² = 0.200, e = 0.447 (sign flipped 1.34,
+#     factor 2 dropped 0.775); the key was 0.448 (e² 0.201), computed with 3.982e14 rather than the printed value;
+#   comet at r = 1.0 AU, v = 38 km/s at 60° from the outward radial (G, M_S as printed): h = rv sin 60° = 4.94e15,
+#     ε = −1.63e8, e = 0.741, p = 1.84e11 m, cos θ = (p/r − 1)/e = 0.302, θ = 72.4° (h with cos 60°: 130°;
+#     180° − θ = 107.6°). This replaced Q-6.4-comet-e (a sideways launch at perihelion), which lesson 6.4's text
+#     answers directly with e = r_pv_p²/(GM) − 1.
+# Chapter review (2026-11-11, .scratch/review/ch6/r64.ts, closed forms only): every key, commonWrong and feedback number
+# recomputed and confirmed; prompts now define μ, k and L so each question stands alone.
 
 chapter: 6
 questions:
@@ -18,9 +26,10 @@ questions:
     qualitative: true
     level: basic
     prompt: >-
-      כדי למצוא את צורת המסלול מחליפים משתנה, $u = 1/r$, ומשתמשים בזווית $\theta$ במקום בזמן. בכבידה מתקבלת המשוואה
+      כדי למצוא את צורת המסלול של שני גופים שמושכים זה את זה בכבידה, מחליפים משתנה, $u = 1/r$, ומשתמשים בזווית $\theta$
+      במקום בזמן. בכבידה מתקבלת המשוואה
       $$\frac{d^2u}{d\theta^2} + u = \frac{\mu k}{L^2}$$
-      למה ההחלפה הזו מועילה?
+      כאשר $\mu$ המסה המצומצמת, $k = Gm_1m_2$ ו-$L$ התנע הזוויתי של התנועה היחסית. למה ההחלפה הזו מועילה?
     choices:
       - text: המשוואה ל-$u(\theta)$ ליניארית עם אגף ימין קבוע, כמו מתנד הרמוני תחת כוח קבוע, ופתרונה ידוע.
         correct: true
@@ -46,7 +55,8 @@ questions:
     level: mid
     prompt: >-
       הפתרון הכללי של $\dfrac{d^2u}{d\theta^2} + u = \dfrac{\mu k}{L^2}$ הוא $u = \dfrac{\mu k}{L^2} + A\cos\theta$ (כשבוחרים
-      $\theta = 0$ בנקודה הקרובה ביותר). מה צורת המסלול $r(\theta)$?
+      $\theta = 0$ בנקודה הקרובה ביותר). כאן $u = 1/r$, $\mu$ המסה המצומצמת, $k = Gm_1m_2$ ו-$L$ התנע הזוויתי. מה צורת
+      המסלול $r(\theta)$?
     choices:
       - text: '$r = \dfrac{p}{1 + e\cos\theta}$ עם $p = \dfrac{L^2}{\mu k}$ ו-$e = \dfrac{AL^2}{\mu k}$'
         correct: true
@@ -81,7 +91,7 @@ questions:
       - text: במרכז האליפסה.
         feedback: >-
           אילו השמש הייתה במרכז, המרחק ממנה לשני קצות הציר הראשי היה שווה. אבל ב-$\theta = 0$ המרחק $p/(1 + e)$ וב-$\theta = \pi$
-          הוא $p/(1 - e)$, שונה. אליפסה סביב המרכז מתקבלת מכוח של קפיץ, $\vec F = -\kappa\vec r$, לא מכבידה.
+          הוא $p/(1 - e)$, שונה. אליפסה סביב המרכז מתקבלת מכוח של קפיץ, $\vec F = -\kappa\vec r$ ($\kappa$ קבוע הקפיץ), לא מכבידה.
         misconception: MC-6-ellipse-center-at-sun
       - text: בנקודת הקרבה, על המסלול עצמו.
         feedback: 'בנקודת הקרבה $r = p/(1 + e) > 0$: כוכב הלכת לא מגיע לשמש. השמש בתוך האליפסה, במוקד.'
@@ -166,7 +176,7 @@ questions:
       - text: היפרבולה.
         correct: true
         feedback: >-
-          נכון. $e^2 = 1 + \dfrac{2EL^2}{\mu k^2} > 1$ כש-$E > 0$, והחתך עם $e > 1$ הוא היפרבולה. השביט חולף פעם אחת על פני
+          נכון. $e^2 = 1 + \dfrac{2EL^2}{\mu k^2} > 1$ כש-$E > 0$ ($L$ התנע הזוויתי, $\mu$ המסה המצומצמת, $k = Gm_1m_2$), והחתך עם $e > 1$ הוא היפרבולה. השביט חולף פעם אחת על פני
           השמש ובורח, ובאינסוף עוד נשארת לו מהירות.
       - text: פרבולה, כי הוא לא קשור לשמש.
         feedback: >-
@@ -186,7 +196,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      לארבעה גופים סביב אותו מרכז כבידה יש אותו תנע זוויתי $L$ ואנרגיות שונות. נסמן $E_0 = \dfrac{\mu k^2}{2L^2}$. סדרו
+      לארבעה גופים זהים סביב אותו מרכז כבידה יש אותו תנע זוויתי $L$ ואנרגיות $E$ שונות (האפס של האנרגיה הפוטנציאלית
+      באינסוף). נסמן $E_0 = \dfrac{\mu k^2}{2L^2}$, כאשר $\mu$ המסה המצומצמת ו-$k = Gm_1m_2$. סדרו
       את האקסצנטריות של המסלולים, מהגדולה לקטנה.
     items:
       - { id: a, label: '$E = -E_0$' }
@@ -243,14 +254,14 @@ questions:
       ללוויין סביב כדור הארץ ($GM_E = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$, מסת הלוויין זניחה) יש אנרגיה ליחידת מסה
       $\varepsilon = -1.5\cdot10^{7}\,\text{J/kg}$ ותנע זוויתי ליחידת מסה $h = 6.5\cdot10^{10}\,\text{m}^2/\text{s}$. מה
       האקסצנטריות של המסלול?
-    answer: 0.448
+    answer: 0.447
     unit: ''
     correctFeedback: >-
-      נכון. ליחידת מסה $e^2 = 1 + \dfrac{2\varepsilon h^2}{(GM_E)^2} = 1 - \dfrac{2\cdot1.5\cdot10^{7}\cdot(6.5\cdot10^{10})^2}{(3.98\cdot10^{14})^2} = 0.201$,
-      ולכן $e = 0.448$. $0 < e < 1$: אליפסה, כמו שמתאים ל-$E < 0$.
+      נכון. ליחידת מסה $e^2 = 1 + \dfrac{2\varepsilon h^2}{(GM_E)^2} = 1 - \dfrac{2\cdot1.5\cdot10^{7}\cdot(6.5\cdot10^{10})^2}{(3.98\cdot10^{14})^2} = 0.200$,
+      ולכן $e = 0.447$. $0 < e < 1$: אליפסה, כמו שמתאים ל-$E < 0$.
     wrongFeedback: 'בנוסחה $e^2 = 1 + 2EL^2/(\mu k^2)$ חלקו מונה ומכנה ב-$m^3$: מתקבל $e^2 = 1 + 2\varepsilon h^2/(GM_E)^2$.'
     commonWrong:
-      - value: 0.201
+      - value: 0.200
         feedback: 'זה $e^2$. הוציאו שורש.'
       - value: 1.34
         feedback: >-
@@ -260,29 +271,36 @@ questions:
     hints:
       - 'בדקו קודם את הסימן: איזה מסלול מתאים ל-$\varepsilon < 0$?'
 
-  - id: Q-6.4-comet-e
+  - id: Q-6.4-comet-angle
     type: numeric
-    objectives: [OBJ-6.4-2]
+    objectives: [OBJ-6.4-2, OBJ-6.4-1]
     level: bagrut
     prompt: >-
-      שביט עובר בנקודת הקרבה שלו לשמש במרחק $r_p = 0.50\,\text{AU}$ (כאשר $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$), במהירות
-      $v_p = 55\,\text{km/s}$, ניצבת לקו אל השמש. מסת השמש $M_S = 1.99\cdot10^{30}\,\text{kg}$, ומסת השביט זניחה. מה
-      האקסצנטריות של המסלול? השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
-    answer: 0.709
-    unit: ''
+      שביט נמצא במרחק $r = 1.0\,\text{AU}$ מהשמש (כאשר $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$) ונע במהירות
+      $v = 38\,\text{km/s}$, בכיוון שיוצר זווית של $60^\circ$ עם הכיוון שמתרחק מהשמש: השביט כבר עבר את נקודת הקרבה שלו
+      ומתרחק. מסת השמש $M_S = 1.99\cdot10^{30}\,\text{kg}$, ומסת השביט זניחה. השתמשו ב-$G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+      בכמה מעלות הסתובב הקו מהשמש אל השביט מאז שהשביט עבר בנקודת הקרבה? כלומר, מה הזווית $\theta$ של השביט, הנמדדת מנקודת
+      הקרבה?
+    answer: 72.4
+    unit: °
     correctFeedback: >-
-      נכון. ליחידת מסה, $h = r_pv_p$ ו-$\varepsilon = \tfrac12v_p^2 - GM_S/r_p$. הצבה ב-$e^2 = 1 + 2\varepsilon h^2/(GM_S)^2$
-      נותנת ריבוע שלם:
-      $$e^2 = \left(\frac{r_pv_p^2}{GM_S} - 1\right)^2\ \Rightarrow\ e = \frac{r_pv_p^2}{GM_S} - 1 = \frac{7.5\cdot10^{10}\cdot(5.5\cdot10^{4})^2}{1.33\cdot10^{20}} - 1 = 0.709$$
-      $e < 1$, ולכן השביט קשור לשמש. **בדיקת גבולות:** כש-$v_p = \sqrt{GM_S/r_p}$, המהירות המעגלית, $e = 0$; וכש-$v_p = \sqrt{2GM_S/r_p}$,
-      מהירות המילוט, $e = 1$, פרבולה.
+      נכון. ליחידת מסה: $h = rv\sin60^\circ = 4.94\cdot10^{15}\,\text{m}^2/\text{s}$ (רק רכיב המהירות הניצב לרדיוס
+      תורם), ו-$\varepsilon = \tfrac12v^2 - GM_S/r = -1.63\cdot10^{8}\,\text{J/kg}$, עם $GM_S = 1.33\cdot10^{20}\,\text{m}^3/\text{s}^2$.
+      מכאן $e = \sqrt{1 + 2\varepsilon h^2/(GM_S)^2} = 0.741$ ו-$p = h^2/(GM_S) = 1.84\cdot10^{11}\,\text{m}$. ממשוואת המסלול:
+      $$\cos\theta = \frac{p/r - 1}{e} = \frac{1.224 - 1}{0.741} = 0.302$$
+      ולכן $\theta = 72.4^\circ$, חיובי כי השביט כבר מתרחק. **בדיקת גבולות:** אילו המהירות הייתה ניצבת לרדיוס ($h = rv$),
+      הנקודה הייתה נקודת קרבה או ריחוק, ואז $\cos\theta = \pm1$.
     wrongFeedback: >-
-      בנקודת הקרבה המהירות ניצבת לרדיוס, ולכן $h = r_pv_p$. חשבו את $\varepsilon$, הציבו בנוסחה ל-$e^2$, והוציאו שורש.
+      שלושה צעדים: $h$ ו-$\varepsilon$ מהמצב הנתון; $e$ ו-$p$ מהם; ואז הציבו את $r$ במשוואת המסלול ובודדו את $\cos\theta$.
     commonWrong:
-      - value: 1.71
-        feedback: 'זה $r_pv_p^2/(GM_S)$ בלי להחסיר 1. בבדיקת הגבול: במהירות המעגלית הביטוי הזה 1, והאקסצנטריות חייבת להיות 0.'
-      - value: 0.503
-        feedback: 'זה $e^2$. הוציאו שורש.'
+      - value: 130
+        feedback: >-
+          חישבתם את $h$ עם $\cos60^\circ$. התנע הזוויתי ליחידת מסה הוא $|\vec r\times\vec v| = rv\sin\alpha$, כאשר $\alpha$ הזווית
+          בין המהירות לרדיוס, כאן $60^\circ$.
+      - value: 107.6
+        feedback: 'זה $180^\circ - \theta$. במשוואת המסלול המכנה הוא $1 + e\cos\theta$, ולכן $\cos\theta = (p/r - 1)/e$, חיובי כאן.'
+      - value: 60
+        feedback: 'זו הזווית בין המהירות לרדיוס, הנתונה בשאלה. הזווית $\theta$ היא הזווית של הרדיוס עצמו, מכיוון נקודת הקרבה.'
     hints:
-      - 'בנקודת הקרבה $h = r_pv_p$ ו-$\varepsilon = \tfrac12v_p^2 - GM_S/r_p$.'
-      - 'בדקו את התשובה: מה צריך לצאת אם $v_p$ היא בדיוק המהירות של מסלול מעגלי ב-$r_p$?'
+      - 'רק רכיב המהירות הניצב לקו אל השמש תורם לתנע הזוויתי.'
+      - 'אחרי שמצאתם $e$ ו-$p$, משוואת המסלול נותנת את $\cos\theta$ מתוך $r$.'

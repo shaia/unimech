@@ -1,0 +1,471 @@
+# Workbook, lesson 5.4 (the driven oscillator and resonance). Format: CLAUDE.md, "The solution format".
+# Notation as in the lesson: ẍ + γẋ + ω0²x = (F0/m) cos ωt, γ = b/m, Q = ω0/γ, x = A cos(ωt − δ), 0 ≤ δ ≤ π.
+# Every number was recomputed by .scratch/ch5/5-4/workbook.ts against src/physics/oscillator.ts and resonance.ts:
+#   W01 z = 3 + 4i: |z| = 5, arg z = 53.1°, 1/z = 0.12 − 0.16i, iz = −4 + 3i, z² = −7 + 24i;
+#   W03 k = 200 N/m, F0 = 0.40 N, Q = 25: F0/k = 0.200 cm, A(ω0) = 5.00 cm;
+#   W04 m = 1.0 kg, k = 100 N/m, b = 0.80 kg/s, F0 = 2.0 N, ω = 12 rad/s: |D| = 45.04 s⁻², A = 4.44 cm, δ = 167.7°
+#       (no damping 4.55 cm; first-quadrant angle 12.3°);
+#   W06 ω0 = 40 rad/s, half-power at 39.0 and 41.0 rad/s: γ = 2.0 s⁻¹, Q = 20, 2/γ = 1.0 s, to 1 %: 4.61 s;
+#   W07 m = 0.25 kg, k = 64 N/m, b = 0.20 kg/s, F0 = 0.40 N: ω0 = 16 rad/s, Q = 20, P̄max = F0²/(2b) = 0.400 W,
+#       A(ω0) = 12.5 cm; at 15 rad/s: P̄ = 0.0521 W (0.130 of the peak), A = 4.81 cm; half-power at 15.6 and 16.4 rad/s;
+#   W08 m = 1.0 kg, k = 36 N/m, b = 2.0 kg/s, ω = 4.0 rad/s, F = 3.0 cos ωt + 4.0 sin ωt (N): F̃ = 3 − 4i, arg −53.13°;
+#       D = 20 + 8i, |D| = 21.54, arg 21.80°; X̃ = 0.0603 − 0.224i m, |X̃| = 0.232 m, arg X̃ = −74.93°
+#       (cosine part alone 0.139 m; F1 + F2 = 7 N: 0.325 m);
+#   W09 A_max/A(ω0) = ω0/ω_d = 1/√(1 − 1/(4Q²)) = 1.1 at Q = 1.20 (Q = 2: 1.033, Q = 1: 1.155, Q = 10: +0.125 %);
+#   W10 from rest at ω0, envelope Q(F0/k)(1 − e^(−ω0t/2Q)); to reach 5F0/k: ω0t = 13.86 (Q = 10), 10.26 (Q = 100);
+#       at 10 Hz: 0.221 s and 0.163 s;
+#   c1 M = 0.50 kg, 4 springs k = 2000 N/m, table at 5.0 Hz with acceleration amplitude 0.20 m/s²: ω0 = 126 rad/s,
+#       ω = 31.4 rad/s, relative amplitude 13.3 μm; ×10 smaller with springs: k' = 1.89·10⁴ N/m (9.44 k; "≫" estimate 10 k);
+#       with a cushion: b = M√99(ω0² − ω²)/ω = 2.38·10³ kg/s (estimate 4√99 k/ω = 2.53·10³);
+#   c2 m = 0.25 kg, two springs k = 18 N/m, b = 0.050 kg/s, Δ = 0.50 cm, ω = 10 rad/s: ω0 = 12 rad/s, γ = 0.20 s⁻¹,
+#       Q = 60, F0/m = kΔ/m = 0.36 m/s²; A = 0.817 cm, δ = 2.60°; A(ω0) = 15.0 cm; ω_max = 11.9992 rad/s;
+#       from rest: C = A sin δ = 0.0371 cm, S = (γC/2 − Aω cos δ)/ω_d = −0.680 cm; largest |x| in 20 s 1.39 cm.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '5.4'
+practice:
+  - id: W-5.4-01
+    level: basic
+    objectives: [OBJ-5.4-1]
+    prompt: >-
+      המספר המרוכב $z = 3 + 4i$.
+
+      א. מה הגודל $|z|$ ומה הארגומנט $\arg z$?
+
+      ב. חשבו את $iz$ ואת $z^2$, ובדקו שהגדלים והארגומנטים שלהם מתאימים לכלל "בכפל הגדלים מוכפלים והארגומנטים מתחברים".
+
+      ג. כתבו את $1/z$ בצורה $a + ib$.
+    answer: >-
+      א. $|z| = 5$, $\arg z = 53.1^\circ$. ב. $iz = -4 + 3i$ (גודל 5, ארגומנט $143.1^\circ$); $z^2 = -7 + 24i$ (גודל 25, ארגומנט $106.3^\circ$). ג. $1/z = 0.12 - 0.16i$.
+    solution:
+      - kind: given
+        text: >-
+          $z = 3 + 4i$: החלק הממשי $3$, החלק המדומה $4$, ברביע הראשון.
+      - kind: law
+        text: >-
+          $|a + ib| = \sqrt{a^2 + b^2}$, $\tan\varphi = b/a$ עם בדיקת רביע; $i^2 = -1$; בכפל הגדלים מוכפלים והארגומנטים מתחברים; $\dfrac1z = \dfrac{\bar z}{|z|^2}$, כאשר $\bar z = a - ib$ הוא הצמוד.
+      - kind: manipulation
+        text: >-
+          $iz = 3i + 4i^2 = -4 + 3i$: גודל $5 \cdot 1$, ארגומנט $53.1^\circ + 90^\circ$. $z^2 = 9 + 24i + 16i^2 = -7 + 24i$: גודל $\sqrt{49 + 576} = 25 = 5^2$, ארגומנט $2 \cdot 53.1^\circ = 106.3^\circ$ (החלק הממשי שלילי, רביע שני). $\dfrac1z = \dfrac{3 - 4i}{(3 + 4i)(3 - 4i)} = \dfrac{3 - 4i}{25}$.
+      - kind: limit
+        text: >-
+          בדיקה: $z \cdot \dfrac1z = \dfrac{(3 + 4i)(3 - 4i)}{25} = \dfrac{9 + 16}{25} = 1$. והגודל של $1/z$ הוא $1/5$, הארגומנט $-53.1^\circ$, כמו שהכלל לחילוק אומר.
+      - kind: units
+        text: >-
+          מספרים טהורים; הזוויות במעלות.
+      - kind: substitution
+        text: >-
+          $|z| = \sqrt{9 + 16} = 5$; $\arg z = \arctan(4/3) = 53.1^\circ$; $1/z = 0.12 - 0.16i$.
+      - kind: result
+        text: >-
+          $|z| = 5$, $\arg z = 53.1^\circ$; $iz = -4 + 3i$; $z^2 = -7 + 24i$; $1/z = 0.12 - 0.16i$.
+
+  - id: W-5.4-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.4-1, OBJ-5.4-2]
+    prompt: >-
+      גוף על קפיץ, עם ריסון, מאולץ בכוח $F_0\cos\omega t$ מרגע $t = 0$. קבעו ונמקו:
+
+      א. אחרי זמן ארוך, באיזו תדירות הגוף מתנודד: בתדירות העצמית $\omega_0$, בתדירות המרוסנת $\omega_d$, או בתדירות $\omega$ של הכוח?
+
+      ב. למה הפיגור $\delta$ של ההעתק אחרי הכוח תמיד בין $0$ ל-$180^\circ$, ואף פעם לא שלילי?
+
+      ג. האם במצב היציב יש זכר לכך שהגוף התחיל במנוחה?
+    answer: >-
+      א. בתדירות של הכוח, $\omega$. ב. כי החלק המדומה של המכנה, $\gamma\omega$, חיובי. ג. לא.
+    solution:
+      - kind: law
+        text: >-
+          הפתרון הכללי: $x = x_p + x_h$. $x_p = A\cos(\omega t - \delta)$, עם $\tilde X = \dfrac{F_0/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$; $x_h$ תנודה חופשית מרוסנת.
+      - kind: reasoning
+        text: >-
+          א. $x_h$, שמתנודד ב-$\omega_d$, דועך כמו $e^{-\gamma t/2}$; נשאר $x_p$, שמתנודד ב-$\omega$. ב. $\delta$ הוא הארגומנט של המכנה $\omega_0^2 - \omega^2 + i\gamma\omega$. החלק המדומה שלו, $\gamma\omega$, חיובי, ולכן הוא בחצי העליון של המישור, בזווית בין $0$ ל-$180^\circ$. פיגור שלילי, כלומר העתק שמקדים את הכוח, היה דורש $\gamma \lt 0$: ריסון שמכניס אנרגיה. ג. תנאי ההתחלה קובעים רק את שני הקבועים של $x_h$, וזה דועך.
+      - kind: limit
+        text: >-
+          בלי ריסון ($\gamma = 0$) $x_h$ לא דועך, ותנאי ההתחלה נשארים בתנועה לתמיד; גם $\delta$ קופץ אז ישר מ-$0$ ל-$180^\circ$ ב-$\omega_0$.
+      - kind: units
+        text: >-
+          $\gamma\omega$ ו-$\omega_0^2 - \omega^2$ שניהם ב-$\text{s}^{-2}$, ולכן הזווית ביניהם מוגדרת.
+      - kind: result
+        text: >-
+          א. ב-$\omega$. ב. $\gamma\omega > 0$ שם את המכנה בחצי העליון. ג. לא: המצב היציב לא תלוי בתנאי ההתחלה.
+
+  - id: W-5.4-03
+    level: basic
+    objectives: [OBJ-5.4-2]
+    prompt: >-
+      גוף על קפיץ שקבועו $k = 200\,\text{N/m}$ מאולץ בכוח $F_0\cos\omega_0t$ עם $F_0 = 0.40\,\text{N}$, בדיוק בתדירות העצמית.
+      מקדם האיכות של המתנד $Q = 25$. מה האמפליטודה של המצב היציב, ומה הפיגור?
+    answer: >-
+      $A = 5.0\,\text{cm}$, $\delta = 90^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $k = 200\,\text{N/m}$, $F_0 = 0.40\,\text{N}$, $Q = 25$, $\omega = \omega_0$.
+      - kind: law
+        text: >-
+          בתדירות העצמית החלק הממשי של המכנה מתאפס: $A = \dfrac{F_0/m}{\gamma\omega_0} = Q\,\dfrac{F_0}{k}$ ו-$\delta = 90^\circ$.
+      - kind: manipulation
+        text: >-
+          $F_0/k$ הוא ההעתק הסטטי, ו-$A$ גדולה ממנו פי $Q$. לא צריך את $m$ ואת $b$ בנפרד.
+      - kind: limit
+        text: >-
+          כש-$Q \to \infty$, $A \to \infty$: בלי ריסון אין מה שיגביל את התהודה. כש-$Q = 1$ האמפליטודה בתהודה שווה להעתק הסטטי.
+      - kind: units
+        text: >-
+          $F_0/k$ ב-$\text{N}/(\text{N/m}) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $F_0/k = 0.40/200 = 2.0\cdot10^{-3}\,\text{m}$, ו-$A = 25 \cdot 0.20\,\text{cm} = 5.0\,\text{cm}$.
+      - kind: result
+        text: >-
+          $A = 5.0\,\text{cm}$, וההעתק מפגר ב-$90^\circ$ אחרי הכוח.
+
+  - id: W-5.4-04
+    level: mid
+    objectives: [OBJ-5.4-1]
+    prompt: >-
+      גוף בעל מסה $1.0\,\text{kg}$ על קפיץ שקבועו $100\,\text{N/m}$, עם ריסון $b = 0.80\,\text{kg/s}$, מאולץ בכוח $F_0\cos\omega t$
+      עם $F_0 = 2.0\,\text{N}$ ו-$\omega = 12\,\text{rad/s}$. מצאו את האמפליטודה ואת הפיגור של המצב היציב.
+    answer: >-
+      $A = 4.44\,\text{cm}$, $\delta = 168^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = \sqrt{100/1.0} = 10\,\text{rad/s}$, $\gamma = 0.80\,\text{s}^{-1}$, $F_0/m = 2.0\,\text{m/s}^2$, $\omega = 12\,\text{rad/s} > \omega_0$.
+      - kind: law
+        text: >-
+          $\tilde X = \dfrac{F_0/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$; $A = |\tilde X|$, ו-$\delta$ הוא הארגומנט של המכנה.
+      - kind: manipulation
+        text: >-
+          המכנה $(100 - 144) + 0.80\cdot12\,i = -44 + 9.6i\,\text{s}^{-2}$: חלק ממשי שלילי וחלק מדומה חיובי, ולכן ברביע השני.
+          $\delta = 180^\circ - \arctan\dfrac{9.6}{44}$, ולא $\arctan\dfrac{9.6}{-44}$ כפי שמחשבון מחזיר.
+      - kind: limit
+        text: >-
+          בלי ריסון $A = 2.0/44 = 4.55\,\text{cm}$ ו-$\delta = 180^\circ$; הריסון כאן משנה מעט, כי $\omega$ רחוקה מ-$\omega_0$ ביחס ל-$\gamma$.
+      - kind: units
+        text: >-
+          $\dfrac{\text{m/s}^2}{\text{s}^{-2}} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $|-44 + 9.6i| = \sqrt{1936 + 92.2} = 45.0\,\text{s}^{-2}$, $A = 2.0/45.0 = 0.0444\,\text{m}$, $\arctan(9.6/44) = 12.3^\circ$, $\delta = 167.7^\circ$.
+      - kind: result
+        text: >-
+          $A = 4.44\,\text{cm}$ ו-$\delta = 168^\circ$: ההעתק כמעט בפאזה הפוכה לכוח.
+
+  - id: W-5.4-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-5.4-2]
+    prompt: >-
+      שני מתנדים, 1 ו-2, בעלי אותה תדירות עצמית ואותה מסה, מאולצים באותו כוח. עקומת התהודה של מתנד 1 גבוהה פי 4 משל מתנד 2, ורוחבה קטן
+      פי 4. קבעו ונמקו:
+
+      א. לאיזה מתנד מקדם איכות גבוה יותר, ופי כמה?
+
+      ב. מאתחילים את שניהם ממנוחה בתדירות העצמית. איזה מהם מגיע מהר יותר למצב היציב שלו?
+
+      ג. סטודנט טוען: "מתנד 1 טוב יותר בכל דבר, כי הוא מגיב חזק יותר". הסבירו מתי מתנד 2 עדיף.
+    answer: >-
+      א. למתנד 1, פי 4. ב. מתנד 2, פי 4 מהר יותר. ג. כשצריך תגובה מהירה, או תגובה דומה בטווח רחב של תדירויות.
+    solution:
+      - kind: law
+        text: >-
+          $A(\omega_0) = Q\,F_0/k$; $\Delta\omega = \omega_0/Q$; התגובה המעברית דועכת ב-$e^{-\gamma t/2}$, וזמן הדעיכה $2/\gamma = 2Q/\omega_0$.
+      - kind: reasoning
+        text: >-
+          א. בגובה וברוחב אותו יחס, פי 4, כמו שצריך: שניהם תלויים ב-$Q$ בכיוונים הפוכים. ב. זמן ההתייצבות פרופורציוני ל-$Q$: מתנד 2 מתייצב פי 4 מהר יותר.
+          ג. מתנד עם $Q$ נמוך עדיף כשמשנים תדירות מהר (הוא עוקב מהר אחרי שינוי), וכשרוצים שתדירות שגויה במעט לא תבטל את התגובה, למשל במכשיר מדידה שצריך להגיב לטווח של תדירויות.
+      - kind: limit
+        text: >-
+          כש-$Q \to \infty$ התהודה אין-סופית וצרה לאפס, ולוקח זמן אין-סופי להגיע אליה: אף מכשיר אמיתי לא היה מספיק להגיב.
+      - kind: units
+        text: >-
+          $2Q/\omega_0$ ב-$\text{s}$; $\Delta\omega/\omega_0$ חסר ממדים.
+      - kind: result
+        text: >-
+          א. $Q_1 = 4Q_2$. ב. מתנד 2. ג. גבוה וצר פירושו גם איטי ובררן.
+
+  - id: W-5.4-06
+    level: mid
+    objectives: [OBJ-5.4-2]
+    prompt: >-
+      במתנד שהתדירות העצמית שלו $\omega_0 = 40\,\text{rad/s}$ מודדים את ההספק הממוצע של הכוח המאלץ כפונקציה של $\omega$, ומוצאים שהוא
+      יורד לחצי מהשיא ב-$39.0\,\text{rad/s}$ וב-$41.0\,\text{rad/s}$. מצאו את $\gamma$ ואת $Q$, וכמה זמן אחרי שהכוח מתחיל לפעול
+      התגובה המעברית קטנה ל-1% מגודלה ההתחלתי.
+    answer: >-
+      $\gamma = 2.0\,\text{s}^{-1}$, $Q = 20$, $4.6\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 40\,\text{rad/s}$; נקודות חצי ההספק $39.0$ ו-$41.0\,\text{rad/s}$.
+      - kind: law
+        text: >-
+          רוחב עקומת ההספק בחצי הגובה הוא בדיוק $\gamma$; $Q = \omega_0/\gamma$; התגובה המעברית דועכת כמו $e^{-\gamma t/2}$.
+      - kind: manipulation
+        text: >-
+          $\gamma = 41.0 - 39.0$. הזמן: $e^{-\gamma t/2} = 0.01$, כלומר $t = \dfrac2\gamma\ln100$.
+      - kind: limit
+        text: >-
+          הנקודות לא בדיוק סימטריות סביב $\omega_0$: הן $\sqrt{\omega_0^2 + \gamma^2/4} \pm \gamma/2$, כלומר $39.01$ ו-$41.01$. ההפרש מ-$40 \pm 1$ זניח כש-$Q$ גדול, כמו כאן.
+      - kind: units
+        text: >-
+          $\gamma$ ב-$\text{s}^{-1}$, $\ln100/\gamma$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $\gamma = 2.0\,\text{s}^{-1}$, $Q = 40/2.0 = 20$, $t = \dfrac{2}{2.0}\cdot4.61 = 4.61\,\text{s}$.
+      - kind: result
+        text: >-
+          $\gamma = 2.0\,\text{s}^{-1}$, $Q = 20$, ובערך $4.6\,\text{s}$.
+
+  - id: W-5.4-07
+    level: mid
+    objectives: [OBJ-5.4-2, OBJ-5.4-1]
+    prompt: >-
+      גוף בעל מסה $0.25\,\text{kg}$ על קפיץ שקבועו $64\,\text{N/m}$, עם ריסון $b = 0.20\,\text{kg/s}$, מאולץ בכוח שהגודל המרבי שלו
+      $F_0 = 0.40\,\text{N}$.
+
+      א. מה ההספק הממוצע שהכוח מכניס כשהוא בתדירות העצמית?
+
+      ב. מה ההספק הממוצע כש-$\omega = 15\,\text{rad/s}$? איזה חלק הוא מהשיא?
+    answer: >-
+      א. $0.40\,\text{W}$. ב. $0.052\,\text{W}$, כ-13% מהשיא.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = \sqrt{64/0.25} = 16\,\text{rad/s}$, $\gamma = 0.20/0.25 = 0.80\,\text{s}^{-1}$, $Q = 20$, $F_0/m = 1.6\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $\bar P = \dfrac{F_0^2}{2m\gamma}\cdot\dfrac{1}{1 + \left[(\omega_0^2 - \omega^2)/(\gamma\omega)\right]^2}$; בשיא $\bar P_{\max} = \dfrac{F_0^2}{2b}$.
+      - kind: manipulation
+        text: >-
+          ב-$\omega = 15$: $\dfrac{\omega_0^2 - \omega^2}{\gamma\omega} = \dfrac{256 - 225}{0.80\cdot15} = \dfrac{31}{12} = 2.58$, והשבר $\dfrac{1}{1 + 2.58^2}$.
+      - kind: limit
+        text: >-
+          $15\,\text{rad/s}$ רחוקה מ-$\omega_0$ פי $2.5$ חצאי רוחב ($\gamma/2 = 0.40$): הרבה מחוץ לתהודה, ולכן חלק קטן מהשיא. נקודות חצי ההספק הן $15.6$ ו-$16.4\,\text{rad/s}$.
+      - kind: units
+        text: >-
+          $F_0^2/b$ ב-$\text{N}^2/(\text{kg/s}) = \text{N}\cdot\text{m/s} = \text{W}$.
+      - kind: substitution
+        text: >-
+          $\bar P_{\max} = \dfrac{0.40^2}{2\cdot0.20} = 0.40\,\text{W}$; השבר $\dfrac{1}{1 + 6.67} = 0.130$; $\bar P = 0.0521\,\text{W}$. (האמפליטודה שם $4.81\,\text{cm}$, לעומת $12.5\,\text{cm}$ בשיא.)
+      - kind: result
+        text: >-
+          א. $0.40\,\text{W}$. ב. $0.052\,\text{W}$, $0.13$ מהשיא.
+
+  - id: W-5.4-08
+    level: bagrut
+    objectives: [OBJ-5.4-1]
+    prompt: >-
+      על גוף בעל מסה $1.0\,\text{kg}$, על קפיץ שקבועו $36\,\text{N/m}$ ועם ריסון $b = 2.0\,\text{kg/s}$, פועל הכוח
+      $F(t) = F_1\cos\omega t + F_2\sin\omega t$ עם $F_1 = 3.0\,\text{N}$, $F_2 = 4.0\,\text{N}$ ו-$\omega = 4.0\,\text{rad/s}$.
+
+      א. כתבו את $F(t)$ כחלק הממשי של $\tilde Fe^{i\omega t}$, ומצאו את $\tilde F$.
+
+      ב. מצאו את המצב היציב בצורה $x = A\cos(\omega t + \varphi)$.
+
+      ג. בכמה מעלות ההעתק מפגר אחרי הכוח?
+    answer: >-
+      א. $\tilde F = 3.0 - 4.0i\,\text{N}$. ב. $x = 0.232\,\text{m}\cdot\cos(\omega t - 74.9^\circ)$. ג. $21.8^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 6.0\,\text{rad/s}$, $\gamma = 2.0\,\text{s}^{-1}$, $\omega = 4.0\,\text{rad/s}$, $m = 1.0\,\text{kg}$.
+      - kind: law
+        text: >-
+          $\operatorname{Re}\left[(a - ib)(\cos\omega t + i\sin\omega t)\right] = a\cos\omega t + b\sin\omega t$. המשוואה ליניארית, ולכן $\tilde X = \dfrac{\tilde F/m}{\omega_0^2 - \omega^2 + i\gamma\omega}$ גם כש-$\tilde F$ מרוכב.
+      - kind: manipulation
+        text: >-
+          $\tilde F = F_1 - iF_2$: גודל $5.0\,\text{N}$ וארגומנט $-53.1^\circ$, כלומר $F = 5.0\cos(\omega t - 53.1^\circ)\,\text{N}$. המכנה $36 - 16 + 8.0i = 20 + 8.0i$: גודל $21.5$, ארגומנט $21.8^\circ$.
+          בחילוק: $|\tilde X| = 5.0/21.5$, ו-$\arg\tilde X = -53.1^\circ - 21.8^\circ$.
+      - kind: limit
+        text: >-
+          כש-$F_2 = 0$ חוזרים לכוח $\cos\omega t$ הרגיל, $\varphi = -\delta$. ובלי ריסון המכנה ממשי וחיובי ($\omega \lt \omega_0$), וההעתק בדיוק עם הכוח.
+      - kind: units
+        text: >-
+          $\dfrac{\text{N/kg}}{\text{s}^{-2}} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $A = 5.0/21.54 = 0.232\,\text{m}$, $\varphi = -74.9^\circ$. בדיקה: $\tilde X = (3.0 - 4.0i)/(20 + 8.0i) = 0.0603 - 0.224i\,\text{m}$.
+      - kind: result
+        text: >-
+          $x = 0.232\,\text{m}\cdot\cos(4.0t - 74.9^\circ)$; הפיגור אחרי הכוח $21.8^\circ$, כמו לכוח קוסינוס פשוט באותה תדירות.
+
+  - id: W-5.4-09
+    level: bagrut
+    objectives: [OBJ-5.4-2]
+    prompt: >-
+      במתנד מאולץ השיא של האמפליטודה נמצא ב-$\omega_{\max} = \sqrt{\omega_0^2 - \gamma^2/2}$.
+
+      א. הראו שהאמפליטודה בשיא היא $\dfrac{F_0/m}{\gamma\omega_d}$, כאשר $\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$.
+
+      ב. מצאו את היחס בין האמפליטודה בשיא לאמפליטודה בתדירות העצמית, כפונקציה של $Q$.
+
+      ג. באיזה $Q$ השיא גבוה ב-10% מהאמפליטודה בתדירות העצמית?
+    answer: >-
+      ב. $\dfrac{1}{\sqrt{1 - 1/(4Q^2)}}$. ג. $Q = 1.20$.
+    solution:
+      - kind: law
+        text: >-
+          $A = \dfrac{F_0/m}{\sqrt{D}}$ עם $D = \left(\omega_0^2 - \omega^2\right)^2 + \gamma^2\omega^2$; בתדירות העצמית $A = \dfrac{F_0/m}{\gamma\omega_0}$.
+      - kind: manipulation
+        text: >-
+          א. ב-$\omega^2 = \omega_0^2 - \gamma^2/2$: $\omega_0^2 - \omega^2 = \gamma^2/2$, ולכן $D = \dfrac{\gamma^4}{4} + \gamma^2\omega_0^2 - \dfrac{\gamma^4}{2} = \gamma^2\left(\omega_0^2 - \dfrac{\gamma^2}{4}\right) = \gamma^2\omega_d^2$.
+          ב. היחס $\dfrac{\gamma\omega_0}{\gamma\omega_d} = \dfrac{\omega_0}{\omega_d}$, ועם $\gamma = \omega_0/Q$: $\dfrac{1}{\sqrt{1 - 1/(4Q^2)}}$. ג. $1 - \dfrac{1}{4Q^2} = \dfrac{1}{1.1^2}$.
+      - kind: limit
+        text: >-
+          כש-$Q \to \infty$ היחס $\to 1$: בריסון חלש השיא והתדירות העצמית כמעט זהים (עם $Q = 10$ ההבדל $0.13\%$). כש-$Q \to 1/\sqrt2$, $\omega_{\max} \to 0$, והשיא עובר ל-$\omega = 0$.
+      - kind: units
+        text: >-
+          היחס חסר ממדים; $\gamma\omega_d$ ב-$\text{s}^{-2}$, כמו המכנה.
+      - kind: substitution
+        text: >-
+          $\dfrac{1}{4Q^2} = 1 - 0.826 = 0.174$, $Q^2 = 1.44$, $Q = 1.20$. בדיקה: עם $Q = 2$ היחס $1.033$, ועם $Q = 1$ הוא $1.155$.
+      - kind: result
+        text: >-
+          ב. $\omega_0/\omega_d = 1/\sqrt{1 - 1/(4Q^2)}$. ג. $Q = 1.20$: רק בריסון חזק השיא בולט מעל הערך שב-$\omega_0$.
+
+  - id: W-5.4-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-5.4-2]
+    prompt: >-
+      שני מתנדים זהים, פרט לריסון: ל-1 $Q = 10$ ול-2 $Q = 100$. שניהם מתחילים במנוחה, ומרגע $t = 0$ מאולצים באותו כוח $F_0\cos\omega_0t$,
+      בתדירות העצמית. קבעו ונמקו:
+
+      א. מי מגיע ראשון לאמפליטודה של $5F_0/k$? (השתמשו במעטפת $A(t) = Q\,\dfrac{F_0}{k}\left(1 - e^{-\omega_0t/2Q}\right)$.)
+
+      ב. מי מגיע ראשון ל-$12F_0/k$?
+
+      ג. למה בהתחלה שניהם גדלים כמעט באותו קצב?
+    answer: >-
+      א. מתנד 2, אחרי $\omega_0t = 10.3$, לעומת $13.9$ של מתנד 1. ב. רק מתנד 2: מתנד 1 לא מגיע לשם בכלל. ג. ברגע הראשון הקצב $F_0/(2m\omega_0)$ לא תלוי בריסון.
+    solution:
+      - kind: given
+        text: >-
+          $Q_1 = 10$, $Q_2 = 100$; אותם $m$, $k$, $F_0$ ו-$\omega_0$; ממנוחה בשיווי המשקל, $\omega = \omega_0$.
+      - kind: law
+        text: >-
+          בריסון חלש, ממנוחה ובתדירות העצמית, $x \approx A(t)\sin\omega_0t$ עם $A(t) = Q\,\dfrac{F_0}{k}\left(1 - e^{-\gamma t/2}\right)$ ו-$\gamma = \omega_0/Q$.
+      - kind: manipulation
+        text: >-
+          א. $Q\left(1 - e^{-\omega_0t/2Q}\right) = 5$, ולכן $\omega_0t = -2Q\ln\left(1 - \dfrac5Q\right)$. ב. מתנד 1 שואף ל-$10F_0/k$ בלבד, ולכן לא מגיע ל-$12$. ג. בפיתוח לזמן קצר $1 - e^{-y} \approx y$, ו-$A(t) \approx Q\,\dfrac{F_0}{k}\cdot\dfrac{\omega_0t}{2Q} = \dfrac{F_0\omega_0}{2k}\,t$: $Q$ מצטמצם.
+      - kind: limit
+        text: >-
+          כש-$Q \to \infty$ האמפליטודה גדלה ליניארית לתמיד; זה הגבול שאליו מתנד 2 קרוב בהתחלה. כש-$5/Q \to 1$ הזמן של מתנד 1 שואף לאין-סוף: היעד שווה בדיוק לשיא שלו.
+      - kind: units
+        text: >-
+          $\omega_0t$ חסר ממדים; $F_0\omega_0/k$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $Q = 10$: $\omega_0t = -20\ln0.5 = 13.9$. $Q = 100$: $\omega_0t = -200\ln0.95 = 10.3$. למשל ב-$10\,\text{Hz}$: $0.221\,\text{s}$ לעומת $0.163\,\text{s}$.
+      - kind: result
+        text: >-
+          א. מתנד 2. ב. רק מתנד 2. ג. ברגע הראשון הריסון כמעט לא פועל, והכוח פשוט מאיץ את הגוף.
+
+challenge:
+  - id: W-5.4-c1
+    stars: 1
+    objectives: [OBJ-5.4-1, OBJ-5.4-2]
+    prompt: >-
+      גביש בעל מסה $M = 0.50\,\text{kg}$ נשען על ארבעה קפיצים חסרי מסה במקביל, לכל אחד קבוע $k = 2000\,\text{N/m}$, שעומדים על שולחן.
+      כשמזיזים ציוד בחדר, משטח השולחן רוטט אנכית: המקום שלו $y_t(t)$, עם תאוצה $\ddot y_t = -A_0\cos\omega t$, $A_0 = 0.20\,\text{m/s}^2$,
+      בתדירות $5.0\,\text{Hz}$.
+
+      א. נסמן ב-$u$ את ההעתק של הגביש ביחס למשטח השולחן, מנקודת שיווי המשקל. כתבו את החוק השני לגביש (בהעתק $x = y_t + u$ ביחס לרצפה),
+      והראו ש-$u$ מקיים משוואה של מתנד מאולץ. הזניחו בינתיים כל ריסון.
+
+      ב. מה האמפליטודה של $u$ במצב היציב?
+
+      ג. רוצים להקטין אותה פי 10 בהחלפת הקפיצים. מה צריך להיות קבוע הקפיץ החדש? פי כמה קצרים יותר הקפיצים החדשים, אם הקבוע הפוך
+      לאורך?
+
+      ד. במקום זה, משאירים את הקפיצים ומוסיפים במקביל להם כרית שמפעילה על הגביש כוח ריסון $-b\dot u$. איזה $b$ מקטין את האמפליטודה
+      פי 10?
+    answer: >-
+      א. $\ddot u + \dfrac{4k}{M}u = A_0\cos\omega t$. ב. $13.3\,\mu\text{m}$. ג. $k' = 1.89\cdot10^4\,\text{N/m}$, קפיצים קצרים פי $9.4$ בערך. ד. $b = 2.38\cdot10^3\,\text{kg/s}$.
+    solution:
+      - kind: given
+        text: >-
+          ציר אנכי למעלה. $M = 0.50\,\text{kg}$, ארבעה קפיצים במקביל: $4k = 8000\,\text{N/m}$. $\omega = 2\pi\cdot5.0 = 31.4\,\text{rad/s}$, $A_0 = 0.20\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          החוק השני ביחס לרצפה, שהיא מערכת אינרציאלית: הקפיצים מפעילים על הגביש $-4ku$ (מעבר לכוח שמאזן את הכובד), והכרית $-b\dot u$. לכן $M\ddot x = -4ku - b\dot u$.
+      - kind: manipulation
+        text: >-
+          מציבים $\ddot x = \ddot y_t + \ddot u$ ומעבירים את $M\ddot y_t$ לאגף ימין: $M\ddot u + b\dot u + 4ku = -M\ddot y_t = MA_0\cos\omega t$. זה מתנד מאולץ עם $\omega_0^2 = 4k/M$, $\gamma = b/M$ וכוח ליחידת מסה $A_0$.
+          ב. בלי ריסון $A_u = \dfrac{A_0}{\omega_0^2 - \omega^2}$. ג. צריך $\omega_0'^2 - \omega^2 = 10\left(\omega_0^2 - \omega^2\right)$. ד. צריך $\sqrt{\left(\omega_0^2 - \omega^2\right)^2 + \left(b\omega/M\right)^2} = 10\left(\omega_0^2 - \omega^2\right)$, כלומר $b = \dfrac{M\sqrt{99}\left(\omega_0^2 - \omega^2\right)}{\omega}$.
+      - kind: limit
+        text: >-
+          כש-$\omega^2 \ll 4k/M$, כמו כאן, $A_u \approx A_0M/(4k)$: הקפיצים קשיחים, ו-$k$ גדול פי 10 מקטין פי 10 בדיוק (הערכה: קפיצים קצרים פי 10, ו-$b \approx 4\sqrt{99}\,k/\omega = 2.5\cdot10^3\,\text{kg/s}$). וכש-$\omega \to \omega_0$ האמפליטודה בלי ריסון אין-סופית: אז רק הכרית עוזרת.
+      - kind: units
+        text: >-
+          $A_0/\omega_0^2$ ב-$\text{m}$; $M\omega_0^2/\omega$ ב-$\text{kg/s}$, יחידות של $b$.
+      - kind: substitution
+        text: >-
+          $\omega_0^2 = 16000\,\text{s}^{-2}$ ($\omega_0 = 126\,\text{rad/s}$), $\omega^2 = 987\,\text{s}^{-2}$. ב. $A_u = 0.20/15013 = 1.33\cdot10^{-5}\,\text{m}$.
+          ג. $4k'/M = 10\cdot15013 + 987 = 1.51\cdot10^5\,\text{s}^{-2}$, $k' = 1.89\cdot10^4\,\text{N/m} = 9.44k$. ד. $b = 0.50\cdot9.95\cdot15013/31.4 = 2.38\cdot10^3\,\text{kg/s}$.
+      - kind: result
+        text: >-
+          ב. $13.3\,\mu\text{m}$. ג. $1.89\cdot10^4\,\text{N/m}$: קפיצים קצרים פי $9.4$ בערך. ד. $b = 2.38\cdot10^3\,\text{kg/s}$, ריסון חזק מאוד ($Q \approx 0.03$).
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 2
+      year: 2016
+      problem: Homework 2, P2.2 (a crystal on springs on a vibrating table)
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/0b2a29348074da9445a2878b4196afbb_MIT8_03SCF16_ProblemSet2.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-5.4-c2
+    stars: 2
+    objectives: [OBJ-5.4-1, OBJ-5.4-2]
+    prompt: >-
+      עגלה בעלת מסה $m = 0.25\,\text{kg}$ על מסילת אוויר מחוברת לשני קפיצים זהים, שלכל אחד קבוע $k = 18\,\text{N/m}$: הקצה של הקפיץ
+      השמאלי קבוע, והקצה של הימני מחובר למנוע. ב-$t = 0$ העגלה במנוחה, הקפיצים רפויים, והמנוע מתחיל להזיז את הקצה הימני כך
+      שהוא זז ב-$\Delta\sin\omega t$ ממקומו, עם $\Delta = 0.50\,\text{cm}$ ו-$\omega = 10\,\text{rad/s}$. על העגלה פועל גם ריסון קטן
+      $-b\dot x$, עם $b = 0.050\,\text{kg/s}$. הציר $x$ ימינה, מהמקום של העגלה ב-$t = 0$.
+
+      א. כתבו את משוואת התנועה של העגלה, וסדרו אותה בצורה $\ddot x + \gamma\dot x + \omega_0^2x = f(t)$.
+
+      ב. מצאו את האמפליטודה והפיגור של המצב היציב.
+
+      ג. באיזו תדירות של המנוע האמפליטודה הייתה מרבית?
+
+      ד. מצאו את $x(t)$ המלא, עם תנאי ההתחלה.
+    answer: >-
+      א. $\ddot x + 0.20\dot x + 144x = 0.36\sin\omega t$ (ביחידות SI). ב. $A = 0.817\,\text{cm}$, $\delta = 2.60^\circ$, $x_p = A\sin(\omega t - \delta)$. ג. $11.9992\,\text{rad/s}$, כמעט $\omega_0 = 12\,\text{rad/s}$. ד. $x = A\sin(\omega t - \delta) + e^{-0.10t}\left(0.037\cos\omega_dt - 0.680\sin\omega_dt\right)\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.25\,\text{kg}$, $k = 18\,\text{N/m}$ לכל קפיץ, $b = 0.050\,\text{kg/s}$, $\Delta = 5.0\cdot10^{-3}\,\text{m}$, $\omega = 10\,\text{rad/s}$; $x(0) = 0$, $\dot x(0) = 0$.
+      - kind: law
+        text: >-
+          החוק השני לעגלה. הקפיץ השמאלי מתארך ב-$x$ ומפעיל $-kx$; הקפיץ הימני מתארך ב-$\Delta\sin\omega t - x$ ומושך ימינה ב-$k\left(\Delta\sin\omega t - x\right)$; הריסון $-b\dot x$.
+      - kind: manipulation
+        text: >-
+          $m\ddot x = -2kx - b\dot x + k\Delta\sin\omega t$, ולכן $\omega_0^2 = 2k/m$, $\gamma = b/m$ והכוח ליחידת מסה $\dfrac{k\Delta}{m}\sin\omega t$.
+          $\sin\omega t = \operatorname{Im}e^{i\omega t}$, ולכן המצב היציב $x_p = A\sin(\omega t - \delta)$ עם אותם $A$ ו-$\delta$ כמו לכוח קוסינוס.
+          ג. $\omega_{\max} = \sqrt{\omega_0^2 - \gamma^2/2}$. ד. $x = x_p + e^{-\gamma t/2}\left(C\cos\omega_dt + S\sin\omega_dt\right)$; מ-$x(0) = 0$: $C = A\sin\delta$; מ-$\dot x(0) = 0$: $A\omega\cos\delta - \tfrac\gamma2C + \omega_dS = 0$.
+      - kind: limit
+        text: >-
+          אילו הקצה הימני זז לאט מאוד ($\omega \to 0$), $A \to \dfrac{k\Delta/m}{2k/m} = \Delta/2$: העגלה באמצע בין קצה קבוע לקצה שזז, כמו שקפיצים זהים מחייבים.
+          והתנועה המלאה מתחילה כפעימות: התגובה המעברית, בתדירות $\omega_d \approx 12\,\text{rad/s}$ ובגודל דומה ל-$A$, מתערבבת עם המצב היציב ב-$10\,\text{rad/s}$, ודועכת בזמן $2/\gamma = 10\,\text{s}$.
+      - kind: units
+        text: >-
+          $k\Delta/m$ ב-$\text{m/s}^2$; $\gamma$ ב-$\text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\omega_0^2 = 144\,\text{s}^{-2}$, $\omega_0 = 12\,\text{rad/s}$, $\gamma = 0.20\,\text{s}^{-1}$, $Q = 60$, $k\Delta/m = 0.36\,\text{m/s}^2$.
+          ב. המכנה $44 + 2.0i\,\text{s}^{-2}$: $A = 0.36/44.05 = 8.17\cdot10^{-3}\,\text{m}$, $\delta = \arctan(2.0/44) = 2.60^\circ$.
+          ג. $\sqrt{144 - 0.020} = 11.9992\,\text{rad/s}$. ד. $\omega_d = 12.000\,\text{rad/s}$, $C = 0.0371\,\text{cm}$, $S = -0.680\,\text{cm}$; בעשרים השניות הראשונות $|x|$ מגיע עד $1.39\,\text{cm}$, כמעט פי 2 מ-$A$.
+      - kind: result
+        text: >-
+          $x(t) = 0.817\sin(10t - 2.60^\circ) + e^{-0.10t}\left(0.0371\cos12t - 0.680\sin12t\right)\,\text{cm}$, עם $t$ בשניות; האמפליטודה הייתה מרבית ב-$11.9992\,\text{rad/s}$.
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Homework 2
+      year: 2016
+      problem: Homework 2, P2.4 (a mass on an air track driven through a spring by a motor)
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/0b2a29348074da9445a2878b4196afbb_MIT8_03SCF16_ProblemSet2.pdf
+      verified: '2026-11-11'
+      adapted: true

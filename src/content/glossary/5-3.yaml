@@ -11,7 +11,7 @@
 - id: c5-natural-frequency
   term: תדירות עצמית
   en: natural frequency
-  symbol: ω₀
+  symbol: '\omega_0'
   unit: rad/s
   definition: התדירות הזוויתית שבה מערכת מתנודדת מעצמה, בלי ריסון ובלי כוח מאלץ. במסה על קפיץ ω₀ = √(k/m).
   lesson: '5.3'
@@ -19,7 +19,7 @@
 - id: c5-damping-rate
   term: קצב הריסון
   en: damping rate
-  symbol: γ
+  symbol: '\gamma'
   unit: 1/s
   definition: המקדם γ = b/m בצורה ẍ + γẋ + ω₀²x = 0. האנרגיה של מתנד בריסון חלש דועכת כמו e^(−γt), והאמפליטודה כמו e^(−γt/2).
   lesson: '5.3'
@@ -47,4 +47,31 @@
   en: quality factor
   symbol: Q
   definition: המספר חסר הממדים Q = ω₀/γ, בצורה ẍ + γẋ + ω₀²x = 0. בריסון חלש האנרגיה יורדת פי e^(2π) אחרי Q תנודות, ובמתנד מאולץ רוחב התהודה בערך ω₀/Q.
+  lesson: '5.3'
+
+- id: c5-damped-frequency
+  term: תדירות מרוסנת
+  en: damped angular frequency
+  symbol: '\omega_d'
+  unit: rad/s
+  definition: התדירות הזוויתית שבה מתנד בתת-ריסון חוצה את שיווי המשקל, ω_d = √(ω₀² − γ²/4). היא החלק המדומה של השורשים של המשוואה האופיינית, קטנה מ-ω₀, ושואפת לאפס בריסון קריטי.
+  lesson: '5.3'
+
+- id: c5-decay-envelope
+  term: מעטפת הדעיכה
+  en: decay envelope
+  definition: העקומות ±A₀e^(−γt/2) שבין שתיהן נע מתנד בתת-ריסון. הגוף נוגע בהן ליד כל שיא, והן דועכות בקצב החלק הממשי של השורשים, γ/2.
+  lesson: '5.3'
+
+- id: c5-log-decrement
+  term: דקרמנט לוגריתמי
+  en: logarithmic decrement
+  symbol: '\Lambda'
+  definition: הלוגריתם הטבעי של היחס בין שני שיאים עוקבים של מתנד בתת-ריסון, Λ = ln(x_n/x_(n+1)) = γT_d/2, כש-T_d = 2π/ω_d. בריסון חלש Λ ≈ π/Q, ולכן מדידה של שני שיאים נותנת את מקדם האיכות.
+  lesson: '5.3'
+
+- id: c5-settling-time
+  term: זמן התייצבות
+  en: settling time
+  definition: הזמן שאחריו ההעתק של מתנד מרוסן נשאר בתוך פס קטן סביב שיווי המשקל, למשל 1% מההעתק ההתחלתי, ולא יוצא ממנו יותר.
   lesson: '5.3'

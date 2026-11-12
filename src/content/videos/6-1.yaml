@@ -1,0 +1,30 @@
+# Videos of lesson 6.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Length from the watch page's lengthSeconds; the description was read from
+# the watch page. Caption tracks were not established, so `captions` lists nothing. `why` claims only what the title
+# and the description support.
+#   1THXiRdD1js: 829 s (13.8 min); description: the shell theorem inside and outside a shell, why the force is zero
+#     inside a hollow shell, the force at r < R inside a uniform sphere, a graph of the force against distance,
+#     "no calculus required".
+#   4DlyZL436hE: 135 s; description: "This is the Cavendish experiment to measure the gravitational constant (G)."
+# Not used: NQhDFujsjOg (oEmbed title differed from the search listing); a Hebrew "פיזיקה כללית 2 תרגול 1" whose
+# title does not say it covers gravity.
+
+- id: v-6-1-shell-inside
+  youtubeId: 1THXiRdD1js
+  title: "Gravity Inside a Planet: Newton's Shell Theorem Explained - AP Physics C Mechanics 2.6c"
+  channel: Jon Bergmann
+  lang: en
+  start: 0
+  minutes: 14
+  why: 'לפי התיאור: משפט הקליפה מבחוץ ומבפנים, למה הכוח בתוך קליפה חלולה אפס, הכוח בתוך כדור אחיד וגרף של הכוח כפונקציה של המרחק מהמרכז, בלי אינטגרלים. השוו את הגרף שלו לגרף של איור 6.1ב.'
+  verified: '2026-11-11'
+
+- id: v-6-1-cavendish
+  youtubeId: 4DlyZL436hE
+  title: 'Demonstration of the Cavendish Experiment - Gravity Between Two Masses'
+  channel: Rhett Allain
+  lang: en
+  start: 0
+  minutes: 2
+  why: 'לפי התיאור: ניסוי קוונדיש שמודד את קבוע הכבידה G, משיכה בין שתי מסות במעבדה. שימו לב כמה התנועה איטית וקטנה: הכוח בין גופים בגודל של שולחן זעיר.'
+  verified: '2026-11-11'

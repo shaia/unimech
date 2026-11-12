@@ -68,8 +68,10 @@ test.describe('every page', () => {
         [...new Set(as.map((a) => (a as HTMLAnchorElement).href.split('#')[0]))].filter((h) => h.startsWith(location.origin)),
       );
       expect(urls.length).toBeGreaterThan(0);
+      // HEAD, not GET: the practice pages are ~5 MB each, and downloading every one a page links to ran past the
+      // test timeout once chapters 5 and 6 were written; only the status matters here
       for (const url of urls) {
-        const res = await request.get(url);
+        const res = await request.head(url);
         expect(res.status(), url).toBe(200);
       }
     });

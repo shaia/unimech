@@ -1,0 +1,7 @@
+---
+/** A body on a spring with x(t) traced live, for lesson MDX: <Spread figure={SpringOscillator} figureProps={{ mode: 'vertical', … }}>. */
+import SpringOscillator, { type SpringOscillatorProps } from './SpringOscillator';
+type Props = SpringOscillatorProps;
+---
+
+<SpringOscillator client:visible {...Astro.props} />

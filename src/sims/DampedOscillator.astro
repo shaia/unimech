@@ -1,0 +1,7 @@
+---
+/** Damped oscillator figure for lesson MDX: <Spread fig="fig-5-3a" figure={DampedOscillator} figureProps={{ gamma: 0.8, … }}>. */
+import DampedOscillator, { type DampedOscillatorProps } from './DampedOscillator';
+type Props = DampedOscillatorProps;
+---
+
+<DampedOscillator client:visible {...Astro.props} />

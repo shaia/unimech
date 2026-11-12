@@ -1,0 +1,25 @@
+# Videos of lesson 6.6. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch pages' lengthSeconds (198 s and 2934 s).
+# Caption tracks were not confirmed, so `captions` lists nothing. `why` claims only what the title (Lewin) or a
+# transcript mirror (minutephysics, rosetta.to/u/minutephysics/two-paradoxes-of-space-navigation) supports.
+# No Hebrew video on escape or transfer orbits was found.
+
+- id: v-6-6-two-paradoxes
+  youtubeId: dLtRtdg67PU
+  title: 'Two Paradoxes of Space Navigation'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 3
+  why: 'לפי התמליל: כדי לעלות למסלול גבוה, שבו המהירות קטנה יותר, מאיצים פעמיים, במסלול הוהמן; וכדי להשיג תחנה שלפניכם באותו מסלול צריך דווקא להאט. השוו לסולם המהירויות של איור 6.6ב.'
+  verified: '2026-11-11'
+
+- id: v-6-6-lewin-escape
+  youtubeId: 3fTVn96gUSQ
+  title: '8.01x - Lect 14 - Escape Velocities, Circular Orbits, Bound and Unbound  Orbits, Power'
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  start: 0
+  minutes: 49
+  why: 'הרצאה שלמה של קורס 8.01 של MIT. לפי הכותרת: מהירויות מילוט, מסלולים מעגליים, מסלולים קשורים ולא קשורים, והספק. חפשו את הקשר בין סימן האנרגיה הכוללת לשאלה אם הגוף חוזר.'
+  verified: '2026-11-11'

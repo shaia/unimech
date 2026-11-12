@@ -5,14 +5,21 @@
 # opposite (1, −1) with ω2² = (k + 2k_c)/m.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch5/q.ts:
+# Every question stands alone (the chapter test draws at random): each prompt describes its own system.
+# Every number was computed in .scratch/ch5/q.ts and recomputed against src/physics/coupled.ts in
+# .scratch/ch5/5-5/numbers.ts (lesson 5.5, 2026-11-11; every key confirmed):
 #   m = 0.50 kg, k = 50 N/m, k_c = 12 N/m: ω1 = 10.0, ω2 = √148 = 12.2 rad/s
 #     (√((k + k_c)/m) = 11.1, √(2k_c/m) = 6.93, √((2k + k_c)/m) = 15.0);
-#   three equal springs: ω2/ω1 = √3 = 1.73 (√2 = 1.41, 3, 2);
+#   three equal springs: ω2/ω1 = √3 = 1.73 (√2 = 1.41, 3, 1 + √2 = 2.41);
 #   wall–k–m–k–m (free end), k/m = 100 s⁻²: ω² = (k/m)(3 ∓ √5)/2, ω_low = 6.18, ω_high = 16.2 rad/s
 #     (√(k/m) = 10, √(k/(2m)) = 7.07, 10·(3 − √5)/2 = 3.82);
 #   k_c = 2.0 N/m (weak): ω2 = √108 = 10.39 rad/s, Δω = 0.392 rad/s, full transfer at π/Δω = 8.01 s
-#     (2π/Δω = 16.0, π/(2Δω) = 4.00; approximation Δω ≈ k_c/(mω1) = 0.40 gives 7.85 s, inside tolerance).
+#     (2π/Δω = 16.0, π/(2Δω) = 4.00; approximation Δω ≈ k_c/(mω0) = 0.40 gives 7.85 s, inside tolerance);
+#   unequal outer springs k1 = 3k, k2 = k, k_c = k, k/m = 25 s⁻²: (4 − λ)(2 − λ) = 1, λ = 3 ∓ √2,
+#     ω_low = 6.30, ω_high = 10.5 rad/s (k_c dropped from the diagonal 3.83; 5·λ 7.93; √(k/m) 5.00; √((k2 + k_c)/m) 7.07).
+# Review 2026-11-11 (.scratch/review/ch5/l55.ts, own closed forms, no import of coupled.ts): every key and
+# commonWrong recomputed and confirmed; Q-5.5-unequal-springs added (mid rung between the identical-body questions
+# and Q-5.5-free-end, after the student read); ω0 = √(k/m) is the chapter's natural frequency of one body alone.
 
 chapter: 5
 questions:
@@ -50,8 +57,9 @@ questions:
     objectives: [OBJ-5.5-1]
     level: basic
     prompt: >-
-      באותה מערכת, עם $m = 0.50\,\text{kg}$, $k = 50\,\text{N/m}$ וקפיץ צימוד $k_c = 12\,\text{N/m}$, מה התדירות הזוויתית של
-      האופן שבו הגופים נעים בכיוונים הפוכים, $x_2 = -x_1$?
+      שני גופים בעלי מסה $m = 0.50\,\text{kg}$ על משטח בלי חיכוך. קפיץ $k = 50\,\text{N/m}$ מחבר כל גוף לקיר שלידו, וקפיץ
+      צימוד $k_c = 12\,\text{N/m}$ מחבר את שני הגופים; $x_1$ ו-$x_2$ הם ההעתקים מנקודות שיווי המשקל. מה התדירות הזוויתית
+      של האופן שבו הגופים נעים בכיוונים הפוכים, $x_2 = -x_1$?
     answer: 12.2
     unit: rad/s
     correctFeedback: >-
@@ -76,8 +84,9 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      באותה מערכת מחפשים אופני תנודה בניחוש $x_1 = a_1\cos\omega t$, $x_2 = a_2\cos\omega t$. משוואות התנועה הן
-      $$m\ddot x_1 = -kx_1 - k_c(x_1 - x_2),\qquad m\ddot x_2 = -kx_2 - k_c(x_2 - x_1)$$
+      שני גופים בעלי מסה $m$ על משטח בלי חיכוך. קפיץ $k$ מחבר כל גוף לקיר שלידו, וקפיץ צימוד $k_c$ מחבר את שני הגופים.
+      מחפשים אופני תנודה בניחוש $x_1 = a_1\cos\omega t$, $x_2 = a_2\cos\omega t$. משוואות התנועה הן
+      $$\begin{aligned} m\ddot x_1 &= -kx_1 + k_c(x_2 - x_1) \\ m\ddot x_2 &= -kx_2 - k_c(x_2 - x_1) \end{aligned}$$
       באופן בעל התדירות הגבוהה, $\omega_2^2 = (k + 2k_c)/m$, מה היחס $a_2/a_1$?
     choices:
       - text: '$a_2/a_1 = -1$'
@@ -94,7 +103,7 @@ questions:
       - text: 'מהמשוואה הראשונה, $\left(k + k_c - m\omega^2\right)a_1 = k_ca_2$. ב-$m\omega_2^2 = k + 2k_c$ אגף שמאל $-k_ca_1$, ולכן $a_2 = -a_1$.'
         correct: true
         feedback: >-
-          זה הנימוק. הצבת הניחוש הופכת את משוואות התנועה למערכת ליניארית ב-$a_1$, $a_2$. יש לה פתרון לא טריוויאלי רק
+          זה הנימוק. הצבת הניחוש הופכת את משוואות התנועה למערכת ליניארית ב-$a_1$, $a_2$. יש לה פתרון שבו $a_1$ ו-$a_2$ לא שניהם אפס רק
           כשהדטרמיננטה מתאפסת, $\left(k + k_c - m\omega^2\right)^2 = k_c^2$, וזה נותן את שתי התדירויות. הצבה של כל אחת מחזירה את
           היחס.
       - text: 'הגוף הראשון דוחף את השני דרך הקפיץ, ולכן השני תמיד נע לכיוון ההפוך.'
@@ -109,8 +118,9 @@ questions:
     objectives: [OBJ-5.5-1]
     level: mid
     prompt: >-
-      באותה מערכת שלושת הקפיצים זהים, $k_c = k$. מה היחס $\omega_2/\omega_1$ בין התדירות של האופן ההפוך לתדירות של
-      האופן שבו הגופים נעים יחד?
+      שני גופים בעלי מסה $m$ על משטח בלי חיכוך. קפיץ $k$ מחבר כל גוף לקיר שלידו, וקפיץ צימוד מחבר את שני הגופים,
+      ושלושת הקפיצים זהים: $k_c = k$. מה היחס $\omega_2/\omega_1$ בין התדירות של האופן שבו הגופים נעים בכיוונים הפוכים
+      לתדירות של האופן שבו הם נעים יחד?
     answer: 1.73
     unit: ''
     correctFeedback: >-
@@ -124,9 +134,47 @@ questions:
       - value: 3
         feedback: 'זה היחס בין **ריבועי** התדירויות. הוציאו שורש.'
       - value: 2.41
-        feedback: 'השתמשתם ב-$\omega_2 = \omega_1 + \sqrt{2k_c/m}$, וחיברתם תדירויות. בקפיצים מקבילים מתחברים הקבועים, כלומר ריבועי התדירויות.'
+        feedback: 'השתמשתם ב-$\omega_2 = \omega_1 + \sqrt{2k_c/m}$, וחיברתם תדירויות. מה שמתחבר הם קבועי הקפיצים, $k + 2k_c$, ואיתם ריבועי התדירויות, לא התדירויות עצמן.'
     hints:
       - 'מה $\omega_2^2/\omega_1^2$?'
+
+  - id: Q-5.5-unequal-springs
+    type: numeric
+    objectives: [OBJ-5.5-1]
+    level: mid
+    prompt: >-
+      שני גופים בעלי מסה $m$ על משטח בלי חיכוך. גוף 1 קשור לקיר השמאלי בקפיץ $3k$, גוף 2 קשור לקיר הימני בקפיץ $k$,
+      וקפיץ צימוד $k_c = k$ מחבר ביניהם; $k/m = 25\,\text{s}^{-2}$. בציר $x$ ימינה, עם ההעתקים מנקודות שיווי המשקל,
+      משוואות התנועה הן
+      $$\begin{aligned} m\ddot x_1 &= -3kx_1 + k\left(x_2 - x_1\right) \\ m\ddot x_2 &= -kx_2 - k\left(x_2 - x_1\right) \end{aligned}$$
+      מה התדירות הזוויתית הנמוכה מבין שני אופני התנודה?
+    answer: 6.30
+    unit: rad/s
+    correctFeedback: >-
+      נכון. הניחוש $x_j = a_j\cos\omega t$ עם $\lambda = m\omega^2/k$ נותן $(4 - \lambda)a_1 - a_2 = 0$ ו-$-a_1 + (2 - \lambda)a_2 = 0$.
+      הדטרמיננטה מתאפסת כש-$(4 - \lambda)(2 - \lambda) = 1$, כלומר $\lambda^2 - 6\lambda + 7 = 0$ ו-$\lambda = 3 \mp \sqrt2$:
+      $$\omega_{\text{low}} = 5\sqrt{1.586} = 6.30\,\text{rad/s}$$
+      והגבוהה $10.5\,\text{rad/s}$. באופן הנמוך $a_2/a_1 = 4 - \lambda = 2.41$: שני הגופים נעים יחד, והגוף שעל הקפיץ הרך נע
+      יותר. **בדיקה:** $\lambda_1 + \lambda_2 = 6$, ואכן $(k_1 + k_c)/m + (k_2 + k_c)/m = 4k/m + 2k/m$.
+    wrongFeedback: >-
+      הציבו $x_1 = a_1\cos\omega t$ ו-$x_2 = a_2\cos\omega t$ בשתי המשוואות, העבירו הכול לאגף אחד ודרשו שהדטרמיננטה תתאפס.
+    commonWrong:
+      - value: 3.83
+        feedback: >-
+          זה מתקבל מ-$(3 - \lambda)(1 - \lambda) = 1$, בלי $k_c$ באיברים שעל האלכסון. קפיץ הצימוד מושך את גוף 1 גם בגלל
+          ההעתק שלו עצמו: $k(x_2 - x_1)$ מכיל $-kx_1$, ולכן המקדם של $a_1$ במשוואה הראשונה הוא $3k + k - m\omega^2$.
+      - value: 7.93
+        feedback: 'לקחתם $5\cdot1.586$. $1.586$ הוא $\lambda = m\omega^2/k$, ולכן $\omega = 5\sqrt{1.586}$.'
+      - value: 5.00
+        feedback: 'זה $\sqrt{k/m}$, התדירות של גוף אחד על קפיץ $k$. כאן שני הגופים קשורים זה לזה, ותדירויות האופנים נקבעות מהדטרמיננטה.'
+        misconception: MC-5-modes-each-mass-own-frequency
+      - value: 7.07
+        feedback: >-
+          זה $\sqrt{(k_2 + k_c)/m}$, התדירות של גוף 2 כשגוף 1 מוחזק במקום. באופן תנודה שני הגופים זזים, ותדירות האופן
+          לא שייכת לגוף אחד.
+        misconception: MC-5-modes-each-mass-own-frequency
+    hints:
+      - 'סמנו $\lambda = m\omega^2/k$. מה המקדם של $a_1$ במשוואה הראשונה אחרי ההצבה?'
 
   - id: Q-5.5-free-end
     type: numeric
@@ -141,9 +189,10 @@ questions:
       נכון. $m\ddot x_1 = -kx_1 - k(x_1 - x_2)$ ו-$m\ddot x_2 = -k(x_2 - x_1)$. עם $\lambda = m\omega^2/k$, הניחוש
       $x_j = a_j\cos\omega t$ נותן $(2 - \lambda)a_1 = a_2$ ו-$(1 - \lambda)a_2 = a_1$. הדטרמיננטה מתאפסת כש-$(2 - \lambda)(1 - \lambda) = 1$,
       כלומר $\lambda^2 - 3\lambda + 1 = 0$:
-      $$\lambda = \frac{3 \mp \sqrt5}{2},\qquad \omega_{\text{low}} = 10\cdot\sqrt{0.382} = 6.18\,\text{rad/s}$$
+      $$\begin{aligned} \lambda &= \frac{3 \mp \sqrt5}{2} \\ \omega_{\text{low}} &= 10\cdot\sqrt{0.382} = 6.18\,\text{rad/s} \end{aligned}$$
       והגבוהה $16.2\,\text{rad/s}$. באופן הנמוך $a_2/a_1 = 2 - \lambda = 1.62$: שני הגופים נעים יחד, והחופשי יותר.
-      **בדיקה:** סכום ריבועי התדירויות, $3k/m$, שווה לעקבה של המטריצה, כפי שצריך.
+      **בדיקה:** סכום שני הפתרונות של $\lambda^2 - 3\lambda + 1 = 0$ הוא 3, ולכן סכום ריבועי התדירויות $3k/m$. ואכן
+      $(k_1 + k_c)/m_1 + (k_2 + k_c)/m_2 = 2k/m + k/m$, כאן עם $k_1 = k_c = k$ ו-$k_2 = 0$.
     wrongFeedback: >-
       כתבו את שתי משוואות התנועה (לגוף 2 יש רק הקפיץ האמצעי), הציבו ניחוש של אופן תנודה, ואפסו את הדטרמיננטה.
     commonWrong:
@@ -166,7 +215,7 @@ questions:
     qualitative: true
     level: basic
     prompt: >-
-      במערכת של שני גופים, שני קפיצים חיצוניים $k$ וקפיץ צימוד $k_c$, מזיזים את גוף 1 למרחק $a$, מחזיקים את גוף 2
+      שני גופים זהים על משטח בלי חיכוך; קפיץ $k$ מחבר כל גוף לקיר שלידו, וקפיץ צימוד $k_c$ מחבר ביניהם. מזיזים את גוף 1 למרחק $a$, מחזיקים את גוף 2
       בשיווי המשקל, ומשחררים את שניהם ממנוחה. $\omega_1$ ו-$\omega_2$ הן התדירויות של האופן המשותף והאופן ההפוך. מה
       התנועה?
     choices:
@@ -193,7 +242,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      באותה מערכת קפיץ הצימוד חלש מאוד, $k_c \ll k$. מזיזים את גוף 1, משאירים את גוף 2 במקומו ומשחררים ממנוחה. מה קורה
+      שני גופים זהים על משטח בלי חיכוך. קפיץ $k$ מחבר כל גוף לקיר שלידו, וקפיץ צימוד חלש מאוד, $k_c \ll k$, מחבר את
+      שני הגופים. מזיזים את גוף 1, משאירים את גוף 2 במקומו ומשחררים ממנוחה. מה קורה
       לאורך זמן רב?
     choices:
       - text: 'גוף 1 נרגע בהדרגה עד עצירה כמעט מלאה, בזמן שגוף 2 מתנודד יותר ויותר, ואז הכול חוזר. האנרגיה עוברת שוב ושוב בין הגופים.'
@@ -219,22 +269,23 @@ questions:
       - text: 'האנרגיה נשמרת, ולכן היא חייבת להתחלק שווה.'
         feedback: 'שימור האנרגיה קובע את הסכום, לא את החלוקה. החלוקה בין הגופים משתנה בזמן, והסכום קבוע.'
     hints:
-      - 'השתמשו בזהות $\cos\alpha + \cos\beta = 2\cos\tfrac{\alpha - \beta}{2}\cos\tfrac{\alpha + \beta}{2}$.'
+      - 'השתמשו בזהות $\cos(u + v) + \cos(u - v) = 2\cos u\cos v$, עם $u + v = \omega_2t$ ו-$u - v = \omega_1t$.'
 
   - id: Q-5.5-swap-time
     type: numeric
     objectives: [OBJ-5.5-2]
     level: mid
     prompt: >-
-      במערכת עם $m = 0.50\,\text{kg}$, $k = 50\,\text{N/m}$ וקפיץ צימוד חלש $k_c = 2.0\,\text{N/m}$ מזיזים את גוף 1, משאירים
-      את גוף 2 במקומו ומשחררים ממנוחה. אחרי כמה זמן גוף 1 נעצר לראשונה כמעט לגמרי, וכל האנרגיה נמצאת בגוף 2?
+      שני גופים בעלי מסה $m = 0.50\,\text{kg}$ על משטח בלי חיכוך. קפיץ $k = 50\,\text{N/m}$ מחבר כל גוף לקיר שלידו, וקפיץ
+      צימוד חלש $k_c = 2.0\,\text{N/m}$ מחבר ביניהם. מזיזים את גוף 1, משאירים את גוף 2 במקומו ומשחררים ממנוחה. אחרי כמה
+      זמן האמפליטודה של גוף 1 יורדת לראשונה כמעט לאפס, וכמעט כל האנרגיה נמצאת בגוף 2?
     answer: 8.01
     unit: s
     correctFeedback: >-
       נכון. $\omega_1 = \sqrt{k/m} = 10.0\,\text{rad/s}$ ו-$\omega_2 = \sqrt{(k + 2k_c)/m} = 10.39\,\text{rad/s}$, ולכן $\Delta\omega = 0.392\,\text{rad/s}$.
       המעטפת של גוף 1, $\cos\dfrac{\Delta\omega\,t}{2}$, מתאפסת לראשונה כש-$\dfrac{\Delta\omega\,t}{2} = \dfrac{\pi}{2}$:
       $t = \dfrac{\pi}{\Delta\omega} = 8.01\,\text{s}$. בזמן הזה גוף 1 מבצע כ-13 תנודות שהולכות וקטנות. בקירוב של צימוד
-      חלש, $\Delta\omega \approx \dfrac{k_c}{m\omega_1} = 0.40\,\text{rad/s}$, ו-$t \approx 7.9\,\text{s}$.
+      חלש, $\Delta\omega \approx \dfrac{k_c}{m\omega_0} = 0.40\,\text{rad/s}$ עם $\omega_0 = \sqrt{k/m}$, ו-$t \approx 7.9\,\text{s}$.
     wrongFeedback: >-
       חשבו את שתי התדירויות (ושימו לב שההפרש ביניהן קטן: שמרו מספיק ספרות), וכתבו את $x_1(t)$ כמכפלה של מעטפת איטית
       ותנודה מהירה. מתי המעטפת מתאפסת לראשונה?
@@ -252,8 +303,9 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      שתי מטוטלות מחוברות בקפיץ חלש, אבל הן **לא** זהות: אחת ארוכה מעט מהשנייה, וההפרש בין התדירויות שלהן לבד גדול
-      מההשפעה של הצימוד. מסיטים רק את הראשונה ומשחררים ממנוחה. מה נכון?
+      שתי מטוטלות מחוברות בקפיץ חלש, אבל הן **לא** זהות: אחת ארוכה מעט מהשנייה. ההפרש בין התדירויות שלהן לבד גדול פי
+      כמה מההפרש $\omega_2 - \omega_1$ שאותו קפיץ היה יוצר בין שתי מטוטלות זהות. מסיטים רק את הראשונה ומשחררים ממנוחה. מה
+      נכון?
     choices:
       - text: 'ההעברה לא מלאה: הראשונה אף פעם לא נעצרת לגמרי, ורק חלק קטן מהאנרגיה עובר לשנייה.'
         correct: true

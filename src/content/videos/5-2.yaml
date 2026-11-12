@@ -1,0 +1,27 @@
+# Videos of lesson 5.2. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). The watch pages did not give length, chapters or caption tracks to the
+# fetch tool, so `minutes` are estimates (UNCONFIRMED) and `captions` lists nothing. `why` claims only what the
+# title supports (and, for Lewin's lecture, the course page of MIT 8.01 Fall 1999 lecture 10: springs, the simple
+# harmonic oscillator, and the pendulum through the small-angle approximation).
+#   3d6DsjIBzJ4: 3Blue1Brown, Essence of calculus chapter 11; length unconfirmed (about 20 minutes).
+#   tNpuTx7UQbw: Lewin's own channel, 8.01x lecture 10; length unconfirmed (about 50 minutes, like lecture 11).
+
+- id: v-5-2-taylor
+  youtubeId: 3d6DsjIBzJ4
+  title: 'Taylor series | Chapter 11, Essence of calculus'
+  channel: 3Blue1Brown
+  lang: en
+  start: 0
+  minutes: 22
+  why: 'לפי הכותרת: טורי טיילור, הפרק ה-11 בסדרה על חשבון דיפרנציאלי ואינטגרלי. זה הכלי של השיעור, מוצג בגרפים: איך כל איבר נוסף בפולינום מתאים עוד נגזרת בנקודה, ולמה הקירוב טוב רק בקרבתה. חפשו את הרגע שבו הפולינום מסדר שני "נצמד" לפונקציה ליד הנקודה ומתרחק ממנה רחוק ממנה.'
+  verified: '2026-11-11'
+
+- id: v-5-2-lewin-pendulum
+  youtubeId: tNpuTx7UQbw
+  title: "8.01x - Lect 10 - Hooke's Law, Springs, Pendulums, Simple Harmonic Motion"
+  channel: 'Lectures by Walter Lewin. They will make you ♥ Physics.'
+  lang: en
+  start: 0
+  minutes: 50
+  why: 'הרצאה שלמה של קורס 8.01 של MIT. לפי הכותרת ודף הקורס: קפיצים, המתנד ההרמוני, והמטוטלת דרך קירוב הזווית הקטנה, אותו קירוב שהשיעור מקבל מפיתוח טיילור. חפשו את המקום שבו מוחלף sin θ ב-θ, ושאלו את עצמכם עד איזו זווית זה מותר.'
+  verified: '2026-11-11'

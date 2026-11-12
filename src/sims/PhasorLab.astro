@@ -1,0 +1,7 @@
+---
+/** Complex-exponential figure for lesson MDX: <Spread figure={PhasorLab} figureProps={{ mode: 'euler', tasks: […] }}>. */
+import PhasorLab, { type PhasorLabProps } from './PhasorLab';
+type Props = PhasorLabProps;
+---
+
+<PhasorLab client:visible {...Astro.props} />

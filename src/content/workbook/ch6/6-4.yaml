@@ -1,0 +1,475 @@
+# Workbook, lesson 6.4 (the orbit equation and conic sections). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch6/6-4/workbook.ts with src/physics (constants.ts, orbit.ts, conics.ts),
+# GM_E = 3.98e14 m³/s², GM_S = 1.33e20 m³/s², printed with toPrecision(3):
+#   W01 r = 2.0e7 m: β = 0.8 sideways e = 0.360; β = 1.2 sideways e = 0.440, at 45° e = 0.773 (same a = 1.79r);
+#       β = 1.5 at −45° e = 1.13 (β² = 2.25 > 2, unbound); none reaches R_E (r_p/R_E ≥ 1.28);
+#   W02 p = 9.0e6, e = 0.50: r_p = 6.00e6, r_a = 1.80e7, a = 1.20e7, b = 1.04e7, ae = 6.00e6;
+#   W03 Earth r_p = 1.471e11, r_a = 1.521e11: e = 0.0167, ae = 2.50e9 m = 3.59 R_SUN, 1 − b/a = 1.40e−4;
+#   W04 r = 9.0e6, ṙ = +1.5 km/s, rθ̇ = 6.5 km/s: h = 5.85e10, C = 1.16e−7, u − C = −5.19e−9, u′ = −2.56e−8,
+#       A = 2.62e−8, e = 0.225, θ = 101.4°, p = 8.60e6, r_p = 7.02e6, r_a = 1.11e7 (review 2026-11-11: the author's
+#       u − C, θ and p were computed with GM = 3.982e14, not the printed 3.98e14; .scratch/review/ch6/r64.ts);
+#   W05 ε = +5.0e6, h = 8.0e10: e = 1.18, p = 1.61e7, r_p = 7.36e6, θ∞ = 148°, χ = 115°, v∞ = 3.16 km/s;
+#   W07 e = 1.2, r_p = 0.25 AU: p = 0.550 AU = 8.25e10 m, θ∞ = 146°, χ = 113°;
+#   W08 r_p = 8.0e6, r(90°) = p = 1.2e7: e = 0.500, h = 6.91e10, v_p = 8.64 km/s, ε = −1.24e7, a = 1.60e7, r_a = 2.40e7,
+#       v_a = 2.88 km/s;
+#   W09 tan γ = e at θ = 90°: e = 0.60 gives 31.0° (checked on a state with elementsFromState);
+#   W10 v∞ = 5.0 km/s: b_max = R_E√(1 + 2GM/(R_E v∞²)) = 1.56e7 m = 2.45 R_E, cross-section 6.00 πR_E²;
+#       at 20 km/s, 1.15 R_E;
+#   c1 (Cambridge IA 2016, 10B) α = 0.5: e = √2 = 1.41, new r_p = 2d/(1 + e) = 0.828d, θ∞ = 135°, kick at θ = 45°;
+#   c2 (Cambridge IA 2013, 9B(b)): symbolic only.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '6.4'
+practice:
+  - id: W-6.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.4-2]
+    prompt: >-
+      מתחנת חלל במרחק $r$ ממרכז כדור הארץ משגרים ארבע גשושיות. $v_c = \sqrt{GM/r}$ היא המהירות המעגלית במרחק הזה. בלי
+      חישוב מספרי, קבעו ונמקו לכל אחת אם היא חוזרת, ואיזה חתך חרוט הוא המסלול שלה. אילו שתיים מהן יקבלו מסלולים עם אותו
+      חצי ציר ראשי? הניחו שאף גשושית לא פוגעת בכדור הארץ.
+
+      א. מהירות $0.8v_c$, בכיוון הצידי (ניצב לקו אל המרכז).
+
+      ב. מהירות $1.2v_c$, בכיוון הצידי.
+
+      ג. מהירות $1.2v_c$, בזווית $45^\circ$ מהכיוון הצידי, החוצה.
+
+      ד. מהירות $1.5v_c$, בזווית $45^\circ$ מהכיוון הצידי, פנימה.
+    answer: >-
+      א, ב, ג: אליפסות, חוזרות. ד: היפרבולה, לא חוזרת. לב ול-ג אותו חצי ציר ראשי; ל-ג אקסצנטריות גדולה יותר.
+    solution:
+      - kind: law
+        text: >-
+          ליחידת מסה $\varepsilon = \tfrac12v^2 - GM/r$ תלויה רק בגודל המהירות. $e^2 = 1 + 2\varepsilon h^2/(GM)^2$: הסימן של
+          $\varepsilon$ קובע את הסוג, ו-$a = -GM/(2\varepsilon)$ תלוי רק ב-$\varepsilon$.
+      - kind: manipulation
+        text: >-
+          עם $GM/r = v_c^2$: $\varepsilon = \tfrac12v_c^2\left(\beta^2 - 2\right)$, כאשר $\beta = v/v_c$. כלומר $\varepsilon < 0$
+          כש-$\beta^2 < 2$ ו-$\varepsilon > 0$ כש-$\beta^2 > 2$. ב-א $\beta^2 = 0.64$, ב-ב וב-ג $1.44$, ב-ד $2.25$.
+      - kind: reasoning
+        text: >-
+          א, ב, ג: $\varepsilon < 0$, אליפסות. ד: $\varepsilon > 0$, היפרבולה, בכל כיוון שיגור. ל-ב ול-ג אותו גודל מהירות, לכן אותה
+          $\varepsilon$ ואותו $a$. אבל ב-ג רק הרכיב הצידי, $v\cos45^\circ$, תורם ל-$h$: $h$ קטן יותר, ולכן $e$ גדול יותר.
+      - kind: limit
+        text: >-
+          כש-$\beta \to \sqrt2$ המסלול נעשה פרבולה, בכל כיוון. ואם ב-ג הזווית הייתה $90^\circ$ (ישר החוצה), $h = 0$ ו-$e = 1$:
+          הגשושית הייתה עולה ונופלת בקו ישר.
+      - kind: units
+        text: >-
+          $\beta$ חסר ממדים; $\varepsilon$ ב-$\text{J/kg}$.
+      - kind: result
+        text: >-
+          א, ב, ג חוזרות, באליפסות (ב ו-ג עם אותו $a$, ו-ג מוארכת יותר); ד בורחת בהיפרבולה.
+
+  - id: W-6.4-02
+    level: basic
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      מסלול של לוויין סביב כוכב לכת הוא $r = \dfrac{p}{1 + e\cos\theta}$, עם $p = 9.0\cdot10^{6}\,\text{m}$ ו-$e = 0.50$, כאשר $r$
+      נמדד ממרכז כוכב הלכת ו-$\theta$ מכיוון נקודת הקרבה. מצאו את $r_p$, את $r_a$, את חצי הציר הראשי $a$, את חצי הציר
+      המשני $b$, ואת המרחק בין מרכז כוכב הלכת למרכז האליפסה.
+    answer: >-
+      $r_p = 6.00\cdot10^{6}\,\text{m}$, $r_a = 1.80\cdot10^{7}\,\text{m}$, $a = 1.20\cdot10^{7}\,\text{m}$,
+      $b = 1.04\cdot10^{7}\,\text{m}$, המרחק $ae = 6.00\cdot10^{6}\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $p = 9.0\cdot10^{6}\,\text{m}$, $e = 0.50$; הראשית במרכז כוכב הלכת, במוקד.
+      - kind: law
+        text: >-
+          $r_p = p/(1 + e)$, $r_a = p/(1 - e)$, $a = p/(1 - e^2)$, $b = p/\sqrt{1 - e^2}$, ומרכז האליפסה במרחק $ae$ מהמוקד.
+      - kind: limit
+        text: >-
+          בדיקה: $r_p + r_a = 2a$, ו-$r_a - r_p = 2ae$. כש-$e \to 0$, $r_p = r_a = a = b = p$.
+      - kind: units
+        text: >-
+          כולם במטרים, כמו $p$.
+      - kind: substitution
+        text: >-
+          $r_p = 9.0\cdot10^{6}/1.5 = 6.00\cdot10^{6}\,\text{m}$, $r_a = 9.0\cdot10^{6}/0.5 = 1.80\cdot10^{7}\,\text{m}$,
+          $a = 9.0\cdot10^{6}/0.75 = 1.20\cdot10^{7}\,\text{m}$, $b = 9.0\cdot10^{6}/\sqrt{0.75} = 1.04\cdot10^{7}\,\text{m}$,
+          $ae = 6.00\cdot10^{6}\,\text{m}$. ובדיקה: $6.00\cdot10^{6} + 1.80\cdot10^{7} = 2.40\cdot10^{7} = 2a$.
+      - kind: result
+        text: >-
+          $r_p = 6.00\cdot10^{6}$, $r_a = 1.80\cdot10^{7}$, $a = 1.20\cdot10^{7}$, $b = 1.04\cdot10^{7}$, $ae = 6.00\cdot10^{6}$, הכול
+          ב-$\text{m}$.
+
+  - id: W-6.4-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      המרחק של כדור הארץ מהשמש הוא $1.471\cdot10^{11}\,\text{m}$ בנקודת הקרבה ו-$1.521\cdot10^{11}\,\text{m}$ בנקודת הריחוק.
+      רדיוס השמש $6.96\cdot10^{8}\,\text{m}$. אם משרטטים את המסלול בקנה מידה, האם רואים שהוא אליפסה ולא מעגל? האם רואים
+      שהשמש לא במרכז? חשבו את האקסצנטריות, את היחס $b/a$, ואת המרחק בין השמש למרכז המסלול.
+    answer: >-
+      $e = 0.0167$; $b/a$ שונה מ-1 רק ב-$1.40\cdot10^{-4}$, ולכן הצורה נראית כמו מעגל מושלם. אבל השמש מוזזת מהמרכז
+      ב-$2.50\cdot10^{9}\,\text{m}$, כ-$3.6$ רדיוסי שמש: את זה כבר רואים.
+    solution:
+      - kind: law
+        text: >-
+          $r_p = a(1 - e)$, $r_a = a(1 + e)$, ולכן $a = (r_p + r_a)/2$ ו-$e = (r_a - r_p)/(r_a + r_p)$. $b = a\sqrt{1 - e^2}$, והמוקד
+          במרחק $ae$ מהמרכז.
+      - kind: reasoning
+        text: >-
+          $1 - b/a \approx e^2/2$ הוא מסדר שני ב-$e$, וזעיר; ההזזה של המוקד, $ae$, היא מסדר ראשון ב-$e$, וגדולה פי
+          $\sim 2/e$ ממנו. במסלול כמעט מעגלי רואים קודם את ההזזה של המוקד, ורק הרבה אחר כך את המעיכה.
+      - kind: limit
+        text: >-
+          כש-$e \to 0$ שני האפקטים נעלמים. כש-$e = 0.5$, $1 - b/a = 0.13$: אז גם המעיכה ניכרת.
+      - kind: units
+        text: >-
+          $e$ ו-$b/a$ חסרי ממדים; $ae$ במטרים.
+      - kind: substitution
+        text: >-
+          $a = 1.496\cdot10^{11}\,\text{m}$, $e = 5.0\cdot10^{9}/2.992\cdot10^{11} = 0.0167$, $1 - \sqrt{1 - e^2} = 1.40\cdot10^{-4}$,
+          $ae = 2.50\cdot10^{9}\,\text{m} = 3.59$ רדיוסי שמש.
+      - kind: result
+        text: >-
+          הצורה לא נבדלת ממעגל ($b/a = 0.99986$), אבל השמש מוזזת ממרכז המסלול ב-$2.50\cdot10^{9}\,\text{m}$, כ-$3.6$ רדיוסי שמש.
+
+  - id: W-6.4-04
+    level: mid
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      לוויין נמצא במרחק $r = 9.0\cdot10^{6}\,\text{m}$ ממרכז כדור הארץ ($GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$). רכיב
+      המהירות שלו לאורך הרדיוס, החוצה, הוא $\dot r = 1.5\,\text{km/s}$, והרכיב הניצב לרדיוס $r\dot\theta = 6.5\,\text{km/s}$.
+      הפתרון של משוואת המסלול הוא $u = C + A\cos\theta$, כאשר $u = 1/r$ ו-$\theta$ נמדדת מכיוון נקודת הקרבה. מצאו את $C$,
+      את $A$ ואת הזווית $\theta$ של הלוויין עכשיו, ומהם את $e$, את $r_p$ ואת $r_a$.
+    answer: >-
+      $C = 1.16\cdot10^{-7}\,\text{m}^{-1}$, $A = 2.62\cdot10^{-8}\,\text{m}^{-1}$, $\theta = 101.4^\circ$; $e = 0.225$,
+      $r_p = 7.02\cdot10^{6}\,\text{m}$, $r_a = 1.11\cdot10^{7}\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $r$, $\dot r > 0$ (מתרחק), $r\dot\theta$. ליחידת מסה $h = r\cdot r\dot\theta$.
+      - kind: law
+        text: >-
+          $u'' + u = C$ עם $C = GM/h^2$; מהשיעור, $\dot r = -h\,u'$ (ליחידת מסה $L/\mu = h$). הפתרון $u = C + A\cos\theta$
+          נותן $u - C = A\cos\theta$ ו-$u' = -A\sin\theta$.
+      - kind: manipulation
+        text: >-
+          $u' = -\dot r/h$, ולכן $A\sin\theta = \dot r/h$ ו-$A\cos\theta = 1/r - C$. מכאן $A = \sqrt{(1/r - C)^2 + (\dot r/h)^2}$,
+          והזווית לפי הסימנים של שני הרכיבים: $\sin\theta > 0$ (מתרחק, אחרי נקודת הקרבה), $\cos\theta < 0$ אם $1/r < C$.
+          ואז $e = A/C$, $p = 1/C$, $r_p = p/(1 + e)$, $r_a = p/(1 - e)$.
+      - kind: limit
+        text: >-
+          אם $\dot r = 0$ ו-$1/r = C$ (כלומר $r\dot\theta$ היא המהירות המעגלית), $A = 0$: מעגל. ואם $\dot r = 0$ בלבד, $\sin\theta = 0$:
+          הלוויין בנקודת קרבה או ריחוק.
+      - kind: units
+        text: >-
+          $C$, $u$ ו-$A$ ביחידות $\text{m}^{-1}$; $\dot r/h$ ב-$(\text{m/s})/(\text{m}^2/\text{s}) = \text{m}^{-1}$.
+      - kind: substitution
+        text: >-
+          $h = r\cdot r\dot\theta = 5.85\cdot10^{10}\,\text{m}^2/\text{s}$, $C = GM/h^2 = 1.16\cdot10^{-7}\,\text{m}^{-1}$.
+          $1/r - C = -5.19\cdot10^{-9}$, $\dot r/h = 2.56\cdot10^{-8}$, $A = 2.62\cdot10^{-8}\,\text{m}^{-1}$, $\theta = 101.4^\circ$.
+          $e = 0.225$, $p = 8.60\cdot10^{6}\,\text{m}$, $r_p = 7.02\cdot10^{6}\,\text{m}$, $r_a = 1.11\cdot10^{7}\,\text{m}$.
+      - kind: result
+        text: >-
+          $e = 0.225$; הלוויין $101.4^\circ$ אחרי נקודת הקרבה; $r_p = 7.02\cdot10^{6}\,\text{m}$, $r_a = 1.11\cdot10^{7}\,\text{m}$.
+
+  - id: W-6.4-05
+    level: mid
+    objectives: [OBJ-6.4-2]
+    prompt: >-
+      לגשושית סביב כדור הארץ ($GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$) יש אנרגיה ליחידת מסה
+      $\varepsilon = +5.0\cdot10^{6}\,\text{J/kg}$ ותנע זוויתי ליחידת מסה $h = 8.0\cdot10^{10}\,\text{m}^2/\text{s}$. מה סוג
+      המסלול? מצאו את $e$, את המרחק הקטן ביותר מהמרכז, את הזווית של האסימפטוטות מכיוון נקודת הקרבה, ואת המהירות של
+      הגשושית רחוק מאוד מכדור הארץ.
+    answer: >-
+      היפרבולה, $e = 1.18$; $r_p = 7.36\cdot10^{6}\,\text{m}$; $\theta_\infty = 148^\circ$; $v_\infty = 3.16\,\text{km/s}$.
+    solution:
+      - kind: law
+        text: >-
+          $e^2 = 1 + 2\varepsilon h^2/(GM)^2$, $p = h^2/GM$, $r_p = p/(1 + e)$, $\cos\theta_\infty = -1/e$, ורחוק מאוד
+          $\varepsilon = \tfrac12v_\infty^2$.
+      - kind: reasoning
+        text: >-
+          $\varepsilon > 0$, ולכן $e > 1$: היפרבולה. הגשושית לא חוזרת.
+      - kind: limit
+        text: >-
+          כש-$\varepsilon \to 0^+$, $e \to 1$ ו-$\theta_\infty \to 180^\circ$: פרבולה, ו-$v_\infty \to 0$.
+      - kind: units
+        text: >-
+          $\varepsilon h^2/(GM)^2$ ב-$(\text{m}^2/\text{s}^2)(\text{m}^4/\text{s}^2)/(\text{m}^6/\text{s}^4) = 1$.
+      - kind: substitution
+        text: >-
+          $2\varepsilon h^2/(GM)^2 = 0.404$, $e = \sqrt{1.404} = 1.18$. $p = (8.0\cdot10^{10})^2/3.98\cdot10^{14} = 1.61\cdot10^{7}\,\text{m}$,
+          $r_p = 1.61\cdot10^{7}/2.18 = 7.36\cdot10^{6}\,\text{m}$ (מעל פני כדור הארץ). $\cos\theta_\infty = -0.844$, $\theta_\infty = 148^\circ$.
+          $v_\infty = \sqrt{2\cdot5.0\cdot10^{6}} = 3.16\cdot10^{3}\,\text{m/s}$.
+      - kind: result
+        text: >-
+          היפרבולה עם $e = 1.18$, $r_p = 7.36\cdot10^{6}\,\text{m}$, אסימפטוטות ב-$\pm148^\circ$, $v_\infty = 3.16\,\text{km/s}$.
+
+  - id: W-6.4-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-6.4-2]
+    prompt: >-
+      לשני לוויינים בעלי אותה מסה יש אותו תנע זוויתי סביב מרכז כדור הארץ, ושניהם במסלול קשור. ללוויין A אנרגיה גבוהה יותר
+      (פחות שלילית) מללוויין B. קבעו ונמקו:
+
+      א. לאיזה מהם אקסצנטריות גדולה יותר?
+
+      ב. מה משותף לשני המסלולים, שאפשר לראות בשרטוט?
+
+      ג. איזה מהם מתקרב יותר לכדור הארץ?
+    answer: >-
+      א. ל-A. ב. אותו $p$: בניצב לציר הראשי, מהמוקד, שני המסלולים עוברים באותו מרחק. ג. A, אף שהאנרגיה שלו גבוהה יותר.
+    solution:
+      - kind: law
+        text: >-
+          $p = L^2/(\mu k)$ תלוי רק ב-$L$; $e^2 = 1 + 2EL^2/(\mu k^2)$; $r_p = p/(1 + e)$.
+      - kind: reasoning
+        text: >-
+          א. $L$ שווה ו-$E_A > E_B$, ולכן $e_A > e_B$. ב. $p$ שווה: ב-$\theta = \pm90^\circ$ שניהם במרחק $p$ מהמוקד. ג. $r_p = p/(1 + e)$
+          עם אותו $p$, ולכן $e$ גדול יותר נותן $r_p$ קטן יותר: A מתקרב יותר. אנרגיה גבוהה יותר באותו $L$ מותחת את המסלול לשני
+          הכיוונים: נקודת הריחוק מתרחקת ונקודת הקרבה מתקרבת.
+      - kind: limit
+        text: >-
+          כש-$E_B$ הוא המינימום של $U_{\text{eff}}$, $e_B = 0$ ו-B במעגל ברדיוס $p$. כל מסלול אחר עם אותו $L$ חוצה את המעגל הזה
+          ב-$\theta = \pm90^\circ$, נכנס לתוכו בנקודת הקרבה ויוצא ממנו בנקודת הריחוק.
+      - kind: units
+        text: >-
+          $p$ ו-$r_p$ במטרים; $e$ חסר ממדים.
+      - kind: result
+        text: >-
+          A: אקסצנטריות גדולה יותר ונקודת קרבה נמוכה יותר; לשניהם אותו $p$.
+
+  - id: W-6.4-07
+    level: mid
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      שביט עובר ליד השמש במסלול היפרבולי עם $e = 1.2$, והמרחק הקטן ביותר שלו מהשמש $0.25\,\text{AU}$, כאשר
+      $1\,\text{AU} = 1.5\cdot10^{11}\,\text{m}$. מה $p$? באיזו זווית מכיוון נקודת הקרבה נמצאות האסימפטוטות, ובכמה מעלות
+      סובבה השמש את כיוון התנועה של השביט?
+    answer: >-
+      $p = 0.550\,\text{AU} = 8.25\cdot10^{10}\,\text{m}$; $\theta_\infty = 146^\circ$; כיוון התנועה הסתובב ב-$113^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          $r_p = p/(1 + e)$; $\cos\theta_\infty = -1/e$; הזווית שבה מסתובב כיוון התנועה $\chi = 2\theta_\infty - 180^\circ$.
+      - kind: manipulation
+        text: >-
+          $p = r_p(1 + e)$.
+      - kind: limit
+        text: >-
+          כש-$e \to 1$, $\theta_\infty \to 180^\circ$ ו-$\chi \to 180^\circ$: השביט חוזר כמעט לכיוון שממנו בא. כש-$e$ גדול מאוד, $\chi \to 0$.
+      - kind: units
+        text: >-
+          $p$ ביחידות של $r_p$; $1/e$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $p = 0.25\cdot2.2 = 0.550\,\text{AU} = 8.25\cdot10^{10}\,\text{m}$. $\cos\theta_\infty = -1/1.2 = -0.833$, $\theta_\infty = 146^\circ$.
+          $\chi = 2\cdot146.4^\circ - 180^\circ = 113^\circ$.
+      - kind: result
+        text: >-
+          $p = 8.25\cdot10^{10}\,\text{m}$; האסימפטוטות ב-$\pm146^\circ$; כיוון התנועה הסתובב ב-$113^\circ$.
+
+  - id: W-6.4-08
+    level: bagrut
+    objectives: [OBJ-6.4-1, OBJ-6.4-2]
+    prompt: >-
+      תחנת מעקב מודדת שני מרחקים של לוויין ממרכז כדור הארץ ($GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$): בנקודת הקרבה
+      $8.0\cdot10^{6}\,\text{m}$, וכשהקו אל הלוויין ניצב לציר הראשי ($90^\circ$ אחרי נקודת הקרבה) $1.2\cdot10^{7}\,\text{m}$. מצאו את
+      $e$, את $h$, את האנרגיה ליחידת מסה, ואת המהירות בנקודת הקרבה ובנקודת הריחוק.
+    answer: >-
+      $e = 0.500$, $h = 6.91\cdot10^{10}\,\text{m}^2/\text{s}$, $\varepsilon = -1.24\cdot10^{7}\,\text{J/kg}$, $v_p = 8.64\,\text{km/s}$,
+      $v_a = 2.88\,\text{km/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $r_p = 8.0\cdot10^{6}\,\text{m}$; ב-$\theta = 90^\circ$, $r = 1.2\cdot10^{7}\,\text{m}$. הראשית במרכז כדור הארץ.
+      - kind: law
+        text: >-
+          $r = p/(1 + e\cos\theta)$, $p = h^2/GM$, $e^2 = 1 + 2\varepsilon h^2/(GM)^2$. בנקודות הקרבה והריחוק המהירות ניצבת לרדיוס,
+          ולכן $v = h/r$ שם.
+      - kind: manipulation
+        text: >-
+          ב-$\theta = 90^\circ$, $r = p$. אז $e = p/r_p - 1$, $h = \sqrt{GMp}$, ומהנוסחה ל-$e$:
+          $\varepsilon = -\dfrac{(GM)^2(1 - e^2)}{2h^2} = -\dfrac{GM(1 - e^2)}{2p}$. $r_a = p/(1 - e)$, $v_p = h/r_p$, $v_a = h/r_a$.
+      - kind: limit
+        text: >-
+          אם שני המרחקים שווים, $e = 0$ ו-$\varepsilon = -GM/(2p)$: האנרגיה של מסלול מעגלי ברדיוס $p$. ו-$v_pr_p = v_ar_a$, שימור
+          התנע הזוויתי.
+      - kind: units
+        text: >-
+          $\sqrt{GMp}$ ב-$\sqrt{\text{m}^3/\text{s}^2\cdot\text{m}} = \text{m}^2/\text{s}$; $GM/p$ ב-$\text{m}^2/\text{s}^2 = \text{J/kg}$.
+      - kind: substitution
+        text: >-
+          $e = 1.2\cdot10^{7}/8.0\cdot10^{6} - 1 = 0.500$. $h = \sqrt{3.98\cdot10^{14}\cdot1.2\cdot10^{7}} = 6.91\cdot10^{10}\,\text{m}^2/\text{s}$.
+          $\varepsilon = -GM\cdot0.75/(2p) = -1.24\cdot10^{7}\,\text{J/kg}$. $r_a = 2.40\cdot10^{7}\,\text{m}$,
+          $v_p = 8.64\cdot10^{3}\,\text{m/s}$, $v_a = 2.88\cdot10^{3}\,\text{m/s}$. בדיקה: $\tfrac12v_p^2 - GM/r_p = -1.24\cdot10^{7}\,\text{J/kg}$.
+      - kind: result
+        text: >-
+          $e = 0.500$, $h = 6.91\cdot10^{10}\,\text{m}^2/\text{s}$, $\varepsilon = -1.24\cdot10^{7}\,\text{J/kg}$, $v_p = 8.64\,\text{km/s}$,
+          $v_a = 2.88\,\text{km/s}$.
+
+  - id: W-6.4-09
+    level: bagrut
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      גוף נע במסלול $r = p/(1 + e\cos\theta)$ סביב מרכז כבידה, עם תנע זוויתי ליחידת מסה $h$.
+
+      א. השתמשו ב-$\dot r = -h\,u'$ (כאשר $u = 1/r$ ו-$u' = du/d\theta$) כדי להראות ש-$\dot r = \dfrac{GM}{h}\,e\sin\theta$.
+
+      ב. הראו שהרכיב הניצב לרדיוס של המהירות הוא $r\dot\theta = \dfrac{GM}{h}(1 + e\cos\theta)$.
+
+      ג. הראו שב-$\theta = 90^\circ$ הזווית $\gamma$ בין כיוון המהירות לכיוון הניצב לרדיוס מקיימת $\tan\gamma = e$. מה $\gamma$
+      במסלול עם $e = 0.60$?
+    answer: >-
+      ג. $\tan\gamma = e$; ב-$e = 0.60$, $\gamma = 31.0^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          $u = (1 + e\cos\theta)/p$ עם $p = h^2/GM$; $\dot r = -hu'$; $h = r^2\dot\theta$.
+      - kind: manipulation
+        text: >-
+          א. $u' = -e\sin\theta/p$, ולכן $\dot r = he\sin\theta/p = (GM/h)\,e\sin\theta$. ב. $r\dot\theta = h/r = hu$, ולכן $r\dot\theta = h(1 + e\cos\theta)/p = (GM/h)(1 + e\cos\theta)$.
+          ג. ב-$\theta = 90^\circ$: $\dot r = (GM/h)e$ ו-$r\dot\theta = GM/h$, ולכן $\tan\gamma = \dot r/(r\dot\theta) = e$.
+      - kind: limit
+        text: >-
+          במעגל, $e = 0$: $\dot r = 0$ בכל מקום, והמהירות תמיד ניצבת לרדיוס. ב-$\theta = 0$ (נקודת הקרבה) $\dot r = 0$ בכל מסלול,
+          כמו שצריך בנקודת מפנה. בפרבולה, $e = 1$, $\gamma = 45^\circ$ ב-$\theta = 90^\circ$.
+      - kind: units
+        text: >-
+          $GM/h$ ב-$(\text{m}^3/\text{s}^2)/(\text{m}^2/\text{s}) = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\gamma = \arctan0.60 = 31.0^\circ$.
+      - kind: result
+        text: >-
+          $\dot r = (GM/h)e\sin\theta$, $r\dot\theta = (GM/h)(1 + e\cos\theta)$, וב-$\theta = 90^\circ$ $\tan\gamma = e$; ב-$e = 0.60$, $31.0^\circ$.
+
+  - id: W-6.4-10
+    level: bagrut
+    objectives: [OBJ-6.4-2]
+    prompt: >-
+      גופים קטנים מגיעים ממרחק עצום לעבר כדור הארץ ($GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$, $R_E = 6.37\cdot10^{6}\,\text{m}$)
+      במהירות $v_\infty = 5.0\,\text{km/s}$, לאורך קווים מקבילים. בלי כבידה, רק אלה שהקו שלהם עובר במרחק קטן מ-$R_E$ ממרכז
+      כדור הארץ היו פוגעים בו. מה המרחק $b$ הגדול ביותר של קו כזה שעדיין פוגע, כשיש כבידה? פי כמה גדל "השטח שתופס" כדור
+      הארץ, $\pi b^2$?
+    answer: >-
+      $b = R_E\sqrt{1 + 2GM/(R_Ev_\infty^2)}$, כלומר $1.56\cdot10^{7}\,\text{m} = 2.45R_E$; השטח גדל פי $6.00$.
+    solution:
+      - kind: given
+        text: >-
+          $v_\infty$, $b$ המרחק של קו התנועה ממרכז כדור הארץ. הגוף פוגע אם $r_p \le R_E$.
+      - kind: law
+        text: >-
+          ליחידת מסה $\varepsilon = \tfrac12v_\infty^2$ ו-$h = bv_\infty$; בנקודת הקרבה $\dot r = 0$, ולכן $h = r_pv_p$ ו-$\varepsilon = \tfrac12v_p^2 - GM/r_p$.
+      - kind: manipulation
+        text: >-
+          הגבול: $r_p = R_E$. מהאנרגיה $v_p^2 = v_\infty^2 + 2GM/R_E$, ומהתנע הזוויתי $b = R_Ev_p/v_\infty$, ולכן
+          $b = R_E\sqrt{1 + 2GM/(R_Ev_\infty^2)}$. (אותו דבר יוצא מ-$r_p = p/(1 + e)$ עם $p = b^2v_\infty^2/GM$ ו-$e^2 = 1 + (bv_\infty^2/GM)^2$.)
+      - kind: limit
+        text: >-
+          כש-$v_\infty \to \infty$, $b \to R_E$: בלי זמן להימשך, רק מה שמכוון ישר פוגע. כש-$v_\infty$ קטן, $b \approx \sqrt{2GMR_E}/v_\infty$
+          גדל בלי גבול: גוף איטי נמשך פנימה גם מרחוק.
+      - kind: units
+        text: >-
+          $GM/(R_Ev_\infty^2)$ ב-$(\text{m}^3/\text{s}^2)/(\text{m}\cdot\text{m}^2/\text{s}^2) = 1$.
+      - kind: substitution
+        text: >-
+          $v_\infty^2 = 2.5\cdot10^{7}\,\text{m}^2/\text{s}^2$, ו-$2GM/(R_Ev_\infty^2) = 5.00$, ולכן $b = R_E\sqrt{6.00} = 1.56\cdot10^{7}\,\text{m}$.
+          $(b/R_E)^2 = 6.00$. (ב-$20\,\text{km/s}$, $b$ רק $1.15R_E$.)
+      - kind: result
+        text: >-
+          $b_{\max} = 1.56\cdot10^{7}\,\text{m}$, פי $2.45$ מרדיוס כדור הארץ, ו"השטח" גדל פי $6.00$.
+
+challenge:
+  - id: W-6.4-c1
+    stars: 2
+    objectives: [OBJ-6.4-2, OBJ-6.4-1]
+    prompt: >-
+      גוף קטן נע תחת כוח מושך מרכזי שגודלו ליחידת מסה $GM/r^2$, עם תנע זוויתי ליחידת מסה $h$. המסלול שלו
+      $r = p/(1 + e\cos\theta)$ עם $p = h^2/GM$.
+
+      א. הראו שהאנרגיה ליחידת מסה היא $\varepsilon = \dfrac{(GM)^2(e^2 - 1)}{2h^2}$, בלי להשתמש בנוסחה מהשיעור.
+      (רמז: חשבו את $\varepsilon$ בנקודת הקרבה.)
+
+      ב. שביט נע סביב השמש במסלול פרבולי. בנקודת הקרבה, במרחק $d$ מהשמש, המהירות שלו $V$. שם הוא מקבל דחיפה שמוסיפה לו
+      מהירות $\alpha V$ בכיוון **הרחק מהשמש**, לאורך הרדיוס. הראו שהאקסצנטריות של המסלול החדש היא $\sqrt{1 + 4\alpha^2}$.
+
+      ג. עבור $\alpha = 0.50$: מה סוג המסלול החדש, מה המרחק הקטן ביותר שלו מהשמש (בעזרת $d$), ובאיזו זווית $\theta$ מכיוון
+      נקודת הקרבה החדשה נמצא השביט ברגע הדחיפה? שרטטו את שני המסלולים על אותם צירים.
+    answer: >-
+      ב. $e = \sqrt{1 + 4\alpha^2}$. ג. היפרבולה, $e = \sqrt2 = 1.41$; $r_p = 2d/(1 + \sqrt2) = 0.828d$; ברגע הדחיפה $\theta = 45^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          לפני הדחיפה: פרבולה, $\varepsilon = 0$, ובנקודת הקרבה $V \perp \vec r$, $r = d$. הדחיפה: $+\alpha V$ לאורך $\hat r$.
+      - kind: law
+        text: >-
+          ליחידת מסה $\varepsilon = \tfrac12v^2 - GM/r$ ו-$h = |\vec r\times\vec v|$. בנקודת הקרבה $\dot r = 0$, $r_p = p/(1 + e)$ ו-$v_p = h/r_p$.
+      - kind: manipulation
+        text: >-
+          א. $\varepsilon = \dfrac{h^2}{2r_p^2} - \dfrac{GM}{r_p}$ עם $1/r_p = GM(1 + e)/h^2$ נותן
+          $\varepsilon = \dfrac{(GM)^2}{2h^2}\left[(1 + e)^2 - 2(1 + e)\right]$, והסוגריים הם $e^2 - 1$.
+          ב. בפרבולה $\varepsilon = 0$, ולכן $V^2 = 2GM/d$. הדחיפה רדיאלית ולא משנה את $h = dV$. אחריה $\varepsilon = \tfrac12\alpha^2V^2$.
+          מ-א: $e^2 = 1 + \dfrac{2\varepsilon h^2}{(GM)^2} = 1 + \dfrac{\alpha^2V^2\cdot d^2V^2}{(GM)^2}$, כלומר
+          $e^2 = 1 + \alpha^2\left(\dfrac{dV^2}{GM}\right)^2$, ועם $dV^2/GM = 2$: $e^2 = 1 + 4\alpha^2$.
+          ג. $p = h^2/GM = d^2V^2/GM = 2d$ (לא השתנה). $r_p = 2d/(1 + e)$. ברגע הדחיפה $r = d$: $\cos\theta = (p/d - 1)/e = 1/e$, ו-$\dot r > 0$, ולכן $\theta > 0$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 0$, $e \to 1$: חוזרים לפרבולה. כל דחיפה כזו, קטנה ככל שתהיה, מוסיפה אנרגיה והופכת את המסלול להיפרבולה.
+          ושימו לב: אחרי הדחיפה השביט כבר לא בנקודת הקרבה; נקודת הקרבה החדשה, $0.828d$ ב-$\alpha = 0.5$, קרובה יותר לשמש.
+      - kind: units
+        text: >-
+          $dV^2/(GM)$ חסר ממדים: $\text{m}\cdot\text{m}^2/\text{s}^2/(\text{m}^3/\text{s}^2)$.
+      - kind: substitution
+        text: >-
+          $\alpha = 0.50$: $e = \sqrt{2} = 1.41$, $r_p = 2d/2.414 = 0.828d$, $\cos\theta = 1/\sqrt2$, $\theta = 45^\circ$.
+          שני המסלולים חולקים את $p = 2d$: הפרבולה הישנה, שנקודת הקרבה שלה $d$, והיפרבולה החדשה, מסובבת ב-$45^\circ$ אחורה.
+      - kind: result
+        text: >-
+          $e = \sqrt{1 + 4\alpha^2}$; ב-$\alpha = 0.50$: היפרבולה עם $e = 1.41$, $r_p = 0.828d$, והשביט $45^\circ$ אחרי נקודת הקרבה החדשה.
+    source:
+      name: University of Cambridge, Mathematical Tripos Part IA, Paper 4 (Dynamics and Relativity)
+      year: 2016
+      problem: Question 10B
+      url: https://www.maths.cam.ac.uk/undergrad/pastpapers/files/2016/paperia_4.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-6.4-c2
+    stars: 1
+    objectives: [OBJ-6.4-1]
+    prompt: >-
+      שאלה הפוכה למה שעשינו בשיעור. כוכב לכת נע תחת כוח מרכזי כלשהו $F(r)$ (ליחידת מסה, חיובי החוצה), עם תנע זוויתי ליחידת
+      מסה $h$ קבוע. מתצפיות ידוע שהמסלול שלו אליפסה שהשמש באחד המוקדים שלה: $\dfrac{\ell}{r} = 1 + e\cos\theta$, עם $\ell > 0$
+      ו-$0 < e < 1$ קבועים.
+
+      א. חזרו על צעדי השיעור, עם $F(r)$ במקום $-GM/r^2$, והראו ש-$u'' + u = -\dfrac{F}{h^2u^2}$, כאשר $u = 1/r$.
+
+      ב. הציבו את המסלול הנתון והסיקו שהכוח מושך והולך כמו $1/r^2$. מה המקדם שלו בעזרת $h$ ו-$\ell$?
+    answer: >-
+      ב. $F = -\dfrac{h^2}{\ell}\,\dfrac{1}{r^2}$: מושך, הפוך לריבוע המרחק, עם $GM = h^2/\ell$.
+    solution:
+      - kind: law
+        text: >-
+          ליחידת מסה: $\ddot r - r\dot\theta^2 = F(r)$ ו-$h = r^2\dot\theta$; מהשיעור, $\dot r = -hu'$, $\ddot r = -h^2u^2u''$, $r\dot\theta^2 = h^2u^3$.
+      - kind: manipulation
+        text: >-
+          א. $-h^2u^2u'' - h^2u^3 = F$, ומחלקים ב-$-h^2u^2$: $u'' + u = -F/(h^2u^2)$.
+          ב. $u = (1 + e\cos\theta)/\ell$, ולכן $u'' = -e\cos\theta/\ell$ ו-$u'' + u = 1/\ell$, קבוע. מכאן $F = -h^2u^2/\ell = -\dfrac{h^2}{\ell r^2}$.
+      - kind: limit
+        text: >-
+          הסימן שלילי: הכוח פונה אל השמש בכל נקודה, כמו שצריך כדי לעקם מסלול סגור סביבה. וההשוואה ל-$F = -GM/r^2$ נותנת $\ell = h^2/GM$,
+          בדיוק $p$ של השיעור. שימו לב שהתוצאה לא תלויה ב-$e$: גם מעגל סביב המוקד ($e = 0$) נותן $1/r^2$, אבל מעגל לבדו לא מכריע
+          את חוק הכוח, כי כל כוח מושך מאפשר מעגל במרחק המתאים. מה שקובע הוא שהאליפסה נכונה **לכל** $\theta$.
+      - kind: units
+        text: >-
+          $h^2/(\ell r^2)$ ב-$(\text{m}^4/\text{s}^2)/\text{m}^3 = \text{m/s}^2$: כוח ליחידת מסה.
+      - kind: result
+        text: >-
+          $F(r) = -\dfrac{h^2}{\ell}\cdot\dfrac{1}{r^2}$: אליפסה שהמרכז המושך במוקד שלה מחייבת כוח הפוך לריבוע המרחק.
+    source:
+      name: University of Cambridge, Mathematical Tripos Part IA, Paper 4 (Dynamics and Relativity)
+      year: 2013
+      problem: Question 9B, part (b)
+      url: https://www.maths.cam.ac.uk/undergrad/pastpapers/files/2013/PaperIA_4.pdf
+      verified: '2026-11-11'
+      adapted: true

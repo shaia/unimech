@@ -1,0 +1,452 @@
+# Workbook, lesson 5.1 (the simple harmonic oscillator). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch5/5-1/workbook.ts with G = 9.8 and src/physics/oscillator.ts, shm.ts:
+#   W02 k = 30 + 50 = 80 N/m, m = 1.5 kg: T = 0.860 s;  W03 A = 4.0 cm, T = 0.50 s: ω₀ = 12.6 rad/s, v_max = 0.503 m/s,
+#       a_max = 6.32 m/s²;  W04 ω₀ = 6.0, x0 = 0, v0 = −0.30 m/s: A = 0.050 m, φ = +π/2, at −A after T/4 = 0.262 s;
+#   W06 Δ = 4.0 cm: T = 2π√(Δ/g) = 0.401 s;  W07 T = 1.2 s: A → A/2 and A/2 → −A/2 both T/6 = 0.200 s;
+#   W08 m = 0.20 kg, k = 50 N/m: ω₀ = 15.8 rad/s, Δ = 3.92 cm, v_min = g/ω₀ = 0.620 m/s; with 1.0 m/s, A = 6.32 cm,
+#       relaxed after 0.0423 s, compressed at most 2.40 cm (0.024046 m; review 2026-11-11, was 2.41);  W09 L = 0.60 m: ω₀ = √(2g/L) = 5.72 rad/s, T = 1.10 s;
+#   W10 M = 1.5, m = 0.50 kg, k = 120 N/m, μs = 0.40: ω₀² = 60 s⁻², A_max = μs g/ω₀² = 6.53 cm;
+#   c1 (MIT 8.03SC, Practice Exam 1, Problem 1) M = 1.2 kg, α = 0.25, k = 80 N/m: rise (1 − α)Mg/k = 11.0 cm = A,
+#      ω = 16.3 rad/s, T = 0.385 s, v_max = 1.80 m/s, top: compressed (1 − 2α)Mg/k = 7.35 cm;
+#   c2 (MITES 2017, Assignment 2, Problem 3) symbolic: v(d/2) = (√3/2)dω₁, A′ = (√7/2)d = 1.32d, φ′ = −arctan√6 = −1.18 rad.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '5.1'
+practice:
+  - id: W-5.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-5.1-1]
+    prompt: >-
+      גוף על קפיץ נע לפי $x(t) = A\cos\omega_0t$, עם ציר $x$ ימינה מנקודת שיווי המשקל. בכל אחד מהרגעים $t = 0$,
+      $T/4$, $T/2$ ו-$3T/4$ קבעו את הסימן (חיובי, שלילי או אפס) של המקום $x$, של המהירות $v$ ושל התאוצה $a$.
+      באיזה מהרגעים גודל המהירות מרבי, ובאיזה גודל התאוצה מרבי?
+    answer: >-
+      $t = 0$: $x > 0$, $v = 0$, $a < 0$. $T/4$: $x = 0$, $v < 0$, $a = 0$. $T/2$: $x < 0$, $v = 0$, $a > 0$.
+      $3T/4$: $x = 0$, $v > 0$, $a = 0$. גודל המהירות מרבי ב-$T/4$ וב-$3T/4$ (במרכז), גודל התאוצה ב-$0$ וב-$T/2$ (בקצוות).
+    solution:
+      - kind: law
+        text: >-
+          $v = \dot x = -A\omega_0\sin\omega_0t$ ו-$a = \ddot x = -\omega_0^2x$: התאוצה תמיד בסימן הפוך למקום.
+      - kind: manipulation
+        text: >-
+          ב-$\omega_0t = 0, \pi/2, \pi, 3\pi/2$: $\cos$ שווה $1, 0, -1, 0$ ו-$\sin$ שווה $0, 1, 0, -1$. מכאן הסימנים של
+          $x$ ושל $v = -A\omega_0\sin\omega_0t$, ו-$a$ הפוך ל-$x$.
+      - kind: reasoning
+        text: >-
+          המהירות מרבית כשהסינוס $\pm1$, כלומר במרכז, שם הכוח אפס. התאוצה מרבית כש-$|x|$ מרבי, בקצוות, שם המהירות אפס.
+      - kind: limit
+        text: >-
+          ב-$t = T$ חוזרים לערכים של $t = 0$: התנועה מחזורית, כמו שצריך.
+      - kind: units
+        text: >-
+          $A\omega_0$ ב-$\text{m/s}$, $A\omega_0^2$ ב-$\text{m/s}^2$.
+      - kind: result
+        text: >-
+          מהירות מרבית במרכז ($T/4$, $3T/4$), תאוצה מרבית בקצוות ($0$, $T/2$), והתאוצה תמיד אל המרכז.
+
+  - id: W-5.1-02
+    level: basic
+    objectives: [OBJ-5.1-2]
+    prompt: >-
+      שני קפיצים, $k_1 = 30\,\text{N/m}$ ו-$k_2 = 50\,\text{N/m}$, מחוברים זה לצד זה בין קיר לגוף בעל מסה
+      $m = 1.5\,\text{kg}$ שמחליק בלי חיכוך. מה זמן המחזור של התנודות?
+    answer: >-
+      $0.860\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $k_1 = 30\,\text{N/m}$, $k_2 = 50\,\text{N/m}$, במקביל; $m = 1.5\,\text{kg}$.
+      - kind: law
+        text: >-
+          במקביל כל קפיץ מתארך באותו מרחק $x$, והכוחות מתחברים: $k_{\text{eq}} = k_1 + k_2$. $T = 2\pi\sqrt{m/k_{\text{eq}}}$.
+      - kind: manipulation
+        text: >-
+          $T = 2\pi\sqrt{\dfrac{m}{k_1 + k_2}}$.
+      - kind: limit
+        text: >-
+          כש-$k_2 \to 0$ נשאר קפיץ אחד, $T = 2\pi\sqrt{m/k_1}$.
+      - kind: units
+        text: >-
+          $m/k$ ב-$\text{kg}/(\text{N/m}) = \text{s}^2$.
+      - kind: substitution
+        text: >-
+          $T = 2\pi\sqrt{1.5/80} = 0.860\,\text{s}$.
+      - kind: result
+        text: >-
+          $0.860\,\text{s}$.
+
+  - id: W-5.1-03
+    level: basic
+    objectives: [OBJ-5.1-1]
+    prompt: >-
+      גוף מתנודד תנודה הרמונית באמפליטודה $4.0\,\text{cm}$ וזמן מחזור $0.50\,\text{s}$. מה גודל המהירות המרבית שלו,
+      ומה גודל התאוצה המרבית?
+    answer: >-
+      $0.503\,\text{m/s}$ ו-$6.32\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $A = 0.040\,\text{m}$, $T = 0.50\,\text{s}$.
+      - kind: law
+        text: >-
+          $\omega_0 = 2\pi/T$; $v_{\max} = A\omega_0$ (במרכז); $a_{\max} = A\omega_0^2$ (בקצוות).
+      - kind: manipulation
+        text: >-
+          $v_{\max} = \dfrac{2\pi A}{T}$, $a_{\max} = \dfrac{4\pi^2A}{T^2}$.
+      - kind: limit
+        text: >-
+          $v_{\max}$ הוא ההיקף של מעגל הייחוס, $2\pi A$, חלקי זמן המחזור: גודל המהירות של הנקודה $P$, כצפוי.
+      - kind: units
+        text: >-
+          $A/T$ ב-$\text{m/s}$, $A/T^2$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = 12.6\,\text{rad/s}$; $v_{\max} = 0.040\cdot12.6 = 0.503\,\text{m/s}$; $a_{\max} = 0.040\cdot12.6^2 = 6.32\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $0.503\,\text{m/s}$; $6.32\,\text{m/s}^2$.
+
+  - id: W-5.1-04
+    level: mid
+    objectives: [OBJ-5.1-1]
+    prompt: >-
+      גוף על קפיץ ($\omega_0 = 6.0\,\text{rad/s}$) נמצא ברגע $t = 0$ בנקודת שיווי המשקל, ומקבל מכה שנותנת לו מהירות
+      $0.30\,\text{m/s}$ בכיוון השלילי. כתבו $x(t)$ בצורה $A\cos(\omega_0t + \varphi)$ עם $-\pi < \varphi \le \pi$, ובצורה
+      של סינוס. מתי הגוף מגיע לראשונה לקצה?
+    answer: >-
+      $x = (0.050\,\text{m})\cos(6.0t + \pi/2) = -(0.050\,\text{m})\sin6.0t$; לקצה $x = -0.050\,\text{m}$ ב-$t = 0.262\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega_0 = 6.0\,\text{rad/s}$, $x_0 = 0$, $v_0 = -0.30\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $x_0 = A\cos\varphi$, $v_0 = -A\omega_0\sin\varphi$.
+      - kind: manipulation
+        text: >-
+          $x_0 = 0$ נותן $\cos\varphi = 0$, $\varphi = \pm\pi/2$. $\sin\varphi = -v_0/(A\omega_0) > 0$, ולכן $\varphi = +\pi/2$ ו-$A = |v_0|/\omega_0$.
+          ו-$\cos(\theta + \pi/2) = -\sin\theta$. הקצה הראשון, $x = -A$, כשהארגומנט מגיע ל-$\pi$, כלומר $\omega_0t = \pi/2$.
+      - kind: limit
+        text: >-
+          מהמרכז לקצה עובר תמיד רבע מחזור, $T/4 = \pi/(2\omega_0)$, בכל מהירות התחלתית: רק המרחק תלוי ב-$v_0$.
+      - kind: units
+        text: >-
+          $v_0/\omega_0$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          $A = 0.30/6.0 = 0.050\,\text{m}$; $t = \pi/12 = 0.262\,\text{s}$.
+      - kind: result
+        text: >-
+          $x(t) = 0.050\cos(6.0t + \pi/2) = -0.050\sin6.0t$ (במטרים); לקצה ב-$0.262\,\text{s}$.
+
+  - id: W-5.1-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-5.1-2]
+    prompt: >-
+      גוף על קפיץ מתנודד בזמן מחזור $T$. קבעו ונמקו פי כמה משתנה זמן המחזור בכל שינוי, כשכל השאר נשאר כמו שהיה:
+
+      א. מחליפים את הגוף בגוף כבד פי ארבעה.
+
+      ב. חותכים את הקפיץ לחצי ומחברים את הגוף לחצי אחד.
+
+      ג. תולים את המערכת אנכית על הירח.
+
+      ד. מושכים את הגוף פי שניים רחוק לפני השחרור.
+
+      ה. מחליפים את הקפיץ בשני קפיצים זהים לו, בטור.
+    answer: >-
+      א. פי $2$. ב. פי $1/\sqrt2$. ג. לא משתנה. ד. לא משתנה. ה. פי $\sqrt2$.
+    solution:
+      - kind: law
+        text: >-
+          $T = 2\pi\sqrt{m/k}$, לא תלוי באמפליטודה ולא בכובד.
+      - kind: reasoning
+        text: >-
+          א: $m \to 4m$ ולכן $T \to 2T$. ב: חצי קפיץ נושא את אותו כוח בחצי התארכות, $k \to 2k$, ולכן $T \to T/\sqrt2$.
+          ג: הכובד, של כל כוכב, רק מזיז את נקודת שיווי המשקל ב-$mg/k$. ד: $T$ לא תלוי ב-$A$. ה: בטור $k_{\text{eq}} = k/2$, ולכן $T \to \sqrt2\,T$.
+      - kind: limit
+        text: >-
+          ב-ב וב-ה, אותו כלל: קפיץ ארוך פי $n$ מאותו חומר רך פי $n$. חצי ($n = 1/2$) נותן $2k$, טור של שניים ($n = 2$) נותן $k/2$.
+      - kind: units
+        text: >-
+          בכל המקרים $T$ ביחידות $\sqrt{\text{kg}/(\text{N/m})} = \text{s}$; משתנה רק המקדם.
+      - kind: result
+        text: >-
+          א. $2T$. ב. $T/\sqrt2$. ג. $T$. ד. $T$. ה. $\sqrt2\,T$.
+
+  - id: W-5.1-06
+    level: mid
+    objectives: [OBJ-5.1-2]
+    prompt: >-
+      תולים משקולת על קפיץ אנכי, והקפיץ מתארך ב-$4.0\,\text{cm}$ עד שהמשקולת נחה. לא ידוע לכם לא $m$ ולא $k$. מה זמן
+      המחזור של התנודות האנכיות של המשקולת?
+    answer: >-
+      $T = 2\pi\sqrt{\Delta/g} = 0.401\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          ההתארכות בשיווי משקל $\Delta = 0.040\,\text{m}$; $g = 9.8\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          בשיווי משקל $k\Delta = mg$. התנודה סביב נקודת שיווי המשקל: $\omega_0^2 = k/m$.
+      - kind: manipulation
+        text: >-
+          $k/m = g/\Delta$, ולכן $T = 2\pi\sqrt{m/k} = 2\pi\sqrt{\Delta/g}$.
+      - kind: limit
+        text: >-
+          כש-$\Delta \to 0$ (קפיץ קשיח מאוד), $T \to 0$: תנודה מהירה מאוד. הנוסחה דורשת $g \neq 0$ כדי למדוד את $\Delta$, אבל זמן המחזור עצמו לא תלוי ב-$g$: על הירח $\Delta$ קטנה פי שישה בערך, ו-$\Delta/g$ לא משתנה.
+      - kind: units
+        text: >-
+          $\Delta/g$ ב-$\text{m}/(\text{m/s}^2) = \text{s}^2$.
+      - kind: substitution
+        text: >-
+          $T = 2\pi\sqrt{0.040/9.8} = 0.401\,\text{s}$.
+      - kind: result
+        text: >-
+          $0.401\,\text{s}$.
+
+  - id: W-5.1-07
+    level: mid
+    objectives: [OBJ-5.1-1]
+    prompt: >-
+      גוף מתנודד בזמן מחזור $T = 1.2\,\text{s}$ ובאמפליטודה $A$. כמה זמן לוקח לו לעבור מהקצה $x = A$ ל-$x = A/2$?
+      וכמה זמן מ-$x = A/2$ ל-$x = -A/2$, באותה תנועה? הסבירו בעזרת מעגל הייחוס למה התשובות שוות, אף שהמרחק השני כפול.
+    answer: >-
+      שניהם $T/6 = 0.200\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $T = 1.2\,\text{s}$; נבחר $x = A\cos\omega_0t$ (שחרור מהקצה ב-$t = 0$).
+      - kind: law
+        text: >-
+          על מעגל הייחוס הזווית $\theta = \omega_0t$ גדלה בקצב קבוע, ו-$x = A\cos\theta$. הזמן בין שני מקומות הוא הקשת שביניהם חלקי $\omega_0$.
+      - kind: manipulation
+        text: >-
+          $x = A$ ב-$\theta = 0$; $x = A/2$ ב-$\theta = \pi/3$; $x = -A/2$ ב-$\theta = 2\pi/3$. שתי הקשתות שוות, $\pi/3$, ולכן
+          שני הזמנים $\dfrac{\pi/3}{\omega_0} = \dfrac{T}{6}$.
+      - kind: reasoning
+        text: >-
+          ליד הקצה הגוף איטי, והוא עובר מרחק קצר בזמן ארוך; ליד המרכז הוא מהיר, ועובר מרחק כפול באותו זמן.
+      - kind: limit
+        text: >-
+          מהקצה עד המרכז ($\theta$ מ-$0$ ל-$\pi/2$) יוצא $T/4$, כמו שצריך.
+      - kind: units
+        text: >-
+          $\theta/\omega_0$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $T/6 = 1.2/6 = 0.200\,\text{s}$.
+      - kind: result
+        text: >-
+          $0.200\,\text{s}$ בכל אחד מהקטעים.
+
+  - id: W-5.1-08
+    level: bagrut
+    objectives: [OBJ-5.1-2, OBJ-5.1-1]
+    prompt: >-
+      גוף בעל מסה $m = 0.20\,\text{kg}$ תלוי על קפיץ אנכי עם $k = 50\,\text{N/m}$ ונח בנקודת שיווי המשקל. נותנים לו מכה
+      כלפי מעלה.
+
+      א. מה המהירות ההתחלתית הקטנה ביותר שבה הקפיץ יגיע בתנועה שאחר כך לאורכו הרפוי?
+
+      ב. אם המהירות ההתחלתית $1.0\,\text{m/s}$, אחרי כמה זמן הקפיץ רפוי לראשונה, ובכמה הוא מתכווץ לכל היותר?
+    answer: >-
+      א. $v_0 = g/\omega_0 = 0.620\,\text{m/s}$. ב. אחרי $0.0423\,\text{s}$; התכווצות מרבית $2.40\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.20\,\text{kg}$, $k = 50\,\text{N/m}$; ציר כלפי מעלה, $x$ ההעתק מנקודת שיווי המשקל; $x_0 = 0$, $v_0 > 0$.
+      - kind: law
+        text: >-
+          סביב נקודת שיווי המשקל, שבה הקפיץ מתוח $\Delta = mg/k$, הגוף מתנודד ב-$\omega_0 = \sqrt{k/m}$. כאן $x_0 = 0$, ולכן $A = v_0/\omega_0$ ו-$x = A\sin\omega_0t$.
+      - kind: manipulation
+        text: >-
+          הקפיץ רפוי כש-$x = +\Delta$. כדי להגיע לשם צריך $A \ge \Delta$, כלומר $v_0 \ge \omega_0\Delta = g/\omega_0$. כש-$A > \Delta$,
+          הרגע הראשון הוא $\sin\omega_0t = \Delta/A$, וההתכווצות המרבית, בנקודה העליונה, $A - \Delta$.
+      - kind: limit
+        text: >-
+          כש-$v_0 \to g/\omega_0$, $\Delta/A \to 1$, והרגע הראשון שואף ל-$T/4$: הקפיץ נעשה רפוי בדיוק בנקודה העליונה, וההתכווצות אפס.
+      - kind: units
+        text: >-
+          $g/\omega_0$ ב-$(\text{m/s}^2)/\text{s}^{-1} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{50/0.20} = 15.8\,\text{rad/s}$, $\Delta = 0.20\cdot9.8/50 = 3.92\,\text{cm}$. א: $9.8/15.8 = 0.620\,\text{m/s}$.
+          ב: $A = 1.0/15.8 = 6.32\,\text{cm}$; $t = \arcsin(3.92/6.32)/15.8 = 0.0423\,\text{s}$; $A - \Delta = 2.40\,\text{cm}$.
+      - kind: result
+        text: >-
+          א. $0.620\,\text{m/s}$. ב. אחרי $0.0423\,\text{s}$; הקפיץ מתכווץ עד $2.40\,\text{cm}$.
+
+  - id: W-5.1-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-5.1-2]
+    prompt: >-
+      בצינור בצורת U, שחתך הרוחב שלו $S$ קבוע, יש נוזל בצפיפות $\rho$. האורך הכולל של עמוד הנוזל לאורך הצינור $L$.
+      דוחפים את הנוזל כך שבזרוע אחת הוא עולה ב-$x$ ובשנייה יורד ב-$x$, ומשחררים.
+
+      א. הראו שהנוזל מתנודד תנודה הרמונית ומצאו את $\omega_0$. הזניחו את החיכוך עם הדפנות.
+
+      ב. קבעו ונמקו: האם זמן המחזור תלוי בצפיפות הנוזל? בעובי הצינור?
+
+      ג. חשבו את זמן המחזור עבור $L = 0.60\,\text{m}$.
+    answer: >-
+      א. $\omega_0 = \sqrt{2g/L}$. ב. לא, ולא. ג. $1.10\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          המסה הנעה כולה $\rho SL$, וכל הנוזל נע יחד במהירות $\dot x$ לאורך הצינור. $x$ ההעתק של פני הנוזל בזרוע אחת מעל מצב המנוחה.
+      - kind: law
+        text: >-
+          החוק השני לכל עמוד הנוזל לאורך הצינור: הכוח המחזיר הוא משקל עודף הנוזל בזרוע הגבוהה, מעל הגובה של הזרוע השנייה.
+      - kind: manipulation
+        text: >-
+          הפרש הגבהים בין שני פני הנוזל $2x$, ומשקל העמודה העודפת $\rho S(2x)g$, ופועל להחזיר. לכן
+          $\rho SL\,\ddot x = -2\rho Sg\,x$, כלומר $\ddot x = -\dfrac{2g}{L}x$.
+      - kind: reasoning
+        text: >-
+          ב: $\rho$ ו-$S$ מצטמצמים: נוזל כבד יותר מקבל כוח מחזיר גדול יותר באותו יחס, וצינור עבה יותר גם הוא. נשארים רק $g$ ו-$L$.
+      - kind: limit
+        text: >-
+          כש-$L$ גדל, $T$ גדל: יותר מסה לאותו כוח מחזיר. ואם $g \to 0$ אין כוח מחזיר ואין תנודה.
+      - kind: units
+        text: >-
+          $g/L$ ב-$\text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{2\cdot9.8/0.60} = 5.72\,\text{rad/s}$, $T = 2\pi/5.72 = 1.10\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $\omega_0 = \sqrt{2g/L}$. ב. לא תלוי לא ב-$\rho$ ולא ב-$S$. ג. $1.10\,\text{s}$.
+
+  - id: W-5.1-10
+    level: bagrut
+    objectives: [OBJ-5.1-1, OBJ-5.1-2]
+    prompt: >-
+      גוש תחתון בעל מסה $M = 1.5\,\text{kg}$ מחליק בלי חיכוך על רצפה, קשור לקיר בקפיץ עם $k = 120\,\text{N/m}$. עליו מונח
+      גוש עליון בעל מסה $m = 0.50\,\text{kg}$, ומקדם החיכוך הסטטי בין שני הגושים $\mu_s = 0.40$. מה האמפליטודה הגדולה
+      ביותר שבה שני הגושים מתנודדים יחד, בלי שהעליון יחליק?
+    answer: >-
+      $A_{\max} = \dfrac{\mu_sg(M + m)}{k} = 6.53\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1.5\,\text{kg}$, $m = 0.50\,\text{kg}$, $k = 120\,\text{N/m}$, $\mu_s = 0.40$. ציר $x$ לאורך הקפיץ, מנקודת שיווי המשקל.
+      - kind: law
+        text: >-
+          כשהגושים נעים יחד, הם מתנד אחד עם $\omega_0^2 = k/(M + m)$. על הגוש העליון הכוח האופקי היחיד הוא החיכוך הסטטי, שהגוש התחתון מפעיל, והוא מוגבל: $|f| \le \mu_smg$.
+      - kind: manipulation
+        text: >-
+          החוק השני לגוש העליון: $f = m\ddot x$, ו-$|\ddot x|$ מרבי בקצוות: $\omega_0^2A$. התנאי $m\omega_0^2A \le \mu_smg$ נותן
+          $A \le \mu_sg/\omega_0^2 = \mu_sg(M + m)/k$.
+      - kind: limit
+        text: >-
+          כש-$\mu_s \to 0$, $A_{\max} \to 0$: בלי חיכוך העליון מחליק בכל תנועה. וכש-$k \to 0$, $A_{\max} \to \infty$: תנודה איטית מאוד דורשת תאוצה קטנה.
+      - kind: units
+        text: >-
+          $\mu_sg(M + m)/k$ ב-$\text{N}/(\text{N/m}) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\omega_0^2 = 120/2.0 = 60\,\text{s}^{-2}$; $A_{\max} = 0.40\cdot9.8/60 = 0.0653\,\text{m}$. בקצה החיכוך $0.50\cdot60\cdot0.0653 = 1.96\,\text{N} = \mu_smg$, בדיוק בגבול.
+      - kind: result
+        text: >-
+          $6.53\,\text{cm}$.
+
+challenge:
+  - id: W-5.1-c1
+    stars: 1
+    objectives: [OBJ-5.1-2, OBJ-5.1-1]
+    prompt: >-
+      גוף בעל מסה $M = 1.2\,\text{kg}$ תלוי על קפיץ אנכי עם $k = 80\,\text{N/m}$ ונח. ברגע $t = 0$ חלק ממנו נשבר ונופל, ועל
+      הקפיץ נשאר רק חלק $\alpha = 0.25$ מהמסה המקורית, במנוחה.
+
+      א. בכמה עולה נקודת שיווי המשקל?
+
+      ב. מה זמן המחזור של התנודות?
+
+      ג. כתבו את מקום הגוף כפונקציה של הזמן, ומצאו את האמפליטודה ואת הפאזה.
+
+      ד. קבעו ונמקו: האם בנקודה העליונה הקפיץ מתוח, רפוי או מכווץ? בכמה?
+    answer: >-
+      א. $(1 - \alpha)Mg/k = 11.0\,\text{cm}$. ב. $2\pi\sqrt{\alpha M/k} = 0.385\,\text{s}$. ג. עם ציר למעלה מנקודת השבירה,
+      $y = \dfrac{(1 - \alpha)Mg}{k}\left(1 - \cos\omega_0t\right)$; $A = 11.0\,\text{cm}$, $\varphi = \pi$. ד. מכווץ ב-$(1 - 2\alpha)Mg/k = 7.35\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1.2\,\text{kg}$, $\alpha = 0.25$, $k = 80\,\text{N/m}$. ציר $y$ כלפי מעלה, הראשית במקום הגוף ברגע $t = 0$. לפני השבירה הקפיץ מתוח $Mg/k$.
+      - kind: law
+        text: >-
+          לגוף שנשאר, במסה $\alpha M$: נקודת שיווי משקל בהתארכות $\alpha Mg/k$, ו-$\omega_0 = \sqrt{k/(\alpha M)}$. הכובד רק מזיז את המרכז.
+      - kind: manipulation
+        text: >-
+          המרכז החדש גבוה מהראשית ב-$\dfrac{Mg}{k} - \dfrac{\alpha Mg}{k} = \dfrac{(1 - \alpha)Mg}{k}$. ברגע $t = 0$ הגוף במנוחה, במרחק
+          הזה **מתחת** למרכז החדש: $x_0 = -A$, $v_0 = 0$, ולכן $x = A\cos(\omega_0t + \pi)$, ו-$y = A + x = A(1 - \cos\omega_0t)$.
+          בנקודה העליונה, $y = 2A$, ההתארכות $\dfrac{Mg}{k} - 2A = \dfrac{(2\alpha - 1)Mg}{k}$, שלילית כש-$\alpha < 1/2$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 1$ לא נשבר דבר: $A \to 0$, והגוף נשאר במנוחה. וכש-$\alpha = 1/2$ הקפיץ מגיע בדיוק לאורכו הרפוי בנקודה העליונה.
+      - kind: units
+        text: >-
+          $Mg/k$ ב-$\text{m}$; $\alpha M/k$ ב-$\text{s}^2$.
+      - kind: substitution
+        text: >-
+          $A = 0.75\cdot1.2\cdot9.8/80 = 0.110\,\text{m}$; $\omega_0 = \sqrt{80/0.30} = 16.3\,\text{rad/s}$, $T = 0.385\,\text{s}$, $v_{\max} = A\omega_0 = 1.80\,\text{m/s}$;
+          בנקודה העליונה ההתארכות $(-0.5)\cdot1.2\cdot9.8/80 = -0.0735\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $11.0\,\text{cm}$. ב. $0.385\,\text{s}$. ג. $y = 0.110(1 - \cos16.3t)$ (במטרים), $A = 0.110\,\text{m}$, $\varphi = \pi$. ד. מכווץ ב-$7.35\,\text{cm}$.
+    source:
+      name: MIT 8.03SC Physics III, Vibrations and Waves, Practice Exam 1
+      year: 2016
+      problem: Problem 1 (Broken Mass)
+      url: https://www.ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/dd15066b749fce14270d09be78348024_MIT8_03SCF16_PracticeExam1.pdf
+      verified: '2026-11-11'
+      adapted: true
+
+  - id: W-5.1-c2
+    stars: 2
+    objectives: [OBJ-5.1-1, OBJ-5.1-2]
+    prompt: >-
+      גוף בעל מסה $m$ מחליק בלי חיכוך בין שני קירות, וקשור לכל קיר בקפיץ בעל קבוע $k$. כשהגוף ב-$x = 0$ שני הקפיצים
+      באורכם הרפוי. הגוף מתנודד באמפליטודה $d$. ברגע שבו הוא ב-$x = d/2$ ונע ימינה, מסירים את הקפיץ הימני (נקראו לרגע
+      הזה $t = 0$).
+
+      א. מה המהירות של הגוף ברגע $t = 0$?
+
+      ב. מצאו את $x(t)$ אחרי ההסרה, ואת האמפליטודה החדשה.
+    answer: >-
+      א. $v_0 = \dfrac{\sqrt3}{2}d\sqrt{\dfrac{2k}{m}}$. ב. $x(t) = \dfrac{\sqrt7}{2}d\cos\left(\sqrt{k/m}\,t - \arctan\sqrt6\right)$; $A' = \dfrac{\sqrt7}{2}d = 1.32d$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ ימינה; שני קפיצים $k$, רפויים ב-$x = 0$. לפני ההסרה האמפליטודה $d$; ב-$t = 0$, $x_0 = d/2$ ו-$v_0 > 0$.
+      - kind: law
+        text: >-
+          לפני ההסרה שני הקפיצים במקביל (כל אחד מתארך או מתקצר ב-$x$): $\omega_1 = \sqrt{2k/m}$. אחרי: קפיץ אחד, $\omega_2 = \sqrt{k/m}$,
+          ונקודת שיווי המשקל נשארת $x = 0$ כי הקפיץ השמאלי רפוי שם. בכל קטע: $A = \sqrt{x_0^2 + (v_0/\omega)^2}$, $\cos\varphi = x_0/A$, $\sin\varphi = -v_0/(A\omega)$.
+      - kind: manipulation
+        text: >-
+          לפני: $v^2 = \omega_1^2(d^2 - x^2)$, ובמקום $d/2$: $v_0 = \omega_1\dfrac{\sqrt3}{2}d$. אחרי:
+          $\dfrac{v_0}{\omega_2} = \dfrac{\omega_1}{\omega_2}\dfrac{\sqrt3}{2}d = \sqrt2\cdot\dfrac{\sqrt3}{2}d = \dfrac{\sqrt6}{2}d$, ולכן
+          $A'^2 = \dfrac{d^2}{4} + \dfrac{6d^2}{4} = \dfrac{7d^2}{4}$. $\cos\varphi > 0$ ו-$\sin\varphi < 0$, ו-$\tan\varphi = -\sqrt6$: $\varphi = -\arctan\sqrt6$.
+      - kind: limit
+        text: >-
+          אם מסירים את הקפיץ בקצה, $x_0 = d$ ו-$v_0 = 0$, האמפליטודה נשארת $d$: אין מהירות שתתורגם לאמפליטודה גדולה יותר. ואם מסירים במרכז, $A' = v_0/\omega_2 = \sqrt2\,d$, הגדלה המרבית.
+      - kind: units
+        text: >-
+          $v_0/\omega_2$ ב-$\text{m}$; $\sqrt{k/m}\,t$ ברדיאנים.
+      - kind: substitution
+        text: >-
+          $\sqrt7/2 = 1.32$; $\arctan\sqrt6 = 1.18\,\text{rad}$.
+      - kind: result
+        text: >-
+          א. $v_0 = \dfrac{\sqrt3}{2}d\sqrt{2k/m}$. ב. $x = 1.32d\cos\left(\sqrt{k/m}\,t - 1.18\right)$; האמפליטודה גדלה פי $1.32$, כי אותה מהירות מול קפיץ רך יותר מגיעה רחוק יותר.
+    source:
+      name: MIT RES.8-009 Introduction to Oscillations and Waves (MITES 2017), Assignment 2
+      year: 2017
+      problem: Problem 3 (Removing a spring)
+      url: https://www.ocw.mit.edu/courses/res-8-009-introduction-to-oscillations-and-waves-summer-2017/mitres_8_009su17_pset_2.pdf
+      verified: '2026-11-11'
+      adapted: true

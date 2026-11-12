@@ -1,21 +1,22 @@
 # Misconceptions first detected in lesson 5.5. Each is detected by at least one distractor (its
 # `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 5.5
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# is written, the remedy link leads to its comprehension ladder on the chapter practice page. The anchors point at
+# lesson 5.5's text (written 2026-11-11).
 
 - id: MC-5-modes-each-mass-own-frequency
   title: בשני מתנדים מצומדים כל גוף מתנודד בתדירות משלו
   belief: בשני גופים מצומדים כל גוף מתנודד בתדירות אחת משלו, ולכל גוף שייכת אחת מהתדירויות העצמיות.
   truth: תדירות עצמית שייכת לאופן תנודה, תנועה משותפת של כל המערכת שבה כל הגופים מתנודדים באותה תדירות. התנועה של כל גוף היא בדרך כלל סכום של שני האופנים, ולכן יש בה את שתי התדירויות.
-  remedy: { lesson: '5.5', label: 'שיעור 5.5: אופני התנודה של שני גופים ושלושה קפיצים' }
+  remedy: { lesson: '5.5', anchor: one-body, label: 'שיעור 5.5: בתנועה של כל גוף יש את שתי התדירויות' }
 
 - id: MC-5-coupling-spring-single-stretch
   title: קפיץ הצימוד נמתח רק בהעתק של גוף אחד
   belief: באופן שבו הגופים נעים בכיוונים הפוכים קפיץ הצימוד נמתח ב-x₁, ולכן ω₂² = (k + k_c)/m.
   truth: קפיץ הצימוד נמתח ב-x₁ − x₂, וכשהגופים נעים הפוך זה 2x₁. לכן ω₂² = (k + 2k_c)/m.
-  remedy: { lesson: '5.5', label: 'שיעור 5.5: אופני התנודה של שני גופים ושלושה קפיצים' }
+  remedy: { lesson: '5.5', anchor: opposite, label: 'שיעור 5.5: למה קפיץ הצימוד נמתח פי שניים באופן ההפוך' }
 
 - id: MC-5-weak-coupling-small-transfer
   title: צימוד חלש מעביר מעט אנרגיה
   belief: כשקפיץ הצימוד חלש, רק חלק קטן מהאנרגיה של גוף אחד יכול לעבור לגוף השני.
   truth: בשני מתנדים זהים צימוד חלש קובע רק את קצב ההעברה. האנרגיה עוברת כולה, באיטיות, ואחר כך חוזרת, בפעימות עם זמן העברה π/(ω₂ − ω₁).
-  remedy: { lesson: '5.5', label: 'שיעור 5.5: פעימות בצימוד חלש' }
+  remedy: { lesson: '5.5', anchor: weak-coupling, label: 'שיעור 5.5: צימוד חלש קובע את הקצב, לא את הכמות' }
