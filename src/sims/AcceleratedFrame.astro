@@ -1,0 +1,7 @@
+---
+/** One scene from two frames, for lesson MDX: <Spread fig="fig-7-1a" figure={AcceleratedFrame} figureProps={{ mode: 'cart', … }}>. */
+import AcceleratedFrame, { type AcceleratedFrameProps } from './AcceleratedFrame';
+type Props = AcceleratedFrameProps;
+---
+
+<AcceleratedFrame client:visible {...Astro.props} />

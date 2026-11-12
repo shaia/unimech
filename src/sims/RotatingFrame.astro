@@ -1,0 +1,7 @@
+---
+/** One puck on a frictionless turntable, seen from the room and from the turntable, for lesson MDX: <Spread fig="fig-7-3a" figure={RotatingFrame} figureProps={{ … }}>. */
+import RotatingFrame, { type RotatingFrameProps } from './RotatingFrame';
+type Props = RotatingFrameProps;
+---
+
+<RotatingFrame client:visible {...Astro.props} />

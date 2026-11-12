@@ -1,0 +1,466 @@
+# Workbook, lesson 7.2 (the rate of change of a vector in a rotating frame, and the fictitious forces). Format:
+# CLAUDE.md, "The solution format". Every number was recomputed by .scratch/ch7/7-2/workbook.ts with
+# src/physics/constants.ts (OMEGA_EARTH = 7.29e-5 rad/s, R_EARTH = 6.37e6 m), src/physics/rotating.ts and rotrate.ts:
+#   W02 Jerusalem, λ = 31.8°: ωR cos λ = 395 m/s (1,420 km/h; equator 464, with sin 245);
+#   W04 radar ω = 0.50 rad/s, bird at 20 m north, 8.0 m/s north: v′ = (10, 8) m/s, |v′| = 12.8 m/s, 51.3° east of north;
+#   W05 |Q| = 0.50 m at 30° from the axis, ω = 2.0 rad/s: ω|Q| sin α = 0.500 m/s;
+#   W06 m = 0.20 kg, v′ = 1.5 m/s, ω = 0.80 rad/s, r = 0.50 m: F_cor = 0.480 N, F_cf = 0.0640 N (ratio 7.50);
+#   W07 3000 rpm in 10 s: ω = 314 rad/s, ω̇ = 31.4 rad/s², m = 0.050 kg, r = 0.10 m: F_Euler = 0.157 N,
+#       F_cf at the end 493 N (4.93 N after 1 s), equal at t = 0.178 s;
+#   W09 ω = 0.50 rad/s, r′ = 2.0 m, v = 2.0 m/s (tangential, in S): v′ = 1.0 m/s, a′ = 0.500 + 1.00 = 1.50 m/s²
+#       outward (checked by differentiating toRotating twice), radius of curvature in S′ 0.667 m;
+#   W10 the same puck: Jacobi integral ½v′² − ½ω²ρ² = 0 at t = 0 and at t = 2.0 s (|v′| = 2.24 m/s, ρ = 4.47 m);
+#   c1, c2 are symbolic (c2: ω grows by a factor 4 at half the radius).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '7.2'
+practice:
+  - id: W-7.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-7.2-1]
+    prompt: >-
+      מאוורר תקרה מסתובב במהירות זוויתית קבועה. ניקח מערכת ייחוס שמסתובבת עם הלהבים, וראשיתה על ציר המאוורר. לכל אחד
+      מהווקטורים הבאים, קבעו ונמקו אם קצב השינוי שלו במערכת החדר אפס, ואם לא, לאן הוא פונה.
+
+      א. הווקטור מהציר אל הקצה של להב אחד.
+
+      ב. וקטור באורך $0.10\,\text{m}$ שצבוע על הציר עצמו, לאורכו, כלפי מטה.
+
+      ג. הווקטור מהציר אל מנורה שתלויה בתקרה, במנוחה בחדר.
+    answer: >-
+      א. לא אפס: $\vec\omega\times\vec Q$, משיק למעגל של קצה הלהב, בכיוון הסיבוב. ב. אפס, כי הוא מקביל ל-$\vec\omega$. ג. אפס במערכת
+      החדר (המנורה במנוחה בה); במערכת הלהבים הקצב שלו $-\vec\omega\times\vec Q$.
+    solution:
+      - kind: law
+        text: >-
+          $\left(\dfrac{d\vec Q}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} + \vec\omega\times\vec Q$.
+      - kind: reasoning
+        text: >-
+          א: הלהב קבוע במערכת המסתובבת, ולכן הקצב בחדר הוא $\vec\omega\times\vec Q$, ניצב גם לציר וגם ללהב: משיק למעגל שהקצה מצייר.
+          ב: הווקטור קבוע במערכת המסתובבת וגם מקביל ל-$\vec\omega$, ולכן $\vec\omega\times\vec Q = 0$: הוא לא משתנה גם בחדר.
+          ג: המנורה במנוחה בחדר, ולכן הקצב בחדר אפס. במערכת הלהבים $\left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} = 0 - \vec\omega\times\vec Q$: שם המנורה נעה במעגל, הפוך לכיוון הסיבוב.
+      - kind: limit
+        text: >-
+          כשהמאוורר כבוי, $\vec\omega = 0$, ושלושת הקצבים זהים בשתי המערכות.
+      - kind: units
+        text: >-
+          $\omega|\vec Q|$ ב-$\text{s}^{-1}\cdot\text{m} = \text{m/s}$.
+      - kind: result
+        text: >-
+          א. $\vec\omega\times\vec Q$, משיק, בכיוון הסיבוב. ב. אפס בשתי המערכות. ג. אפס בחדר, אבל לא במערכת הלהבים.
+
+  - id: W-7.2-02
+    level: basic
+    objectives: [OBJ-7.2-1]
+    prompt: >-
+      $\vec r$ הוא הווקטור ממרכז כדור הארץ אל ירושלים, בקו רוחב $\lambda = 31.8^\circ$ צפון. במערכת הייחוס של כדור הארץ
+      ירושלים במנוחה. מה גודל קצב השינוי של $\vec r$ במערכת שאינה מסתובבת עם כדור הארץ, שראשיתה במרכזו, ולאן הוא פונה?
+      קחו $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$ ו-$R = 6.37\cdot10^{6}\,\text{m}$.
+    answer: >-
+      $\omega R\cos\lambda = 395\,\text{m/s}$, מזרחה.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega$ לאורך ציר כדור הארץ, מהקוטב הדרומי לצפוני; $|\vec r| = R$; הזווית בין $\vec r$ למישור קו המשווה היא $\lambda$, ולכן הזווית בין
+          $\vec r$ ל-$\vec\omega$ היא $90^\circ - \lambda$.
+      - kind: law
+        text: >-
+          $\left(\dfrac{d\vec r}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec r}{dt}\right)_{\text{rot}} + \vec\omega\times\vec r$, ו-$|\vec\omega\times\vec r| = \omega R\sin(90^\circ - \lambda)$.
+      - kind: manipulation
+        text: >-
+          $(d\vec r/dt)_{\text{rot}} = 0$, ולכן הקצב הוא $\vec\omega\times\vec r$, בגודל $\omega R\cos\lambda$: $R\cos\lambda$ הוא המרחק של ירושלים מהציר.
+          הכיוון ניצב לציר ולרדיוס, בכיוון הסיבוב: מזרחה.
+      - kind: limit
+        text: >-
+          בקו המשווה, $\lambda = 0$: $\omega R$, המהירות הגדולה ביותר. בקוטב, $\lambda = 90^\circ$: אפס, כי הנקודה על הציר.
+      - kind: units
+        text: >-
+          $\text{s}^{-1}\cdot\text{m} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $7.29\cdot10^{-5}\cdot6.37\cdot10^{6}\cdot\cos31.8^\circ = 395\,\text{m/s}$, כ-1,420 קמ״ש.
+      - kind: result
+        text: >-
+          $395\,\text{m/s}$, מזרחה.
+
+  - id: W-7.2-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      תחנת חלל היא טבעת שמסתובבת סביב הציר שלה במהירות זוויתית קבועה, רחוק מכל כוכב. במערכת הייחוס של התחנה, אילו כוחות
+      מדומים פועלים על כל אחד מהבאים? נמקו.
+
+      א. אסטרונאוט שעומד על הרצפה, הדופן החיצונית של הטבעת.
+
+      ב. אסטרונאוט שרץ לאורך הרצפה.
+
+      ג. כדור שמרחף במנוחה ביחס לתחנה, בדיוק על הציר.
+    answer: >-
+      א. רק הכוח הצנטריפוגלי. ב. הכוח הצנטריפוגלי וכוח קוריוליס. ג. אף אחד.
+    solution:
+      - kind: law
+        text: >-
+          במערכת שמסתובבת במהירות זוויתית קבועה ושהראשית שלה לא מאיצה: $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r') = m\omega^2\vec\rho$, $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$; כוח אוילר אפס, כי $\dot{\vec\omega} = 0$.
+      - kind: reasoning
+        text: >-
+          א: $\vec v' = 0$, ולכן אין כוח קוריוליס; $\rho = R$, והכוח הצנטריפוגלי פונה אל הרצפה, החוצה מהציר. ב: הכוח הצנטריפוגלי באותו מקום ועוד
+          כוח קוריוליס, כי $\vec v' \neq 0$ וניצב ל-$\vec\omega$. ג: $\rho = 0$ ו-$\vec v' = 0$: שני הכוחות אפס.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ אין כוחות מדומים בכלל, והתחנה היא מערכת אינרציאלית.
+      - kind: units
+        text: >-
+          $m\omega^2\rho$ ו-$m\omega v'$ ב-$\text{N}$.
+      - kind: result
+        text: >-
+          א. צנטריפוגלי. ב. צנטריפוגלי וקוריוליס. ג. אף אחד: על הציר ובמנוחה.
+
+  - id: W-7.2-04
+    level: mid
+    objectives: [OBJ-7.2-1]
+    prompt: >-
+      אנטנת מכ״ם מסתובבת נגד כיוון השעון במבט מלמעלה, ב-$\omega = 0.50\,\text{rad/s}$. ניקח מערכת ייחוס שמסתובבת עם האנטנה,
+      וראשיתה בציר שלה, ונסתכל על המישור האופקי בגובה ציפור. ברגע מסוים הצירים של המערכת מתלכדים עם צירי הקרקע: $x$ מזרחה
+      ו-$y$ צפונה. באותו רגע ציפור נמצאת $20\,\text{m}$ צפונית לציר, ועפה צפונה ב-$8.0\,\text{m/s}$ ביחס לקרקע, בקו ישר. מה
+      המהירות שלה במערכת של האנטנה?
+    answer: >-
+      $\vec v' = (10,\ 8.0)\,\text{m/s}$: $12.8\,\text{m/s}$, $51.3^\circ$ מזרחית לצפון.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega = 0.50\,\hat z\,\text{rad/s}$ ($z$ למעלה), $\vec r' = (0,\ 20,\ 0)\,\text{m}$, $\vec v = (0,\ 8.0,\ 0)\,\text{m/s}$ ביחס לקרקע.
+      - kind: law
+        text: >-
+          $\vec v = \vec v' + \vec\omega\times\vec r'$, כלומר $\vec v' = \vec v - \vec\omega\times\vec r'$.
+      - kind: manipulation
+        text: >-
+          $\vec\omega\times\vec r' = 0.50\cdot20\,(\hat z\times\hat y) = -10\,\hat x\,\text{m/s}$: הנקודה של המערכת שמתחת לציפור נעה מערבה. לכן
+          $\vec v' = (0,\ 8.0) - (-10,\ 0) = (10,\ 8.0)\,\text{m/s}$.
+      - kind: limit
+        text: >-
+          אם הציפור הייתה בדיוק מעל הציר, $\vec r' = 0$ ו-$\vec v' = \vec v$. וככל שהיא רחוקה יותר, האיבר $\omega r$ גדל: במערכת המסתובבת עצמים רחוקים "רצים" מהר.
+      - kind: units
+        text: >-
+          $\omega r$ ב-$\text{m/s}$, כמו $\vec v$.
+      - kind: substitution
+        text: >-
+          $|\vec v'| = \sqrt{10^2 + 8.0^2} = 12.8\,\text{m/s}$; הזווית מצפון: $\arctan(10/8.0) = 51.3^\circ$ מזרחה.
+      - kind: result
+        text: >-
+          במערכת האנטנה הציפור נעה ב-$12.8\,\text{m/s}$, $51.3^\circ$ מזרחית לצפון.
+
+  - id: W-7.2-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-7.2-1]
+    prompt: >-
+      וקטור $\vec Q$ באורך $0.50\,\text{m}$ צבוע על גוף שמסתובב במהירות זוויתית קבועה $\omega = 2.0\,\text{rad/s}$, בזווית $\alpha = 30^\circ$
+      מציר הסיבוב. תארו איך $\vec Q$ נע במערכת אינרציאלית: מה נשאר קבוע, מה משתנה, ומה גודל קצב השינוי שלו? בדקו את התשובה
+      בשני מקרי הקצה של $\alpha$.
+    answer: >-
+      $\vec Q$ מסתובב על פני חרוט סביב הציר; האורך והזווית עם הציר קבועים. $|d\vec Q/dt| = \omega|\vec Q|\sin\alpha = 0.500\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $|\vec Q| = 0.50\,\text{m}$, $\alpha = 30^\circ$ בין $\vec Q$ ל-$\vec\omega$, $\omega = 2.0\,\text{rad/s}$ קבועה; $(d\vec Q/dt)_{\text{rot}} = 0$.
+      - kind: law
+        text: >-
+          $\left(\dfrac{d\vec Q}{dt}\right)_{\text{in}} = \vec\omega\times\vec Q$; $|\vec\omega\times\vec Q| = \omega|\vec Q|\sin\alpha$.
+      - kind: reasoning
+        text: >-
+          מפרקים את $\vec Q$ לחלק לאורך הציר, $|\vec Q|\cos\alpha$, ולחלק ניצב לו, $|\vec Q|\sin\alpha$. $\vec\omega\times$ מוחק את החלק הראשון, ולכן הוא לא
+          משתנה; החלק השני מסתובב במעגל בקצב $\omega$. לכן הקצה של $\vec Q$ מצייר מעגל ברדיוס $|\vec Q|\sin\alpha$, ו-$\vec Q$ עצמו מצייר חרוט. גם
+          $\vec Q\cdot\vec\omega$ קבוע, כי $\vec\omega\cdot(\vec\omega\times\vec Q) = 0$, ולכן הזווית $\alpha$ קבועה.
+      - kind: limit
+        text: >-
+          $\alpha = 0$: $\vec Q$ על הציר ולא זז, הקצב אפס. $\alpha = 90^\circ$: $\vec Q$ במישור הניצב לציר, והקצב המקסימלי, $\omega|\vec Q|$, כמו החץ באיור 7.2א.
+      - kind: units
+        text: >-
+          $\omega|\vec Q|$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $2.0\cdot0.50\cdot\sin30^\circ = 0.500\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $\vec Q$ נע על חרוט סביב הציר, באורך ובזווית קבועים; גודל קצב השינוי $0.500\,\text{m/s}$, בניצב גם ל-$\vec Q$ וגם לציר.
+
+  - id: W-7.2-06
+    level: mid
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      דיסקית במסה $0.20\,\text{kg}$ מחליקה על פטיפון אופקי שמסתובב נגד כיוון השעון במבט מלמעלה, ב-$\omega = 0.80\,\text{rad/s}$. ברגע מסוים
+      היא במרחק $0.50\,\text{m}$ מהמרכז, ומהירותה ביחס לפטיפון $1.5\,\text{m/s}$, אופקית. במערכת הפטיפון, מה גודל כוח קוריוליס עליה ולאן
+      הוא פונה ביחס לכיוון התנועה? מה גודל הכוח הצנטריפוגלי עליה באותו רגע?
+    answer: >-
+      $F_{\text{cor}} = 0.480\,\text{N}$, ימינה מכיוון התנועה; $F_{\text{cf}} = 0.0640\,\text{N}$, החוצה מהמרכז.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.20\,\text{kg}$, $\vec\omega = 0.80\,\hat z\,\text{rad/s}$ ($z$ למעלה), $\vec v'$ אופקית בגודל $1.5\,\text{m/s}$, $\rho = 0.50\,\text{m}$.
+      - kind: law
+        text: >-
+          $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$; $\vec F_{\text{cf}} = m\omega^2\vec\rho$.
+      - kind: manipulation
+        text: >-
+          $\vec v'$ ניצבת ל-$\vec\omega$, ולכן $|\vec\omega\times\vec v'| = \omega v'$, והגודל $2m\omega v'$, בכל כיוון אופקי של התנועה. $\hat z\times\vec v'$ הוא
+          $\vec v'$ מסובב ברבע סיבוב נגד כיוון השעון (שמאלה ממנו), והמינוס הופך אותו: ימינה מכיוון התנועה.
+      - kind: limit
+        text: >-
+          אם הדיסקית עומדת ביחס לפטיפון, $v' = 0$, כוח קוריוליס אפס, ונשאר רק הכוח הצנטריפוגלי. במרכז, $\rho = 0$, הכוח הצנטריפוגלי אפס, וכוח קוריוליס לא משתנה.
+      - kind: units
+        text: >-
+          $m\omega v'$ ו-$m\omega^2\rho$ ב-$\text{kg}\cdot\text{m/s}^2 = \text{N}$.
+      - kind: substitution
+        text: >-
+          $F_{\text{cor}} = 2\cdot0.20\cdot0.80\cdot1.5 = 0.480\,\text{N}$; $F_{\text{cf}} = 0.20\cdot0.80^2\cdot0.50 = 0.0640\,\text{N}$, קטן פי $7.50$.
+      - kind: result
+        text: >-
+          כוח קוריוליס $0.480\,\text{N}$, ימינה מכיוון התנועה; הכוח הצנטריפוגלי $0.0640\,\text{N}$, החוצה. כאן קוריוליס שולט.
+
+  - id: W-7.2-07
+    level: mid
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      צנטריפוגה מאיצה בקצב קבוע מ-0 ל-$3000$ סיבובים לדקה בתוך $10\,\text{s}$. מבחנה במסה $0.050\,\text{kg}$ נמצאת $0.10\,\text{m}$ מהציר.
+      במערכת של הצנטריפוגה, מה גודל כוח אוילר על המבחנה בזמן ההאצה? מה גודל הכוח הצנטריפוגלי עליה בסוף ההאצה? מאיזה רגע
+      הכוח הצנטריפוגלי גדול מכוח אוילר?
+    answer: >-
+      $F_{\text{Euler}} = 0.157\,\text{N}$, נגד כיוון הסיבוב; בסוף $F_{\text{cf}} = 493\,\text{N}$; מ-$t = 0.178\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega(t) = \dot\omega t$, $\omega(10\,\text{s}) = 3000\cdot2\pi/60\,\text{rad/s}$; $m = 0.050\,\text{kg}$, $r = 0.10\,\text{m}$; המבחנה במנוחה ביחס לצנטריפוגה, ולכן אין כוח קוריוליס.
+      - kind: law
+        text: >-
+          $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r'$, בגודל $m\dot\omega r$; $F_{\text{cf}} = m\omega^2r$.
+      - kind: manipulation
+        text: >-
+          $\dot\omega = \omega_{\text{end}}/10\,\text{s}$, קבוע. הכוחות שווים כש-$m\omega^2r = m\dot\omega r$, כלומר $(\dot\omega t)^2 = \dot\omega$: $t = 1/\sqrt{\dot\omega}$.
+      - kind: limit
+        text: >-
+          כוח אוילר לא תלוי ב-$\omega$ ולכן קבוע כל ההאצה, ונעלם ברגע שהצנטריפוגה מגיעה לקצב קבוע. הכוח הצנטריפוגלי מתחיל מאפס וגדל כמו $t^2$: בהתחלה אוילר שולט.
+      - kind: units
+        text: >-
+          $\dot\omega$ ב-$\text{rad/s}^2$; $m\dot\omega r$ ב-$\text{N}$; $1/\sqrt{\dot\omega}$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $\omega_{\text{end}} = 314\,\text{rad/s}$, $\dot\omega = 31.4\,\text{rad/s}^2$. $F_{\text{Euler}} = 0.050\cdot31.4\cdot0.10 = 0.157\,\text{N}$.
+          $F_{\text{cf}} = 0.050\cdot314^2\cdot0.10 = 493\,\text{N}$ (אחרי שנייה אחת כבר $4.93\,\text{N}$). $t = 1/\sqrt{31.4} = 0.178\,\text{s}$.
+      - kind: result
+        text: >-
+          כוח אוילר $0.157\,\text{N}$ לאורך כל ההאצה, נגד כיוון הסיבוב; הכוח הצנטריפוגלי מגיע ל-$493\,\text{N}$, ועובר את כוח אוילר כבר אחרי $0.178\,\text{s}$.
+
+  - id: W-7.2-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-7.2-1, OBJ-7.2-2]
+    prompt: >-
+      מערכת $S'$ מסתובבת במהירות זוויתית $\vec\omega(t)$, והראשית שלה $O'$ אינה קבועה: המקום שלה ביחס לראשית $O$ של מערכת אינרציאלית $S$ הוא
+      $\vec R(t)$, עם מהירות $\vec V$ ותאוצה $\vec A$.
+
+      א. כתבו את המקום של גוף ב-$S$ בעזרת $\vec R$ ו-$\vec r'$, וגזרו את המהירות שלו ב-$S$.
+
+      ב. גזרו את התאוצה שלו ב-$S$, ומשם את החוק השני ב-$S'$ עם כל הכוחות המדומים.
+
+      ג. הסבירו למה בסעיף א אין צורך לכתוב $\left(\dfrac{d\vec R}{dt}\right)_{\text{rot}}$.
+    answer: >-
+      א. $\vec r = \vec R + \vec r'$, $\vec v = \vec V + \vec v' + \vec\omega\times\vec r'$. ב. $\vec a = \vec A + \vec a' + 2\vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r') + \dot{\vec\omega}\times\vec r'$, ולכן
+      $m\vec a' = \vec F - m\vec A - 2m\vec\omega\times\vec v' - m\vec\omega\times(\vec\omega\times\vec r') - m\dot{\vec\omega}\times\vec r'$. ג. $\vec R$ הוא המקום של $O'$, ואנחנו גוזרים אותו ב-$S$ בלבד.
+    solution:
+      - kind: law
+        text: >-
+          $\left(\dfrac{d\vec Q}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} + \vec\omega\times\vec Q$ לכל וקטור; ב-$S$, $m\vec a = \vec F$.
+      - kind: manipulation
+        text: >-
+          א: $\vec r = \vec R + \vec r'$, כש-$\vec r'$ מ-$O'$ אל הגוף. גוזרים ב-$S$: $\vec v = \dot{\vec R} + (d\vec r'/dt)_{\text{in}} = \vec V + \vec v' + \vec\omega\times\vec r'$.
+      - kind: manipulation
+        text: >-
+          ב: גוזרים שוב ב-$S$: $\dot{\vec V} = \vec A$, ועל $\vec v' + \vec\omega\times\vec r'$ מפעילים את הכלל כמו בשיעור: $\vec a' + 2\vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r') + \dot{\vec\omega}\times\vec r'$.
+          מציבים ב-$m\vec a = \vec F$ ומעבירים אגף.
+      - kind: reasoning
+        text: >-
+          ג: הכלל נחוץ רק לווקטור שאנחנו גוזרים ברכיבים של $S'$. את $\vec R$ אנחנו מודדים ישירות ב-$S$, ולכן הנגזרת שלו היא $\vec V$, נקודה. ($\vec R$ הוא לא וקטור שהצופה ב-$S'$ מודד: בשבילו $O'$ תמיד בראשית.)
+      - kind: limit
+        text: >-
+          $\vec\omega = 0$: $\vec a = \vec A + \vec a'$, שיעור 7.1. $\vec A = 0$ ו-$\vec V = 0$: הנוסחאות של שיעור 7.2. וכש-$\vec V$ קבוע ו-$\vec\omega = 0$: $\vec a = \vec a'$, טרנספורמציית גליליי של שיעור 1.5.
+      - kind: units
+        text: >-
+          כל איבר ב-$\text{m/s}^2$: $\omega v'$, $\omega^2r'$ ו-$\dot\omega r'$.
+      - kind: result
+        text: >-
+          $m\vec a' = \vec F - m\vec A - 2m\vec\omega\times\vec v' - m\vec\omega\times(\vec\omega\times\vec r') - m\dot{\vec\omega}\times\vec r'$: ארבעה כוחות מדומים, אחד לתאוצה של הראשית ושלושה לסיבוב.
+
+  - id: W-7.2-09
+    level: bagrut
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      דיסקית מחליקה בלי חיכוך על משטח קרח אופקי, ואין עליה כוח אופקי. מעל המשטח מסתובבת קרוסלה, נגד כיוון השעון במבט מלמעלה,
+      ב-$\omega = 0.50\,\text{rad/s}$, והדיסקית לא נוגעת בה. ברגע מסוים הדיסקית נמצאת $2.0\,\text{m}$ מציר הקרוסלה, ומהירותה ביחס
+      לקרקע $2.0\,\text{m/s}$, בניצב לקו אל הציר, בכיוון הסיבוב.
+
+      א. מה המהירות שלה במערכת הקרוסלה?
+
+      ב. מה התאוצה שלה במערכת הקרוסלה, בגודל ובכיוון?
+
+      ג. מה רדיוס העקמומיות של המסלול שלה במערכת הקרוסלה, ברגע הזה?
+    answer: >-
+      א. $1.0\,\text{m/s}$, בכיוון הסיבוב. ב. $1.50\,\text{m/s}^2$, החוצה מהציר. ג. $0.667\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega = 0.50\,\hat z\,\text{rad/s}$; $\hat\rho$ מהציר אל הדיסקית, $\hat\varphi = \hat z\times\hat\rho$ בכיוון הסיבוב. $\vec r' = 2.0\,\hat\rho\,\text{m}$, $\vec v = 2.0\,\hat\varphi\,\text{m/s}$; $\vec F = 0$ באופק.
+      - kind: law
+        text: >-
+          $\vec v' = \vec v - \vec\omega\times\vec r'$; $m\vec a' = \vec F + \vec F_{\text{cf}} + \vec F_{\text{cor}}$ ($\omega$ קבועה, אין כוח אוילר).
+      - kind: manipulation
+        text: >-
+          $\vec\omega\times\vec r' = \omega\rho\,\hat\varphi = 1.0\,\hat\varphi\,\text{m/s}$, ולכן $\vec v' = 1.0\,\hat\varphi\,\text{m/s}$.
+          $\vec F_{\text{cf}}/m = \omega^2\rho\,\hat\rho$. $\vec F_{\text{cor}}/m = -2\omega v'\,(\hat z\times\hat\varphi) = +2\omega v'\,\hat\rho$, כי $\hat z\times\hat\varphi = -\hat\rho$. שני הכוחות החוצה.
+          רדיוס העקמומיות: $v'^2 = a'_\perp\cdot\rho_c$, והתאוצה כאן כולה ניצבת ל-$\vec v'$.
+      - kind: limit
+        text: >-
+          אילו הדיסקית נעה עם הקרוסלה, $\vec v = \omega\rho\,\hat\varphi$, אז $\vec v' = 0$ ו-$\vec a' = \omega^2\rho$ החוצה: היא מתחילה "ליפול" החוצה ב-$S'$, אף שב-$S$ היא נעה בקו ישר. כש-$\omega \to 0$, $\vec a' \to 0$.
+      - kind: units
+        text: >-
+          $\omega^2\rho$ ו-$\omega v'$ ב-$\text{m/s}^2$; $v'^2/a'$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          $\omega^2\rho = 0.25\cdot2.0 = 0.500\,\text{m/s}^2$; $2\omega v' = 2\cdot0.50\cdot1.0 = 1.00\,\text{m/s}^2$; $a' = 1.50\,\text{m/s}^2$ החוצה. $\rho_c = 1.0^2/1.50 = 0.667\,\text{m}$.
+          בדיקה: גזירה מספרית כפולה של המסלול הישר, כפי שהוא נראה במערכת המסתובבת, נותנת אותו $\vec a'$.
+      - kind: result
+        text: >-
+          א. $1.0\,\text{m/s}$ בכיוון הסיבוב. ב. $1.50\,\text{m/s}^2$ החוצה: $0.500$ מהכוח הצנטריפוגלי ו-$1.00$ מכוח קוריוליס. ג. $0.667\,\text{m}$: ב-$S'$ הקו הישר של $S$ מתעקל בחדות.
+
+  - id: W-7.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      במערכת $S'$ שמסתובבת סביב הציר $z$ במהירות זוויתית קבועה $\vec\omega$, גוף במסה $m$ נע תחת כוח אמיתי $\vec F$ שיש לו אנרגיה פוטנציאלית $U(\vec r')$.
+
+      א. הראו שכוח קוריוליס לא עושה עבודה במערכת $S'$.
+
+      ב. הראו שהכוח הצנטריפוגלי שווה ל-$-\nabla U_{\text{cf}}$, עם $U_{\text{cf}} = -\tfrac12m\omega^2\rho^2$, כאשר $\rho$ המרחק מהציר.
+
+      ג. הסיקו שהגודל $\tfrac12mv'^2 - \tfrac12m\omega^2\rho^2 + U$ נשמר בתנועה. בדקו אותו לדיסקית חופשית ($U = 0$) שנמצאת $2.0\,\text{m}$ מהציר, מהירותה
+      במערכת המסתובבת $1.0\,\text{m/s}$, ו-$\omega = 0.50\,\text{rad/s}$.
+    answer: >-
+      א. $\vec F_{\text{cor}}\cdot\vec v' = 0$. ב. $-\nabla(-\tfrac12m\omega^2(x^2 + y^2)) = m\omega^2(x,\ y,\ 0) = \vec F_{\text{cf}}$. ג. משפט העבודה והאנרגיה ב-$S'$; לדיסקית
+      הגודל ליחידת מסה הוא $0.500 - 0.500 = 0$.
+    solution:
+      - kind: law
+        text: >-
+          ב-$S'$: $m\vec a' = \vec F + \vec F_{\text{cf}} + \vec F_{\text{cor}}$. כופלים סקלרית ב-$\vec v'$: $\dfrac{d}{dt}\left(\tfrac12mv'^2\right) = (\vec F + \vec F_{\text{cf}} + \vec F_{\text{cor}})\cdot\vec v'$.
+      - kind: manipulation
+        text: >-
+          א: $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$ ניצב ל-$\vec v'$, ולכן $\vec F_{\text{cor}}\cdot\vec v' = 0$. ב: עם $\vec r' = (x,\ y,\ z)$,
+          $U_{\text{cf}} = -\tfrac12m\omega^2(x^2 + y^2)$ ו-$-\nabla U_{\text{cf}} = m\omega^2(x,\ y,\ 0) = m\omega^2\vec\rho$, הכוח הצנטריפוגלי מהשיעור.
+          ג: $\vec F\cdot\vec v' = -dU/dt$ ו-$\vec F_{\text{cf}}\cdot\vec v' = -dU_{\text{cf}}/dt$, ולכן $\dfrac{d}{dt}\left(\tfrac12mv'^2 + U_{\text{cf}} + U\right) = 0$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ זה שימור האנרגיה הרגיל. והגודל אינו האנרגיה של $S$: גם גוף חופשי, שהאנרגיה הקינטית שלו ב-$S$ קבועה, מאיץ ב-$S'$ כשהוא מתרחק מהציר.
+      - kind: units
+        text: >-
+          $m\omega^2\rho^2$ ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$, כמו $\tfrac12mv'^2$.
+      - kind: substitution
+        text: >-
+          ליחידת מסה: $\tfrac12\cdot1.0^2 - \tfrac12\cdot0.50^2\cdot2.0^2 = 0.500 - 0.500 = 0$. כעבור $2.0\,\text{s}$ (חישוב המסלול) הדיסקית $4.47\,\text{m}$ מהציר ומהירותה ב-$S'$ $2.24\,\text{m/s}$:
+          $\tfrac12\cdot2.24^2 - \tfrac12\cdot0.25\cdot4.47^2 = 0$ שוב.
+      - kind: result
+        text: >-
+          כוח קוריוליס לא עושה עבודה, והכוח הצנטריפוגלי נגזר מפוטנציאל; לכן $\tfrac12mv'^2 - \tfrac12m\omega^2\rho^2 + U$ נשמר במערכת המסתובבת. לדיסקית החופשית הוא אפס כל הזמן.
+
+challenge:
+  - id: W-7.2-c1
+    stars: 1
+    objectives: [OBJ-7.2-1, OBJ-7.2-2]
+    prompt: >-
+      נמלה במסה $M$ הולכת לאורך קו רדיאלי שצבוע על דיסקה אופקית, שמסתובבת במהירות זוויתית קבועה $\Omega$. הנמלה הולכת **אל המרכז**,
+      במהירות קבועה $v$ לאורך הקו, ויצאה מהמרחק $r_0$ ברגע $t = 0$. הכובד כלפי מטה, והחיכוך מספיק כדי שהנמלה לא תחליק.
+
+      א. מצאו את גודל הכוח האופקי שהדיסקה מפעילה על הנמלה ברגע $t > 0$, לפני שהיא מגיעה למרכז: פעם במערכת אינרציאלית, ופעם במערכת הדיסקה.
+
+      ב. מה גודל הכוח הכולל שהדיסקה מפעילה עליה?
+
+      ג. לאן פונה הרכיב המשיקי של הכוח האופקי, ביחס לכיוון הסיבוב?
+    answer: >-
+      א. $M\Omega\sqrt{\Omega^2(r_0 - vt)^2 + 4v^2}$. ב. $M\sqrt{g^2 + \Omega^2\left(\Omega^2(r_0 - vt)^2 + 4v^2\right)}$. ג. נגד כיוון הסיבוב.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\Omega = \Omega\hat z$ למעלה (נגד כיוון השעון במבט מלמעלה). $r(t) = r_0 - vt$; $\hat r$ החוצה לאורך הקו, $\hat\varphi = \hat z\times\hat r$ בכיוון הסיבוב.
+          $\vec r' = r\hat r$, $\vec v' = -v\hat r$, $\vec a' = 0$.
+      - kind: law
+        text: >-
+          ב-$S$: $\vec a = \vec a' + 2\vec\Omega\times\vec v' + \vec\Omega\times(\vec\Omega\times\vec r')$ ($\dot\Omega = 0$), ו-$\vec F = M\vec a$.
+          ב-$S'$: $0 = \vec F + \vec F_{\text{cf}} + \vec F_{\text{cor}}$.
+      - kind: manipulation
+        text: >-
+          $2\vec\Omega\times\vec v' = -2\Omega v\,\hat\varphi$; $\vec\Omega\times(\vec\Omega\times\vec r') = -\Omega^2r\,\hat r$. לכן $\vec F = -M\Omega^2r\,\hat r - 2M\Omega v\,\hat\varphi$.
+          ב-$S'$: $\vec F_{\text{cf}} = M\Omega^2r\,\hat r$ ו-$\vec F_{\text{cor}} = -2M\Omega\hat z\times(-v\hat r) = 2M\Omega v\,\hat\varphi$, ו-$\vec F = -(\vec F_{\text{cf}} + \vec F_{\text{cor}})$: אותה תוצאה.
+          הכוח הכולל מהדיסקה כולל גם את הכוח הנורמלי, $Mg$ כלפי מעלה, ניצב לכוח האופקי.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$: $M\Omega^2r_0$, הכוח על נמלה שעומדת. כשהיא מגיעה למרכז, $r \to 0$: נשאר $2M\Omega v$, כולו מכוח קוריוליס (או, ב-$S$, מאיבר קוריוליס של התאוצה). וכש-$\Omega \to 0$: אפס, הליכה בקו ישר במהירות קבועה.
+      - kind: units
+        text: >-
+          $\Omega^2r$ ו-$\Omega v$ ב-$\text{m/s}^2$; כפול $M$, ב-$\text{N}$.
+      - kind: result
+        text: >-
+          א. הכוח האופקי: $M\Omega\sqrt{\Omega^2(r_0 - vt)^2 + 4v^2}$, בשתי המערכות. ב. $M\sqrt{g^2 + \Omega^2\left(\Omega^2(r_0 - vt)^2 + 4v^2\right)}$. ג. הרכיב המשיקי,
+          $2M\Omega v$, פונה נגד כיוון הסיבוב: נמלה שהולכת פנימה צריכה "לבלום" את המהירות המשיקית שלה, $\Omega r$, שקטנה.
+    source:
+      name: MIT 8.012 Physics I (Classical Mechanics), Midterm Exam 1
+      year: 2005
+      problem: Problem 3 (Ant on a spinning turntable)
+      url: https://www.ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/15feeea6471bc3ff11ca74e33fde4bd2_exam1.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-7.2-c2
+    stars: 2
+    objectives: [OBJ-7.2-2]
+    prompt: >-
+      מחליקה על הקרח מסתובבת סביב ציר אנכי במהירות זוויתית $\vec\omega$, כלפי מעלה. נבנה מודל: שתי ידיים, כל אחת במסה $M$, בקצות
+      זרועות חסרות מסה, במרחק $R$ מהציר; הגוף והזרועות חסרי מסה. המחליקה מקרבת את הידיים לגוף לאט, בקצב $\dot r \lt 0$.
+
+      א. בגזירה של הכוחות המדומים בשיעור, $\vec\omega$ יכולה להשתנות. כתבו את הכוח המדומה התלוי ב-$\dot{\vec\omega}$.
+
+      ב. במערכת המסתובבת עם המחליקה, הידיים נעות רק לאורך הזרועות. בגלל שהגוף והזרועות חסרי מסה ואין מומנט חיצוני, הזרועות לא
+      מפעילות על הידיים כוח משיקי. מצאו את $\dot\omega$ בעזרת $\omega$, $r$ ו-$\dot r$.
+
+      ג. גזרו את אותה תוצאה משימור התנע הזוויתי במערכת אינרציאלית.
+
+      ד. פי כמה גדלה המהירות הזוויתית כשהידיים מגיעות לחצי מהרדיוס המקורי?
+    answer: >-
+      א. $\vec F_{\text{Euler}} = -M\dot{\vec\omega}\times\vec r'$. ב. $\dot\omega = -2\omega\dot r/r$. ג. $L = 2Mr^2\omega$ קבוע נותן אותו דבר. ד. פי 4.
+    solution:
+      - kind: given
+        text: >-
+          כל יד: $\vec r' = r\hat r$, $\vec v' = \dot r\hat r$, $\vec a'$ רדיאלי; $\vec\omega = \omega\hat z$, $\dot{\vec\omega} = \dot\omega\hat z$; $\hat\varphi = \hat z\times\hat r$.
+      - kind: law
+        text: >-
+          ב-$S'$: $M\vec a' = \vec F - M\vec\omega\times(\vec\omega\times\vec r') - 2M\vec\omega\times\vec v' - M\dot{\vec\omega}\times\vec r'$. ב-$S$: $d\vec L/dt$ שווה למומנט החיצוני, כאן אפס.
+      - kind: manipulation
+        text: >-
+          הרכיב המשיקי של המשוואה ב-$S'$: $\vec a'$ רדיאלי ו-$\vec F$ בלי רכיב משיקי, ולכן $0 = -2M\omega\dot r - M\dot\omega r$: כוח קוריוליס וכוח אוילר מאזנים זה את זה.
+          מכאן $\dot\omega = -2\omega\dot r/r$. ב-$S$: $L = 2Mr^2\omega$, ו-$dL/dt = 2M(2r\dot r\omega + r^2\dot\omega) = 0$ נותן אותו דבר.
+          מ-$\dfrac{\dot\omega}{\omega} = -2\dfrac{\dot r}{r}$: $\ln\omega = -2\ln r + \text{const}$, כלומר $\omega r^2$ קבוע.
+      - kind: limit
+        text: >-
+          כש-$\dot r = 0$, $\dot\omega = 0$: בלי תנועה של הידיים אין שינוי. כש-$\dot r \lt 0$, $\dot\omega > 0$: מקרבים ידיים ומסתובבים מהר יותר, כמו שכל מחליקה יודעת.
+      - kind: units
+        text: >-
+          $\omega\dot r/r$ ב-$\text{s}^{-1}\cdot\text{m/s}/\text{m} = \text{s}^{-2}$, כמו $\dot\omega$.
+      - kind: result
+        text: >-
+          א. $-M\dot{\vec\omega}\times\vec r'$, כוח אוילר. ב. $\dot\omega = -2\omega\dot r/r$. ג. זהה, מ-$L = 2Mr^2\omega$. ד. $\omega r^2$ קבוע: בחצי הרדיוס, פי $4$.
+    source:
+      name: MIT 8.012 Physics I (Classical Mechanics), Problem Set 10 (optional)
+      year: 2008
+      problem: Problem 10 (Spinning up Figure Skater)
+      url: https://www.ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/9f403188824326949f9f8098bb70674f_ps10.pdf
+      verified: '2026-11-12'
+      adapted: true

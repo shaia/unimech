@@ -1,13 +1,20 @@
 # Lesson 7.2 question bank: the comprehension ladder of "מערכת מסתובבת: קצב השינוי של וקטור".
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
 # (exam level). Strings may hold $inline$ / $$display$$ TeX and **bold**; never use "…" for TeX.
+# Notation (chapter 7): a generic vector is Q (A is the acceleration of the frame S′); primes are quantities
+# measured in the rotating frame S′ (r′, v′, a′); unprimed v, a are measured in the inertial frame S.
 #
-# Every number was computed with src/physics/constants.ts (OMEGA_EARTH = 7.29e-5 rad/s,
-# R_EARTH = 6.37e6 m) in .scratch/ch7/q.ts:
-#   a point on the equator: ωR = 464 m/s (0.464 with R in km), ω²R = 0.0339 m/s²;
+# Every number was recomputed with src/physics/constants.ts (OMEGA_EARTH = 7.29e-5 rad/s,
+# R_EARTH = 6.37e6 m) and src/physics/rotrate.ts in .scratch/ch7/7-2/bank.ts:
+#   a point on the equator: ωR = 464 m/s (0.464 with R in km; 1,670 km/h), ω²R = 0.0339 m/s²;
 #   bug on a turntable, ω = 2.0 rad/s, r = 0.15 m, v' = 0.40 m/s outward:
 #     ωr = 0.30 m/s, |v| = √(v'² + (ωr)²) = 0.500 m/s (sum 0.70, difference 0.10);
-#     2ωv' = 1.6 m/s², ω²r = 0.60 m/s², |a| = √(1.6² + 0.6²) = 1.71 m/s² (without the 2: 1.00, sum 2.2).
+#   the same bug while the turntable speeds up at ω̇ = 4.0 rad/s²: 2ωv' = 1.6, ω̇r = 0.60 (both along the turn),
+#     ω²r = 0.60 m/s² inward, |a| = √(2.2² + 0.6²) = 2.28 m/s² (no Euler term 1.71, no 2: 1.52,
+#     Euler sign flipped 1.17, magnitudes summed 2.80).
+# Review (2026-11-12): every key, commonWrong and feedback number recomputed independently with explicit cross products
+#   in .scratch/review/ch7/r72.ts: all correct. The centrifugal-direction reasons now argue in components, as the
+#   lesson does (the BAC-CAB identity is not taught before 8.8, and its letter a clashed with the acceleration).
 
 chapter: 7
 questions:
@@ -19,29 +26,29 @@ questions:
     level: basic
     prompt: >-
       מערכת ייחוס מסתובבת במהירות זוויתית קבועה $\vec\omega$ ביחס למערכת אינרציאלית, והראשית של שתיהן משותפת ונמצאת
-      על ציר הסיבוב. הווקטור $\vec A$ קבוע במערכת המסתובבת: צופה שמסתובב איתה רואה אותו עומד, כלומר
-      $\left(\dfrac{d\vec A}{dt}\right)_{\text{rot}} = 0$. מה קצב השינוי שלו במערכת האינרציאלית?
+      על ציר הסיבוב. הווקטור $\vec Q$ קבוע במערכת המסתובבת: צופה שמסתובב איתה רואה אותו עומד, כלומר
+      $\left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} = 0$. מה קצב השינוי שלו במערכת האינרציאלית?
     choices:
-      - text: '$\vec\omega\times\vec A$'
+      - text: '$\vec\omega\times\vec Q$'
         correct: true
         feedback: >-
-          נכון. הקצה של $\vec A$ נע במעגל סביב הציר, ומהירותו $\vec\omega\times\vec A$, בדיוק כמו המהירות
-          $\vec\omega\times\vec r$ של נקודה על גוף מסתובב. התוצאה ניצבת ל-$\vec A$, ולכן אורכו לא משתנה.
-      - text: '$\vec A\times\vec\omega$'
+          נכון. הקצה של $\vec Q$ נע במעגל סביב הציר, ומהירותו $\vec\omega\times\vec Q$, בדיוק כמו המהירות
+          $\vec\omega\times\vec r$ של נקודה על גוף מסתובב. התוצאה ניצבת ל-$\vec Q$, ולכן אורכו לא משתנה.
+      - text: '$\vec Q\times\vec\omega$'
         feedback: >-
-          זה הווקטור ההפוך. בדקו בדוגמה: $\vec\omega = \omega\hat z$ ו-$\vec A = \hat x$, סיבוב נגד כיוון השעון במבט מלמעלה.
-          הקצה של $\vec A$ נע לכיוון $+\hat y$, ואכן $\hat z\times\hat x = +\hat y$, בעוד ש-$\hat x\times\hat z = -\hat y$.
-      - text: 'אפס, כי $\vec A$ לא משתנה.'
+          זה הווקטור ההפוך. בדקו בדוגמה: $\vec\omega = \omega\hat z$ ו-$\vec Q = \hat x$, סיבוב נגד כיוון השעון במבט מלמעלה.
+          הקצה של $\vec Q$ נע לכיוון $+\hat y$, ואכן $\hat z\times\hat x = +\hat y$, בעוד ש-$\hat x\times\hat z = -\hat y$.
+      - text: 'אפס, כי $\vec Q$ לא משתנה.'
         feedback: >-
-          $\vec A$ לא משתנה **במערכת המסתובבת**. צופה אינרציאלי רואה אותו מסתובב, והכיוון שלו משתנה כל הזמן. קצב
+          $\vec Q$ לא משתנה **במערכת המסתובבת**. צופה אינרציאלי רואה אותו מסתובב, והכיוון שלו משתנה כל הזמן. קצב
           השינוי של וקטור תלוי במערכת הייחוס.
         misconception: MC-7-derivative-frame-independent
-      - text: '$\omega\vec A$'
+      - text: '$\omega\vec Q$'
         feedback: >-
-          וקטור שמקביל ל-$\vec A$ היה משנה את **אורכו**. סיבוב משנה רק את הכיוון, ולכן קצב השינוי ניצב ל-$\vec A$ וגם
+          וקטור שמקביל ל-$\vec Q$ היה משנה את **אורכו**. סיבוב משנה רק את הכיוון, ולכן קצב השינוי ניצב ל-$\vec Q$ וגם
           ל-$\vec\omega$.
     hints:
-      - 'חשבו על $\vec A$ כעל המקום של נקודה שמודבקת לפטיפון. מה המהירות שלה?'
+      - 'חשבו על $\vec Q$ כעל המקום של נקודה שמודבקת לפטיפון. מה המהירות שלה?'
 
   - id: Q-7.2-equator-speed
     type: numeric
@@ -78,17 +85,17 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      כדי לגזור את הקשר, כותבים וקטור כלשהו ברכיבים של המערכת המסתובבת, $\vec A = A_1\hat e_1 + A_2\hat e_2 + A_3\hat e_3$,
+      כדי לגזור את הקשר, כותבים וקטור כלשהו ברכיבים של המערכת המסתובבת, $\vec Q = Q_1\hat e_1 + Q_2\hat e_2 + Q_3\hat e_3$,
       כאשר $\hat e_i$ הם וקטורי היחידה של הצירים המסתובבים. במערכת האינרציאלית
-      $$\left(\frac{d\vec A}{dt}\right)_{\text{in}} = \sum_i \frac{dA_i}{dt}\hat e_i + \sum_i A_i\frac{d\hat e_i}{dt}$$
-      הסכום הראשון הוא $\left(\dfrac{d\vec A}{dt}\right)_{\text{rot}}$. מה $\dfrac{d\hat e_i}{dt}$ במערכת האינרציאלית?
+      $$\left(\frac{d\vec Q}{dt}\right)_{\text{in}} = \sum_i \frac{dQ_i}{dt}\hat e_i + \sum_i Q_i\frac{d\hat e_i}{dt}$$
+      הסכום הראשון הוא $\left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}}$. מה $\dfrac{d\hat e_i}{dt}$ במערכת האינרציאלית?
     choices:
-      - text: '$\vec\omega\times\hat e_i$, ולכן הסכום השני הוא $\vec\omega\times\vec A$.'
+      - text: '$\vec\omega\times\hat e_i$, ולכן הסכום השני הוא $\vec\omega\times\vec Q$.'
         correct: true
         feedback: >-
           נכון. כל וקטור יחידה מודבק לצירים המסתובבים, ולכן הוא מסתובב כמו וקטור מקום של נקודה על גוף מסתובב: $\dfrac{d\hat e_i}{dt} = \vec\omega\times\hat e_i$.
-          מכאן $\sum_i A_i\,\vec\omega\times\hat e_i = \vec\omega\times\vec A$, והקשר המלא הוא
-          $\left(\dfrac{d\vec A}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec A}{dt}\right)_{\text{rot}} + \vec\omega\times\vec A$.
+          מכאן $\sum_i Q_i\,\vec\omega\times\hat e_i = \vec\omega\times\vec Q$, והקשר המלא הוא
+          $\left(\dfrac{d\vec Q}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} + \vec\omega\times\vec Q$.
       - text: 'אפס, כי האורך של וקטור יחידה תמיד 1.'
         feedback: >-
           אורך קבוע לא אומר נגזרת אפס: וקטור יכול לשנות את **כיוונו**. אורך קבוע אומר רק שהנגזרת ניצבת לווקטור,
@@ -115,16 +122,16 @@ questions:
     answer: 0.5
     unit: m/s
     correctFeedback: >-
-      נכון. $\vec v_{\text{in}} = \vec v' + \vec\omega\times\vec r$. הרכיב הראשון רדיאלי, $0.40\,\text{m/s}$, והשני משיקי,
+      נכון. $\vec v = \vec v' + \vec\omega\times\vec r'$. הרכיב הראשון רדיאלי, $0.40\,\text{m/s}$, והשני משיקי,
       $\omega r = 2.0\cdot0.15 = 0.30\,\text{m/s}$. הם ניצבים, ולכן $v = \sqrt{0.40^2 + 0.30^2} = 0.500\,\text{m/s}$.
     wrongFeedback: >-
-      הפעילו את הקשר על וקטור המקום של החיפושית: $\vec v_{\text{in}} = \vec v' + \vec\omega\times\vec r$. לאיזה כיוון פונה
+      הפעילו את הקשר על וקטור המקום של החיפושית: $\vec v = \vec v' + \vec\omega\times\vec r'$. לאיזה כיוון פונה
       כל אחד משני האיברים?
     commonWrong:
       - value: 0.7
-        feedback: 'חיברתם את הגדלים. $\vec v''$ רדיאלי ו-$\vec\omega\times\vec r$ משיקי: הם ניצבים, ומחברים אותם כווקטורים.'
+        feedback: 'חיברתם את הגדלים. $\vec v''$ רדיאלי ו-$\vec\omega\times\vec r''$ משיקי: הם ניצבים, ומחברים אותם כווקטורים.'
       - value: 0.4
-        feedback: 'זו המהירות ביחס לפטיפון. ביחס לחדר נוסף האיבר $\vec\omega\times\vec r$, כי הפטיפון נושא את החיפושית איתו.'
+        feedback: 'זו המהירות ביחס לפטיפון. ביחס לחדר נוסף האיבר $\vec\omega\times\vec r''$, כי הפטיפון נושא את החיפושית איתו.'
         misconception: MC-7-derivative-frame-independent
       - value: 0.3
         feedback: 'זו המהירות של נקודה על הפטיפון במרחק $0.15\,\text{m}$. החיפושית גם הולכת ביחס לפטיפון.'
@@ -142,31 +149,32 @@ questions:
       מערכת מסתובבת במהירות זוויתית $\vec\omega(t)$, שעשויה להשתנות בזמן, ביחס למערכת אינרציאלית, עם ראשית משותפת. לאילו
       מהגדלים הבאים יש **אותו** קצב שינוי בשתי המערכות? סמנו את כל התשובות הנכונות.
     choices:
-      - text: 'הגודל $|\vec A|$ של וקטור כלשהו.'
+      - text: 'הגודל $|\vec Q|$ של וקטור כלשהו.'
         correct: true
         feedback: >-
-          נכון. גודל הוא סקלר, ואורך של וקטור זהה בשתי המערכות. גם מהקשר: $\dfrac{d}{dt}|\vec A|^2 = 2\vec A\cdot\dfrac{d\vec A}{dt}$,
-          והאיבר הנוסף $\vec A\cdot(\vec\omega\times\vec A)$ אפס.
+          נכון. גודל הוא סקלר, ואורך של וקטור זהה בשתי המערכות. גם מהקשר: $\dfrac{d}{dt}|\vec Q|^2 = 2\vec Q\cdot\dfrac{d\vec Q}{dt}$,
+          והאיבר הנוסף $\vec Q\cdot(\vec\omega\times\vec Q)$ אפס.
       - text: 'המהירות הזוויתית $\vec\omega$ עצמה.'
         correct: true
         feedback: >-
           נכון, כי $\vec\omega\times\vec\omega = 0$. לכן $\dot{\vec\omega}$ זהה בשתי המערכות, וזו הסיבה שבכוח המדומה
-          $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r$ אין צורך לציין באיזו מערכת גוזרים את $\vec\omega$.
+          $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r'$ אין צורך לציין באיזו מערכת גוזרים את $\vec\omega$.
       - text: 'וקטור שמקביל לציר הסיבוב ברגע מסוים, באותו רגע.'
         correct: true
-        feedback: 'נכון. אם $\vec A \parallel \vec\omega$, אז $\vec\omega\times\vec A = 0$ ושתי הנגזרות שוות ברגע הזה.'
+        feedback: 'נכון. אם $\vec Q \parallel \vec\omega$, אז $\vec\omega\times\vec Q = 0$ ושתי הנגזרות שוות ברגע הזה.'
       - text: 'וקטור המקום של גוף שעומד במנוחה במערכת האינרציאלית.'
         feedback: >-
           במערכת האינרציאלית קצב השינוי שלו אפס, אבל במערכת המסתובבת הגוף נע במעגל סביב הציר, במהירות
-          $\vec v' = -\vec\omega\times\vec r$. השוויון מתקיים רק אם הגוף על הציר.
+          $\vec v' = -\vec\omega\times\vec r'$. השוויון מתקיים רק אם הגוף על הציר.
         misconception: MC-7-derivative-frame-independent
       - text: 'כל וקטור שאורכו קבוע.'
         feedback: >-
           אורך קבוע לא מספיק: וקטור יחידה של ציר מסתובב קבוע במערכת המסתובבת אבל משנה כיוון במערכת האינרציאלית.
-          ההפרש בין שני הקצבים הוא $\vec\omega\times\vec A$, והוא מתאפס רק כש-$\vec A$ מקביל ל-$\vec\omega$.
+          ההפרש בין שני הקצבים הוא $\vec\omega\times\vec Q$, והוא מתאפס רק כש-$\vec Q$ מקביל ל-$\vec\omega$.
         misconception: MC-7-unit-vector-constant
     hints:
-      - 'ההפרש בין שני הקצבים הוא $\vec\omega\times\vec A$. מתי הוא אפס?'
+      - 'ההפרש בין שני הקצבים הוא $\vec\omega\times\vec Q$. מתי הוא אפס?'
+      - 'מספר, כמו אורך של חץ, הוא אותו מספר לשני הצופים בכל רגע. מה זה אומר על קצב השינוי שלו? ובדקו: $\dfrac{d}{dt}|\vec Q|^2 = 2\vec Q\cdot\dfrac{d\vec Q}{dt}$.'
 
   # ---------------------------------------------------------------- OBJ-7.2-2 the fictitious forces of a rotating frame
   - id: Q-7.2-resting-coin
@@ -176,14 +184,14 @@ questions:
     level: basic
     prompt: >-
       מטבע מונח במנוחה על פטיפון שמסתובב במהירות זוויתית קבועה. במערכת המסתובבת החוק השני הוא
-      $$m\vec a' = \vec F - m\vec\omega\times(\vec\omega\times\vec r) - 2m\vec\omega\times\vec v' - m\dot{\vec\omega}\times\vec r$$
+      $$\begin{aligned} m\vec a' &= \vec F - m\vec\omega\times(\vec\omega\times\vec r') \\ &\quad - 2m\vec\omega\times\vec v' - m\dot{\vec\omega}\times\vec r' \end{aligned}$$
       אילו מהכוחות המדומים פועלים על המטבע במערכת הפטיפון?
     choices:
       - text: רק הכוח הצנטריפוגלי.
         correct: true
         feedback: >-
           נכון. המטבע במנוחה במערכת המסתובבת, $\vec v' = 0$, ולכן כוח קוריוליס מתאפס. המהירות הזוויתית קבועה, ולכן גם
-          האיבר $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r$ מתאפס. החיכוך כלפי המרכז מאזן את הכוח הצנטריפוגלי, והמטבע נשאר במנוחה.
+          האיבר $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r'$ מתאפס. החיכוך כלפי המרכז מאזן את הכוח הצנטריפוגלי, והמטבע נשאר במנוחה.
       - text: הכוח הצנטריפוגלי וכוח קוריוליס.
         feedback: 'כוח קוריוליס פרופורציוני ל-$\vec v''$, המהירות **במערכת המסתובבת**. המטבע במנוחה בה, ולכן הכוח הזה אפס.'
         misconception: MC-7-coriolis-on-resting-body
@@ -192,7 +200,7 @@ questions:
           במערכת הפטיפון המטבע במנוחה, ובכל זאת החיכוך עליו פונה למרכז ואינו מאוזן בכוח אמיתי. משהו צריך לאזן אותו: הכוח
           הצנטריפוגלי.
       - text: הכוח הצנטריפוגלי וכוח אוילר.
-        feedback: 'כוח אוילר, $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r$, קיים רק כשהמהירות הזוויתית משתנה. כאן היא קבועה.'
+        feedback: 'כוח אוילר, $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r''$, קיים רק כשהמהירות הזוויתית משתנה. כאן היא קבועה.'
     hints:
       - 'בכל איבר בדקו: מה $\vec v''$ של המטבע, ומה $\dot{\vec\omega}$?'
 
@@ -202,7 +210,7 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      לאן פונה הכוח הצנטריפוגלי $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r)$ על גוף שנמצא במרחק $\rho$ מציר הסיבוב?
+      לאן פונה הכוח הצנטריפוגלי $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r')$ על גוף שנמצא במרחק $\rho$ מציר הסיבוב?
     choices:
       - text: החוצה מציר הסיבוב, בניצב לו.
         correct: true
@@ -210,28 +218,28 @@ questions:
           נכון. גודלו $m\omega^2\rho$, והוא פונה הרחק מהציר, בניצב לו. לגוף שעל הציר עצמו אין כוח צנטריפוגלי.
       - text: אל ציר הסיבוב.
         feedback: >-
-          אל הציר פונה **התאוצה הצנטריפטלית**, $\vec\omega\times(\vec\omega\times\vec r)$, של גוף שמסתובב עם המערכת. הכוח
+          אל הציר פונה **התאוצה הצנטריפטלית**, $\vec\omega\times(\vec\omega\times\vec r')$, של גוף שמסתובב עם המערכת. הכוח
           הצנטריפוגלי הוא מינוס $m$ כפול הווקטור הזה, ולכן הפוך לו.
         misconception: MC-7-centrifugal-points-inward
-      - text: החוצה מהראשית, לאורך $\vec r$.
+      - text: החוצה מהראשית, לאורך $\vec r'$.
         feedback: >-
-          רק הרכיב של $\vec r$ שניצב לציר נכנס. גוף שעל הציר, מעל הראשית, לא מרגיש כוח צנטריפוגלי, אף ש-$\vec r$ שלו אינו
+          רק הרכיב של $\vec r'$ שניצב לציר נכנס. גוף שעל הציר, מעל הראשית, לא מרגיש כוח צנטריפוגלי, אף ש-$\vec r'$ שלו אינו
           אפס.
       - text: בכיוון $\vec\omega$, לאורך הציר.
         feedback: 'מכפלה וקטורית ב-$\vec\omega$ ניצבת תמיד ל-$\vec\omega$, ולכן לכוח הזה אין רכיב לאורך הציר.'
     reasonPrompt: ומה הנימוק?
     reasons:
       - text: >-
-          לפי $\vec a\times(\vec b\times\vec c) = \vec b(\vec a\cdot\vec c) - \vec c(\vec a\cdot\vec b)$ מקבלים
-          $\vec\omega\times(\vec\omega\times\vec r) = -\omega^2\vec\rho$, כאשר $\vec\rho$ הוא הרכיב של $\vec r$ הניצב לציר,
-          והמינוס שלפני הכוח הופך את הכיוון.
+          ברכיבים, עם $\vec\omega = (0,\,0,\,\omega)$ ו-$\vec r' = (x,\,y,\,z)$: $\vec\omega\times(\vec\omega\times\vec r') = (-\omega^2x,\ -\omega^2y,\ 0) = -\omega^2\vec\rho$,
+          כאשר $\vec\rho = (x,\,y,\,0)$ הוא החלק של $\vec r'$ הניצב לציר, והמינוס שלפני הכוח הופך את הכיוון.
         correct: true
         feedback: >-
-          זה הנימוק. הרכיב של $\vec r$ לאורך הציר מתבטל, ונשאר $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r) = m\omega^2\vec\rho$.
-      - text: '$\vec\omega\times(\vec\omega\times\vec r) = \omega^2\vec r$, והמינוס מפנה את הכוח פנימה.'
+          זה הנימוק. הרכיב של $\vec r'$ לאורך הציר מתבטל, ונשאר $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r') = m\omega^2\vec\rho$.
+      - text: '$\vec\omega\times(\vec\omega\times\vec r'') = \omega^2\vec r''$, והמינוס מפנה את הכוח פנימה.'
         feedback: >-
-          פתחו את המכפלה הכפולה בזהירות: $\vec\omega(\vec\omega\cdot\vec r) - \vec r\,\omega^2$. יש בה מינוס משלה, ויחד עם
-          המינוס שלפני הכוח הכיוון יוצא החוצה.
+          חשבו ברכיבים, בזהירות: $\vec\omega\times\vec r' = (-\omega y,\ \omega x,\ 0)$, ופעם נוספת
+          $\vec\omega\times(\vec\omega\times\vec r') = (-\omega^2x,\ -\omega^2y,\ 0)$. יש בה מינוס משלה, ויחד עם המינוס שלפני
+          הכוח הכיוון יוצא החוצה.
         misconception: MC-7-centrifugal-points-inward
       - text: גוף שמסתובב רוצה להמשיך לנוע במעגל, וזה הכוח שמחזיק אותו.
         feedback: >-
@@ -239,7 +247,7 @@ questions:
           הצנטריפוגלי קיים רק במערכת המסתובבת.
         misconception: MC-7-fictitious-force-in-inertial-frame
     hints:
-      - 'פתחו את המכפלה הווקטורית הכפולה בזהות $\vec a\times(\vec b\times\vec c) = \vec b(\vec a\cdot\vec c) - \vec c(\vec a\cdot\vec b)$.'
+      - 'חשבו את המכפלה הכפולה ברכיבים, עם $\vec\omega$ לאורך הציר $z$: קודם $\vec\omega\times\vec r''$, ואחר כך $\vec\omega$ כפול התוצאה.'
 
   - id: Q-7.2-euler-force
     type: vector
@@ -247,23 +255,23 @@ questions:
     level: mid
     prompt: >-
       פטיפון, במבט מלמעלה, מסתובב נגד כיוון השעון, ולכן $\vec\omega$ פונה החוצה מהדף. מפעילים אותו, והוא **מאיץ**: גם
-      $\dot{\vec\omega}$ פונה החוצה מהדף. מטבע במנוחה על הפטיפון נמצא ימינה מהמרכז, כלומר $\vec r$ פונה ימינה בדף. לאן פונה
-      הכוח המדומה $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r$, כוח אוילר, על המטבע?
+      $\dot{\vec\omega}$ פונה החוצה מהדף. מטבע במנוחה על הפטיפון נמצא ימינה מהמרכז, כלומר $\vec r'$ פונה ימינה בדף. לאן פונה
+      הכוח המדומה $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r'$, כוח אוילר, על המטבע?
     answer: s
     allowOutIn: true
     correctFeedback: >-
-      נכון. עם $\hat x$ ימינה, $\hat y$ למעלה בדף ו-$\hat z$ החוצה: $\dot{\vec\omega}\times\vec r \propto \hat z\times\hat x = \hat y$,
-      ולכן $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r$ פונה למטה בדף. זה הגיוני: הנקודה שמתחת למטבע נעה למעלה בדף ומאיצה, והמטבע
+      נכון. עם $\hat x$ ימינה, $\hat y$ למעלה בדף ו-$\hat z$ החוצה: $\dot{\vec\omega}\times\vec r' \propto \hat z\times\hat x = \hat y$,
+      ולכן $\vec F_{\text{Euler}} = -m\dot{\vec\omega}\times\vec r'$ פונה למטה בדף. זה הגיוני: הנקודה שמתחת למטבע נעה למעלה בדף ומאיצה, והמטבע
       ״מפגר״ אחריה, אחורה ביחס לכיוון הסיבוב.
     wrongFeedback: >-
-      כתבו את הווקטורים ברכיבים: $\dot{\vec\omega}$ לאורך $\hat z$ ו-$\vec r$ לאורך $\hat x$. חשבו את המכפלה, ואל תשכחו
+      כתבו את הווקטורים ברכיבים: $\dot{\vec\omega}$ לאורך $\hat z$ ו-$\vec r'$ לאורך $\hat x$. חשבו את המכפלה, ואל תשכחו
       את המינוס.
     wrong:
       - dir: n
-        feedback: 'זה הכיוון של $\dot{\vec\omega}\times\vec r$ עצמו. הכוח הוא מינוס $m$ כפול הווקטור הזה.'
+        feedback: 'זה הכיוון של $\dot{\vec\omega}\times\vec r''$ עצמו. הכוח הוא מינוס $m$ כפול הווקטור הזה.'
       - dir: e
         feedback: >-
-          ימינה, הרחק מהמרכז, פונה הכוח הצנטריפוגלי. כוח אוילר ניצב ל-$\vec r$, ופועל רק כשקצב הסיבוב משתנה.
+          ימינה, הרחק מהמרכז, פונה הכוח הצנטריפוגלי. כוח אוילר ניצב ל-$\vec r'$, ופועל רק כשקצב הסיבוב משתנה.
       - dir: out
         feedback: 'מכפלה וקטורית ב-$\dot{\vec\omega}$ ניצבת ל-$\dot{\vec\omega}$, ולכן הכוח הזה במישור הדף.'
       - dir: zero
@@ -279,61 +287,68 @@ questions:
     qualitative: true
     level: bagrut
     prompt: >-
-      מפעילים את הקשר $\left(\dfrac{d}{dt}\right)_{\text{in}} = \left(\dfrac{d}{dt}\right)_{\text{rot}} + \vec\omega\times$
-      פעמיים על וקטור המקום $\vec r$, ומקבלים
-      $$\vec a_{\text{in}} = \vec a' + 2\vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r) + \dot{\vec\omega}\times\vec r$$
-      מאיפה בא המקדם 2 באיבר של קוריוליס?
+      סטודנטית הפעילה את הקשר $\left(\dfrac{d\vec Q}{dt}\right)_{\text{in}} = \left(\dfrac{d\vec Q}{dt}\right)_{\text{rot}} + \vec\omega\times\vec Q$
+      פעמיים על וקטור המקום, אבל בהפעלה השנייה שכחה איבר אחד, וקיבלה
+      $$\vec a = \vec a' + \vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r') + \dot{\vec\omega}\times\vec r'$$
+      במקום $2\vec\omega\times\vec v'$. איזו מהבדיקות הבאות **תגלה** לה שהתוצאה שגויה?
     choices:
       - text: >-
-          איבר אחד בא מגזירת $\vec v'$, שגם הוא וקטור שמשנה כיוון עם המערכת, והשני מגזירת $\vec\omega\times\vec r$, כי $\vec r$
-          משתנה במערכת המסתובבת בקצב $\vec v'$.
+          חיפושית שהולכת החוצה במהירות קבועה לאורך רדיוס של פטיפון שמסתובב במהירות זוויתית קבועה, בהשוואה לתאוצה הקוטבית
+          מפרק 1.
         correct: true
         feedback: >-
-          נכון. מהפעלה ראשונה $\vec v_{\text{in}} = \vec v' + \vec\omega\times\vec r$. בהפעלה השנייה, הנגזרת של $\vec v'$ נותנת
-          $\vec a' + \vec\omega\times\vec v'$, והנגזרת של $\vec\omega\times\vec r$ נותנת
-          $\dot{\vec\omega}\times\vec r + \vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r)$. שני העותקים של
-          $\vec\omega\times\vec v'$ מצטרפים.
-      - text: 'מהאיבר $\vec\omega\times(\vec\omega\times\vec r)$, שיש בו פעמיים $\vec\omega$.'
+          נכון. ביחס לחדר, בקואורדינטות קוטביות עם $\dot r = v'$ ו-$\dot\theta = \omega$, הרכיב הזוויתי של התאוצה הוא
+          $r\ddot\theta + 2\dot r\dot\theta = 2v'\omega$. הנוסחה שלה נותנת $v'\omega$ בלבד. הבדיקה הזו רגישה לאיבר של
+          קוריוליס, כי בה $\vec v' \neq 0$ ו-$\vec v'$ אינו מקביל ל-$\vec\omega$.
+      - text: 'מטבע שמונח במנוחה על פטיפון שמסתובב במהירות זוויתית קבועה.'
         feedback: >-
-          באיבר הצנטריפוגלי יש $\omega^2$, לא 2. המקדם 2 מופיע באיבר שליניארי ב-$\vec\omega$ וב-$\vec v'$, ויש לו שני
-          מקורות בגזירה.
-      - text: 'מוסכמה: הגדירו את כוח קוריוליס עם 2 כדי שיתאים למדידות.'
+          כאן $\vec v' = 0$, ולכן האיבר של קוריוליס מתאפס בשתי הנוסחאות, והן נותנות אותה תאוצה צנטריפטלית $\omega^2\rho$.
+          בדיקה שבה האיבר השגוי אפס לא יכולה לגלות אותו.
+        misconception: MC-7-coriolis-on-resting-body
+      - text: 'הגבול $\omega \to 0$: הנוסחה צריכה לחזור ל-$\vec a = \vec a''$.'
         feedback: >-
-          אין כאן בחירה: המקדם יוצא מהגזירה בלבד, וכל מקדם אחר היה נותן תנועה שגויה, למשל סטייה שגויה של גוף נופל.
-      - text: מכלל השרשרת על $\omega^2$.
-        feedback: 'אף איבר לא גוזרים בו את $\omega^2$. מעקב אחר שתי ההפעלות של הקשר מראה מאיפה כל איבר בא.'
+          שתי הנוסחאות עוברות את הבדיקה הזו, כי כל האיברים הנוספים מתאפסים כש-$\vec\omega$ ו-$\dot{\vec\omega}$ אפס. בדיקת
+          גבול נחוצה, אבל היא לא מבחינה בין מקדם 1 למקדם 2.
+      - text: 'גוף שנע לאורך ציר הסיבוב עצמו, במהירות קבועה.'
+        feedback: >-
+          כאן $\vec v' \parallel \vec\omega$, ולכן $\vec\omega\times\vec v' = 0$, וגם $\vec r'$ על הציר. שתי הנוסחאות נותנות
+          $\vec a = 0$, ולכן הבדיקה לא מגלה את הטעות.
     hints:
-      - 'כתבו את $\vec v_{\text{in}}$ אחרי הפעלה ראשונה, ואז הפעילו את הקשר על כל אחד משני האיברים שלו.'
+      - 'הטעות נמצאת באיבר $\vec\omega\times\vec v''$. באילו מהמצבים האיבר הזה לא אפס?'
 
   - id: Q-7.2-bug-acceleration
     type: numeric
     objectives: [OBJ-7.2-2]
     level: bagrut
     prompt: >-
-      חיפושית הולכת על קו רדיאלי של פטיפון שמסתובב ב-$\omega = 2.0\,\text{rad/s}$, החוצה, במהירות קבועה
-      $v' = 0.40\,\text{m/s}$ ביחס לפטיפון. מה גודל התאוצה שלה ביחס לחדר ברגע שהיא במרחק $r = 0.15\,\text{m}$ מהמרכז?
-    answer: 1.71
+      פטיפון מסתובב נגד כיוון השעון במבט מלמעלה, וברגע מסוים $\omega = 2.0\,\text{rad/s}$, והוא **מאיץ**:
+      $\dot\omega = 4.0\,\text{rad/s}^2$. באותו רגע חיפושית הולכת על קו רדיאלי שצויר על הפטיפון, החוצה, במהירות קבועה
+      $v' = 0.40\,\text{m/s}$ ביחס לפטיפון, והיא במרחק $r = 0.15\,\text{m}$ מהמרכז. מה גודל התאוצה שלה ביחס לחדר?
+    answer: 2.28
     unit: m/s²
     correctFeedback: >-
-      נכון. במערכת הפטיפון החיפושית נעה בקו ישר במהירות קבועה, $\vec a' = 0$, ו-$\dot{\vec\omega} = 0$. נשארים שני איברים:
-      $2\vec\omega\times\vec v'$, משיקי בגודל $2\cdot2.0\cdot0.40 = 1.6\,\text{m/s}^2$, ו-$\vec\omega\times(\vec\omega\times\vec r)$,
-      כלפי המרכז בגודל $\omega^2r = 0.60\,\text{m/s}^2$. הם ניצבים: $a = \sqrt{1.6^2 + 0.60^2} = 1.71\,\text{m/s}^2$.
-      **בדיקת גבולות:** כש-$\omega \to 0$ החיפושית נעה בקו ישר במהירות קבועה גם ביחס לחדר, $a \to 0$, וכש-$v' \to 0$
-      נשארת התאוצה הצנטריפטלית $\omega^2r$ של נקודה על הפטיפון.
+      נכון. במערכת הפטיפון החיפושית נעה בקו ישר במהירות קבועה, $\vec a' = 0$. ניקח $\hat r$ החוצה לאורך הקו ו-$\hat\varphi$
+      בכיוון הסיבוב. $2\vec\omega\times\vec v' = 2\cdot2.0\cdot0.40\,\hat\varphi = 1.6\,\hat\varphi$,
+      $\dot{\vec\omega}\times\vec r' = 4.0\cdot0.15\,\hat\varphi = 0.60\,\hat\varphi$, ושניהם בכיוון הסיבוב;
+      $\vec\omega\times(\vec\omega\times\vec r') = -\omega^2r\,\hat r = -0.60\,\hat r$. לכן
+      $a = \sqrt{2.2^2 + 0.60^2} = 2.28\,\text{m/s}^2$.
+      **בדיקת גבולות:** כש-$\omega \to 0$ ו-$\dot\omega \to 0$ החיפושית נעה בקו ישר במהירות קבועה גם ביחס לחדר, $a \to 0$.
     wrongFeedback: >-
-      השתמשו ב-$\vec a_{\text{in}} = \vec a' + 2\vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r) + \dot{\vec\omega}\times\vec r$.
-      אילו איברים מתאפסים כאן, ולאן פונים האחרים?
+      השתמשו ב-$\vec a = \vec a' + 2\vec\omega\times\vec v' + \vec\omega\times(\vec\omega\times\vec r') + \dot{\vec\omega}\times\vec r'$.
+      איזה איבר מתאפס כאן, ולאן פונה כל אחד מהאחרים?
     commonWrong:
-      - value: 1.0
-        feedback: 'שכחתם את המקדם 2 באיבר של קוריוליס: $\sqrt{0.80^2 + 0.60^2} = 1.0$. יש שני עותקים של $\vec\omega\times\vec v''$.'
-      - value: 0.6
-        feedback: 'זו רק התאוצה הצנטריפטלית $\omega^2r$. החיפושית גם נעה ביחס לפטיפון, ולכן נוסף האיבר $2\vec\omega\times\vec v''$.'
-      - value: 2.2
-        feedback: 'חיברתם את הגדלים. האיבר של קוריוליס משיקי והצנטריפטלי רדיאלי: הם ניצבים.'
+      - value: 1.71
+        feedback: 'השמטתם את $\dot{\vec\omega}\times\vec r''$. הפטיפון מאיץ, ולכן גם האיבר הזה תורם, בכיוון הסיבוב.'
+      - value: 1.52
+        feedback: 'שכחתם את המקדם 2 באיבר של קוריוליס: יש שני עותקים של $\vec\omega\times\vec v''$, ולכן הרכיב המשיקי $1.6 + 0.60$, לא $0.80 + 0.60$.'
+      - value: 1.17
+        feedback: 'הפכתם את הסימן של $\dot{\vec\omega}\times\vec r''$. $\hat z\times\hat r = \hat\varphi$: כשהפטיפון מאיץ, האיבר הזה בכיוון הסיבוב, כמו $2\vec\omega\times\vec v''$.'
+      - value: 2.8
+        feedback: 'חיברתם את הגדלים. האיבר הצנטריפטלי רדיאלי, והשניים האחרים משיקיים: חברו כווקטורים.'
       - value: 0
         feedback: >-
           $\vec a' = 0$ היא התאוצה במערכת הפטיפון. ביחס לחדר מסלול החיפושית מתעקל, וגודל המהירות שלה גדל, ולכן התאוצה
           אינה אפס.
         misconception: MC-7-derivative-frame-independent
     hints:
-      - 'האיבר $2\vec\omega\times\vec v''$ ניצב לרדיוס. לאן פונה $\vec\omega\times(\vec\omega\times\vec r)$?'
+      - 'בחרו $\hat r$ לאורך הקו ו-$\hat\varphi$ בכיוון הסיבוב. לאיזה מהם פונה כל איבר?'

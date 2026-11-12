@@ -1,0 +1,447 @@
+# Workbook, lesson 7.4 (the rotating Earth). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch7/7-4/workbook.ts with src/physics/constants.ts (G = 9.8 as the
+# gravitational acceleration without rotation, OMEGA_EARTH = 7.29e-5 rad/s, R_EARTH = 6.37e6 m),
+# src/physics/rotating.ts and src/physics/earthrot.ts (ω²R = 0.0339 m/s²):
+#   W01 |g_eff|: pole 9.800, 45° 9.783, ±30° 9.775, equator 9.766 m/s²;
+#   W02 λ = 50°: ω²R cos λ = 0.0218, up 0.0140, toward the equator 0.0167 m/s²; R cos λ = 4.09e3 km;
+#   W04 λ = 20°: α = 1.11e-3 rad = 0.0638°; a 30 m line: 33.4 mm;
+#   W05 50 m at 10°: t = 3.19 s, d = 7.64 mm east;
+#   W06 55°: 12.3°/h, 37.0° in 3 h (clockwise), a turn in 29.2 h;
+#   W07 2.0e5 kg, 30 m/s north, 50°: 670 N toward the east rail (3.42e-4 of the weight);
+#   W08 800 m/s over 1000 m at 45°: t = 1.25 s, ω sin λ v t² = 6.44 cm to the right (an RK4 run agrees);
+#   W09 river 2 m/s north, 45°, 1 km: 2ωv sin λ = 2.06e-4 m/s², tilt 2.10e-5 rad, 2.10 cm, east bank higher;
+#   W10 α = 1° at 45°: first order ω = 2.32e-4 rad/s (7.53 h); exact ω = 2.30e-4 rad/s, a day of 7.60 h (3.15 ω);
+#   c1 52°: a puck at 5 m/s circles clockwise, r = 43.5 km, once in 15.2 h; a train at 50 m/s: φ = 5.86e-4 rad
+#      = 0.0336°;
+#   c2 52°, 1000 m/s: flight 144 s, east deflection 626 m (an RK4 run in the Earth frame: 626 m).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '7.4'
+practice:
+  - id: W-7.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-7.4-1]
+    prompt: >-
+      אותו גוש נשקל במאזני קפיץ בחמישה מקומות: בקוטב הצפוני, בקו רוחב $45^\circ$ צפון, ב-$30^\circ$ צפון, ב-$30^\circ$
+      דרום ועל קו המשווה. ראו בכדור הארץ כדור. דרגו את הקריאות מהגדולה לקטנה, ונמקו בלי חישוב. אחר כך חשבו את
+      $|\vec g_{\text{eff}}|$ בכל מקום.
+    answer: >-
+      הקוטב > $45^\circ$ > $30^\circ$ צפון = $30^\circ$ דרום > קו המשווה: $9.800$, $9.783$, $9.775$, $9.775$, $9.766\,\text{m/s}^2$.
+    solution:
+      - kind: law
+        text: >-
+          במערכת של כדור הארץ המאזניים מראים $m|\vec g_{\text{eff}}|$, ו-$|\vec g_{\text{eff}}| \approx g - \omega^2R\cos^2\lambda$.
+      - kind: reasoning
+        text: >-
+          הקריאה יורדת ככל שהגוש רחוק יותר מהציר, $R\cos\lambda$, כי שם הכוח הצנטריפוגלי גדול יותר ופונה יותר נגד הכובד.
+          $\cos^2\lambda$ תלוי רק בגודל של $\lambda$, ולכן $30^\circ$ צפון ו-$30^\circ$ דרום שווים.
+      - kind: limit
+        text: >-
+          בקוטב $\cos\lambda = 0$ והקריאה היא $mg$; בקו המשווה $\cos\lambda = 1$ והיא הקטנה ביותר.
+      - kind: units
+        text: >-
+          $\omega^2R$ ב-$\text{s}^{-2}\cdot\text{m} = \text{m/s}^2$, כמו $g$.
+      - kind: substitution
+        text: >-
+          $\omega^2R = 0.0339\,\text{m/s}^2$. $\cos^245^\circ = 0.5$: $9.783$; $\cos^230^\circ = 0.75$: $9.775$; קו המשווה: $9.766\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          הקוטב ($9.800$) > $45^\circ$ ($9.783$) > $\pm30^\circ$ ($9.775$) > קו המשווה ($9.766\,\text{m/s}^2$).
+
+  - id: W-7.4-02
+    level: basic
+    objectives: [OBJ-7.4-1]
+    prompt: >-
+      בקו רוחב $50^\circ$ צפון: מה המרחק מציר כדור הארץ, ומה גודל התאוצה הצנטריפוגלית במערכת של כדור הארץ? פרקו אותה
+      לרכיב לאורך הקו מהמרכז החוצה ולרכיב בניצב לו, וקבעו את כיוון הרכיב הניצב.
+    answer: >-
+      $R\cos\lambda = 4.09\cdot10^{3}\,\text{km}$; $0.0218\,\text{m/s}^2$; $0.0140\,\text{m/s}^2$ החוצה מהמרכז, ו-$0.0167\,\text{m/s}^2$ דרומה, לכיוון קו המשווה.
+    solution:
+      - kind: given
+        text: >-
+          $\lambda = 50^\circ$, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$, $R = 6.37\cdot10^{6}\,\text{m}$. מערכת הייחוס: כדור הארץ.
+      - kind: law
+        text: >-
+          הכוח הצנטריפוגלי ליחידת מסה: $\omega^2\rho$, הרחק מהציר, עם $\rho = R\cos\lambda$.
+      - kind: manipulation
+        text: >-
+          הכיוון "הרחק מהציר" נוטה מהקו מהמרכז בזווית $\lambda$. לכן הרכיב החוצה מהמרכז $\omega^2R\cos^2\lambda$, והרכיב הניצב,
+          לכיוון קו המשווה, $\omega^2R\sin\lambda\cos\lambda$.
+      - kind: limit
+        text: >-
+          בקו המשווה כל התאוצה החוצה מהמרכז; בקוטב היא אפס. הרכיב הניצב מתאפס בשני המקומות.
+      - kind: units
+        text: >-
+          $\text{s}^{-2}\cdot\text{m} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $\rho = 6.37\cdot10^{6}\cdot\cos50^\circ = 4.09\cdot10^{6}\,\text{m}$; $\omega^2\rho = 0.0218$; $\cdot\cos50^\circ = 0.0140$; $\cdot\sin50^\circ = 0.0167\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          $0.0218\,\text{m/s}^2$ הרחק מהציר: $0.0140$ החוצה מהמרכז ו-$0.0167\,\text{m/s}^2$ דרומה.
+
+  - id: W-7.4-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      לאן פונה הרכיב האופקי של כוח קוריוליס בכל מקרה? אם אין רכיב אופקי, האם יש רכיב אנכי?
+
+      א. דיסקית מחליקה מערבה על קרח, בחיפה (חצי הכדור הצפוני).
+
+      ב. כדור מתגלגל צפונה על מגרש במלבורן (חצי הכדור הדרומי).
+
+      ג. מכונית נוסעת מזרחה על קו המשווה.
+    answer: >-
+      א. צפונה (ימינה מכיוון התנועה). ב. מערבה (שמאלה מכיוון התנועה). ג. אין רכיב אופקי; הכוח אנכי, כלפי מעלה.
+    solution:
+      - kind: law
+        text: >-
+          $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$ עם $\vec\omega = \omega\cos\lambda\,\hat n + \omega\sin\lambda\,\hat u$. על תנועה אופקית
+          רק $\omega\sin\lambda\,\hat u$ נותן כוח אופקי: ימינה מהתנועה כש-$\sin\lambda > 0$, שמאלה כש-$\sin\lambda \lt 0$.
+      - kind: reasoning
+        text: >-
+          א: ימינה ממערב היא צפונה. ב: שמאלה מצפון היא מערבה. ג: $\sin\lambda = 0$, ונשאר $\omega\hat n\times v\hat e = -\omega v\,\hat u$,
+          ולכן $\vec F_{\text{cor}} = +2m\omega v\,\hat u$, כלפי מעלה.
+      - kind: limit
+        text: >-
+          בקוטב הצפוני $\vec\omega = \omega\hat u$, וכל הכוח על תנועה אופקית אופקי, ימינה. בקו המשווה, הפוך: כולו אנכי.
+      - kind: units
+        text: >-
+          $m\omega v$ ב-$\text{kg}\cdot\text{s}^{-1}\cdot\text{m/s} = \text{N}$.
+      - kind: result
+        text: >-
+          א. צפונה. ב. מערבה. ג. אופקית אפס, ואנכית כלפי מעלה.
+
+  - id: W-7.4-04
+    level: mid
+    objectives: [OBJ-7.4-1]
+    prompt: >-
+      בקו רוחב $20^\circ$ צפון תולים משקולת על חוט באורך $30\,\text{m}$. מה הזווית בין החוט לבין הקו אל מרכז כדור הארץ,
+      ובכמה מילימטרים ולאיזה כיוון רחוקה המשקולת מהנקודה שהקו אל המרכז, דרך נקודת התלייה, עובר בה?
+    answer: >-
+      $\alpha = 1.11\cdot10^{-3}\,\text{rad} = 0.0638^\circ$; $33.4\,\text{mm}$ דרומה.
+    solution:
+      - kind: given
+        text: >-
+          $\lambda = 20^\circ$, $L = 30\,\text{m}$, $g = 9.8\,\text{m/s}^2$ בלי הסיבוב, $\omega^2R = 0.0339\,\text{m/s}^2$. מערכת הייחוס: כדור הארץ.
+      - kind: law
+        text: >-
+          $\tan\alpha = \dfrac{\omega^2R\sin\lambda\cos\lambda}{g - \omega^2R\cos^2\lambda}$, והמשקולת מוסטת לכיוון קו המשווה.
+      - kind: manipulation
+        text: >-
+          הזווית זעירה: $\alpha \approx \dfrac{\omega^2R}{2g}\sin2\lambda$, וההסטה בקצה החוט $L\tan\alpha \approx L\alpha$.
+      - kind: limit
+        text: >-
+          ב-$\lambda = 0$ ההסטה אפס. היא גדלה עם $L$: החוט הוא קו ישר שנוטה מהקו אל המרכז.
+      - kind: units
+        text: >-
+          $\alpha$ חסרת ממדים (רדיאנים), ו-$L\alpha$ במטרים.
+      - kind: substitution
+        text: >-
+          $\alpha = \dfrac{0.0339}{19.6}\cdot\sin40^\circ = 1.11\cdot10^{-3}\,\text{rad} = 0.0638^\circ$; $L\alpha = 30\cdot1.11\cdot10^{-3} = 0.0334\,\text{m}$.
+      - kind: result
+        text: >-
+          $0.0638^\circ$; המשקולת $33.4\,\text{mm}$ דרומה מהקו אל המרכז.
+
+  - id: W-7.4-05
+    level: mid
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      אבן נופלת ממנוחה מגובה $50\,\text{m}$ בקו רוחב $10^\circ$ צפון. הזניחו את התנגדות האוויר. בכמה מילימטרים ולאיזה כיוון
+      היא מוסטת מהנקודה שמתחת לנקודת השחרור? ובאותו גובה בקו רוחב $80^\circ$?
+    answer: >-
+      $7.64\,\text{mm}$ מזרחה; ב-$80^\circ$, $1.35\,\text{mm}$ מזרחה.
+    solution:
+      - kind: given
+        text: >-
+          $h = 50\,\text{m}$, $\lambda = 10^\circ$ ו-$80^\circ$, $g = 9.8\,\text{m/s}^2$, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$.
+      - kind: law
+        text: >-
+          בסדר ראשון ב-$\omega$: $d = \tfrac13\omega gt^3\cos\lambda$, מזרחה, עם $t = \sqrt{2h/g}$.
+      - kind: manipulation
+        text: >-
+          הגובה זהה בשני המקומות, ולכן גם $t$; היחס בין ההסטות הוא $\cos80^\circ/\cos10^\circ$.
+      - kind: limit
+        text: >-
+          ההסטה הגדולה ביותר בקו המשווה, ואפס בקוטב, ולכן $80^\circ$ נותן הרבה פחות מ-$10^\circ$.
+      - kind: units
+        text: >-
+          $\text{s}^{-1}\cdot\text{m}\,\text{s}^{-2}\cdot\text{s}^3 = \text{m}$.
+      - kind: substitution
+        text: >-
+          $t = \sqrt{100/9.8} = 3.19\,\text{s}$; $d = \tfrac13\cdot7.29\cdot10^{-5}\cdot9.8\cdot3.19^3\cdot\cos10^\circ = 7.64\cdot10^{-3}\,\text{m}$; ב-$80^\circ$: $1.35\cdot10^{-3}\,\text{m}$.
+      - kind: result
+        text: >-
+          $7.64\,\text{mm}$ מזרחה ב-$10^\circ$; $1.35\,\text{mm}$ מזרחה ב-$80^\circ$.
+
+  - id: W-7.4-06
+    level: mid
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      מטוטלת פוקו תלויה בקו רוחב $55^\circ$ צפון ומשוחררת כשהיא מתנודדת בכיוון צפון-דרום. כמה מעלות לשעה מסתובב מישור
+      התנודה, באיזה כיוון במבט מלמעלה, ובאיזה כיוון יהיה המישור אחרי $3\,\text{h}$?
+    answer: >-
+      $12.3^\circ$ לשעה, עם כיוון השעון; אחרי $3\,\text{h}$ הוא סובב ב-$37.0^\circ$: מצפון-דרום לכיוון צפון-מזרח/דרום-מערב, $37.0^\circ$ מזרחה מהצפון.
+    solution:
+      - kind: given
+        text: >-
+          $\lambda = 55^\circ$, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$; בהתחלה המישור צפון-דרום.
+      - kind: law
+        text: >-
+          המישור מסתובב ביחס לקרקע בקצב $\omega\sin\lambda$, עם כיוון השעון בחצי הכדור הצפוני.
+      - kind: manipulation
+        text: >-
+          $\omega$ במעלות לשעה: $\omega\cdot3600\cdot\dfrac{180}{\pi} = 15.0^\circ/\text{h}$. כפול $\sin55^\circ$. עם כיוון השעון במבט מלמעלה, הקצה הצפוני של המישור זז מזרחה.
+      - kind: limit
+        text: >-
+          בקוטב $15.0^\circ$ לשעה, יום כוכבי לסיבוב; בקו המשווה אפס.
+      - kind: units
+        text: >-
+          $\omega\sin\lambda$ ב-$\text{rad/s}$, ולכן גם במעלות לשעה.
+      - kind: substitution
+        text: >-
+          $15.04\cdot\sin55^\circ = 12.3^\circ/\text{h}$; אחרי $3\,\text{h}$: $37.0^\circ$. סיבוב שלם ב-$29.2\,\text{h}$.
+      - kind: result
+        text: >-
+          $12.3^\circ$ לשעה, עם כיוון השעון; אחרי $3\,\text{h}$ המישור מצביע $37.0^\circ$ מזרחה מהצפון (ובצד השני, $37.0^\circ$ מערבה מהדרום).
+
+  - id: W-7.4-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      רכבת במסה $2.0\cdot10^{5}\,\text{kg}$ נוסעת צפונה במהירות $30\,\text{m/s}$ על מסילה ישרה בקו רוחב $50^\circ$ צפון.
+
+      א. במערכת של כדור הארץ, מה גודל הרכיב האופקי של כוח קוריוליס על הרכבת, ולאן הוא פונה? איזו מסילה, המזרחית או
+      המערבית, צריכה להפעיל כוח צידי כדי שהרכבת תיסע ישר?
+
+      ב. מה משתנה כשהרכבת נוסעת דרומה באותה מהירות?
+
+      ג. במערכת האינרציאלית אין כוח קוריוליס. מה אז "מסביר" את הכוח שהמסילה מפעילה?
+    answer: >-
+      א. $670\,\text{N}$ מזרחה; המסילה המזרחית דוחפת מערבה. ב. הכוח פונה מערבה, והמסילה המערבית דוחפת. ג. כדי לנוע לאורך קו
+      ישר על פני כדור מסתובב, הרכבת צריכה תאוצה אמיתית במערכת האינרציאלית, והמסילה נותנת אותה.
+    solution:
+      - kind: given
+        text: >-
+          $m = 2.0\cdot10^{5}\,\text{kg}$, $v' = 30\,\text{m/s}$ צפונה, $\lambda = 50^\circ$. צירים: $\hat e$ מזרחה, $\hat n$ צפונה, $\hat u$ למעלה.
+      - kind: law
+        text: >-
+          הרכיב האופקי: $\vec F_{\text{cor},\parallel} = -2m\omega\sin\lambda\;\hat u\times\vec v'$, בגודל $2m\omega v'\sin\lambda$.
+      - kind: manipulation
+        text: >-
+          צפונה: $\hat u\times\hat n = -\hat e$, ולכן הכוח $+\hat e$, מזרחה. כדי שהרכבת לא תסטה, כוח אמיתי מערבה צריך לאזן אותו: הגלגלים נלחצים אל המסילה המזרחית, והיא דוחפת אותם מערבה. דרומה: $\hat u\times(-\hat n) = \hat e$, והכוח מערבה.
+      - kind: limit
+        text: >-
+          בקו המשווה $\sin\lambda = 0$: אין כוח צידי. בכל מקרה הכוח ימינה מכיוון הנסיעה בצפון.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{s}^{-1}\cdot\text{m/s} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $2\cdot2.0\cdot10^{5}\cdot7.29\cdot10^{-5}\cdot30\cdot\sin50^\circ = 670\,\text{N}$, פי $3.42\cdot10^{-4}$ מהמשקל.
+      - kind: result
+        text: >-
+          א. $670\,\text{N}$ מזרחה, והמסילה המזרחית מאזנת אותו. ב. מערבה, והמסילה המערבית. ג. במערכת האינרציאלית המסילה מפעילה כוח אמיתי כי הכיוון "צפונה" עצמו מסתובב עם כדור הארץ, והרכבת חייבת להאיץ כדי לעקוב אחריו.
+
+  - id: W-7.4-08
+    level: bagrut
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      קליע נורה אופקית צפונה במהירות $800\,\text{m/s}$ אל מטרה במרחק $1000\,\text{m}$, בקו רוחב $45^\circ$ צפון. הזניחו את
+      התנגדות האוויר ואת השינוי במהירות.
+
+      א. הראו שבסדר ראשון ב-$\omega$ הקליע מוסט הצידה במרחק $\omega v t^2\sin\lambda$, וקבעו לאיזה צד.
+
+      ב. חשבו את ההסטה. האם צלף צריך להתחשב בה?
+    answer: >-
+      א. ימינה מכיוון התנועה, מזרחה. ב. $6.44\,\text{cm}$ מזרחה; כן, במטרה קטנה בטווח הזה זה לא זניח.
+    solution:
+      - kind: given
+        text: >-
+          $v = 800\,\text{m/s}$ צפונה, $L = 1000\,\text{m}$, $\lambda = 45^\circ$, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$. מערכת הייחוס: כדור הארץ; $\hat e$ מזרחה, $\hat n$ צפונה.
+      - kind: law
+        text: >-
+          הרכיב האופקי של כוח קוריוליס ליחידת מסה: $2\omega v\sin\lambda$, בניצב ל-$\vec v'$, ימינה בצפון.
+      - kind: manipulation
+        text: >-
+          בסדר ראשון המהירות נשארת $v\hat n$, והתאוצה הצידית קבועה, $a_e = 2\omega v\sin\lambda$. ממנוחה בכיוון הצידי: $x_e = \tfrac12a_et^2 = \omega vt^2\sin\lambda$, עם $t = L/v$.
+      - kind: limit
+        text: >-
+          בקו המשווה אין הסטה אופקית; בחצי הכדור הדרומי היא מערבה. כש-$t$ קטן פי 2, ההסטה קטנה פי 4.
+      - kind: units
+        text: >-
+          $\text{s}^{-1}\cdot\text{m/s}\cdot\text{s}^2 = \text{m}$.
+      - kind: substitution
+        text: >-
+          $t = 1000/800 = 1.25\,\text{s}$; $x_e = 7.29\cdot10^{-5}\cdot800\cdot1.25^2\cdot\sin45^\circ = 0.0644\,\text{m}$. (באותו זמן הקליע גם נופל $7.66\,\text{m}$, שכל רובה מכויל לתקן.)
+      - kind: result
+        text: >-
+          $6.44\,\text{cm}$ מזרחה, ימינה מכיוון הירי.
+
+  - id: W-7.4-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-7.4-1, OBJ-7.4-2]
+    prompt: >-
+      נהר ברוחב $1.0\,\text{km}$ זורם צפונה במהירות $2.0\,\text{m/s}$, בקו רוחב $45^\circ$ צפון. פני מים במנוחה במערכת מסוימת
+      ניצבים לסכום הכוחות על חלקיק מים בה, ליחידת מסה (כמו האנך).
+
+      א. במערכת של כדור הארץ, מה הכוח האופקי ליחידת מסה על מים שזורמים, שאין על מים עומדים?
+
+      ב. איזו גדה גבוהה יותר, ובכמה סנטימטרים?
+    answer: >-
+      א. כוח קוריוליס, $2.06\cdot10^{-4}\,\text{m/s}^2$ מזרחה. ב. הגדה המזרחית (הימנית), גבוהה ב-$2.10\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $v = 2.0\,\text{m/s}$ צפונה, רוחב $w = 1.0\,\text{km}$, $\lambda = 45^\circ$, $g = 9.8\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          במערכת של כדור הארץ, על מים עומדים פועלת ליחידת מסה $\vec g_{\text{eff}}$, ופני המים ניצבים לה (האנך מגדיר את "אופקי"). על מים זורמים נוסף הרכיב האופקי של כוח קוריוליס, $2\omega v\sin\lambda$, ימינה מהזרימה.
+      - kind: manipulation
+        text: >-
+          פני המים ניצבים לסכום $\vec g_{\text{eff}} + 2\omega v\sin\lambda\,\hat e$, ולכן נוטים מהאופקי בזווית $\beta \approx 2\omega v\sin\lambda/g$, עולים לכיוון שאליו פונה הכוח. ההפרש בין הגדות: $w\beta$.
+      - kind: limit
+        text: >-
+          בלי זרימה, $\beta = 0$; בקו המשווה $\beta = 0$; בחצי הכדור הדרומי הגדה המערבית (השמאלית) גבוהה יותר.
+      - kind: units
+        text: >-
+          $\omega v/g$ חסר ממדים; $w\beta$ במטרים.
+      - kind: substitution
+        text: >-
+          $2\cdot7.29\cdot10^{-5}\cdot2.0\cdot\sin45^\circ = 2.06\cdot10^{-4}\,\text{m/s}^2$; $\beta = 2.10\cdot10^{-5}\,\text{rad}$; $1000\cdot2.10\cdot10^{-5} = 0.0210\,\text{m}$.
+      - kind: result
+        text: >-
+          הגדה המזרחית, מימין לזרימה, גבוהה ב-$2.10\,\text{cm}$.
+
+  - id: W-7.4-10
+    level: bagrut
+    objectives: [OBJ-7.4-1]
+    prompt: >-
+      כמה זמן היה צריך להימשך יום כדי שבקו רוחב $45^\circ$ האנך ינטה בדיוק $1^\circ$ מהקו אל מרכז כדור הארץ (באותו $R$
+      ובאותו $g = 9.8\,\text{m/s}^2$ בלי הסיבוב)? חשבו בקירוב מסדר ראשון, ואחר כך בדקו בביטוי המדויק אם הקירוב מספיק.
+    answer: >-
+      בקירוב $7.53\,\text{h}$; בביטוי המדויק $\omega = 2.30\cdot10^{-4}\,\text{rad/s}$ ויום של $7.60\,\text{h}$: הקירוב טוב לאחוז.
+    solution:
+      - kind: given
+        text: >-
+          $\alpha = 1^\circ = 0.01745\,\text{rad}$, $\lambda = 45^\circ$, $R = 6.37\cdot10^{6}\,\text{m}$, $g = 9.8\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          $\tan\alpha = \dfrac{\omega^2R\sin\lambda\cos\lambda}{g - \omega^2R\cos^2\lambda}$; בסדר ראשון $\alpha \approx \dfrac{\omega^2R}{2g}\sin2\lambda$.
+      - kind: manipulation
+        text: >-
+          ב-$45^\circ$, $\sin2\lambda = 1$: $\omega_1 = \sqrt{2g\alpha/R}$. בביטוי המדויק, עם $c = \omega^2R$ ו-$\cos^2\lambda = \sin\lambda\cos\lambda = \tfrac12$: $\tan\alpha = \dfrac{c/2}{g - c/2}$, ולכן $c = \dfrac{2g\tan\alpha}{1 + \tan\alpha}$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 0$ שני הביטויים מתלכדים ו-$\omega \to 0$. היום המתאים ל-$\omega$ האמיתי, $23.9\,\text{h}$, נותן נטייה קטנה פי $3.15^2$.
+      - kind: units
+        text: >-
+          $\sqrt{(\text{m/s}^2)/\text{m}} = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\omega_1 = \sqrt{2\cdot9.8\cdot0.01745/6.37\cdot10^{6}} = 2.32\cdot10^{-4}\,\text{rad/s}$, יום $2\pi/\omega_1 = 7.53\,\text{h}$. מדויק: $c = 0.336\,\text{m/s}^2$, $\omega = 2.30\cdot10^{-4}\,\text{rad/s}$, יום $7.60\,\text{h}$, פי $3.15$ מהיר מהיום.
+      - kind: result
+        text: >-
+          יום של כ-$7.6\,\text{h}$. הקירוב מסדר ראשון נותן $7.53\,\text{h}$, טעות של אחוז, כי גם אז $\omega^2R/g$ הוא רק $3.4\%$.
+
+challenge:
+  - id: W-7.4-c1
+    stars: 1
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      בשאלות האלה הזניחו את הכוח הצנטריפוגלי, $\omega$ היא המהירות הזוויתית של כדור הארץ, והכל קורה בקו רוחב $\theta$
+      בחצי הכדור הצפוני.
+
+      א. ביום שקט מאוד הים קפא. דיסקית נדחפת על הקרח, ואין עליה חיכוך. היא נעה במעגל: עם כיוון השעון או נגדו, במבט
+      מלמעלה? מה רדיוס המעגל, בעזרת $\theta$, מהירות הדיסקית $v$ ו-$\omega$? (הניחו שהתנועה כולה במישור הניצב לקו
+      מהמרכז.) חשבו אותו ל-$v = 5.0\,\text{m/s}$ ו-$\theta = 52^\circ$.
+
+      ב. חוט עם משקולת תלוי מתקרת קרון של רכבת, במנוחה ביחס לרכבת. כשהרכבת נוסעת במהירות $V$ לכיוון צפון-מזרח, החוט
+      נוטה בזווית $\varphi$ מהכיוון שבו הוא תלוי כשהרכבת עומדת. הראו ש-$\varphi \approx 2\omega V\sin\theta/g$. מדוע מותר
+      להזניח כאן את הכוח הצנטריפוגלי? חשבו את $\varphi$ ל-$V = 50\,\text{m/s}$ ו-$\theta = 52^\circ$.
+    answer: >-
+      א. עם כיוון השעון; $r = \dfrac{v}{2\omega\sin\theta} = 43.5\,\text{km}$ (סיבוב ב-$15.2\,\text{h}$). ב. $\varphi = 5.86\cdot10^{-4}\,\text{rad} = 0.0336^\circ$;
+      הכוח הצנטריפוגלי תלוי רק במקום, ולכן הוא זהה ברכבת עומדת וברכבת נוסעת, וכבר בתוך הכיוון "כשהרכבת עומדת".
+    solution:
+      - kind: given
+        text: >-
+          קו רוחב $\theta$ צפון; צירים: $\hat e$ מזרחה, $\hat n$ צפונה, $\hat u$ למעלה. $\vec\omega = \omega\cos\theta\,\hat n + \omega\sin\theta\,\hat u$. מערכת הייחוס: כדור הארץ.
+      - kind: law
+        text: >-
+          $m\vec a' = \vec F + m\vec g_{\text{eff}} - 2m\vec\omega\times\vec v'$. על מהירות אופקית, הרכיב האופקי של כוח קוריוליס הוא $2m\omega v\sin\theta$, בניצב למהירות, ימינה.
+      - kind: manipulation
+        text: >-
+          א: על הקרח הכוח האופקי היחיד הוא קוריוליס. הוא ניצב למהירות ולא משנה את גודלה, ולכן הדיסקית נעה במעגל, והכוח הוא הכוח השקול הרדיאלי: $\dfrac{mv^2}{r} = 2m\omega v\sin\theta$. הוא תמיד ימינה מהתנועה, ולכן המרכז מימין: עם כיוון השעון.
+          ב: ברכבת שנוסעת ישר במהירות קבועה, המשקולת במנוחה ביחס לרכבת, כלומר נעה ב-$\vec V$ במערכת של כדור הארץ, בלי תאוצה. המתיחות מאזנת את $m\vec g_{\text{eff}}$ ואת הרכיב האופקי של כוח קוריוליס, $2m\omega V\sin\theta$, ימינה מהנסיעה (לדרום-מזרח). לכן החוט נוטה מהכיוון של $\vec g_{\text{eff}}$ בזווית שהטנגנס שלה $2\omega V\sin\theta/g$. (הרכיב האנכי של קוריוליס, מ-$\omega\cos\theta$ והרכיב המזרחי של $\vec V$, רק משנה מעט את הגודל.)
+      - kind: limit
+        text: >-
+          כש-$v$ גדל, המעגל גדל; כש-$\theta \to 0$, $r \to \infty$: בקו המשווה הדיסקית נעה ישר. ב-$V \to 0$, $\varphi \to 0$. הכוח הצנטריפוגלי $-m\vec\omega\times(\vec\omega\times\vec r)$ תלוי במקום ולא במהירות, ולכן הוא אותו כוח ברכבת עומדת ונוסעת: הוא כבר בתוך $\vec g_{\text{eff}}$, הכיוון שממנו מודדים את $\varphi$.
+      - kind: units
+        text: >-
+          $v/(\omega\sin\theta)$ ב-$\dfrac{\text{m/s}}{\text{s}^{-1}} = \text{m}$; $\omega V/g$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          א: $r = \dfrac{5.0}{2\cdot7.29\cdot10^{-5}\cdot\sin52^\circ} = 4.35\cdot10^{4}\,\text{m}$; סיבוב ב-$2\pi r/v = \pi/(\omega\sin\theta) = 15.2\,\text{h}$.
+          ב: $\varphi = \dfrac{2\cdot7.29\cdot10^{-5}\cdot50\cdot\sin52^\circ}{9.8} = 5.86\cdot10^{-4}\,\text{rad} = 0.0336^\circ$.
+      - kind: result
+        text: >-
+          א. עם כיוון השעון, $r = v/(2\omega\sin\theta) = 43.5\,\text{km}$. ב. $\varphi \approx 2\omega V\sin\theta/g = 0.0336^\circ$, ימינה מכיוון הנסיעה.
+    source:
+      name: University of Cambridge, Part IA Dynamics and Relativity, Example Sheet 3 (D. Tong)
+      year: 2012
+      problem: Problem 7 (b) and (d)
+      url: https://davidtong.org/pdfs/teaching/dynamics-and-relativity/htl3.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-7.4-c2
+    stars: 2
+    objectives: [OBJ-7.4-2]
+    prompt: >-
+      קליע במסה $m$ נורה מנקודה $\vec r_0$ במהירות $\vec u$ במערכת שמסתובבת במהירות זוויתית קבועה $\vec\omega$ ביחס
+      למערכת אינרציאלית. פועל עליו כוח כובד $m\vec g$, קבוע במערכת המסתובבת (הכוח הצנטריפוגלי כלול בו).
+
+      א. מתוך משוואת התנועה, והזנחת איברים מסדר $\omega^2$, הראו שהמקום של הקליע במערכת המסתובבת הוא בקירוב
+      $$\vec r_0 + \vec ut + \left(\tfrac12\vec g - \vec\omega\times\vec u\right)t^2 + \tfrac13\,\vec g\times\vec\omega\,t^3$$
+
+      ב. הקליע נורה מגובה פני הים בקו רוחב $\theta$ בחצי הכדור הצפוני, בזווית $45^\circ$ מהאנך, צפונה. הראו שכשהוא חוזר
+      לגובה פני הים (הזניחו את העקמומיות של כדור הארץ ואת התנגדות האוויר) הוא מוסט מזרחה בקירוב ב-
+      $$\frac{\sqrt2\,\omega u^3}{3g^2}\left(3\sin\theta - \cos\theta\right)$$
+
+      ג. חשבו את ההסטה ב-$52^\circ$ צפון ל-$u = 1000\,\text{m/s}$. באיזה קו רוחב היא מתאפסת?
+    answer: >-
+      ג. $626\,\text{m}$ מזרחה (זמן מעוף $144\,\text{s}$); מתאפסת כש-$\tan\theta = \tfrac13$, ב-$18.4^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega$ קבועה, $\vec g$ קבוע במערכת המסתובבת, $\vec r(0) = \vec r_0$, $\dot{\vec r}(0) = \vec u$. בסעיף ב: צירים $\hat e$ מזרחה, $\hat n$ צפונה, $\hat u_z$ למעלה; $\vec g = -g\hat u_z$, $\vec\omega = \omega(\cos\theta\,\hat n + \sin\theta\,\hat u_z)$, $\vec u = \tfrac{u}{\sqrt2}(\hat n + \hat u_z)$.
+      - kind: law
+        text: >-
+          $\ddot{\vec r} = \vec g - 2\vec\omega\times\dot{\vec r}$ (הכוח הצנטריפוגלי בתוך $\vec g$, ואיבר מסדר $\omega^2$ נזנח).
+      - kind: manipulation
+        text: >-
+          א: בסדר אפס $\dot{\vec r} = \vec u + \vec gt$. מציבים באיבר של קוריוליס: $\ddot{\vec r} = \vec g - 2\vec\omega\times\vec u - 2t\,\vec\omega\times\vec g$. אינטגרציה פעמיים מהתנאים ההתחלתיים: $\vec r = \vec r_0 + \vec ut + \tfrac12\vec gt^2 - \vec\omega\times\vec u\,t^2 - \tfrac13\vec\omega\times\vec g\,t^3$, ו-$-\vec\omega\times\vec g = \vec g\times\vec\omega$.
+          ב: $\vec\omega\times\vec u = \tfrac{\omega u}{\sqrt2}(\cos\theta - \sin\theta)\,\hat e$ ו-$\vec g\times\vec\omega = g\omega\cos\theta\,\hat e$. זמן המעוף בסדר אפס: $\tfrac{u}{\sqrt2}t - \tfrac12gt^2 = 0$, כלומר $t = \sqrt2u/g$. מציבים: $x_e = \tfrac{\omega u}{\sqrt2}(\sin\theta - \cos\theta)t^2 + \tfrac13g\omega\cos\theta\,t^3 = \dfrac{\sqrt2\omega u^3}{g^2}\left(\sin\theta - \cos\theta + \tfrac23\cos\theta\right)$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ אין הסטה. בקוטב, $\cos\theta = 0$: $\tfrac{\sqrt2\omega u^3}{g^2}$ מזרחה, כולה מהרכיב האופקי של התנועה צפונה, ימינה. בקו המשווה $-\tfrac{\sqrt2\omega u^3}{3g^2}$: מערבה, כי בעלייה כוח קוריוליס על התנועה כלפי מעלה פונה מערבה. בין לבין יש קו רוחב שבו שני האפקטים מתבטלים, $\tan\theta = \tfrac13$.
+      - kind: units
+        text: >-
+          $\omega u^3/g^2$ ב-$\dfrac{\text{s}^{-1}\cdot\text{m}^3\text{s}^{-3}}{\text{m}^2\text{s}^{-4}} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $t = \sqrt2\cdot1000/9.8 = 144\,\text{s}$; $3\sin52^\circ - \cos52^\circ = 1.75$; $\dfrac{\sqrt2\cdot7.29\cdot10^{-5}\cdot10^{9}}{3\cdot9.8^2}\cdot1.75 = 626\,\text{m}$. ($\arctan\tfrac13 = 18.4^\circ$.)
+      - kind: result
+        text: >-
+          כ-$626\,\text{m}$ מזרחה ב-$52^\circ$ צפון, על טווח של כ-$102\,\text{km}$ בלי התנגדות אוויר; ההסטה מתאפסת ב-$18.4^\circ$ צפון.
+    source:
+      name: University of Cambridge, Part IA Dynamics and Relativity, Example Sheet 3 (D. Tong)
+      year: 2012
+      problem: Problem 8
+      url: https://davidtong.org/pdfs/teaching/dynamics-and-relativity/htl3.pdf
+      verified: '2026-11-12'
+      adapted: true

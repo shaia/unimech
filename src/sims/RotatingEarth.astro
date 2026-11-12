@@ -1,0 +1,7 @@
+---
+/** The rotating Earth in its own frame, for lesson MDX: <Spread fig="fig-7-4a" figure={RotatingEarth} figureProps={{ view: 'meridian', … }}>. */
+import RotatingEarth, { type RotatingEarthProps } from './RotatingEarth';
+type Props = RotatingEarthProps;
+---
+
+<RotatingEarth client:visible {...Astro.props} />

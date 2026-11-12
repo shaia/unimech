@@ -1,0 +1,448 @@
+# Workbook, lesson 7.3 (the centrifugal and Coriolis forces). Format: CLAUDE.md, "The solution format".
+# Every number was recomputed by .scratch/ch7/7-3/wb.ts with src/physics/constants.ts (G = 9.8) and
+# src/physics/carousel.ts:
+#   W02 arm 8.0 m, 5g: ω = 2.47 rad/s, T = 2.54 s, speed 19.8 m/s;
+#   W03 0.50 kg, ω = 0.30, v′ = 2.0 m/s: F_cor = 0.600 N, F_cf at 1.5 m = 0.0675 N (ratio 8.89), weight 4.90 N;
+#   W05 ρ = 4.0 m, ω = 0.80: tan θ = 0.261, θ = 14.6°, g_eff = 10.1 m/s²;
+#   W06 R = 2.5 m, μ = 0.50: ω_min = 2.80 rad/s, T_max = 2.24 s (26.7 turns a minute);
+#   W07 ρ = 3.0 m, ω = 0.50, flight 0.80 s: lands 0.231 m farther out and 0.0630 m behind (exact, toRotating);
+#   W08 rod, ω = 3.0, r₀ = 0.20 → 1.0 m, m = 0.050 kg: t = 0.764 s, ṙ = 2.94 m/s, N = 0.882 N, speed in S 4.20 m/s,
+#       work of N in S = 0.432 J = mω²(r² − r₀²);
+#   W09 liquid mirror f = 2.0 m: ω = 1.57 rad/s, T = 4.01 s, depth at 0.50 m 3.13 cm;
+#   W10 ω = 1.5, ρ₀ = 0.40, v′ = 0.60 m/s against the rotation: at rest in S; F_cf/m = 0.900, F_cor/m = 1.80,
+#       net 0.900 m/s² inward = v′²/ρ₀; one turn in S′ takes 4.19 s;
+#   c1 symbolic; c2 (Tong, sheet 3, Q9; replaced the skater of 8.012 PS10, which 7.2 keeps) a = 0.10 m, ω = 4.0,
+#       m = 0.020 kg: t = arccosh 2/ω = 0.329 s, ẏ at C = √3 aω = 0.693 m/s, 2maω² = 0.0640 N, 2mωẏ = 0.111 N,
+#       horizontal 0.175 N, mg 0.196 N, |N| = 0.263 N (.scratch/review/ch7/r73.ts, the chapter 7 review).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '7.3'
+practice:
+  - id: W-7.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-7.3-1]
+    prompt: >-
+      קרוסלה מסתובבת **עם** כיוון השעון במבט מלמעלה. ילד הולך עליה לאורך רדיוס, אל המרכז. במערכת הקרוסלה, לאן פונה
+      הכוח הצנטריפוגלי עליו, ולאן פונה כוח קוריוליס? נמקו בעזרת המכפלה הווקטורית.
+    answer: >-
+      הכוח הצנטריפוגלי החוצה מהציר; כוח קוריוליס במשיק, בכיוון הסיבוב של הקרוסלה (שמאלה מכיוון ההליכה).
+    solution:
+      - kind: given
+        text: >-
+          $\hat z$ כלפי מעלה, $\hat\rho$ מהציר החוצה, $\hat\varphi$ נגד כיוון השעון. הסיבוב עם כיוון השעון, ולכן $\vec\omega = -\omega\hat z$ עם $\omega \gt 0$. ההליכה פנימה: $\vec v' = -v'\hat\rho$.
+      - kind: law
+        text: >-
+          $\vec F_{\text{cf}} = m\omega^2\rho\,\hat\rho$ בכל כיוון סיבוב; $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$, עם $\hat z\times\hat\rho = \hat\varphi$.
+      - kind: manipulation
+        text: >-
+          $\vec\omega\times\vec v' = (-\omega\hat z)\times(-v'\hat\rho) = \omega v'\,\hat\varphi$, ולכן $\vec F_{\text{cor}} = -2m\omega v'\,\hat\varphi$: עם כיוון השעון, כלומר בכיוון הסיבוב של הקרוסלה.
+      - kind: limit
+        text: >-
+          בסיבוב עם כיוון השעון כוח קוריוליס מסיט שמאלה מכיוון התנועה. שמאלה מ-$-\hat\rho$ הוא $\hat z\times(-\hat\rho) = -\hat\varphi$, אותה תשובה. אם הילד עומד, $v' = 0$, נשאר רק הכוח הצנטריפוגלי.
+      - kind: units
+        text: >-
+          $m\omega v'$ ב-$\text{kg}\cdot\text{s}^{-1}\cdot\text{m/s} = \text{N}$.
+      - kind: result
+        text: >-
+          הכוח הצנטריפוגלי החוצה; כוח קוריוליס במשיק, בכיוון הסיבוב (עם כיוון השעון). ילד שהולך פנימה מרגיש דחיפה הצידה, ״קדימה״ עם הקרוסלה.
+
+  - id: W-7.3-02
+    level: basic
+    objectives: [OBJ-7.3-1]
+    prompt: >-
+      צנטריפוגה לאימון טייסים היא זרוע באורך $8.0\,\text{m}$ שמסתובבת במישור אופקי. בקצה הזרוע יושב טייס. באיזו מהירות
+      זוויתית הכוח הצנטריפוגלי על הטייס, במערכת הזרוע, שווה לפי $5$ מהמשקל שלו? כמה זמן לוקח סיבוב, ומה מהירות הטייס
+      במערכת החדר?
+    answer: >-
+      $\omega = 2.47\,\text{rad/s}$; סיבוב ב-$2.54\,\text{s}$; $19.8\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\rho = 8.0\,\text{m}$, $F_{\text{cf}} = 5mg$, $g = 9.8\,\text{m/s}^2$. הטייס במנוחה במערכת הזרוע.
+      - kind: law
+        text: >-
+          $F_{\text{cf}} = m\omega^2\rho$; $T = 2\pi/\omega$; במערכת החדר $v = \omega\rho$.
+      - kind: manipulation
+        text: >-
+          $m\omega^2\rho = 5mg$, ולכן $\omega = \sqrt{5g/\rho}$. המסה מתבטלת.
+      - kind: limit
+        text: >-
+          אילו הזרוע הייתה ארוכה פי 4, הייתה מספיקה מחצית מה-$\omega$. כש-$\rho \to 0$ צריך $\omega \to \infty$: על הציר אין כוח צנטריפוגלי.
+      - kind: units
+        text: >-
+          $\sqrt{(\text{m/s}^2)/\text{m}} = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\omega = \sqrt{5\cdot9.8/8.0} = 2.47\,\text{rad/s}$, $T = 2\pi/2.47 = 2.54\,\text{s}$, $v = 2.47\cdot8.0 = 19.8\,\text{m/s}$.
+      - kind: result
+        text: >-
+          $\omega = 2.47\,\text{rad/s}$, סיבוב ב-$2.54\,\text{s}$. במערכת החדר הטייס נע במעגל ב-$19.8\,\text{m/s}$, והמושב דוחף אותו אל הציר בכוח $5mg$, הכוח הצנטריפטלי.
+
+  - id: W-7.3-03
+    level: basic
+    objectives: [OBJ-7.3-1]
+    prompt: >-
+      במה שמסתובבת ב-$0.30\,\text{rad/s}$ מתגלגל כדור בעל מסה $0.50\,\text{kg}$ ב-$2.0\,\text{m/s}$ ביחס לבמה, אופקית,
+      במרחק $1.5\,\text{m}$ מהציר. חשבו את כוח קוריוליס ואת הכוח הצנטריפוגלי עליו במערכת הבמה. איזה מהם גדול יותר, ופי
+      כמה?
+    answer: >-
+      $F_{\text{cor}} = 0.600\,\text{N}$, $F_{\text{cf}} = 0.0675\,\text{N}$; כוח קוריוליס גדול פי $8.89$.
+    solution:
+      - kind: given
+        text: >-
+          $m = 0.50\,\text{kg}$, $\omega = 0.30\,\text{rad/s}$, $v' = 2.0\,\text{m/s}$ אופקית (ניצבת ל-$\vec\omega$), $\rho = 1.5\,\text{m}$.
+      - kind: law
+        text: >-
+          $F_{\text{cor}} = 2m\omega v'\sin\alpha$, כאן $\alpha = 90^\circ$; $F_{\text{cf}} = m\omega^2\rho$.
+      - kind: manipulation
+        text: >-
+          היחס: $\dfrac{F_{\text{cor}}}{F_{\text{cf}}} = \dfrac{2v'}{\omega\rho}$. כוח קוריוליס גובר כשהמהירות ביחס לבמה גדולה ממהירות הבמה עצמה במקום הזה, $\omega\rho$.
+      - kind: limit
+        text: >-
+          כש-$v' \to 0$ נשאר רק הכוח הצנטריפוגלי; כש-$\omega \to 0$ שניהם מתאפסים, אבל הצנטריפוגלי מהר יותר (כמו $\omega^2$).
+      - kind: units
+        text: >-
+          שני הכוחות ב-$\text{kg}\cdot\text{m/s}^2 = \text{N}$; היחס $v'/(\omega\rho)$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $F_{\text{cor}} = 2\cdot0.50\cdot0.30\cdot2.0 = 0.600\,\text{N}$; $F_{\text{cf}} = 0.50\cdot0.090\cdot1.5 = 0.0675\,\text{N}$; היחס $8.89$. שניהם קטנים ממשקל הכדור, $4.90\,\text{N}$.
+      - kind: result
+        text: >-
+          כוח קוריוליס $0.600\,\text{N}$, הכוח הצנטריפוגלי $0.0675\,\text{N}$: קוריוליס גדול פי $8.89$, כי הכדור נע מהר ביחס למהירות הבמה ($0.45\,\text{m/s}$ שם).
+
+  - id: W-7.3-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-7.3-1, OBJ-7.3-2]
+    prompt: >-
+      דיסקית מחליקה על פטיפון חלק שמסתובב במהירות זוויתית קבועה. צופה בחדר ($S$) וצופה על הפטיפון ($S'$) מתארים
+      אותה ברגע מסוים. קבעו ונמקו, לכל גודל, אם הוא זהה אצל שניהם:
+
+      א. המרחק של הדיסקית מהציר.
+
+      ב. גודל המהירות שלה.
+
+      ג. האנרגיה הקינטית שלה.
+
+      ד. הכוח הנורמלי שהפטיפון מפעיל עליה.
+
+      ה. הכוח השקול שהם כותבים בחוק השני.
+    answer: >-
+      א. זהה. ב. שונה. ג. שונה. ד. זהה. ה. שונה (ב-$S$ אפס; ב-$S'$ סכום הכוחות המדומים).
+    solution:
+      - kind: law
+        text: >-
+          $\vec r$ ו-$\vec r'$ הם אותו וקטור בצירים מסובבים; $\vec v = \vec v' + \vec\omega\times\vec r'$; כוחות אמיתיים זהים בכל מערכת, וכוחות מדומים קיימים רק ב-$S'$.
+      - kind: reasoning
+        text: >-
+          א: סיבוב לא משנה אורך של וקטור, ולכן המרחק מהציר זהה. ב: המהירויות שונות ב-$\vec\omega\times\vec r'$, ולכן גם הגדלים, חוץ ממקרים מיוחדים. ג: אנרגיה קינטית בנויה מגודל המהירות, ולכן תלויה במערכת. ד: הכוח הנורמלי הוא כוח אמיתי, של הפטיפון על הדיסקית, וזהה בשתי המערכות. ה: ב-$S$ אין כוח אופקי והכוח השקול אפס (הכובד והנורמלי מתקזזים); ב-$S'$ הכוח השקול שנכנס לחוק השני כולל את הכוח הצנטריפוגלי ואת כוח קוריוליס.
+      - kind: limit
+        text: >-
+          כש-$\omega = 0$ כל חמשת הגדלים זהים, והמערכות שתיהן אינרציאליות.
+      - kind: units
+        text: >-
+          $\vec\omega\times\vec r'$ ב-$\text{s}^{-1}\cdot\text{m} = \text{m/s}$, כמו מהירות.
+      - kind: result
+        text: >-
+          זהים: המרחק מהציר והכוח הנורמלי. שונים: גודל המהירות, האנרגיה הקינטית והכוח השקול. מה שזהה הוא כלי טוב לבדוק פתרון במערכת אחת מול השנייה.
+
+  - id: W-7.3-05
+    level: mid
+    objectives: [OBJ-7.3-2]
+    prompt: >-
+      בקרון סגור של קרוסלה, במרחק $4.0\,\text{m}$ מהציר, תלויה משקולת על חוט מהתקרה. הקרוסלה מסתובבת במהירות זוויתית
+      קבועה $0.80\,\text{rad/s}$, והמשקולת במנוחה ביחס לקרון. מצאו את הזווית של החוט עם האנך, ואת תאוצת הנפילה
+      האפקטיבית בקרון. פתרו במערכת הקרוסלה, ובדקו במערכת האינרציאלית. הניחו שהמשקולת במרחק $4.0\,\text{m}$ מהציר.
+    answer: >-
+      $\theta = 14.6^\circ$, החוט נוטה הרחק מהציר; $g_{\text{eff}} = 10.1\,\text{m/s}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $\rho = 4.0\,\text{m}$, $\omega = 0.80\,\text{rad/s}$, $g = 9.8\,\text{m/s}^2$. $\hat\rho$ מהציר החוצה, $\hat z$ למעלה.
+      - kind: law
+        text: >-
+          במערכת הקרוסלה המשקולת במנוחה: $\vec T + m\vec g + m\omega^2\rho\,\hat\rho = 0$, וכוח קוריוליס אפס. במערכת האינרציאלית: $\vec T + m\vec g = -m\omega^2\rho\,\hat\rho$.
+      - kind: manipulation
+        text: >-
+          $\vec g_{\text{eff}} = \vec g + \omega^2\rho\,\hat\rho$, והחוט מתיישר לאורכו. הרכיב האופקי חלקי האנכי: $\tan\theta = \dfrac{\omega^2\rho}{g}$. הגודל: $g_{\text{eff}} = \sqrt{g^2 + \omega^4\rho^2}$. במערכת האינרציאלית: הרכיב האנכי של $\vec T$ מאזן את $mg$, והרכיב האופקי, אל הציר, הוא $m\omega^2\rho$. אותו $\tan\theta$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$, $\theta \to 0$ והחוט אנכי. על הציר, $\rho = 0$, החוט אנכי בכל $\omega$. זה בדיוק המצב של קרון שמאיץ ב-$A = \omega^2\rho$ (שיעור 7.1).
+      - kind: units
+        text: >-
+          $\omega^2\rho/g$ חסר ממדים: $\dfrac{\text{s}^{-2}\,\text{m}}{\text{m/s}^2}$.
+      - kind: substitution
+        text: >-
+          $\tan\theta = 0.64\cdot4.0/9.8 = 0.261$, $\theta = 14.6^\circ$; $g_{\text{eff}} = \sqrt{9.8^2 + 2.56^2} = 10.1\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          החוט נוטה $14.6^\circ$ מהאנך, הקצה התחתון הרחק מהציר, ו-$g_{\text{eff}} = 10.1\,\text{m/s}^2$. במערכת האינרציאלית אותה זווית נובעת מכך שהמתיחות חייבת לתת גם את הכוח הצנטריפטלי.
+
+  - id: W-7.3-06
+    level: mid
+    objectives: [OBJ-7.3-2]
+    prompt: >-
+      במתקן ״רוטור״ ביריד הרוכבים עומדים צמודים לדופן של גליל אנכי ברדיוס $2.5\,\text{m}$, שמסתובב סביב הציר שלו. כשהגליל
+      מסתובב מספיק מהר, הרצפה יורדת, והרוכבים נשארים ״תלויים״ על הדופן. מקדם החיכוך הסטטי בין הרוכבים לדופן $0.50$.
+      מה המהירות הזוויתית הקטנה ביותר שבה הם לא מחליקים? פתרו במערכת הגליל ובמערכת האינרציאלית.
+    answer: >-
+      $\omega_{\min} = 2.80\,\text{rad/s}$ (סיבוב בכל $2.24\,\text{s}$, $26.7$ סיבובים בדקה).
+    solution:
+      - kind: given
+        text: >-
+          $R = 2.5\,\text{m}$, $\mu_s = 0.50$, $g = 9.8\,\text{m/s}^2$. הציר אנכי; $\hat\rho$ מהציר החוצה.
+      - kind: law
+        text: >-
+          במערכת הגליל הרוכב במנוחה: הכוח הנורמלי של הדופן מאזן את הכוח הצנטריפוגלי, והחיכוך מאזן את הכובד; $f \le \mu_sN$.
+      - kind: manipulation
+        text: >-
+          $N = m\omega^2R$ (אל הציר), $f = mg$ (למעלה). התנאי $mg \le \mu_sm\omega^2R$, ולכן $\omega^2 \ge \dfrac{g}{\mu_sR}$. במערכת האינרציאלית $N$ הוא הכוח השקול הרדיאלי, $m\omega^2R$, וגם שם $f = mg$: אותו תנאי.
+      - kind: limit
+        text: >-
+          כש-$\mu_s \to 0$, $\omega_{\min} \to \infty$: בלי חיכוך שום מהירות לא מספיקה. כש-$R$ גדל, מספיקה $\omega$ קטנה יותר. המסה לא נכנסת: ילד ומבוגר נשארים יחד.
+      - kind: units
+        text: >-
+          $\dfrac{\text{m/s}^2}{\text{m}} = \text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\omega_{\min} = \sqrt{9.8/(0.50\cdot2.5)} = 2.80\,\text{rad/s}$; $T = 2\pi/2.80 = 2.24\,\text{s}$; $2.80\cdot60/(2\pi) = 26.7$ סיבובים בדקה.
+      - kind: result
+        text: >-
+          $\omega_{\min} = 2.80\,\text{rad/s}$. במערכת הגליל הדופן ״מחזיקה״ את הרוכב מול הכוח הצנטריפוגלי, והחיכוך מחזיק אותו מול הכובד; במערכת האינרציאלית הדופן נותנת את הכוח הצנטריפטלי.
+
+  - id: W-7.3-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-7.3-2]
+    prompt: >-
+      ילד עומד על קרוסלה במרחק $3.0\,\text{m}$ מהציר. הקרוסלה מסתובבת נגד כיוון השעון במבט מלמעלה, ב-$0.50\,\text{rad/s}$.
+      הילד זורק כדור אנכית כלפי מעלה **ביחס לקרוסלה**, והכדור חוזר לגובה היד אחרי $0.80\,\text{s}$. קבעו ונמקו: האם
+      הכדור חוזר ליד? אם לא, לאן הוא נוחת ביחס לילד: קרוב לציר או רחוק ממנו, לפני הילד או מאחוריו? הסבירו במערכת
+      האינרציאלית ובמערכת הקרוסלה. הזניחו את התנגדות האוויר.
+    answer: >-
+      לא. הכדור נוחת רחוק יותר מהציר ומעט מאחורי הילד, נגד כיוון הסיבוב (חישוב מדויק: $0.231\,\text{m}$ החוצה, $0.0630\,\text{m}$ אחורה).
+    solution:
+      - kind: given
+        text: >-
+          $\rho_0 = 3.0\,\text{m}$, $\omega = 0.50\,\text{rad/s}$, זמן תעופה $0.80\,\text{s}$. התנועה האופקית לא תלויה בתנועה האנכית.
+      - kind: law
+        text: >-
+          ב-$S$: אופקית אין כוח, קו ישר במהירות $\omega\rho_0$ המשיקית. ב-$S'$: הכוח הצנטריפוגלי וכוח קוריוליס (לרכיב האופקי של המהירות; לרכיב האנכי $\vec\omega\times\vec v' = 0$).
+      - kind: reasoning
+        text: >-
+          ב-$S$ הכדור נע במשיק, ולכן מתרחק מהציר: $\rho = \rho_0\sqrt{1 + \omega^2t^2}$. הזווית שלו מהציר גדלה כמו $\arctan(\omega t)$, לאט יותר מהזווית של הילד, $\omega t$. לכן הוא נוחת רחוק יותר מהציר ומאחורי הילד. ב-$S'$: ברגע הזריקה הכדור במנוחה אופקית, ורק הכוח הצנטריפוגלי פועל, החוצה. ברגע שיש לו מהירות החוצה, כוח קוריוליס מסיט אותו ימינה ממנה, כלומר נגד כיוון הסיבוב.
+      - kind: limit
+        text: >-
+          כש-$\omega t \ll 1$, ההתרחקות $\approx \tfrac12\omega^2\rho_0t^2$, תאוצה צנטריפוגלית קבועה; ההסטה אחורה קטנה יותר, מסדר $t^3$, כי כוח קוריוליס מתחיל מאפס. כש-$\omega \to 0$ הכדור חוזר ליד.
+      - kind: units
+        text: >-
+          $\omega^2\rho_0t^2$ ב-$\text{s}^{-2}\,\text{m}\,\text{s}^2 = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\tfrac12\omega^2\rho_0t^2 = 0.24\,\text{m}$; החישוב המדויק (הקו הישר של $S$ כפי שנראה מ-$S'$) נותן $0.231\,\text{m}$ החוצה ו-$0.0630\,\text{m}$ אחורה.
+      - kind: result
+        text: >-
+          הכדור לא חוזר ליד: הוא נוחת כ-$23\,\text{cm}$ רחוק יותר מהציר וכ-$6\,\text{cm}$ מאחורי הילד. ב-$S$ הכדור ממשיך ישר בזמן שהילד מסתובב; ב-$S'$ הכוח הצנטריפוגלי מוציא אותו החוצה, וכוח קוריוליס מסיט אותו אחורה.
+
+  - id: W-7.3-08
+    level: bagrut
+    objectives: [OBJ-7.3-1, OBJ-7.3-2]
+    prompt: >-
+      מוט ישר וחלק מסתובב במישור אופקי סביב ציר אנכי שעובר בקצה שלו, ב-$\omega = 3.0\,\text{rad/s}$. חרוז בעל מסה
+      $0.050\,\text{kg}$ מושחל על המוט ומשוחרר ממנוחה ביחס למוט במרחק $r_0 = 0.20\,\text{m}$ מהציר.
+
+      א. כתבו את משוואת התנועה של החרוז לאורך המוט במערכת המוט, והראו ש-$r(t) = r_0\cosh(\omega t)$ פותרת אותה.
+
+      ב. אחרי כמה זמן החרוז מגיע ל-$1.0\,\text{m}$, ומה מהירותו לאורך המוט שם?
+
+      ג. מה הכוח האופקי שהמוט מפעיל על החרוז שם? במערכת המוט הכוח הזה לא עושה עבודה; במערכת האינרציאלית הוא כן.
+      הראו שהעבודה שלו ב-$S$ שווה לשינוי באנרגיה הקינטית ב-$S$.
+    answer: >-
+      א. $\ddot r = \omega^2r$. ב. $0.764\,\text{s}$, $\dot r = 2.94\,\text{m/s}$. ג. $N = 2m\omega\dot r = 0.882\,\text{N}$; העבודה ב-$S$ $0.432\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega = 3.0\,\text{rad/s}$, $m = 0.050\,\text{kg}$, $r_0 = 0.20\,\text{m}$, $\dot r(0) = 0$. $\hat r$ לאורך המוט החוצה, $\hat\varphi$ אופקי וניצב לו, בכיוון הסיבוב. הכובד מאוזן ברכיב האנכי של הכוח הנורמלי.
+      - kind: law
+        text: >-
+          במערכת המוט: $m\vec a' = \vec N + \vec F_{\text{cf}} + \vec F_{\text{cor}}$. המוט חלק, ולכן $\vec N$ ניצב לו.
+      - kind: manipulation
+        text: >-
+          לאורך המוט רק הכוח הצנטריפוגלי: $m\ddot r = m\omega^2r$, כלומר $\ddot r = \omega^2r$. עם $r = r_0\cosh(\omega t)$: $\ddot r = \omega^2r_0\cosh(\omega t) = \omega^2r$, ו-$r(0) = r_0$, $\dot r(0) = r_0\omega\sinh0 = 0$. בניצב למוט: $\vec v' = \dot r\hat r$, ו-$\vec F_{\text{cor}} = -2m\omega\dot r\,\hat\varphi$; החרוז לא זז בכיוון $\hat\varphi$ ביחס למוט, ולכן $\vec N_\varphi = +2m\omega\dot r\,\hat\varphi$. מהירות לאורך המוט: $\dot r^2 = \omega^2(r^2 - r_0^2)$, כי $\cosh^2 - \sinh^2 = 1$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ החרוז לא זז. ב-$S$ העבודה של $N$ היא $\int N v_\varphi\,dt$ עם $v_\varphi = \omega r$: $\int 2m\omega^2r\dot r\,dt = m\omega^2(r^2 - r_0^2)$, וזה בדיוק השינוי ב-$\tfrac12m(\dot r^2 + \omega^2r^2)$.
+      - kind: units
+        text: >-
+          $m\omega\dot r$ ב-$\text{kg}\cdot\text{s}^{-1}\cdot\text{m/s} = \text{N}$; $m\omega^2r^2$ ב-$\text{J}$.
+      - kind: substitution
+        text: >-
+          $\cosh(3.0t) = 5.0$: $t = \operatorname{arccosh}(5)/3.0 = 0.764\,\text{s}$. $\dot r = 3.0\sqrt{1.0 - 0.04} = 2.94\,\text{m/s}$. $N = 2\cdot0.050\cdot3.0\cdot2.94 = 0.882\,\text{N}$. ב-$S$: המהירות בהתחלה $\omega r_0 = 0.60\,\text{m/s}$ ובסוף $\sqrt{2.94^2 + 3.0^2} = 4.20\,\text{m/s}$; השינוי באנרגיה הקינטית $0.441 - 0.009 = 0.432\,\text{J}$, ו-$m\omega^2(r^2 - r_0^2) = 0.050\cdot9.0\cdot0.96 = 0.432\,\text{J}$.
+      - kind: result
+        text: >-
+          $r = r_0\cosh(\omega t)$; ב-$1.0\,\text{m}$ אחרי $0.764\,\text{s}$, ב-$2.94\,\text{m/s}$ לאורך המוט. המוט דוחף את החרוז ב-$0.882\,\text{N}$ בכיוון הסיבוב; ב-$S'$ זה מאזן את כוח קוריוליס ולא עושה עבודה, וב-$S$ הוא עושה $0.432\,\text{J}$, כל השינוי באנרגיה הקינטית.
+
+  - id: W-7.3-09
+    level: bagrut
+    objectives: [OBJ-7.3-2]
+    prompt: >-
+      ״מראה נוזלית״ של טלסקופ היא כספית בכלי עגול שמסתובב סביב ציר אנכי, עד שהכספית מסתובבת איתו כגוף אחד. פני הכספית
+      הם אז פרבולואיד, ומראה פרבולית $z = \dfrac{r^2}{4f}$ ממקדת אור שבא מלמעלה לנקודה בגובה $f$ מעל התחתית שלה (המוקד).
+      באיזו מהירות זוויתית צריך לסובב את הכלי כדי שהמוקד יהיה בגובה $f = 2.0\,\text{m}$? מה זמן הסיבוב, ומה עומק המראה
+      ב-$0.50\,\text{m}$ מהציר?
+    answer: >-
+      $\omega = \sqrt{g/(2f)} = 1.57\,\text{rad/s}$; סיבוב ב-$4.01\,\text{s}$; עומק $3.13\,\text{cm}$.
+    solution:
+      - kind: given
+        text: >-
+          $f = 2.0\,\text{m}$, $g = 9.8\,\text{m/s}^2$, $r = 0.50\,\text{m}$. $z$ נמדד מהנקודה התחתונה של פני הכספית, על הציר.
+      - kind: law
+        text: >-
+          במערכת הכלי הכספית במנוחה, ופני הנוזל הם משטח שעליו $gz - \tfrac12\omega^2r^2$ קבוע: $z = \dfrac{\omega^2r^2}{2g}$.
+      - kind: manipulation
+        text: >-
+          משווים לצורת המראה: $\dfrac{\omega^2}{2g} = \dfrac{1}{4f}$, ולכן $\omega^2 = \dfrac{g}{2f}$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$, $f \to \infty$: נוזל שעומד הוא מראה שטוחה, שלא ממקדת. סיבוב מהיר יותר נותן מוקד קרוב יותר, $f \propto 1/\omega^2$. ה-$f$ לא תלוי בצפיפות הנוזל.
+      - kind: units
+        text: >-
+          $\dfrac{g}{f}$ ב-$\dfrac{\text{m/s}^2}{\text{m}} = \text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\omega = \sqrt{9.8/4.0} = 1.57\,\text{rad/s}$, $T = 2\pi/1.57 = 4.01\,\text{s}$. העומק ב-$0.50\,\text{m}$: $\dfrac{0.25}{4\cdot2.0} = 0.0313\,\text{m} = 3.13\,\text{cm}$.
+      - kind: result
+        text: >-
+          $\omega = 1.57\,\text{rad/s}$, סיבוב בכל $4.01\,\text{s}$, והמראה עמוקה ב-$3.13\,\text{cm}$ חצי מטר מהציר.
+
+  - id: W-7.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-7.3-1, OBJ-7.3-2]
+    prompt: >-
+      פטיפון חלק מסתובב נגד כיוון השעון ב-$\omega = 1.5\,\text{rad/s}$. ילד על הפטיפון, במרחק $\rho_0 = 0.40\,\text{m}$ מהמרכז,
+      משגר דיסקית במשיק, **נגד** כיוון הסיבוב, ב-$v' = 0.60\,\text{m/s}$ ביחס לפטיפון. מה רואה צופה בחדר? מה רואה הילד?
+      הראו שבמערכת הפטיפון שני הכוחות המדומים יחד נותנים בדיוק את הכוח הדרוש לתנועה שהילד רואה.
+    answer: >-
+      בחדר הדיסקית עומדת במקום. הילד רואה אותה נעה במעגל ברדיוס $0.40\,\text{m}$, עם כיוון השעון, ב-$0.60\,\text{m/s}$:
+      $F_{\text{cf}}/m = 0.900$ החוצה, $F_{\text{cor}}/m = 1.80$ פנימה, השקול $0.900\,\text{m/s}^2$ פנימה $= v'^2/\rho_0$.
+    solution:
+      - kind: given
+        text: >-
+          $\omega = 1.5\,\text{rad/s}$, $\rho_0 = 0.40\,\text{m}$, $\vec v' = -0.60\,\text{m/s}\,\hat\varphi$ ($\hat\varphi$ בכיוון הסיבוב).
+      - kind: law
+        text: >-
+          $\vec v = \vec v' + \vec\omega\times\vec r'$; ב-$S'$: $m\vec a' = \vec F_{\text{cf}} + \vec F_{\text{cor}}$.
+      - kind: manipulation
+        text: >-
+          $\vec\omega\times\vec r' = \omega\rho_0\,\hat\varphi = 0.60\,\text{m/s}\,\hat\varphi$, ולכן $\vec v = 0$: בחדר הדיסקית במנוחה, ונשארת כך (אין כוח). ב-$S'$ הנקודה הקבועה בחדר נראית נעה במעגל ברדיוס $\rho_0$, נגד הסיבוב, ב-$\omega\rho_0$. הכוחות: $\vec F_{\text{cf}} = m\omega^2\rho_0\,\hat\rho$; $\vec F_{\text{cor}} = -2m\omega\hat z\times(-v'\hat\varphi) = -2m\omega v'\,\hat\rho$ (מ-$\hat z\times\hat\varphi = -\hat\rho$). עם $v' = \omega\rho_0$, השקול $m\omega^2\rho_0 - 2m\omega^2\rho_0 = -m\omega^2\rho_0$, כלפי הציר, וזה $mv'^2/\rho_0$.
+      - kind: limit
+        text: >-
+          בלי כוח קוריוליס הכוח הצנטריפוגלי לבדו היה דוחף את הדיסקית החוצה, וההסבר ב-$S'$ היה נשבר. אילו $v'$ היה בכיוון הסיבוב, כוח קוריוליס היה מצטרף לכוח הצנטריפוגלי החוצה.
+      - kind: units
+        text: >-
+          $\omega^2\rho_0$, $\omega v'$ ו-$v'^2/\rho_0$ כולם ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $F_{\text{cf}}/m = 2.25\cdot0.40 = 0.900\,\text{m/s}^2$; $F_{\text{cor}}/m = 2\cdot1.5\cdot0.60 = 1.80\,\text{m/s}^2$; השקול $0.900\,\text{m/s}^2$ פנימה $= 0.36/0.40$. סיבוב שלם ב-$S'$ לוקח $2\pi\rho_0/v' = 4.19\,\text{s}$, זמן הסיבוב של הפטיפון.
+      - kind: result
+        text: >-
+          בחדר הדיסקית עומדת. הילד רואה מעגל ברדיוס $0.40\,\text{m}$: כוח קוריוליס פנימה, כפול מהכוח הצנטריפוגלי החוצה, והשקול הוא בדיוק הכוח הצנטריפטלי. בלי כוח קוריוליס אי אפשר להסביר ב-$S'$ גוף שעומד בחדר.
+
+challenge:
+  - id: W-7.3-c1
+    stars: 1
+    objectives: [OBJ-7.3-1, OBJ-7.3-2]
+    prompt: >-
+      על פטיפון אופקי מחוברת מסילה ישרה וחלקה לאורך הציר $x'$ של הפטיפון, דרך מרכזו. גוש בעל מסה $m$ נע בתוך המסילה, ושני
+      קפיצים, אחד לכל קצה של המסילה, מחברים אותו אליה; יחד הם פועלים כקפיץ אחד בעל קבוע $k$, שמושך את הגוש אל המרכז,
+      $x' = 0$. הפטיפון מסתובב נגד כיוון השעון במבט מלמעלה, במהירות זוויתית קבועה $\omega$. במערכת הפטיפון משחררים את הגוש
+      ממנוחה ב-$x' = x_0$.
+
+      א. לאילו ערכים של $\omega$ הגוש מבצע במערכת הפטיפון תנועה הרמונית פשוטה לאורך המסילה? מה זמן המחזור שלה?
+
+      ב. המסילה מפעילה על הגוש כוח אופקי בניצב לה. מה הגודל המרבי שלו, ולאן הוא פונה בפעם הראשונה שהוא מגיע אליו?
+
+      ג. באיזה תנאי הגוש נשאר במנוחה ביחס לפטיפון בכל מקום שמניחים אותו?
+    answer: >-
+      א. $\omega^2 \lt k/m$; $T = 2\pi/\sqrt{k/m - \omega^2}$. ב. $2m\omega x_0\Omega$ עם $\Omega = \sqrt{k/m - \omega^2}$, במעבר במרכז,
+      בכיוון $-\hat y'$ (בפעם הראשונה). ג. $\omega^2 = k/m$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega = \omega\hat z$, $\omega \gt 0$; המסילה לאורך $\hat x'$, ו-$\hat y' = \hat z\times\hat x'$. במערכת הפטיפון $\vec r' = x'\hat x'$, $\vec v' = \dot x'\hat x'$; $x'(0) = x_0$, $\dot x'(0) = 0$.
+      - kind: law
+        text: >-
+          במערכת הפטיפון: $m\vec a' = -kx'\hat x' + \vec N + m\omega^2x'\hat x' - 2m\vec\omega\times\vec v'$, כאשר $\vec N$ הכוח האופקי של המסילה, ניצב לה (הכובד והכוח הנורמלי האנכי מתקזזים).
+      - kind: manipulation
+        text: >-
+          לאורך המסילה: $m\ddot x' = -(k - m\omega^2)x'$. זו תנועה הרמונית אם $k - m\omega^2 \gt 0$, בתדירות $\Omega = \sqrt{k/m - \omega^2}$, ו-$x' = x_0\cos\Omega t$. בניצב למסילה הגוש לא זז, ולכן $\vec N$ מאזן את כוח קוריוליס: $-2m\omega\hat z\times\dot x'\hat x' = -2m\omega\dot x'\,\hat y'$, ולכן $\vec N = 2m\omega\dot x'\,\hat y'$. $|\dot x'|$ מרבי במרכז, $x_0\Omega$. בחצי המחזור הראשון הגוש נע אל המרכז, $\dot x' \lt 0$, ולכן $\vec N$ פונה ל-$-\hat y'$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$, $\Omega \to \sqrt{k/m}$, המתנד הרגיל, ו-$N \to 0$. כש-$\omega^2 \to k/m$, $\Omega \to 0$: הכוח הצנטריפוגלי מבטל את הקפיץ בכל $x'$, וכל מקום הוא שיווי משקל אדיש. מעל זה הגוש בורח מהמרכז.
+      - kind: units
+        text: >-
+          $k/m$ ב-$\text{s}^{-2}$, כמו $\omega^2$; $m\omega x_0\Omega$ ב-$\text{kg}\cdot\text{s}^{-1}\cdot\text{m}\cdot\text{s}^{-1} = \text{N}$.
+      - kind: result
+        text: >-
+          א. תנועה הרמונית כש-$\omega^2 \lt k/m$, עם $T = 2\pi/\sqrt{k/m - \omega^2}$. ב. $N_{\max} = 2m\omega x_0\sqrt{k/m - \omega^2}$, במעבר במרכז, בפעם הראשונה בכיוון $-\hat y'$. ג. כש-$\omega^2 = k/m$ הגוש במנוחה בכל מקום.
+    source:
+      name: Grand Valley State University, Physics Department, Homework "Accelerating reference frames - Rotating frames"
+      year: 2013
+      problem: Problem 4 (block on a grooved track with springs on a spinning platform)
+      url: https://faculty.gvsu.edu/AMBROSEB/research/IMT-Accelframes_files/ARF2-rot-hw.pdf
+      verified: '2026-11-12'
+      adapted: true
+
+  - id: W-7.3-c2
+    stars: 2
+    objectives: [OBJ-7.3-1, OBJ-7.3-2]
+    prompt: >-
+      חישוק ריבועי $ABCD$ עשוי תיל דק וחלק, ואורך כל צלע שלו $2a$. החישוק אופקי, והאותיות $A, B, C, D$ מסודרות סביבו נגד
+      כיוון השעון במבט מלמעלה. החישוק מסתובב במהירות זוויתית קבועה $\omega$, נגד כיוון השעון במבט מלמעלה, סביב ציר אנכי
+      שעובר בקודקוד $A$. חרוז קטן בעל מסה $m$, שמושחל על התיל ומחליק עליו בלי חיכוך, נמצא בהתחלה במנוחה ביחס לחישוק,
+      באמצע הצלע $BC$. עבדו במערכת החישוק: הראשית ב-$A$, הציר $x'$ לאורך $AB$, הציר $y'$ מקביל ל-$BC$ (מ-$B$ לכיוון
+      $C$), ו-$y$ המרחק של החרוז מ-$B$.
+
+      א. כתבו את וקטור המקום של החרוז במערכת החישוק, והראו ש-$\ddot y - \omega^2y = 0$.
+
+      ב. הראו שהחרוז מגיע לקודקוד $C$ אחרי זמן $\omega^{-1}\operatorname{arccosh}2$. הסבירו בעזרת ניתוח ממדים למה הזמן
+      הזה לא תלוי ב-$a$.
+
+      ג. מצאו את גודל הכוח שהתיל מפעיל על החרוז כפונקציה של הזמן, וחשבו אותו ברגע שהחרוז מגיע ל-$C$, עבור
+      $a = 0.10\,\text{m}$, $\omega = 4.0\,\text{rad/s}$ ו-$m = 0.020\,\text{kg}$. איזה חלק ממנו מאזן את הכוח הצנטריפוגלי,
+      ואיזה את כוח קוריוליס?
+    answer: >-
+      א. $\vec r' = 2a\hat x' + y\hat y'$, ו-$\ddot y = \omega^2y$. ב. $y = a\cosh\omega t$, ו-$y = 2a$ כש-$\cosh\omega t = 2$.
+      ג. $|\vec N| = m\sqrt{g^2 + 4a^2\omega^4\left(1 + \sinh\omega t\right)^2}$; ב-$C$, $0.263\,\text{N}$ (אופקית
+      $0.0640\,\text{N}$ נגד הכוח הצנטריפוגלי ועוד $0.111\,\text{N}$ נגד כוח קוריוליס, ואנכית $0.196\,\text{N}$).
+    solution:
+      - kind: given
+        text: >-
+          $\vec\omega = \omega\hat z$, $\hat z$ כלפי מעלה, $\omega \gt 0$. הראשית ב-$A$, על הציר; $\hat x'$ לאורך $AB$, ו-$\hat y' = \hat z\times\hat x'$ לאורך $BC$ (האותיות נגד כיוון השעון). $y(0) = a$, $\dot y(0) = 0$. המערכת: מערכת החישוק $S'$.
+      - kind: law
+        text: >-
+          במערכת החישוק: $m\vec a' = \vec N + m\vec g + \vec F_{\text{cf}} + \vec F_{\text{cor}}$, עם $\vec F_{\text{cf}} = -m\vec\omega\times(\vec\omega\times\vec r')$ ו-$\vec F_{\text{cor}} = -2m\vec\omega\times\vec v'$. $\vec N$ הכוח של התיל; התיל חלק, ולכן $\vec N$ ניצב לצלע $BC$: יש לו רכיב לאורך $\hat x'$ ורכיב אנכי בלבד.
+      - kind: manipulation
+        text: >-
+          המקום: $\vec r' = 2a\hat x' + y\hat y'$, והמהירות $\vec v' = \dot y\hat y'$. המקום כולו אופקי, ולכן $\vec F_{\text{cf}} = m\omega^2\vec r' = m\omega^2(2a\hat x' + y\hat y')$, הרחק מהציר. כוח קוריוליס: $-2m\omega\dot y\,\hat z\times\hat y' = +2m\omega\dot y\,\hat x'$, כי $\hat z\times\hat y' = -\hat x'$. לאורך התיל ($\hat y'$) פועל רק הרכיב $m\omega^2y$ של הכוח הצנטריפוגלי: $m\ddot y = m\omega^2y$. הפתרון עם $y(0) = a$, $\dot y(0) = 0$ הוא $y = a\cosh\omega t$, ולכן $\dot y = a\omega\sinh\omega t$. החרוז מגיע ל-$C$ כש-$y = 2a$, כלומר $\cosh\omega t = 2$. בניצב לתיל החרוז לא זז: לאורך $\hat x'$, $N_x + 2ma\omega^2 + 2m\omega\dot y = 0$, ולכן $N_x = -2ma\omega^2\left(1 + \sinh\omega t\right)$; אנכית $N_z = mg$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$, החרוז נשאר במקום ו-$|\vec N| \to mg$. ב-$t = 0$, $\dot y = 0$ וכוח קוריוליס אפס: התיל מאזן רק את $2ma\omega^2$ ואת הכובד. ניתוח ממדים: המשוואה $\ddot y = \omega^2y$ ותנאי ההתחלה $y(0) = a$ והקודקוד $y = 2a$ כולם פרופורציוניים ל-$a$, והכובד לא נכנס לתנועה האופקית. הגודל היחיד שיש לו ממד של זמן הוא $1/\omega$, ולכן הזמן הוא מספר טהור חלקי $\omega$, בלי $a$. בדיקה באנרגיה במערכת החישוק: $\tfrac12\dot y^2 - \tfrac12\omega^2y^2$ נשמר (התיל וכוח קוריוליס ניצבים לתנועה), כלומר $\dot y^2 = \omega^2(y^2 - a^2)$, ובקודקוד $\dot y = \sqrt3\,a\omega$, כמו $a\omega\sinh(\operatorname{arccosh}2) = \sqrt3\,a\omega$. אילו החישוק הסתובב עם כיוון השעון, כוח קוריוליס היה מתהפך, ו-$N_x$ היה $-2ma\omega^2(1 - \sinh\omega t)$: התנועה לאורך התיל זהה, אבל הכוח של התיל תלוי בכיוון הסיבוב.
+      - kind: units
+        text: >-
+          $\omega^{-1}$ ב-$\text{s}$; $ma\omega^2$ ו-$m\omega\dot y$ ב-$\text{kg}\cdot\text{m}\cdot\text{s}^{-2} = \text{N}$.
+      - kind: substitution
+        text: >-
+          $t = \operatorname{arccosh}2/4.0 = 1.317/4.0 = 0.329\,\text{s}$. ב-$C$: $\dot y = \sqrt3\cdot0.10\cdot4.0 = 0.693\,\text{m/s}$; $2ma\omega^2 = 2\cdot0.020\cdot0.10\cdot16 = 0.0640\,\text{N}$; $2m\omega\dot y = 2\cdot0.020\cdot4.0\cdot0.693 = 0.111\,\text{N}$; יחד $0.175\,\text{N}$ אופקית; $mg = 0.196\,\text{N}$; $|\vec N| = \sqrt{0.175^2 + 0.196^2} = 0.263\,\text{N}$.
+      - kind: result
+        text: >-
+          $y = a\cosh\omega t$, והחרוז מגיע ל-$C$ אחרי $\omega^{-1}\operatorname{arccosh}2$, $0.329\,\text{s}$ כאן, בלי תלות ב-$a$. התיל דוחף את החרוז אופקית אל עבר הצלע $AD$ בכוח $2ma\omega^2(1 + \sinh\omega t)$: החלק $2ma\omega^2$ מאזן את רכיב הכוח הצנטריפוגלי שניצב לתיל, והחלק $2ma\omega^2\sinh\omega t$ מאזן את כוח קוריוליס. ב-$C$, $|\vec N| = 0.263\,\text{N}$.
+    source:
+      name: University of Cambridge, Part IA Dynamics and Relativity, Example Sheet 3 (D. Tong)
+      year: 2012
+      problem: Problem 9 (a square hoop rotating about a vertical axis through a vertex)
+      url: https://davidtong.org/pdfs/teaching/dynamics-and-relativity/htl3.pdf
+      verified: '2026-11-12'
+      adapted: true

@@ -1,21 +1,27 @@
 # Misconceptions first detected in lesson 7.3. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 7.3
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 7.3 that refutes it (anchors are Step and
+# Explain ids of the lesson).
 
 - id: MC-7-released-flies-radially
   title: גוף שמשתחרר מקרוסלה עף לאורך הרדיוס
   belief: כשחוט שמחזיק גוף מסתובב נקרע, הגוף עף החוצה בקו ישר לאורך הרדיוס.
   truth: ברגע הקריעה מהירות הגוף משיקה למעגל, ובלי כוח אופקי הוא ממשיך בקו ישר בכיוון המשיק. רק במערכת המסתובבת המסלול נראה כמו התרחקות מהמרכז.
-  remedy: { lesson: '7.3', label: 'שיעור 7.3: דיסקית משתחררת, בשתי מערכות ייחוס' }
+  remedy: { lesson: '7.3', anchor: release-two-frames, label: 'שיעור 7.3: דיסקית משתחררת, בשתי מערכות ייחוס' }
 
 - id: MC-7-coriolis-depends-on-radius
   title: כוח קוריוליס גדל עם המרחק מהציר
   belief: כמו הכוח הצנטריפוגלי, כוח קוריוליס חזק יותר ככל שהגוף רחוק יותר מציר הסיבוב.
   truth: כוח קוריוליס הוא מינוס 2m ω × v'. הוא תלוי במהירות ביחס למערכת המסתובבת, ולא במקום. רק הכוח הצנטריפוגלי גדל עם המרחק מהציר.
-  remedy: { lesson: '7.3', label: 'שיעור 7.3: הכוח הצנטריפוגלי לעומת כוח קוריוליס' }
+  remedy: { lesson: '7.3', anchor: compare, label: 'שיעור 7.3: הכוח הצנטריפוגלי לעומת כוח קוריוליס' }
+
+- id: MC-7-coriolis-does-work
+  title: כוח קוריוליס עושה עבודה
+  belief: כוח קוריוליס מאיץ או מאט גוף שנע במערכת מסתובבת, ומשנה את האנרגיה הקינטית שלו במערכת הזו.
+  truth: כוח קוריוליס ניצב תמיד למהירות במערכת המסתובבת, ולכן ההספק שלו אפס והוא לא עושה עבודה. הוא משנה רק את כיוון התנועה. את גודל המהירות במערכת המסתובבת משנה הכוח הצנטריפוגלי, שיש לו אנרגיה פוטנציאלית.
+  remedy: { lesson: '7.3', anchor: no-work, label: 'שיעור 7.3: כוח קוריוליס לא עושה עבודה' }
 
 - id: MC-7-bead-rises-at-any-speed
-  title: כל סיבוב מרים את החרוז על החישוק
-  belief: חרוז על חישוק מסתובב עולה מעט מהנקודה התחתונה בכל מהירות זוויתית, גם איטית מאוד.
-  truth: החרוז עוזב את התחתית רק מעל המהירות הקריטית, שורש g חלקי R. מתחתיה הכובד גדול מהכוח הצנטריפוגלי בכל זווית קטנה, והתחתית היא שיווי המשקל היציב.
-  remedy: { lesson: '7.3', label: 'שיעור 7.3: חרוז על חישוק מסתובב' }
+  title: כל סיבוב מרים את החרוז מהתחתית
+  belief: חרוז על חישוק או על תיל מכופף שמסתובבים סביב ציר אנכי עולה מעט מהנקודה התחתונה בכל מהירות זוויתית, גם איטית מאוד.
+  truth: החרוז עוזב את התחתית רק מעל מהירות זוויתית קריטית (בחישוק ברדיוס R, שורש g חלקי R). מתחתיה, ליד התחתית, הרכיב המחזיר של הכובד גדול מהכוח הצנטריפוגלי, והתחתית היא שיווי המשקל היציב.
+  remedy: { lesson: '7.3', anchor: bead, label: 'שיעור 7.3: חרוז על חישוק מסתובב' }

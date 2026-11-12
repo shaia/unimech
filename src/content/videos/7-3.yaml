@@ -1,0 +1,32 @@
+# Videos of lesson 7.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch pages' lengthSeconds; caption tracks were
+# not confirmed, so `captions` lists nothing. `why` claims only what the pages that link the videos say.
+#   gLRNoCrbY80: "merry-go-round", Mechanics Books (8:33). Purdue ME 274's page "The merry-go-round and the Coriolis
+#     component of acceleration" (purdue.edu/freeform/me274/?p=8130) links it: a ball on a merry-go-round, the video
+#     split between a stationary observer above (a straight path) and a rotating observer (a curved path).
+#   kPB8f8wO6eo: "Non-Inertial Frames at the Playground", Chad Orzel (0:59). His post "Non-Inertial Playground
+#     Physics" (chadorzel.com/principles/?p=9328) embeds it: a camera tied to a playground merry-go-round, a tennis
+#     ball rolls straight when it is still and curves when it spins; the merry-go-round turns clockwise.
+# Chapter 7 review (2026-11-12): both pages re-opened; every claim of `why` and of the lesson's Watch notes is in
+# them (gLRNoCrbY80 has no YouTube description; kPB8f8wO6eo's says only "the merry-go-round at the Schenectady
+# JCC to demonstrate Coriolis forces"). Neither page says which way the Purdue merry-go-round turns.
+
+- id: v-7-3-two-views
+  youtubeId: gLRNoCrbY80
+  title: 'merry-go-round'
+  channel: Mechanics Books
+  lang: en
+  start: 0
+  minutes: 9
+  why: 'לפי הדף של הקורס ME 274 בפרדו, שמקשר אליו, הסרטון מראה כדור על קרוסלה משני מבטים בבת אחת: מצלמה שעומדת מעל רואה קו ישר, ומצלמה שמסתובבת עם הקרוסלה רואה עקומה. זה איור 7.3א בקרוסלה אמיתית. הסרטון באנגלית.'
+  verified: '2026-11-12'
+
+- id: v-7-3-playground
+  youtubeId: kPB8f8wO6eo
+  title: 'Non-Inertial Frames at the Playground'
+  channel: Chad Orzel
+  lang: en
+  start: 0
+  minutes: 1
+  why: 'לפי הרשומה של צ׳אד אורזל שבה הסרטון מוטמע, מצלמה קשורה לקרוסלה במגרש משחקים: כדור טניס מתגלגל ישר כשהקרוסלה עומדת, ומתעקל כשהיא מסתובבת, עם כיוון השעון. השוו לכיוון ההסטה שכוח קוריוליס צופה.'
+  verified: '2026-11-12'

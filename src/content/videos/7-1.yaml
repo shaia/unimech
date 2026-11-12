@@ -1,0 +1,38 @@
+# Videos of lesson 7.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Caption tracks were not confirmed, so `captions` lists nothing.
+#   W47wXR1lgUU: the PSSC film of lesson 1.5 (its length, 1646 s, is from lesson 1.5's record, not re-read here);
+#     `why` rests on its description as recorded there (inertial and non-inertial frames). No timestamps of the
+#     accelerating-frame parts were found, so `start: 0`.
+#   E43-CfukEgs: BBC, Human Universe; the title, and a 2014 blog post that embeds it (freethoughtblogs.com, Singham,
+#     "A spectacular demonstration of the Equivalence Principle"): a bowling ball and feathers dropped in a huge
+#     vacuum chamber near Cleveland, filmed with high-speed cameras. The length was not readable: `minutes` is a
+#     conservative estimate.
+# A third candidate, SmarterEveryDay 113 "A Baffling Balloon Behavior" (y8mzDvpKzfY, oEmbed 200), was left out: it
+# answers the exam-level question Q-7.1-helium-balloon.
+
+- id: v-7-1-frames-of-reference
+  youtubeId: W47wXR1lgUU
+  title: 'Frames of Reference (1960)'
+  channel: A/V Geeks 16mm Films
+  lang: en
+  captions: []
+  start: 0
+  minutes: 27
+  why: >-
+    סרט הלימוד הקלאסי של שיעור 1.5 (PSSC, 1960). לפי תיאורו, הוא מראה תנועה ממערכות שנעות במהירות קבועה וגם ממערכות
+    שמאיצות. הפעם חפשו את החלקים על מערכות מאיצות: איזה כוח מדומה צריך הצופה שבתוכן, ואיך אותה תנועה מוסברת בלעדיו
+    ממערכת אינרציאלית.
+  verified: '2026-11-12'
+
+- id: v-7-1-vacuum-drop
+  youtubeId: E43-CfukEgs
+  title: "Brian Cox visits the world's biggest vacuum | Human Universe - BBC"
+  channel: BBC
+  lang: en
+  captions: []
+  start: 0
+  minutes: 5
+  why: >-
+    לפי התיאורים של הסרטון, כדור באולינג ונוצות משוחררים יחד בתא ואקום ענק ומצולמים במצלמות מהירות, ונופלים יחד. זו
+    התכונה שעליה עומד עקרון השקילות: הכובד פרופורציוני למסה, ולכן כל הגופים מקבלים ממנו אותה תאוצה.
+  verified: '2026-11-12'

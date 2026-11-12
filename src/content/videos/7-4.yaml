@@ -1,0 +1,33 @@
+# Videos of lesson 7.4. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). Lengths come from the watch pages' lengthSeconds; caption tracks were
+# not confirmed, so `captions` lists nothing. `why` claims only what the title and the description support.
+#   65nosFGJ1lo: SciShow (5:44, published 2017-08-29); the description: "People have suspected that Earth rotates
+#     for thousands of years, but how did we first prove it?", sources include an APS News history page and an
+#     article on Foucault's pendulum.
+#   mXaad0rsV38: Veritasium (5:58, published 2017-03-20); the description: identical experiments in the northern
+#     and southern hemispheres (with Smarter Every Day) found that the swirl in a toilet, sink or bathtub is set by
+#     other sources of angular momentum, but a kiddy pool left still for at least 24 hours swirls counterclockwise
+#     in the north and clockwise in the south.
+# No Hebrew video on the Coriolis force or the Foucault pendulum was found in this session.
+# Chapter 7 review (2026-11-12): both descriptions re-read from the watch pages (shortDescription; lengths 344 s
+# and 358 s); the notes now claim only what they say (the SciShow description names no rate for the plane).
+
+- id: v-7-4-foucault-history
+  youtubeId: 65nosFGJ1lo
+  title: 'How We Proved Earth Rotates Using a Giant Swinging Ball'
+  channel: SciShow
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי הכותרת והתיאור, הסרטון עוסק בשאלה איך הוכיחו לראשונה שכדור הארץ מסתובב, בעזרת "כדור ענק מתנודד", ובין המקורות שלו מאמר על מטוטלת פוקו. אם נאמר בו כמה זמן לוקח למישור התנודה להסתובב, השוו לנוסחה של השיעור, $2\pi/(\omega|\sin\lambda|)$. הסרטון באנגלית.'
+  verified: '2026-11-12'
+
+- id: v-7-4-sink-swirl
+  youtubeId: mXaad0rsV38
+  title: 'Does Water Swirl the Other Way in the Southern Hemisphere?'
+  channel: Veritasium
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'לפי התיאור, אותו ניסוי נעשה בחצי הכדור הצפוני ובדרומי. בכיור, באסלה ובאמבטיה את כיוון המערבולת קובעים מקורות אחרים של תנע זוויתי, אבל בבריכת ילדים שנשארה דוממת לפחות 24 שעות המים הסתובבו נגד כיוון השעון בצפון ועם כיוון השעון בדרום. השוו להערכה של השיעור: כמה זמן צריך כדי שכוח קוריוליס יסובב זרימה? הסרטון באנגלית.'
+  verified: '2026-11-12'

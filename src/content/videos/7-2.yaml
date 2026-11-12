@@ -1,0 +1,18 @@
+# Videos of lesson 7.2. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what the OCW page and the video's transcript support.
+#   IOcrHOc23N4: MIT OpenCourseWare, RES.TLL-004 STEM Concept Videos (Fall 2013), "Rotating Frames of Reference".
+#     The OCW page: the motion of two objects described from a rotating turntable and from the ground, the
+#     centripetal and Coriolis accelerations, then hurricanes. Its subtitle file (OCW, …_IOcrHOc23N4.srt) ends at
+#     15:06, introduces the turntable at 2:19 and the ground frame at 3:32, states "a formula for how to take the
+#     time derivative in the G frame of any vector, x, in terms of its T-frame derivative" at 5:39, and names the
+#     Coriolis term at 6:46. YouTube caption tracks were not confirmed, so `captions` lists nothing.
+
+- id: v-7-2-mit-rotating-frames
+  youtubeId: IOcrHOc23N4
+  title: 'Rotating Frames of Reference'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 15
+  why: 'סרטון של MIT OpenCourseWare על פטיפון מסתובב ועל הקרקע, באנגלית. לפי התמליל, בערך בדקה 5:40 הוא בונה נוסחה לנגזרת בזמן של וקטור כלשהו במערכת הקרקע מתוך הנגזרת שלו במערכת הפטיפון, ובדקה 6:46 מזהה בה את איבר קוריוליס. השוו לגזירה שלנו של קצב השינוי של וקטור.'
+  verified: '2026-11-12'

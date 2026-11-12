@@ -1,27 +1,26 @@
 # Misconceptions first detected in lesson 7.2. Each is detected by at least one distractor (its
-# `misconception:` tag) and has a remedy: the place in the course that refutes it. Until lesson 7.2
-# is written, the remedy link leads to its comprehension ladder on the chapter practice page.
+# `misconception:` tag) and has a remedy: the place in lesson 7.2 that refutes it (`anchor`, an element id).
 
 - id: MC-7-derivative-frame-independent
   title: קצב השינוי של וקטור זהה בכל מערכת
   belief: אם וקטור לא משתנה במערכת אחת, הוא לא משתנה גם במערכת אחרת, ולכן הנגזרת שלו לפי הזמן זהה בכל מערכת ייחוס.
-  truth: בין מערכת אינרציאלית למערכת מסתובבת קצבי השינוי שונים באיבר ω × A. וקטור שקבוע במערכת המסתובבת מסתובב במערכת האינרציאלית.
-  remedy: { lesson: '7.2', label: 'שיעור 7.2: וקטור שמודבק למערכת מסתובבת' }
+  truth: בין מערכת אינרציאלית למערכת מסתובבת קצבי השינוי שונים באיבר ω × Q. וקטור שקבוע במערכת המסתובבת מסתובב במערכת האינרציאלית.
+  remedy: { lesson: '7.2', label: 'שיעור 7.2: וקטור שמודבק למערכת מסתובבת', anchor: 'fixed-vector' }
 
 - id: MC-7-unit-vector-constant
   title: לווקטור באורך קבוע אין נגזרת
   belief: וקטור יחידה תמיד באורך 1, ולכן הנגזרת שלו לפי הזמן אפס.
   truth: אורך קבוע אומר רק שהנגזרת ניצבת לווקטור. וקטור יחידה של ציר מסתובב משנה כיוון, והנגזרת שלו היא ω × ê.
-  remedy: { lesson: '7.2', label: 'שיעור 7.2: הנגזרת של וקטורי היחידה המסתובבים' }
+  remedy: { lesson: '7.2', label: 'שיעור 7.2: הנגזרת של וקטורי היחידה המסתובבים', anchor: 'unit-vector-derivative' }
 
 - id: MC-7-coriolis-on-resting-body
   title: כוח קוריוליס פועל גם על גוף במנוחה
   belief: במערכת מסתובבת כוח קוריוליס פועל על כל גוף, גם על גוף שעומד במנוחה בה.
   truth: כוח קוריוליס הוא מינוס 2m ω × v', ו-v' היא המהירות במערכת המסתובבת. על גוף במנוחה בה הוא אפס, ורק הכוח הצנטריפוגלי, ואולי כוח אוילר, פועלים.
-  remedy: { lesson: '7.2', label: 'שיעור 7.2: שלושת הכוחות המדומים ומתי כל אחד מתאפס' }
+  remedy: { lesson: '7.2', label: 'שיעור 7.2: שלושת הכוחות המדומים ומתי כל אחד מתאפס', anchor: 'three-forces' }
 
 - id: MC-7-centrifugal-points-inward
   title: הכוח הצנטריפוגלי פונה אל הציר
   belief: הכוח הצנטריפוגלי פונה אל ציר הסיבוב, כמו התאוצה הצנטריפטלית.
   truth: התאוצה הצנטריפטלית פונה אל הציר, והכוח הצנטריפוגלי הוא מינוס m כפולה בה, ולכן פונה הרחק מהציר.
-  remedy: { lesson: '7.2', label: 'שיעור 7.2: פיתוח המכפלה הכפולה ω × (ω × r)' }
+  remedy: { lesson: '7.2', label: 'שיעור 7.2: פיתוח המכפלה הכפולה ω × (ω × r′)', anchor: 'centrifugal-direction' }
