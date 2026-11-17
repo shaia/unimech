@@ -416,7 +416,7 @@ export default function PolarFrame(props: PolarFrameProps) {
 
   const describe = () =>
     `${PRESET_LABEL[s.preset]}, ברגע t = ${num(s.t)} s: r = ${num(st.r)} m, θ = ${deg(st.th)}. ` +
-    `המהירות: רכיב רדיאלי ${num(v.vr)} m/s, רכיב זוויתי ${num(v.vth)} m/s. התאוצה: רכיב רדיאלי ${num(a.ar)} m/s², רכיב זוויתי ${num(a.ath)} m/s².`;
+    `המהירות: רכיב רדיאלי ${num(v.vr)} m/s, רכיב משיקי ${num(v.vth)} m/s. התאוצה: רכיב רדיאלי ${num(a.ar)} m/s², רכיב משיקי ${num(a.ath)} m/s².`;
 
   const setTime = (t: number) => {
     userRan.current = true;

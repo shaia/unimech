@@ -90,7 +90,7 @@ questions:
       - value: 8
         feedback: 'חיברתם $2.0 + 6.0$ כמספרים. הרכיבים בכיוונים $\hat r$ ו-$\hat\theta$ ניצבים זה לזה.'
       - value: 4.47
-        feedback: 'הצבתם $\dot\theta = 4.0$ כרכיב המהירות. $\dot\theta$ הוא ברדיאנים לשנייה; הרכיב הזוויתי של המהירות הוא $r\dot\theta = 6.0\,\text{m/s}$.'
+        feedback: 'הצבתם $\dot\theta = 4.0$ כרכיב המהירות. $\dot\theta$ הוא ברדיאנים לשנייה; הרכיב המשיקי של המהירות הוא $r\dot\theta = 6.0\,\text{m/s}$.'
       - value: 2
         feedback: 'זה רק $\dot r$. חסר הרכיב $r\dot\theta\hat\theta$, שבא מכך ש-$\hat r$ מסתובב.'
         misconception: MC-1-polar-unit-vectors-fixed
@@ -112,12 +112,12 @@ questions:
         feedback: >-
           נכון. $\dfrac{d}{dt}\left(\dot r\hat r\right) = \ddot r\hat r + \dot r\dot\theta\hat\theta$,
           ו-$\dfrac{d}{dt}\left(r\dot\theta\hat\theta\right) = \left(\dot r\dot\theta + r\ddot\theta\right)\hat\theta - r\dot\theta^2\hat r$. יש שני
-          מקורות: הסיבוב של $\hat r$ מסובב את המהירות הרדיאלית $\dot r\hat r$, ושינוי ה-$r$ משנה את הרכיב הזוויתי של
+          מקורות: הסיבוב של $\hat r$ מסובב את המהירות הרדיאלית $\dot r\hat r$, ושינוי ה-$r$ משנה את הרכיב המשיקי של
           המהירות, $r\dot\theta$.
       - text: 'מכלל השרשרת על $\dot\theta^2$: הנגזרת של $\dot\theta^2$ היא $2\dot\theta\ddot\theta$.'
         feedback: 'אין $\dot\theta^2$ במהירות שצריך לגזור. האיבר $r\dot\theta^2$, בסימן מינוס, מופיע רק **אחרי** הגזירה, מ-$d\hat\theta/dt = -\dot\theta\hat r$.'
       - text: 'מהנגזרת של $\hat\theta$, שתורמת $\dot r\dot\theta$ פעמיים.'
-        feedback: '$\dfrac{d\hat\theta}{dt} = -\dot\theta\hat r$, בכיוון $\hat r$, ולכן היא תורמת לרכיב הרדיאלי (האיבר $r\dot\theta^2$ בסימן מינוס), ולא לרכיב הזוויתי.'
+        feedback: '$\dfrac{d\hat\theta}{dt} = -\dot\theta\hat r$, בכיוון $\hat r$, ולכן היא תורמת לרכיב הרדיאלי (האיבר $r\dot\theta^2$ בסימן מינוס), ולא לרכיב המשיקי.'
       - text: 'מהגדרה: כך מסמנים את איבר קוריוליס.'
         feedback: 'זה לא סימון אלא תוצאה של גזירה. שתי התרומות באות מכלל המכפלה, וכל אחת שווה ל-$\dot r\dot\theta$.'
     hints:
@@ -206,7 +206,7 @@ questions:
       נכון. $\dot r = 0.50\,\text{m/s}$, $\ddot r = 0$, $\dot\theta = \omega$ ו-$\ddot\theta = 0$. לכן
       $a_r = -r\omega^2 = -3.6\,\text{m/s}^2$ (אל הציר) ו-$a_\theta = 2\dot r\omega = 3.0\,\text{m/s}^2$ (בכיוון הסיבוב),
       ולכן $|\vec a| = \sqrt{3.6^2 + 3.0^2} = 4.69\,\text{m/s}^2$. את האיבר $2\dot r\omega$ מרגישה החיפושית כדחיפה של המוט לצד:
-      ככל שהיא מתרחקת, הרכיב הזוויתי של המהירות שלה, $r\omega$, גדל, וגם המהירות שלה לאורך המוט מסתובבת יחד איתו.
+      ככל שהיא מתרחקת, הרכיב המשיקי של המהירות שלה, $r\omega$, גדל, וגם המהירות שלה לאורך המוט מסתובבת יחד איתו.
       כל אחד מהשניים תורם $\dot r\omega$.
     wrongFeedback: 'מה $\dot r$, $\ddot r$, $\dot\theta$ ו-$\ddot\theta$ של החיפושית? הציבו אותם בשני הרכיבים של התאוצה הקוטבית.'
     commonWrong:
@@ -340,7 +340,7 @@ questions:
     level: bagrut
     prompt: >-
       דיסקית מחליקה בלי חיכוך על שולחן אופקי, קשורה לחוט שעובר דרך חור במרכז השולחן. מושכים את החוט מלמטה, לאט,
-      והחוט מושך את הדיסקית רק לכיוון החור, כך שהרכיב $a_\theta$ של התאוצה שלה אפס כל הזמן. מה קורה לרכיב הזוויתי
+      והחוט מושך את הדיסקית רק לכיוון החור, כך שהרכיב $a_\theta$ של התאוצה שלה אפס כל הזמן. מה קורה לרכיב המשיקי
       של המהירות, $v_\theta = r\dot\theta$, כשהמרחק של הדיסקית מהחור קטן פי 3?
     choices:
       - text: הוא גדל פי 3.
