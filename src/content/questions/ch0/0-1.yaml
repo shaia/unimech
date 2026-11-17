@@ -1,4 +1,12 @@
 # Lesson 0.1 question bank: the comprehension ladder of "יחידות, ממדים וסדרי גודל".
+# Reviewed against the written lesson (2026-11-17): every number below recomputed in .scratch/ch0/0-1/bank.ts;
+# the raindrop's "measured 6.5 m/s" (no source opened) replaced by lesson 2.7's computed 6.25 m/s; added
+# Q-0.1-same-order (the lesson defines the order on a log scale, which no question tested).
+# Review (2026-11-17, independent recompute in .scratch/review/ch0/0-1/check.ts, 128 numbers, 0 mismatches):
+# same-order's 2·10²² feedback no longer argues by the rounded exponent (it would also have rejected the key
+# 3·10²²); raindrop's feedback derives 6.41 m/s from lesson 2.7's c = 0.25 D² = 0.208 ρ_a D² before the linear
+# part lowers it to 6.25; added the mid rung Q-0.1-find-group (build a dimensionless group, b/√(mk): exponents
+# (b, m, k) = (−2, 1, 1) from solveExponents) before the exam-level Q-0.1-two-groups.
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut
 # (exam level), as in the model bank ch2/2-7.yaml.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
@@ -7,9 +15,11 @@
 #   escape speed √(2GM/R) with G_NEWTON, M_EARTH, R_EARTH: 11.2 km/s (7.91 with C = 1; 125 km²/s² without the root);
 #   classroom 10 × 8 × 3 m, ρ = 1.2 kg/m³: 288 kg (240 000 kg with water's density);
 #   raindrop D = 2 mm, F = ρ_air v²D², m = ρ_w(π/6)D³: v = 2.92 m/s (4.04 without π/6, 8.55 without the root);
-#     with the full drag constant ½·0.5·π/4 ≈ 0.196 it is 6.60 m/s, the measured value is about 6.5 m/s;
+#     with the full drag constant ½·0.5·π/4 ≈ 0.196 it is 6.60 m/s (lesson 2.7, with both parts of the drag: 6.25 m/s);
 #   a 5 m standing jump needs 9.90 m/s at take-off; a 2 mm drop has a mass of 4.19 mg; a 50 g water drop is 4.57 cm across;
-#   100 km/h to rest in 3 s is 9.26 m/s².
+#   100 km/h to rest in 3 s is 9.26 m/s²;
+#   same order as M_MOON = 7.35·10²² kg (ratio below √10): 2·10²² (0.272, no), 3·10²² (0.408, yes),
+#     1.5·10²³ (2.04, yes), 3·10²³ (4.08, no).
 
 chapter: 0
 questions:
@@ -113,6 +123,33 @@ questions:
     hints:
       - '$[G] = \dfrac{\text{N}\cdot\text{m}^2}{\text{kg}^2} = \dfrac{\text{m}^3}{\text{kg}\cdot\text{s}^2}$. מה צריך לעשות עם $M$ כדי שהקילוגרמים יתבטלו?'
 
+  - id: Q-0.1-find-group
+    type: mc
+    objectives: [OBJ-0.1-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      גוף במסה $m$ על קפיץ בעל קבוע $k$ (ביחידות $\text{kg/s}^2$) מתנודד בתוך שמן, שמפעיל עליו כוח ריסון $b\dot x$,
+      עם $b$ ביחידות $\text{kg/s}$. מבין הצירופים הבאים של $m$, $k$ ו-$b$, איזה **חסר ממדים**?
+    choices:
+      - text: $\dfrac{b}{\sqrt{mk}}$
+        correct: true
+        feedback: >-
+          נכון. $\sqrt{mk}$ ביחידות $\sqrt{\text{kg}\cdot\text{kg/s}^2} = \text{kg/s}$, בדיוק כמו $b$, והמנה של שני
+          גדלים מאותו ממד היא מספר. דרך אחרת לראות את זה: $m/b$ הוא זמן ו-$\sqrt{m/k}$ הוא זמן, והמנה שלהם היא אותו
+          צירוף. מכאן שזמן המחזור של מתנד כזה הוא $\sqrt{m/k}$ כפול **פונקציה** של $b/\sqrt{mk}$; בפרק 5 נראה שכש-$b/\sqrt{mk}$
+          מגיע ל-2 הגוף מפסיק להתנודד.
+      - text: $\dfrac{b}{mk}$
+        feedback: >-
+          $\dfrac{\text{kg/s}}{\text{kg}\cdot\text{kg/s}^2} = \dfrac{\text{s}}{\text{kg}}$: נשארו יחידות. כדי שהקילוגרמים
+          יתבטלו צריך במכנה $\text{kg}^1$, לא $\text{kg}^2$: השורש של $mk$.
+      - text: $\dfrac{bm}{k}$
+        feedback: '$\dfrac{\text{kg/s}\cdot\text{kg}}{\text{kg/s}^2} = \text{kg}\cdot\text{s}$: לא חסר ממדים.'
+      - text: $b\sqrt{\dfrac mk}$
+        feedback: '$\sqrt{m/k}$ הוא זמן, ו-$b$ כפול זמן הוא מסה, $\text{kg}$. כדי להגיע למספר צריך לחלק גם ב-$m$: $\dfrac bm\sqrt{\dfrac mk} = \dfrac{b}{\sqrt{mk}}$.'
+    hints:
+      - 'חפשו שני צירופים עם אותו ממד, למשל שני זמנים: $m/b$ ו-$\sqrt{m/k}$. המנה שלהם חסרת ממדים.'
+
   - id: Q-0.1-drag-exponents
     type: mc
     objectives: [OBJ-0.1-1]
@@ -197,7 +234,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      סטודנטים פתרו כמה תרגילים. סמנו את כל התוצאות שאפשר לפסול מיד בהערכת סדר גודל, בלי לחזור לחישוב.
+      סטודנטים פתרו כמה תרגילים. סמנו את כל התוצאות שאפשר לפסול מיד בהערכת סדר גודל, בלי לפתור את התרגיל מחדש:
+      רק בהשוואה לגדלים מוכרים ובחשבון של שורה אחת.
     choices:
       - text: מכונית נבלמת ממהירות $100\,\text{km/h}$ עד עצירה תוך $3\,\text{s}$.
         feedback: >-
@@ -209,7 +247,9 @@ questions:
           נכון, לפסול. טיפת מים של $50\,\text{g}$ היא כדור בקוטר של כ-$4.6\,\text{cm}$. טיפת גשם בקוטר
           $2\,\text{mm}$ שוקלת כ-$4\,\text{mg}$, פי עשרת אלפים פחות.
       - text: לוויין במסלול נמוך סביב כדור הארץ נע במהירות של כ-$8\,\text{km/s}$.
-        feedback: 'זה סביר: זה בדיוק סדר הגודל של $\sqrt{gR}$ עם $R \approx 6.4\cdot10^6\,\text{m}$.'
+        feedback: >-
+          זה סביר: זו אחת המהירויות שכדאי לזכור ($\sim8\,\text{km/s}$). ומממדים: המהירות היחידה שאפשר לבנות מ-$g$
+          ומרדיוס כדור הארץ היא $\sqrt{gR} \approx \sqrt{10\cdot6.4\cdot10^6} \approx 8\,\text{km/s}$.
       - text: אדם קופץ מהמקום לגובה $5\,\text{m}$.
         correct: true
         feedback: >-
@@ -219,6 +259,33 @@ questions:
         feedback: 'זה סביר: אדם של $70\,\text{kg}$ דוחף את הרצפה בכוח $mg \approx 700\,\text{N}$.'
     hints:
       - 'לכל תוצאה, השוו לגודל שאתם מכירים מהיום-יום: משקל של אדם, גודל של טיפה, מהירות של אצן.'
+
+  - id: Q-0.1-same-order
+    type: multi
+    objectives: [OBJ-0.1-2]
+    level: mid
+    prompt: >-
+      המסה של הירח היא $7.35\cdot10^{22}\,\text{kg}$. ארבעה סטודנטים העריכו אותה, כל אחד בדרך אחרת. שני ערכים הם
+      **מאותו סדר גודל** אם היחס ביניהם קטן מ-$\sqrt{10} \approx 3.16$, לכל כיוון. סמנו את כל ההערכות שהן מאותו סדר
+      גודל כמו המסה האמיתית.
+    choices:
+      - text: $2\cdot10^{22}\,\text{kg}$
+        misconception: MC-0-order-by-exponent
+        feedback: >-
+          לא. החזקה של 10 בכתיב המדעי זהה, אבל היחס הוא $7.35/2 = 3.7$, יותר מ-$3.16$: בסולם לוגריתמי שני הערכים
+          רחוקים זה מזה יותר מחצי צעד. חזקה משותפת בכתיב המדעי לא מבטיחה את אותו סדר גודל; מה שקובע הוא היחס.
+      - text: $3\cdot10^{22}\,\text{kg}$
+        correct: true
+        feedback: 'כן. היחס $7.35/3 = 2.45$, פחות מ-$3.16$.'
+      - text: $1.5\cdot10^{23}\,\text{kg}$
+        correct: true
+        feedback: >-
+          כן, אף שהחזקה בכתיב המדעי שונה: היחס $15/7.35 = 2.04$, פחות מ-$3.16$. מה שקובע הוא היחס, לא הספרה
+          שבמעריך.
+      - text: $3\cdot10^{23}\,\text{kg}$
+        feedback: 'לא. היחס $30/7.35 = 4.1$, יותר מ-$3.16$.'
+    hints:
+      - 'לכל הערכה, חלקו בערך האמיתי (או להפך, כך שיצא מספר גדול מ-1) והשוו ל-$3.16$.'
 
   - id: Q-0.1-raindrop
     type: numeric
@@ -234,8 +301,9 @@ questions:
     correctFeedback: >-
       נכון. $\rho_\text{a}v^2D^2 = \rho_\text{w}\dfrac{\pi}{6}D^3g$, ולכן
       $v = \sqrt{\dfrac{\pi\rho_\text{w}gD}{6\rho_\text{a}}} = \sqrt{\dfrac{\pi\cdot1000\cdot9.8\cdot0.002}{6\cdot1.2}} \approx 2.9\,\text{m/s}$.
-      הנמדד הוא כ-$6.5\,\text{m/s}$: אותו סדר גודל. הקבוע שהשמטנו הוא בערך $0.2$, והוא מגדיל את התוצאה פי
-      $1/\sqrt{0.2} \approx 2.2$. **בדיקת גבולות:** $v \propto \sqrt D$, ולכן כש-$D \to 0$ המהירות קטנה, וטיפות
+      הקבוע שהשמטנו הוא בערך $0.2$ (בשיעור 2.7 הגרר הריבועי הוא $0.208\,\rho_\text{a}v^2D^2$), והוא מגדיל את
+      התוצאה פי $1/\sqrt{0.208} \approx 2.2$, ל-$6.41\,\text{m/s}$. שיעור 2.7 מוסיף גם גרר קטן שפרופורציוני למהירות
+      עצמה, ומקבל $6.25\,\text{m/s}$. היחס $6.25/2.92 = 2.1$ קטן מ-$\sqrt{10}$: ההערכה שלנו מאותו סדר גודל. **בדיקת גבולות:** $v \propto \sqrt D$, ולכן כש-$D \to 0$ המהירות קטנה, וטיפות
       ערפל כמעט מרחפות.
     wrongFeedback: 'השוו את הגרר לכובד, $\rho_\text{a}v^2D^2 = mg$, ובודדו את $v$. בדקו שהיחידות יוצאות $\text{m/s}$.'
     commonWrong:

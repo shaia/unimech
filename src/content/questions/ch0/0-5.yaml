@@ -2,13 +2,21 @@
 # Every objective has ≥ 3 questions, one of them qualitative, and the lesson climbs basic → mid → bagrut.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch0/ladder.ts (G = 9.8 from src/physics/constants.ts):
-#   x = e^(−3t) in ẍ + 5ẋ + kx = 0: k = 6 s⁻² (the other root is −2);
+# Every number was computed in .scratch/ch0/ladder.ts and recomputed in .scratch/ch0/0-5/numbers.ts with
+# src/physics/ode.ts (G = 9.8 from src/physics/constants.ts). Notation as chapter 5: ẍ + γẋ + ω₀²x = 0, γ = b/m,
+# trial x = e^(st), roots −γ/2 ± iω_d (lesson 0.5, 2026-11-17: r → s and γ → γ/2 in the questions):
+# Review (2026-11-17, independent recompute in .scratch/review/ch0/0-5/check.ts): Q-0.5-substitute writes ω₀² for
+# its coefficient (k already meant a spring constant); Q-0.5-tanh states tanh 0 = 0 and tanh → 1; Q-0.5-critical
+# moved to mid (one step: discriminant zero, easier than Q-0.5-damped-frequency) and says "from rest", which
+# Q-0.5-critical-crossing needs (a double-root body pushed hard enough toward x = 0 crosses once).
+#   x = e^(−3t) in ẍ + 5ẋ + ω₀²x = 0: ω₀² = 6 s⁻² (the other root is −2);
 #   m = 80 kg, c = 0.25 kg/m: V = √(mg/c) = 56 m/s, T = V/g = 5.71 s (1/T = 0.175 s⁻¹);
 #   cooling, 90 °C in 20 °C, τ = 10 min, t = 15 min: 35.6 °C (90e^(−1.5) = 20.1; 90 − 70e^(−1.5) = 74.4; 20 + 70e^(−2/3) = 55.9);
 #   boat m = 500 kg, b = 100 kg/s, v₀ = 6 m/s: τ = 5 s, x(5 s) = v₀τ(1 − e^(−1)) = 19.0 m (v₀τ = v₀t = 30; v₀τe^(−1) = 11.0; 15);
 #   m = 1 kg, b = 6 kg/s, k = 25 N/m: r = −3 ± 4i, ω = 4 rad/s (√(k/m) = 5, √|Δ| = 8);
-#   m = 0.5 kg, k = 200 N/m: b_crit = 2√(mk) = 20 kg/s (√(mk) = 10, 4mk = 400, 2√(k/m) = 40).
+#   m = 0.5 kg, k = 200 N/m: b_crit = 2√(mk) = 20 kg/s (√(mk) = 10, 4mk = 400, 2√(k/m) = 40);
+#   critical crossing, ω₀ = 2.5, γ = 5.0, x₀ = 0.20 m, v₀ = −1.5 m/s: s₀ = −2.5, B = −1.0, t = 0.200 s
+#     (B = v₀: 0.133; s₀ = −γ: 0.400; B = v₀ + s₀x₀: 0.100).
 
 chapter: 0
 questions:
@@ -48,13 +56,13 @@ questions:
     objectives: [OBJ-0.5-1]
     level: mid
     prompt: >-
-      הציעו לכם את הפתרון $x(t) = e^{-3t}$ (עם $t$ בשניות) למשוואה $\ddot x + 5\dot x + kx = 0$. בדקו בהצבה: בעבור
-      איזה ערך של $k$ הוא באמת פתרון?
+      הציעו לכם את הפתרון $x(t) = e^{-3t}$ (עם $t$ בשניות) למשוואה $\ddot x + 5\dot x + \omega_0^2x = 0$, שבה המקדם 5
+      ביחידות $\text{s}^{-1}$. בדקו בהצבה: בעבור איזה ערך של $\omega_0^2$ (ב-$\text{s}^{-2}$) הוא באמת פתרון?
     answer: 6
     unit: 1/s²
     correctFeedback: >-
-      נכון. $\dot x = -3e^{-3t}$ ו-$\ddot x = 9e^{-3t}$, ולכן $(9 - 15 + k)e^{-3t} = 0$ לכל $t$, ו-$k = 6\,\text{s}^{-2}$.
-      שימו לב: עם $k = 6$ גם $e^{-2t}$ פתרון, כי $r^2 + 5r + 6 = (r + 2)(r + 3)$.
+      נכון. $\dot x = -3e^{-3t}$ ו-$\ddot x = 9e^{-3t}$, ולכן $(9 - 15 + \omega_0^2)e^{-3t} = 0$ לכל $t$, ו-$\omega_0^2 = 6\,\text{s}^{-2}$.
+      שימו לב: עם $\omega_0^2 = 6$ גם $e^{-2t}$ פתרון, כי $s^2 + 5s + 6 = (s + 2)(s + 3)$.
     wrongFeedback: 'גזרו את $e^{-3t}$ פעמיים (כלל השרשרת מוריד בכל פעם גורם $-3$), הציבו, ודרשו שהמקדם של $e^{-3t}$ יתאפס.'
     commonWrong:
       - value: -24
@@ -62,16 +70,17 @@ questions:
       - value: 24
         feedback: 'הנגזרת השנייה חיובית: $\ddot x = (-3)^2e^{-3t} = +9e^{-3t}$. מינוס כפול מינוס.'
     hints:
-      - 'כל נגזרת של $e^{rt}$ כופלת ב-$r$.'
+      - 'כל נגזרת של $e^{st}$ כופלת ב-$s$.'
 
   - id: Q-0.5-tanh
     type: numeric
     objectives: [OBJ-0.5-1]
     level: bagrut
     prompt: >-
-      צנחן בעל מסה $m = 80\,\text{kg}$ נופל ממנוחה עם גרר ריבועי, $m\dot v = mg - cv^2$, עם $c = 0.25\,\text{kg/m}$.
-      מציעים לו את הפתרון $v(t) = V\tanh(t/T)$, כאשר $\dfrac{d}{du}\tanh u = 1 - \tanh^2u$. הציבו במשוואה ומצאו
-      בעבור איזה $V$ ואיזה $T$ זה פתרון. מה $T$?
+      צנחן בעל מסה $m = 80\,\text{kg}$ נופל ממנוחה עם גרר ריבועי, $m\dot v = mg - cv^2$ (ציר כלפי מטה), עם
+      $c = 0.25\,\text{kg/m}$. למשוואה הזו מציעים את הפתרון $v(t) = V\tanh(t/T)$, עם קבועים $V$ ו-$T$. הפונקציה
+      $\tanh$ (טנגנס היפרבולי) מקיימת $\tanh0 = 0$, שואפת ל-1 כשהארגומנט שלה שואף לאינסוף, והנגזרת שלה
+      $\dfrac{d}{du}\tanh u = 1 - \tanh^2u$. הציבו במשוואה ומצאו בעבור איזה $V$ ואיזה $T$ זה פתרון. מה $T$?
     answer: 5.71
     unit: s
     correctFeedback: >-
@@ -109,7 +118,7 @@ questions:
           $v = v_0e^{-kt}$.
       - text: '$dv = -kv\,dt$, ולכן $v - v_0 = -kvt$.'
         feedback: >-
-          אינטגרלתם את $v\,dt$ כאילו $v$ קבוע. אבל $v$ משתנה בזמן: לכן מעבירים אותו לאגף של $dv$ לפני
+          חישבתם את האינטגרל של $v\,dt$ כאילו $v$ קבוע. אבל $v$ משתנה בזמן: לכן מעבירים אותו לאגף של $dv$ לפני
           שמאנטגרלים.
         misconception: MC-0-constant-rate-assumed
       - text: '$v\,dv = -k\,dt$, ולכן $\tfrac12\left(v^2 - v_0^2\right) = -kt$.'
@@ -185,22 +194,22 @@ questions:
     objectives: [OBJ-0.5-3]
     level: basic
     prompt: >-
-      מסה על קפיץ עם ריסון מקיימת $m\ddot x + b\dot x + kx = 0$. מציבים את הניחוש $x = e^{rt}$. איזו משוואה מקבלים
-      בעבור $r$?
+      מסה על קפיץ עם ריסון מקיימת $m\ddot x + b\dot x + kx = 0$. מציבים את הניחוש $x = e^{st}$, עם $s$ קבוע. איזו
+      משוואה מקבלים בעבור $s$?
     choices:
-      - text: $mr^2 + br + k = 0$
+      - text: $ms^2 + bs + k = 0$
         correct: true
         feedback: >-
-          נכון. $\dot x = re^{rt}$ ו-$\ddot x = r^2e^{rt}$, ולכן $(mr^2 + br + k)e^{rt} = 0$, ו-$e^{rt}$ אף פעם לא
+          נכון. $\dot x = se^{st}$ ו-$\ddot x = s^2e^{st}$, ולכן $(ms^2 + bs + k)e^{st} = 0$, ו-$e^{st}$ אף פעם לא
           מתאפס. זו המשוואה האופיינית: היא הופכת משוואה דיפרנציאלית למשוואה ריבועית.
-      - text: $mr^2 + k = 0$
-        feedback: 'שכחתם את איבר הריסון: $b\dot x$ נותן $bre^{rt}$. בלי ריסון ($b = 0$) זו אכן המשוואה, והשורשים $\pm i\sqrt{k/m}$.'
-      - text: $mr + b + k = 0$
-        feedback: 'כל נגזרת כופלת ב-$r$ פעם אחת: הנגזרת השנייה ב-$r^2$, הראשונה ב-$r$, ו-$x$ עצמו ב-1.'
-      - text: $mr^2 - br + k = 0$
-        feedback: 'הסימן של $b$ לא משתנה בהצבה: $b\dot x = bre^{rt}$. אם היה מינוס, הריסון היה מגדיל את התנודות.'
+      - text: $ms^2 + k = 0$
+        feedback: 'שכחתם את איבר הריסון: $b\dot x$ נותן $bse^{st}$. בלי ריסון ($b = 0$) זו אכן המשוואה, והשורשים $\pm i\sqrt{k/m}$.'
+      - text: $ms + b + k = 0$
+        feedback: 'כל נגזרת כופלת ב-$s$ פעם אחת: הנגזרת השנייה ב-$s^2$, הראשונה ב-$s$, ו-$x$ עצמו ב-1.'
+      - text: $ms^2 - bs + k = 0$
+        feedback: 'הסימן של $b$ לא משתנה בהצבה: $b\dot x = bse^{st}$. אם היה מינוס, הריסון היה מגדיל את התנודות.'
     hints:
-      - 'גזרו את $e^{rt}$ פעם ופעמיים, והציבו.'
+      - 'גזרו את $e^{st}$ פעם ופעמיים, והציבו.'
 
   - id: Q-0.5-roots-type
     type: twotier
@@ -213,23 +222,23 @@ questions:
     choices:
       - text: כש-$b^2 < 4mk$
         correct: true
-        feedback: 'נכון. אז הדיסקרימיננטה של $mr^2 + br + k = 0$ שלילית, והשורשים מרוכבים.'
+        feedback: 'נכון. אז הדיסקרימיננטה של $ms^2 + bs + k = 0$ שלילית, והשורשים מרוכבים.'
       - text: כש-$b^2 > 4mk$
         feedback: 'אז שני השורשים ממשיים ושליליים, והפתרון הוא סכום של שני אקספוננטים דועכים: המסה זוחלת חזרה לאפס, ועוברת אותו פעם אחת לכל היותר.'
       - text: תמיד, כי מסה על קפיץ תמיד מתנודדת.
         feedback: 'בריסון חזק, למשל מסה על קפיץ בתוך דבש, המסה חוזרת לאט לשיווי משקל בלי לעבור אותו. זה תלוי ביחס בין $b^2$ ל-$4mk$.'
         misconception: MC-0-spring-always-oscillates
     reasons:
-      - text: 'השורשים הם $r = -\gamma \pm i\omega$, ולכן $e^{rt} = e^{-\gamma t}e^{\pm i\omega t}$: קוסינוס שהאמפליטודה שלו דועכת.'
+      - text: 'השורשים הם $s = -\gamma/2 \pm i\omega_d$ (עם $\gamma = b/m$), ולכן $e^{st} = e^{-\gamma t/2}e^{\pm i\omega_dt}$: קוסינוס שהאמפליטודה שלו דועכת.'
         correct: true
         feedback: 'זה הנימוק. החלק הממשי של השורש קובע את הדעיכה, והחלק המדומה את התדירות.'
       - text: כשהדיסקרימיננטה שלילית למשוואה האופיינית אין פתרון, ולכן המסה לא זזה באופן פשוט.
         feedback: 'יש לה שני פתרונות **מרוכבים**, והם בדיוק התנודות. החלק הממשי של הפתרון המרוכב הוא פתרון ממשי של המשוואה הדיפרנציאלית.'
         misconception: MC-0-complex-roots-no-solution
-      - text: שורשים ממשיים נותנים תנודה בתדירות $|r|$.
-        feedback: '$e^{rt}$ עם $r$ ממשי ושלילי רק דועך, בלי לשנות סימן. תנודה צריכה $e^{i\omega t}$, כלומר חלק מדומה בשורש.'
+      - text: שורשים ממשיים נותנים תנודה בתדירות $|s|$.
+        feedback: '$e^{st}$ עם $s$ ממשי ושלילי רק דועך, בלי לשנות סימן. תנודה צריכה $e^{i\omega t}$, כלומר חלק מדומה בשורש.'
     hints:
-      - 'פתרו את $mr^2 + br + k = 0$ בנוסחת השורשים. מתי יש שורש ריבועי של מספר שלילי?'
+      - 'פתרו את $ms^2 + bs + k = 0$ בנוסחת השורשים. מתי יש שורש ריבועי של מספר שלילי?'
 
   - id: Q-0.5-damped-frequency
     type: numeric
@@ -241,10 +250,10 @@ questions:
     answer: 4
     unit: rad/s
     correctFeedback: >-
-      נכון. $r = \dfrac{-6 \pm \sqrt{36 - 100}}{2} = -3 \pm 4i$, ולכן $x(t) = Ae^{-3t}\cos(4t + \varphi)$: התדירות
+      נכון. $s = \dfrac{-6 \pm \sqrt{36 - 100}}{2} = -3 \pm 4i$, ולכן $x(t) = Ae^{-3t}\cos(4t + \varphi)$: התדירות
       $4\,\text{rad/s}$, וקבוע הדעיכה $3\,\text{s}^{-1}$. בלי ריסון היא הייתה $\sqrt{k/m} = 5\,\text{rad/s}$: הריסון
       מאט את התנודות.
-    wrongFeedback: 'השורשים מהצורה $-\gamma \pm i\omega$. התדירות היא החלק המדומה, $\omega = \dfrac{\sqrt{4mk - b^2}}{2m}$.'
+    wrongFeedback: 'השורשים מהצורה $-\gamma/2 \pm i\omega_d$, עם $\gamma = b/m$. התדירות היא החלק המדומה, $\omega_d = \dfrac{\sqrt{4mk - b^2}}{2m}$.'
     commonWrong:
       - value: 5
         feedback: 'זה $\sqrt{k/m}$, התדירות **בלי** ריסון. הריסון מקטין אותה: $\omega = \sqrt{k/m - (b/2m)^2}$.'
@@ -259,16 +268,16 @@ questions:
   - id: Q-0.5-critical
     type: numeric
     objectives: [OBJ-0.5-3]
-    level: bagrut
+    level: mid
     prompt: >-
       בולם זעזועים הוא מסה $m = 0.50\,\text{kg}$ על קפיץ עם $k = 200\,\text{N/m}$ ובולם עם מקדם ריסון $b$:
-      $m\ddot x + b\dot x + kx = 0$. מתכננים אותו כך שלמשוואה האופיינית יהיה **שורש כפול**, כדי שיחזור לשיווי משקל
-      הכי מהר בלי לעבור אותו. מה צריך להיות $b$?
+      $m\ddot x + b\dot x + kx = 0$. מתכננים אותו כך שלמשוואה האופיינית יהיה **שורש כפול**: זה הריסון הקטן ביותר
+      שבו המסה, אחרי שחרור ממנוחה, חוזרת לשיווי המשקל בלי לעבור אותו. מה צריך להיות $b$?
     answer: 20
     unit: kg/s
     correctFeedback: >-
       נכון. שורש כפול פירושו דיסקרימיננטה אפס: $b^2 = 4mk$, ולכן $b = 2\sqrt{mk} = 2\sqrt{0.5\cdot200} = 20\,\text{kg/s}$.
-      השורש $r = -b/(2m) = -20\,\text{s}^{-1}$, והפתרון הכללי $x = (A + Bt)e^{-20t}$. **בדיקת יחידות:**
+      השורש $s = -b/(2m) = -20\,\text{s}^{-1}$, והפתרון הכללי $x = (A + Bt)e^{-20t}$. **בדיקת יחידות:**
       $\sqrt{mk} = \sqrt{\text{kg}\cdot\text{kg/s}^2} = \text{kg/s}$, כמו $b$.
     wrongFeedback: 'בנוסחת השורשים, שורש כפול מתקבל כשהביטוי שמתחת לשורש מתאפס. השוו $b^2 - 4mk = 0$.'
     commonWrong:
@@ -279,31 +288,61 @@ questions:
       - value: 40
         feedback: 'זה $2\sqrt{k/m}$, ביחידות $\text{s}^{-1}$, ולא $\text{kg/s}$. בדיסקרימיננטה מופיעה המכפלה $mk$.'
     hints:
-      - 'הדיסקרימיננטה של $mr^2 + br + k$ היא $b^2 - 4mk$.'
+      - 'הדיסקרימיננטה של $ms^2 + bs + k$ היא $b^2 - 4mk$.'
 
   - id: Q-0.5-double-root
     type: mc
     objectives: [OBJ-0.5-3, OBJ-0.5-2]
     qualitative: true
-    level: bagrut
+    level: mid
     prompt: >-
-      במתנד בריסון קריטי, למשוואה האופיינית יש שורש כפול $r = -\gamma$. סטודנטית כותבת את הפתרון $x(t) = Ae^{-\gamma t}$,
-      ומנסה לקבוע את $A$ משני תנאי ההתחלה, $x(0) = x_0$ ו-$\dot x(0) = v_0$. מה נכון?
+      מתנד מקיים $\ddot x + \gamma\dot x + \omega_0^2x = 0$ עם $\gamma = 2\omega_0$, ולמשוואה האופיינית שלו יש שורש
+      כפול $s_0 = -\gamma/2$. סטודנטית כותבת את הפתרון $x(t) = Ae^{s_0t}$, ומנסה לקבוע את $A$ משני תנאי ההתחלה,
+      $x(0) = x_0$ ו-$\dot x(0) = v_0$. מה נכון?
     choices:
-      - text: 'אי אפשר בדרך כלל: קבוע אחד לא מתאים לשני תנאים. חסר הפתרון השני, $te^{-\gamma t}$, והפתרון הכללי $(A + Bt)e^{-\gamma t}$.'
+      - text: 'אי אפשר בדרך כלל: קבוע אחד לא מתאים לשני תנאים. חסר הפתרון השני, $te^{s_0t}$, והפתרון הכללי $(A + Bt)e^{s_0t}$.'
         correct: true
         feedback: >-
-          נכון. $A = x_0$ קובע גם את $\dot x(0) = -\gamma x_0$, ולכן מסה שיוצאת מ-$x_0$ עם מהירות אחרת לא מתוארת.
-          במשוואה מסדר שני יש שני פתרונות בלתי תלויים ושני קבועים. הצבה מראה ש-$te^{-\gamma t}$ פותר את המשוואה
-          כשהשורש כפול: $\ddot x + 2\gamma\dot x + \gamma^2x = 0$.
-      - text: זה בסדר. בריסון קריטי התנועה נקבעת על ידי $x_0$ בלבד, ותנאי אחד מספיק.
+          נכון. $A = x_0$ קובע גם את $\dot x(0) = s_0x_0$, ולכן מסה שיוצאת מ-$x_0$ עם מהירות אחרת לא מתוארת. במשוואה
+          מסדר שני יש שני פתרונות בלתי תלויים ושני קבועים. הצבה מראה ש-$te^{s_0t}$ פותר את המשוואה בדיוק כשהשורש
+          כפול: המקדם של $te^{s_0t}$ הוא $s_0^2 + \gamma s_0 + \omega_0^2 = 0$, והמקדם של $e^{s_0t}$ הוא $2s_0 + \gamma = 0$.
+      - text: זה בסדר. כשהשורש כפול התנועה נקבעת על ידי $x_0$ בלבד, ותנאי אחד מספיק.
         feedback: >-
           משוואה מסדר שני צריכה שני תנאי התחלה בכל מקרה. מסה שמשחררים ממנוחה ומסה שבועטים בה מאותו מקום זזות
-          אחרת, גם בריסון קריטי.
+          אחרת, גם כשהשורש כפול.
         misconception: MC-0-double-root-one-solution
-      - text: 'חסר הפתרון $e^{+\gamma t}$, והפתרון הכללי $Ae^{-\gamma t} + Be^{\gamma t}$.'
-        feedback: '$r = +\gamma$ אינו שורש של המשוואה האופיינית, ולכן $e^{\gamma t}$ לא פותר אותה. וגם פיזיקלית, מסה מרוסנת לא מתרחקת בלי גבול.'
-      - text: 'צריך להוסיף קבוע: $x = Ae^{-\gamma t} + B$.'
-        feedback: 'קבוע $B$ פותר את המשוואה רק כש-$k = 0$ (אין קפיץ). הציבו $x = B$: נשאר $kB = 0$.'
+      - text: 'חסר הפתרון $e^{-s_0t}$, והפתרון הכללי $Ae^{s_0t} + Be^{-s_0t}$.'
+        feedback: '$-s_0 = +\gamma/2$ אינו שורש של המשוואה האופיינית, ולכן $e^{-s_0t}$ לא פותר אותה. וגם פיזיקלית, מסה מרוסנת לא מתרחקת בלי גבול.'
+      - text: 'צריך להוסיף קבוע: $x = Ae^{s_0t} + B$.'
+        feedback: 'קבוע $B$ פותר את המשוואה רק כש-$\omega_0 = 0$ (אין קפיץ). הציבו $x = B$: נשאר $\omega_0^2B = 0$.'
     hints:
       - 'כמה קבועים צריך כדי לקיים שני תנאי התחלה?'
+
+  - id: Q-0.5-critical-crossing
+    type: numeric
+    objectives: [OBJ-0.5-3]
+    level: bagrut
+    prompt: >-
+      גוף על קפיץ עם ריסון מקיים $\ddot x + \gamma\dot x + \omega_0^2x = 0$, עם $\omega_0 = 2.5\,\text{rad/s}$ ו-$\gamma = 5.0\,\text{s}^{-1}$,
+      כלומר $\gamma = 2\omega_0$. ברגע $t = 0$ הגוף ב-$x_0 = 0.20\,\text{m}$, ונותנים לו מהירות $v_0 = -1.5\,\text{m/s}$,
+      כלומר $1.5\,\text{m/s}$ אל שיווי המשקל. מצאו את $x(t)$. באיזה רגע הגוף עובר את $x = 0$?
+    answer: 0.2
+    unit: s
+    correctFeedback: >-
+      נכון. השורש הכפול $s_0 = -\gamma/2 = -2.5\,\text{s}^{-1}$, והפתרון הכללי $x = (A + Bt)e^{s_0t}$. מ-$x(0) = x_0$:
+      $A = 0.20\,\text{m}$. מ-$\dot x(0) = B + s_0A = v_0$: $B = v_0 - s_0x_0 = -1.5 + 0.50 = -1.0\,\text{m/s}$. האקספוננט אף
+      פעם לא מתאפס, ולכן $x = 0$ כש-$A + Bt = 0$: $t = -A/B = 0.20\,\text{s}$. **בדיקת גבולות:** הגוף עובר את שיווי
+      המשקל רק כש-$A$ ו-$B$ בסימנים הפוכים, כלומר כש-$v_0 \lt s_0x_0 = -0.50\,\text{m/s}$; ממנוחה, $v_0 = 0$, הוא לא עובר
+      בכלל. ויותר ממעבר אחד אין: $A + Bt$ ליניארי ב-$t$.
+    wrongFeedback: >-
+      כתבו $x = (A + Bt)e^{s_0t}$ עם $s_0 = -\gamma/2$, גזרו פעם אחת (כלל המכפלה), והציבו $t = 0$ בשני הביטויים. את
+      הרגע מוצאים מ-$A + Bt = 0$.
+    commonWrong:
+      - value: 0.133
+        feedback: 'לקחתם $B = v_0$. אבל $\dot x(0) = B + s_0A$: גם הדעיכה של האיבר $Ae^{s_0t}$ תורמת למהירות ההתחלתית.'
+      - value: 0.4
+        feedback: 'לקחתם את השורש $s_0 = -\gamma$. השורש הכפול של $s^2 + \gamma s + \omega_0^2 = 0$ הוא $-\gamma/2$.'
+      - value: 0.1
+        feedback: 'לקחתם $B = v_0 + s_0A = -2.0\,\text{m/s}$: טעות סימן בהעברת אגף. מ-$B + s_0A = v_0$ מקבלים $B = v_0 - s_0A = -1.5 - (-2.5)(0.20) = -1.0\,\text{m/s}$.'
+    hints:
+      - 'השורש הכפול של $s^2 + \gamma s + \omega_0^2 = 0$ הוא $s_0 = -\gamma/2$, והפתרון הכללי $(A + Bt)e^{s_0t}$.'

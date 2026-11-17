@@ -1,0 +1,27 @@
+# Videos of lesson 0.1. Both ids were checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds) and
+# the caption tracks from its captionTracks list. `why` claims only what was read the same day: for the
+# Lewin lecture, a full transcript with timestamps (sozai.app, "8.01x – Lect 1"); for the parachute video,
+# MIT OpenCourseWare's own transcript (RES.TLL-004, "dimensional_analysis", PDF). The transcript's timestamps
+# run to 33:25 while the YouTube upload is 38 minutes long, so no `start` is given and the parts are named
+# by content. No public Hebrew video on dimensional analysis or orders of magnitude was found.
+
+- id: v-0-1-lewin-falling-apples
+  youtubeId: GtOGurrUPmQ
+  title: 8.01x - Lect 1 - Powers of 10, Units, Dimensions, Uncertainties, Scaling Arguments
+  channel: Lectures by Walter Lewin. They will make you ♥ Physics.
+  lang: en
+  captions: [en]
+  minutes: 38
+  why: 'ההרצאה הראשונה של וולטר לוין בקורס MIT 8.01. לפי התמליל, אחרי טיעון קנה מידה על עצמות הירך של בעלי חיים (שהנתונים שהוא מודד לא מאשרים) הוא מוצא בניתוח ממדים שזמן הנפילה מגובה h הוא C√(h/g): המסה לא יכולה להופיע, וה-C נשאר לא ידוע. אחר כך הוא מפיל תפוחים מ-3 ומ-1.5 מטרים ומודד יחס זמנים של כ-1.417, קרוב ל-√2, בדיוק השיטה של יחס בלי הקבוע. בסוף הוא מזהיר שניתוח ממדים אינו הוכחה.'
+  verified: '2026-11-17'
+
+- id: v-0-1-mars-parachute
+  youtubeId: 3gxNrc_EEN8
+  title: Dimensional Analysis
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  minutes: 18
+  why: 'סרטון של קן קמרין (MIT) על המצנח של רכב החלל קיוריוסיטי במאדים. לפי התמליל, הוא בונה מהקוטר של המצנח, מהמסה, מתאוצת הנפילה ומצפיפות האטמוספרה צירופים חסרי ממדים, ומראה שהמהירות הסופית נקבעת עד כדי פונקציה לא ידועה של צירוף חסר ממדים אחד, שאותה מוצאים בניסויים על פני כדור הארץ ומשתמשים בה למאדים. זה המצב של "צירוף חסר ממדים" בשיעור, עם פונקציה במקום קבוע.'
+  verified: '2026-11-17'

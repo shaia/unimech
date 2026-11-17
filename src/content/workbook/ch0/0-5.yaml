@@ -1,0 +1,551 @@
+# Workbook, lesson 0.5 (ordinary differential equations). Format and rules: .claude/CLAUDE.md, "The solution
+# format" (law … limit, units, result). In a >- block, consecutive lines fold into one paragraph: every part
+# (א, ב, …) starts after a blank line. Notation as chapter 5: ẍ + γẋ + ω₀²x = 0, trial e^(st).
+#
+# Every number was recomputed in .scratch/ch0/0-5/numbers.ts with src/physics/ode.ts (relaxSolution,
+# solveSecondOrder, charRoots, zeroCrossings, emptyTime) and G = 9.8 from constants.ts:
+#   W-02: ω₀ = 120 rad/s, τ = 4.0 s: ω(6.0 s) = 26.8 rad/s; ω = 1.0 rad/s at 4 ln120 = 19.1 s; total angle 480 rad = 76.4 turns;
+#   W-03: ẍ + 6ẋ + 8x = 0: s = −2, −4; x₀ = 0.050 m, v₀ = 0: C₁ = 0.10, C₂ = −0.050; x(0.50 s) = 0.0300 m;
+#   W-05: 85 °C, room 22 °C, 65 °C after 5.0 min: τ = 5/ln(63/43) = 13.1 min; 40 °C at τ ln(63/18) = 16.4 min;
+#   W-06: ẍ + 2ẋ + 10x = 0: s = −1 ± 3i; x₀ = 0.050 m, v₀ = 0: x = 0.050e^(−t)(cos3t + ⅓sin3t); first zero
+#         (π − arctan3)/3 = 0.631 s; envelope after 2π/3 s: e^(−2π/3) = 0.123;
+#   W-07: m = 70 kg, c = 0.25 kg/m: v* = √(mg/c) = 52.4 m/s; slope at 80 m/s: 9.8 − 0.25·6400/70 = −13.1 m/s²;
+#   W-08: cone, half-angle 30°, h₀ = 0.20 m, a = 0.50 cm²: T = 2π tan²30° h₀^(5/2)/(5a√(2g)) = 33.9 s; half height
+#         after (1 − 2^(−5/2))T = 27.9 s; a cylinder with the same volume and height: 56.4 s (ratio 3/5);
+#   W-09: γ = 10 s⁻¹, ω₀ = 5.0 rad/s, x₀ = 0, v₀ = 1.0 m/s: x = v₀te^(−5t), max at 0.20 s, 0.0736 m (v₀/ω₀ = 0.20 m);
+#   W-10: ẍ = κ²x, κ = 3.0 s⁻¹, x₀ = 1.0 mm, v₀ = 0: x = x₀cosh κt; 10 cm at arccosh(100)/3 = 1.77 s; v₀ = −κx₀ = −3.0 mm/s;
+#   c1: σ = μ, x(0) = 1: y = (σt/2)e^(−σt), peak at σt = 1 (t = t_S/ln2 = 1.44 t_S), y_max = 1/(2e) = 0.184, z = 0.448 there;
+#   c2: m = 0.50, b = 1.5, k = 0.625: γ = 3, ω₀² = 1.25, s = −0.5, −2.5; swings through iff ẋ₀ < −2.5x₀ (x₀ = 0.25:
+#       ẋ₀ < −0.625); ẋ₀ = −1: crossing at 0.424 (time units of the problem); critical b = √5/2 = 1.12, root −1.12;
+#       b = 0.25: s = −0.25 ± 1.09i, zeros π/ω_d = 2.88 apart.
+
+lesson: '0.5'
+practice:
+  - id: W-0.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.5-1]
+    prompt: >-
+      לכל משוואה קבעו את הסדר, האם היא ליניארית, ואם כן, האם היא הומוגנית. כמה תנאי התחלה צריך לכל אחת?
+
+      א. גובה של אבן בנפילה חופשית, ציר $y$ כלפי מעלה: $\ddot y = -g$.
+
+      ב. מטוטלת בזוויות קטנות: $\ddot\theta = -\dfrac gL\theta$.
+
+      ג. גוף שמאט כך ש-$\dot x = -\alpha x^2$, עם $\alpha$ קבוע.
+
+      ד. $\ddot x + t\dot x = 0$.
+    answer: >-
+      א. סדר 2, ליניארית, לא הומוגנית; שני תנאים.
+
+      ב. סדר 2, ליניארית, הומוגנית; שני תנאים.
+
+      ג. סדר 1, לא ליניארית; תנאי אחד.
+
+      ד. סדר 2, ליניארית (המקדם $t$ תלוי רק בזמן), הומוגנית; שני תנאים.
+    solution:
+      - kind: law
+        text: >-
+          הסדר הוא הסדר של הנגזרת הגבוהה ביותר. ליניארית: הנעלם והנגזרות שלו בחזקה ראשונה, כפול מקדמים שתלויים לכל
+          היותר ב-$t$. הומוגנית: כל איבר מכיל את הנעלם או נגזרת שלו. מספר תנאי ההתחלה שווה לסדר.
+      - kind: reasoning
+        text: >-
+          א. האיבר $-g$ לא מכיל את $y$: לא הומוגנית, אבל ליניארית.
+
+          ב. כל איבר מכיל את $\theta$ או את $\ddot\theta$, בחזקה ראשונה.
+
+          ג. $x^2$ הוא פונקציה לא ליניארית של הנעלם.
+
+          ד. המקדם של $\dot x$ הוא $t$: הוא משתנה בזמן, אבל $\dot x$ עצמו בחזקה ראשונה, ולכן זו עדיין משוואה ליניארית (רק לא עם מקדמים קבועים, ולכן הניחוש $e^{st}$ לא יעבוד בה).
+      - kind: limit
+        text: >-
+          ב-ג, כש-$\alpha \to 0$ נשאר $\dot x = 0$, ליניארית. ב-א, כש-$g \to 0$ המשוואה נעשית הומוגנית, $\ddot y = 0$, ופתרונה תנועה במהירות קבועה.
+      - kind: units
+        text: >-
+          ב-ג, $\alpha x^2$ צריך להיות ביחידות של $\dot x$, ולכן $\alpha$ ביחידות $1/(\text{m}\cdot\text{s})$.
+      - kind: result
+        text: >-
+          א. 2, ליניארית, לא הומוגנית. ב. 2, ליניארית, הומוגנית. ג. 1, לא ליניארית. ד. 2, ליניארית, הומוגנית. מספר התנאים: 2, 2, 1, 2.
+
+  - id: W-0.5-02
+    level: basic
+    objectives: [OBJ-0.5-2]
+    prompt: >-
+      מאוורר שכבה מאט בגלל חיכוך באוויר. המהירות הזוויתית שלו מקיימת $\dot\omega = -\omega/\tau$, עם $\tau = 4.0\,\text{s}$,
+      וברגע הכיבוי $\omega_0 = 120\,\text{rad/s}$.
+
+      א. מה המהירות הזוויתית אחרי $6.0\,\text{s}$?
+
+      ב. מתי היא תרד ל-$1.0\,\text{rad/s}$?
+    answer: >-
+      א. $26.8\,\text{rad/s}$.
+
+      ב. $19.1\,\text{s}$ אחרי הכיבוי.
+    solution:
+      - kind: given
+        text: >-
+          כיוון הסיבוב חיובי. $\omega_0 = 120\,\text{rad/s}$, $\tau = 4.0\,\text{s}$.
+      - kind: law
+        text: >-
+          הפרדת משתנים: $\dfrac{d\omega}{\omega} = -\dfrac{dt}{\tau}$, ואינטגרל מסוים מ-$\omega_0$ ב-$t = 0$: $\ln\dfrac{\omega}{\omega_0} = -\dfrac t\tau$.
+      - kind: manipulation
+        text: >-
+          א. $\omega = \omega_0e^{-t/\tau}$.
+
+          ב. $t = \tau\ln\dfrac{\omega_0}{\omega}$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$ מקבלים $\omega_0$; כש-$\tau \to \infty$ (בלי חיכוך) $\omega$ קבועה. וכש-$\omega \to 0$, $t \to \infty$: המאוורר אף פעם לא נעצר לגמרי במודל הזה. (מאוורר אמיתי נעצר, כי יש גם חיכוך יבש בצירים.)
+      - kind: units
+        text: >-
+          $t/\tau$ חסר ממדים, כמו שצריך במעריך; הלוגריתם של יחס בין שתי מהירויות זוויתיות חסר ממדים.
+      - kind: substitution
+        text: >-
+          א. $120\,e^{-1.5} = 26.8\,\text{rad/s}$. ב. $4.0\cdot\ln120 = 19.1\,\text{s}$.
+      - kind: result
+        text: >-
+          א. $26.8\,\text{rad/s}$. ב. $19.1\,\text{s}$.
+
+  - id: W-0.5-03
+    level: basic
+    objectives: [OBJ-0.5-3]
+    prompt: >-
+      גוף מקיים $\ddot x + 6\dot x + 8x = 0$ (עם $t$ בשניות). הוא מתחיל ב-$x_0 = 0.050\,\text{m}$ ממנוחה.
+
+      א. כתבו את המשוואה האופיינית ומצאו את שורשיה.
+
+      ב. מצאו את $x(t)$ מתנאי ההתחלה. מה $x$ ב-$t = 0.50\,\text{s}$?
+    answer: >-
+      א. $s^2 + 6s + 8 = 0$, $s_1 = -2\,\text{s}^{-1}$, $s_2 = -4\,\text{s}^{-1}$.
+
+      ב. $x = 0.10\,e^{-2t} - 0.050\,e^{-4t}$ (במטרים); $x(0.50\,\text{s}) = 0.0300\,\text{m}$.
+    solution:
+      - kind: law
+        text: >-
+          הניחוש $x = e^{st}$ נותן $s^2 + 6s + 8 = 0$. עם שני שורשים ממשיים, $x = C_1e^{s_1t} + C_2e^{s_2t}$, ו-$C_1 + C_2 = x_0$, $s_1C_1 + s_2C_2 = v_0$.
+      - kind: manipulation
+        text: >-
+          א. $s^2 + 6s + 8 = (s + 2)(s + 4)$.
+
+          ב. $C_1 + C_2 = 0.050$ ו-$-2C_1 - 4C_2 = 0$, ולכן $C_1 = -2C_2$, כלומר $C_2 = -0.050$ ו-$C_1 = 0.10$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $0.10 - 0.050 = 0.050\,\text{m}$, ו-$\dot x(0) = -0.20 + 0.20 = 0$, כמו שנדרש. אחרי זמן רב נשאר רק האיבר האיטי, $0.10\,e^{-2t}$: השורש הקרוב לאפס קובע. ובשורשים ממשיים אין תנודה: $x$ נשאר חיובי.
+      - kind: units
+        text: >-
+          המקדמים 6 ו-8 ביחידות $\text{s}^{-1}$ ו-$\text{s}^{-2}$, ולכן גם השורשים ב-$\text{s}^{-1}$, ו-$st$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $x(0.50) = 0.10\,e^{-1} - 0.050\,e^{-2} = 0.0368 - 0.0068 = 0.0300\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $s = -2$ ו-$(-4)\,\text{s}^{-1}$. ב. $x = 0.10\,e^{-2t} - 0.050\,e^{-4t}$; $0.0300\,\text{m}$.
+
+  - id: W-0.5-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.5-1]
+    prompt: >-
+      א. הראו שאם $x_1(t)$ ו-$x_2(t)$ פותרים את $\ddot x + \gamma\dot x + \omega_0^2x = 0$, אז גם $C_1x_1 + C_2x_2$ פותר אותה, לכל זוג קבועים.
+
+      ב. הראו ש-$x_1 = \dfrac{1}{1 + t}$ פותר את המשוואה הלא ליניארית $\dot x = -x^2$ (עם $t$ בשניות), אבל $2x_1$ לא פותר אותה.
+
+      ג. גוף על קפיץ שתלוי בשדה כובד מקיים $\ddot x + \omega_0^2x = g$. אם $x_1$ ו-$x_2$ שני פתרונות שלה, האם $x_1 + x_2$ פתרון? ומה לגבי $x_1 - x_2$?
+    answer: >-
+      א. מציבים ומקבצים: $C_1\cdot0 + C_2\cdot0 = 0$.
+
+      ב. $\dot x_1 = -1/(1 + t)^2 = -x_1^2$; אבל ל-$2x_1$ האגף השמאלי $-2/(1 + t)^2$ והימני $-4/(1 + t)^2$.
+
+      ג. $x_1 + x_2$ אינו פתרון (נותן $2g$); $x_1 - x_2$ פותר את ההומוגנית, $\ddot x + \omega_0^2x = 0$.
+    solution:
+      - kind: law
+        text: >-
+          הנגזרת של סכום היא סכום הנגזרות, ונגזרת של קבוע כפול פונקציה היא הקבוע כפול הנגזרת. פתרון נבדק בהצבה, כזהות לכל $t$.
+      - kind: manipulation
+        text: >-
+          א. $\dfrac{d^2}{dt^2}(C_1x_1 + C_2x_2) + \gamma\dfrac{d}{dt}(C_1x_1 + C_2x_2) + \omega_0^2(C_1x_1 + C_2x_2) = C_1\left(\ddot x_1 + \gamma\dot x_1 + \omega_0^2x_1\right) + C_2\left(\ddot x_2 + \gamma\dot x_2 + \omega_0^2x_2\right) = 0$.
+
+          ב. $\dot x_1 = -\dfrac{1}{(1 + t)^2} = -x_1^2$: פתרון. בעבור $x = 2x_1$: $\dot x = -\dfrac{2}{(1 + t)^2}$, אבל $-x^2 = -\dfrac{4}{(1 + t)^2}$. הם שונים לכל $t$.
+
+          ג. $\dfrac{d^2}{dt^2}(x_1 + x_2) + \omega_0^2(x_1 + x_2) = g + g = 2g \ne g$. אבל $\dfrac{d^2}{dt^2}(x_1 - x_2) + \omega_0^2(x_1 - x_2) = g - g = 0$.
+      - kind: reasoning
+        text: >-
+          הכפל בקבוע נכשל ב-ב כי $x^2$ גדל פי 4 כש-$x$ גדל פי 2. וב-ג המשוואה ליניארית אבל לא הומוגנית: האיבר $g$ לא "מוכפל". לכן כל פתרון שלה הוא פתרון אחד, למשל שיווי המשקל $g/\omega_0^2$, ועוד פתרון של ההומוגנית.
+      - kind: limit
+        text: >-
+          ב-ג, כש-$g \to 0$ המשוואה נעשית הומוגנית, ואז גם $x_1 + x_2$ פתרון: מקבלים את סעיף א.
+      - kind: units
+        text: >-
+          ב-ב, $\dot x$ ו-$x^2$ צריכים אותן יחידות; עם $t$ בשניות, $x$ ביחידות $\text{s}^{-1}$, כמו $1/(1 + t)$.
+      - kind: result
+        text: >-
+          א. כן, לכל $C_1$, $C_2$. ב. $x_1$ פתרון, $2x_1$ לא. ג. $x_1 + x_2$ לא; $x_1 - x_2$ פותר את ההומוגנית.
+
+  - id: W-0.5-05
+    level: mid
+    objectives: [OBJ-0.5-2]
+    prompt: >-
+      ספל קפה ב-$85\,^\circ\text{C}$ עומד בחדר של $22\,^\circ\text{C}$, ומתקרר לפי $\dot T = -(T - T_{\text{env}})/\tau$. אחרי $5.0\,\text{min}$
+      הוא ב-$65\,^\circ\text{C}$.
+
+      א. מה $\tau$?
+
+      ב. מתי הקפה יגיע ל-$40\,^\circ\text{C}$?
+    answer: >-
+      א. $\tau = 13.1\,\text{min}$.
+
+      ב. $16.4\,\text{min}$ אחרי ההתחלה.
+    solution:
+      - kind: given
+        text: >-
+          $T_0 = 85\,^\circ\text{C}$, $T_{\text{env}} = 22\,^\circ\text{C}$, $T_1 = 65\,^\circ\text{C}$ ב-$t_1 = 5.0\,\text{min}$, $T_2 = 40\,^\circ\text{C}$.
+      - kind: law
+        text: >-
+          עם $u = T - T_{\text{env}}$: $\dot u = -u/\tau$, ובהפרדת משתנים $u = u_0e^{-t/\tau}$, כלומר $T = T_{\text{env}} + (T_0 - T_{\text{env}})e^{-t/\tau}$.
+      - kind: manipulation
+        text: >-
+          א. $\dfrac{T_1 - T_{\text{env}}}{T_0 - T_{\text{env}}} = e^{-t_1/\tau}$, ולכן $\tau = \dfrac{t_1}{\ln\left[(T_0 - T_{\text{env}})/(T_1 - T_{\text{env}})\right]}$.
+
+          ב. $t_2 = \tau\ln\dfrac{T_0 - T_{\text{env}}}{T_2 - T_{\text{env}}}$.
+      - kind: limit
+        text: >-
+          כש-$T_2 \to T_{\text{env}}$ הלוגריתם שואף לאינסוף: הקפה אף פעם לא מגיע בדיוק לטמפרטורת החדר. ואם בטעות משתמשים ב-$T$ במקום ב-$T - T_{\text{env}}$, ב-א יוצא $\tau = 5.0/\ln(85/65) = 18.6\,\text{min}$, והקפה "מתקרר לאפס מעלות".
+      - kind: units
+        text: >-
+          יחסי הפרשי טמפרטורות חסרי ממדים, ולכן $\tau$ ו-$t_2$ ביחידות של $t_1$, דקות.
+      - kind: substitution
+        text: >-
+          א. $\tau = 5.0/\ln(63/43) = 5.0/0.382 = 13.1\,\text{min}$. ב. $t_2 = 13.1\cdot\ln(63/18) = 13.1\cdot1.253 = 16.4\,\text{min}$.
+      - kind: result
+        text: >-
+          א. $13.1\,\text{min}$. ב. $16.4\,\text{min}$.
+
+  - id: W-0.5-06
+    level: mid
+    objectives: [OBJ-0.5-3]
+    prompt: >-
+      גוף מקיים $\ddot x + 2\dot x + 10x = 0$ (עם $t$ בשניות), ומשוחרר ממנוחה ב-$x_0 = 0.050\,\text{m}$.
+
+      א. מצאו את שורשי המשוואה האופיינית ואת $x(t)$.
+
+      ב. מתי הגוף עובר לראשונה את $x = 0$?
+
+      ג. פי כמה קטנה המעטפת של התנודה אחרי זמן מחזור אחד, $2\pi/\omega_d$?
+    answer: >-
+      א. $s = -1 \pm 3i\,\text{s}^{-1}$; $x = 0.050\,e^{-t}\left(\cos3t + \tfrac13\sin3t\right)$ (במטרים).
+
+      ב. $t = 0.631\,\text{s}$.
+
+      ג. פי $e^{2\pi/3} = 8.1$, כלומר נשאר $12.3\%$.
+    solution:
+      - kind: law
+        text: >-
+          $s^2 + 2s + 10 = 0$. כשהשורשים $-\gamma/2 \pm i\omega_d$: $x = e^{-\gamma t/2}\left(C_1\cos\omega_dt + C_2\sin\omega_dt\right)$, עם $C_1 = x_0$ ו-$C_2 = (v_0 + \gamma x_0/2)/\omega_d$.
+      - kind: manipulation
+        text: >-
+          א. $s = -1 \pm \sqrt{1 - 10} = -1 \pm 3i$, ולכן $\gamma/2 = 1\,\text{s}^{-1}$, $\omega_d = 3\,\text{rad/s}$, $C_1 = 0.050\,\text{m}$, $C_2 = 0.050/3\,\text{m}$.
+
+          ב. $x = 0$ כש-$\cos3t + \tfrac13\sin3t = 0$, כלומר $\tan3t = -3$. הפתרון החיובי הראשון: $3t = \pi - \arctan3$.
+
+          ג. המעטפת $e^{-t}$; אחרי $2\pi/3\,\text{s}$ היא $e^{-2\pi/3}$.
+      - kind: limit
+        text: >-
+          בלי ריסון, $\ddot x + 10x = 0$, הגוף היה עובר את האפס ברבע מחזור, $t = \dfrac{\pi}{2\sqrt{10}} = 0.497\,\text{s}$. עם הריסון התנודה איטית יותר ($\omega_d = 3 \lt \sqrt{10}$), והמעבר הראשון מאוחר יותר. ב-$t = 0$, $x = x_0$ ו-$\dot x = -x_0 + 3\cdot x_0/3 = 0$, כנדרש.
+      - kind: units
+        text: >-
+          $\omega_dt$ ו-$\gamma t/2$ חסרי ממדים; $C_1$ ו-$C_2$ במטרים.
+      - kind: substitution
+        text: >-
+          ב. $\arctan3 = 1.249$, ולכן $3t = 1.893$ ו-$t = 0.631\,\text{s}$. ג. $e^{-2\pi/3} = e^{-2.094} = 0.123$.
+      - kind: result
+        text: >-
+          א. $s = -1 \pm 3i\,\text{s}^{-1}$, $x = 0.050\,e^{-t}(\cos3t + \tfrac13\sin3t)\,\text{m}$. ב. $0.631\,\text{s}$. ג. נשאר $12.3\%$.
+
+  - id: W-0.5-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.5-2, OBJ-0.5-1]
+    prompt: >-
+      צנחן במסה $m = 70\,\text{kg}$ נופל עם גרר ריבועי. ציר כלפי מטה: $\dot v = g - \dfrac cmv^2$, עם $c = 0.25\,\text{kg/m}$. בלי
+      לפתור את המשוואה:
+
+      א. מצאו את פתרון שיווי המשקל $v^*$.
+
+      ב. מה סימן השיפוע $\dot v$ מתחת ל-$v^*$ ומעליו? ציירו את שדה הכיוונים במילים.
+
+      ג. הצנחן קופץ ממנוחה. האם הוא יכול לעבור את $v^*$? ואם ברגע מסוים הוא נע ב-$80\,\text{m/s}$ (למשל אחרי נפילה מגובה רב, שבו האוויר דליל, כשהוא נכנס לאוויר שבו $c = 0.25\,\text{kg/m}$), מה יקרה?
+    answer: >-
+      א. $v^* = \sqrt{mg/c} = 52.4\,\text{m/s}$.
+
+      ב. מתחת: $\dot v \gt 0$; מעל: $\dot v \lt 0$. כל העקומות מתכנסות אל הקו האופקי $v = v^*$.
+
+      ג. לא; עקומה שמתחילה מתחת ל-$v^*$ לא יכולה לחצות את הפתרון $v \equiv v^*$. מ-$80\,\text{m/s}$ הוא מאט אל $v^*$ מלמעלה (השיפוע שם $(-13.1)\,\text{m/s}^2$).
+    solution:
+      - kind: law
+        text: >-
+          פתרון שיווי משקל הוא ערך קבוע שבו $\dot v = 0$. כשהשיפוע משתנה בצורה חלקה עם $v$, שתי עקומות פתרון לא נחתכות, ולכן עקומה לא חוצה פתרון שיווי משקל.
+      - kind: manipulation
+        text: >-
+          א. $g - \dfrac cmv^{*2} = 0$, ולכן $v^* = \sqrt{mg/c}$.
+
+          ב. $\dot v = \dfrac cm\left(v^{*2} - v^2\right)$: חיובי כש-$v \lt v^*$ ושלילי כש-$v \gt v^*$.
+
+          ג. ממנוחה $\dot v = g \gt 0$, והמהירות גדלה, אבל לא עוברת את $v^*$. מ-$80\,\text{m/s}$, $\dot v \lt 0$.
+      - kind: reasoning
+        text: >-
+          זו משוואה לא ליניארית ($v^2$), אבל כדי לדעת **לאן** הפתרון הולך לא צריך לפתור אותה: מספיק הסימן של השיפוע משני צדי שיווי המשקל. שיווי המשקל יציב, כי השדה מצביע אליו משני הצדדים.
+      - kind: limit
+        text: >-
+          כש-$c \to 0$, $v^* \to \infty$: בלי גרר המהירות גדלה בלי גבול, $v = gt$. וממנוחה, בתחילת הנפילה, $\dot v = g$: נפילה חופשית, לפני שהגרר מורגש.
+      - kind: units
+        text: >-
+          $mg/c$ ב-$\dfrac{\text{kg}\cdot\text{m/s}^2}{\text{kg/m}} = \text{m}^2/\text{s}^2$, ולכן $v^*$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          א. $\sqrt{70\cdot9.8/0.25} = 52.4\,\text{m/s}$. ג. $9.8 - \dfrac{0.25}{70}\cdot80^2 = -13.1\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $52.4\,\text{m/s}$. ב. השיפוע חיובי מתחת, שלילי מעל. ג. ממנוחה הוא מתקרב ל-$v^*$ מלמטה בלי לעבור אותה; מ-$80\,\text{m/s}$ הוא מאט אליה מלמעלה.
+
+  - id: W-0.5-08
+    level: bagrut
+    objectives: [OBJ-0.5-2]
+    prompt: >-
+      משפך בצורת חרוט, עם הקודקוד למטה וזווית $30^\circ$ בין הדופן לציר האנכי, מלא מים עד גובה $h_0 = 0.20\,\text{m}$ מעל
+      הקודקוד. בקודקוד יש פתח בשטח $a = 0.50\,\text{cm}^2$, והמים יוצאים ממנו במהירות $\sqrt{2gh}$.
+
+      א. הראו שהגובה מקיים $\pi\tan^2\!30^\circ\,h^2\,\dot h = -a\sqrt{2gh}$.
+
+      ב. פתרו בהפרדת משתנים: אחרי כמה זמן המשפך מתרוקן?
+
+      ג. כמה זמן לוקח לגובה לרדת לחצי? מה זה אומר על איפה נמצאים רוב המים?
+    answer: >-
+      א. שטח פני המים $\pi(h\tan30^\circ)^2$, והנפח יורד בקצב $a\sqrt{2gh}$.
+
+      ב. $T = \dfrac{2\pi\tan^2\!30^\circ\,h_0^{5/2}}{5a\sqrt{2g}} = 33.9\,\text{s}$.
+
+      ג. $27.9\,\text{s}$, $82\%$ מהזמן: בחצי העליון של החרוט יש $7/8$ מהמים.
+    solution:
+      - kind: given
+        text: >-
+          ציר $h$ כלפי מעלה מהקודקוד. $h_0 = 0.20\,\text{m}$, $a = 5.0\cdot10^{-5}\,\text{m}^2$, $\tan^2\!30^\circ = 1/3$, $g = 9.8\,\text{m/s}^2$.
+      - kind: law
+        text: >-
+          שימור הנפח: הקצב שבו הנפח בחרוט קטן שווה לספיקה בפתח. בגובה $h$ רדיוס פני המים $h\tan30^\circ$, ולכן $A(h)\dot h = -a\sqrt{2gh}$ עם $A(h) = \pi h^2\tan^2\!30^\circ$.
+      - kind: manipulation
+        text: >-
+          ב. מפרידים: $\pi\tan^2\!30^\circ\,h^{3/2}\,dh = -a\sqrt{2g}\,dt$. אינטגרל מ-$h_0$ ב-$t = 0$ עד $h$ ב-$t$: $\tfrac25\pi\tan^2\!30^\circ\left(h_0^{5/2} - h^{5/2}\right) = a\sqrt{2g}\,t$. המשפך ריק כש-$h = 0$.
+
+          ג. $h^{5/2} = h_0^{5/2}\left(1 - t/T\right)$, ולכן $h = h_0/2$ כש-$t/T = 1 - 2^{-5/2} = 0.823$.
+      - kind: limit
+        text: >-
+          כש-$a \to 0$, $T \to \infty$. כש-$h_0$ גדל פי 2, $T$ גדל פי $2^{5/2} = 5.7$, הרבה יותר מבחבית גלילית ($\sqrt2$), כי בחרוט הנפח גדל כמו $h^3$. ובדיקה: לגליל עם אותו נפח ואותו גובה התחלתי יוצא $56.4\,\text{s}$, ולחרוט $3/5$ מזה; בחרוט רוב המים למעלה, שם הלחץ בפתח גדול והזרימה מהירה.
+      - kind: units
+        text: >-
+          $\dfrac{h_0^{5/2}}{a\sqrt{2g}}$ ב-$\dfrac{\text{m}^{5/2}}{\text{m}^2\cdot\text{m}^{1/2}/\text{s}} = \text{s}$.
+      - kind: substitution
+        text: >-
+          ב. $h_0^{5/2} = 0.0179\,\text{m}^{5/2}$; $T = \dfrac{2\pi\cdot0.0179/3}{5\cdot5.0\cdot10^{-5}\cdot4.43} = 33.9\,\text{s}$. ג. $0.823\cdot33.9 = 27.9\,\text{s}$.
+      - kind: result
+        text: >-
+          ב. $33.9\,\text{s}$. ג. $27.9\,\text{s}$: רוב הזמן הולך על החצי העליון, שבו $7/8$ מהנפח.
+
+  - id: W-0.5-09
+    level: bagrut
+    objectives: [OBJ-0.5-3, OBJ-0.5-1]
+    prompt: >-
+      גוף על קפיץ עם ריסון מקיים $\ddot x + \gamma\dot x + \omega_0^2x = 0$, עם $\omega_0 = 5.0\,\text{rad/s}$ ו-$\gamma = 10\,\text{s}^{-1}$.
+      הגוף נמצא בשיווי המשקל, $x_0 = 0$, ומקבל מכה שנותנת לו $v_0 = 1.0\,\text{m/s}$.
+
+      א. הראו שלמשוואה האופיינית שורש כפול, ובדקו בהצבה ש-$te^{-5t}$ פותר את המשוואה.
+
+      ב. מצאו את $x(t)$, ואת ההעתק המרבי ומתי הוא מתקבל.
+
+      ג. השוו להעתק המרבי בלי ריסון.
+    answer: >-
+      א. $s^2 + 10s + 25 = (s + 5)^2$: $s_0 = -5\,\text{s}^{-1}$, כפול.
+
+      ב. $x = v_0te^{-5t}$; המקסימום ב-$t = 1/5 = 0.20\,\text{s}$, $x_{\max} = v_0/(e\,\omega_0) = 0.0736\,\text{m}$.
+
+      ג. בלי ריסון $v_0/\omega_0 = 0.20\,\text{m}$: הריסון מקטין את ההעתק המרבי פי $e$.
+    solution:
+      - kind: law
+        text: >-
+          שורש כפול $s_0 = -\gamma/2$ כש-$\gamma^2/4 = \omega_0^2$, ואז $x = (C_1 + C_2t)e^{s_0t}$ עם $C_1 = x_0$ ו-$C_2 = v_0 - s_0x_0$.
+      - kind: manipulation
+        text: >-
+          א. $\gamma^2/4 = 25 = \omega_0^2$. עם $x = te^{-5t}$: $\dot x = (1 - 5t)e^{-5t}$, $\ddot x = (-10 + 25t)e^{-5t}$, ו-$\ddot x + 10\dot x + 25x = \left[(-10 + 10) + t(25 - 50 + 25)\right]e^{-5t} = 0$.
+
+          ב. $C_1 = 0$, $C_2 = v_0$: $x = v_0te^{-5t}$. $\dot x = v_0(1 - 5t)e^{-5t} = 0$ ב-$t = 1/5\,\text{s}$, שם $x = v_0e^{-1}/5$.
+      - kind: limit
+        text: >-
+          כש-$v_0 \to 0$ הגוף לא זז, כמו שצריך: הוא בשיווי משקל. ובזמן קצר, $x \approx v_0t$: ברגע הראשון הקפיץ והריסון עוד לא הספיקו להשפיע. אחרי המקסימום הגוף חוזר לאפס בלי לעבור אותו: $te^{-5t} \gt 0$ לכל $t \gt 0$.
+      - kind: units
+        text: >-
+          $v_0/\omega_0$ ב-$(\text{m/s})/(\text{1/s}) = \text{m}$.
+      - kind: substitution
+        text: >-
+          $x_{\max} = 1.0/(2.718\cdot5.0) = 0.0736\,\text{m}$ ב-$0.20\,\text{s}$; בלי ריסון $1.0/5.0 = 0.20\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $s_0 = -5\,\text{s}^{-1}$, כפול. ב. $x = 1.0\,t\,e^{-5t}\,\text{m}$; $0.0736\,\text{m}$ ב-$0.20\,\text{s}$. ג. בלי ריסון $0.20\,\text{m}$, פי $e$ יותר.
+
+  - id: W-0.5-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.5-3, OBJ-0.5-1]
+    prompt: >-
+      כדור קטן מונח על ראש גבעה חלקה ומעוגלת. בהעתקים קטנים $x$ מהפסגה (לאורך הקרקע) הוא מקיים $\ddot x = \kappa^2x$, עם
+      $\kappa = 3.0\,\text{s}^{-1}$.
+
+      א. מה שורשי המשוואה האופיינית? למה אין כאן תנודה, ומה זה אומר על שיווי המשקל בפסגה?
+
+      ב. מזיזים את הכדור ל-$x_0 = 1.0\,\text{mm}$ ומשחררים ממנוחה. מצאו את $x(t)$. מתי הוא מגיע ל-$10\,\text{cm}$ (אם הקירוב עדיין טוב שם)?
+
+      ג. באיזו מהירות התחלתית צריך לגלגל אותו מ-$x_0 = 1.0\,\text{mm}$ אל הפסגה כדי שייעצר בדיוק עליה? ומה יקרה אם המהירות תהיה $2.9\,\text{mm/s}$ במקום זה?
+    answer: >-
+      א. $s = \pm\kappa = \pm3.0\,\text{s}^{-1}$: אחד חיובי, ולכן יש פתרון שגדל; שיווי המשקל לא יציב.
+
+      ב. $x = x_0\cosh\kappa t$; $10\,\text{cm}$ אחרי $1.77\,\text{s}$.
+
+      ג. $v_0 = -\kappa x_0 = -3.0\,\text{mm/s}$ (אל הפסגה). עם $2.9\,\text{mm/s}$ הוא נעצר לפני הפסגה ומתגלגל חזרה.
+    solution:
+      - kind: law
+        text: >-
+          הניחוש $e^{st}$ נותן $s^2 = \kappa^2$. הפתרון הכללי $x = C_1e^{\kappa t} + C_2e^{-\kappa t}$, עם $C_1 = \tfrac12(x_0 + v_0/\kappa)$ ו-$C_2 = \tfrac12(x_0 - v_0/\kappa)$. ציר $x$ לאורך הקרקע, ראשית בפסגה, חיובי לצד שאליו הוזז הכדור.
+      - kind: manipulation
+        text: >-
+          א. $s = \pm\kappa$, שני שורשים ממשיים: בלי חלק מדומה אין תנודה, ו-$e^{\kappa t}$ גדל.
+
+          ב. $v_0 = 0$: $C_1 = C_2 = x_0/2$, ולכן $x = x_0\cosh\kappa t$. $x = 100x_0$ כש-$\cosh\kappa t = 100$, כלומר $\kappa t = \operatorname{arccosh}100 \approx \ln200$.
+
+          ג. כדי שהאיבר הגדל ייעלם צריך $C_1 = 0$: $v_0 = -\kappa x_0$, ואז $x = x_0e^{-\kappa t}$, מתקרב לפסגה ולא מגיע אליה. עם $v_0 = -2.9\,\text{mm/s}$, $C_1 = \tfrac12(1.0 - 2.9/3.0)\,\text{mm} \gt 0$: האיבר $C_1e^{\kappa t}$ ינצח בסוף, והכדור יחזור לצד שממנו בא.
+      - kind: reasoning
+        text: >-
+          השוו ל-$\ddot x = -\omega_0^2x$, שבה השורשים מדומים והגוף מתנודד סביב שיווי משקל יציב. סימן המקדם קובע: כוח שדוחף מהפסגה הופך את השורשים לממשיים. ההתנהגות רגישה מאוד לתנאי ההתחלה: שינוי של $3\%$ במהירות מהפך את התוצאה.
+      - kind: limit
+        text: >-
+          כש-$\kappa \to 0$ (גבעה שטוחה) $x = x_0 + v_0t$: תנועה במהירות קבועה. ובזמן קצר, $\cosh\kappa t \approx 1 + \tfrac12\kappa^2t^2$: הכדור מתחיל כאילו בתאוצה קבועה $\kappa^2x_0$.
+      - kind: units
+        text: >-
+          $\kappa t$ חסר ממדים; $\kappa x_0$ ב-$\text{s}^{-1}\cdot\text{mm} = \text{mm/s}$.
+      - kind: substitution
+        text: >-
+          ב. $\operatorname{arccosh}100 = 5.30$, ולכן $t = 5.30/3.0 = 1.77\,\text{s}$. ג. $v_0 = -3.0\cdot1.0 = -3.0\,\text{mm/s}$.
+      - kind: result
+        text: >-
+          א. $s = \pm3.0\,\text{s}^{-1}$; שיווי משקל לא יציב. ב. $x = 1.0\cosh3t\,\text{mm}$, $10\,\text{cm}$ אחרי $1.77\,\text{s}$. ג. $3.0\,\text{mm/s}$ אל הפסגה; עם $2.9\,\text{mm/s}$ הוא חוזר.
+
+challenge:
+  - id: W-0.5-c1
+    stars: 2
+    objectives: [OBJ-0.5-2, OBJ-0.5-1]
+    prompt: >-
+      שרשרת דעיכות רדיואקטיביות (מודל צעצוע). יסוד א דועך בזמן מחצית חיים $t_S$; מחצית מהגרעינים שדועכים הופכים ליסוד
+      ב, והמחצית השנייה ליסוד יציב ג. גם ב רדיואקטיבי, ודועך ל-ג באותו זמן מחצית חיים, $t_S$. ברגע $t = 0$ יש רק יסוד א,
+      בכמות $x(0) = 1$ (ביחידות שבהן זו הכמות כולה). נסמן את הכמויות $x(t)$, $y(t)$ ו-$z(t)$, ואת קבוע הדעיכה $\sigma$.
+
+      א. מה הקשר בין $\sigma$ ל-$t_S$? כתבו את המשוואות ל-$\dot x$, $\dot y$ ו-$\dot z$, ובדקו ש-$x + y + z$ קבוע.
+
+      ב. פתרו את המשוואה של $x$.
+
+      ג. המשוואה של $y$ אינה ניתנת להפרדת משתנים. הציבו $y = u(t)e^{-\sigma t}$, ומצאו את $u$ ואת $y$.
+
+      ד. מתי הכמות של ב מרבית, ומה היא אז? מה $z$ באותו רגע?
+    answer: >-
+      א. $\sigma = \ln2/t_S$; $\dot x = -\sigma x$, $\dot y = \tfrac12\sigma x - \sigma y$, $\dot z = \tfrac12\sigma x + \sigma y$; הסכום אפס.
+
+      ב. $x = e^{-\sigma t}$.
+
+      ג. $\dot u = \sigma/2$, $u = \sigma t/2$, $y = \tfrac12\sigma te^{-\sigma t}$.
+
+      ד. ב-$t = 1/\sigma = t_S/\ln2 = 1.44\,t_S$; $y_{\max} = 1/(2e) = 0.184$; $z = 0.448$.
+    solution:
+      - kind: law
+        text: >-
+          דעיכה רדיואקטיבית: קצב הדעיכה פרופורציוני לכמות, $\dot x = -\sigma x$, והכמות יורדת לחצי אחרי $t_S$, ולכן $e^{-\sigma t_S} = \tfrac12$. כל מה שעוזב יסוד אחד מגיע ליסוד אחר.
+      - kind: manipulation
+        text: >-
+          א. $\sigma = \ln2/t_S$. ל-ב נכנס חצי ממה שדועך מ-א, $\tfrac12\sigma x$, ויוצא $\sigma y$; ל-ג נכנסים החצי השני ו-$\sigma y$. הסכום: $-\sigma x + \tfrac12\sigma x - \sigma y + \tfrac12\sigma x + \sigma y = 0$.
+
+          ב. הפרדת משתנים עם $x(0) = 1$: $x = e^{-\sigma t}$.
+
+          ג. $\dot y + \sigma y = \tfrac12\sigma e^{-\sigma t}$. עם $y = ue^{-\sigma t}$: $\dot y = \dot ue^{-\sigma t} - \sigma ue^{-\sigma t}$, ולכן $\dot ue^{-\sigma t} = \tfrac12\sigma e^{-\sigma t}$, כלומר $\dot u = \sigma/2$. עם $y(0) = 0$: $u = \sigma t/2$.
+
+          ד. $\dot y = \tfrac12\sigma e^{-\sigma t}(1 - \sigma t) = 0$ ב-$\sigma t = 1$. שם $y = \tfrac12e^{-1}$ ו-$z = 1 - x - y = 1 - e^{-1} - \tfrac12e^{-1}$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $y = 0$, $\dot y = \sigma/2$ (רק ההזנה מ-א). כש-$t \to \infty$: $x, y \to 0$ ו-$z \to 1$: הכול הופך ליציב. והתבנית $te^{-\sigma t}$ היא בדיוק הפתרון של שורש כפול: שני זמני מחצית חיים שווים הם "שורש כפול" של השרשרת.
+      - kind: units
+        text: >-
+          $\sigma$ ביחידות של אחד חלקי זמן, ולכן $\sigma t$ חסר ממדים; $x$, $y$, $z$ שברים של הכמות ההתחלתית.
+      - kind: substitution
+        text: >-
+          $1/\ln2 = 1.44$; $1/(2e) = 0.184$; $z = 1 - 0.368 - 0.184 = 0.448$.
+      - kind: result
+        text: >-
+          א. $\sigma = \ln2/t_S$. ב. $x = e^{-\sigma t}$. ג. $y = \tfrac12\sigma te^{-\sigma t}$. ד. ב-$1.44\,t_S$, $y_{\max} = 0.184$, $z = 0.448$.
+    source:
+      name: MIT OpenCourseWare, 18.03 Differential Equations
+      year: 2010
+      problem: 'Problem Set 2, Part II, Problem 4 (the decay chain on Tatooine; parts (b)–(d), with tM = tS)'
+      url: https://ocw.mit.edu/courses/18-03-differential-equations-spring-2010/f6f9a502e444bb002f9e64e090f4b8ad_MIT18_03S10_ps2.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.5-c2
+    stars: 1
+    objectives: [OBJ-0.5-3]
+    prompt: >-
+      דלתות של סלון (דלתות מתנדנדות) יכולות לעבור דרך המשקוף. בולם טוב מאט את הדלת כך שהיא נעצרת בלי לעבור את המשקוף,
+      אלא אם דוחפים אותה חזק אל המשקוף; אז היא עוברת פעם אחת וחוזרת מהצד השני. נניח שהזווית $x$ של הדלת מהמצב הסגור
+      מקיימת $m\ddot x + b\dot x + kx = 0$ עם $m = 0.50$, $b = 1.5$ ו-$k = 0.625$ (ביחידות של הבעיה, עם $t$ ביחידות זמן
+      שלה).
+
+      א. כתבו את המשוואה האופיינית ומצאו את שורשיה.
+
+      ב. כתבו את הפתרון הכללי בעזרת $x(0) = x_0$ ו-$\dot x(0) = \dot x_0$.
+
+      ג. נניח $x_0 \gt 0$. באילו מהירויות התחלתיות $\dot x_0$ הדלת עוברת את $x = 0$ ברגע כלשהו $t \gt 0$? מה הסף כש-$x_0 = 0.25$?
+
+      ד. מקטינים את $b$ ומשאירים את $m$ ו-$k$. באיזה $b$ השורשים נפגשים, ומה הפתרון הכללי אז?
+    answer: >-
+      א. $0.50s^2 + 1.5s + 0.625 = 0$, כלומר $s^2 + 3s + 1.25 = 0$: $s_1 = -0.5$, $s_2 = -2.5$.
+
+      ב. $x = \tfrac14(5x_0 + 2\dot x_0)e^{-t/2} - \tfrac14(x_0 + 2\dot x_0)e^{-5t/2}$.
+
+      ג. כש-$\dot x_0 \lt -\tfrac52x_0$; בעבור $x_0 = 0.25$, $\dot x_0 \lt -0.625$.
+
+      ד. $b = 2\sqrt{mk} = \sqrt5/2 = 1.12$; $x = (C_1 + C_2t)e^{-1.12t}$.
+    solution:
+      - kind: law
+        text: >-
+          הניחוש $e^{st}$ נותן $ms^2 + bs + k = 0$. שני שורשים ממשיים: $x = C_1e^{s_1t} + C_2e^{s_2t}$, עם $C_1 = \dfrac{\dot x_0 - s_2x_0}{s_1 - s_2}$, $C_2 = \dfrac{s_1x_0 - \dot x_0}{s_1 - s_2}$. ציר $x$: חיובי לצד שבו הדלת נמצאת בהתחלה.
+      - kind: manipulation
+        text: >-
+          א. מחלקים ב-$m$: $\gamma = 3$, $\omega_0^2 = 1.25$, ו-$s = -1.5 \pm \sqrt{2.25 - 1.25} = -1.5 \pm 1$.
+
+          ב. $s_1 - s_2 = 2$: $C_1 = (\dot x_0 + 2.5x_0)/2 = \tfrac14(5x_0 + 2\dot x_0)$, $C_2 = (-0.5x_0 - \dot x_0)/2 = -\tfrac14(x_0 + 2\dot x_0)$.
+
+          ג. $x = 0$ כש-$e^{2t} = -C_2/C_1$. פתרון עם $t \gt 0$ קיים רק אם $-C_2/C_1 \gt 1$. עם $x_0 \gt 0$: אם $C_1 \gt 0$ צריך $x_0 + 2\dot x_0 \gt 5x_0 + 2\dot x_0$, בלתי אפשרי; לכן $C_1 \lt 0$, כלומר $5x_0 + 2\dot x_0 \lt 0$, ואז $x_0 + 2\dot x_0 \lt 5x_0 + 2\dot x_0 \lt 0$ מתקיים מאליו. התנאי: $\dot x_0 \lt -\tfrac52x_0 = s_2x_0$.
+
+          ד. שורש כפול כש-$b^2 = 4mk$; אז $s_0 = -b/(2m)$.
+      - kind: limit
+        text: >-
+          על הסף, $\dot x_0 = -\tfrac52x_0$, $C_1 = 0$ ו-$x = x_0e^{-5t/2}$: הדלת מתקרבת למשקוף ולא מגיעה אליו. כש-$\dot x_0 \to -\infty$ רגע המעבר שואף לאפס. ובכל מקרה יש מעבר אחד לכל היותר: $e^{2t}$ עולה, ולכן מקבל כל ערך פעם אחת.
+      - kind: units
+        text: >-
+          $\dot x_0$ ו-$s_2x_0$ באותן יחידות, זווית ליחידת זמן, כמו שצריך באי שוויון ביניהם.
+      - kind: substitution
+        text: >-
+          ג. $-2.5\cdot0.25 = -0.625$. בדיקה: עם $x_0 = 0.25$ ו-$\dot x_0 = -1$, $C_1 = -0.1875$, $C_2 = 0.4375$, והמעבר ב-$t = \tfrac12\ln(0.4375/0.1875) = 0.424$. ד. $b = 2\sqrt{0.50\cdot0.625} = 1.12$, $s_0 = -1.12/1.0 = -1.12$.
+      - kind: result
+        text: >-
+          א. $s = -0.5$ ו-$(-2.5)$. ב. $x = \tfrac14(5x_0 + 2\dot x_0)e^{-t/2} - \tfrac14(x_0 + 2\dot x_0)e^{-5t/2}$. ג. $\dot x_0 \lt -2.5x_0$, כלומר $\dot x_0 \lt -0.625$. ד. $b = 1.12$, $x = (C_1 + C_2t)e^{-1.12t}$.
+    source:
+      name: MIT OpenCourseWare, 18.03SC Differential Equations
+      year: 2011
+      problem: 'Unit II, Problem Set 3, Part II, Problem 1 (the saloon door) and Problem 2(a)'
+      url: https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/d2c06ce5eaef4f97b8d7b4db55a89926_MIT18_03SCF11_ps3_II_s13s.pdf
+      verified: '2026-11-17'
+      adapted: true

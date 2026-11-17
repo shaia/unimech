@@ -1,0 +1,470 @@
+# Workbook, lesson 0.1 (units, dimensions and orders of magnitude). Format and rules: .claude/CLAUDE.md,
+# "The solution format" (law … limit, units, result). In a >- block, consecutive lines fold into one
+# paragraph: every part (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-1/wb.ts with src/physics/dimensions.ts (solveExponents,
+# orderOfMagnitude, decadesApart) and constants.ts (G, G_NEWTON, M_EARTH, R_EARTH, M_MOON, R_MOON, M_SUN, R_SUN):
+#   W-02: T = 2π√(m/k), m = 0.50 kg, k = 200 N/m: 0.314 s (the inverted 2π√(k/m) = 126 s⁻¹);
+#   W-03: sand grain d = 0.50 mm, ρ = 2600 kg/m³: 1.70·10⁻⁷ kg (log −6.77, order 10⁻⁷); 5.88·10⁶ grains per kg (10⁷);
+#   W-04: v = √(F/λ), exponents (½, −½, 0) for (F, λ, L); F = 100 N, λ = 0.010 kg/m: 100 m/s; L = 0.65 m: f = 76.9 Hz;
+#   W-05: v₀ = 3.0 m/s: h = 0.459 m and t = 0.612 s on Earth, 2.78 m and 3.70 s on the Moon (g = 1.62), ratio 6.05;
+#   W-06: oceans 0.70·4πR²·3.7 km·1000 kg/m³ = 1.32·10²¹ kg (4πR² = 5.10·10¹⁴ m²), 2.21·10⁻⁴ of M_EARTH;
+#   W-07: 1.0 m pendulum 2.01 s (√(L/g) = 0.319 s); braking from 30 m/s with μ = 0.7: 65.6 m; 50 m/s² = 5.1 g;
+#   W-08: T = √(3π/(Gρ)): Earth (ρ = 5510) 84.4 min, Moon (ρ = 3330) 109 min, ratio 1.29 = √(5510/3330);
+#   W-09: ten times taller: weight ×1000, bone cross-section ×100, stress ×10; bones ∝ L^{3/2}: ×31.6 thicker;
+#   W-10: p₀ = 1.0·10⁵ Pa: atmosphere 5.20·10¹⁸ kg, oceans/atmosphere = 254, water layer 10.2 m, 8.72·10⁻⁷ of M_EARTH;
+#   c1: ω = C√(GM/R³), exponents (½, ½, −3/2) for (G, M, R); Sun: 6.27·10⁻⁴ s⁻¹, 2π/ω = 1.00·10⁴ s = 2.78 h;
+#       v from (M, g, b, R): one group bR/M; baseball of lesson 2.7 (b = 1.37·10⁻³ kg/m, M = 0.145 kg): 32.2 m/s;
+#   c2: ω² ∝ σ/(ρr²R); mouse E_shake = ¼MR²ω² = 4.5·10⁻⁴ J, E_evap = 0.05·20 g·2430 J/g = 2430 J,
+#       ratio 5.4·10⁶, cubed 1.57·10²⁰, M* = 3.15·10¹⁸ kg.
+
+lesson: '0.1'
+practice:
+  - id: W-0.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      א. מצאו את היחידות של הקבועים הבאים ביחידות היסוד $\text{kg}$, $\text{m}$, $\text{s}$: קבוע הקפיץ $k$ (מ-$F = kx$), קבוע הכבידה $G$ (מ-$F = Gm_1m_2/r^2$), ומקדם הגרר הריבועי $c$ (מ-$F = cv^2$).
+
+      ב. קבעו ונמקו: לאילו מהביטויים הבאים יש יחידות של אנרגיה? $\tfrac12kx^2$, $Gm^2/r$, $cv^3$.
+    answer: >-
+      א. $[k] = \text{kg/s}^2$, $[G] = \text{m}^3/(\text{kg}\cdot\text{s}^2)$, $[c] = \text{kg/m}$.
+
+      ב. $\tfrac12kx^2$ ו-$Gm^2/r$ הם אנרגיה; $cv^3$ הוא הספק ($\text{J/s}$), לא אנרגיה.
+    solution:
+      - kind: law
+        text: >-
+          $1\,\text{N} = 1\,\text{kg}\cdot\text{m/s}^2$ ו-$1\,\text{J} = 1\,\text{N}\cdot\text{m} = 1\,\text{kg}\cdot\text{m}^2/\text{s}^2$. היחידות של קבוע הן היחידות של הכוח חלקי היחידות של מה שהוא כופל.
+      - kind: manipulation
+        text: >-
+          א. $[k] = \text{N/m} = \text{kg/s}^2$. $[G] = \text{N}\cdot\text{m}^2/\text{kg}^2 = \text{m}^3/(\text{kg}\cdot\text{s}^2)$. $[c] = \text{N}/(\text{m/s})^2 = \text{kg/m}$.
+
+          ב. $[kx^2] = \text{kg/s}^2\cdot\text{m}^2 = \text{J}$. $[Gm^2/r] = \dfrac{\text{m}^3}{\text{kg}\cdot\text{s}^2}\cdot\dfrac{\text{kg}^2}{\text{m}} = \text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$. $[cv^3] = \text{kg/m}\cdot\text{m}^3/\text{s}^3 = \text{kg}\cdot\text{m}^2/\text{s}^3 = \text{J/s}$.
+      - kind: limit
+        text: >-
+          ה-$\tfrac12$ לא משנה יחידות, ולכן בדיקת יחידות לא אומרת אם הוא נכון; היא רק פוסלת. וכש-$x \to 0$ האנרגיה של הקפיץ שואפת לאפס, כמו שצריך לקפיץ רפוי.
+      - kind: units
+        text: >-
+          $cv^3 = (cv^2)\cdot v$ הוא כוח כפול מהירות: הקצב שבו הגרר מבצע עבודה, ולא העבודה עצמה.
+      - kind: result
+        text: >-
+          א. $\text{kg/s}^2$, $\text{m}^3/(\text{kg}\cdot\text{s}^2)$, $\text{kg/m}$. ב. $\tfrac12kx^2$ ו-$Gm^2/r$ כן; $cv^3$ לא.
+
+  - id: W-0.1-02
+    level: basic
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      סטודנטית לא זוכרת אם זמן המחזור של גוף במסה $m$ על קפיץ בעל קבוע $k$ הוא $2\pi\sqrt{m/k}$ או $2\pi\sqrt{k/m}$. הכריעו בעזרת יחידות, וחשבו את זמן המחזור עבור $m = 0.50\,\text{kg}$ ו-$k = 200\,\text{N/m}$.
+    answer: >-
+      $T = 2\pi\sqrt{m/k} = 0.314\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          $[m] = \text{kg}$, $[k] = \text{N/m} = \text{kg/s}^2$.
+      - kind: law
+        text: >-
+          לזמן המחזור יש יחידות של שניות.
+      - kind: manipulation
+        text: >-
+          $[m/k] = \text{kg}/(\text{kg/s}^2) = \text{s}^2$, ולכן $\sqrt{m/k}$ בשניות. $\sqrt{k/m}$ ביחידות $\text{s}^{-1}$: זו מהירות זוויתית, לא זמן.
+      - kind: limit
+        text: >-
+          גוף כבד יותר על אותו קפיץ צריך לנוע לאט יותר, ו-$\sqrt{m/k}$ אכן גדל עם $m$. קפיץ קשה יותר ($k$ גדול) מחזיר מהר יותר, ו-$\sqrt{m/k}$ אכן קטן.
+      - kind: units
+        text: >-
+          $2\pi$ חסר ממדים, ולכן $T$ בשניות.
+      - kind: substitution
+        text: >-
+          $T = 2\pi\sqrt{0.50/200} = 2\pi\cdot0.050 = 0.314\,\text{s}$. הנוסחה השנייה הייתה נותנת $126$, ביחידות $\text{s}^{-1}$.
+      - kind: result
+        text: >-
+          $T = 2\pi\sqrt{m/k} = 0.314\,\text{s}$.
+
+  - id: W-0.1-03
+    level: basic
+    objectives: [OBJ-0.1-2]
+    prompt: >-
+      גרגר חול הוא בערך כדור בקוטר $0.50\,\text{mm}$, וצפיפות החול $2600\,\text{kg/m}^3$. מה סדר הגודל של המסה של גרגר אחד, ושל מספר הגרגרים בקילוגרם של חול?
+    answer: >-
+      $m = 1.70\cdot10^{-7}\,\text{kg}$, סדר גודל $10^{-7}\,\text{kg}$; כ-$5.9\cdot10^6$ גרגרים בקילוגרם, סדר גודל $10^7$.
+    solution:
+      - kind: given
+        text: >-
+          $d = 5.0\cdot10^{-4}\,\text{m}$, $\rho = 2600\,\text{kg/m}^3$.
+      - kind: law
+        text: >-
+          המסה של כדור בקוטר $d$ היא $m = \rho\dfrac{\pi}{6}d^3$. סדר הגודל הוא $10^n$ עם $n$ השלם הקרוב ביותר ל-$\log_{10}$ של הערך.
+      - kind: manipulation
+        text: >-
+          מספר הגרגרים בקילוגרם הוא $N = 1\,\text{kg}/m$.
+      - kind: limit
+        text: >-
+          המסה פרופורציונית ל-$d^3$: גרגר בקוטר כפול כבד פי 8, וגרגרים כאלה בקילוגרם יהיו פי 8 פחות, כמעט סדר גודל שלם.
+      - kind: units
+        text: >-
+          $\text{kg/m}^3\cdot\text{m}^3 = \text{kg}$, ו-$N$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $m = 2600\cdot0.524\cdot(5.0\cdot10^{-4})^3 = 1.70\cdot10^{-7}\,\text{kg}$, ו-$\log_{10}m = -6.77$: סדר גודל $10^{-7}$. $N = 5.88\cdot10^6$, ו-$\log_{10}N = 6.77$: סדר גודל $10^7$.
+      - kind: result
+        text: >-
+          גרגר: $1.70\cdot10^{-7}\,\text{kg}$ (סדר גודל $10^{-7}\,\text{kg}$). קילוגרם: כ-$6\cdot10^6$ גרגרים (סדר גודל $10^7$).
+
+  - id: W-0.1-04
+    level: mid
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      מיתר של גיטרה מתוח בכוח $F$, ומסה ליחידת אורך שלו היא $\lambda$ (ביחידות $\text{kg/m}$). אורכו $L$.
+
+      א. בעזרת ניתוח ממדים, מצאו איך מהירות הגל לאורך המיתר תלויה ב-$F$, ב-$\lambda$ וב-$L$, עד כדי קבוע.
+
+      ב. הקבוע הוא 1. חשבו את המהירות עבור $F = 100\,\text{N}$ ו-$\lambda = 0.010\,\text{kg/m}$, ואת התדירות $f = v/(2L)$ עבור $L = 0.65\,\text{m}$.
+    answer: >-
+      א. $v = C\sqrt{F/\lambda}$, בלי תלות ב-$L$.
+
+      ב. $v = 100\,\text{m/s}$, $f = 76.9\,\text{Hz}$.
+    solution:
+      - kind: given
+        text: >-
+          $[F] = \text{M}\,\text{L}\,\text{T}^{-2}$, $[\lambda] = \text{M}\,\text{L}^{-1}$, $[L] = \text{L}$; המבוקש $[v] = \text{L}\,\text{T}^{-1}$.
+      - kind: law
+        text: >-
+          $v = C\,F^a\lambda^bL^c$, ומשווים את המעריכים של מסה, אורך וזמן.
+      - kind: manipulation
+        text: >-
+          זמן: $-2a = -1$, ולכן $a = \tfrac12$. מסה: $a + b = 0$, ולכן $b = -\tfrac12$. אורך: $a - b + c = 1$, ולכן $c = 0$. האורך של המיתר לא יכול להופיע במהירות.
+      - kind: limit
+        text: >-
+          מיתר מתוח יותר ($F$ גדול) מחזיר מהר יותר, ו-$v$ גדל; מיתר כבד יותר ($\lambda$ גדול) איטי יותר, ו-$v$ קטן. כש-$F \to 0$, $v \to 0$: מיתר רפוי לא מעביר גל.
+      - kind: units
+        text: >-
+          $\sqrt{\text{N}/(\text{kg/m})} = \sqrt{\text{kg}\cdot\text{m/s}^2\cdot\text{m/kg}} = \text{m/s}$; $f = v/(2L)$ ביחידות $\text{1/s} = \text{Hz}$.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{100/0.010} = 100\,\text{m/s}$, ו-$f = 100/(2\cdot0.65) = 76.9\,\text{Hz}$. האורך לא משנה את המהירות, אבל הוא קובע את התדירות: מיתר קצר יותר נותן צליל גבוה יותר.
+      - kind: result
+        text: >-
+          א. $v = C\sqrt{F/\lambda}$. ב. $100\,\text{m/s}$ ו-$76.9\,\text{Hz}$.
+
+  - id: W-0.1-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      אסטרונאוטית קופצת אנכית, באותה מהירות המראה $v_0$, פעם על כדור הארץ ופעם על הירח, שם תאוצת הנפילה קטנה פי $6.05$ (מזניחים את האוויר ואת החליפה).
+
+      א. בניתוח ממדים בלבד: איך תלויים הגובה המרבי וזמן השהייה באוויר ב-$v_0$ וב-$g$ (המסה שלה אולי משפיעה)? פי כמה גדלים שניהם על הירח?
+
+      ב. קבעו ונמקו: האם התוצאה של סעיף א תלויה בכך שאיננו יודעים את הקבועים חסרי הממדים?
+    answer: >-
+      א. $h = C_1v_0^2/g$ ו-$t = C_2v_0/g$, בלי המסה; על הירח שניהם גדלים פי $6.05$.
+
+      ב. לא: ביחס בין הירח לכדור הארץ הקבועים מצטמצמים.
+    solution:
+      - kind: given
+        text: >-
+          $[v_0] = \text{L}\,\text{T}^{-1}$, $[g] = \text{L}\,\text{T}^{-2}$, $[m] = \text{M}$.
+      - kind: law
+        text: >-
+          $h = C_1m^av_0^bg^c$ ו-$t = C_2m^{a'}v_0^{b'}g^{c'}$; משווים מעריכים.
+      - kind: manipulation
+        text: >-
+          א. מסה: $a = 0$ (רק ל-$m$ יש קילוגרמים). לגובה: זמן $-b - 2c = 0$, אורך $b + c = 1$, ולכן $c = -1$ ו-$b = 2$: $h = C_1v_0^2/g$. לזמן: $-b' - 2c' = 1$, $b' + c' = 0$, ולכן $c' = -1$, $b' = 1$: $t = C_2v_0/g$. שניהם פרופורציוניים ל-$1/g$.
+      - kind: reasoning
+        text: >-
+          ב. היחס בין הירח לכדור הארץ, באותה $v_0$, הוא $h_{\text{Moon}}/h_{\text{Earth}} = g_{\text{Earth}}/g_{\text{Moon}} = 6.05$, ו-$C_1$ מצטמצם. כך גם בזמן. הקבועים נחוצים רק כדי לחשב את הגובה עצמו ($C_1 = \tfrac12$, $C_2 = 2$, מהקינמטיקה של שיעור 1.2).
+      - kind: limit
+        text: >-
+          כש-$g \to 0$ שניהם שואפים לאינסוף: בלי כובד היא לא חוזרת. וכש-$v_0 \to 0$ שניהם אפס.
+      - kind: units
+        text: >-
+          $\dfrac{(\text{m/s})^2}{\text{m/s}^2} = \text{m}$ ו-$\dfrac{\text{m/s}}{\text{m/s}^2} = \text{s}$.
+      - kind: result
+        text: >-
+          א. $h \propto v_0^2/g$ ו-$t \propto v_0/g$; פי $6.05$ כל אחד. ב. לא, הקבועים מצטמצמים ביחס. (עם $v_0 = 3.0\,\text{m/s}$: $0.459\,\text{m}$ ו-$0.612\,\text{s}$ על כדור הארץ, $2.78\,\text{m}$ ו-$3.70\,\text{s}$ על הירח.)
+
+  - id: W-0.1-06
+    level: mid
+    objectives: [OBJ-0.1-2]
+    prompt: >-
+      העריכו את המסה של כל המים באוקיינוסים, בהנחה שהם מכסים $70\%$ משטח הפנים של כדור הארץ ($R = 6.37\cdot10^6\,\text{m}$) בעומק ממוצע של $3.7\,\text{km}$. איזה חלק זה ממסת כדור הארץ, $5.97\cdot10^{24}\,\text{kg}$? מה זה אומר על עובי שכבת המים לעומת הרדיוס?
+    answer: >-
+      $1.32\cdot10^{21}\,\text{kg}$, כ-$2.2\cdot10^{-4}$ ממסת כדור הארץ: שכבה דקה מאוד.
+    solution:
+      - kind: given
+        text: >-
+          $R = 6.37\cdot10^6\,\text{m}$, עומק $d = 3.7\cdot10^3\,\text{m}$, $\rho_\text{w} = 1000\,\text{kg/m}^3$, חלק השטח $0.70$.
+      - kind: law
+        text: >-
+          כשהעומק קטן מאוד לעומת הרדיוס, נפח השכבה הוא שטח כפול עומק: $M_\text{o} \approx 0.70\cdot4\pi R^2\,d\,\rho_\text{w}$. זו הערכת פרמי: מכפלה של ארבעה גורמים.
+      - kind: manipulation
+        text: >-
+          את החלק ממסת כדור הארץ, $M_\text{o}/M$, משווים ליחס העוביים: $d/R = 5.8\cdot10^{-4}$.
+      - kind: limit
+        text: >-
+          הקירוב "שטח כפול עומק" טוב כי $d/R \ll 1$; בשכבה עבה, שהעובי שלה דומה לרדיוס, היה צריך הפרש בין נפחים של שני כדורים.
+      - kind: units
+        text: >-
+          $\text{m}^2\cdot\text{m}\cdot\text{kg/m}^3 = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $4\pi R^2 = 5.10\cdot10^{14}\,\text{m}^2$, ולכן $M_\text{o} = 0.70\cdot5.10\cdot10^{14}\cdot3.7\cdot10^3\cdot1000 = 1.32\cdot10^{21}\,\text{kg}$, ו-$M_\text{o}/M = 2.21\cdot10^{-4}$.
+      - kind: result
+        text: >-
+          כ-$1.3\cdot10^{21}\,\text{kg}$, שהם כ-$2\cdot10^{-4}$ ממסת כדור הארץ. העומק הוא פחות מאלפית מהרדיוס: האוקיינוסים הם קרום דק על פני כדור צפוף.
+
+  - id: W-0.1-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.1-2, OBJ-0.1-1]
+    prompt: >-
+      שלושה סטודנטים הגישו תוצאות. בלי לחזור על החישוב, קבעו ונמקו בעזרת יחידות וסדרי גודל איזו תוצאה כמעט בוודאות שגויה:
+
+      א. זמן המחזור של מטוטלת באורך $1.0\,\text{m}$ הוא $0.32\,\text{s}$.
+
+      ב. מכונית שנוסעת ב-$30\,\text{m/s}$ (כ-108 קילומטרים בשעה) ובולמת בבלימת חירום, עם מקדם חיכוך $0.7$, עוצרת אחרי כ-$66\,\text{m}$.
+
+      ג. מעלית בבניין מגורים מאיצה ב-$50\,\text{m/s}^2$ כשהיא יוצאת לדרך.
+    answer: >-
+      א ו-ג שגויות; ב סבירה.
+    solution:
+      - kind: law
+        text: >-
+          משווים כל תוצאה לסדר גודל מוכר, ובודקים שהתלות בגדלים הגיונית.
+      - kind: reasoning
+        text: >-
+          א. מניתוח ממדים $T = C\sqrt{L/g}$, ו-$\sqrt{1.0/9.8} = 0.319\,\text{s}$: התשובה היא בדיוק $\sqrt{L/g}$, כאילו $C = 1$. אבל מטוטלת של מטר בשעון מסיימת תנודה בכשתי שניות; הסטודנט שכח את $2\pi$, ותוצאה נכונה היא $2.01\,\text{s}$, פי 6 יותר.
+
+          ב. דרך הבלימה היא $v^2/(2a)$, והתאוצה בבלימת חירום היא כ-$\mu g \approx 7\,\text{m/s}^2$. $900/14 \approx 65\,\text{m}$: סביר: סדר גודל של כמה עשרות מטרים.
+
+          ג. $50\,\text{m/s}^2$ הם כמעט $5g$: יותר ממה שטייס קרב מרגיש בפנייה חדה. מעלית מאיצה בעשיריות של $g$, כ-$1\,\text{m/s}^2$. התוצאה שגויה בכמעט שני סדרי גודל.
+      - kind: limit
+        text: >-
+          ב-ב, כש-$\mu \to 0$ הדרך שואפת לאינסוף (קרח), וכש-$v \to 0$ היא אפס: התלות הגיונית. ב-א, הבדיקה לא נכשלה בתלות ($\sqrt{L/g}$ נכון) אלא בקבוע, וזה מה שרק סדר גודל יכול לגלות.
+      - kind: units
+        text: >-
+          לכל התוצאות יחידות נכונות ($\text{s}$, $\text{m}$, $\text{m/s}^2$): כאן רק השוואה לסדרי גודל מוכרים תופסת את הטעויות.
+      - kind: result
+        text: >-
+          א שגויה (חסר $2\pi$; הנכון $2.01\,\text{s}$), ב סבירה, ג שגויה (כ-$5g$ במעלית).
+
+  - id: W-0.1-08
+    level: bagrut
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      לוויין מקיף כוכב לכת כדורי בעל צפיפות אחידה $\rho$ ורדיוס $R$, במסלול מעגלי צמוד לפני השטח. זמן ההקפה תלוי ב-$G$, ב-$\rho$ וב-$R$.
+
+      א. הראו בניתוח ממדים שזמן ההקפה לא תלוי ברדיוס של הכוכב, רק בצפיפות שלו.
+
+      ב. הפתרון המלא נותן $T = \sqrt{3\pi/(G\rho)}$. חשבו את זמן ההקפה הצמוד לכדור הארץ ($\rho = 5510\,\text{kg/m}^3$) ולירח ($\rho = 3330\,\text{kg/m}^3$), עם $G = 6.67\cdot10^{-11}\,\text{N}\cdot\text{m}^2/\text{kg}^2$.
+
+      ג. מה היחס בין שני הזמנים, ואיך אפשר לקבל אותו בלי הקבוע?
+    answer: >-
+      א. $T = C/\sqrt{G\rho}$, בלי $R$.
+
+      ב. $84.4$ דקות לכדור הארץ, $109$ דקות לירח.
+
+      ג. $1.29 = \sqrt{5510/3330}$.
+    solution:
+      - kind: given
+        text: >-
+          $[G] = \text{M}^{-1}\text{L}^3\text{T}^{-2}$, $[\rho] = \text{M}\,\text{L}^{-3}$, $[R] = \text{L}$; המבוקש $[T] = \text{T}$.
+      - kind: law
+        text: >-
+          $T = C\,G^a\rho^bR^c$, ומשווים מעריכים.
+      - kind: manipulation
+        text: >-
+          א. זמן: $-2a = 1$, ולכן $a = -\tfrac12$. מסה: $-a + b = 0$, ולכן $b = -\tfrac12$. אורך: $3a - 3b + c = 0$, ולכן $c = 0$. $T = C/\sqrt{G\rho}$: הרדיוס נעלם. בבדיקה: $T = 2\pi\sqrt{R^3/(GM)}$ עם $M = \tfrac{4\pi}{3}R^3\rho$ נותן $T = \sqrt{3\pi/(G\rho)}$, ו-$R^3$ אכן מצטמצם.
+
+          ג. לשני כוכבים, $T_1/T_2 = \sqrt{\rho_2/\rho_1}$, ו-$C$ ו-$G$ מצטמצמים.
+      - kind: limit
+        text: >-
+          כש-$\rho \to 0$, $T \to \infty$: בלי מסה אין מה שיחזיק את הלוויין. כוכב צפוף יותר מושך חזק יותר, והלוויין מקיף מהר יותר.
+      - kind: units
+        text: >-
+          $[G\rho] = \text{M}^{-1}\text{L}^3\text{T}^{-2}\cdot\text{M}\,\text{L}^{-3} = \text{T}^{-2}$, ולכן $1/\sqrt{G\rho}$ בשניות.
+      - kind: substitution
+        text: >-
+          ב. כדור הארץ: $T = \sqrt{3\pi/(6.67\cdot10^{-11}\cdot5510)} = 5.06\cdot10^3\,\text{s} = 84.4\,\text{min}$. הירח: $T = 109\,\text{min}$. ג. $109/84.4 = 1.29$, ו-$\sqrt{5510/3330} = 1.29$.
+      - kind: result
+        text: >-
+          א. $T = C/\sqrt{G\rho}$. ב. $84.4$ ו-$109$ דקות. ג. $1.29 = \sqrt{\rho_\text{E}/\rho_\text{M}}$.
+
+  - id: W-0.1-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.1-1]
+    prompt: >-
+      גלילאו שאל למה אין ענקים. נניח שענק הוא העתק מוגדל של אדם רגיל: כל אורך בגופו, כולל העובי של העצמות, גדול פי 10, והחומר זהה.
+
+      א. פי כמה גדל המשקל של הענק? פי כמה גדל שטח החתך של עצם הירך שלו?
+
+      ב. הלחץ על העצם הוא כוח ליחידת שטח. פי כמה גדל הלחץ על עצם הירך כשהענק עומד? קבעו ונמקו: האם הענק יכול לעמוד?
+
+      ג. פי כמה צריך להיות עבה יותר הקוטר של העצם, ביחס לאדם רגיל, כדי שהלחץ יישאר כמו אצל אדם רגיל?
+    answer: >-
+      א. משקל פי 1000, שטח חתך פי 100.
+
+      ב. הלחץ פי 10; עצם רגילה לא תעמוד בזה.
+
+      ג. פי $10^{3/2} = 31.6$ בקוטר, פי 3.16 יותר מהגדלה פשוטה.
+    solution:
+      - kind: law
+        text: >-
+          במשקל, המסה פרופורציונית לנפח, $\propto L^3$, כשהצפיפות לא משתנה. שטח פרופורציוני ל-$L^2$. לחץ הוא כוח חלקי שטח.
+      - kind: manipulation
+        text: >-
+          א. משקל: $10^3 = 1000$. שטח חתך: $10^2 = 100$.
+
+          ב. הלחץ: $1000/100 = 10$. באופן כללי, $p \propto L^3/L^2 = L$: הלחץ גדל ליניארית עם הגודל.
+
+          ג. כדי שהלחץ לא ישתנה, שטח החתך צריך לגדול כמו המשקל, $\propto L^3$, ולכן הקוטר $D \propto L^{3/2}$: $10^{1.5} = 31.6$.
+      - kind: reasoning
+        text: >-
+          ב. עצמות של אדם עומדות בעומסים של פי כמה מהמשקל בעמידה, למשל בקפיצה, אבל לא בפקטור 10 תמידי. הענק היה שובר את רגליו בצעד הראשון. לכן בעלי חיים גדולים, כמו פילים, אינם העתקים מוגדלים: הרגליים שלהם עבות יחסית לגוף.
+      - kind: limit
+        text: >-
+          בהגדלה פי 1 (אדם רגיל) כל היחסים 1. בהקטנה ($L \to 0$) הלחץ קטן ליניארית: בעל חיים קטן יכול להרשות לעצמו עצמות דקות יחסית לגופו.
+      - kind: units
+        text: >-
+          כל התשובות הן יחסים, חסרי ממדים; $[p] = \text{N/m}^2$ בשני המקרים.
+      - kind: result
+        text: >-
+          א. פי 1000 ופי 100. ב. פי 10: הענק לא יכול לעמוד על עצמות של אדם מוגדל. ג. קוטר פי $31.6$, כלומר $D \propto L^{3/2}$.
+
+  - id: W-0.1-10
+    level: bagrut
+    objectives: [OBJ-0.1-2]
+    prompt: >-
+      הלחץ של האוויר על פני כדור הארץ הוא $p_0 = 1.0\cdot10^5\,\text{Pa}$. הוא נובע מהמשקל של עמודת האוויר שמעל כל מטר מרובע.
+
+      א. העריכו את המסה של כל האטמוספרה ($R = 6.37\cdot10^6\,\text{m}$).
+
+      ב. אילו דחסו את כל האוויר למים, באותה מסה, כמה עבה הייתה השכבה שמכסה את כדור הארץ?
+
+      ג. השוו את מסת האטמוספרה למסת האוקיינוסים, כ-$1.3\cdot10^{21}\,\text{kg}$. כמה סדרי גודל ביניהן?
+    answer: >-
+      א. $5.2\cdot10^{18}\,\text{kg}$.
+
+      ב. $10.2\,\text{m}$ של מים.
+
+      ג. האוקיינוסים כבדים פי 250 בערך: שני סדרי גודל וחצי.
+    solution:
+      - kind: given
+        text: >-
+          $p_0 = 1.0\cdot10^5\,\text{Pa} = 1.0\cdot10^5\,\text{N/m}^2$, $R = 6.37\cdot10^6\,\text{m}$, $g = 9.8\,\text{m/s}^2$, $\rho_\text{w} = 1000\,\text{kg/m}^3$.
+      - kind: law
+        text: >-
+          בשיווי משקל, הלחץ בבסיס של עמודה שווה למשקל שלה חלקי שטח הבסיס: $p_0 = mg/A$ לכל מטר מרובע. האטמוספרה דקה לעומת $R$ (רוב האוויר בעשרות הקילומטרים הראשונים), ולכן $g$ כמעט קבוע בה.
+      - kind: manipulation
+        text: >-
+          א. $M_\text{a} = p_0\cdot4\pi R^2/g$.
+
+          ב. שכבת מים בעובי $d$ יוצרת לחץ $\rho_\text{w}gd$; אותו לחץ פירושו $d = p_0/(\rho_\text{w}g)$.
+
+          ג. היחס $M_\text{o}/M_\text{a}$ ו-$\log_{10}$ שלו.
+      - kind: limit
+        text: >-
+          כש-$g \to 0$, אותו לחץ היה דורש מסה אינסופית: הלחץ הוא משקל, לא מסה. וכש-$R$ גדל, המסה גדלה כמו השטח.
+      - kind: units
+        text: >-
+          $\text{N/m}^2\cdot\text{m}^2/(\text{m/s}^2) = \text{N}\cdot\text{s}^2/\text{m} = \text{kg}$; $\dfrac{\text{N/m}^2}{\text{kg/m}^3\cdot\text{m/s}^2} = \text{m}$.
+      - kind: substitution
+        text: >-
+          א. $4\pi R^2 = 5.10\cdot10^{14}\,\text{m}^2$, ו-$M_\text{a} = 1.0\cdot10^5\cdot5.10\cdot10^{14}/9.8 = 5.20\cdot10^{18}\,\text{kg}$. ב. $d = 10^5/(1000\cdot9.8) = 10.2\,\text{m}$. ג. $1.32\cdot10^{21}/5.20\cdot10^{18} = 254$, ו-$\log_{10}254 = 2.4$.
+      - kind: result
+        text: >-
+          א. כ-$5\cdot10^{18}\,\text{kg}$. ב. כ-$10\,\text{m}$ של מים: לכן מים לא עולים בצינור יניקה גבוה מכעשרה מטרים. ג. האוקיינוסים כבדים מהאטמוספרה פי 250 בערך, כשני סדרי גודל וחצי.
+
+challenge:
+  - id: W-0.1-c1
+    stars: 1
+    objectives: [OBJ-0.1-1, OBJ-0.1-2]
+    prompt: >-
+      א. כוכב במסה $M$ וברדיוס $R$ מתנודד: הוא מתרחב ומתכווץ, והכוח המחזיר הוא הכבידה שלו עצמו. מצאו בניתוח ממדים את התדירות הזוויתית של התנודה, עד כדי קבוע, מתוך $G$, $M$ ו-$R$. העריכו (עם קבוע 1) את הזמן $2\pi/\omega$ לשמש, $M = 1.99\cdot10^{30}\,\text{kg}$, $R = 6.96\cdot10^8\,\text{m}$.
+
+      ב. כדור במסה $M$ וברדיוס $R$ נופל ליד פני כדור הארץ, והגרר עליו $F = bv^2$, עם $b$ נתון (ביחידות $\text{kg/m}$). מצאו בניתוח ממדים את המהירות הסופית שלו מתוך $M$, $g$, $b$ ו-$R$. האם ניתוח הממדים קובע את התשובה עד כדי קבוע? מצאו דרך אחרת לקבל את המהירות, ובדקו בעזרתה.
+    answer: >-
+      א. $\omega = C\sqrt{GM/R^3}$; לשמש $2\pi/\omega \approx 1.0\cdot10^4\,\text{s}$, כ-2.8 שעות.
+
+      ב. $v = \sqrt{Mg/b}\,f(bR/M)$: יש צירוף חסר ממדים, ולכן לא עד כדי קבוע. איזון כוחות, $bv^2 = Mg$, נותן $v = \sqrt{Mg/b}$, כלומר $f \equiv 1$.
+    solution:
+      - kind: given
+        text: >-
+          $[G] = \text{M}^{-1}\text{L}^3\text{T}^{-2}$, $[\omega] = \text{T}^{-1}$, $[b] = \text{M}\,\text{L}^{-1}$, $[g] = \text{L}\,\text{T}^{-2}$.
+      - kind: law
+        text: >-
+          המבוקש הוא מכפלה של חזקות המשתנים, כפול פונקציה של הצירופים חסרי הממדים (אם יש כאלה). משווים מעריכים של מסה, אורך וזמן.
+      - kind: manipulation
+        text: >-
+          א. $\omega = C\,G^aM^bR^c$: זמן $-2a = -1$, ולכן $a = \tfrac12$; מסה $-a + b = 0$, ולכן $b = \tfrac12$; אורך $3a + c = 0$, ולכן $c = -\tfrac32$. $\omega = C\sqrt{GM/R^3}$, וזה אותו צירוף שנותן את זמן ההקפה של לוויין צמוד לפני הכוכב.
+
+          ב. ארבעה משתנים, שלוש משוואות: נשאר צירוף אחד, $bR/M$ (קילוגרם למטר כפול מטר חלקי קילוגרם). צירוף אחד שנותן מהירות הוא $\sqrt{Mg/b}$, ולכן $v = \sqrt{Mg/b}\,f(bR/M)$ עם $f$ לא ידועה. הדרך האחרת: במהירות הסופית הגרר מאזן את הכובד, $bv^2 = Mg$, ולכן $v = \sqrt{Mg/b}$ בדיוק: $f \equiv 1$, ו-$R$ לא משפיע (כל התלות בגודל כבר בתוך $b$).
+      - kind: limit
+        text: >-
+          א. כש-$M \to 0$, $\omega \to 0$: בלי כבידה אין כוח מחזיר. כוכב גדול יותר באותה מסה (פחות צפוף) מתנודד לאט יותר. ב. כש-$b \to 0$, $v \to \infty$: בלי גרר אין מהירות סופית.
+      - kind: units
+        text: >-
+          $\sqrt{GM/R^3}$: $\sqrt{\text{m}^3/(\text{kg}\cdot\text{s}^2)\cdot\text{kg}/\text{m}^3} = \text{s}^{-1}$. $\sqrt{Mg/b}$: $\sqrt{\text{kg}\cdot\text{m/s}^2/(\text{kg/m})} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          א. $\omega = \sqrt{6.67\cdot10^{-11}\cdot1.99\cdot10^{30}/(6.96\cdot10^8)^3} = 6.27\cdot10^{-4}\,\text{s}^{-1}$, ו-$2\pi/\omega = 1.00\cdot10^4\,\text{s} = 2.78\,\text{h}$. ב. לכדור הבייסבול של שיעור 2.7 ($M = 0.145\,\text{kg}$, $b = 1.37\cdot10^{-3}\,\text{kg/m}$): $v = \sqrt{0.145\cdot9.8/1.37\cdot10^{-3}} = 32.2\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $\omega = C\sqrt{GM/R^3}$; לשמש סדר גודל של $10^4\,\text{s}$, כמה שעות. ב. ממדים בלבד: $v = \sqrt{Mg/b}\,f(bR/M)$; איזון כוחות קובע $f = 1$, $v = \sqrt{Mg/b}$.
+    source:
+      name: MIT OpenCourseWare, 8.012 Physics I (Classical Mechanics)
+      year: 2008
+      problem: 'Problem Set 1, Problem 10: Dimensional Analysis (parts a and c; part b, the drag force from ρ, is a ladder question of this lesson, and part d, the pendulum with θ₀, is worked in the lesson)'
+      url: https://ocw.mit.edu/courses/8-012-physics-i-classical-mechanics-fall-2008/9f7e6c47cbd960c7232d163f31cfdaa8_ps1.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.1-c2
+    stars: 2
+    objectives: [OBJ-0.1-1, OBJ-0.1-2]
+    prompt: >-
+      בעלי חיים פרוותיים מתנערים אחרי שהם נרטבים. נדמה בעל חיים לגליל ברדיוס $R$ שמסתובב סביב הציר שלו במהירות זוויתית $\omega$. הפרווה הרטובה נצמדת לצרורות ברדיוס $r \ll R$, ובקצה של כל צרור תלויה טיפת מים בצפיפות $\rho$. את הטיפה מחזיק כוח של מתח פנים, בגודל של בערך $\sigma r$, כאשר $\sigma$ (ביחידות $\text{N/m}$) היא קבוע של המים. מזניחים את הכובד.
+
+      א. הטיפה ניתקת כשהכוח המחזיק לא מספיק כדי לתת לה את התאוצה הצנטריפטלית. מצאו, עד כדי קבוע, את $\omega$ הדרושה כפונקציה של $\sigma$, $\rho$, $r$ ו-$R$. למה ניתוח ממדים לבדו לא היה מספיק כאן?
+
+      ב. נניח שכל היונקים הם העתקים מוגדלים זה של זה, באותה צפיפות, וש-$r$ זהה לכולם. מצאו את המעריך $n$ ב-$\omega \propto M^n$, כאשר $M$ מסת בעל החיים.
+
+      ג. האנרגיה של ההתנערה היא בערך האנרגיה הקינטית של הגליל המסתובב, $\tfrac14MR^2\omega^2$. החלופה היא לחכות שהמים יתאדו: בעל חיים רטוב נושא מים במסה של $5\%$ ממסתו, ולאדות גרם מים צריך $2430\,\text{J}$. לעכבר יש $M = 20\,\text{g}$, $R = 1.0\,\text{cm}$, $\omega = 30\,\text{rad/s}$. מעל איזו מסה עדיף לבעל חיים להתייבש באידוי? האם זה רלוונטי ליונקים אמיתיים?
+    answer: >-
+      א. $\omega^2 \sim \sigma/(\rho r^2R)$.
+
+      ב. $n = -\tfrac16$.
+
+      ג. $M \gtrsim 3\cdot10^{18}\,\text{kg}$, מסה של אסטרואיד: לכל יונק אמיתי עדיף להתנער.
+    solution:
+      - kind: law
+        text: >-
+          החוק השני בכיוון הרדיאלי: כדי שהטיפה תנוע במעגל ברדיוס $R$ צריך כוח $m\omega^2R$, עם מסת הטיפה $m \sim \rho r^3$. הטיפה ניתקת כש-$m\omega^2R$ עולה על $\sigma r$.
+      - kind: manipulation
+        text: >-
+          א. $\rho r^3\omega^2R \sim \sigma r$, ולכן $\omega^2 \sim \dfrac{\sigma}{\rho r^2R}$. ניתוח ממדים לבדו לא מספיק כי יש שני אורכים, $r$ ו-$R$: המנה $r/R$ חסרת ממדים, והתשובה הייתה נקבעת רק עד כדי פונקציה שלה. הפיזיקה (מאיפה בא כל כוח) היא שקובעת את החזקות של כל אחד מהם.
+
+          ב. $\sigma$, $\rho$ ו-$r$ קבועים, ולכן $\omega \propto R^{-1/2}$. בהעתקים מוגדלים $M \propto R^3$, כלומר $R \propto M^{1/3}$, ו-$\omega \propto M^{-1/6}$.
+
+          ג. $E_\text{shake} = \tfrac14MR^2\omega^2 \propto M\cdot M^{2/3}\cdot M^{-1/3} = M^{4/3}$, ואילו $E_\text{evap} = 0.05\,M\cdot2430\,\text{J/g} \propto M$. היחס $E_\text{evap}/E_\text{shake} \propto M^{-1/3}$ קטן עם המסה, והם שווים כש-$M/M_\text{mouse} = \left(E_\text{evap}/E_\text{shake}\right)_\text{mouse}^3$.
+      - kind: limit
+        text: >-
+          כש-$\sigma \to 0$ (מים שלא נדבקים) כל סיבוב, גם איטי, מנתק את הטיפות: $\omega \to 0$. וכש-$R$ גדל, אותה $\omega$ נותנת תאוצה גדולה יותר בשפה, ולכן בעל חיים גדול יכול להסתובב לאט יותר, כמו שמצאנו בסעיף ב.
+      - kind: units
+        text: >-
+          $\dfrac{\text{N/m}}{\text{kg/m}^3\cdot\text{m}^2\cdot\text{m}} = \dfrac{\text{kg/s}^2}{\text{kg}} = \text{s}^{-2}$, כמו $\omega^2$. $\tfrac14MR^2\omega^2$: $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          ג. עכבר: $E_\text{shake} = \tfrac14\cdot0.020\cdot(0.010)^2\cdot30^2 = 4.5\cdot10^{-4}\,\text{J}$, ו-$E_\text{evap} = 0.05\cdot20\cdot2430 = 2430\,\text{J}$. היחס $5.4\cdot10^6$, בחזקת 3: $1.57\cdot10^{20}$. לכן $M^* = 1.57\cdot10^{20}\cdot0.020\,\text{kg} = 3.2\cdot10^{18}\,\text{kg}$.
+      - kind: result
+        text: >-
+          א. $\omega \sim \sqrt{\sigma/(\rho r^2R)}$. ב. $n = -\tfrac16$. ג. רק מעל כ-$3\cdot10^{18}\,\text{kg}$, יותר מ-$10^{14}$ פעמים המסה של פיל, שהיא כמה טונות; לכל יונק אמיתי ההתנערה זולה בהרבה.
+    source:
+      name: USA Physics Olympiad (AAPT)
+      year: 2025
+      problem: 'Problem A1: Shake It (parts b, c and d; part a, the polar acceleration, belongs to lesson 1.4)'
+      url: https://www.aapt.org/physicsteam/upload/2025-USAPhO-Exam_solutions.pdf
+      verified: '2026-11-17'
+      adapted: true

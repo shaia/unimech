@@ -1,0 +1,26 @@
+# Videos of lesson 0.4. Every id was checked against YouTube oEmbed on the `verified` date (status 200, embeddable;
+# title and channel exactly as returned). Lengths come from the watch page (lengthSeconds: 1246 and 351) and the
+# caption tracks from its captionTracks list (the 3Blue1Brown video lists English and Hebrew among many; the MIT
+# clip "English - CC"). `why` claims only what was opened the same day: for v-0-4-car-integral, the text version of
+# the lesson on 3blue1brown.com/lessons/integration; for v-0-4-rod-dm, the MIT OpenCourseWare transcript (PDF).
+# No public Hebrew video on the definite integral as accumulation, at university level, was found.
+
+- id: v-0-4-car-integral
+  youtubeId: rfG8ce4nNh0
+  title: Integration and the fundamental theorem of calculus | Chapter 8, Essence of calculus
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en, he]
+  minutes: 21
+  why: 'פרק מהסדרה של 3Blue1Brown, עם כתוביות בעברית. לפי גרסת הטקסט של השיעור באתר הסדרה, הנוסע במכונית רואה רק את מד המהירות, v(t) = t(8 − t), וכדי לדעת כמה נסע הוא חותך את הזמן לחתיכות dt שבהן המהירות כמעט קבועה, סוכם מלבנים, ונותן ל-dt לקטון. אחר כך הוא מראה שהשטח שמתחת לציר נספר עם סימן שלילי, ושהאינטגרל הוא F(b) − F(a) לכל פונקציה קדומה F: שני הצעדים של איור 0.4א.'
+  verified: '2026-11-17'
+
+- id: v-0-4-rod-dm
+  youtubeId: CFh3gu-z_rc
+  title: 17.5 Worked Example - Center of Mass of a Uniform Rod
+  channel: MIT OpenCourseWare
+  lang: en
+  captions: [en]
+  minutes: 6
+  why: 'קטע קצר מהקורס MIT 8.01. לפי התמליל, המרצה מסדר את בניית האינטגרל בשלבים: בוחר ראשית וכיוון לציר, מסמן חתיכה dm במקום כלשהו במוט (לא בקצה), מכניס משתנה אינטגרציה x′ שרץ מ-0 עד L, וכותב dm = (M/L)dx′, צפיפות קווית כפול אורך. התוצאה, L/2, היא מה שציפינו. זה המתכון של איור 0.4ב, עם צפיפות קבועה.'
+  verified: '2026-11-17'

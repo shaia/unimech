@@ -1,0 +1,491 @@
+# Workbook, lesson 0.3 (derivatives and approximations). Format and rules: .claude/CLAUDE.md, "The solution
+# format" (law … limit, units, result). In a >- block, consecutive lines fold into one paragraph: every part
+# (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-3/examples.ts and challenge.ts with src/physics/taylor.ts and G from
+# constants.ts:
+#   W-01: x = 0.50t² − 0.020t³: v(5) = 3.5 m/s, a(5) = 0.40 m/s²; a = 0 at t = 8.33 s, where v = 4.17 m/s;
+#   W-02: θ = 0.3: sin error 4.48e-3 (estimate θ³/6 = 4.5e-3, 1.5%); cos error 3.36e-4 (θ⁴/24 = 3.4e-4, 0.035%);
+#   W-03: helix R = 0.20 m, ω = 5.0 rad/s, u = 0.60 m/s: |v| = 1.17 m/s, |a| = 5.0 m/s², v at 59.0° to the axis;
+#   W-04: cone, α = 30°, Q = 0.50 L/s, h = 0.40 m: ḣ = 2.98e-3 m/s (1.19e-2 at h = 0.20 m);
+#   W-05: m = 1000 kg, h = 300 km, R = 6.37e6 m: mgh = 2.94e9 J, ×(1 − h/R) = 2.80e9 J, exact mghR/(R + h) = 2.81e9 J;
+#   W-06: R = 2.0 m, α = 0.50 rad/s², t = 2.0 s: |v| = 2.0 m/s, d|v|/dt = 1.0 m/s², |a| = 2.24 m/s²;
+#   W-07: e = 0.0167: ±2e = ±3.34%; exact +3.43% (perihelion), −3.26% (aphelion); max/min = 1.069;
+#   W-08: A = 0.10 m, ω = 2π rad/s, error 1.0 mm: τ = (6·1e-3/(Aω³))^(1/3) = 0.0623 s (true error at t₀ = 0: 0.99 mm);
+#   W-09: τ = 3.0 s: estimate t = 0.1τ = 0.30 s; exact (1 − e^(−u))/u = 0.95 at u = 0.1035, t = 0.310 s;
+#   W-10: d = 50 m, θ = 30°, δθ = 0.50°: h = 28.9 m, δh = 0.582 m (exact 0.585), δh/h = 2.0%, 1.75% at 45°;
+#         the degree slip gives 33.3 m;
+#   c1: H = 20 000 km: at h₀ = 25 000 km L₀ = 15 000 km, dL/dh = 5/3; at h₀ = 20 001 km L₀ = 200.0 km,
+#       dL/dh = 100.0, L″ = −50.0 /km; Δh = 1 km: exact ΔL = 82.8 km, linear 100, quadratic 75.0;
+#       Δh = 0.1 km: 9.76 km (linear 10.0); Δh = 0.01 km: 0.998 km (linear 1.00);
+#   c2: R = 1.5 cm, r = 0.15 cm, π = 3.14, 100 dimples: x = (r/R)² = 0.010; cap: flat 0.07065, quadratic 0.070827,
+#       exact 0.070828 cm²; ball: flat 35.325, quadratic 35.3073, exact 35.3072 cm² (35.31 rounded).
+
+lesson: '0.3'
+practice:
+  - id: W-0.3-01
+    level: basic
+    objectives: [OBJ-0.3-1]
+    prompt: >-
+      מכונית יוצאת ממנוחה ונוסעת על כביש ישר, והמקום שלה הוא $x(t) = 0.50\,t^2 - 0.020\,t^3$ (במטרים, כש-$t$ בשניות), בין $t = 0$ ל-$t = 15\,\text{s}$.
+
+      א. מצאו את המהירות ואת התאוצה שלה כפונקציה של הזמן, ואת ערכיהן ב-$t = 5.0\,\text{s}$.
+
+      ב. מתי התאוצה מתאפסת, ומה המהירות ברגע הזה?
+    answer: >-
+      א. $v = t - 0.060\,t^2$, $a = 1 - 0.12\,t$; ב-$t = 5.0\,\text{s}$: $v = 3.5\,\text{m/s}$, $a = 0.40\,\text{m/s}^2$.
+
+      ב. ב-$t = 8.33\,\text{s}$, כש-$v = 4.17\,\text{m/s}$, המהירות הגדולה ביותר.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ בכיוון הנסיעה, הראשית בנקודת היציאה. $x(t) = 0.50t^2 - 0.020t^3$.
+      - kind: law
+        text: >-
+          $v = \dot x$, $a = \ddot x$, ו-$\dfrac{d}{dt}t^n = nt^{n - 1}$.
+      - kind: manipulation
+        text: >-
+          $v = 2\cdot0.50\,t - 3\cdot0.020\,t^2 = t - 0.060\,t^2$, ו-$a = 1 - 0.12\,t$. התאוצה מתאפסת כש-$t = 1/0.12$.
+      - kind: limit
+        text: >-
+          ב-$t = 0$: $x = 0$ ו-$v = 0$, כמו שצריך למכונית שיוצאת ממנוחה, והתאוצה ההתחלתית $1.0\,\text{m/s}^2$. כשהתאוצה מתאפסת המהירות מפסיקה לגדול: זה המקסימום שלה.
+      - kind: units
+        text: >-
+          המקדם $0.50$ ביחידות $\text{m/s}^2$ ו-$0.020$ ביחידות $\text{m/s}^3$, ולכן $v$ ב-$\text{m/s}$ ו-$a$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          ב-$t = 5.0\,\text{s}$: $v = 5.0 - 0.060\cdot25 = 3.5\,\text{m/s}$, $a = 1 - 0.60 = 0.40\,\text{m/s}^2$. $t = 8.33\,\text{s}$, ושם $v = 8.33 - 0.060\cdot69.4 = 4.17\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $v = t - 0.060t^2$, $a = 1 - 0.12t$; $3.5\,\text{m/s}$ ו-$0.40\,\text{m/s}^2$. ב. $t = 8.33\,\text{s}$, $v = 4.17\,\text{m/s}$.
+
+  - id: W-0.3-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.3-2]
+    prompt: >-
+      סטודנטית כותבת $\sin0.3 \approx 0.3$ ו-$\cos0.3 \approx 1 - \tfrac12\cdot0.3^2 = 0.955$.
+
+      א. באיזו יחידה חייבת להיות הזווית $0.3$ כדי ששני הקירובים יהיו נכונים? נמקו.
+
+      ב. העריכו את השגיאה של כל קירוב בעזרת האיבר הראשון שהוזנח, וקבעו איזה מהשניים מדויק יותר, ביחס לערך עצמו.
+    answer: >-
+      א. ברדיאנים.
+
+      ב. בסינוס כ-$4.5\cdot10^{-3}$ ($1.5\%$), בקוסינוס כ-$3.4\cdot10^{-4}$ ($0.035\%$): הקוסינוס מדויק יותר, פי 40 בערך.
+    solution:
+      - kind: law
+        text: >-
+          $\sin\theta \approx \theta - \tfrac16\theta^3$ ו-$\cos\theta \approx 1 - \tfrac12\theta^2 + \tfrac1{24}\theta^4$, נכונים רק ברדיאנים, כי רק ברדיאנים $\dfrac{d}{d\theta}\sin\theta = \cos\theta$.
+      - kind: reasoning
+        text: >-
+          א. במעלות השיפוע של $\sin$ ב-0 הוא $\pi/180$ ולא 1, ו-$\sin0.3^\circ \approx 0.3$ שגוי פי 57.
+
+          ב. בקירוב של הסינוס הוזנח $\tfrac16\theta^3$. בקירוב של הקוסינוס, האיבר מסדר 3 ממילא אפס, והראשון שהוזנח הוא $\tfrac1{24}\theta^4$: חזקה גבוהה יותר, ומקדם קטן יותר. לכן הקוסינוס, שנשמר בו גם האיבר מסדר שני, מדויק הרבה יותר.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$ שתי השגיאות היחסיות, $\theta^2/6$ ו-$\theta^4/24$, שואפות לאפס, והשנייה מהר יותר.
+      - kind: units
+        text: >-
+          זווית ברדיאנים חסרת ממדים, ולכן אפשר לחבר $1$ ו-$\theta^2$; במעלות אי אפשר.
+      - kind: substitution
+        text: >-
+          $\tfrac16\cdot0.3^3 = 4.5\cdot10^{-3}$, לעומת $\sin0.3 = 0.2955$: $1.5\%$ (המדויק: $0.3 - 0.29552 = 4.48\cdot10^{-3}$). $\tfrac1{24}\cdot0.3^4 = 3.4\cdot10^{-4}$, לעומת $\cos0.3 = 0.9553$: $0.035\%$ (המדויק: $0.95534 - 0.955 = 3.36\cdot10^{-4}$).
+      - kind: result
+        text: >-
+          א. רדיאנים. ב. $1.5\%$ בסינוס, $0.035\%$ בקוסינוס.
+
+  - id: W-0.3-03
+    level: basic
+    objectives: [OBJ-0.3-1]
+    prompt: >-
+      חלקיק טעון בשדה מגנטי נע על בורג (סליל): $\vec r(t) = \left(R\cos\omega t,\ R\sin\omega t,\ ut\right)$, עם $R = 0.20\,\text{m}$, $\omega = 5.0\,\text{rad/s}$ ו-$u = 0.60\,\text{m/s}$.
+
+      א. מצאו את $\vec v(t)$ ואת $\vec a(t)$, ואת הגדלים שלהם.
+
+      ב. מה הזווית בין המהירות לבין הציר $z$?
+    answer: >-
+      א. $\vec v = (-R\omega\sin\omega t,\ R\omega\cos\omega t,\ u)$, $|\vec v| = 1.17\,\text{m/s}$; $\vec a = -\omega^2(R\cos\omega t,\ R\sin\omega t,\ 0)$, $|\vec a| = 5.0\,\text{m/s}^2$, אל הציר $z$.
+
+      ב. $59.0^\circ$.
+    solution:
+      - kind: law
+        text: >-
+          גוזרים כל רכיב לחוד: $\vec v = (\dot x,\ \dot y,\ \dot z)$, $\vec a = (\ddot x,\ \ddot y,\ \ddot z)$, כי $\hat x$, $\hat y$, $\hat z$ קבועים. כלל השרשרת ל-$\cos\omega t$ ול-$\sin\omega t$.
+      - kind: manipulation
+        text: >-
+          $\vec v = (-R\omega\sin\omega t,\ R\omega\cos\omega t,\ u)$, ולכן $|\vec v|^2 = R^2\omega^2 + u^2$, קבוע. גוזרים שוב: $\vec a = (-R\omega^2\cos\omega t,\ -R\omega^2\sin\omega t,\ 0)$, כלומר $(-\omega^2)$ כפול ההיטל של $\vec r$ על המישור $xy$: אל הציר $z$. הזווית מהציר $z$: $\tan\varphi = R\omega/u$.
+      - kind: limit
+        text: >-
+          כש-$u = 0$ זו תנועה מעגלית: $|\vec v| = R\omega$, והמהירות ניצבת לציר ($\varphi = 90^\circ$). כש-$\omega = 0$ החלקיק נע בקו ישר לאורך $z$: $\vec a = 0$ ו-$\varphi = 0$. ו-$\vec a\cdot\vec v = 0$ בכל רגע, כמו שצריך כשגודל המהירות קבוע.
+      - kind: units
+        text: >-
+          $R\omega$ ב-$\text{m/s}$, כמו $u$; $R\omega^2$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $R\omega = 1.0\,\text{m/s}$, $|\vec v| = \sqrt{1.0^2 + 0.60^2} = 1.17\,\text{m/s}$; $|\vec a| = 0.20\cdot25 = 5.0\,\text{m/s}^2$; $\varphi = \arctan(1.0/0.60) = 59.0^\circ$.
+      - kind: result
+        text: >-
+          א. $|\vec v| = 1.17\,\text{m/s}$, $|\vec a| = 5.0\,\text{m/s}^2$ אל הציר. ב. $59.0^\circ$.
+
+  - id: W-0.3-04
+    level: mid
+    objectives: [OBJ-0.3-1]
+    prompt: >-
+      ממלאים במים מיכל בצורת חרוט הפוך (הקודקוד למטה, הציר אנכי), שזווית הפתיחה שלו $\alpha = 30^\circ$ בין הדופן לציר. המים זורמים פנימה בקצב קבוע $Q = 0.50\,\text{L/s}$. בכל רגע המים ממלאים חרוט בגובה $h$ וברדיוס $h\tan\alpha$.
+
+      א. מצאו את קצב העלייה של פני המים, $\dot h$, כפונקציה של $h$.
+
+      ב. חשבו אותו ב-$h = 0.40\,\text{m}$ וב-$h = 0.20\,\text{m}$. למה הוא תלוי בגובה, אף ש-$Q$ קבוע?
+    answer: >-
+      א. $\dot h = \dfrac{Q}{\pi\tan^2\alpha\,h^2}$.
+
+      ב. $2.98\cdot10^{-3}\,\text{m/s}$ ב-$0.40\,\text{m}$, ו-$1.19\cdot10^{-2}\,\text{m/s}$ ב-$0.20\,\text{m}$: פי 4, כי שטח פני המים גדל כמו $h^2$.
+    solution:
+      - kind: given
+        text: >-
+          $V = \tfrac13\pi(h\tan\alpha)^2h = \tfrac13\pi\tan^2\alpha\,h^3$; $\dot V = Q = 5.0\cdot10^{-4}\,\text{m}^3\text{/s}$; $\tan^2 30^\circ = 1/3$.
+      - kind: law
+        text: >-
+          כלל השרשרת: $\dfrac{dV}{dt} = \dfrac{dV}{dh}\,\dfrac{dh}{dt}$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{dV}{dh} = \pi\tan^2\alpha\,h^2$, שהוא בדיוק שטח פני המים, $\pi(h\tan\alpha)^2$. לכן $Q = \pi\tan^2\alpha\,h^2\,\dot h$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 90^\circ$ החרוט שטוח ורחב, $\tan\alpha \to \infty$, ו-$\dot h \to 0$. כש-$h \to 0$ הקצב מתבדר: בתחתית החרוט שטח הפנים כמעט אפס, והמים עולים מהר מאוד.
+      - kind: units
+        text: >-
+          $Q/h^2$ הוא $\text{m}^3\text{/s}$ חלקי $\text{m}^2$, כלומר $\text{m/s}$.
+      - kind: substitution
+        text: >-
+          ב-$h = 0.40\,\text{m}$: $\dot h = \dfrac{5.0\cdot10^{-4}}{\pi\cdot\tfrac13\cdot0.16} = 2.98\cdot10^{-3}\,\text{m/s}$. ב-$h = 0.20\,\text{m}$, $h^2$ קטן פי 4: $1.19\cdot10^{-2}\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $\dot h = Q/(\pi\tan^2\alpha\,h^2)$. ב. $3.0\,\text{mm/s}$ ו-$11.9\,\text{mm/s}$; אותו נפח בשנייה נפרס על פני מים רחבים יותר ככל שהמיכל מתמלא.
+
+  - id: W-0.3-05
+    level: mid
+    objectives: [OBJ-0.3-2]
+    prompt: >-
+      האנרגיה הפוטנציאלית הכבידתית של גוף במסה $m$ בגובה $h$ מעל פני כדור הארץ היא $U(h) = -\dfrac{GMm}{R + h}$, כש-$R$ רדיוס כדור הארץ, ו-$GM = gR^2$.
+
+      א. הראו בעזרת פיתוח טיילור ב-$h/R$ ש-$U(h) - U(0) \approx mgh\left(1 - h/R\right)$, ומכאן ש-$mgh$ הוא הקירוב מסדר ראשון.
+
+      ב. מה התיקון היחסי, ומה ההפרש $U(h) - U(0)$ בשלושה חישובים ($mgh$, עם התיקון, ומדויק), להרמת לוויין של $1000\,\text{kg}$ לגובה $300\,\text{km}$? קחו $g = 9.8\,\text{m/s}^2$ ו-$R = 6.37\cdot10^6\,\text{m}$.
+    answer: >-
+      א. $U(h) - U(0) = mgh\,(1 + h/R)^{-1} \approx mgh\,(1 - h/R)$.
+
+      ב. התיקון $h/R = 4.7\%$. $mgh = 2.94\cdot10^9\,\text{J}$; עם התיקון $2.80\cdot10^9\,\text{J}$; מדויק $2.81\cdot10^9\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          $x = h/R$, גודל חסר ממדים. $m = 1000\,\text{kg}$, $h = 3.0\cdot10^5\,\text{m}$.
+      - kind: law
+        text: >-
+          $(1 + x)^{-1} \approx 1 - x + x^2$ כש-$|x| \ll 1$.
+      - kind: manipulation
+        text: >-
+          $U(h) - U(0) = GMm\left(\dfrac1R - \dfrac1{R + h}\right) = \dfrac{GMm}{R}\cdot\dfrac{h/R}{1 + h/R} = mgh\,(1 + x)^{-1}$, כי $GM/R^2 = g$. מסדר ראשון ב-$x$: $mgh\,(1 - x)$.
+      - kind: limit
+        text: >-
+          כש-$h \ll R$ התיקון זניח, ונשאר $mgh$ של הבגרות. כש-$h \to \infty$ הביטוי המדויק שואף ל-$mgR$, אנרגיית ההימלטות מהקרקע, ולא גדל בלי גבול כמו $mgh$.
+      - kind: units
+        text: >-
+          $mgh$ ב-$\text{J}$, ו-$h/R$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $x = 3.0\cdot10^5/6.37\cdot10^6 = 0.0471$. $mgh = 1000\cdot9.8\cdot3.0\cdot10^5 = 2.94\cdot10^9\,\text{J}$; עם התיקון $2.94\cdot10^9\cdot0.953 = 2.80\cdot10^9\,\text{J}$; מדויק $2.94\cdot10^9/1.0471 = 2.81\cdot10^9\,\text{J}$. השארית, האיבר מסדר שני $x^2 = 0.2\%$, מסבירה את ההפרש.
+      - kind: result
+        text: >-
+          א. $mgh\,(1 - h/R)$. ב. $4.7\%$; $2.94$, $2.80$ ו-$2.81\cdot10^9\,\text{J}$.
+
+  - id: W-0.3-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.3-1]
+    prompt: >-
+      נקודה מתחילה ממנוחה ונעה על מעגל ברדיוס $R = 2.0\,\text{m}$, והזווית שלה היא $\theta(t) = \tfrac12\alpha t^2$, עם $\alpha = 0.50\,\text{rad/s}^2$.
+
+      א. מצאו ב-$t = 2.0\,\text{s}$ את גודל המהירות $|\vec v|$, את קצב השינוי שלו $\dfrac{d|\vec v|}{dt}$, ואת גודל התאוצה $|\vec a|$.
+
+      ב. קבעו ונמקו: האם $\dfrac{d|\vec v|}{dt}$ ו-$|\vec a|$ שווים? מתי הם שווים?
+    answer: >-
+      א. $|\vec v| = 2.0\,\text{m/s}$, $\dfrac{d|\vec v|}{dt} = 1.0\,\text{m/s}^2$, $|\vec a| = 2.24\,\text{m/s}^2$.
+
+      ב. לא. הם שווים רק ב-$t = 0$, כשהמהירות אפס ואין עדיין שינוי כיוון.
+    solution:
+      - kind: given
+        text: >-
+          הראשית במרכז המעגל, $\theta$ נגד כיוון השעון. $\vec r = R(\cos\theta,\ \sin\theta)$, $\dot\theta = \alpha t$, $\ddot\theta = \alpha$.
+      - kind: law
+        text: >-
+          גוזרים רכיב-רכיב, בכלל השרשרת: $\dfrac{d}{dt}\cos\theta = -\sin\theta\,\dot\theta$.
+      - kind: manipulation
+        text: >-
+          $\vec v = R\dot\theta(-\sin\theta,\ \cos\theta)$, ולכן $|\vec v| = R\alpha t$ ו-$\dfrac{d|\vec v|}{dt} = R\alpha$. גוזרים שוב: $\vec a = R\ddot\theta(-\sin\theta,\ \cos\theta) - R\dot\theta^2(\cos\theta,\ \sin\theta)$, שני רכיבים ניצבים, ולכן $|\vec a| = R\sqrt{\alpha^2 + \alpha^4t^4}$.
+      - kind: reasoning
+        text: >-
+          ב. $\dfrac{d|\vec v|}{dt}$ הוא רק הרכיב המשיקי של התאוצה, $R\alpha$. $|\vec a|$ כולל גם את הרכיב שפונה אל המרכז, $R\dot\theta^2$, שמשנה את **כיוון** המהירות. הם שווים רק כשהרכיב הזה אפס, כלומר כש-$\dot\theta = 0$: ב-$t = 0$.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 0$ הנקודה לא זזה, והכול אפס. בזמנים ארוכים $|\vec a| \approx R\alpha^2t^2 = |\vec v|^2/R$: הרכיב אל המרכז שולט.
+      - kind: units
+        text: >-
+          $R\alpha$ ו-$R\alpha^2t^2$ שניהם $\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $|\vec v| = 2.0\cdot0.50\cdot2.0 = 2.0\,\text{m/s}$; $\dfrac{d|\vec v|}{dt} = 1.0\,\text{m/s}^2$; $R\dot\theta^2 = 2.0\cdot1.0^2 = 2.0\,\text{m/s}^2$, ולכן $|\vec a| = \sqrt{1.0^2 + 2.0^2} = 2.24\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $2.0\,\text{m/s}$, $1.0\,\text{m/s}^2$, $2.24\,\text{m/s}^2$. ב. לא; רק ב-$t = 0$.
+
+  - id: W-0.3-07
+    level: mid
+    objectives: [OBJ-0.3-2]
+    prompt: >-
+      המרחק של כדור הארץ מהשמש משתנה במשך השנה בין $\bar r(1 - e)$ ל-$\bar r(1 + e)$, עם $e = 0.0167$. עוצמת אור השמש פרופורציונית ל-$1/r^2$.
+
+      א. בעזרת הקירוב $(1 + x)^n \approx 1 + nx$, בכמה אחוזים העוצמה בנקודה הקרובה ובנקודה הרחוקה שונה מהעוצמה במרחק $\bar r$?
+
+      ב. השוו לחישוב המדויק, והעריכו את השגיאה מהאיבר הראשון שהוזנח.
+    answer: >-
+      א. $\pm2e = \pm3.34\%$.
+
+      ב. מדויק: $+3.43\%$ ו-$-3.26\%$. האיבר שהוזנח, $3e^2 = 0.084\%$, מסביר את ההפרש בשני הצדדים.
+    solution:
+      - kind: law
+        text: >-
+          $(1 + x)^n \approx 1 + nx + \tfrac12n(n - 1)x^2$, עם $n = -2$: $1 - 2x + 3x^2$.
+      - kind: manipulation
+        text: >-
+          $\dfrac{I}{\bar I} = \left(\dfrac{r}{\bar r}\right)^{-2} = (1 \mp e)^{-2} \approx 1 \pm 2e + 3e^2$. בסדר ראשון השינוי היחסי $\pm2e$.
+      - kind: limit
+        text: >-
+          כש-$e \to 0$ המסלול מעגלי והעוצמה קבועה. האיבר מסדר שני, $3e^2$, חיובי בשני הצדדים, ולכן בנקודה הקרובה העלייה גדולה מ-$2e$, ובנקודה הרחוקה הירידה קטנה ממנו.
+      - kind: units
+        text: >-
+          $e$ חסר ממדים, וגם היחס $I/\bar I$.
+      - kind: substitution
+        text: >-
+          $2e = 0.0334$. מדויק: $(1 - 0.0167)^{-2} = 1.0343$ ו-$(1 + 0.0167)^{-2} = 0.9674$. $3e^2 = 8.4\cdot10^{-4}$: $3.34\% + 0.08\% = 3.42\%$ ו-$-3.34\% + 0.08\% = -3.26\%$.
+      - kind: result
+        text: >-
+          א. $\pm3.3\%$. ב. $+3.43\%$ ו-$-3.26\%$; השגיאה של הקירוב הקווי $0.08\%$, כצפוי מ-$3e^2$.
+
+  - id: W-0.3-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.3-1, OBJ-0.3-2]
+    prompt: >-
+      משטח רוטט נע לפי $x(t) = A\sin\omega t$, עם $A = 0.10\,\text{m}$ ו-$\omega = 2\pi\,\text{rad/s}$. סביב כל רגע $t_0$ מקרבים את התנועה בתנועה בתאוצה קבועה: $x(t_0 + \tau) \approx x(t_0) + \dot x(t_0)\,\tau + \tfrac12\ddot x(t_0)\,\tau^2$.
+
+      א. מה האיבר הראשון שהקירוב מזניח? באיזה רגע $t_0$ הוא הגדול ביותר, ומה פשר הקירוב באותו רגע?
+
+      ב. עד איזה $\tau$ השגיאה של הקירוב קטנה מ-$1.0\,\text{mm}$ בכל רגע $t_0$?
+    answer: >-
+      א. $\tfrac16\dddot x(t_0)\,\tau^3$, עם $\dddot x = -A\omega^3\cos\omega t_0$: הגדול ביותר כשהמשטח עובר במרכז, שם התאוצה אפס והקירוב הוא תנועה במהירות קבועה.
+
+      ב. $\tau \approx 0.062\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ לאורך התנודה, הראשית במרכזה. $\dot x = A\omega\cos\omega t$, $\ddot x = -A\omega^2\sin\omega t$, $\dddot x = -A\omega^3\cos\omega t$.
+      - kind: law
+        text: >-
+          השגיאה של פיתוח טיילור היא בערך האיבר הראשון שהוזנח, כאן מסדר שלישי: $\tfrac16\dddot x(t_0)\,\tau^3$.
+      - kind: reasoning
+        text: >-
+          א. $|\dddot x|$ מרבי, $A\omega^3$, כש-$\cos\omega t_0 = \pm1$, כלומר כשהמשטח עובר במרכז. שם $\ddot x = 0$, וה"תאוצה הקבועה" היא אפס: הקירוב הוא קו ישר, והוא נשבר הכי מהר, כי התאוצה מתחילה מיד לגדול. בקצוות, להפך, $\dddot x = 0$, והקירוב מסדר שני טוב במיוחד.
+      - kind: manipulation
+        text: >-
+          ב. דורשים $\tfrac16A\omega^3\tau^3 \le \varepsilon$, עם $\varepsilon = 1.0\cdot10^{-3}\,\text{m}$: $\tau \le \left(\dfrac{6\varepsilon}{A\omega^3}\right)^{1/3}$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ התנועה איטית, ו-$\tau \to \infty$: הקירוב טוב לזמן ארוך. כש-$\varepsilon \to 0$, $\tau \to 0$. ו-$\omega\tau$, החלק של המחזור, הוא הגודל הקטן חסר הממדים: $(\omega\tau)^3 = 6\varepsilon/A$.
+      - kind: units
+        text: >-
+          $\varepsilon/(A\omega^3)$ הוא $\text{m}/(\text{m}\cdot\text{s}^{-3}) = \text{s}^3$, ושורש שלישי שלו בשניות.
+      - kind: substitution
+        text: >-
+          $\omega^3 = 248\,\text{s}^{-3}$; $\tau = \left(\dfrac{6\cdot10^{-3}}{0.10\cdot248}\right)^{1/3} = 0.062\,\text{s}$. בדיקה ב-$t_0 = 0$: $A\omega\tau - A\sin\omega\tau = 0.99\,\text{mm}$.
+      - kind: result
+        text: >-
+          א. $\tfrac16\dddot x\,\tau^3$, הגדול ביותר במעבר במרכז. ב. $\tau \approx 0.062\,\text{s}$, כ-6% מהמחזור.
+
+  - id: W-0.3-09
+    level: bagrut
+    objectives: [OBJ-0.3-2]
+    prompt: >-
+      גוף נופל ממנוחה באוויר עם גרר ליניארי, והמהירות שלו כלפי מטה היא $v(t) = v_t\left(1 - e^{-t/\tau}\right)$, עם $v_t = g\tau$ ו-$\tau = 3.0\,\text{s}$.
+
+      א. הראו שבזמנים קצרים, $t \ll \tau$, $v \approx gt\left(1 - \dfrac{t}{2\tau}\right)$: נפילה חופשית ועוד תיקון.
+
+      ב. העריכו מהתיקון באיזה רגע המהירות נמוכה ב-5% מזו של נפילה חופשית, $gt$, והשוו לחישוב המדויק.
+    answer: >-
+      א. $1 - e^{-u} \approx u - \tfrac12u^2$ עם $u = t/\tau$.
+
+      ב. הערכה: $t = 0.1\,\tau = 0.30\,\text{s}$; מדויק: $0.31\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר כלפי מטה. $u = t/\tau$ חסר ממדים, $\tau = 3.0\,\text{s}$.
+      - kind: law
+        text: >-
+          $e^{-u} \approx 1 - u + \tfrac12u^2 - \tfrac16u^3$ כש-$|u| \ll 1$.
+      - kind: manipulation
+        text: >-
+          $v = g\tau\left(1 - e^{-u}\right) \approx g\tau\left(u - \tfrac12u^2\right) = gt\left(1 - \dfrac{t}{2\tau}\right)$. היחס $v/(gt) = (1 - e^{-u})/u \approx 1 - u/2$, ולכן הוא יורד ל-$0.95$ כש-$u/2 \approx 0.05$.
+      - kind: limit
+        text: >-
+          כש-$\tau \to \infty$ (אין גרר) נשאר $v = gt$, נפילה חופשית. התיקון שלילי, כמו שצריך: הגרר רק מאט. והקירוב נשבר כש-$t$ מתקרב ל-$\tau$, כשהמהירות מתקרבת ל-$v_t$.
+      - kind: units
+        text: >-
+          $t/\tau$ חסר ממדים; $gt$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          הערכה: $u = 0.10$, $t = 0.30\,\text{s}$. מדויק: $(1 - e^{-u})/u = 0.95$ ב-$u = 0.1035$, כלומר $t = 0.310\,\text{s}$. ההפרש בא מהאיבר הבא, $u^2/6 = 0.0017$, שמקטין את התיקון.
+      - kind: result
+        text: >-
+          א. כפי שהראינו בפיתוח. ב. $0.30\,\text{s}$ בהערכה, $0.31\,\text{s}$ במדויק.
+
+  - id: W-0.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.3-1, OBJ-0.3-2]
+    prompt: >-
+      מודדים את הגובה של מגדל: עומדים במרחק $d = 50\,\text{m}$ מבסיסו ומודדים את זווית ההגבהה אל ראשו, $\theta = 30^\circ$, כך ש-$h = d\tan\theta$. המדידה של הזווית שוגה בעד $\delta\theta = 0.50^\circ$.
+
+      א. העריכו בעזרת הנגזרת את השגיאה בגובה, $\delta h$, והשוו לחישוב מדויק.
+
+      ב. סטודנט הציב $\delta\theta = 0.5$ ישר בנוסחה. מה הוא קיבל, ומה הטעות?
+
+      ג. קבעו ונמקו: מאיזה מרחק כדאי למדוד, כלומר באיזו זווית השגיאה **היחסית** $\delta h/h$ הקטנה ביותר?
+    answer: >-
+      א. $\delta h \approx d\,\delta\theta/\cos^2\theta = 0.58\,\text{m}$ (מדויק $0.585\,\text{m}$), מגובה $28.9\,\text{m}$.
+
+      ב. $33\,\text{m}$: הוא הציב מעלות במקום רדיאנים.
+
+      ג. ב-$45^\circ$: $\delta h/h = 2\delta\theta/\sin2\theta$, $1.75\%$ (מול $2.0\%$ ב-$30^\circ$).
+    solution:
+      - kind: law
+        text: >-
+          קירוב מסדר ראשון: $\delta h \approx \dfrac{dh}{d\theta}\,\delta\theta$, עם $\delta\theta$ **ברדיאנים**; $\dfrac{d}{d\theta}\tan\theta = \dfrac1{\cos^2\theta}$.
+      - kind: manipulation
+        text: >-
+          $\delta h = \dfrac{d\,\delta\theta}{\cos^2\theta}$, ולכן $\dfrac{\delta h}{h} = \dfrac{\delta\theta}{\sin\theta\cos\theta} = \dfrac{2\,\delta\theta}{\sin2\theta}$.
+      - kind: reasoning
+        text: >-
+          ב. $0.5$ הוא מספר המעלות. בנגזרת של $\tan$ הזווית חייבת להיות ברדיאנים, $0.50^\circ = 8.73\cdot10^{-3}\,\text{rad}$; במעלות התוצאה גדולה פי 57.
+
+          ג. $\sin2\theta$ מרבי ב-$2\theta = 90^\circ$, ולכן השגיאה היחסית הקטנה ביותר ב-$\theta = 45^\circ$, כלומר במרחק $d = h$. קרוב מדי, הזווית תלולה ו-$\tan$ משתנה מהר מאוד; רחוק מדי, הזווית קטנה והגובה עצמו קטן לעומת השגיאה.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 90^\circ$ או $\theta \to 0$, $\sin2\theta \to 0$ והשגיאה היחסית מתבדרת. כש-$\delta\theta \to 0$, גם $\delta h \to 0$.
+      - kind: units
+        text: >-
+          $d\,\delta\theta$ במטרים כש-$\delta\theta$ ברדיאנים, שהם חסרי ממדים.
+      - kind: substitution
+        text: >-
+          א. $h = 50\tan30^\circ = 28.9\,\text{m}$; $\delta h = \dfrac{50\cdot8.73\cdot10^{-3}}{0.75} = 0.582\,\text{m}$; מדויק: $50(\tan30.5^\circ - \tan30^\circ) = 0.585\,\text{m}$. ב. $\dfrac{50\cdot0.5}{0.75} = 33.3\,\text{m}$. ג. ב-$30^\circ$: $\dfrac{2\cdot8.73\cdot10^{-3}}{0.866} = 2.0\%$; ב-$45^\circ$: $1.75\%$.
+      - kind: result
+        text: >-
+          א. $0.58\,\text{m}$. ב. $33\,\text{m}$, מעלות במקום רדיאנים. ג. ב-$45^\circ$.
+
+challenge:
+  - id: W-0.3-c1
+    stars: 1
+    objectives: [OBJ-0.3-1, OBJ-0.3-2]
+    prompt: >-
+      על כוכב לכת שטוח לגמרי, לוויין מרחף בגובה קבוע $H = 20\,000\,\text{km}$ מעל נקודה $O$ על פני הקרקע. מקלט על הקרקע מודד את המרחק שלו מהלוויין, $h$, ומחשב ממנו את המרחק $L$ שלו מ-$O$ לאורך הקרקע.
+
+      א. כתבו את $L(h)$, ומצאו בכלל השרשרת את $dL/dh$: פי כמה מוגדלת שגיאה קטנה $\Delta h$ במדידה?
+
+      ב. המקלט רחוק: $h_0 = 25\,000\,\text{km}$. העריכו את $\Delta L$ ל-$\Delta h = 1\,\text{km}$, והשוו לחישוב מדויק.
+
+      ג. המקלט כמעט מתחת ללוויין: $h_0 = 20\,001\,\text{km}$. חשבו את היחס $\Delta L/\Delta h$ המדויק ל-$\Delta h = 1$, $0.1$ ו-$0.01\,\text{km}$, והשוו ל-$dL/dh$. הסבירו, בעזרת האיבר מסדר שני, למה הקירוב הקווי נכשל ב-$\Delta h = 1\,\text{km}$ כאן ולא בסעיף ב.
+    answer: >-
+      א. $L = \sqrt{h^2 - H^2}$, $\dfrac{dL}{dh} = \dfrac hL$.
+
+      ב. $L_0 = 15\,000\,\text{km}$, $dL/dh = 5/3$: $\Delta L \approx 1.67\,\text{km}$, כמו המדויק.
+
+      ג. $L_0 = 200\,\text{km}$, $dL/dh = 100$; המדויק: $82.8$, $97.6$, $99.8$. האיבר השני ביחס לראשון הוא בערך $0.25\,\Delta h$ (ב-$\text{km}$): $25\%$ ב-$1\,\text{km}$, לעומת $3.6\cdot10^{-5}$ בסעיף ב.
+    solution:
+      - kind: law
+        text: >-
+          פיתגורס, $L = \sqrt{h^2 - H^2}$; כלל השרשרת; פיתוח טיילור מסדר שני, $\Delta L \approx L'\,\Delta h + \tfrac12L''\,\Delta h^2$.
+      - kind: manipulation
+        text: >-
+          $L' = \dfrac{2h}{2\sqrt{h^2 - H^2}} = \dfrac hL$. גוזרים שוב (כלל המנה ושרשרת): $L'' = \dfrac{L - h\cdot h/L}{L^2} = -\dfrac{H^2}{L^3}$. היחס בין האיבר מסדר שני לבין הראשון הוא $\dfrac{|L''|\,\Delta h}{2L'} = \dfrac{H^2\,\Delta h}{2hL^2}$, והוא גדל מאוד כש-$L$ קטן.
+      - kind: limit
+        text: >-
+          כש-$h \gg H$, $L \approx h$ ו-$L' \to 1$: שגיאה במרחק עוברת כמו שהיא. כש-$h \to H$, $L \to 0$ ו-$L' \to \infty$: מתחת ללוויין, שינוי זעיר ב-$h$ מזיז את $L$ הרבה, והקירוב הקווי טוב רק בטווח צר מאוד. הגודל הקטן הנכון הוא $\Delta h$ לעומת $L^2/H$, לא לעומת $h$.
+      - kind: units
+        text: >-
+          $h/L$ חסר ממדים; $H^2/L^3$ ביחידות $1/\text{km}$, ולכן $L''\,\Delta h^2$ ב-$\text{km}$.
+      - kind: substitution
+        text: >-
+          ב. $L_0 = \sqrt{25\,000^2 - 20\,000^2} = 15\,000\,\text{km}$; $\Delta L \approx \tfrac53\cdot1 = 1.667\,\text{km}$, והמדויק $1.6666\,\text{km}$; האיבר השני ביחס לראשון $3.6\cdot10^{-5}$.
+
+          ג. $L_0 = \sqrt{20\,001^2 - 20\,000^2} = 200.0\,\text{km}$, $L' = 100.0$, $L'' = -50.0\,\text{km}^{-1}$. מדויק: $L(20\,002) - L_0 = 282.8 - 200.0 = 82.8\,\text{km}$; ב-$0.1\,\text{km}$: $9.76\,\text{km}$; ב-$0.01\,\text{km}$: $0.998\,\text{km}$. עם האיבר השני, ב-$1\,\text{km}$: $100 - 25.0 = 75.0\,\text{km}$, קרוב יותר אבל עדיין לא מדויק: גם האיבר השלישי לא קטן.
+      - kind: result
+        text: >-
+          א. $dL/dh = h/L$. ב. $1.67\,\text{km}$, הקירוב מצוין. ג. $82.8$, $97.6$ ו-$99.8$ מול $100$; הקירוב הקווי נכשל ב-$1\,\text{km}$ כי שם האיבר מסדר שני הוא רבע מהראשון.
+    source:
+      name: MIT OpenCourseWare, 18.01 Single Variable Calculus
+      year: 2006
+      problem: 'Problem Set 1, Part II, Problem 2: Sensitivity of measurement (a GPS satellite over the flat planet Quirk)'
+      url: https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/ps1.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.3-c2
+    stars: 1
+    objectives: [OBJ-0.3-2]
+    prompt: >-
+      השטח של קליפה כדורית ברדיוס $R$ בין שני מישורים מקבילים במרחק $h$ זה מזה הוא $2\pi Rh$ (קחו את הנוסחה הזו כנתונה). מישור חותך כדור במעגל ברדיוס $r \le R$, והחלק של הקליפה מעליו נקרא כיפה.
+
+      א. מצאו את גובה הכיפה ואת שטחה כפונקציה של $R$ ושל $x = (r/R)^2$.
+
+      ב. בעזרת פיתוח טיילור של $\sqrt{1 - x}$, מצאו קירוב מסדר ראשון ומסדר שני לשטח הכיפה כש-$r \ll R$. מה המשמעות של הקירוב מסדר ראשון?
+
+      ג. כדור גולף בקוטר $3\,\text{cm}$ ועליו 100 גומות בצורת חצי כדור, בקוטר $3\,\text{mm}$ כל אחת (כל גומה מסירה כיפה מהכדור ומוסיפה חצי כדור קטן). חשבו את שטח הפנים של הכדור, עם $\pi = 3.14$, בשלוש דרכים: כשהשטח שהגומה מסירה הוא עיגול שטוח, עם הקירוב מסדר שני, ומדויק. האם עיגול לשתי ספרות אחרי הנקודה מבדיל ביניהם?
+    answer: >-
+      א. גובה $R\left(1 - \sqrt{1 - x}\right)$, שטח $2\pi R^2\left(1 - \sqrt{1 - x}\right)$.
+
+      ב. $\pi r^2$ (שטח של עיגול שטוח), ו-$\pi r^2\left(1 + \dfrac{r^2}{4R^2}\right)$.
+
+      ג. $35.325$, $35.307$ ו-$35.307\,\text{cm}^2$: הקירוב השטוח נותן $35.33$ (או אפילו $35.32$, על גבול העיגול), והנכון $35.31\,\text{cm}^2$.
+    solution:
+      - kind: given
+        text: >-
+          $R = 1.5\,\text{cm}$, $r = 0.15\,\text{cm}$, ולכן $x = (r/R)^2 = 0.010$. 100 גומות; $\pi = 3.14$ כמו בשאלה המקורית.
+      - kind: law
+        text: >-
+          $\sqrt{1 - x} \approx 1 - \tfrac12x - \tfrac18x^2$ כש-$|x| \ll 1$.
+      - kind: manipulation
+        text: >-
+          א. מרכז הכדור נמצא $\sqrt{R^2 - r^2}$ מתחת למישור החותך, ולכן גובה הכיפה $R - \sqrt{R^2 - r^2} = R\left(1 - \sqrt{1 - x}\right)$, והשטח $2\pi R\cdot R\left(1 - \sqrt{1 - x}\right)$.
+
+          ב. $1 - \sqrt{1 - x} \approx \tfrac12x + \tfrac18x^2$, ולכן השטח $\approx 2\pi R^2\left(\tfrac12x + \tfrac18x^2\right) = \pi r^2 + \dfrac{\pi r^4}{4R^2}$. הקירוב מסדר ראשון, $\pi r^2$, הוא שטח העיגול השטוח שהכיפה יושבת עליו.
+
+          ג. שטח הכדור הוא $4\pi R^2$, פחות 100 כיפות, ועוד 100 חצאי כדור קטנים, $100\cdot2\pi r^2$.
+      - kind: limit
+        text: >-
+          כש-$r \to 0$ הכיפה שטוחה ושטחה $\pi r^2$, כמו שצריך. כש-$r = R$ ($x = 1$) הנוסחה המדויקת נותנת $2\pi R^2$, חצי כדור, אבל הפיתוח, שנכתב ל-$x \ll 1$, נותן רק $2\pi R^2\cdot\tfrac58$: מחוץ לתחום שבו $x$ קטן אין קירוב.
+      - kind: units
+        text: >-
+          $\pi r^2$ ו-$\pi r^4/R^2$ שניהם ב-$\text{cm}^2$; $x$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          שטח הכדור בלי גומות $4\cdot3.14\cdot2.25 = 28.26\,\text{cm}^2$, והחצאי-כדור $100\cdot2\cdot3.14\cdot0.0225 = 14.13\,\text{cm}^2$. כיפה: שטוחה $0.070650$, מסדר שני $0.070827$, מדויקת $0.070828\,\text{cm}^2$. סך הכול: $35.325$, $35.3073$ ו-$35.3072\,\text{cm}^2$. ההפרש בין הקירוב השטוח למדויק, $100\cdot\pi r^2x/4 = 0.018\,\text{cm}^2$, גדול מספיק כדי לשנות את הספרה השנייה אחרי הנקודה.
+      - kind: result
+        text: >-
+          א. $2\pi R^2\left(1 - \sqrt{1 - x}\right)$. ב. $\pi r^2$, ו-$\pi r^2(1 + r^2/4R^2)$. ג. $35.31\,\text{cm}^2$; הקירוב השטוח, $35.325$, כבר לא נותן את התשובה המעוגלת הנכונה, והקירוב מסדר שני נותן.
+    source:
+      name: MIT OpenCourseWare, 18.01 Single Variable Calculus
+      year: 2006
+      problem: 'Problem Set 2B, Part II, Problem 1: Golf balls (the area of a spherical cap and the dimples of a golf ball, parts a to c)'
+      url: https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/ps2b.pdf
+      verified: '2026-11-17'
+      adapted: true

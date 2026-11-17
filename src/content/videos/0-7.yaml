@@ -1,0 +1,27 @@
+# Videos of lesson 0.7. Every id was checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds: 377 and
+# 632 s) and the caption tracks from its captionTracks list ("English - Default" in both). `why` claims only
+# what the two descriptions on the watch pages say (opened the same day): the first, "Gradient vectors always
+# point perpendicular to contour lines"; the second, that it shows how the computation of the gradient relates
+# to its meaning as the direction of steepest ascent. No public Hebrew video on these coordinates or on the
+# gradient was found (searched in Hebrew; only text pages came back).
+
+- id: v-0-7-gradient-contours
+  youtubeId: ZTbTYEMvo10
+  title: Gradient and contour maps
+  channel: Khan Academy
+  lang: en
+  captions: [en]
+  minutes: 6
+  why: 'סרטון קצר מקורס החשבון הרב-משתני של Khan Academy. לפי התיאור שלו, הוא מראה על מפת קווי גובה שהגרדיאנט תמיד ניצב לקווי הגובה, הטענה של איור 0.7ד. בזמן הצפייה, חשבו: איפה במפה הגרדיאנט ארוך יותר, ואיך רואים את זה מהמרווח בין הקווים?'
+  verified: '2026-11-17'
+
+- id: v-0-7-steepest-ascent
+  youtubeId: TEB2z7ZlRAw
+  title: Why the gradient is the direction of steepest ascent
+  channel: Khan Academy
+  lang: en
+  captions: [en]
+  minutes: 11
+  why: 'מאותו קורס. לפי התיאור, הוא מסביר למה הגרדיאנט, שמחשבים מהנגזרות החלקיות לאורך x ו-y, הוא גם כיוון העלייה התלולה ביותר: אותו טיעון של השיעור, עם הנגזרת הכיוונית ∇f·ŝ. השוו את ההסבר שלו לשלב "הגרדיאנט: כיוון העלייה התלולה ביותר".'
+  verified: '2026-11-17'

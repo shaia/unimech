@@ -1,0 +1,485 @@
+# Workbook, lesson 0.7 (polar, cylindrical and spherical coordinates; the gradient). Format and rules:
+# .claude/CLAUDE.md, "The solution format" (law … limit, units, result). In a >- block, consecutive lines fold
+# into one paragraph: every part (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-7/nums.ts with src/physics/coords.ts (toPolar, polarBasis,
+# polarPatchArea, capArea, ballMass, numericGradient, simpson) and R_EARTH from constants.ts:
+#   W-02: (−2.0, 3.5) m: r = 4.03 m, θ = 119.7° (the calculator's arctan gives −60.3°);
+#   W-03: wiper 0.10…0.50 m over 110° = 1.92 rad: area 0.230 m² (the full sector to 0.50 m: 0.240 m²);
+#   W-04: θ̇ = 1.5 rad/s at θ = 60°: dr̂/dt = (−1.30, 0.75) s⁻¹, dθ̂/dt = (−0.75, −1.30) s⁻¹; tip (40 m) v = (−52.0, 30.0) m/s, 60 m/s;
+#   W-05: cap θ ≤ 30°: 6.70% of the sphere, 3.42e13 m² on the Earth; band 0°–30°N: 25.0%; ratio 3.73;
+#   W-06: T = 25 + 4xy − y² at (1, 2): T = 29 °C, ∇T = (8.0, 0) °C/m, at 45° 5.66 °C/m;
+#   W-08: ρ = ρc(1 − r²/R²), ρc = 1.3e4 kg/m³, R = R_EARTH: M = 8πρcR³/15 = 5.63e24 kg, mean 0.4ρc, inside R/2: 17/64 = 0.266;
+#   W-09: θ = ½αt², α = 0.40 rad/s², t = 2.0 s: θ̇ = 0.80 rad/s, d²r̂/dt² = 0.40 θ̂ − 0.64 r̂ (s⁻²), 0.755 s⁻²; at R = 0.50 m 0.377 m/s²;
+#   c1: average distance in a ball of radius a from the centre 3a/4, from a diameter 3πa/16 = 0.589a, from a plane 3a/8;
+#   c2: U = x³ − xy² − 4x² + 3x + x²y at (1/2, 1): ∇U = (−1/4, −3/4), |∇U| = √10/4 = 0.791, at 251.6°.
+
+lesson: '0.7'
+practice:
+  - id: W-0.7-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.7-1]
+    prompt: >-
+      נקודה P נמצאת ב-$(x,\ y) = (0,\ -3.0)\,\text{m}$, כשהציר $x$ ימינה והציר $y$ למעלה, והזווית $\theta$ נמדדת מהציר $x$ החיובי נגד כיוון השעון.
+
+      א. מה $r$ ומה $\theta$ של P?
+
+      ב. לאן מצביעים $\hat r$ ו-$\hat\theta$ ב-P (ימינה, שמאלה, למעלה או למטה)?
+
+      ג. כתבו את וקטור המקום של P בעזרת $\hat r$ ו-$\hat\theta$. קבעו ונמקו: למה אין בו רכיב $\hat\theta$?
+    answer: >-
+      א. $r = 3.0\,\text{m}$, $\theta = 270^\circ$.
+
+      ב. $\hat r$ למטה, $\hat\theta$ ימינה.
+
+      ג. $\vec r = 3.0\,\hat r$ (במטרים); $\hat r$ מוגדר ככיוון מ-O אל הנקודה, ולכן וקטור המקום כולו לאורכו.
+    solution:
+      - kind: law
+        text: >-
+          $r = \sqrt{x^2 + y^2}$; $\hat r = (\cos\theta,\ \sin\theta)$, $\hat\theta = (-\sin\theta,\ \cos\theta)$; $\vec r = r\hat r$.
+      - kind: manipulation
+        text: >-
+          א. $r = 3.0\,\text{m}$. הנקודה על הציר $y$ השלילי, ולכן $\theta = 270^\circ$ (או $-90^\circ$; זו אותה נקודה). כאן $\tan\theta = y/x$ לא מוגדר, כי $x = 0$, ומחליטים לפי הציור.
+
+          ב. $\hat r = (\cos270^\circ,\ \sin270^\circ) = (0,\ -1)$: למטה. $\hat\theta = (-\sin270^\circ,\ \cos270^\circ) = (1,\ 0)$: ימינה.
+
+          ג. $\vec r = (0,\ -3.0) = 3.0\,(0,\ -1) = 3.0\,\hat r$. הרכיב ב-$\hat\theta$ הוא $\vec r\cdot\hat\theta = 0$.
+      - kind: reasoning
+        text: >-
+          $\hat r$ בנקודה P הוא בדיוק הכיוון מ-O אל P. וקטור המקום מצביע מ-O אל P, ולכן הוא $\hat r$ כפול האורך שלו. הזווית לא "נעלמה": היא מוסתרת בכיוון של $\hat r$, שתלוי ב-$\theta$.
+      - kind: limit
+        text: >-
+          בדיקה ב-$\theta = 0$, על הציר $x$ החיובי: $\hat r = \hat x$ ו-$\hat\theta = \hat y$. ב-$270^\circ$ שניהם מסובבים ב-$270^\circ$ נגד כיוון השעון: $\hat x$ הופך ל"למטה", ו-$\hat y$ ל"ימינה". אותה תשובה.
+      - kind: units
+        text: >-
+          $r$ במטרים; $\hat r$ ו-$\hat\theta$ חסרי ממדים, ולכן $3.0\,\hat r$ במטרים.
+      - kind: result
+        text: >-
+          א. $r = 3.0\,\text{m}$, $\theta = 270^\circ$. ב. $\hat r$ למטה, $\hat\theta$ ימינה. ג. $\vec r = 3.0\,\hat r$ במטרים, בלי רכיב $\hat\theta$.
+
+  - id: W-0.7-02
+    level: basic
+    objectives: [OBJ-0.7-1]
+    prompt: >-
+      שואב אבק רובוטי נמצא ב-$x = -2.0\,\text{m}$, $y = 3.5\,\text{m}$ ביחס לתחנת הטעינה שלו, כש-$x$ מזרחה ו-$y$ צפונה. מה המרחק שלו מהתחנה, ובאיזו זווית $\theta$ מהציר $x$, נגד כיוון השעון? מה ייתן לכם המחשבון אם תחשבו $\arctan(y/x)$?
+    answer: >-
+      $r = 4.03\,\text{m}$, $\theta = 119.7^\circ$. המחשבון נותן $-60.3^\circ$, ברביע הלא נכון.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בתחנה; $x = -2.0\,\text{m}$, $y = 3.5\,\text{m}$: הרביע השני ($x \lt 0$, $y \gt 0$).
+      - kind: law
+        text: >-
+          $r = \sqrt{x^2 + y^2}$, $\tan\theta = y/x$, ברביע של הנקודה.
+      - kind: manipulation
+        text: >-
+          $\arctan(3.5/(-2.0)) = -60.3^\circ$ נמצא ברביע הרביעי. הזווית עם אותו טנגנס ברביע השני גדולה ממנו ב-$180^\circ$.
+      - kind: limit
+        text: >-
+          בדיקה: $x = r\cos\theta = 4.03\cos119.7^\circ = -2.0\,\text{m}$ ו-$y = r\sin\theta = 3.5\,\text{m}$, הנקודה שממנה יצאנו. עם $-60.3^\circ$ היינו מקבלים $(2.0,\ -3.5)$, הנקודה הנגדית.
+      - kind: units
+        text: >-
+          $r$ במטרים; הזווית חסרת ממדים.
+      - kind: substitution
+        text: >-
+          $r = \sqrt{4.0 + 12.25} = 4.03\,\text{m}$; $\theta = -60.3^\circ + 180^\circ = 119.7^\circ$.
+      - kind: result
+        text: >-
+          $r = 4.03\,\text{m}$, $\theta = 119.7^\circ$ (צפון-מערבית לתחנה). $\arctan(y/x) = -60.3^\circ$ אינו התשובה.
+
+  - id: W-0.7-03
+    level: basic
+    objectives: [OBJ-0.7-2]
+    prompt: >-
+      מגב של חלון רכב מסתובב סביב ציר. הגומי שלו מתחיל $0.10\,\text{m}$ מהציר ונגמר $0.50\,\text{m}$ ממנו, והוא סורק זווית של $110^\circ$. כתבו את השטח שהגומי מנגב כאינטגרל של $dA = r\,dr\,d\theta$, וחשבו אותו.
+    answer: >-
+      $A = \tfrac12\left(r_2^2 - r_1^2\right)\Delta\theta = 0.230\,\text{m}^2$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית בציר; $r_1 = 0.10\,\text{m}$, $r_2 = 0.50\,\text{m}$, $\Delta\theta = 110^\circ = 1.92\,\text{rad}$.
+      - kind: law
+        text: >-
+          $A = \displaystyle\int_0^{\Delta\theta}\int_{r_1}^{r_2}r\,dr\,d\theta$.
+      - kind: manipulation
+        text: >-
+          הגבולות קבועים, ולכן האינטגרל הוא מכפלה: $\displaystyle\int_{r_1}^{r_2}r\,dr = \tfrac12\left(r_2^2 - r_1^2\right)$, ו-$\displaystyle\int_0^{\Delta\theta}d\theta = \Delta\theta$.
+      - kind: limit
+        text: >-
+          כש-$r_1 \to 0$ מתקבל $\tfrac12r_2^2\Delta\theta$, שטח של גזרת עיגול; וכש-$\Delta\theta = 2\pi$, $\pi\left(r_2^2 - r_1^2\right)$, שטח של טבעת.
+      - kind: units
+        text: >-
+          $\text{m}^2\cdot\text{rad} = \text{m}^2$.
+      - kind: substitution
+        text: >-
+          $\tfrac12\left(0.25 - 0.01\right)\cdot1.92 = 0.230\,\text{m}^2$. (הגזרה המלאה עד $0.50\,\text{m}$ הייתה $0.240\,\text{m}^2$: הקטע הפנימי, ליד הציר, תורם מעט, כי שם המשבצות קטנות.)
+      - kind: result
+        text: >-
+          $0.230\,\text{m}^2$.
+
+  - id: W-0.7-04
+    level: mid
+    objectives: [OBJ-0.7-1]
+    prompt: >-
+      להב של טורבינת רוח, באורך $40\,\text{m}$, מסתובב במישור אנכי במהירות זוויתית קבועה $\dot\theta = 1.5\,\text{rad/s}$, נגד כיוון השעון כשמסתכלים עליו מלפנים. $\theta$ נמדדת מהאופק, ימינה, והציר $y$ למעלה.
+
+      א. ברגע שבו $\theta = 60^\circ$, מה $d\hat r/dt$ ומה $d\hat\theta/dt$ ברכיבים קרטזיים?
+
+      ב. המקום של קצה הלהב הוא $\vec r = R\hat r$ עם $R$ קבוע. מה המהירות שלו ברגע הזה, ברכיבים ובגודל?
+    answer: >-
+      א. $d\hat r/dt = (-1.30,\ 0.75)\,\text{s}^{-1}$, $d\hat\theta/dt = (-0.75,\ -1.30)\,\text{s}^{-1}$.
+
+      ב. $\vec v = (-52.0,\ 30.0)\,\text{m/s}$, $|\vec v| = 60\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{d\hat r}{dt} = \dot\theta\,\hat\theta$, $\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$, עם $\hat r = (\cos\theta,\ \sin\theta)$ ו-$\hat\theta = (-\sin\theta,\ \cos\theta)$.
+      - kind: manipulation
+        text: >-
+          א. ב-$60^\circ$: $\hat r = (0.5,\ 0.866)$, $\hat\theta = (-0.866,\ 0.5)$. לכן $d\hat r/dt = 1.5\,\hat\theta$ ו-$d\hat\theta/dt = -1.5\,\hat r$.
+
+          ב. $R$ קבוע, ולכן $\vec v = R\,\dfrac{d\hat r}{dt} = R\dot\theta\,\hat\theta$.
+      - kind: limit
+        text: >-
+          $d\hat r/dt$ ניצב ל-$\hat r$: $(-1.30)(0.5) + (0.75)(0.866) = 0$, כמו שצריך לווקטור שהאורך שלו קבוע. וכשהטורבינה עומדת, $\dot\theta = 0$, שתי הנגזרות והמהירות אפס.
+      - kind: units
+        text: >-
+          $\dot\theta$ ב-$\text{s}^{-1}$, ולכן הנגזרות של וקטורי היחידה ב-$\text{s}^{-1}$; $R\dot\theta$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          א. $1.5\,(-0.866,\ 0.5) = (-1.30,\ 0.75)\,\text{s}^{-1}$; $-1.5\,(0.5,\ 0.866) = (-0.75,\ -1.30)\,\text{s}^{-1}$.
+
+          ב. $40\cdot(-1.30,\ 0.75) = (-52.0,\ 30.0)\,\text{m/s}$, וגודלה $40\cdot1.5 = 60\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $(-1.30,\ 0.75)\,\text{s}^{-1}$ ו-$(-0.75,\ -1.30)\,\text{s}^{-1}$. ב. $(-52.0,\ 30.0)\,\text{m/s}$, $60\,\text{m/s}$, בכיוון $\hat\theta$, שמאלה ולמעלה.
+
+  - id: W-0.7-05
+    level: mid
+    objectives: [OBJ-0.7-2]
+    prompt: >-
+      מתייחסים לכדור הארץ כספרה ברדיוס $R = 6.37\cdot10^6\,\text{m}$, עם הציר $z$ דרך הקוטב הצפוני, כך ש-$\theta$ היא $90^\circ$ פחות קו הרוחב.
+
+      א. בעזרת $dA = R^2\sin\theta\,d\theta\,d\varphi$, מצאו את השטח שמצפון לקו הרוחב $60^\circ$ צפון, ואיזה חלק הוא מכל פני כדור הארץ.
+
+      ב. איזה חלק מפני כדור הארץ נמצא בין קו המשווה לקו הרוחב $30^\circ$ צפון?
+
+      ג. בשני האזורים הטווח של קווי הרוחב הוא $30^\circ$. קבעו ונמקו למה השטחים שלהם כל כך שונים.
+    answer: >-
+      א. $2\pi R^2\left(1 - \cos30^\circ\right) = 3.42\cdot10^{13}\,\text{m}^2$, $6.70\%$.
+
+      ב. $25.0\%$.
+
+      ג. פי $3.73$: הרוחב של רצועה, $R\sin\theta\,d\varphi$, קטן ליד הקוטב.
+    solution:
+      - kind: law
+        text: >-
+          $A = \displaystyle\int_0^{2\pi}\int_{\theta_1}^{\theta_2}R^2\sin\theta\,d\theta\,d\varphi = 2\pi R^2\left(\cos\theta_1 - \cos\theta_2\right)$.
+      - kind: manipulation
+        text: >-
+          א. מצפון לקו הרוחב $60^\circ$: $\theta$ מ-$0$ עד $30^\circ$. $A = 2\pi R^2\left(1 - \cos30^\circ\right)$, והחלק $\dfrac{1 - \cos30^\circ}{2}$.
+
+          ב. מקו המשווה ($\theta = 90^\circ$) עד $30^\circ$ צפון ($\theta = 60^\circ$): החלק $\dfrac{\cos60^\circ - \cos90^\circ}{2} = \tfrac14$.
+
+          ג. בשני האזורים $d\theta$ אותו טווח, אבל הגורם $\sin\theta$ שונה: ליד הקוטב המעגלים סביב הציר קטנים, ו-$\sin\theta \le 0.5$; ליד קו המשווה $\sin\theta$ קרוב ל-1.
+      - kind: limit
+        text: >-
+          על כל הספרה, $\theta$ מ-$0$ עד $\pi$: $2\pi R^2\cdot2 = 4\pi R^2$, וחלק $1$. וחצי כדור, עד $\theta = 90^\circ$: חלק $\tfrac12$.
+      - kind: units
+        text: >-
+          $R^2$ ב-$\text{m}^2$; הזוויות חסרות ממדים.
+      - kind: substitution
+        text: >-
+          א. $\dfrac{1 - 0.866}{2} = 0.0670$, ו-$0.0670\cdot4\pi\left(6.37\cdot10^6\right)^2 = 3.42\cdot10^{13}\,\text{m}^2$. ג. $0.25/0.0670 = 3.73$.
+      - kind: result
+        text: >-
+          א. $3.42\cdot10^{13}\,\text{m}^2$, $6.70\%$. ב. $25.0\%$. ג. הרצועה שליד קו המשווה גדולה פי $3.73$, בגלל הגורם $\sin\theta$ באלמנט השטח.
+
+  - id: W-0.7-06
+    level: mid
+    objectives: [OBJ-0.7-3]
+    prompt: >-
+      הטמפרטורה על פלטה מתכתית שטוחה היא $T(x,\ y) = 25 + 4xy - y^2$, ב-$^\circ\text{C}$, כש-$x$ ו-$y$ במטרים. נמלה עומדת בנקודה $(1.0,\ 2.0)\,\text{m}$.
+
+      א. מה $\nabla T$ בנקודה?
+
+      ב. לאיזה כיוון עליה ללכת כדי שהטמפרטורה תעלה הכי מהר, ובאיזה קצב?
+
+      ג. באיזה קצב משתנה הטמפרטורה אם היא הולכת בכיוון שבאמצע בין $+x$ ל-$+y$?
+
+      ד. לאיזה כיוון עליה ללכת כדי שהטמפרטורה לא תשתנה?
+    answer: >-
+      א. $(8.0,\ 0)\,^\circ\text{C/m}$. ב. בכיוון $+x$, $8.0\,^\circ\text{C/m}$. ג. $5.66\,^\circ\text{C/m}$. ד. בכיוון $\pm y$.
+    solution:
+      - kind: law
+        text: >-
+          $\nabla T = \left(\dfrac{\partial T}{\partial x},\ \dfrac{\partial T}{\partial y}\right)$, ו-$\dfrac{dT}{ds} = \nabla T\cdot\hat s$.
+      - kind: manipulation
+        text: >-
+          א. $\partial T/\partial x = 4y$ (עם $y$ קבוע), $\partial T/\partial y = 4x - 2y$ (עם $x$ קבוע). בנקודה: $(8.0,\ 4.0 - 4.0) = (8.0,\ 0)$.
+
+          ב. הכיוון של $\nabla T$, והקצב $|\nabla T|$.
+
+          ג. $\hat s = \left(\tfrac1{\sqrt2},\ \tfrac1{\sqrt2}\right)$, ולכן $dT/ds = 8.0/\sqrt2$.
+
+          ד. בניצב לגרדיאנט, לאורך קו הטמפרטורה השווה שעובר בנקודה: $\hat s = (0,\ \pm1)$.
+      - kind: limit
+        text: >-
+          כשהזווית בין $\hat s$ ל-$\nabla T$ היא $0$ מתקבל $8.0$, וכשהיא $90^\circ$ מתקבל אפס; ב-$45^\circ$, $8.0\cos45^\circ = 5.66$, בין שני הקצוות.
+      - kind: units
+        text: >-
+          $T$ ב-$^\circ\text{C}$ ו-$x$ במטרים, ולכן הגרדיאנט ב-$^\circ\text{C/m}$.
+      - kind: substitution
+        text: >-
+          $8.0/\sqrt2 = 5.66\,^\circ\text{C/m}$.
+      - kind: result
+        text: >-
+          א. $\nabla T = (8.0,\ 0)\,^\circ\text{C/m}$. ב. בכיוון $+x$, $8.0\,^\circ\text{C/m}$. ג. $5.66\,^\circ\text{C/m}$. ד. בכיוון $+y$ או $-y$.
+
+  - id: W-0.7-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.7-3]
+    prompt: >-
+      שתי גבעות עגולות, שהפסגה של כל אחת בראשית. הגובה של הראשונה, חרוט, הוא $h_1 = H - \alpha r$; של השנייה, כיפה, $h_2 = H - \beta r^2$, כאשר $r$ הוא המרחק האופקי מהפסגה ו-$\alpha$, $\beta$ קבועים חיוביים.
+
+      א. בעזרת $\nabla f = \dfrac{\partial f}{\partial r}\,\hat r + \dfrac1r\,\dfrac{\partial f}{\partial\theta}\,\hat\theta$, מצאו את $\nabla h$ בכל גבעה. לאן הוא מצביע?
+
+      ב. במפה מציירים קווי גובה כל $10\,\text{m}$. קבעו ונמקו: באיזו גבעה הקווים במרחקים שווים זה מזה, ובאיזו הם מתקרבים זה לזה ככל שמתרחקים מהפסגה?
+
+      ג. מה קורה לגרדיאנט בפסגה של כל גבעה?
+    answer: >-
+      א. $\nabla h_1 = -\alpha\,\hat r$, $\nabla h_2 = -2\beta r\,\hat r$: בשתיהן אל הפסגה.
+
+      ב. בחרוט במרחקים שווים; בכיפה הם מתקרבים.
+
+      ג. בכיפה $\nabla h_2 = 0$ בפסגה; בחרוט הוא לא מוגדר (חוד).
+    solution:
+      - kind: law
+        text: >-
+          $\nabla f = \dfrac{\partial f}{\partial r}\,\hat r + \dfrac1r\,\dfrac{\partial f}{\partial\theta}\,\hat\theta$; $|\nabla h| \approx \Delta h/\Delta n$, כאשר $\Delta n$ הוא המרחק בין קווי גובה שכנים.
+      - kind: manipulation
+        text: >-
+          א. $h$ לא תלוי ב-$\theta$, ולכן הרכיב $\hat\theta$ אפס. $\partial h_1/\partial r = -\alpha$ ו-$\partial h_2/\partial r = -2\beta r$. שניהם שליליים: הגרדיאנט בכיוון $(-\hat r)$, אל הפסגה, כי שם הגובה עולה.
+
+          ב. בחרוט $|\nabla h_1| = \alpha$ קבוע, ולכן $\Delta n = \Delta h/\alpha$ קבוע: טבעות במרחקים שווים. בכיפה $|\nabla h_2| = 2\beta r$ גדל עם $r$, ולכן $\Delta n$ קטן: הקווים מתקרבים לכיוון השוליים, שם הכיפה תלולה.
+
+          ג. בכיפה $2\beta r \to 0$: פסגה חלקה ושטוחה. בחרוט הגודל נשאר $\alpha$ ממש עד הפסגה, אבל הכיוון $(-\hat r)$ תלוי מאיזה צד מגיעים: בחוד אין כיוון אחד.
+      - kind: reasoning
+        text: >-
+          כאן הגרדיאנט כן מצביע אל הפסגה, כי קווי הגובה מעגלים סביבה. בגבעה מוארכת זה לא נכון.
+      - kind: limit
+        text: >-
+          כש-$\alpha \to 0$ או $\beta \to 0$ הקרקע שטוחה: $\nabla h = 0$, והקווים רחוקים לאין סוף.
+      - kind: units
+        text: >-
+          $\alpha$ חסר ממדים (מטר עלייה למטר); $\beta$ ב-$\text{m}^{-1}$, ולכן $2\beta r$ חסר ממדים, כמו כל שיפוע.
+      - kind: result
+        text: >-
+          א. $\nabla h_1 = -\alpha\,\hat r$, $\nabla h_2 = -2\beta r\,\hat r$, אל הפסגה. ב. חרוט: מרחקים שווים; כיפה: מתקרבים החוצה. ג. כיפה: אפס; חרוט: לא מוגדר.
+
+  - id: W-0.7-08
+    level: bagrut
+    objectives: [OBJ-0.7-2]
+    prompt: >-
+      במודל של כוכב לכת ברדיוס $R = 6.37\cdot10^6\,\text{m}$ הצפיפות יורדת מהמרכז כמו פרבולה: $\rho(r) = \rho_c\left(1 - r^2/R^2\right)$, עם $\rho_c = 1.3\cdot10^4\,\text{kg/m}^3$.
+
+      א. מצאו את המסה שלו.
+
+      ב. מה הצפיפות הממוצעת, כחלק מ-$\rho_c$?
+
+      ג. איזה חלק מהמסה נמצא בתוך חצי הרדיוס, $r \lt R/2$?
+    answer: >-
+      א. $M = \tfrac{8}{15}\pi\rho_cR^3 = 5.63\cdot10^{24}\,\text{kg}$. ב. $\tfrac25\rho_c$. ג. $\tfrac{17}{64} = 0.266$.
+    solution:
+      - kind: law
+        text: >-
+          קליפות כדוריות: $M(r_0) = \displaystyle\int_0^{r_0}\rho(r)\,4\pi r^2\,dr$.
+      - kind: manipulation
+        text: >-
+          א. $M = 4\pi\rho_c\displaystyle\int_0^R\left(r^2 - \frac{r^4}{R^2}\right)dr = 4\pi\rho_cR^3\left(\frac13 - \frac15\right) = \frac{8}{15}\pi\rho_cR^3$.
+
+          ב. $\bar\rho = \dfrac{M}{\tfrac43\pi R^3} = \dfrac{8/15}{4/3}\,\rho_c = \tfrac25\rho_c$.
+
+          ג. עד $R/2$: $4\pi\rho_cR^3\left(\dfrac{1}{24} - \dfrac{1}{160}\right) = 4\pi\rho_cR^3\cdot\dfrac{17}{480}$, ומחלקים ב-$4\pi\rho_cR^3\cdot\dfrac{64}{480}$.
+      - kind: limit
+        text: >-
+          בלי האיבר $r^2/R^2$, צפיפות אחידה $\rho_c$, נשאר $\tfrac43\pi R^3\rho_c$, וחלק $\tfrac18$ בתוך $R/2$. כאן החלק גדול יותר, $0.266$, כי המסה מרוכזת יותר במרכז. והצפיפות הממוצעת $0.4\rho_c$ קטנה מהממוצע לאורך הרדיוס, $\tfrac23\rho_c$: השכבות החיצוניות, הדלילות, תופסות את רוב הנפח.
+      - kind: units
+        text: >-
+          $\text{kg/m}^3\cdot\text{m}^3 = \text{kg}$; החלקים חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $M = \tfrac{8}{15}\pi\cdot1.3\cdot10^4\cdot\left(6.37\cdot10^6\right)^3 = 5.63\cdot10^{24}\,\text{kg}$; $\tfrac{17}{64} = 0.266$.
+      - kind: result
+        text: >-
+          א. $5.63\cdot10^{24}\,\text{kg}$. ב. $0.4\rho_c = 5200\,\text{kg/m}^3$. ג. $0.266$ מהמסה, בתוך $\tfrac18$ מהנפח.
+
+  - id: W-0.7-09
+    level: bagrut
+    objectives: [OBJ-0.7-1]
+    prompt: >-
+      גלגל מתחיל להסתובב ממנוחה בתאוצה זוויתית קבועה, כך ש-$\theta = \tfrac12\alpha t^2$, עם $\alpha = 0.40\,\text{rad/s}^2$.
+
+      א. גזרו פעמיים את $\hat r$ לפי הזמן, ובטאו את $\dfrac{d^2\hat r}{dt^2}$ בעזרת $\hat r$ ו-$\hat\theta$.
+
+      ב. מה $\dfrac{d^2\hat r}{dt^2}$ ומה גודלו ברגע $t = 2.0\,\text{s}$?
+
+      ג. נקודה על הגלגל, במרחק קבוע $R = 0.50\,\text{m}$ מהציר, נמצאת ב-$\vec r = R\hat r$. מה גודל התאוצה שלה ברגע הזה?
+    answer: >-
+      א. $\dfrac{d^2\hat r}{dt^2} = \ddot\theta\,\hat\theta - \dot\theta^2\,\hat r$. ב. $0.40\,\hat\theta - 0.64\,\hat r$ (ב-$\text{s}^{-2}$), $0.755\,\text{s}^{-2}$. ג. $0.377\,\text{m/s}^2$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{d\hat r}{dt} = \dot\theta\,\hat\theta$, $\dfrac{d\hat\theta}{dt} = -\dot\theta\,\hat r$, וכלל המכפלה.
+      - kind: manipulation
+        text: >-
+          א. $\dfrac{d^2\hat r}{dt^2} = \dfrac{d}{dt}\left(\dot\theta\,\hat\theta\right) = \ddot\theta\,\hat\theta + \dot\theta\,\dfrac{d\hat\theta}{dt} = \ddot\theta\,\hat\theta - \dot\theta^2\,\hat r$.
+
+          ב. $\dot\theta = \alpha t$, $\ddot\theta = \alpha$. שני הרכיבים ניצבים, ולכן הגודל $\sqrt{\ddot\theta^2 + \dot\theta^4}$.
+
+          ג. $R$ קבוע, ולכן $\ddot{\vec r} = R\,\dfrac{d^2\hat r}{dt^2}$.
+      - kind: limit
+        text: >-
+          כש-$\alpha = 0$ והגלגל מסתובב בקצב קבוע $\omega$, נשאר $-\omega^2\hat r$: התאוצה של נקודה על הגלגל, $-R\omega^2\hat r$, פונה אל הציר. וב-$t = 0$, כש-$\dot\theta = 0$, נשאר רק $\alpha\,\hat\theta$, משיק למעגל.
+      - kind: units
+        text: >-
+          $\ddot\theta$ ו-$\dot\theta^2$ שניהם ב-$\text{s}^{-2}$; כפול $R$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          ב. $\dot\theta = 0.80\,\text{rad/s}$, $\dot\theta^2 = 0.64\,\text{s}^{-2}$, ולכן $0.40\,\hat\theta - 0.64\,\hat r$ וגודלו $\sqrt{0.16 + 0.41} = 0.755\,\text{s}^{-2}$. ג. $0.50\cdot0.755 = 0.377\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          א. $\ddot\theta\,\hat\theta - \dot\theta^2\,\hat r$. ב. $0.40\,\hat\theta - 0.64\,\hat r$, $0.755\,\text{s}^{-2}$. ג. $0.377\,\text{m/s}^2$.
+
+  - id: W-0.7-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.7-1, OBJ-0.7-3]
+    prompt: >-
+      השתמשו בנוסחה $\nabla f = \dfrac{\partial f}{\partial r}\,\hat r + \dfrac1r\,\dfrac{\partial f}{\partial\theta}\,\hat\theta$.
+
+      א. הפונקציה $f = r\cos\theta$ היא בעצם $x$. חשבו את $\nabla f$ בנוסחה הקוטבית, והראו שיוצא $\hat x$.
+
+      ב. חשבו את $\nabla g$ לפונקציה $g = \theta$, הזווית עצמה. מה הגודל שלו במרחק $r$ מהראשית, ולמה הגיוני שהוא קטן כש-$r$ גדל?
+
+      ג. קבעו ונמקו: מה קורה ל-$\nabla g$ בראשית?
+    answer: >-
+      א. $\cos\theta\,\hat r - \sin\theta\,\hat\theta = \hat x$. ב. $\nabla\theta = \hat\theta/r$, בגודל $1/r$. ג. הוא לא מוגדר: גדל בלי גבול כש-$r \to 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\nabla f = \dfrac{\partial f}{\partial r}\,\hat r + \dfrac1r\,\dfrac{\partial f}{\partial\theta}\,\hat\theta$, עם $\hat r = (\cos\theta,\ \sin\theta)$, $\hat\theta = (-\sin\theta,\ \cos\theta)$.
+      - kind: manipulation
+        text: >-
+          א. $\partial f/\partial r = \cos\theta$, $\dfrac1r\,\partial f/\partial\theta = -\sin\theta$. לכן $\nabla f = \cos\theta\,(\cos\theta,\ \sin\theta) - \sin\theta\,(-\sin\theta,\ \cos\theta) = (1,\ 0) = \hat x$.
+
+          ב. $\partial g/\partial r = 0$ ו-$\partial g/\partial\theta = 1$, ולכן $\nabla g = \hat\theta/r$.
+
+          ג. כש-$r \to 0$ הגודל $1/r$ גדל בלי גבול, והכיוון $\hat\theta$ תלוי מאיזה צד מתקרבים.
+      - kind: reasoning
+        text: >-
+          ב. כדי לשנות את $\theta$ ברדיאן אחד צריך ללכת לאורך מעגל קשת באורך $r$. רחוק מהראשית זו דרך ארוכה, ולכן הזווית משתנה לאט לכל מטר: $1/r$ רדיאנים למטר. קרוב לראשית צעד קטן מסובב את הזווית הרבה. ג. בראשית עצמה הזווית לא מוגדרת, ולכן גם הגרדיאנט שלה.
+      - kind: limit
+        text: >-
+          א. הוא בדיקת גבולות של הנוסחה עצמה: הגרדיאנט של $x$ חייב להיות $\hat x$ בכל מקום, והנוסחה הקוטבית מחזירה אותו, אף ש-$\hat r$ ו-$\hat\theta$ משתנים מנקודה לנקודה.
+      - kind: units
+        text: >-
+          $\nabla x$ חסר ממדים (מטר למטר); $\nabla\theta$ ב-$\text{rad/m}$, כלומר $\text{m}^{-1}$.
+      - kind: result
+        text: >-
+          א. $\nabla(r\cos\theta) = \hat x$. ב. $\nabla\theta = \hat\theta/r$, בגודל $1/r$. ג. לא מוגדר בראשית.
+
+challenge:
+  - id: W-0.7-c1
+    stars: 2
+    objectives: [OBJ-0.7-2]
+    prompt: >-
+      מכל סגור בצורת כדור ברדיוס $a$ מלא בגז בצפיפות אחידה. בוחרים מולקולה אקראית מהגז, כשכל אלמנט נפח שווה בסיכוי. הממוצע של גודל $q$ על הכדור הוא $\bar q = \dfrac{1}{V}\displaystyle\int q\,dV$, כאשר $V = \tfrac43\pi a^3$.
+
+      א. מה המרחק הממוצע של מולקולה ממרכז הכדור?
+
+      ב. מה המרחק הממוצע שלה מקוטר קבוע של הכדור?
+
+      ג. מה המרחק הממוצע שלה ממישור קבוע שעובר דרך המרכז?
+
+      רמז: שימו את המרכז בראשית, ובחרו את הקוטר ואת המישור כך שהמרחק יהיה פשוט בקואורדינטות כדוריות.
+    answer: >-
+      א. $\tfrac34a$. ב. $\tfrac{3\pi}{16}a = 0.589a$. ג. $\tfrac38a$.
+    solution:
+      - kind: given
+        text: >-
+          הראשית במרכז, הקוטר הוא הציר $z$, והמישור הוא $z = 0$. המרחק מהמרכז: $r$; מהציר $z$: $r\sin\theta$; מהמישור: $|r\cos\theta|$.
+      - kind: law
+        text: >-
+          $dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$; $\bar q = \dfrac{1}{V}\displaystyle\int q\,dV$.
+      - kind: manipulation
+        text: >-
+          כשהגבולות קבועים והאינטגרנד מכפלה של פונקציות של משתנה אחד, האינטגרל הוא מכפלה של שלושה אינטגרלים.
+
+          א. $\displaystyle\int_0^{2\pi}\!\!d\varphi\int_0^\pi\sin\theta\,d\theta\int_0^ar\cdot r^2\,dr = 2\pi\cdot2\cdot\frac{a^4}{4} = \pi a^4$, וחלקי $V$: $\tfrac34a$.
+
+          ב. $\displaystyle\int_0^{2\pi}\!\!d\varphi\int_0^\pi\sin^2\theta\,d\theta\int_0^ar^3\,dr = 2\pi\cdot\frac\pi2\cdot\frac{a^4}{4} = \frac{\pi^2a^4}{4}$, וחלקי $V$: $\tfrac{3\pi}{16}a$.
+
+          ג. מסימטריה מספיק חצי הכדור העליון, עם חצי הנפח: $\displaystyle\int_0^{2\pi}\!\!d\varphi\int_0^{\pi/2}\cos\theta\sin\theta\,d\theta\int_0^ar^3\,dr = 2\pi\cdot\frac12\cdot\frac{a^4}{4} = \frac{\pi a^4}{4}$, וחלקי $\tfrac23\pi a^3$: $\tfrac38a$.
+      - kind: limit
+        text: >-
+          שלוש התשובות קטנות מ-$a$, כמו שצריך. א. גדולה מ-$a/2$, אמצע הטווח של $r$: רוב הנפח רחוק מהמרכז (חצי ממנו מחוץ ל-$0.794a$). ב. המרחק מהקוטר תמיד קטן או שווה למרחק מהמרכז, ואכן $0.589a \lt 0.75a$. ג. המרחק מהמישור הוא רכיב אחד מתוך שלושה, ולכן קטן משני האחרים.
+      - kind: units
+        text: >-
+          $\int r^3\,dr$ ב-$\text{m}^4$, חלקי נפח ב-$\text{m}^3$: מטר.
+      - kind: result
+        text: >-
+          א. $\tfrac34a$. ב. $\tfrac{3\pi}{16}a \approx 0.589a$. ג. $\tfrac38a$.
+    source:
+      name: MIT OpenCourseWare, 18.02SC Multivariable Calculus, Supplementary Problems (E. 18.02 Exercises)
+      year: 2010
+      problem: '5B-4: average distance of a point in a solid sphere of radius a from (a) the center, (b) a fixed diameter, (c) a fixed plane through the center'
+      url: https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/768cfad15f60e810a846cfba8a71f488_MIT18_02SC_SupProb5.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.7-c2
+    stars: 1
+    objectives: [OBJ-0.7-3]
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק במישור היא $U(x,\ y) = x^3 - xy^2 - 4x^2 + 3x + x^2y$, ב-$\text{J}$, כש-$x$ ו-$y$ במטרים. החלקיק בנקודה $(\tfrac12,\ 1)\,\text{m}$, ובוחנים את הנגזרת הכיוונית $dU/ds$ כשהכיוון $\hat s$ משתנה.
+
+      א. מה הערך הגדול ביותר והקטן ביותר של $dU/ds$ בנקודה?
+
+      ב. באילו כיוונים הם מתקבלים?
+
+      ג. באילו כיוונים $dU/ds = 0$?
+    answer: >-
+      א. $\pm\dfrac{\sqrt{10}}{4} = \pm0.791\,\text{J/m}$. ב. המקסימום בכיוון $(-1,\ -3)/\sqrt{10}$, המינימום בכיוון $(1,\ 3)/\sqrt{10}$. ג. $\pm(3,\ -1)/\sqrt{10}$.
+    solution:
+      - kind: law
+        text: >-
+          $\dfrac{dU}{ds} = \nabla U\cdot\hat s = |\nabla U|\cos\alpha$, כאשר $\alpha$ היא הזווית בין $\hat s$ לגרדיאנט.
+      - kind: manipulation
+        text: >-
+          $\dfrac{\partial U}{\partial x} = 3x^2 - y^2 - 8x + 3 + 2xy$ ו-$\dfrac{\partial U}{\partial y} = -2xy + x^2$. בנקודה: $\tfrac34 - 1 - 4 + 3 + 1 = -\tfrac14$ ו-$-1 + \tfrac14 = -\tfrac34$. לכן $\nabla U = \left(-\tfrac14,\ -\tfrac34\right)$ ו-$|\nabla U| = \tfrac{\sqrt{10}}{4}$.
+
+          א, ב. המקסימום ב-$\alpha = 0$, בכיוון $\nabla U/|\nabla U| = (-1,\ -3)/\sqrt{10}$; המינימום ב-$\alpha = 180^\circ$, בכיוון ההפוך.
+
+          ג. $\alpha = 90^\circ$: הכיוונים שניצבים ל-$(-1,\ -3)$, כלומר $\pm(3,\ -1)/\sqrt{10}$, לאורך קו הגובה שעובר בנקודה.
+      - kind: limit
+        text: >-
+          בדיקה: $(-1,\ -3)\cdot(3,\ -1) = -3 + 3 = 0$, ניצב. והמקסימום והמינימום שווים בגודל ומנוגדים בסימן, כמו שצריך: הליכה הפוכה הופכת את סימן השינוי.
+      - kind: units
+        text: >-
+          $U$ ב-$\text{J}$ ו-$x$ ב-$\text{m}$: $dU/ds$ ב-$\text{J/m}$.
+      - kind: substitution
+        text: >-
+          $\sqrt{10}/4 = 0.791\,\text{J/m}$. הכיוון של $\nabla U$ הוא $251.6^\circ$ מהציר $x$, דרום-מערבה בעיקר דרומה.
+      - kind: result
+        text: >-
+          א. $+0.791\,\text{J/m}$ ו-$-0.791\,\text{J/m}$. ב. בכיוון $(-1,\ -3)/\sqrt{10}$ ובכיוון $(1,\ 3)/\sqrt{10}$. ג. $\pm(3,\ -1)/\sqrt{10}$.
+    source:
+      name: MIT OpenCourseWare, 18.02 Multivariable Calculus
+      year: 2007
+      problem: 'Problem Set 5, Part B, Problem 1 (a)–(c): the maximum, minimum and zero directional derivatives of f(x, y) = x³ − xy² − 4x² + 3x + x²y at (1/2, 1); part (d), with the course applet, is left out'
+      url: https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/b4036a083eda01968709dc22325f76d4_ps5.pdf
+      verified: '2026-11-17'
+      adapted: true

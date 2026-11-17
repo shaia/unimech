@@ -1,0 +1,475 @@
+# Workbook, lesson 0.2 (vectors: components, the dot product and the cross product). Format and rules:
+# .claude/CLAUDE.md, "The solution format" (law … limit, units, result). In a >- block, consecutive lines fold
+# into one paragraph: every part (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-2/lesson.ts with src/physics/vectors.ts (fromPolar, toPolar,
+# angleBetween3, crossZ, scalarProjection3, sumMagnitude) and vec.ts (dot3, cross3), and G from constants.ts:
+#   W-01: 3 N and 4 N: |sum| from 1 to 7 N, 5 N at 90°;
+#   W-02: v = (−3.0, 4.0) m/s: 5.0 m/s at 126.9° (arctan gives −53.1°);
+#   W-04: F1 = 10 N at 0°, F2 = 15 N at 120°: F3 = (−2.5, −13.0) N, 13.2 N at 259.1° (79.1° below −x);
+#   W-05: rope (−4, 3, 12) m, 13 m long, T = 260 N: (−80, 60, 240) N, 22.6° from the vertical, 100 N horizontal;
+#   W-06: m = 2.0 kg, Δr = (8.0, −4.0) m: W = 78.4 J (mg = 19.6 N);
+#   W-07: r = (0.20, 0.10) m, F = (−3.0, 4.0) N: τ_z = 1.1 N·m (out of the page), lever arm 0.22 m;
+#   W-08: r = (0.80, 0, 1.2) m, F = (0, 30, −10) N: τ = (−36, 8, 24) N·m; with O raised 0.50 m, (−21, 8, 24);
+#   W-09: 5.0 N, 8.0 N, |sum| 10.0 N: cos θ = 11/80, θ = 82.1°, |A − B| = √78 = 8.83 N; at 90°, 9.43 N;
+#   W-10: α = 20°, β = 75°: û·ŵ = cos 55° = 0.574, (û×ŵ)_z = sin 55° = 0.819;
+#   c1: cube (±1,±1,±1): edges 2.83, edge angle 60°, normals (4,4,−4) and (−4,4,−4) (outward, inward),
+#       cos = 16/48 = 1/3, dihedral 70.5°, H–C–H 109.5°;
+#   c2: P = w cos θ cos φ cos(θ + φ); θ = φ = 60°, w = 10 m/s: w₁ₓ = 2.5, |w₂| = 2.5, P = −1.25 m/s;
+#       the most upwind push, −w/8, at θ = φ = 60° (grid search over θ, φ in steps of 0.5°).
+
+lesson: '0.2'
+practice:
+  - id: W-0.2-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.2-1]
+    prompt: >-
+      על גוף פועלים שני כוחות בלבד: אחד בגודל $3.0\,\text{N}$ והשני בגודל $4.0\,\text{N}$. הכיוונים שלהם לא ידועים.
+
+      א. מה הערך הגדול ביותר, ומה הקטן ביותר, שיכול להיות לגודל של סכום שני הכוחות? באיזה סידור של הכוחות מתקבל כל אחד?
+
+      ב. באיזו זווית בין הכוחות גודל הסכום הוא $5.0\,\text{N}$?
+    answer: >-
+      א. הגדול ביותר $7.0\,\text{N}$, כשהכוחות באותו כיוון; הקטן ביותר $1.0\,\text{N}$, כשהם בכיוונים מנוגדים.
+
+      ב. בזווית ישרה.
+    solution:
+      - kind: law
+        text: >-
+          $|\vec A + \vec B|^2 = A^2 + B^2 + 2AB\cos\theta$, כאשר $\theta$ הזווית בין הכוחות.
+      - kind: reasoning
+        text: >-
+          א. $\cos\theta$ נע בין $-1$ ל-$1$, ולכן $|\vec A + \vec B|^2$ נע בין $(A - B)^2$ ל-$(A + B)^2$. הגדול ביותר ב-$\theta = 0$, כשהכוחות באותו כיוון והגדלים מתחברים; הקטן ביותר ב-$\theta = 180^\circ$, כשהם מנוגדים.
+
+          ב. $5^2 = 3^2 + 4^2$, ולכן צריך $2AB\cos\theta = 0$: $\theta = 90^\circ$.
+      - kind: limit
+        text: >-
+          אם אחד הכוחות אפס, הטווח מצטמצם לנקודה אחת, הגודל של הכוח השני. ובכל זווית הגודל בין $1.0$ ל-$7.0\,\text{N}$, בהתאם לאי-שוויון המשולש.
+      - kind: units
+        text: >-
+          כל האיברים ב-$\text{N}^2$ לפני השורש, ובניוטון אחריו.
+      - kind: result
+        text: >-
+          א. בין $1.0\,\text{N}$ (מנוגדים) ל-$7.0\,\text{N}$ (באותו כיוון). ב. $90^\circ$.
+
+  - id: W-0.2-02
+    level: basic
+    objectives: [OBJ-0.2-1]
+    prompt: >-
+      המהירות של כדור ברגע מסוים היא $\vec v = (-3.0,\ 4.0)\,\text{m/s}$, כשציר $x$ ימינה וציר $y$ למעלה. מה גודל המהירות, ומה הזווית שלה מציר $x$ החיובי, נגד כיוון השעון? תלמיד הקיש במחשבון $\arctan(4.0/(-3.0))$ וקיבל $-53.1^\circ$. מה הטעות שלו?
+    answer: >-
+      $5.0\,\text{m/s}$, בזווית $126.9^\circ$. ה-$\arctan$ מחזיר זווית רק בין $-90^\circ$ ל-$90^\circ$, והתלמיד לא בדק שהווקטור ברביע השני.
+    solution:
+      - kind: given
+        text: >-
+          $v_x = -3.0\,\text{m/s}$, $v_y = 4.0\,\text{m/s}$: הכדור נע שמאלה ולמעלה, ברביע השני.
+      - kind: law
+        text: >-
+          $v = \sqrt{v_x^2 + v_y^2}$, ו-$\tan\alpha = v_y/v_x$ עם בדיקת רביע.
+      - kind: manipulation
+        text: >-
+          $\arctan(-4/3) = -53.1^\circ$ היא זווית ברביע הרביעי, ימינה ולמטה: הווקטור $(3.0,\ -4.0)$, שמנוגד לנכון. לשני הווקטורים אותו יחס $v_y/v_x$, ולכן ה-$\tan$ לא מבחין ביניהם. כדי לעבור לווקטור הנכון מוסיפים $180^\circ$.
+      - kind: limit
+        text: >-
+          אילו $v_x$ היה חיובי, $\arctan$ היה נותן את הזווית הנכונה מיד. כש-$v_x \to 0$ מצד שלילי, $\alpha \to 90^\circ$, ישר למעלה, כמו שצריך.
+      - kind: units
+        text: >-
+          $\sqrt{(\text{m/s})^2} = \text{m/s}$; היחס $v_y/v_x$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $v = \sqrt{9.0 + 16} = 5.0\,\text{m/s}$, $\alpha = -53.1^\circ + 180^\circ = 126.9^\circ$.
+      - kind: result
+        text: >-
+          $5.0\,\text{m/s}$ בזווית $126.9^\circ$ מציר $x$. התלמיד קיבל את הכיוון ההפוך, כי לא בדק רביע.
+
+  - id: W-0.2-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.2-2]
+    prompt: >-
+      לכל מקרה, קבעו ונמקו אם המכפלה הסקלרית $\vec F\cdot\Delta\vec r$ של הכוח המתואר בהעתק קצר $\Delta\vec r$ של הגוף חיובית, שלילית או אפס.
+
+      א. כוח הכובד על כדור שנזרק כלפי מעלה, בזמן שהוא עולה.
+
+      ב. כוח הכובד על אותו כדור, בזמן שהוא יורד.
+
+      ג. הכוח של חוט על אבן שמסתובבת במעגל אופקי בקצה החוט, במהירות קבועה.
+
+      ד. כוח החיכוך של רצפה על ארגז שמחליק עליה.
+    answer: >-
+      א. שלילית. ב. חיובית. ג. אפס. ד. שלילית.
+    solution:
+      - kind: law
+        text: >-
+          $\vec F\cdot\Delta\vec r = F\,|\Delta\vec r|\cos\theta$: חיובית בזווית חדה, אפס בזווית ישרה, שלילית בזווית קהה.
+      - kind: reasoning
+        text: >-
+          א. הכובד כלפי מטה וההעתק כלפי מעלה: $\theta = 180^\circ$, שלילית.
+
+          ב. שניהם כלפי מטה: $\theta = 0$, חיובית.
+
+          ג. החוט מושך את האבן אל מרכז המעגל, וההעתק הקצר משיק למעגל, ניצב לרדיוס: $\theta = 90^\circ$, אפס.
+
+          ד. החיכוך פועל נגד כיוון ההחלקה: $\theta = 180^\circ$, שלילית.
+      - kind: limit
+        text: >-
+          בנקודה העליונה של הזריקה, ברגע שהכדור עוצר, ההעתק הקצר אפס, והמכפלה עוברת שם מערך שלילי לחיובי.
+      - kind: units
+        text: >-
+          $\text{N}\cdot\text{m} = \text{J}$: זו העבודה של הכוח בהעתק הקצר, ולכן הסימן אומר אם הכוח מוסיף אנרגיה קינטית או לוקח אותה.
+      - kind: result
+        text: >-
+          א. שלילית. ב. חיובית. ג. אפס. ד. שלילית.
+
+  - id: W-0.2-04
+    level: mid
+    objectives: [OBJ-0.2-1]
+    prompt: >-
+      טבעת קטנה נמשכת בשלושה חבלים אופקיים ונשארת במנוחה, ולכן סכום שלושת הכוחות עליה אפס. החבל הראשון מושך בכוח של $10\,\text{N}$ בכיוון ציר $x$ החיובי, והשני בכוח של $15\,\text{N}$ בזווית $120^\circ$ מציר $x$ החיובי, נגד כיוון השעון. מצאו את הכוח של החבל השלישי: רכיבים, גודל וכיוון.
+    answer: >-
+      $\vec F_3 = (-2.5,\ -13.0)\,\text{N}$, בגודל $13.2\,\text{N}$, בזווית $259.1^\circ$ מציר $x$ החיובי ($79.1^\circ$ מתחת לציר $x$ השלילי).
+    solution:
+      - kind: given
+        text: >-
+          צירים: $x$ לאורך החבל הראשון, $y$ ניצב לו, $90^\circ$ נגד כיוון השעון. $\vec F_1 = (10,\ 0)\,\text{N}$, $\vec F_2 = (15\cos120^\circ,\ 15\sin120^\circ)\,\text{N}$.
+      - kind: law
+        text: >-
+          $\vec F_1 + \vec F_2 + \vec F_3 = 0$, רכיב-רכיב, ולכן $\vec F_3 = -(\vec F_1 + \vec F_2)$.
+      - kind: manipulation
+        text: >-
+          $\vec F_2 = (-7.5,\ 13.0)\,\text{N}$, ולכן $\vec F_1 + \vec F_2 = (2.5,\ 13.0)\,\text{N}$ ו-$\vec F_3 = (-2.5,\ -13.0)\,\text{N}$. הווקטור פונה שמאלה ולמטה, ברביע השלישי.
+      - kind: limit
+        text: >-
+          אילו החבל השני משך באותו גודל כמו הראשון ובכיוון הפוך לו ($10\,\text{N}$ ב-$180^\circ$), שני החבלים היו מאזנים זה את זה, והחבל השלישי לא היה צריך למשוך בכלל: $\vec F_3 = 0$.
+      - kind: units
+        text: >-
+          כל הרכיבים בניוטון.
+      - kind: substitution
+        text: >-
+          $|\vec F_3| = \sqrt{2.5^2 + 13.0^2} = 13.2\,\text{N}$. $\arctan(13.0/2.5) = 79.1^\circ$ מתחת לציר $x$ השלילי, כלומר $180^\circ + 79.1^\circ = 259.1^\circ$ מציר $x$ החיובי.
+      - kind: result
+        text: >-
+          $\vec F_3 = (-2.5,\ -13.0)\,\text{N}$, $13.2\,\text{N}$, בזווית $259.1^\circ$.
+
+  - id: W-0.2-05
+    level: mid
+    objectives: [OBJ-0.2-1, OBJ-0.2-2]
+    prompt: >-
+      חבל קשור לארגז בנקודה $P = (4.0,\ 0,\ 0)\,\text{m}$ ונמתח ממנה אל וו בתקרה, בנקודה $Q = (0,\ 3.0,\ 12.0)\,\text{m}$. ציר $z$ אנכי כלפי מעלה. המתיחות בחבל $260\,\text{N}$, והחבל מושך את הארגז לכיוון הוו.
+
+      א. מה הרכיבים של הכוח של החבל על הארגז?
+
+      ב. מה הזווית בין החבל לבין האנך?
+
+      ג. מה הגודל של הרכיב האופקי של הכוח?
+    answer: >-
+      א. $(-80,\ 60,\ 240)\,\text{N}$. ב. $22.6^\circ$. ג. $100\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          הכיוון מהארגז אל הוו: $\vec L = Q - P = (-4.0,\ 3.0,\ 12.0)\,\text{m}$. $T = 260\,\text{N}$.
+      - kind: law
+        text: >-
+          כוח בגודל $T$ בכיוון $\vec L$ הוא $T\hat L = T\vec L/L$. הזווית עם האנך: $\cos\theta = \hat L\cdot\hat z$.
+      - kind: manipulation
+        text: >-
+          $L = \sqrt{16 + 9 + 144} = 13.0\,\text{m}$, ולכן $\hat L = (-4,\ 3,\ 12)/13$. $\cos\theta = L_z/L = 12/13$. הרכיב האופקי הוא מה שנשאר אחרי הרכיב האנכי: $\sqrt{T_x^2 + T_y^2} = T\sin\theta$.
+      - kind: limit
+        text: >-
+          אילו הוו היה בדיוק מעל הארגז, $Q = (4.0,\ 0,\ 12.0)\,\text{m}$, היה $\vec L = (0,\ 0,\ 12.0)\,\text{m}$: כל המתיחות אנכית, $\theta = 0$, והרכיב האופקי אפס.
+      - kind: units
+        text: >-
+          $\hat L$ חסר ממדים (מטר חלקי מטר), ולכן $T\hat L$ בניוטון.
+      - kind: substitution
+        text: >-
+          א. $\vec T = \tfrac{260}{13}(-4,\ 3,\ 12) = (-80,\ 60,\ 240)\,\text{N}$. ב. $\theta = \arccos(12/13) = 22.6^\circ$. ג. $\sqrt{80^2 + 60^2} = 100\,\text{N}$; ובדיקה: $260\sin22.6^\circ = 100\,\text{N}$, ו-$100^2 + 240^2 = 260^2$.
+      - kind: result
+        text: >-
+          א. $(-80,\ 60,\ 240)\,\text{N}$. ב. $22.6^\circ$ מהאנך. ג. $100\,\text{N}$.
+
+  - id: W-0.2-06
+    level: mid
+    objectives: [OBJ-0.2-2]
+    prompt: >-
+      גוף במסה $2.0\,\text{kg}$ עובר בדרך עקומה כלשהי מהנקודה $A = (0,\ 5.0)\,\text{m}$ לנקודה $B = (8.0,\ 1.0)\,\text{m}$, כשציר $y$ אנכי כלפי מעלה. כוח הכובד עליו קבוע, $m\vec g$, עם $g = 9.8\,\text{m/s}^2$. העבודה של כוח קבוע בהעתק $\Delta\vec r$ היא $\vec F\cdot\Delta\vec r$.
+
+      א. מה העבודה של כוח הכובד בין $A$ ל-$B$?
+
+      ב. למה ההעתק האופקי, $8.0\,\text{m}$, לא משפיע על התשובה?
+    answer: >-
+      א. $78.4\,\text{J}$. ב. כוח הכובד ניצב לציר $x$, ולכן רכיב $x$ של ההעתק נכפל ברכיב $x$ של הכוח, שהוא אפס.
+    solution:
+      - kind: given
+        text: >-
+          צירים: $x$ אופקי, $y$ כלפי מעלה. $m\vec g = (0,\ -mg)$, $\Delta\vec r = B - A = (8.0,\ -4.0)\,\text{m}$.
+      - kind: law
+        text: >-
+          $W = \vec F\cdot\Delta\vec r = F_x\Delta x + F_y\Delta y$. לכוח קבוע העבודה תלויה רק בהעתק, לא בדרך.
+      - kind: manipulation
+        text: >-
+          $W = 0\cdot\Delta x + (-mg)\,\Delta y = -mg\,\Delta y$. רק השינוי בגובה נכנס.
+      - kind: limit
+        text: >-
+          בדרך אופקית, $\Delta y = 0$, והעבודה אפס: הכובד ניצב לתנועה. בנפילה ישרה מגובה $h$, $\Delta y = -h$ ו-$W = mgh$, התוצאה המוכרת.
+      - kind: units
+        text: >-
+          $\text{kg}\cdot\text{m/s}^2\cdot\text{m} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $W = -2.0\cdot9.8\cdot(1.0 - 5.0) = 78.4\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $78.4\,\text{J}$, חיובית: הגוף ירד. ב. במכפלה הסקלרית רכיב $x$ של ההעתק נכפל ב-$F_x = 0$.
+
+  - id: W-0.2-07
+    level: mid
+    objectives: [OBJ-0.2-3]
+    prompt: >-
+      כוח $\vec F = (-3.0,\ 4.0)\,\text{N}$ פועל בנקודה $\vec r = (0.20,\ 0.10)\,\text{m}$ ביחס לציר קבוע שעובר בראשית וניצב לדף. ציר $x$ ימינה, $y$ למעלה, $z$ החוצה מהדף.
+
+      א. חשבו את $\vec\tau = \vec r\times\vec F$. לאן הוא מצביע, ולאיזה כיוון הכוח מסובב סביב הראשית?
+
+      ב. הזרוע של הכוח היא המרחק הניצב מהראשית אל הישר שלאורכו פועל הכוח. מצאו אותה בעזרת $|\vec\tau| = F d$.
+    answer: >-
+      א. $\tau_z = 1.1\,\text{N·m}$, החוצה מהדף: הכוח מסובב נגד כיוון השעון. ב. $d = 0.22\,\text{m}$.
+    solution:
+      - kind: law
+        text: >-
+          במישור, $\tau_z = r_xF_y - r_yF_x$; חיובי פירושו החוצה מהדף וסיבוב נגד כיוון השעון. $|\vec\tau| = rF\sin\theta = F\,(r\sin\theta) = Fd$.
+      - kind: manipulation
+        text: >-
+          $\tau_z = (0.20)(4.0) - (0.10)(-3.0)$. שני האיברים חיוביים: גם הרכיב $F_y$ בנקודה שמימין לציר וגם הרכיב $F_x$ שמאלה בנקודה שמעל הציר מסובבים נגד כיוון השעון.
+      - kind: limit
+        text: >-
+          אילו הכוח היה מקביל ל-$\vec r$, $\vec F \propto (0.20,\ 0.10)$, היה $\tau_z = 0$: הישר של הכוח עובר דרך הציר, והזרוע אפס.
+      - kind: units
+        text: >-
+          $\text{m}\cdot\text{N} = \text{N·m}$; $d = \tau/F$ במטרים.
+      - kind: substitution
+        text: >-
+          $\tau_z = 0.80 + 0.30 = 1.1\,\text{N·m}$. $F = \sqrt{9.0 + 16} = 5.0\,\text{N}$, ולכן $d = 1.1/5.0 = 0.22\,\text{m}$, פחות מ-$|\vec r| = 0.224\,\text{m}$, כמו שצריך.
+      - kind: result
+        text: >-
+          א. $\vec\tau = 1.1\,\text{N·m}\ \hat z$, החוצה מהדף, נגד כיוון השעון. ב. $0.22\,\text{m}$.
+
+  - id: W-0.2-08
+    level: bagrut
+    objectives: [OBJ-0.2-3, OBJ-0.2-2]
+    prompt: >-
+      דלת מסתובבת על צירים שנמצאים על ציר $z$, האנכי. ברגע מסוים הדלת במישור $xz$. הנקודה $O$ היא ראשית הצירים, על ציר הסיבוב בגובה הרצפה. הידית ב-$\vec r = (0.80,\ 0,\ 1.2)\,\text{m}$ ביחס ל-$O$, ודוחפים אותה בכוח $\vec F = (0,\ 30,\ -10)\,\text{N}$: בניצב לדלת וגם קצת כלפי מטה.
+
+      א. חשבו את $\vec\tau = \vec r\times\vec F$, המומנט ביחס ל-$O$.
+
+      ב. הדלת יכולה רק להסתובב סביב ציר $z$; את שאר הרכיבים של המומנט בולעים הצירים. איזה רכיב של $\vec\tau$ מסובב את הדלת, ולמה הרכיב האנכי של הכוח לא תורם לו?
+
+      ג. הראו שהרכיב הזה לא משתנה אם בוחרים במקום $O$ נקודה אחרת על ציר הסיבוב, בגובה $h$.
+    answer: >-
+      א. $\vec\tau = (-36,\ 8,\ 24)\,\text{N·m}$. ב. $\tau_z = \vec\tau\cdot\hat z = 24\,\text{N·m}$; ב-$\tau_z = r_xF_y - r_yF_x$ אין $F_z$. ג. ב-$\tau_z$ אין $r_z$, ולכן הוא לא תלוי ב-$h$.
+    solution:
+      - kind: given
+        text: >-
+          $\vec r = (0.80,\ 0,\ 1.2)\,\text{m}$, $\vec F = (0,\ 30,\ -10)\,\text{N}$, ציר הסיבוב $\hat z$.
+      - kind: law
+        text: >-
+          $\vec r\times\vec F = (r_yF_z - r_zF_y,\ \ r_zF_x - r_xF_z,\ \ r_xF_y - r_yF_x)$. המומנט סביב ציר הוא ההיטל של $\vec\tau$ על כיוון הציר, $\vec\tau\cdot\hat z = \tau_z$.
+      - kind: manipulation
+        text: >-
+          א. $\tau_x = 0\cdot(-10) - 1.2\cdot30$, $\tau_y = 1.2\cdot0 - 0.80\cdot(-10)$, $\tau_z = 0.80\cdot30 - 0\cdot0$.
+
+          ב. $\tau_z = r_xF_y - r_yF_x$ לא מכיל את $F_z$, הרכיב האנכי של הכוח: כוח מקביל לציר לא מסובב סביבו.
+
+          ג. בנקודה $O' = (0,\ 0,\ h)$: $\vec r' = (0.80,\ 0,\ 1.2 - h)$. רק $r_z$ השתנה, ו-$\tau_z$ לא מכיל את $r_z$. רכיבי $x$ ו-$y$ של המומנט משתנים, אבל אותם בולעים הצירים.
+      - kind: limit
+        text: >-
+          אם דוחפים במקביל לדלת, בתוך המישור $xz$ שלה, $F_y = 0$, ונשאר $\tau_z = -r_yF_x = 0$, כי הידית על הדלת ($r_y = 0$): הדלת לא זזה. אם דוחפים ממש על הצירים, $r_x = 0$, ושוב $\tau_z = 0$.
+      - kind: units
+        text: >-
+          $\text{m}\cdot\text{N} = \text{N·m}$ בכל הרכיבים.
+      - kind: substitution
+        text: >-
+          $\vec\tau = (-36,\ 8,\ 24)\,\text{N·m}$. בדיקת ניצבות: $\vec\tau\cdot\vec r = -28.8 + 0 + 28.8 = 0$, ו-$\vec\tau\cdot\vec F = 0 + 240 - 240 = 0$. ב-$h = 0.50\,\text{m}$: $\vec r'\times\vec F = (-21,\ 8,\ 24)\,\text{N·m}$, אותו $\tau_z$.
+      - kind: result
+        text: >-
+          א. $(-36,\ 8,\ 24)\,\text{N·m}$. ב. $\tau_z = 24\,\text{N·m}$, והוא לא תלוי ב-$F_z$. ג. $\tau_z$ לא תלוי בגובה של הנקודה על הציר.
+
+  - id: W-0.2-09
+    level: bagrut
+    objectives: [OBJ-0.2-1, OBJ-0.2-2]
+    prompt: >-
+      א. הוכיחו, בלי רכיבים, ששני וקטורים $\vec A$ ו-$\vec B$ מקיימים $|\vec A + \vec B| = |\vec A - \vec B|$ אם ורק אם הם ניצבים זה לזה (או שאחד מהם אפס). מה המשמעות במקבילית ש-$\vec A$ ו-$\vec B$ פורשים?
+
+      ב. שני כוחות, בגודל $5.0\,\text{N}$ ו-$8.0\,\text{N}$, פועלים על גוף, וגודל הסכום שלהם $10.0\,\text{N}$. מה הזווית בין הכוחות, ומה הגודל של ההפרש שלהם?
+    answer: >-
+      א. $|\vec A + \vec B|^2 - |\vec A - \vec B|^2 = 4\vec A\cdot\vec B$; שני האלכסונים של המקבילית שווים בדיוק כשהיא מלבן.
+
+      ב. $82.1^\circ$; $|\vec A - \vec B| = 8.83\,\text{N}$.
+    solution:
+      - kind: law
+        text: >-
+          $|\vec A \pm \vec B|^2 = (\vec A \pm \vec B)\cdot(\vec A \pm \vec B) = A^2 + B^2 \pm 2\vec A\cdot\vec B$.
+      - kind: manipulation
+        text: >-
+          א. מחסרים: $|\vec A + \vec B|^2 - |\vec A - \vec B|^2 = 4\vec A\cdot\vec B$. הגדלים שווים בדיוק כש-$\vec A\cdot\vec B = 0$. $\vec A + \vec B$ ו-$\vec A - \vec B$ הם שני האלכסונים של המקבילית, והם שווים בדיוק כשהמקבילית מלבן.
+
+          ב. $\cos\theta = \dfrac{|\vec A + \vec B|^2 - A^2 - B^2}{2AB}$, ו-$|\vec A - \vec B|^2 = 2A^2 + 2B^2 - |\vec A + \vec B|^2$ (מחברים את שתי השורות של החוק).
+      - kind: limit
+        text: >-
+          בזווית ישרה שני הגדלים היו $\sqrt{25 + 64} = 9.43\,\text{N}$. כאן הסכום, $10.0\,\text{N}$, גדול מזה, ולכן הזווית צריכה להיות חדה וההפרש קטן מ-$9.43\,\text{N}$. ואמנם כך יוצא.
+      - kind: units
+        text: >-
+          כל האיברים ב-$\text{N}^2$, ו-$\cos\theta$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\cos\theta = \dfrac{100 - 25 - 64}{2\cdot5.0\cdot8.0} = \dfrac{11}{80} = 0.1375$, ולכן $\theta = 82.1^\circ$. $|\vec A - \vec B| = \sqrt{50 + 128 - 100} = \sqrt{78} = 8.83\,\text{N}$. בדיקה: $2\vec A\cdot\vec B = 100 - 89 = 11\,\text{N}^2$, ו-$89 - 11 = 78$.
+      - kind: result
+        text: >-
+          א. $|\vec A + \vec B| = |\vec A - \vec B| \Leftrightarrow \vec A\cdot\vec B = 0$: המקבילית מלבן. ב. $82.1^\circ$, ו-$8.83\,\text{N}$.
+
+  - id: W-0.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.2-2, OBJ-0.2-3]
+    prompt: >-
+      שני וקטורי יחידה במישור: $\hat u$ בזווית $\alpha$ מציר $x$ ו-$\hat w$ בזווית $\beta$ מציר $x$, שתיהן נגד כיוון השעון.
+
+      א. חשבו את $\hat u\cdot\hat w$ פעם ברכיבים ופעם מההגדרה עם הזווית ביניהם, והסיקו נוסחה ל-$\cos(\beta - \alpha)$.
+
+      ב. עשו אותו דבר עם רכיב $z$ של $\hat u\times\hat w$, והסיקו נוסחה ל-$\sin(\beta - \alpha)$. למה כאן הסימן של $\beta - \alpha$ חשוב, ובמכפלה הסקלרית לא?
+    answer: >-
+      א. $\cos(\beta - \alpha) = \cos\alpha\cos\beta + \sin\alpha\sin\beta$.
+
+      ב. $\sin(\beta - \alpha) = \sin\beta\cos\alpha - \cos\beta\sin\alpha$; הסימן של רכיב $z$ אומר אם הסיבוב מ-$\hat u$ ל-$\hat w$ נגד כיוון השעון או איתו, והקוסינוס זוגי ולא מבחין בזה.
+    solution:
+      - kind: given
+        text: >-
+          $\hat u = (\cos\alpha,\ \sin\alpha)$, $\hat w = (\cos\beta,\ \sin\beta)$, שניהם באורך 1. הסיבוב מ-$\hat u$ אל $\hat w$ הוא $\beta - \alpha$.
+      - kind: law
+        text: >-
+          $\hat u\cdot\hat w = \cos\theta = u_xw_x + u_yw_y$; $(\hat u\times\hat w)_z = u_xw_y - u_yw_x$, שגודלו $\sin\theta$ וסימנו חיובי כשהסיבוב מ-$\hat u$ אל $\hat w$ נגד כיוון השעון.
+      - kind: manipulation
+        text: >-
+          א. ברכיבים $\hat u\cdot\hat w = \cos\alpha\cos\beta + \sin\alpha\sin\beta$. הזווית ביניהם היא $|\beta - \alpha|$ (עד כדי כפולות של $360^\circ$), ו-$\cos|\beta - \alpha| = \cos(\beta - \alpha)$ כי הקוסינוס זוגי.
+
+          ב. ברכיבים $(\hat u\times\hat w)_z = \cos\alpha\sin\beta - \sin\alpha\cos\beta$. כש-$\beta - \alpha$ בין $0$ ל-$180^\circ$ זה $+\sin\theta = \sin(\beta - \alpha)$; כשהוא בין $-180^\circ$ ל-$0$ הסיבוב עם כיוון השעון, ורכיב $z$ הוא $-\sin\theta = \sin(\beta - \alpha)$ שוב. בשני המקרים יוצאת אותה נוסחה, בזכות הסימן של המכפלה הווקטורית.
+      - kind: limit
+        text: >-
+          ב-$\beta = \alpha$: $\cos^2\alpha + \sin^2\alpha = 1 = \cos0$, ו-$\cos\alpha\sin\alpha - \sin\alpha\cos\alpha = 0 = \sin0$. ב-$\beta = \alpha + 90^\circ$ הווקטורים ניצבים: המכפלה הסקלרית אפס ורכיב $z$ של הווקטורית $1$.
+      - kind: units
+        text: >-
+          וקטורי יחידה חסרי ממדים, וכך גם כל הביטויים.
+      - kind: substitution
+        text: >-
+          בדיקה ב-$\alpha = 20^\circ$, $\beta = 75^\circ$: $\cos20^\circ\cos75^\circ + \sin20^\circ\sin75^\circ = 0.574 = \cos55^\circ$, ו-$\cos20^\circ\sin75^\circ - \sin20^\circ\cos75^\circ = 0.819 = \sin55^\circ$.
+      - kind: result
+        text: >-
+          $\cos(\beta - \alpha) = \cos\alpha\cos\beta + \sin\alpha\sin\beta$ ו-$\sin(\beta - \alpha) = \sin\beta\cos\alpha - \cos\beta\sin\alpha$: נוסחאות החיסור של הטריגונומטריה הן המכפלה הסקלרית והמכפלה הווקטורית של שני וקטורי יחידה.
+
+challenge:
+  - id: W-0.2-c1
+    stars: 1
+    objectives: [OBJ-0.2-2, OBJ-0.2-3]
+    prompt: >-
+      במולקולת מתאן אטום פחמן אחד קשור לארבעה אטומי מימן, ואטומי המימן יושבים בקודקודים של ארבעון משוכלל (פירמידה שכל ארבע הפאות שלה משולשים שווי צלעות). מודל נוח: קובייה שאורך הצלע שלה $2$ (ביחידות אורך כלשהן), שמרכזה בראשית, כך שהקודקודים שלה בנקודות $(\pm1,\ \pm1,\ \pm1)$. הפחמן במרכז.
+
+      א. מצאו ארבעה קודקודים של הקובייה, שאחד מהם $(1,\ 1,\ 1)$, שהם הקודקודים של ארבעון משוכלל. מה אורך הצלע של הארבעון, ולמה כל הצלעות שוות?
+
+      ב. מה הזווית בין שתי צלעות של הארבעון שיוצאות מאותו קודקוד?
+
+      ג. מה הזווית בין שתי פאות של הארבעון שיש להן צלע משותפת? היעזרו בניצבים לפאות, שמקבלים ממכפלות וקטוריות.
+
+      ד. מה הזווית בין שני קשרים, מהפחמן אל שני אטומי מימן?
+    answer: >-
+      א. $(1,\ 1,\ 1)$, $(1,\ -1,\ -1)$, $(-1,\ 1,\ -1)$, $(-1,\ -1,\ 1)$; צלע $2\sqrt2 = 2.83$.
+
+      ב. $60^\circ$. ג. $\arccos\tfrac13 = 70.5^\circ$. ד. $\arccos(-\tfrac13) = 109.5^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $T_0 = (1,\ 1,\ 1)$, $T_1 = (1,\ -1,\ -1)$, $T_2 = (-1,\ 1,\ -1)$, $T_3 = (-1,\ -1,\ 1)$: הקודקודים שבהם מספר הסימנים השליליים זוגי.
+      - kind: law
+        text: >-
+          $\cos\theta = \dfrac{\vec a\cdot\vec b}{ab}$; $\vec a\times\vec b$ ניצב לשניהם. הזווית בין שתי פאות שווה לזווית בין הניצבים שלהן, כשאחד הניצבים פונה אל מחוץ לארבעון והשני פנימה.
+      - kind: manipulation
+        text: >-
+          א. כל שני קודקודים מהרשימה נבדלים בדיוק בשני רכיבים, ובכל אחד מהם ההפרש $\pm2$. לכן המרחק ביניהם תמיד $\sqrt{4 + 4} = 2\sqrt2$: אלה אלכסונים של פאות הקובייה.
+
+          ב. $\vec a = T_1 - T_0 = (0,\ -2,\ -2)$, $\vec b = T_2 - T_0 = (-2,\ 0,\ -2)$: $\vec a\cdot\vec b = 4$, $ab = 8$, $\cos\theta = \tfrac12$.
+
+          ג. פאה $T_0T_1T_2$: $\vec n_1 = \vec a\times\vec b = (4,\ 4,\ -4)$. פאה $T_0T_1T_3$, עם $\vec c = T_3 - T_0 = (-2,\ -2,\ 0)$: $\vec n_2 = \vec a\times\vec c = (-4,\ 4,\ -4)$. $\vec n_1\cdot\vec c = -16 \lt 0$, ולכן $\vec n_1$ פונה הרחק מ-$T_3$, החוצה; $\vec n_2\cdot\vec b = 16 \gt 0$, ולכן $\vec n_2$ פונה אל $T_2$, פנימה. לכן הזווית בין הניצבים היא הזווית בין הפאות: $\cos\delta = \dfrac{\vec n_1\cdot\vec n_2}{n_1n_2} = \dfrac{16}{48} = \dfrac13$.
+
+          ד. $\hat T_0\cdot\hat T_1$: $(1,\ 1,\ 1)\cdot(1,\ -1,\ -1) = -1$, וכל אחד באורך $\sqrt3$: $\cos\theta = -\tfrac13$.
+      - kind: limit
+        text: >-
+          בדיקות: ב-(ב), שלוש הצלעות של כל פאה שוות, ולכן כל פאה משולש שווה צלעות, וזוויותיו $60^\circ$, כמו שיצא. ב-(ג), הזווית בין שתי פאות של ארבעון חייבת להיות קטנה מ-$90^\circ$: הארבעון "חד" יותר מקובייה, שבה הזווית בין פאות סמוכות $90^\circ$. ב-(ד), הזווית קהה, כי ארבעה קשרים שמתרחקים זה מזה ככל האפשר לא יכולים להיות כולם במרחק $90^\circ$ או פחות.
+      - kind: units
+        text: >-
+          כל הזוויות מתקבלות מיחסים חסרי ממדים, ולכן לא תלויות ביחידת האורך של המודל.
+      - kind: substitution
+        text: >-
+          א. $2\sqrt2 = 2.83$. ב. $\arccos\tfrac12 = 60^\circ$. ג. $\arccos\tfrac13 = 70.5^\circ$. ד. $\arccos(-\tfrac13) = 109.5^\circ$, הזווית הנמדדת במולקולת מתאן.
+      - kind: result
+        text: >-
+          א. $(1,\ 1,\ 1)$, $(1,\ -1,\ -1)$, $(-1,\ 1,\ -1)$, $(-1,\ -1,\ 1)$, צלע $2.83$. ב. $60^\circ$. ג. $70.5^\circ$. ד. $109.5^\circ$.
+    source:
+      name: MIT OpenCourseWare, 18.02 Multivariable Calculus
+      year: 2006
+      problem: 'Problem Set 1, Part B, Problem 1 (the regular tetrahedron in the cube: its vertices, the angle between edges, the dihedral angle)'
+      url: https://ocw.mit.edu/courses/18-02-multivariable-calculus-spring-2006/8fc520debc5a5eea90a379e5891bed27_ps1_s06.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.2-c2
+    stars: 2
+    objectives: [OBJ-0.2-2]
+    prompt: >-
+      איך סירת מפרש מתקדמת נגד הרוח? מודל פשוט: הרוח, $\vec w = w\,\hat x$ (נושבת לכיוון $+x$), דוחפת את המפרש רק ברכיב שלה **הניצב למפרש**: הדחיפה היא $\vec w_1 = (\vec w\cdot\hat n)\,\hat n$, כאשר $\hat n$ וקטור יחידה ניצב למפרש. השדרית של הסירה מאפשרת לה לנוע רק לאורך הציר שלה, ולכן רק הרכיב של $\vec w_1$ לאורך הציר, $\vec w_2 = (\vec w_1\cdot\hat b)\,\hat b$, מקדם אותה, כאשר $\hat b$ וקטור יחידה לאורך הסירה. במישור המים, $\hat n$ בזווית $\theta$ מציר $x$ ו-$\hat b$ בזווית $\theta + \varphi$ מציר $x$, נגד כיוון השעון, עם $0 \le \theta \lt 90^\circ$ ו-$0 \le \varphi \lt 90^\circ$.
+
+      א. הראו ש-$\vec w_1$ אף פעם לא פונה נגד הרוח.
+
+      ב. מצאו את $\vec w_2$, ואת התנאי על $\theta$ ו-$\varphi$ שבו יש ל-$\vec w_2$ רכיב נגד הרוח (בכיוון $-x$).
+
+      ג. ב-$\theta = \varphi = 60^\circ$ ו-$w = 10\,\text{m/s}$, מה הרכיב של $\vec w_2$ לאורך $x$?
+
+      ד. לכיוון סירה נתון, $\psi = \theta + \varphi \gt 90^\circ$, איזו זווית מפרש $\theta$ נותנת את הדחיפה הגדולה ביותר נגד הרוח? ובאיזה כיוון סירה הדחיפה נגד הרוח הגדולה ביותר?
+    answer: >-
+      א. $w_{1x} = w\cos^2\theta \ge 0$.
+
+      ב. $\vec w_2 = w\cos\theta\cos\varphi\,\hat b$; רכיב $x$ שלו $w\cos\theta\cos\varphi\cos(\theta + \varphi)$, שלילי בדיוק כש-$\theta + \varphi \gt 90^\circ$.
+
+      ג. $-1.25\,\text{m/s}$.
+
+      ד. $\theta = \psi/2$; הכי טוב ב-$\psi = 120^\circ$ (ו-$\theta = \varphi = 60^\circ$), עם דחיפה $w/8$ נגד הרוח.
+    solution:
+      - kind: given
+        text: >-
+          $\hat x$ בכיוון הרוח. $\hat n = (\cos\theta,\ \sin\theta)$, $\hat b = (\cos(\theta + \varphi),\ \sin(\theta + \varphi))$; הזווית בין $\hat n$ ל-$\hat b$ היא $\varphi$.
+      - kind: law
+        text: >-
+          היטל על כיוון: $\vec A\cdot\hat u = A\cos\gamma$, כאשר $\gamma$ הזווית בין $\vec A$ ל-$\hat u$, והחלק של $\vec A$ לאורך $\hat u$ הוא $(\vec A\cdot\hat u)\hat u$.
+      - kind: manipulation
+        text: >-
+          א. $\vec w\cdot\hat n = w\cos\theta$, ולכן $\vec w_1 = w\cos\theta\,(\cos\theta,\ \sin\theta)$ ו-$w_{1x} = w\cos^2\theta \ge 0$.
+
+          ב. $\vec w_1\cdot\hat b = |\vec w_1|\cos\varphi = w\cos\theta\cos\varphi$, ולכן $\vec w_2 = w\cos\theta\cos\varphi\,\hat b$ ו-$w_{2x} = w\cos\theta\cos\varphi\cos(\theta + \varphi)$. $\cos\theta$ ו-$\cos\varphi$ חיוביים, ולכן הסימן הוא הסימן של $\cos(\theta + \varphi)$: שלילי כש-$\theta + \varphi \gt 90^\circ$.
+
+          ד. לפי נוסחת מכפלה, $\cos\theta\cos(\psi - \theta) = \tfrac12\left[\cos\psi + \cos(2\theta - \psi)\right]$, מקסימלי ב-$\theta = \psi/2$, ואז שווה ל-$\tfrac12(1 + \cos\psi)$. הדחיפה נגד הרוח: $-w_{2x} = -\tfrac{w}{2}(1 + \cos\psi)\cos\psi$. עם $c = \cos\psi$, הביטוי $-(c + c^2)$ מקסימלי ב-$c = -\tfrac12$, כלומר $\psi = 120^\circ$, ושם הוא $\tfrac14$.
+      - kind: limit
+        text: >-
+          ב-$\theta = \varphi = 0$ (המפרש ניצב לרוח והסירה לאורך הרוח) $\vec w_2 = \vec w$: הרוח דוחפת מאחור, כמו בספינה עתיקה. ב-$\psi = 180^\circ$ (הסירה מכוונת ישר נגד הרוח) יוצא $1 + \cos\psi = 0$: אי אפשר להפליג ישר נגד הרוח, ולכן מפליגים בזיגזג.
+      - kind: units
+        text: >-
+          כל ההיטלים כפולים של $w$ במקדמים חסרי ממדים, ולכן ב-$\text{m/s}$, כמו $\vec w$.
+      - kind: substitution
+        text: >-
+          ג. $w_{2x} = 10\cdot\cos60^\circ\cdot\cos60^\circ\cdot\cos120^\circ = 10\cdot0.5\cdot0.5\cdot(-0.5) = -1.25\,\text{m/s}$. ד. ב-$\psi = 120^\circ$: $-w_{2x} = \tfrac{w}{2}\cdot\tfrac12\cdot\tfrac12 = \tfrac{w}{8}$, אותו ערך שיצא בסעיף ג: $1.25\,\text{m/s}$ ב-$w = 10\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $w_{1x} = w\cos^2\theta \ge 0$. ב. $w_{2x} = w\cos\theta\cos\varphi\cos(\theta + \varphi)$, שלילי כש-$\theta + \varphi \gt 90^\circ$. ג. $-1.25\,\text{m/s}$. ד. $\theta = \psi/2$; הסירה ב-$120^\circ$ מכיוון הרוח, המפרש באמצע, והדחיפה נגד הרוח $w/8$.
+    source:
+      name: MIT OpenCourseWare, 18.02SC Multivariable Calculus
+      year: 2010
+      problem: 'Problem Set 1, Part II, Problem 3 (tacking: the wind projected on the sail normal, then on the boat axis)'
+      url: https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/2ea35c7ab33c5c143ae8f60f949588f2_MIT18_02SC_pset1.pdf
+      verified: '2026-11-17'
+      adapted: true

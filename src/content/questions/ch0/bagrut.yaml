@@ -7,7 +7,13 @@
 # → unit check (units) → numbers (substitution) only when asked, ending in a result step.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch0/review.ts with src/physics/constants.ts (G = 9.8, G_NEWTON, M_EARTH, R_EARTH):
+# Every number was computed in .scratch/ch0/review.ts with src/physics/constants.ts (G = 9.8, G_NEWTON, M_EARTH, R_EARTH),
+# and recomputed independently in the physics review (2026-11-17, .scratch/ch0/bagrut/review.ts, values as printed;
+# every pair of answer/commonWrong values checked > 3% apart; the shell integral and the general-n mass checked by
+# quadrature; the fall time solved exactly, T = H/v_t + τ). The review fixed: the 0.785 feedback of 4ד (g taken at
+# mid-height gives −0.006%, nearly exact; h/2R comes from dropping the 2 in d(1/r²)/dr); H undefined in problem 2;
+# 2ב and 2ג need 2א (standalone: false); forces named by their agents in 1ב; \mathrm{Re} → \operatorname{Re} and
+# chapter 5's γ = b/m, ω₀ = √(k/m) in problem 3; the buoyancy ratio (ρ_w/ρ_air = 833, "more than 800").
 #   1: D = 20 μm, ρ_w = 1000 kg/m³, η = 1.8e-5 kg/(m·s): m = 4.19e-12 kg, b = 3πηD = 3.39e-9 kg/s, τ = 1.23 ms,
 #      v_t = 1.21 cm/s (D as a radius in the mass 9.68; without π/6 2.31; without 3π 11.4), Re = 0.016;
 #      1.0 km from rest: T = 8.27e4 s = 23.0 h (H/v_t + τ; free fall 14.3 s = 0.00397 h; 1378 min);
@@ -16,7 +22,8 @@
 #   3: m = 0.50 kg, k = 50 N/m, b = 4.0 kg/s: r = −4 ± 9.17i, ω₀ = 10 rad/s; F₀ = 2.0 N, ω = 8.0 rad/s:
 #      k − mω² + ibω = 18 + 32i, |Ã| = 5.45 cm (no damping 11.1; F₀/k = F₀/(18 + 32) = 4.0), δ = 1.06 rad = 60.6° (0.512);
 #   4: ρ = ρ₀(1 − r²/R²): M = 8πρ₀R³/15; with M_EARTH, R_EARTH ρ₀ = 1.38e4 kg/m³, mean 5510 kg/m³ = 2ρ₀/5;
-#      h = 100 km: mgh/ΔU − 1 = h/R = 1.57% (2h/R = 3.14, h/2R = 0.785; 0.157% at 10 km).
+#      h = 100 km: mgh/ΔU − 1 = h/R = 1.57% (2h/R = 3.14, h/2R = 0.785 from U'' without its 2 [exact 0.791];
+#      0.157% at 10 km).
 
 chapter: 0
 questions:
@@ -28,7 +35,7 @@ questions:
       טיפת ערפל היא כדור מים זעיר בקוטר $D = 20\,\mu\text{m}$, עם צפיפות $\rho_\text{w} = 1000\,\text{kg/m}^3$. על גוף
       זעיר ואיטי כל כך כוח הגרר ליניארי במהירות, ולפי חוק סטוקס הוא $F = 3\pi\eta Dv$, נגד כיוון התנועה. הצמיגות
       של האוויר היא $\eta = 1.8\cdot10^{-5}\,\text{kg}/(\text{m}\cdot\text{s})$. הזניחו את כוח הציפה: צפיפות האוויר
-      קטנה פי 800 מזו של המים. הטיפה מתחילה ליפול ממנוחה, באוויר שקט.
+      קטנה פי יותר מ-800 מזו של המים. הטיפה מתחילה ליפול ממנוחה, באוויר שקט.
     parts:
       - label: א
         type: mc
@@ -68,10 +75,10 @@ questions:
 
           (3) בדקו את הפתרון בשני גבולות, $t \ll \tau$ ו-$t \to \infty$, ובדקו את היחידות של $v_t$ ושל $\tau$.
         hints:
-          - 'על הטיפה פועלים שני כוחות: הכובד $mg$ כלפי מטה, והגרר $bv$ כלפי מעלה.'
+          - 'על הטיפה פועלים שני כוחות: כוח הכובד של כדור הארץ, $mg$, כלפי מטה, וכוח הגרר של האוויר, $bv$, כלפי מעלה.'
           - 'אספו את $v$ לאגף אחד: $\dfrac{dv}{g - (b/m)v} = dt$.'
         solution:
-          - { kind: law, text: 'החוק השני של ניוטון, עם ציר כלפי מטה: $m\dfrac{dv}{dt} = mg - bv$, עם $b = 3\pi\eta D$. זו משוואה מסדר ראשון, ליניארית ב-$v$, לא הומוגנית (בגלל $mg$).' }
+          - { kind: law, text: 'החוק השני של ניוטון לטיפה, עם ציר חיובי כלפי מטה. כדור הארץ מפעיל עליה $mg$ כלפי מטה, והאוויר גרר $bv$ כלפי מעלה: $m\dfrac{dv}{dt} = mg - bv$, עם $b = 3\pi\eta D$. זו משוואה מסדר ראשון, ליניארית ב-$v$, לא הומוגנית (בגלל $mg$).' }
           - { kind: manipulation, text: 'מפרידים משתנים: $\dfrac{dv}{g - (b/m)v} = dt$. מאנטגרלים מ-$0$ עד $v$ ומ-$0$ עד $t$: $-\dfrac{m}{b}\ln\left(1 - \dfrac{bv}{mg}\right) = t$, ולכן $$v(t) = v_t\left(1 - e^{-t/\tau}\right),\qquad v_t = \frac{mg}{b},\qquad \tau = \frac{m}{b}$$' }
           - { kind: limit, text: 'כש-$t \ll \tau$: $e^{-t/\tau} \approx 1 - t/\tau$, ולכן $v \approx v_t\,t/\tau = gt$: בהתחלה הגרר אפס, והטיפה בנפילה חופשית. כש-$t \to \infty$: $v \to v_t$, המהירות שבה $bv_t = mg$ והשקול מתאפס.' }
           - { kind: units, text: '$[b] = \text{N}/(\text{m/s}) = \text{kg/s}$, ולכן $\tau = m/b$ בשניות, ו-$v_t = mg/b = g\tau$ ב-$\text{m/s}^2\cdot\text{s} = \text{m/s}$.' }
@@ -145,7 +152,7 @@ questions:
       מגלשה בפארק מים מתפתלת סביב עמוד אנכי. במודל פשוט, המגלש נע על סליל ברדיוס $R = 3.0\,\text{m}$ סביב הציר $z$
       (כלפי מעלה), במהירות זוויתית קבועה $\omega = 1.0\,\text{rad/s}$, ויורד בקצב קבוע $u = 0.80\,\text{m/s}$:
       $$\vec r(t) = \left(R\cos\omega t,\ R\sin\omega t,\ H - ut\right)$$
-      המגלשה עושה שלושה סיבובים שלמים.
+      כאשר $H$ הגובה של ראש המגלשה. המגלשה עושה שלושה סיבובים שלמים.
     parts:
       - label: א
         type: numeric
@@ -172,6 +179,7 @@ questions:
         type: numeric
         points: 5
         level: mid
+        standalone: false
         objectives: [OBJ-0.2-2, OBJ-0.3-1]
         prompt: >-
           מה הזווית בין וקטור המהירות למישור האופקי, במעלות? חשבו קודם במכפלה סקלרית את הזווית בין $\vec v$ לבין
@@ -194,6 +202,7 @@ questions:
         type: open
         points: 7
         level: mid
+        standalone: false
         objectives: [OBJ-0.3-1, OBJ-0.2-2]
         prompt: >-
           (1) חשבו את וקטור התאוצה $\vec a(t)$. מה הגודל שלו, ולאן הוא מצביע?
@@ -250,10 +259,11 @@ questions:
     type: bagrut
     title: מתנד מרוסן ומאולץ
     prompt: >-
-      מסה $m = 0.50\,\text{kg}$ קשורה לקפיץ עם $k = 50\,\text{N/m}$ ולבולם עם מקדם ריסון $b = 4.0\,\text{kg/s}$. התזוזה
-      שלה מקיימת
+      מסה $m = 0.50\,\text{kg}$ קשורה לקפיץ שקבועו $k = 50\,\text{N/m}$ ולבולם עם מקדם ריסון $b = 4.0\,\text{kg/s}$.
+      התזוזה שלה מקיימת
       $$m\ddot x + b\dot x + kx = F(t)$$
-      כאשר $F(t)$ כוח חיצוני.
+      כאשר $F(t)$ כוח חיצוני. אחרי חלוקה ב-$m$ זו המשוואה
+      $$\ddot x + \gamma\dot x + \omega_0^2x = \frac{F(t)}{m},\qquad \gamma = \frac bm,\quad \omega_0 = \sqrt{\frac km}$$
     parts:
       - label: א
         type: numeric
@@ -265,14 +275,14 @@ questions:
         unit: rad/s
         correctFeedback: >-
           נכון. $0.5r^2 + 4r + 50 = 0$ נותן $r = \dfrac{-4 \pm \sqrt{16 - 100}}{1} = -4 \pm 9.17i$. התנודות דועכות כמו
-          $e^{-4t}$, כלומר בקבוע זמן $0.25\,\text{s}$, ומתנודדות ב-$9.17\,\text{rad/s}$, קצת מתחת ל-$\sqrt{k/m} = 10\,\text{rad/s}$.
+          $e^{-\gamma t/2} = e^{-4t}$, כלומר בקבוע זמן $0.25\,\text{s}$, ומתנודדות ב-$9.17\,\text{rad/s}$, קצת מתחת ל-$\omega_0 = \sqrt{k/m} = 10\,\text{rad/s}$.
         wrongFeedback: 'הציבו $x = e^{rt}$ וקבלו $mr^2 + br + k = 0$. התדירות היא החלק המדומה של השורש.'
         commonWrong:
           - value: 10
-            feedback: 'זה $\sqrt{k/m}$, התדירות בלי ריסון. הריסון מקטין אותה ל-$\sqrt{k/m - (b/2m)^2} = \sqrt{100 - 16}$.'
+            feedback: 'זה $\omega_0 = \sqrt{k/m}$, התדירות בלי ריסון. הריסון מקטין אותה ל-$\sqrt{\omega_0^2 - (\gamma/2)^2} = \sqrt{100 - 16}\,\text{rad/s}$.'
             misconception: MC-0-damping-no-frequency-change
           - value: 4
-            feedback: 'זה החלק **הממשי** של השורש, בגודלו: קצב הדעיכה, $b/(2m)$. התדירות היא החלק המדומה.'
+            feedback: 'זה החלק **הממשי** של השורש, בגודלו: קצב הדעיכה, $\gamma/2 = b/(2m)$. התדירות היא החלק המדומה.'
         hints:
           - 'הדיסקרימיננטה: $b^2 - 4mk = 16 - 100$.'
 
@@ -282,8 +292,8 @@ questions:
         level: mid
         objectives: [OBJ-0.6-2, OBJ-0.5-1]
         prompt: >-
-          עכשיו $F(t) = F_0\cos\omega t$. כותבים $F_0\cos\omega t = \mathrm{Re}\left(F_0e^{i\omega t}\right)$ ומחפשים פתרון
-          יציב מהצורה $x = \mathrm{Re}\left(\tilde Ae^{i\omega t}\right)$.
+          עכשיו $F(t) = F_0\cos\omega t$. כותבים $F_0\cos\omega t = \operatorname{Re}\left(F_0e^{i\omega t}\right)$ ומחפשים פתרון
+          יציב מהצורה $x = \operatorname{Re}\left(\tilde Ae^{i\omega t}\right)$.
 
           (1) הסבירו למה מותר לפתור את המשוואה עם הכוח המרוכב ולקחת חלק ממשי רק בסוף.
 
@@ -294,7 +304,7 @@ questions:
           - 'אילו פעולות מופיעות במשוואה? האם יש בה מכפלה של $x$ בעצמו?'
           - 'אם $z = \tilde Ae^{i\omega t}$, אז $\dot z = i\omega z$ ו-$\ddot z = -\omega^2z$.'
         solution:
-          - { kind: law, text: 'המשוואה ליניארית ובעלת מקדמים ממשיים, ו-$\mathrm{Re}$ עובר דרך סכומים, כפל בקבוע ממשי ונגזרות. לכן אם $z(t)$ פותר את $m\ddot z + b\dot z + kz = F_0e^{i\omega t}$, החלק הממשי שלו פותר את המשוואה עם $F_0\cos\omega t$. (במכפלה של שני גדלים זה כבר לא נכון.)' }
+          - { kind: law, text: 'המשוואה ליניארית ובעלת מקדמים ממשיים, ו-$\operatorname{Re}$ עובר דרך סכומים, כפל בקבוע ממשי ונגזרות. לכן אם $z(t)$ פותר את $m\ddot z + b\dot z + kz = F_0e^{i\omega t}$, החלק הממשי שלו פותר את המשוואה עם $F_0\cos\omega t$. (במכפלה של שני גדלים זה כבר לא נכון.)' }
           - { kind: manipulation, text: 'מציבים $z = \tilde Ae^{i\omega t}$: $\left(-m\omega^2 + ib\omega + k\right)\tilde Ae^{i\omega t} = F_0e^{i\omega t}$, ומחלקים ב-$e^{i\omega t} \ne 0$: $$\tilde A = \frac{F_0}{k - m\omega^2 + ib\omega}$$' }
           - { kind: limit, text: 'כש-$\omega \to 0$: $\tilde A \to F_0/k$, המתיחה הסטטית של קפיץ תחת כוח קבוע. כש-$b \to 0$ המכנה ממשי, $k - m\omega^2$, והוא מתאפס ב-$\omega = \sqrt{k/m}$: בלי ריסון האמפליטודה מתבדרת בתדירות הטבעית (תהודה, פרק 5).' }
           - { kind: units, text: 'כל איבר במכנה ביחידות $\text{N/m} = \text{kg/s}^2$: $k$, $m\omega^2$ ($\text{kg}\cdot\text{s}^{-2}$) ו-$b\omega$ ($\text{kg/s}\cdot\text{s}^{-1}$). לכן $\tilde A$ במטרים.' }
@@ -457,6 +467,9 @@ questions:
           - value: 3.14
             feedback: 'זה $2h/R$, הירידה היחסית ב-$g$ עצמו בגובה $h$. כאן משווים אנרגיות, ו-$1/r$ יורד לאט יותר מ-$1/r^2$: השגיאה היא $h/R$.'
           - value: 0.785
-            feedback: 'זה $h/(2R)$, כאילו לוקחים את $g$ באמצע הדרך. המנה המדויקת היא $1 + h/R$.'
+            feedback: >-
+              זה $h/(2R)$: כך יוצא בפיתוח טיילור לסדר שני כששוכחים את המעריך בנגזרת של $1/r^2$. הנגזרת היא
+              $\dfrac{d}{dr}\dfrac{1}{r^2} = -\dfrac{2}{r^3}$, ולכן $\dfrac{d^2U}{dr^2} = -\dfrac{2GMm}{R^3}$, והאיבר מסדר
+              שני הוא $\tfrac12\dfrac{d^2U}{dr^2}h^2 = -mgh\cdot\dfrac hR$. המנה המדויקת היא $1 + h/R$.
         hints:
           - '$\dfrac1R - \dfrac{1}{R + h} = \dfrac{h}{R(R + h)}$.'

@@ -1,0 +1,27 @@
+# Videos of lesson 0.2. Every id was checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds: 851 s and
+# 533 s), and the caption tracks from its captionTracks list: the dot-product video has English (auto-generated)
+# and no Hebrew track; the cross-product video has English (auto-generated) and a Hebrew track. `why` claims only
+# what the 3Blue1Brown lesson pages of the two videos (3blue1brown.com/lessons/dot-products and /cross-products,
+# opened the same day) state. No public Hebrew video on the dot or the cross product was found (searched
+# "מכפלה וקטורית", "מכפלה סקלרית").
+
+- id: v-0-2-dot-product
+  youtubeId: LyGKycYT2v0
+  title: Dot products and duality | Chapter 9, Essence of linear algebra
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en]
+  minutes: 14
+  why: 'גרנט סנדרסון מ-3Blue1Brown מראה את המכפלה הסקלרית כהיטל: מטילים וקטור אחד על הישר של השני וכופלים את אורך ההיטל באורך של השני. לפי דף השיעור, הוא מראה שהסימן אומר אם הווקטורים פונים לאותו צד (חיובי), ניצבים (אפס) או מנוגדים (שלילי), ושהסדר לא משנה. החלק האחרון, על "דואליות", הוא העשרה ואפשר לדלג עליו.'
+  verified: '2026-11-17'
+
+- id: v-0-2-cross-product
+  youtubeId: eu6i7WJeinw
+  title: Cross products | Chapter 10, Essence of linear algebra
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en, he]
+  minutes: 9
+  why: 'המשך של הסרטון הקודם, עם כתוביות בעברית. לפי דף השיעור, הוא מתחיל במישור: המכפלה הווקטורית של שני וקטורים היא השטח של המקבילית שהם פורשים, עם סימן חיובי כשהסיבוב מהראשון לשני נגד כיוון השעון, ושלילי כשמחליפים את הסדר. אחר כך במרחב: וקטור שאורכו השטח הזה, ניצב למקבילית, בכיוון שכלל יד ימין קובע. זה איור 0.2ד, עם האנימציה של מישור שמסתובב.'
+  verified: '2026-11-17'

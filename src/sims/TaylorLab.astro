@@ -1,0 +1,7 @@
+---
+/** TaylorLab for lesson MDX: <Spread figure={TaylorLab} figureProps={{ mode: 'secant' | 'taylor', … }}>. */
+import TaylorLab, { type TaylorLabProps } from './TaylorLab';
+type Props = TaylorLabProps;
+---
+
+<TaylorLab client:visible {...Astro.props} />

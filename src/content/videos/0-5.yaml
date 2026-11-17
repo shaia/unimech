@@ -1,0 +1,27 @@
+# Videos of lesson 0.5. Both ids were checked against YouTube oEmbed on the `verified` date (status 200, embeddable;
+# title and channel exactly as returned). Lengths and caption tracks come from the watch page (lengthSeconds,
+# captionTracks): p_di4Zn4wz4 1636 s, tracks include Hebrew and English; -j8PzkZ70Lg 1669 s, English (no Hebrew).
+# The start time of the second (9:27, "The harmonic oscillator") is a chapter of its description. `why` claims only
+# what the transcripts on rosetta.to (opened the same day) support. No public Hebrew video on first-order
+# separation or on the characteristic equation was found.
+
+- id: v-0-5-tourist
+  youtubeId: p_di4Zn4wz4
+  title: Differential equations, a tourist's guide | DE1
+  channel: 3Blue1Brown
+  lang: en
+  captions: [he, en]
+  minutes: 27
+  why: 'סיור של 3Blue1Brown במשוואות דיפרנציאליות (יש כתוביות בעברית). לפי התמליל, הוא כותב את משוואת המטוטלת עם sin θ ועם איבר ריסון שפרופורציוני ל-θ̇, מצייר אותה כשדה של חצים שהפתרון נע לאורכם, ופותר אותה בצעדי זמן קטנים, כי פתרון מדויק אין לה. זה שדה הכיוונים של איור 0.5א, בשני ממדים: θ ו-θ̇ במקום t ו-y.'
+  verified: '2026-11-17'
+
+- id: v-0-5-euler-spring
+  youtubeId: -j8PzkZ70Lg
+  title: The Physics of Euler's Formula | Laplace Transform Prelude
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en]
+  start: 567
+  minutes: 12
+  why: 'מהפרק "The harmonic oscillator" (9:27). לפי התמליל, הוא מנחש לקפיץ עם ריסון פתרון מהצורה e^(st), מקבל משוואה ריבועית ב-s, ומראה איך שני השורשים זזים במישור המרוכב כשמגדילים את הריסון: החלק המדומה קובע את קצב התנודה, החלק הממשי קובע אם האמפליטודה גדלה או דועכת, ובריסון חזק השורשים נעשים ממשיים. זה איור 0.5ב. הוא כותב את מקדם הריסון μ, ואנחנו γ.'
+  verified: '2026-11-17'

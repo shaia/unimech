@@ -9,6 +9,14 @@
 #   λ = λ₀(1 + x/L), λ₀ = 0.20 kg/m, L = 2.0 m: M = 3λ₀L/2 = 0.600 kg (λ₀L = 0.4, λ(L)L = 0.8),
 #     x_cm = 5L/9 = 1.11 m (L/2 = 1, 2L/3 = 1.33, the numerator alone 0.667 kg·m);
 #   centres of mass of rods with λ ∝ 1, x, x², L − x: L/2, 2L/3, 3L/4, L/3.
+# Lesson 0.4 (written 2026-11-17) works out x_cm of a linearly tapered rod in its text, so Q-0.4-rod-cm moved
+# to the mid rung and the exam rung of OBJ-0.4-2 is Q-0.4-rod-half, recomputed in .scratch/ch0/0-4/numbers.ts:
+#   same rod: the equal-mass cut solves λ₀(c + c²/(2L)) = M/2, c² + 4c − 6 = 0, c = √10 − 2 = 1.16 m
+#   (x_cm = 1.11 m, 4.4% away; the middle 1.0 m holds only 0.25 kg of the 0.60 kg on its left).
+# Review (2026-11-17, .scratch/review/ch0/0-4/check.ts, every number above recomputed independently) added two
+# commonWrong values: −20 m (antiderivative 6t − 2t², 30 − 50) and 5.76 m/s ((a₀/τ)(1 − e^(−2)), the inner
+# derivative multiplied instead of divided); 0.8 kg and 1.33 m are also what a dropped ½ or ⅓ in the
+# antiderivative gives (λ₀(L + L) = 0.8; λ₀(L²/2 + L²/2)/M = 1.33), and their feedback now says so.
 
 chapter: 0
 questions:
@@ -35,14 +43,14 @@ questions:
       - text: את המהירות הממוצעת.
         feedback: 'המהירות הממוצעת היא האינטגרל **חלקי** משך הזמן, $2\,\text{s}$. האינטגרל עצמו ביחידות $\text{m/s}\cdot\text{s} = \text{m}$.'
     reasons:
-      - text: 'בזמן קצר $dt$ הגוף עובר העתק $v\,dt$, והאינטגרל סוכם את כל ההעתקים האלה. כש-$v < 0$ ההעתק הקטן שלילי ומחוסר מהסכום.'
+      - text: 'בזמן קצר $dt$ הגוף עובר העתק $v\,dt$, והאינטגרל סוכם את כל ההעתקים האלה. כש-$v < 0$ ההעתק הקטן שלילי ומקטין את הסכום.'
         correct: true
         feedback: זה הנימוק. האינטגרל המסוים הוא צבירה של חתיכות, עם הסימנים שלהן.
       - text: שטח הוא תמיד חיובי, ולכן האינטגרל סוכם את כל הדרך.
         feedback: 'שטח **מתחת לציר** נספר עם סימן שלילי. לכן האינטגרל נותן העתק, ולא דרך.'
         misconception: MC-0-integral-is-distance
       - text: האינטגרל הוא הערך של הפונקציה הקדומה בגבול העליון.
-        feedback: 'הוא ההפרש בין הערכים בשני הגבולות, $F(2) - F(0)$. בלי לחסר את הגבול התחתון מקבלים מספר שתלוי בבחירה שרירותית של קבוע.'
+        feedback: 'הוא ההפרש בין הערכים בשני הגבולות, $F(2) - F(0)$. בלי לחסר את הערך של $F$ בגבול התחתון מקבלים מספר שתלוי בבחירה שרירותית של קבוע.'
     hints:
       - 'כמה הגוף זז בזמן קצר $dt$? ומה הסימן של ההעתק הזה כשהוא נע אחורה?'
 
@@ -68,6 +76,10 @@ questions:
       - value: 30
         feedback: 'כפלתם את המהירות ההתחלתית בזמן, כאילו היא קבועה. המהירות יורדת, וצריך לצבור אותה באינטגרל.'
         misconception: MC-0-constant-rate-assumed
+      - value: -20
+        feedback: >-
+          לקחתם $6t - 2t^2$ כפונקציה קדומה. גזרו אותה: יוצא $6 - 4t$, לא $6 - 2t$. הפונקציה הקדומה של $t$ היא
+          $t^2/2$, ולכן של $2t$ היא $t^2$.
     hints:
       - 'פונקציה קדומה של $6 - 2t$ היא $6t - t^2$.'
 
@@ -99,7 +111,8 @@ questions:
     level: bagrut
     prompt: >-
       מנוע של רקטת צעצוע נחלש עם הזמן, והתאוצה שלה (בהזנחת הכובד) היא $a(t) = a_0e^{-t/\tau}$, עם
-      $a_0 = 20\,\text{m/s}^2$ ו-$\tau = 3\,\text{s}$. בכמה גדלה המהירות שלה בשש השניות הראשונות?
+      $a_0 = 20\,\text{m/s}^2$ ו-$\tau = 3\,\text{s}$ ($\tau$ הוא קבוע הזמן: אחרי כל $\tau$ התאוצה קטנה פי $e$). בכמה
+      גדלה המהירות שלה בשש השניות הראשונות?
     answer: 51.9
     unit: m/s
     correctFeedback: >-
@@ -117,6 +130,11 @@ questions:
         feedback: 'הצבתם רק את הגבול העליון, ובלי הסימן: $a_0\tau e^{-2}$. הציבו את שני הגבולות, $\left[-a_0\tau e^{-t/\tau}\right]_0^T$.'
       - value: 16.2
         feedback: 'כפלתם את התאוצה **בסוף** בזמן, $a(6)\cdot6$. בתחילת הדרך התאוצה הייתה גדולה פי 7, וצריך לצבור את כולה.'
+      - value: 5.76
+        feedback: >-
+          כפלתם בנגזרת הפנימית, $(-1/\tau)$, במקום לחלק בה: $\tfrac{a_0}{\tau}\left(1 - e^{-2}\right)$. גזרו את הפונקציה
+          הקדומה שלכם ובדקו: הנגזרת של $e^{-t/\tau}$ היא $-\tfrac1\tau e^{-t/\tau}$, ולכן הפונקציה הקדומה של $e^{-t/\tau}$
+          היא $-\tau e^{-t/\tau}$. גם היחידות מסגירות: $a_0/\tau$ ב-$\text{m/s}^3$, לא ב-$\text{m/s}$.
     hints:
       - '$\Delta v = \displaystyle\int_0^T a\,dt$.'
       - 'כמה זה $\left[-\tau e^{-t/\tau}\right]_0^T$?'
@@ -163,7 +181,9 @@ questions:
         feedback: 'זה $\lambda_0L$, כאילו הצפיפות קבועה ושווה לערך שלה בקצה $x = 0$. הצפיפות גדלה לאורך המוט.'
         misconception: MC-0-constant-rate-assumed
       - value: 0.8
-        feedback: 'זה $\lambda(L)\cdot L$, הצפיפות של הקצה הכבד כפול האורך. רק הקצה עצמו כל כך צפוף.'
+        feedback: >-
+          זה $\lambda(L)\cdot L$, הצפיפות של הקצה הכבד כפול האורך, ורק הקצה עצמו כל כך צפוף. ואם הגעתם לכאן
+          באינטגרל: כנראה כתבתם $x^2/L$ במקום $x^2/(2L)$ בפונקציה הקדומה של $x/L$. גזרו ובדקו.
     hints:
       - 'המסה של חתיכה באורך $dx$ היא $\lambda(x)\,dx$.'
 
@@ -195,7 +215,7 @@ questions:
   - id: Q-0.4-rod-cm
     type: numeric
     objectives: [OBJ-0.4-2]
-    level: bagrut
+    level: mid
     prompt: >-
       למוט באורך $L = 2.0\,\text{m}$, מ-$x = 0$ עד $x = L$, יש צפיפות קווית $\lambda(x) = \lambda_0\left(1 + x/L\right)$,
       עם $\lambda_0 = 0.20\,\text{kg/m}$, ולכן המסה שלו $M = \tfrac32\lambda_0L = 0.60\,\text{kg}$. איפה מרכז המסה שלו?
@@ -213,8 +233,43 @@ questions:
         feedback: 'זה אמצע המוט, $L/2$. הוא מרכז המסה רק כשהצפיפות אחידה. כאן הקצה הימני צפוף פי 2, והוא מושך את מרכז המסה אליו.'
         misconception: MC-0-cm-at-middle
       - value: 1.33
-        feedback: 'זה $2L/3$, מרכז המסה של מוט שצפיפותו $\lambda \propto x$, שמתחילה מאפס. כאן הצפיפות בקצה השמאלי היא $\lambda_0$, ולא אפס.'
+        feedback: >-
+          זה $2L/3$, מרכז המסה של מוט שצפיפותו $\lambda \propto x$, שמתחילה מאפס; כאן הצפיפות בקצה השמאלי היא
+          $\lambda_0$, ולא אפס. ואם הגעתם לכאן באינטגרל: כנראה שכחתם את השליש בפונקציה הקדומה של $x^2/L$, שהיא
+          $x^3/(3L)$.
       - value: 0.667
         feedback: 'זה המונה בלבד, $\int x\lambda\,dx$, ביחידות $\text{kg}\cdot\text{m}$. חלקו במסה $M$ כדי לקבל מקום במטרים.'
     hints:
       - '$\int_0^Lx\left(1 + \dfrac{x}{L}\right)dx = \dfrac{L^2}{2} + \dfrac{L^2}{3}$.'
+
+  - id: Q-0.4-rod-half
+    type: numeric
+    objectives: [OBJ-0.4-2]
+    level: bagrut
+    prompt: >-
+      מוט דק באורך $L = 2.0\,\text{m}$ מונח על הציר $x$, מ-$x = 0$ עד $x = L$. הצפיפות הקווית שלו היא
+      $\lambda(x) = \lambda_0\left(1 + x/L\right)$, עם $\lambda_0 = 0.20\,\text{kg/m}$. רוצים לחתוך אותו לשתי
+      חתיכות **שוות במסה**. באיזה מרחק מהקצה $x = 0$ צריך לחתוך?
+    answer: 1.16
+    unit: m
+    correctFeedback: >-
+      נכון. המסה משמאל לנקודה $c$ היא $m(c) = \displaystyle\int_0^c\lambda_0\left(1 + \frac{x}{L}\right)dx = \lambda_0\left(c + \frac{c^2}{2L}\right)$,
+      והמסה כולה $M = \tfrac32\lambda_0L = 0.60\,\text{kg}$. התנאי $m(c) = M/2$ נותן $c^2 + 2Lc - \tfrac32L^2 = 0$, כלומר
+      $c = L\left(\sqrt{5/2} - 1\right) = 1.16\,\text{m}$. **בדיקת גבולות:** במוט אחיד אותו חישוב נותן $c = L/2$. ושימו לב
+      שמרכז המסה של המוט הזה, $5L/9 = 1.11\,\text{m}$, **לא** מחלק אותו לשתי מסות שוות: משני צדי מרכז המסה מתאזנת
+      המסה כפול המרחק ממנו, ולא המסה עצמה.
+    wrongFeedback: >-
+      כתבו את המסה שמשמאל לנקודה $c$ כאינטגרל עם גבול עליון משתנה, $m(c) = \int_0^c\lambda\,dx$, ודרשו שהיא תהיה
+      חצי מהמסה כולה. יוצאת משוואה ריבועית ב-$c$.
+    commonWrong:
+      - value: 1
+        feedback: 'זה אמצע המוט. משמאל לו יש רק $0.25\,\text{kg}$ מתוך $0.60\,\text{kg}$, כי הצד הימני צפוף יותר. חותכים באמצע רק מוט אחיד.'
+        misconception: MC-0-constant-rate-assumed
+      - value: 1.11
+        feedback: >-
+          זה מרכז המסה, $5L/9$. הוא לא הנקודה שמחלקת את המסה לשתיים: משני צדיו מתאזנת המסה **כפול המרחק**
+          ממנו, וחתיכה רחוקה נספרת יותר. משמאל ל-$1.11\,\text{m}$ יש רק $0.284\,\text{kg}$.
+        misconception: MC-0-cm-splits-mass
+    hints:
+      - 'המסה שמשמאל ל-$c$ היא $\lambda_0\left(c + \dfrac{c^2}{2L}\right)$. כמה היא צריכה להיות?'
+

@@ -1,0 +1,26 @@
+# Videos of lesson 0.3. Every id was checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds: 1010 s and
+# 1339 s) and the caption tracks from its captionTracks list (English, and a community Hebrew translation, in both).
+# `why` claims only what the video descriptions (the chapter list of the Taylor video) and the matching lesson pages
+# on 3blue1brown.com, opened the same day, support. No public Hebrew video on derivatives as a limit or on Taylor
+# expansions for physics was found.
+
+- id: v-0-3-derivative-paradox
+  youtubeId: 9vKqVkMQHKk
+  title: The paradox of the derivative | Chapter 2, Essence of calculus
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en, he]
+  minutes: 17
+  why: 'מכונית שנוסעת 100 מטר בעשר שניות, וגרף המרחק שלה כפונקציה של הזמן. לפי עמוד השיעור באתר של הערוץ, הסרטון מחשב קצב ממוצע על פני dt קטן אבל סופי, ומראה שהנגזרת היא הערך שהיחס הזה מתקרב אליו כש-dt קטן, השיפוע של המשיק, ולא מה שמקבלים כשמציבים dt = 0. זה בדיוק איור 0.3א, בשפה אחרת. יש כתוביות בעברית.'
+  verified: '2026-11-17'
+
+- id: v-0-3-taylor-series
+  youtubeId: 3d6DsjIBzJ4
+  title: Taylor series | Chapter 11, Essence of calculus
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en, he]
+  minutes: 22
+  why: 'לפי רשימת הפרקים בתיאור ועמוד השיעור באתר: קירוב של cos x ליד 0 בפולינום (1 − x²/2, ואחר כך עם איבר x⁴/24), כל מקדם מתאים נגזרת אחת בנקודה, ובמקדם של xⁿ מחלקים ב-n!. בסוף, ln x סביב x = 1: הטור מתכנס רק בין 0 ל-2. זה הצד השני של איור 0.3ב, שבו סדר גבוה יותר עוזר רק בתוך תחום מסוים. יש כתוביות בעברית.'
+  verified: '2026-11-17'

@@ -1,6 +1,18 @@
 # Terms first defined in lesson 0.1. One spelling per concept, course-wide; `reject` lists spellings
 # that must not appear in course text (lint-content enforces it).
 
+- id: dimension
+  term: ממד
+  en: dimension
+  definition: הסוג של גודל פיזיקלי, בלי קשר ליחידה שבה מודדים אותו. במכניקה כל ממד בנוי משלושה ממדי יסוד, מסה (M), אורך (L) וזמן (T), ולכן כותבים [x] = MᵃLᵇTᶜ. למשל, למהירות יש ממד L T⁻¹, ביחידות SI m/s.
+  lesson: '0.1'
+
+- id: dimensionless
+  term: חסר ממדים
+  en: dimensionless
+  definition: גודל שכל המעריכים של M, L ו-T שלו אפס, כמו מספר טהור, זווית ברדיאנים או מנה של שני גדלים מאותו ממד. הערך שלו לא משתנה כשמחליפים יחידות.
+  lesson: '0.1'
+
 - id: dimensional-analysis
   term: ניתוח ממדים
   en: dimensional analysis
@@ -11,5 +23,17 @@
 - id: order-of-magnitude
   term: סדר גודל
   en: order of magnitude
-  definition: החזקה של 10 הקרובה ביותר לערך של גודל. הערכת סדר גודל עונה על השאלה "בערך כמה" בלי חישוב מדויק, ובודקת אם תוצאה סבירה.
+  definition: החזקה של 10 הקרובה ביותר לערך של גודל בסולם לוגריתמי (מעגלים את log₁₀ של הערך למספר שלם, ולכן הגבול בין 10ⁿ ל-10ⁿ⁺¹ הוא בערך 3.16·10ⁿ). הערכת סדר גודל עונה על השאלה "בערך כמה" בלי חישוב מדויק, ובודקת אם תוצאה סבירה.
+  lesson: '0.1'
+
+- id: fermi-estimate
+  term: הערכת פרמי
+  en: Fermi estimate
+  definition: הערכת סדר גודל שבנויה ממכפלה של כמה גורמים שכל אחד מהם קל להעריך. השגיאות של הגורמים קטנות בסולם לוגריתמי ולעתים מבטלות זו את זו, ולכן התוצאה נכונה בדרך כלל עד כדי פקטור של 2 או 3.
+  lesson: '0.1'
+
+- id: limit-check
+  term: בדיקת גבולות
+  en: limit check
+  definition: בדיקה של תוצאה סימבולית במקרה קיצון שהתשובה שלו ידועה מראש, למשל זווית אפס, חיכוך אפס או זמן ארוך מאוד. תוצאה שנכשלת בבדיקה כזו שגויה, גם אם הממדים שלה נכונים.
   lesson: '0.1'

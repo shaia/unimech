@@ -10,6 +10,14 @@
 #   g at h = 10 km with R_EARTH: Δg ≈ 2gh/R = 0.0308 m/s² (exact 0.0307; 0.0154 with n = −1);
 #   v = 7.8 km/s, C_LIGHT: γ − 1 ≈ v²/(2c²) = 3.38e-10 (β² = 6.76e-10, β/2 = 1.30e-5);
 #   0.99^100 = 0.366, e^(−1) = 0.368.
+# Added with the lesson (2026-11-17): Q-0.3-error-scaling, an order-2 error 0.008 at distance 0.2 scales as the
+#   cube of the distance: 0.008/2³ = 0.001 at 0.1 (0.004 linear, 0.002 quadratic, 0.008 unchanged). Checked in
+#   tests/physics/taylor.test.ts ("halving the distance divides it by 2ⁿ⁺¹").
+# Review (2026-11-17, .scratch/review/ch0/0-3/recompute.ts, independent of the authors' scripts): every number above
+#   recomputed (sin θ ≈ θ is 1% off at 13.99° exactly). Q-0.3-damping-cycles moved to mid (the lesson's predict
+#   resolution works the same case). Added Q-0.3-potential-minimum (bagrut, an expansion built by hand about x₀ ≠ 0):
+#   U = U₀(x/a + a/x), U₀ = 0.50 J, a = 0.10 m: k = U″(a) = 2U₀/a² = 100 N/m (50 = ½U″, 1000 = 2U₀/a³, 1 J = U(a));
+#   at x = 1.2a the harmonic form gives 0.020 J against the exact 0.0167 J (20%).
 
 chapter: 0
 questions:
@@ -84,7 +92,9 @@ questions:
           $R\omega^2$.
         misconception: MC-0-constant-speed-no-acceleration
       - text: הנקודה נדחפת החוצה מהמעגל, ולכן התאוצה מצביעה החוצה.
-        feedback: 'הנגזרת השנייה של $\vec r$ היא $-\omega^2\vec r$, עם מינוס: פנימה. אין כאן כוח שדוחף החוצה.'
+        feedback: >-
+          הנגזרת השנייה של $\vec r$ היא $-\omega^2\vec r$, עם מינוס: פנימה. אין כאן כוח שדוחף החוצה. התחושה של
+          נוסע במכונית בפנייה, שהוא "נדחף החוצה", שייכת למערכת הצירים המסתובבת שלו, ונחזור אליה בפרק 7.
     hints:
       - '$\dfrac{d}{dt}\cos\omega t = -\omega\sin\omega t$, לפי כלל השרשרת.'
 
@@ -199,6 +209,35 @@ questions:
     hints:
       - 'השגיאה היחסית היא בקירוב $\dfrac{\theta^3/6}{\theta}$.'
 
+  - id: Q-0.3-error-scaling
+    type: mc
+    objectives: [OBJ-0.3-2]
+    qualitative: true
+    level: mid
+    prompt: >-
+      קירוב מסדר שני של פונקציה חלקה $f$ סביב נקודה $x_0$ שוגה ב-$0.008$ בנקודה $x_0 + 0.2$. האיבר מסדר שלישי
+      בפיתוח של $f$ סביב $x_0$ אינו אפס. בערך בכמה שוגה אותו קירוב בנקודה $x_0 + 0.1$?
+    choices:
+      - text: $0.001$
+        correct: true
+        feedback: >-
+          נכון. השגיאה היא בערך האיבר הראשון שהוזנח, $\tfrac16f'''(x_0)(x - x_0)^3$. כשהמרחק מ-$x_0$ קטן פי 2,
+          השגיאה קטנה פי $2^3 = 8$.
+      - text: $0.004$
+        feedback: >-
+          זה נכון רק אילו השגיאה הייתה פרופורציונית למרחק עצמו. אבל הקירוב כבר כולל את האיבר הקווי ואת
+          הריבועי; מה שנשאר מתחיל בחזקה השלישית של המרחק.
+        misconception: MC-0-error-linear-in-distance
+      - text: $0.002$
+        feedback: >-
+          הקטנתם פי $2^2$, כמו האיבר האחרון ש**נשמר**. השגיאה היא האיבר הראשון ש**הוזנח**, מסדר שלישי, ולכן
+          היא קטנה פי $2^3$.
+        misconception: MC-0-error-linear-in-distance
+      - text: $0.008$, כי השגיאה תלויה רק בסדר של הקירוב
+        feedback: 'השגיאה תלויה במרחק מנקודת הפיתוח: בנקודה $x_0$ עצמה היא אפס, והיא גדלה ככל שמתרחקים.'
+    hints:
+      - 'מה החזקה של $(x - x_0)$ באיבר הראשון שקירוב מסדר שני מזניח?'
+
   - id: Q-0.3-g-altitude
     type: numeric
     objectives: [OBJ-0.3-2]
@@ -222,6 +261,39 @@ questions:
     hints:
       - '$x = h/R = 10^4/(6.37\cdot10^6)$, ו-$n = -2$.'
 
+  - id: Q-0.3-potential-minimum
+    type: numeric
+    objectives: [OBJ-0.3-2]
+    level: bagrut
+    prompt: >-
+      האנרגיה הפוטנציאלית של חלקיק שנע על ציר $x$, עם $x > 0$, היא
+      $U(x) = U_0\left(\dfrac{x}{a} + \dfrac{a}{x}\right)$, כאשר $U_0 = 0.50\,\text{J}$ ו-$a = 0.10\,\text{m}$. ב-$x = a$
+      יש לה מינימום. בונים לה פיתוח טיילור מסדר שני סביב $x_0 = a$ וכותבים אותו בצורה
+      $U(x) \approx U(a) + \tfrac12k\,(x - a)^2$, כמו האנרגיה של קפיץ. מה $k$, ב-$\text{N/m}$?
+    answer: 100
+    unit: N/m
+    correctFeedback: >-
+      נכון. $U'(x) = U_0\left(\dfrac1a - \dfrac{a}{x^2}\right)$ מתאפסת ב-$x = a$, ולכן אין איבר קווי. גוזרים שוב:
+      $U''(x) = \dfrac{2U_0a}{x^3}$, וב-$x = a$: $U''(a) = \dfrac{2U_0}{a^2}$. המקדם של $(x - a)^2$ בפיתוח הוא
+      $\tfrac12U''(a)$, ולכן $k = U''(a) = \dfrac{2\cdot0.50}{0.10^2} = 100\,\text{N/m}$. **בדיקת יחידות:**
+      $\text{J/m}^2 = \text{N/m}$. **כמה טוב הקירוב:** ב-$x = 1.2a$ הוא נותן $U - U(a) = 0.020\,\text{J}$, והערך
+      המדויק $0.0167\,\text{J}$: שגיאה של $20\%$, כי $(x - a)/a = 0.2$ כבר לא קטן מספיק.
+    wrongFeedback: >-
+      גזרו את $U$ פעמיים, והציבו $x = a$ רק בסוף. השוו את $\tfrac12U''(a)\,(x - a)^2$ ל-$\tfrac12k\,(x - a)^2$.
+    commonWrong:
+      - value: 50
+        feedback: >-
+          זה $\tfrac12U''(a)$, המקדם של $(x - a)^2$. אבל בצורה $\tfrac12k\,(x - a)^2$ ה-$\tfrac12$ כבר כתוב, ולכן
+          $k = U''(a)$.
+      - value: 1000
+        feedback: >-
+          זה $2U_0/a^3$: איבדתם את ה-$a$ שבמונה. $\dfrac{d^2}{dx^2}\dfrac{a}{x} = \dfrac{2a}{x^3}$, וב-$x = a$ זה
+          $\dfrac{2}{a^2}$. בדיקת יחידות הייתה תופסת את זה: $\text{J/m}^3$ אינו $\text{N/m}$.
+      - value: 1
+        feedback: 'זה $U(a) = 2U_0$, בג׳אול: האיבר מסדר אפס. $k$ הוא העקמומיות, הנגזרת השנייה ב-$x = a$.'
+    hints:
+      - '$\dfrac{d}{dx}\dfrac{a}{x} = -\dfrac{a}{x^2}$, ו-$\dfrac{d}{dx}\left(-\dfrac{a}{x^2}\right) = \dfrac{2a}{x^3}$.'
+
   - id: Q-0.3-gamma-satellite
     type: numeric
     objectives: [OBJ-0.3-2]
@@ -229,7 +301,8 @@ questions:
     prompt: >-
       בתורת היחסות מופיע הגורם $\gamma = \left(1 - v^2/c^2\right)^{-1/2}$. לוויין נע במהירות
       $v = 7.8\,\text{km/s}$, ו-$c = 3.0\cdot10^8\,\text{m/s}$. מחשבון שמציג עשר ספרות מראה כאן $\gamma = 1$. חשבו
-      בעזרת הקירוב $(1 + x)^n \approx 1 + nx$ את ההפרש $\gamma - 1$.
+      בעזרת הקירוב $(1 + x)^n \approx 1 + nx$ את ההפרש $\gamma - 1$. (מספר כמו $2.5\cdot10^{-7}$ מקלידים
+      2.5e-7 או 2.5*10^-7.)
     answer: 3.38e-10
     unit: ''
     correctFeedback: >-
@@ -252,7 +325,7 @@ questions:
     type: mc
     objectives: [OBJ-0.3-2]
     qualitative: true
-    level: bagrut
+    level: mid
     prompt: >-
       האמפליטודה של מתנד עם ריסון חלש קטנה בכל מחזור בחלק קטן $\varepsilon = 0.01$ מערכה, ולכן אחרי $N$ מחזורים
       היא $A_N = A_0(1 - \varepsilon)^N$. סטודנט מקרב $(1 - \varepsilon)^N \approx 1 - N\varepsilon$ ומחשב את

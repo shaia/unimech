@@ -1,0 +1,32 @@
+# Videos of lesson 0.6. Both ids were checked against YouTube oEmbed on the `verified` date (status 200,
+# embeddable; title and channel exactly as returned). Lengths come from the watch page (lengthSeconds) and the
+# caption tracks from its captionTracks list. `why` claims only what the title and the description support:
+# - the Technion clip: title "הצגה טריגונומטרית של מספר מרוכב", description "קליפ 17 של פרק 11 מתוך קורס ההכנה
+#   במתמטיקה של הטכניון, מרצה ד״ר אביב צנזור"; 824 s; only auto-generated Hebrew captions (not listed). Its
+#   transcript could not be fetched.
+# - 3Blue1Brown: the description's chapters "1:51 Euler's formula explained dynamically", "9:27 The harmonic
+#   oscillator", "21:08 General linear equations"; the clip is cut to 1:51–21:08 (111–1268 s); 1669 s in all;
+#   English captions uploaded by the channel.
+
+- id: v-0-6-polar-form-technion
+  youtubeId: BPJFskOxFu0
+  title: מספרים מרוכבים - 17 - הצגה טריגונומטרית של מספר מרוכב
+  channel: הטכניון - מכון טכנולוגי לישראל
+  lang: he
+  captions: []
+  start: 0
+  minutes: 14
+  why: 'קליפ מקורס ההכנה במתמטיקה של הטכניון, בעברית (מרצה: ד״ר אביב צנזור), על ההצגה הטריגונומטרית של מספר מרוכב: הגודל והזווית במקום החלק הממשי והמדומה. זו ההצגה z = |z|(cos φ + i sin φ) של השיעור, לפני שהיא נכתבת כ-|z|e^(iφ). בזמן הצפייה שימו לב איך נקבעת הזווית כשהחלק הממשי שלילי.'
+  verified: '2026-11-17'
+
+- id: v-0-6-euler-physics
+  youtubeId: -j8PzkZ70Lg
+  title: The Physics of Euler's Formula | Laplace Transform Prelude
+  channel: 3Blue1Brown
+  lang: en
+  captions: [en]
+  start: 111
+  end: 1268
+  minutes: 19
+  why: 'מערוץ 3Blue1Brown, באנגלית. לפי רשימת הפרקים בתיאור, הקטע הזה מסביר את נוסחת אוילר דרך תנועה (מדקה 1:51) ואחר כך את המתנד ההרמוני (מדקה 9:27), שבו האקספוננט המרוכב פותר את משוואת התנועה. זה המסלול של השיעור: e בחזקת iωt כחץ מסתובב, ותנודה ממשית כחלק הממשי שלו.'
+  verified: '2026-11-17'

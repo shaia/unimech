@@ -1,0 +1,504 @@
+# Workbook, lesson 0.4 (integrals: from sum to accumulation). Format and rules: .claude/CLAUDE.md, "The solution
+# format" (law … limit, units, result). In a >- block, consecutive lines fold into one paragraph: every part
+# (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-4/numbers.ts with src/physics/accumulate.ts, calculus.ts (riemann)
+# and G = 9.8 from constants.ts:
+#   W-02: v = 0.60t², 0…5.0 s: Δx = 25.0 m, v(5) = 15 m/s (15·5 = 75 m is the wrong product);
+#   W-03: λ = 0.30 + 0.60x/L at the middles of 5 pieces: 0.36, 0.48, 0.60, 0.72, 0.84 kg/m (ratio 2.33), mean 0.60
+#         (moved in review off 0.20…0.80 kg/m, which is the lesson's own tapered rod);
+#   W-09 and the lesson's ex-0-4-4 integrate (1 − z/h)² by expanding the square: the lesson never teaches substitution;
+#   W-04: a = a_m sin(πt/τ), a_m = 1.5·10⁴ m/s², τ = 5.0 ms: Δv = 2a_mτ/π = 47.7 m/s (a_mτ = 75), ā = 9.55·10³,
+#         −20 m/s → +27.7 m/s;
+#   W-05: v = 4 − 2√t, 0…9 s: displacement 0, distance 32/3 = 10.7 m, x_max = 16/3 = 5.33 m at t = 4 s;
+#   W-06: v = 0, 8, 14, 18, 20 m/s every 2.0 s: left 80 m, right 120 m, trapezoid 100 m;
+#   W-07: λ = λ₀√(x/L), λ₀ = 0.60 kg/m, L = 1.5 m: M = 2λ₀L/3 = 0.600 kg, x_cm = 3L/5 = 0.900 m (λ₀L = 0.90);
+#   W-08: a = a₀ sin(2πt/T), a₀ = 1.2 m/s², T = 8.0 s, from rest: v_max = a₀T/π = 3.06 m/s, Δy = a₀T²/(2π) = 12.2 m,
+#         half of it, 6.11 m, by T/2;
+#   W-09: cone R = 2.0 m, h = 6.0 m, ρ = 2.5·10³ kg/m³: M = ρπR²h/3 = 6.28·10⁴ kg, z_cm = h/4 = 1.50 m
+#         (a cylinder 1.88·10⁵ kg);
+#   W-10: a = 0, 1.2, 1.8, 1.2, 0 m/s² each 1.0 s: v = 0, 0.6, 2.1, 3.6, 4.2 m/s, x = 0, 0.3, 1.65, 4.5, 8.4 m;
+#   c1:   hose L = 15 m, λ = 3.0 kg/m: W = λgL²/2 = 3.31·10³ J (MgL = 6.62·10³ J);
+#   c2:   pail 1.0 kg, paint 5.0 kg, H = 9.0 m, 1/5 leaks: W = gH(m_b + 0.9m_p) = 485 J (529 J without the leak,
+#         309 J if all of it leaked; weight 58.8 N at the bottom, 49.0 N at the top).
+
+lesson: '0.4'
+practice:
+  - id: W-0.4-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      כדור נזרק אנכית כלפי מעלה במהירות $u$, עולה לגובה מרבי $h$ ונתפס ביד באותו גובה שממנו נזרק. הציר החיובי
+      כלפי מעלה. גרף המהירות שלו הוא קו ישר שיורד מ-$u$ ל-$(-u)$.
+
+      א. מה הערך של $\int v\,dt$ על כל זמן התעופה? נמקו בעזרת השטחים שמעל הציר ומתחתיו.
+
+      ב. מה $\int|v|\,dt$ על אותו זמן, בעזרת $h$?
+
+      ג. מה $\int a\,dt$ על אותו זמן, ומה פירושו?
+    answer: >-
+      א. אפס. ב. $2h$. ג. $(-2u)$: השינוי במהירות, מ-$u$ ל-$(-u)$.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי כלפי מעלה, הראשית ביד. $v$ יורדת בקו ישר מ-$u$ ל-$(-u)$, ומתאפסת באמצע הזמן, בשיא.
+      - kind: law
+        text: >-
+          $\int v\,dt = \Delta y$ (שטח עם סימן); $\int|v|\,dt$ הדרך; $\int a\,dt = \Delta v$.
+      - kind: reasoning
+        text: >-
+          א. הגרף יוצר שני משולשים חופפים, אחד מעל הציר ואחד מתחתיו: השטחים שווים והפוכים בסימן, ולכן הסכום אפס.
+          זה ההעתק: הכדור חוזר ליד.
+
+          ב. בלי הסימן כל משולש תורם $h$, הגובה שהכדור עלה או ירד.
+
+          ג. $a = -g$ קבועה, ולכן $\int a\,dt = -gT$, וזה $v_\text{end} - v_\text{start} = -u - u = -2u$.
+      - kind: limit
+        text: >-
+          אם הכדור נתפס בשיא, אחרי חצי מהזמן, $\int v\,dt = \int|v|\,dt = h$: עד השיא $v$ לא מחליפה סימן, וההעתק
+          והדרך שווים.
+      - kind: units
+        text: >-
+          $\int v\,dt$ ו-$\int|v|\,dt$ במטרים; $\int a\,dt$ ב-$\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $\int v\,dt = 0$. ב. $\int|v|\,dt = 2h$. ג. $\int a\,dt = -2u$.
+
+  - id: W-0.4-02
+    level: basic
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      מכונית מרוץ מזנקת ממנוחה, והמהירות שלה בחמש השניות הראשונות היא $v(t) = 0.60\,t^2$ (עם $v$ ב-$\text{m/s}$ ו-$t$
+      בשניות). כמה מטרים היא עוברת בחמש השניות האלה? ומה הייתה התשובה של מי שכופל את המהירות בסוף בזמן?
+    answer: >-
+      $25.0\,\text{m}$; הכפל השגוי נותן $75\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי בכיוון הנסיעה, הראשית בקו הזינוק. $v(t) = 0.60\,t^2 \ge 0$, ולכן ההעתק הוא גם הדרך.
+      - kind: law
+        text: >-
+          $\Delta x = \displaystyle\int_0^T v\,dt$.
+      - kind: manipulation
+        text: >-
+          $\Delta x = \displaystyle\int_0^T 0.60\,t^2\,dt = 0.60\left[\frac{t^3}{3}\right]_0^T = 0.20\,T^3$.
+      - kind: limit
+        text: >-
+          המהירות גדלה, ולכן ההעתק קטן מ-$v(T)\cdot T$ (המהירות הגבוהה כל הזמן) וגדול מאפס. כאן יוצא בדיוק שליש
+          מ-$v(T)\cdot T$, כמו השטח מתחת לפרבולה בתוך המלבן שחוסם אותה.
+      - kind: units
+        text: >-
+          המקדם $0.60$ ב-$\text{m/s}^3$, ולכן $0.20\,T^3$ במטרים.
+      - kind: substitution
+        text: >-
+          $\Delta x = 0.20\cdot5.0^3 = 25.0\,\text{m}$. $v(5.0) = 15\,\text{m/s}$, ו-$15\cdot5.0 = 75\,\text{m}$.
+      - kind: result
+        text: >-
+          $25.0\,\text{m}$, שליש מ-$75\,\text{m}$ של הכפל השגוי.
+
+  - id: W-0.4-03
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.4-2]
+    prompt: >-
+      הצפיפות הקווית של מוט באורך $L$ עולה בקו ישר מ-$0.30\,\text{kg/m}$ בקצה אחד ל-$0.90\,\text{kg/m}$ בקצה השני.
+      חותכים אותו לחמש חתיכות שוות.
+
+      א. איזו חתיכה הכי כבדה, ופי כמה היא כבדה מהקלה ביותר? (קחו את הצפיפות של כל חתיכה באמצע שלה.)
+
+      ב. קבעו ונמקו: המסה של המוט גדולה מ-$0.30\,\text{kg/m}\cdot L$ וקטנה מ-$0.90\,\text{kg/m}\cdot L$. בין אילו
+      ערכים היא, ולמה הממוצע של שתי הצפיפויות בקצוות נותן כאן את התשובה המדויקת?
+    answer: >-
+      א. החתיכה בקצה הצפוף, פי $2.33$ מזו שבקצה הדליל. ב. $M = 0.60\,\text{kg/m}\cdot L$, כי הצפיפות ליניארית.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ לאורך המוט, מהקצה הדליל. $\lambda(x) = 0.30 + 0.60\,x/L$ (ב-$\text{kg/m}$). אמצעי החתיכות ב-$x/L = 0.1$,
+          $0.3$, $0.5$, $0.7$, $0.9$.
+      - kind: law
+        text: >-
+          $\Delta m_i = \lambda(x_i)\,\Delta x$, ו-$M = \int_0^L\lambda\,dx$.
+      - kind: reasoning
+        text: >-
+          א. לכל החתיכות אותו רוחב, ולכן המסה שלהן ביחס לצפיפות: $0.36$, $0.48$, $0.60$, $0.72$ ו-$0.84\,\text{kg/m}$
+          כפול $\Delta x$. הכבדה ביותר היא האחרונה, והיחס $0.84/0.36 = 2.33$.
+
+          ב. בכל נקודה $0.30 \le \lambda \le 0.90$, ולכן גם האינטגרל בין $0.30L$ ל-$0.90L$. הצפיפות ליניארית: כל
+          חתיכה במרחק $s$ מאמצע המוט, בצד הצפוף, צפופה מהממוצע בדיוק בכמה שהחתיכה הסימטרית לה דלילה ממנו. העודף
+          והחוסר מתבטלים, ו-$M = \bar\lambda L$ עם $\bar\lambda = \tfrac12(0.30 + 0.90) = 0.60\,\text{kg/m}$.
+      - kind: limit
+        text: >-
+          אם שתי הצפיפויות בקצוות שוות, המוט אחיד, וכל החתיכות שוות: היחס 1 ו-$M = \lambda L$.
+      - kind: units
+        text: >-
+          $\text{kg/m}\cdot\text{m} = \text{kg}$.
+      - kind: result
+        text: >-
+          א. החתיכה בקצה הצפוף, פי $2.33$. ב. $M = 0.60\,\text{kg/m}\cdot L$: בצפיפות ליניארית הממוצע של הקצוות הוא
+          הצפיפות הממוצעת. לצפיפות שאינה ליניארית זה לא נכון.
+
+  - id: W-0.4-04
+    level: mid
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      כדור טניס מגיע אל המחבט במהירות $20\,\text{m/s}$. המחבט דוחף אותו לאורך זמן מגע $\tau = 5.0\,\text{ms}$, והתאוצה
+      שלו, בכיוון ההתרחקות מהמחבט, היא $a(t) = a_m\sin\left(\pi t/\tau\right)$ עם $a_m = 1.5\cdot10^{4}\,\text{m/s}^2$.
+
+      א. בכמה משתנה מהירות הכדור? מה התאוצה הממוצעת?
+
+      ב. מה המהירות שלו כשהוא עוזב את המחבט?
+    answer: >-
+      א. $\Delta v = 47.7\,\text{m/s}$; תאוצה ממוצעת $9.55\cdot10^{3}\,\text{m/s}^2$. ב. $27.7\,\text{m/s}$ הרחק מהמחבט.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי בכיוון ההתרחקות מהמחבט. לפני המגע $v = -20\,\text{m/s}$ (הכדור נע אל המחבט). $0 \le t \le \tau$.
+      - kind: law
+        text: >-
+          $\Delta v = \displaystyle\int_0^\tau a\,dt$; התאוצה הממוצעת $\bar a = \Delta v/\tau$.
+      - kind: manipulation
+        text: >-
+          $\Delta v = a_m\left[-\dfrac{\tau}{\pi}\cos\dfrac{\pi t}{\tau}\right]_0^\tau = \dfrac{a_m\tau}{\pi}\left(1 - (-1)\right) = \dfrac{2a_m\tau}{\pi}$,
+          ולכן $\bar a = \dfrac{2a_m}{\pi}$.
+      - kind: limit
+        text: >-
+          התאוצה הממוצעת, $0.64\,a_m$, בין 0 ל-$a_m$, כמו שצריך לממוצע. אילו התאוצה הייתה $a_m$ כל הזמן, השינוי היה
+          $a_m\tau$, ותמיד גדול מ-$2a_m\tau/\pi$.
+      - kind: units
+        text: >-
+          $\text{m/s}^2\cdot\text{s} = \text{m/s}$.
+      - kind: substitution
+        text: >-
+          $\Delta v = 2\cdot1.5\cdot10^{4}\cdot5.0\cdot10^{-3}/\pi = 47.7\,\text{m/s}$; $\bar a = 9.55\cdot10^{3}\,\text{m/s}^2$;
+          $v_\text{final} = -20 + 47.7 = 27.7\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. $47.7\,\text{m/s}$, וממוצע $9.55\cdot10^{3}\,\text{m/s}^2$. ב. $27.7\,\text{m/s}$, הרחק מהמחבט.
+
+  - id: W-0.4-05
+    level: mid
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      חלקיק נע על ציר במהירות $v(t) = 4 - 2\sqrt t$ (עם $v$ ב-$\text{m/s}$ ו-$t$ בשניות), מ-$t = 0$ עד $t = 9\,\text{s}$.
+
+      א. מה ההעתק שלו בקטע הזה?
+
+      ב. מה הדרך שעבר, ומה המרחק הגדול ביותר שלו מנקודת ההתחלה?
+    answer: >-
+      א. $0$. ב. $10.7\,\text{m}$; הכי רחוק $5.33\,\text{m}$, ב-$t = 4\,\text{s}$.
+    solution:
+      - kind: given
+        text: >-
+          הכיוון החיובי של הציר נתון, הראשית בנקודת ההתחלה. $v = 0$ כש-$\sqrt t = 2$, כלומר ב-$t = 4\,\text{s}$: לפני
+          כן $v > 0$, אחר כך $v < 0$.
+      - kind: law
+        text: >-
+          $x(t) = \displaystyle\int_0^tv\,dt'$; הדרך $\int|v|\,dt$ בקטעים שבין רגעי העצירה.
+      - kind: manipulation
+        text: >-
+          $x(t) = 4t - \tfrac43t^{3/2}$. $x(9) = 36 - \tfrac43\cdot27 = 0$. $x(4) = 16 - \tfrac43\cdot8 = \tfrac{16}{3}$.
+          הדרך $|x(4) - x(0)| + |x(9) - x(4)| = \tfrac{16}{3} + \tfrac{16}{3} = \tfrac{32}{3}$.
+      - kind: limit
+        text: >-
+          בזמן קצר $x \approx 4t$, כמו במהירות ההתחלתית. והדרך לא קטנה מגודל ההעתק: כאן ההעתק אפס והדרך לא.
+      - kind: units
+        text: >-
+          המקדם $2$ ב-$\sqrt t$ הוא ב-$\text{m/s}^{3/2}$, ולכן $\tfrac43t^{3/2}$ במטרים.
+      - kind: result
+        text: >-
+          א. ההעתק אפס: ב-$t = 9\,\text{s}$ החלקיק חזר. ב. הדרך $10.7\,\text{m}$; המרחק הגדול ביותר $5.33\,\text{m}$, ב-$t = 4\,\text{s}$.
+
+  - id: W-0.4-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      נהג רושם את מד המהירות כל $2.0\,\text{s}$ בזמן שהמכונית מאיצה: $0$, $8$, $14$, $18$ ו-$20\,\text{m/s}$, ב-$t = 0$,
+      $2$, $4$, $6$ ו-$8\,\text{s}$. המהירות עולה כל הזמן, ובקצב שהולך וקטן.
+
+      א. העריכו את הדרך בשמונה השניות פעם עם המהירות בתחילת כל קטע ופעם עם המהירות בסופו. איזו הערכה גבוהה מדי,
+      ואיזו נמוכה מדי? נמקו בלי לדעת את $v(t)$ המדויקת.
+
+      ב. מה נותן הממוצע של שתי ההערכות? האם הוא גבוה מהערך האמיתי או נמוך ממנו?
+    answer: >-
+      א. $80\,\text{m}$ (נמוכה מדי) ו-$120\,\text{m}$ (גבוהה מדי). ב. $100\,\text{m}$, קצת נמוך מהאמת.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי בכיוון הנסיעה. $\Delta t = 2.0\,\text{s}$; $v \ge 0$ ועולה, ולכן ההעתק הוא הדרך.
+      - kind: law
+        text: >-
+          $\Delta x = \int v\,dt \approx \sum v(t_i)\,\Delta t$.
+      - kind: reasoning
+        text: >-
+          א. כש-$v$ עולה, המהירות בתחילת כל קטע היא הנמוכה ביותר בו: כל מלבן כזה נמצא מתחת לגרף, והסכום נמוך מדי.
+          המהירות בסוף הקטע היא הגבוהה ביותר, והסכום שלה גבוה מדי. הדרך האמיתית ביניהם.
+
+          ב. הממוצע שלהם הוא סכום של טרפזים, שמחברים את הנקודות הנמדדות בקווים ישרים. כאן הקצב שבו המהירות עולה
+          הולך וקטן: הגרף מתעקם כלפי מטה, והוא **מעל** כל קו ישר שמחבר שתי נקודות שלו. לכן הטרפזים קצת מתחת לגרף,
+          והממוצע נמוך מעט מהאמת.
+      - kind: limit
+        text: >-
+          כשהמהירות קבועה שתי ההערכות שוות לדרך האמיתית. וכש-$\Delta t \to 0$ ההפרש ביניהן, $\left(v_\text{end} - v_\text{start}\right)\Delta t$,
+          שואף לאפס.
+      - kind: units
+        text: >-
+          $\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $2.0\cdot(0 + 8 + 14 + 18) = 80\,\text{m}$; $2.0\cdot(8 + 14 + 18 + 20) = 120\,\text{m}$; הממוצע $100\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $80\,\text{m}$, נמוכה מדי; $120\,\text{m}$, גבוהה מדי. ב. $100\,\text{m}$, קצת פחות מהדרך האמיתית.
+
+  - id: W-0.4-07
+    level: mid
+    objectives: [OBJ-0.4-2]
+    prompt: >-
+      למוט באורך $L = 1.5\,\text{m}$, מ-$x = 0$ עד $x = L$, יש צפיפות קווית $\lambda(x) = \lambda_0\sqrt{x/L}$, עם
+      $\lambda_0 = 0.60\,\text{kg/m}$. מצאו את המסה שלו ואת מקום מרכז המסה.
+    answer: >-
+      $M = 0.600\,\text{kg}$; $x_\text{cm} = 0.900\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $x$ לאורך המוט, הראשית בקצה הדליל, שבו $\lambda = 0$.
+      - kind: law
+        text: >-
+          $M = \displaystyle\int_0^L\lambda\,dx$, $x_\text{cm} = \dfrac1M\displaystyle\int_0^Lx\,\lambda\,dx$.
+      - kind: manipulation
+        text: >-
+          $M = \dfrac{\lambda_0}{\sqrt L}\displaystyle\int_0^Lx^{1/2}dx = \dfrac{\lambda_0}{\sqrt L}\cdot\dfrac23L^{3/2} = \dfrac23\lambda_0L$;
+          $\displaystyle\int_0^Lx\,\lambda\,dx = \dfrac{\lambda_0}{\sqrt L}\cdot\dfrac25L^{5/2} = \dfrac25\lambda_0L^2$, ולכן
+          $x_\text{cm} = \dfrac{2/5}{2/3}\,L = \dfrac35L$.
+      - kind: limit
+        text: >-
+          לצפיפות $\lambda \propto x^n$ אותו חישוב נותן $x_\text{cm} = \dfrac{n + 1}{n + 2}\,L$: ב-$n = 0$ (אחיד) $L/2$,
+          ב-$n = 1$ $2L/3$, וכאן, ב-$n = \tfrac12$, $3L/5$, בין השניים.
+      - kind: units
+        text: >-
+          $\lambda_0L$ בקילוגרמים; $x_\text{cm}$ הוא מספר כפול $L$, ולכן במטרים.
+      - kind: substitution
+        text: >-
+          $M = \tfrac23\cdot0.60\cdot1.5 = 0.600\,\text{kg}$; $x_\text{cm} = 0.6\cdot1.5 = 0.900\,\text{m}$.
+      - kind: result
+        text: >-
+          $M = 0.600\,\text{kg}$, ומרכז המסה $0.900\,\text{m}$ מהקצה הדליל.
+
+  - id: W-0.4-08
+    level: bagrut
+    objectives: [OBJ-0.4-1]
+    prompt: >-
+      מעלית יוצאת ממנוחה כלפי מעלה, והתאוצה שלה (הציר החיובי כלפי מעלה) היא $a(t) = a_0\sin\left(2\pi t/T\right)$
+      בזמן $0 \le t \le T$, עם $a_0 = 1.2\,\text{m/s}^2$ ו-$T = 8.0\,\text{s}$.
+
+      א. מצאו את $v(t)$. קבעו ונמקו: האם המעלית נוסעת אי פעם כלפי מטה? ומה מהירותה ב-$t = T$?
+
+      ב. מה המהירות המרבית, ובכמה מטרים עלתה המעלית עד $t = T$?
+    answer: >-
+      א. $v = \dfrac{a_0T}{2\pi}\left(1 - \cos\dfrac{2\pi t}{T}\right) \ge 0$; ב-$t = T$ היא שוב במנוחה. ב. $3.06\,\text{m/s}$; $12.2\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי כלפי מעלה, הראשית בנקודת היציאה. $v(0) = 0$, $y(0) = 0$.
+      - kind: law
+        text: >-
+          $v(t) = v(0) + \displaystyle\int_0^ta\,dt'$, $y(t) = y(0) + \displaystyle\int_0^tv\,dt'$.
+      - kind: manipulation
+        text: >-
+          $v(t) = a_0\left[-\dfrac{T}{2\pi}\cos\dfrac{2\pi t'}{T}\right]_0^t = \dfrac{a_0T}{2\pi}\left(1 - \cos\dfrac{2\pi t}{T}\right)$.
+          $1 - \cos \ge 0$, ולכן $v \ge 0$ כל הזמן, והמהירות מתאפסת שוב ב-$t = T$. היא מרבית כש-$\cos = -1$, ב-$t = T/2$,
+          כשהתאוצה מחליפה סימן: $v_{\max} = a_0T/\pi$. אחר כך
+          $y(T) = \dfrac{a_0T}{2\pi}\displaystyle\int_0^T\left(1 - \cos\dfrac{2\pi t}{T}\right)dt = \dfrac{a_0T}{2\pi}\cdot T$,
+          כי האינטגרל של הקוסינוס על מחזור שלם אפס.
+      - kind: limit
+        text: >-
+          כש-$a_0 \to 0$ המעלית לא זזה. ו-$y(T) = \tfrac12v_{\max}T$, כמו בתנועה שבה המהירות עולה בקו ישר ל-$v_{\max}$
+          ויורדת בקו ישר לאפס, אף שכאן הצורה שונה: הגרף של $v$ סימטרי סביב $T/2$, כמו משולש.
+      - kind: units
+        text: >-
+          $a_0T$ ב-$\text{m/s}$; $a_0T^2$ במטרים.
+      - kind: substitution
+        text: >-
+          $v_{\max} = 1.2\cdot8.0/\pi = 3.06\,\text{m/s}$; $y(T) = 1.2\cdot64/(2\pi) = 12.2\,\text{m}$, חצי מזה, $6.11\,\text{m}$,
+          עד $T/2$.
+      - kind: result
+        text: >-
+          א. $v \ge 0$ תמיד, ו-$v(T) = 0$. ב. $v_{\max} = 3.06\,\text{m/s}$ ב-$t = 4.0\,\text{s}$; המעלית עלתה $12.2\,\text{m}$.
+
+  - id: W-0.4-09
+    level: bagrut
+    objectives: [OBJ-0.4-2]
+    prompt: >-
+      אנדרטה עשויה אבן בצורת קונוס, ברדיוס בסיס $R = 2.0\,\text{m}$ ובגובה $h = 6.0\,\text{m}$, והצפיפות של האבן
+      $\rho = 2.5\cdot10^{3}\,\text{kg/m}^3$.
+
+      א. חתכו את הקונוס לפרוסות אופקיות דקות, ובנו ממנן אינטגרל למסה. הראו שהוא נותן את נוסחת הנפח המוכרת של קונוס.
+
+      ב. באיזה גובה מעל הבסיס נמצא מרכז המסה?
+    answer: >-
+      א. $M = \dfrac13\rho\pi R^2h = 6.28\cdot10^{4}\,\text{kg}$. ב. $h/4 = 1.50\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $z$ אנכי כלפי מעלה, הראשית במרכז הבסיס. בגובה $z$ הרדיוס יורד בקו ישר: $r(z) = R\left(1 - z/h\right)$.
+      - kind: law
+        text: >-
+          פרוסה בגובה $z$ ובעובי $dz$ היא דסקה בנפח $\pi r(z)^2dz$, ולכן $dm = \rho\pi r(z)^2dz$; $M = \int dm$ ו-$z_\text{cm} = \frac1M\int z\,dm$.
+      - kind: manipulation
+        text: >-
+          פותחים $\left(1 - z/h\right)^2 = 1 - 2z/h + z^2/h^2$ ומוצאים פונקציה קדומה לכל איבר:
+          $M = \rho\pi R^2\displaystyle\int_0^h\left(1 - \frac{2z}{h} + \frac{z^2}{h^2}\right)dz = \rho\pi R^2\left(h - h + \frac h3\right) = \dfrac13\rho\pi R^2h$, ו-
+          $\displaystyle\int z\,dm = \rho\pi R^2\int_0^h\left(z - \frac{2z^2}{h} + \frac{z^3}{h^2}\right)dz = \rho\pi R^2h^2\left(\frac12 - \frac23 + \frac14\right) = \dfrac{1}{12}\rho\pi R^2h^2$,
+          ולכן $z_\text{cm} = \dfrac h4$.
+      - kind: limit
+        text: >-
+          הנפח $M/\rho = \tfrac13\pi R^2h$ הוא נוסחת הנפח של קונוס, ושליש מנפח הגליל שחוסם אותו. בגליל מרכז המסה
+          ב-$h/2$; בקונוס רוב המסה למטה, ולכן הוא נמוך יותר.
+      - kind: units
+        text: >-
+          $\text{kg/m}^3\cdot\text{m}^3 = \text{kg}$.
+      - kind: substitution
+        text: >-
+          $M = \tfrac13\cdot2.5\cdot10^{3}\cdot\pi\cdot4.0\cdot6.0 = 6.28\cdot10^{4}\,\text{kg}$; $z_\text{cm} = 6.0/4 = 1.50\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $M = \tfrac13\rho\pi R^2h = 6.28\cdot10^{4}\,\text{kg}$. ב. $1.50\,\text{m}$ מעל הבסיס.
+
+  - id: W-0.4-10
+    level: bagrut
+    objectives: [OBJ-0.4-1, OBJ-0.4-2]
+    prompt: >-
+      טלפון שמונח על עגלה מודד את התאוצה שלה פעם בשנייה: $0$, $1.2$, $1.8$, $1.2$ ו-$0\,\text{m/s}^2$, ב-$t = 0$, $1$,
+      $2$, $3$ ו-$4\,\text{s}$. העגלה יצאה ממנוחה.
+
+      א. העריכו בעזרת טרפזים את המהירות של העגלה ב-$t = 1$, $2$, $3$ ו-$4\,\text{s}$.
+
+      ב. העריכו מהמהירויות האלה, שוב בטרפזים, כמה מטרים עברה העגלה.
+
+      ג. קבעו ונמקו: למה ניווט שמחשב מקום מתאוצה בלבד הולך ומאבד דיוק עם הזמן?
+    answer: >-
+      א. $0.6$, $2.1$, $3.6$, $4.2\,\text{m/s}$. ב. $8.4\,\text{m}$. ג. כל שגיאה בתאוצה נצברת פעמיים: במהירות, ושוב במקום.
+    solution:
+      - kind: given
+        text: >-
+          הציר החיובי בכיוון התנועה. $\Delta t = 1.0\,\text{s}$, $v(0) = 0$, $x(0) = 0$.
+      - kind: law
+        text: >-
+          $v(t_{k+1}) = v(t_k) + \displaystyle\int_{t_k}^{t_{k+1}}a\,dt \approx v(t_k) + \tfrac12\left(a_k + a_{k+1}\right)\Delta t$, ובאותו אופן $x$ מ-$v$.
+      - kind: manipulation
+        text: >-
+          א. התוספות: $0.6$, $1.5$, $1.5$, $0.6\,\text{m/s}$, ולכן $v = 0.6$, $2.1$, $3.6$, $4.2\,\text{m/s}$.
+
+          ב. התוספות למקום: $\tfrac12(0 + 0.6) = 0.3$, $\tfrac12(0.6 + 2.1) = 1.35$, $\tfrac12(2.1 + 3.6) = 2.85$, $\tfrac12(3.6 + 4.2) = 3.9\,\text{m}$;
+          הסכום $8.4\,\text{m}$.
+
+          ג. שגיאה קבועה קטנה $\delta a$ במדידה מוסיפה למהירות $\delta a\,t$, ולמקום $\tfrac12\delta a\,t^2$: השגיאה במקום
+          גדלה כמו ריבוע הזמן. לכן מכשיר כזה צריך תיקון מבחוץ, כמו אות לוויין, מדי פעם.
+      - kind: limit
+        text: >-
+          אם התאוצה הייתה קבועה, הטרפזים היו מדויקים לגמרי במהירות (קו ישר). ואם $a = 0$ בכל המדידות, העגלה נשארת
+          במנוחה: $v = 0$ ו-$x = 0$.
+      - kind: units
+        text: >-
+          $\text{m/s}^2\cdot\text{s} = \text{m/s}$; $\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: result
+        text: >-
+          א. $0.6$, $2.1$, $3.6$, $4.2\,\text{m/s}$. ב. כ-$8.4\,\text{m}$. ג. השגיאה נצברת פעמיים, והשגיאה במקום גדלה כמו $t^2$.
+
+challenge:
+  - id: W-0.4-c1
+    stars: 1
+    objectives: [OBJ-0.4-2]
+    prompt: >-
+      צינור כיבוי אש באורך $L = 15\,\text{m}$, שמסתו ליחידת אורך $\lambda = 3.0\,\text{kg/m}$, תלוי אנכית מגג של בניין.
+      מגלגלים אותו לאט אל תוף שעל הגג. כמו בבגרות, העבודה שנדרשת כדי להרים גוף לאט לגובה $y$ היא המשקל שלו כפול $y$.
+
+      א. חתכו את הצינור לחתיכות קצרות, ובנו אינטגרל לעבודה שנדרשת כדי לגלגל את כולו.
+
+      ב. הראו שהתוצאה שווה למשקל הצינור כפול הגובה שבו עולה מרכז המסה שלו. כמה הייתה העבודה לפי מי שכופל את
+      משקל הצינור כולו באורכו?
+    answer: >-
+      א. $W = \tfrac12\lambda gL^2 = 3.31\cdot10^{3}\,\text{J}$. ב. $Mg\cdot L/2$, אותו מספר; הכפל השגוי נותן $6.62\cdot10^{3}\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $y$ אנכי כלפי מטה מהגג, הראשית בתוף. חתיכה במרחק $y$ מתחת לגג, באורך $dy$, מסתה $\lambda\,dy$.
+      - kind: law
+        text: >-
+          חתיכה שמורמת לאט בגובה $y$ דורשת עבודה $dW = (\lambda\,dy)\,g\,y$; העבודה כולה $W = \int dW$.
+      - kind: manipulation
+        text: >-
+          $W = \displaystyle\int_0^L\lambda g\,y\,dy = \tfrac12\lambda gL^2$. מרכז המסה של הצינור האחיד באמצע, $L/2$ מתחת
+          לגג, והמסה $M = \lambda L$, ולכן $Mg\cdot\tfrac L2 = \tfrac12\lambda gL^2$.
+      - kind: limit
+        text: >-
+          כש-$L \to 0$ אין מה לגלגל. וההשוואה לכפל השגוי: רק החתיכה התחתונה עולה $L$; החתיכות העליונות עולות מעט,
+          ולכן העבודה חצי מ-$MgL$.
+      - kind: units
+        text: >-
+          $\text{kg/m}\cdot\text{m/s}^2\cdot\text{m}^2 = \text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $W = \tfrac12\cdot3.0\cdot9.8\cdot15^2 = 3.31\cdot10^{3}\,\text{J}$; $MgL = 45\cdot9.8\cdot15 = 6.62\cdot10^{3}\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $3.31\cdot10^{3}\,\text{J}$. ב. אותו מספר, $Mg\cdot L/2$; הכפל השגוי גדול פי 2.
+    source:
+      name: MIT OpenCourseWare, 18.01SC Single Variable Calculus
+      year: 2010
+      problem: 'Exercises, Applications of Integration, 4D''-3 (a firehose hanging over the side of a building is wound up; the work)'
+      url: https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/92e9fe301b92d11995b3775aedb4bd6a_MIT18_01SC_pset4prb.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.4-c2
+    stars: 1
+    objectives: [OBJ-0.4-1, OBJ-0.4-2]
+    prompt: >-
+      דלי ריק במסה $m_b = 1.0\,\text{kg}$ מלא ב-$m_p = 5.0\,\text{kg}$ צבע, ומושכים אותו בחבל, במהירות קבועה ואיטית,
+      לגג בגובה $H = 9.0\,\text{m}$. בדלי יש חור, והצבע נוזל ממנו בקצב קבוע, כך שעד שהדלי מגיע לגג נוזלת חמישית מהצבע.
+      כמו בבגרות, כשמרימים לאט גוף לגובה קטן $dy$, העבודה היא המשקל שלו כפול $dy$.
+
+      א. כתבו את המשקל של הדלי כפונקציה של הגובה שלו $y$.
+
+      ב. בנו אינטגרל לעבודה שנעשית בהרמה, וחשבו אותה.
+
+      ג. השוו לעבודה אילו לא היה חור, ואילו כל הצבע היה נוזל עד הגג.
+    answer: >-
+      א. $w(y) = g\left[m_b + m_p\left(1 - \dfrac{y}{5H}\right)\right]$. ב. $485\,\text{J}$. ג. $529\,\text{J}$ ו-$309\,\text{J}$.
+    solution:
+      - kind: given
+        text: >-
+          הציר $y$ אנכי כלפי מעלה, הראשית בקרקע. המהירות קבועה, ולכן הזמן ביחס לגובה, והצבע שנוזל ביחס לגובה: בגובה $y$
+          נוזל חלק $y/(5H)$ מהצבע.
+      - kind: law
+        text: >-
+          $dW = w(y)\,dy$, ו-$W = \displaystyle\int_0^Hw(y)\,dy$.
+      - kind: manipulation
+        text: >-
+          $W = g\displaystyle\int_0^H\left[m_b + m_p\left(1 - \frac{y}{5H}\right)\right]dy = gH\left[m_b + m_p\left(1 - \frac{1}{10}\right)\right] = gH\left(m_b + 0.9\,m_p\right)$.
+          המשקל יורד בקו ישר, ולכן העבודה היא $H$ כפול המשקל באמצע הדרך.
+      - kind: limit
+        text: >-
+          בלי חור ($m_p$ נשאר) $W = gH(m_b + m_p)$, הנוסחה של גוף בעל מסה קבועה. אם כל הצבע נוזל עד הגג, המשקל יורד
+          ל-$m_bg$ בקו ישר, ו-$W = gH(m_b + \tfrac12m_p)$: שוב המשקל באמצע הדרך.
+      - kind: units
+        text: >-
+          $\text{m/s}^2\cdot\text{m}\cdot\text{kg} = \text{J}$.
+      - kind: substitution
+        text: >-
+          $W = 9.8\cdot9.0\cdot(1.0 + 4.5) = 485\,\text{J}$; בלי חור $9.8\cdot9.0\cdot6.0 = 529\,\text{J}$; אם הכול נוזל
+          $9.8\cdot9.0\cdot3.5 = 309\,\text{J}$.
+      - kind: result
+        text: >-
+          א. המשקל יורד בקו ישר מ-$58.8\,\text{N}$ ל-$49.0\,\text{N}$. ב. $485\,\text{J}$. ג. $529\,\text{J}$ בלי חור,
+          $309\,\text{J}$ אם כל הצבע נוזל.
+    source:
+      name: MIT OpenCourseWare, 18.01SC Single Variable Calculus
+      year: 2010
+      problem: 'Exercises, Applications of Integration, 4D''-2 (a leaking pail of paint pulled up at a steady rate; the work)'
+      url: https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/92e9fe301b92d11995b3775aedb4bd6a_MIT18_01SC_pset4prb.pdf
+      verified: '2026-11-17'
+      adapted: true

@@ -1,0 +1,7 @@
+---
+/** Gradient figure for lesson MDX: <Spread figure={GradientMap} figureProps={{ preset: 'hill', … }}>. */
+import GradientMap, { type GradientMapProps } from './GradientMap';
+type Props = GradientMapProps;
+---
+
+<GradientMap client:visible {...Astro.props} />

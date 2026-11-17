@@ -15,3 +15,31 @@
   unit: kg/m
   definition: המסה ליחידת אורך של גוף דק, כמו מוט או חוט. מסה של חתיכה באורך dx היא λ(x)dx, והמסה הכוללת היא האינטגרל של λ לאורך הגוף.
   lesson: '0.4'
+
+- id: c0-riemann-sum
+  term: סכום רימן
+  en: Riemann sum
+  symbol: Σ f(xᵢ)Δx
+  definition: סכום של חתיכות, f(xᵢ)Δx, שבו הקטע [a, b] חתוך ל-N חתיכות ברוחב Δx, ו-f נלקחת בנקודה אחת בכל חתיכה (בקצה שלה או באמצע). כש-N גדל הסכום מתקרב לאינטגרל המסוים.
+  lesson: '0.4'
+
+- id: c0-antiderivative
+  term: פונקציה קדומה
+  en: antiderivative
+  symbol: F
+  definition: פונקציה F שהנגזרת שלה היא f, F′ = f. לכל f יש אינסוף פונקציות קדומות, שנבדלות זו מזו בקבוע.
+  lesson: '0.4'
+
+- id: c0-fundamental-theorem
+  term: המשפט היסודי של החשבון האינפיניטסימלי
+  en: fundamental theorem of calculus
+  definition: שני צדדים של עובדה אחת. הנגזרת של האינטגרל המצטבר, ∫ₐˣ f dt, לפי הגבול העליון x, היא f(x). ולכן האינטגרל המסוים מ-a עד b שווה ל-F(b) − F(a), לכל פונקציה קדומה F של f.
+  lesson: '0.4'
+
+- id: c0-distance
+  term: דרך
+  en: distance travelled
+  symbol: ∫|v|dt
+  unit: m
+  definition: האורך הכולל שגוף עבר לאורך המסלול, בלי סימן. בתנועה על ציר זה האינטגרל של |v| לפי הזמן, ומחשבים אותו בקטעים שבין הרגעים שבהם v = 0. הדרך אינה קטנה מגודל ההעתק.
+  lesson: '0.4'

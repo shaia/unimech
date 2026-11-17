@@ -1,0 +1,7 @@
+---
+/** Riemann-sum figure for lesson MDX: <Spread figure={RiemannSum} figureProps={{ preset: 'reverse', … }}>. */
+import RiemannSum, { type RiemannSumProps } from './RiemannSum';
+type Props = RiemannSumProps;
+---
+
+<RiemannSum client:visible {...Astro.props} />

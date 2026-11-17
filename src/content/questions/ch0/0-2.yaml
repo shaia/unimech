@@ -9,6 +9,10 @@
 #   F = (3,4,0) N, d = (2,−1,2) m: F·d = 2 J, angle 82.3° (7.66° with arcsin, 48.2° without the minus, 1.44 in rad);
 #   F = (30,20,10) N, û = (0.6,0.8,0): F∥ = 34 N, |F| = 37.4 N, F⊥ = 15.6 N, work over 100 m 3400 J;
 #   r = (0.4,0.3,0) m, F = (10,20,30) N: r×F = (9,−12,5) N·m, |τ| = 15.8 N·m (|r||F| = 18.7, r·F = 10).
+#   (lesson 0.2, .scratch/ch0/0-2/lesson.ts) v₁ = 15 m/s east, v₂ = 15 m/s south: Δv = (−15,−15) m/s, 21.2 m/s south-west.
+# Review (2026-11-17, .scratch/review/ch0/0-2/recompute.ts, independent of the authors' scripts): every number above
+#   recomputed; added Q-0.2-wrench-angle, r = 0.25 m east, F = 80 N at 30° north of west: θ = 150°,
+#   |r×F| = 10 N·m ⊙ (17.3 with the cosine, 20 = rF), F = (−69.3, 40) N.
 
 chapter: 0
 questions:
@@ -77,9 +81,35 @@ questions:
       - value: 361
         feedback: 'זה $\sqrt{300^2 + 200^2}$, כאילו החבלים ניצבים זה לזה. פיתגורס על הגדלים עובד רק בזווית ישרה.'
       - value: 265
-        feedback: 'זה ההפרש בין הכוחות, $|\vec F_1 - \vec F_2|$ (משפט הקוסינוסים עם מינוס). בסכום שני הכוחות מושכים באותו צד.'
+        feedback: >-
+          זה ההפרש בין הכוחות, $|\vec F_1 - \vec F_2|$: הצבתם $60^\circ$ במשפט הקוסינוסים עם מינוס. אבל במשולש
+          של הסכום (החבל השני מוזז לראש של הראשון) הזווית בין הצלעות היא $180^\circ - 60^\circ = 120^\circ$, ואז
+          $\sqrt{300^2 + 200^2 - 2\cdot300\cdot200\cos120^\circ} = 436\,\text{N}$. בטוח יותר: ברכיבים.
     hints:
       - 'הרכיבים של החבל השני: $(200\cos60^\circ,\ 200\sin60^\circ)$.'
+
+  - id: Q-0.2-velocity-change
+    type: vector
+    objectives: [OBJ-0.2-1]
+    qualitative: true
+    level: mid
+    prompt: >-
+      מכונית נוסעת מזרחה במהירות $\vec v_1$ שגודלה $15\,\text{m/s}$, פונה בצומת, וממשיכה דרומה במהירות $\vec v_2$
+      שגודלה גם הוא $15\,\text{m/s}$. במפה, צפון הוא למעלה ומזרח ימינה. מה הכיוון של שינוי המהירות,
+      $\Delta\vec v = \vec v_2 - \vec v_1$?
+    answer: sw
+    correctFeedback: >-
+      נכון. עם $x$ מזרחה ו-$y$ צפונה, $\Delta\vec v = (0, -15) - (15, 0) = (-15, -15)\,\text{m/s}$: רכיבים שווים,
+      שניהם שליליים, ולכן בדיוק דרום-מערב, בגודל $15\sqrt2 \approx 21.2\,\text{m/s}$. גודל המהירות לא השתנה,
+      ובכל זאת המהירות השתנתה, כי הכיוון השתנה.
+    wrong:
+      - dir: se
+        feedback: 'זה הכיוון של הסכום $\vec v_1 + \vec v_2$. בהפרש מחברים את $\vec v_2$ עם **מינוס** $\vec v_1$, כלומר עם וקטור שפונה מערבה.'
+      - dir: ne
+        feedback: 'זה $\vec v_1 - \vec v_2$, ההפרש בסדר ההפוך. שינוי הוא תמיד "הסוף פחות ההתחלה".'
+      - dir: s
+        feedback: 'זה הכיוון של $\vec v_2$ בלבד. השינוי הוא מה שצריך להוסיף ל-$\vec v_1$ כדי לקבל את $\vec v_2$: צריך גם לבטל את המהירות מזרחה.'
+    wrongFeedback: 'כתבו את שתי המהירויות ברכיבים, עם $x$ מזרחה ו-$y$ צפונה, וחסרו רכיב-רכיב: $\Delta v_x = v_{2x} - v_{1x}$.'
 
   # ---------------------------------------------------------------- OBJ-0.2-2 the dot product: angle and projection
   - id: Q-0.2-work-normal
@@ -199,8 +229,8 @@ questions:
     qualitative: true
     level: mid
     prompt: >-
-      מושכים את הידית של מפתח ברגים באורך $0.3\,\text{m}$ בכוח של $50\,\text{N}$, בדיוק לאורך המפתח, הרחק
-      מהבורג. מה הגודל של $\vec r\times\vec F$, כאשר $\vec r$ הוא הווקטור מהבורג אל היד?
+      מושכים את הידית של מפתח ברגים באורך $0.3\,\text{m}$ בכוח של $50\,\text{N}$, והכוח פונה בדיוק לאורך
+      המפתח, מהבורג והלאה. מה הגודל של $\vec r\times\vec F$, כאשר $\vec r$ הוא הווקטור מהבורג אל היד?
     choices:
       - text: אפס
         correct: true
@@ -221,6 +251,34 @@ questions:
         misconception: MC-0-cross-in-plane
     hints:
       - 'מה הזווית בין $\vec r$ ל-$\vec F$ כשמושכים לאורך המפתח?'
+
+  - id: Q-0.2-wrench-angle
+    type: numeric
+    objectives: [OBJ-0.2-3]
+    level: mid
+    prompt: >-
+      מפתח ברגים מונח במישור הדף, כשצפון הוא למעלה בדף ומזרח ימינה. הווקטור $\vec r$, מהבורג אל היד, מצביע
+      מזרחה ואורכו $0.25\,\text{m}$. היד מושכת בכוח $\vec F$ של $80\,\text{N}$ בכיוון $30^\circ$ צפונית למערב.
+      מה הגודל של $\vec r\times\vec F$, ב-$\text{N}\cdot\text{m}$? (חשבו גם לאן הוא מצביע.)
+    answer: 10
+    unit: N·m
+    correctFeedback: >-
+      נכון. הזווית בין $\vec r$ (מזרחה) לבין $\vec F$ היא $180^\circ - 30^\circ = 150^\circ$, ולכן
+      $|\vec r\times\vec F| = rF\sin150^\circ = 0.25\cdot80\cdot0.5 = 10\,\text{N}\cdot\text{m}$. הסיבוב ממזרח אל
+      הכיוון של $\vec F$, דרך הזווית הקטנה, הוא נגד כיוון השעון, ולכן המכפלה $\odot$, החוצה מהדף. **בדיקה ברכיבים**,
+      עם $x$ מזרחה ו-$y$ צפונה: $\vec F = (-69.3,\ 40)\,\text{N}$, ו-$(\vec r\times\vec F)_z = r_xF_y - r_yF_x = 0.25\cdot40 - 0 = 10\,\text{N}\cdot\text{m}$,
+      חיובי: $\odot$.
+    wrongFeedback: >-
+      $|\vec r\times\vec F| = rF\sin\theta$, כאשר $\theta$ הזווית בין שני הווקטורים כשהזנבות שלהם בנקודה אחת.
+      שרטטו: $\vec r$ מזרחה, $\vec F$ קצת צפונה ממערב.
+    commonWrong:
+      - value: 17.3
+        feedback: 'זה $rF\,|\cos150^\circ|$. במכפלה הסקלרית יש $\cos\theta$; בגודל של המכפלה הווקטורית יש $\sin\theta$.'
+      - value: 20
+        feedback: 'זו מכפלת הגדלים, $rF$. הכוח לא ניצב למפתח, ולכן רק הרכיב הניצב שלו, $F\sin\theta$, מסובב.'
+        misconception: MC-0-product-ignores-angle
+    hints:
+      - 'מה הזווית בין מזרח לבין $30^\circ$ צפונית למערב?'
 
   - id: Q-0.2-torque-3d
     type: numeric

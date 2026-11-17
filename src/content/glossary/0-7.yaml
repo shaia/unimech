@@ -28,3 +28,24 @@
   symbol: ∇f
   definition: הווקטור שרכיביו הם הנגזרות החלקיות של פונקציה סקלרית, ∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z). הוא מצביע בכיוון שבו f עולה הכי מהר, גודלו הוא קצב העלייה הזה, והוא ניצב לקווי הגובה (משטחי הגובה) של f.
   lesson: '0.7'
+
+- id: c0-area-element
+  term: אלמנט שטח
+  en: area element
+  symbol: dA
+  definition: השטח של משבצת זעירה ברשת של קואורדינטות, כשכל קואורדינטה משתנה בצעד קטן. בקרטזיות dA = dx dy; בקוטביות הצלעות הן dr ו-r dθ, ולכן dA = r dr dθ. כשהגודל תלוי רק ב-r, טבעת שלמה נותנת dA = 2πr dr.
+  lesson: '0.7'
+
+- id: c0-volume-element
+  term: אלמנט נפח
+  en: volume element
+  symbol: dV
+  definition: הנפח של משבצת זעירה במרחב, מכפלת שלוש הצלעות שלה. בגליליות ds, s dφ ו-dz, ולכן dV = s ds dφ dz; בכדוריות dr, r dθ ו-r sin θ dφ, ולכן dV = r² sin θ dr dθ dφ. לקליפה כדורית שלמה dV = 4πr² dr.
+  lesson: '0.7'
+
+- id: c0-directional-derivative
+  term: נגזרת כיוונית
+  en: directional derivative
+  symbol: df/ds
+  definition: קצב השינוי של פונקציה סקלרית לכל מטר של התקדמות בכיוון נתון ŝ (וקטור יחידה), df/ds = ∇f·ŝ. הוא הגדול ביותר, |∇f|, בכיוון הגרדיאנט, ואפס לאורך קו הגובה.
+  lesson: '0.7'

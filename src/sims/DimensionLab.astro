@@ -1,0 +1,7 @@
+---
+/** Dimension lab figure for lesson MDX: <Spread figure={DimensionLab} figureProps={{ mode: 'dims', preset: 'pendulum', … }}>. */
+import DimensionLab, { type DimensionLabProps } from './DimensionLab';
+type Props = DimensionLabProps;
+---
+
+<DimensionLab client:visible {...Astro.props} />

@@ -3,8 +3,14 @@
 # Directions in `vector` questions: n = up the page (or north on a map), e = right (east).
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed in .scratch/ch0/ladder.ts (R_EARTH from src/physics/constants.ts):
+# Every number was computed in .scratch/ch0/ladder.ts (R_EARTH from src/physics/constants.ts), and recomputed
+# when lesson 0.7 was written, in .scratch/ch0/0-7/bank.ts with src/physics/coords.ts (cylinderMass, ballMass,
+# numericGradient, directionalDerivative): every value below agreed. The lesson text works out none of these
+# setups; its worked examples use other densities, fields and points:
 #   r = 2 m, θ = 150°: x = −1.73 m, y = 1 m;
+#   (−2.0, −1.0) m: θ = 206.6° (arctan 26.6°, 180° − 26.6° = 153.4°, 180° + arctan(x/y) = 243.4°), r = 2.24 m;
+# The review of 2026-11-17 recomputed every value above independently in .scratch/review/ch0/0-7/recompute.ts
+# (and added Q-0.7-cartesian-to-polar, because the lesson's quadrant trap had no question).
 #   bead r = 0.2 + 0.4t m, ω = 1 rad/s, t = 2 s: r = 1 m, speed √(0.4² + 1²) = 1.08 m/s (0.4 + 1 = 1.4);
 #   log R = 0.10 m, L = 2.0 m, ρ = ρ₀s/R, ρ₀ = 900 kg/m³: M = 2πρ₀LR²/3 = 37.7 kg (ρ₀V/2 = 28.3, ρ₀V = 56.5);
 #   planet ρ = ρ₀(1 − r/R), ρ₀ = 12 000 kg/m³, R = R_EARTH: M = πρ₀R³/3 = 3.25e24 kg
@@ -21,12 +27,12 @@ questions:
     objectives: [OBJ-0.7-1]
     level: basic
     prompt: >-
-      המקום של כדורית על שולחן נתון בקואורדינטות קוטביות: $r = 2.0\,\text{m}$ ו-$\theta = 150^\circ$, כשהזווית
+      המקום של גולה על שולחן נתון בקואורדינטות קוטביות: $r = 2.0\,\text{m}$ ו-$\theta = 150^\circ$, כשהזווית
       נמדדת מהציר $x$ החיובי נגד כיוון השעון. מה הקואורדינטה $x$ שלה?
     answer: -1.73
     unit: m
     correctFeedback: >-
-      נכון. $x = r\cos\theta = 2\cdot\cos150^\circ = -1.73\,\text{m}$, ו-$y = r\sin\theta = 1.0\,\text{m}$: הכדורית ברביע
+      נכון. $x = r\cos\theta = 2\cdot\cos150^\circ = -1.73\,\text{m}$, ו-$y = r\sin\theta = 1.0\,\text{m}$: הגולה ברביע
       השני, משמאל לציר $y$. בדיקה: $x^2 + y^2 = 3 + 1 = r^2$.
     wrongFeedback: '$x = r\cos\theta$ ו-$y = r\sin\theta$. זווית של $150^\circ$ נמצאת ברביע השני: מה הסימן של $x$ שם?'
     commonWrong:
@@ -37,6 +43,33 @@ questions:
         feedback: 'הסימן הפוך: $\cos150^\circ = -\cos30^\circ < 0$. ברביע השני $x$ שלילי.'
     hints:
       - '$\cos150^\circ = -\dfrac{\sqrt3}{2}$.'
+
+  - id: Q-0.7-cartesian-to-polar
+    type: numeric
+    objectives: [OBJ-0.7-1]
+    level: basic
+    prompt: >-
+      כדור ביליארד נמצא ב-$x = -2.0\,\text{m}$, $y = -1.0\,\text{m}$ ביחס למרכז השולחן. מה הזווית $\theta$ שלו
+      בקואורדינטות קוטביות, נמדדת מהציר $x$ החיובי נגד כיוון השעון, בין $0^\circ$ ל-$360^\circ$?
+    answer: 206.6
+    unit: °
+    correctFeedback: >-
+      נכון. שני הרכיבים שליליים, ולכן הכדור ברביע השלישי, בין $180^\circ$ ל-$270^\circ$. המחשבון נותן
+      $\arctan(y/x) = \arctan0.5 = 26.6^\circ$, ברביע הראשון, ולכן מוסיפים $180^\circ$: $\theta = 206.6^\circ$.
+      **בדיקה:** $r = \sqrt{5} = 2.24\,\text{m}$, ו-$r\cos\theta = -2.0\,\text{m}$, $r\sin\theta = -1.0\,\text{m}$.
+    wrongFeedback: 'קבעו קודם את הרביע לפי הסימנים של $x$ ושל $y$, ורק אחר כך בדקו אם הזווית שהמחשבון נתן נמצאת בו.'
+    commonWrong:
+      - value: 26.6
+        feedback: >-
+          זה מה שהמחשבון נותן, $\arctan(y/x)$, ברביע הראשון. אבל לנקודה $(2,\ 1)$ ולנקודה $(-2,\ -1)$ אותו יחס
+          $y/x$. כאן שני הרכיבים שליליים, ולכן מוסיפים $180^\circ$.
+        misconception: MC-0-arg-arctan-quadrant
+      - value: 153.4
+        feedback: 'זה $180^\circ - 26.6^\circ$, ברביע השני, שם $y$ חיובי. כאן גם $y$ שלילי: הרביע השלישי.'
+      - value: 243.4
+        feedback: 'החלפתם בין $x$ ל-$y$: $\arctan(x/y) = 63.4^\circ$. הזווית נמדדת מהציר $x$, ולכן $\tan\theta = y/x$.'
+    hints:
+      - 'באיזה רביע נמצאת נקודה ששני הרכיבים שלה שליליים?'
 
   - id: Q-0.7-thetahat-direction
     type: vector
@@ -160,10 +193,10 @@ questions:
       - text: $dV = 4\pi r\,dr$
         feedback: 'בדקו יחידות: $\text{m}^2$, לא נפח. שטח הספרה גדל כמו $r^2$, ולא כמו $r$.'
     reasons:
-      - text: 'שטח הספרה $4\pi r^2$ כפול העובי $dr$. אותו דבר מתקבל מ-$dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$, כשמאנטגרלים על הזוויות.'
+      - text: 'שטח הספרה $4\pi r^2$ כפול העובי $dr$. אותו דבר מתקבל מ-$dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$, אחרי אינטגרציה על הזוויות.'
         correct: true
         feedback: '$\displaystyle\int_0^{2\pi}\int_0^\pi\sin\theta\,d\theta\,d\varphi = 4\pi$, ולכן $dV = 4\pi r^2\,dr$. שתי הדרכים מסכימות.'
-      - text: 'אלמנט הנפח בקואורדינטות כדוריות הוא $dr\,d\theta\,d\varphi$, ולכן אנטגרציה על הזוויות נותנת $2\pi^2\,dr$.'
+      - text: 'אלמנט הנפח בקואורדינטות כדוריות הוא $dr\,d\theta\,d\varphi$, ולכן האינטגרציה על הזוויות נותנת $2\pi^2\,dr$.'
         feedback: >-
           $dr\,d\theta\,d\varphi$ ביחידות מטר בלבד. הצעדים בזוויות הם קשתות באורכים $r\,d\theta$ ו-$r\sin\theta\,d\varphi$,
           ולכן $dV = r^2\sin\theta\,dr\,d\theta\,d\varphi$.
@@ -187,7 +220,7 @@ questions:
       נכון. לקליפה ברדיוס $s$ ובעובי $ds$ יש נפח $dV = 2\pi sL\,ds$ (היקף כפול אורך כפול עובי), ולכן
       $M = \displaystyle\int_0^R\rho_0\frac{s}{R}\,2\pi sL\,ds = \frac{2\pi\rho_0LR^2}{3} = \frac{2\pi\cdot900\cdot2.0\cdot0.01}{3} = 37.7\,\text{kg}$.
       **בדיקה:** הצפיפות הממוצעת $\tfrac23\rho_0$, גדולה מ-$\rho_0/2$, כי לקליפות החיצוניות, הצפופות, יש יותר נפח.
-    wrongFeedback: 'אלמנט הנפח בקואורדינטות גליליות, כשהצפיפות תלויה רק ב-$s$: $dV = 2\pi s\,L\,ds$. הכפילו ב-$\rho(s)$ ואנטגרלו מ-0 עד $R$.'
+    wrongFeedback: 'אלמנט הנפח בקואורדינטות גליליות, כשהצפיפות תלויה רק ב-$s$: $dV = 2\pi s\,L\,ds$. הכפילו ב-$\rho(s)$ ואינטגרלו מ-0 עד $R$.'
     commonWrong:
       - value: 28.3
         feedback: >-
@@ -213,7 +246,7 @@ questions:
       נכון. $M = \displaystyle\int_0^R\rho_0\left(1 - \frac{r}{R}\right)4\pi r^2\,dr = 4\pi\rho_0\left(\frac{R^3}{3} - \frac{R^3}{4}\right) = \frac{\pi\rho_0R^3}{3} = 3.25\cdot10^{24}\,\text{kg}$.
       **בדיקה:** הצפיפות הממוצעת היא $M/V = \rho_0/4 = 3000\,\text{kg/m}^3$, ולא $\rho_0/2$: רוב הנפח רחוק מהמרכז, שם
       הצפיפות קטנה. **בדיקת יחידות:** $\text{kg/m}^3\cdot\text{m}^3 = \text{kg}$.
-    wrongFeedback: 'חלקו לקליפות כדוריות, $dm = \rho(r)\,4\pi r^2\,dr$, ואנטגרלו מ-0 עד $R$. אל תשכחו את $r^2$ באלמנט הנפח.'
+    wrongFeedback: 'חלקו לקליפות כדוריות, $dm = \rho(r)\,4\pi r^2\,dr$, ואינטגרלו מ-0 עד $R$. אל תשכחו את $r^2$ באלמנט הנפח.'
     commonWrong:
       - value: 1.3e25
         feedback: 'זה $\tfrac43\pi R^3\rho_0$, כאילו הצפיפות $\rho_0$ בכל מקום. רק המרכז צפוף כל כך.'

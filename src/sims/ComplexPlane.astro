@@ -1,0 +1,7 @@
+---
+/** Complex-plane figure for lesson MDX: <Spread figure={ComplexPlane} figureProps={{ mode: 'polar', modes: […], tasks: […] }}>. */
+import ComplexPlane, { type ComplexPlaneProps } from './ComplexPlane';
+type Props = ComplexPlaneProps;
+---
+
+<ComplexPlane client:visible {...Astro.props} />

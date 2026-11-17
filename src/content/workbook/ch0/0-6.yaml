@@ -1,0 +1,473 @@
+# Workbook, lesson 0.6 (complex numbers and the complex exponential). Format and rules: .claude/CLAUDE.md,
+# "The solution format" (law … limit, units, result). In a >- block, consecutive lines fold into one
+# paragraph: every part (א, ב, …) starts after a blank line.
+#
+# Every number was recomputed in .scratch/ch0/0-6/wb.ts with src/physics/complexnum.ts (polar, cmul, cdiv, conj,
+# cexp, sumOfOscillations, derivativeAmplitude, reAt):
+#   W-01: 5.0e^(i·210°) = −4.33 − 2.50i m/s²; 2.0 − 2.0i N: 2.83 N at −45°;
+#   W-02: z = 2e^(iπ/6): −z at −150° (= 210°), z̄ at −30°, iz at 120°, 1/z = 0.5e^(−iπ/6) = 0.433 − 0.250i;
+#   W-03: Ã = 4.0e^(−iπ/6) = 3.46 − 2.00i cm; iωÃ = 12e^(iπ/3) = 6.00 + 10.4i cm/s; −ω²Ã = 36e^(i·150°) cm/s²;
+#   W-04: cos 75° = 0.259 and sin 75° = 0.966 from both sides;
+#   W-06: −5i + 5e^(iπ/4) = 3.54 − 1.46i, modulus 3.83 cm (= 10 cos 67.5°), phase −22.5°;
+#   W-07: s = −1 ± 2i, |s| = √5 = 2.24 s⁻¹, arg 116.6° (calculator −63.4°); |e^(st)| = e^(−t), period π = 3.14 s;
+#   W-08: cos 20t + cos 21t = 2cos(0.5t)cos(20.5t) (max error 3·10⁻¹⁴ on a grid); beat period 2π/1 = 6.28 s;
+#   W-09: |Ã| = 0.050 m, U_max = 0.0625 J, ⟨U⟩ = 0.0313 J (midpoint rule agrees); the wrong ½kRe(Ã²e^(2iωt))
+#         averages to 0 and gives −0.0175 J at t = 0 against the true 0.0225 J;
+#   W-10: v = 3.0 m/s, R = 0.35 m: ω = 8.57 rad/s; speed 2v|sin(ωt/2)|: 0, 3.00 (60°), 4.24 (90°), 6.00 m/s (top);
+#         acceleration v²/R = 25.7 m/s²;
+#   c1: ω = 3.0 rad/s, A = 2.0 cm, B = 6.0 cm/s, α = 3.0 cm, β = 4.0 cm, γ = 12 cm/s: (b) x = −1.73cos 3t + 1.00 sin 3t,
+#       v = 3.00cos 3t + 5.20 sin 3t, a = 15.6cos 3t − 9.00 sin 3t (review: a and b now the conjugates of the source's
+#       e^(−iωt) forms, so the real motion is the source's; recomputed in .scratch/review/ch0/0-6/check.ts); (c) Q = 5.0 cm, φ = 0.927 rad, v: 15 cm/s at
+#       2.50 rad, a: 45 cm/s² at −2.21 rad; (d) v: 12 at 2.62 rad, x: 4.0 cm at 1.05 rad, a: 36 at −2.09 rad;
+#   c2: cos 4t at t = 0.3: 0.362 from all three forms; e^(−t)cos 2πt = Re e^((−1 + 2πi)t), shrinking by e^(−1) = 0.368
+#       per turn.
+
+lesson: '0.6'
+practice:
+  - id: W-0.6-01
+    level: basic
+    objectives: [OBJ-0.6-1]
+    prompt: >-
+      במישור $xy$ (הציר $x$ ימינה, הציר $y$ למעלה) כותבים וקטור כמספר מרוכב: הרכיב $x$ הוא החלק הממשי והרכיב $y$ החלק המדומה.
+
+      א. התאוצה של גוף היא $a = 5.0e^{i\cdot210^\circ}\,\text{m/s}^2$. מה הרכיבים $a_x$ ו-$a_y$?
+
+      ב. הכוח על גוף אחר הוא $F = 2.0 - 2.0i\,\text{N}$. כתבו אותו בהצגה קוטבית: מה הגודל, ומה הזווית מהציר $x$?
+    answer: >-
+      א. $a_x = -4.33\,\text{m/s}^2$, $a_y = -2.50\,\text{m/s}^2$.
+
+      ב. $F = 2.83e^{-i\cdot45^\circ}\,\text{N}$: גודל $2.83\,\text{N}$, בזווית $45^\circ$ מתחת לציר $x$.
+    solution:
+      - kind: law
+        text: >-
+          $z = |z|e^{i\varphi}$, $x = |z|\cos\varphi$, $y = |z|\sin\varphi$; $|z| = \sqrt{x^2 + y^2}$, והזווית מ-$\tan\varphi = y/x$ אחרי שמסמנים את הרביע.
+      - kind: manipulation
+        text: >-
+          א. $a_x = 5.0\cos210^\circ$ ו-$a_y = 5.0\sin210^\circ$. $210^\circ$ ברביע השלישי, ושני הרכיבים שליליים.
+
+          ב. $F$ ברביע הרביעי ($x > 0$, $y < 0$), ולכן הזווית של המחשבון, $\arctan(-1) = -45^\circ$, נכונה.
+      - kind: limit
+        text: >-
+          בזווית $180^\circ$ במקום $210^\circ$ התאוצה הייתה כולה שמאלה, $a_y = 0$; $210^\circ$ מעט מתחת, ולכן $a_y$ שלילי וקטן מ-$|a_x|$. ו-$F$ עם רכיבים שווים בגודל חייב להיות ב-$45^\circ$ מהציר.
+      - kind: units
+        text: >-
+          הרכיבים ביחידות של הגודל: $\text{m/s}^2$ ו-$\text{N}$. $e^{i\varphi}$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          א. $\cos210^\circ = -0.866$, $\sin210^\circ = -0.500$. ב. $|F| = \sqrt{4.0 + 4.0} = 2.83\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $a = -4.33 - 2.50i\,\text{m/s}^2$. ב. $F = 2.83e^{-i\pi/4}\,\text{N}$.
+
+  - id: W-0.6-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-0.6-1]
+    prompt: >-
+      המספר $z = 2e^{i\pi/6}$ נמצא ברביע הראשון, בזווית $30^\circ$. בלי לחשב רכיבים, קבעו ונמקו לכל אחד מהמספרים $-z$, $\bar z$, $iz$ ו-$1/z$: מה הגודל שלו ומה הזווית שלו? באיזה רביע הוא נמצא?
+    answer: >-
+      $-z$: גודל 2, זווית $210^\circ$ (רביע שלישי). $\bar z$: גודל 2, זווית $(-30^\circ)$ (רביע רביעי). $iz$: גודל 2, זווית $120^\circ$ (רביע שני). $1/z$: גודל $0.5$, זווית $(-30^\circ)$ (רביע רביעי).
+    solution:
+      - kind: law
+        text: >-
+          בכפל הגדלים מוכפלים והזוויות מתחברות; בחילוק הם מתחלקים ומתחסרות. $-1 = e^{i\pi}$, $i = e^{i\pi/2}$, והצמוד הופך את סימן הזווית.
+      - kind: reasoning
+        text: >-
+          $-z = e^{i\pi}z$: חצי סיבוב, $30^\circ + 180^\circ = 210^\circ$. $\bar z$: שיקוף בציר הממשי, $(-30^\circ)$. $iz$: רבע סיבוב נגד כיוון השעון, $120^\circ$. $1/z = \dfrac{1}{2}e^{-i\pi/6}$: הגודל הפוך והזווית הפוכה. כאן $1/z$ ו-$\bar z$ באותו כיוון, ושונים רק באורך.
+      - kind: limit
+        text: >-
+          בדיקה במקרה פשוט: אם $|z| = 1$, אז $1/z = \bar z$ בדיוק, כי $z\bar z = |z|^2 = 1$. וכאן $1/z = \bar z/|z|^2 = \bar z/4$, באותו כיוון כמו $\bar z$ ובאורך רבע ממנו.
+      - kind: units
+        text: >-
+          $z$ חסר ממדים כאן. אילו $z$ היה, למשל, במטרים, $1/z$ היה ב-$\text{1/m}$.
+      - kind: result
+        text: >-
+          $-z = 2e^{i\cdot210^\circ}$, $\bar z = 2e^{-i\cdot30^\circ}$, $iz = 2e^{i\cdot120^\circ}$, $1/z = 0.5e^{-i\cdot30^\circ} = 0.433 - 0.250i$.
+
+  - id: W-0.6-03
+    level: basic
+    objectives: [OBJ-0.6-2]
+    prompt: >-
+      גוף מתנודד לפי $x(t) = 4.0\cos\left(3.0t - \dfrac{\pi}{6}\right)\,\text{cm}$ ($t$ בשניות).
+
+      א. כתבו את התנודה כ-$x = \operatorname{Re}(\tilde Ae^{i\omega t})$: מה $\omega$, ומה $\tilde A$, בהצגה קוטבית ובהצגה קרטזית?
+
+      ב. מה האמפליטודה המרוכבת של המהירות ושל התאוצה?
+    answer: >-
+      א. $\omega = 3.0\,\text{rad/s}$, $\tilde A = 4.0e^{-i\pi/6} = 3.46 - 2.00i\,\text{cm}$.
+
+      ב. מהירות: $12e^{i\pi/3} = 6.00 + 10.4i\,\text{cm/s}$. תאוצה: $36e^{i\cdot150^\circ} = -31.2 + 18.0i\,\text{cm/s}^2$.
+    solution:
+      - kind: law
+        text: >-
+          $A\cos(\omega t + \varphi) = \operatorname{Re}(\tilde Ae^{i\omega t})$ עם $\tilde A = Ae^{i\varphi}$; כל גזירה כופלת ב-$i\omega = \omega e^{i\pi/2}$.
+      - kind: manipulation
+        text: >-
+          א. $A = 4.0\,\text{cm}$, $\varphi = -\pi/6$: $\tilde A = 4.0(\cos30^\circ - i\sin30^\circ)$.
+
+          ב. $i\omega\tilde A = 3.0\cdot4.0\,e^{i(-\pi/6 + \pi/2)} = 12e^{i\pi/3}$; $(i\omega)^2\tilde A = -9.0\tilde A = 36e^{i(-\pi/6 + \pi)}$.
+      - kind: limit
+        text: >-
+          אילו $\varphi = 0$, $\tilde A$ היה ממשי, והמהירות הייתה בזווית $90^\circ$ בדיוק: $v = -A\omega\sin\omega t$. כאן כל הזוויות מוזזות באותו $(-30^\circ)$.
+      - kind: units
+        text: >-
+          $\omega\cdot\text{cm} = \text{cm/s}$, $\omega^2\cdot\text{cm} = \text{cm/s}^2$.
+      - kind: substitution
+        text: >-
+          $\tilde A = 3.46 - 2.00i\,\text{cm}$; $12e^{i\pi/3} = 6.00 + 10.4i\,\text{cm/s}$; $36e^{i\cdot150^\circ} = -31.2 + 18.0i\,\text{cm/s}^2$.
+      - kind: result
+        text: >-
+          א. $\omega = 3.0\,\text{rad/s}$, $\tilde A = 4.0e^{-i\pi/6} = 3.46 - 2.00i\,\text{cm}$. ב. $\tilde v = 12e^{i\pi/3}\,\text{cm/s}$, $\tilde a = 36e^{i\cdot150^\circ}\,\text{cm/s}^2$.
+
+  - id: W-0.6-04
+    level: mid
+    objectives: [OBJ-0.6-1]
+    prompt: >-
+      מסובבים וקטור במישור פעמיים: קודם בזווית $\alpha$ ואחר כך בזווית $\beta$, נגד כיוון השעון. בכתיב מרוכב, כל סיבוב הוא כפל ב-$e^{i\alpha}$ או ב-$e^{i\beta}$.
+
+      א. השתמשו ב-$e^{i(\alpha + \beta)} = e^{i\alpha}e^{i\beta}$ ובנוסחת אוילר כדי לגזור את הנוסחאות של $\cos(\alpha + \beta)$ ושל $\sin(\alpha + \beta)$.
+
+      ב. בדקו את שתי הנוסחאות במספרים, עם $\alpha = 25^\circ$ ו-$\beta = 50^\circ$.
+    answer: >-
+      א. $\cos(\alpha + \beta) = \cos\alpha\cos\beta - \sin\alpha\sin\beta$, $\sin(\alpha + \beta) = \sin\alpha\cos\beta + \cos\alpha\sin\beta$.
+
+      ב. שני האגפים: $\cos75^\circ = 0.259$ ו-$\sin75^\circ = 0.966$.
+    solution:
+      - kind: law
+        text: >-
+          $e^{i\theta} = \cos\theta + i\sin\theta$; שני מספרים מרוכבים שווים רק כשהחלקים הממשיים שווים וגם המדומים.
+      - kind: manipulation
+        text: >-
+          $\cos(\alpha + \beta) + i\sin(\alpha + \beta) = (\cos\alpha + i\sin\alpha)(\cos\beta + i\sin\beta)$. פותחים סוגריים עם $i^2 = -1$: האגף הימני הוא $(\cos\alpha\cos\beta - \sin\alpha\sin\beta) + i(\sin\alpha\cos\beta + \cos\alpha\sin\beta)$. משווים חלק ממשי לחלק ממשי, ומדומה למדומה.
+      - kind: limit
+        text: >-
+          עם $\beta = 0$: $\cos\alpha\cdot1 - \sin\alpha\cdot0 = \cos\alpha$, כמו שצריך (סיבוב באפס לא משנה). ועם $\beta = -\alpha$: $\cos^2\alpha + \sin^2\alpha = 1 = \cos0$.
+      - kind: units
+        text: >-
+          הכול חסר ממדים; הזוויות במעלות או ברדיאנים, באותה יחידה בשני האגפים.
+      - kind: substitution
+        text: >-
+          $\cos25^\circ\cos50^\circ - \sin25^\circ\sin50^\circ = 0.582 - 0.324 = 0.259$, ו-$\sin25^\circ\cos50^\circ + \cos25^\circ\sin50^\circ = 0.272 + 0.694 = 0.966$.
+      - kind: result
+        text: >-
+          א. שתי נוסחאות הסכום יוצאות מהשוואת החלקים. ב. $0.259$ ו-$0.966$ בשני האגפים.
+
+  - id: W-0.6-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-0.6-2]
+    prompt: >-
+      שלוש מסות מתנודדות באותה תדירות $\omega$: $x_1 = \operatorname{Re}(2e^{i\omega t})$, $x_2 = \operatorname{Re}(-2ie^{i\omega t})$ ו-$x_3 = \operatorname{Re}(2ie^{i\omega t})$ (בסנטימטרים). בלי לשרטט, קבעו ונמקו: מה הסדר שבו הן מגיעות לשיא אחרי $t = 0$, ואיזו מהן נמצאת ברגע $t = 0$ בשיווי משקל ונעה לכיוון החיובי?
+    answer: >-
+      הסדר: $x_2$ (אחרי רבע מחזור), $x_3$ (אחרי שלושה רבעים), $x_1$ (אחרי מחזור שלם; היא כבר בשיא ב-$t = 0$). $x_2$ ו-$x_3$ שתיהן בשיווי משקל ב-$t = 0$, ורק $x_2 = 2\sin\omega t$ נעה לכיוון החיובי.
+    solution:
+      - kind: law
+        text: >-
+          $\operatorname{Re}(Ae^{i\varphi}e^{i\omega t}) = A\cos(\omega t + \varphi)$; השיא הוא כש-$\omega t + \varphi$ הוא כפולה של $2\pi$.
+      - kind: reasoning
+        text: >-
+          הזוויות: $\arg2 = 0$, $\arg(-2i) = -90^\circ$, $\arg(2i) = +90^\circ$. החץ $\tilde Ae^{i\omega t}$ מסתובב נגד כיוון השעון, והשיא הוא כשהוא מגיע לציר הממשי החיובי. $x_2$ צריך להסתובב רק $90^\circ$, $x_3$ צריך $270^\circ$, ו-$x_1$, שכבר שם ב-$t = 0$, יגיע שוב רק אחרי $360^\circ$. ב-$t = 0$ החצים של $x_2$ ו-$x_3$ על הציר המדומה: הצל אפס. המהירות היא הצל של $i\omega\tilde A$: עבור $x_2$ זה $2\omega$, חיובי; עבור $x_3$ זה $(-2\omega)$.
+      - kind: limit
+        text: >-
+          כתיבה ישירה מאשרת: $x_2 = 2\cos(\omega t - \pi/2) = 2\sin\omega t$, עולה מאפס; $x_3 = -2\sin\omega t$, יורדת מאפס. ו-$x_3 = -x_2$, כמו ש-$2i = -(-2i)$.
+      - kind: units
+        text: >-
+          הזמנים עד השיא הם זווית חלקי $\omega$: $\text{rad}/(\text{rad/s}) = \text{s}$.
+      - kind: result
+        text: >-
+          אחרי $t = 0$ הסדר הוא $x_2$ (ב-$T/4$), $x_3$ (ב-$3T/4$), $x_1$ (ב-$T$). רק $x_2$ יוצאת משיווי המשקל לכיוון החיובי.
+
+  - id: W-0.6-06
+    level: mid
+    objectives: [OBJ-0.6-2]
+    prompt: >-
+      על מסה פועלים שני מקורות באותה תדירות, וכל אחד לבד מזיז אותה ב-$x_1 = 5.0\sin\omega t$ ו-$x_2 = 5.0\cos\left(\omega t + \dfrac{\pi}{4}\right)$ (בסנטימטרים). מצאו את האמפליטודה ואת הפאזה של ההעתק הכולל, בצורה $A\cos(\omega t + \varphi)$.
+    answer: >-
+      $A = 3.83\,\text{cm}$, $\varphi = -22.5^\circ = -0.393\,\text{rad}$.
+    solution:
+      - kind: law
+        text: >-
+          תנודות באותה תדירות מתחברות כמו האמפליטודות המרוכבות שלהן; $\sin\omega t = \operatorname{Re}(-ie^{i\omega t})$.
+      - kind: manipulation
+        text: >-
+          $\tilde A_1 = -5.0i$, $\tilde A_2 = 5.0e^{i\pi/4} = 3.54 + 3.54i$. הסכום: $\tilde A = 3.54 - 1.46i$. בציור: שני חצים באורך 5, בזוויות $(-90^\circ)$ ו-$45^\circ$, כלומר בהפרש של $135^\circ$; הסכום על חוצה הזווית, ב-$(-22.5^\circ)$.
+      - kind: limit
+        text: >-
+          מחוק הקוסינוסים: $A^2 = 25 + 25 + 50\cos135^\circ$, ולכן $A = 10\cos67.5^\circ$. בהפרש $0$ זה היה $10$, ובהפרש $180^\circ$ אפס: $135^\circ$ קרוב לביטול, ו-$A$ קטן מכל אחת מהתנודות.
+      - kind: units
+        text: >-
+          האמפליטודות בסנטימטרים; הפאזה ברדיאנים או במעלות.
+      - kind: substitution
+        text: >-
+          $|\tilde A| = \sqrt{3.54^2 + 1.46^2} = 3.83\,\text{cm}$; החץ ברביע הרביעי, ולכן $\varphi = \arctan(-1.46/3.54) = -22.5^\circ$.
+      - kind: result
+        text: >-
+          $x_1 + x_2 = 3.83\cos(\omega t - 0.393)\,\text{cm}$.
+
+  - id: W-0.6-07
+    level: mid
+    objectives: [OBJ-0.6-1]
+    prompt: >-
+      לתנועה של גוף מרוסן יש משוואה אופיינית $s^2 + 2s + 5 = 0$ ($s$ ב-$\text{s}^{-1}$), והפתרונות שלה הם מהצורה $e^{st}$.
+
+      א. מצאו את שני השורשים, וכתבו אותם בהצגה קוטבית. שימו לב לרביע.
+
+      ב. כתבו $e^{st}$ כגודל כפול חץ באורך 1. מה קורה לגודל של $e^{st}$ עם הזמן, ומה זמן המחזור של הסיבוב של החץ?
+    answer: >-
+      א. $s = -1 \pm 2i$; $|s| = \sqrt5 = 2.24\,\text{s}^{-1}$, בזוויות $\pm116.6^\circ$.
+
+      ב. $e^{st} = e^{-t}e^{\pm2it}$: הגודל $e^{-t}$ דועך, והחץ מסתובב עם זמן מחזור $\pi = 3.14\,\text{s}$.
+    solution:
+      - kind: law
+        text: >-
+          נוסחת השורשים; $|z| = \sqrt{x^2 + y^2}$ עם בדיקת רביע; $e^{a + ib} = e^ae^{ib}$.
+      - kind: manipulation
+        text: >-
+          א. $s = \dfrac{-2 \pm \sqrt{4 - 20}}{2} = -1 \pm \dfrac{\sqrt{-16}}{2} = -1 \pm 2i$. החלק הממשי שלילי: השורשים ברביע השני והשלישי. המחשבון נותן $\arctan(2/(-1)) = -63.4^\circ$, ולכן הזווית של $-1 + 2i$ היא $-63.4^\circ + 180^\circ = 116.6^\circ$, ושל הצמוד שלו $(-116.6^\circ)$.
+
+          ב. $e^{(-1 \pm 2i)t} = e^{-t}\cdot e^{\pm2it}$. $e^{\pm2it}$ באורך 1, ומסתובב במהירות זוויתית $2\,\text{rad/s}$.
+      - kind: limit
+        text: >-
+          בלי ריסון (המקדם של $s$ אפס) השורשים היו $\pm\sqrt5\,i$, על הציר המדומה, והגודל $|e^{st}| = 1$ לא היה דועך: תנודה טהורה. החלק הממשי של השורש הוא קצב הדעיכה, והמדומה הוא התדירות הזוויתית.
+      - kind: units
+        text: >-
+          $st$ חסר ממדים, כמו שצריך במעריך; זמן המחזור $2\pi/(2\,\text{s}^{-1})$ בשניות.
+      - kind: substitution
+        text: >-
+          $|s| = 2.24\,\text{s}^{-1}$; זמן מחזור $\pi = 3.14\,\text{s}$; אחרי מחזור אחד הגודל קטן פי $e^{-\pi} = 0.043$.
+      - kind: result
+        text: >-
+          א. $s = -1 \pm 2i = 2.24e^{\pm i\cdot116.6^\circ}\,\text{s}^{-1}$. ב. $e^{st} = e^{-t}e^{\pm2it}$: חץ שמסתובב עם זמן מחזור $3.14\,\text{s}$ ומתקצר כמו $e^{-t}$.
+
+  - id: W-0.6-08
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-0.6-2]
+    prompt: >-
+      שני מקורות מנערים את אותה מסה בתדירויות **שונות** במקצת: $x = \cos\omega_1t + \cos\omega_2t$ (בסנטימטרים), עם $\omega_1 = 20\,\text{rad/s}$ ו-$\omega_2 = 21\,\text{rad/s}$.
+
+      א. קבעו ונמקו בציור של שני חצים מסתובבים: האם $x(t)$ היא תנודה הרמונית אחת?
+
+      ב. כתבו $e^{i\omega_1t} + e^{i\omega_2t}$ כ-$e^{i\bar\omega t}$ כפול גורם, כאשר $\bar\omega = (\omega_1 + \omega_2)/2$, והראו ש-$x = 2\cos\left(\dfrac{\Delta\omega}{2}t\right)\cos\bar\omega t$, עם $\Delta\omega = \omega_2 - \omega_1$.
+
+      ג. כל כמה זמן התנודה כמעט נעלמת?
+    answer: >-
+      א. לא: החצים מסתובבים בקצבים שונים, והזווית ביניהם גדלה כל הזמן.
+
+      ב. $e^{i\omega_1t} + e^{i\omega_2t} = 2\cos\left(\tfrac{\Delta\omega}{2}t\right)e^{i\bar\omega t}$.
+
+      ג. כל $2\pi/\Delta\omega = 6.28\,\text{s}$.
+    solution:
+      - kind: law
+        text: >-
+          $\cos\omega t = \operatorname{Re}(e^{i\omega t})$, $\operatorname{Re}$ עובר דרך סכום, ו-$e^{i\theta} + e^{-i\theta} = 2\cos\theta$.
+      - kind: reasoning
+        text: >-
+          א. השיטה של השיעור עובדת רק כשהחצים מסתובבים יחד: אז המשולש קשיח והסכום באורך קבוע. כאן החץ השני מקדים את הראשון ב-$\Delta\omega\,t$, הולך וגדל: פעם הם באותו כיוון (סכום באורך 2) ופעם הפוכים (סכום אפס).
+      - kind: manipulation
+        text: >-
+          ב. $\omega_1 = \bar\omega - \tfrac{\Delta\omega}{2}$ ו-$\omega_2 = \bar\omega + \tfrac{\Delta\omega}{2}$, ולכן $e^{i\omega_1t} + e^{i\omega_2t} = e^{i\bar\omega t}\left(e^{-i\Delta\omega t/2} + e^{i\Delta\omega t/2}\right) = 2\cos\left(\tfrac{\Delta\omega}{2}t\right)e^{i\bar\omega t}$. הגורם $2\cos(\Delta\omega t/2)$ ממשי, ולכן החלק הממשי הוא $2\cos(\Delta\omega t/2)\cos\bar\omega t$.
+      - kind: limit
+        text: >-
+          כש-$\Delta\omega \to 0$ הגורם שואף ל-$2$, ו-$x = 2\cos\omega t$: שתי תנודות זהות באותה פאזה, כמו בשיעור. והביטוי מתאפס כש-$\cos(\Delta\omega t/2) = 0$, בדיוק כשהחצים הפוכים.
+      - kind: units
+        text: >-
+          $\Delta\omega\,t$ חסר ממדים; $2\pi/\Delta\omega$ בשניות.
+      - kind: substitution
+        text: >-
+          $\bar\omega = 20.5\,\text{rad/s}$ (מחזור $0.307\,\text{s}$), $\Delta\omega = 1\,\text{rad/s}$. המעטפת $|2\cos(t/2)|$ מתאפסת ב-$t = \pi, 3\pi, \dots$ שניות, כלומר כל $2\pi/\Delta\omega = 6.28\,\text{s}$, ובכל פעימה יש כ-$6.28/0.307 = 20$ תנודות מהירות.
+      - kind: result
+        text: >-
+          א. לא תנודה הרמונית אחת. ב. $x = 2\cos(0.5t)\cos(20.5t)\,\text{cm}$. ג. כל $6.28\,\text{s}$: אלה הפעימות של שיעור 5.5.
+
+  - id: W-0.6-09
+    level: bagrut
+    objectives: [OBJ-0.6-2]
+    prompt: >-
+      גוף על קפיץ שקבועו $k = 50\,\text{N/m}$ מתנודד לפי $x = \operatorname{Re}(\tilde Ae^{i\omega t})$, עם $\tilde A = 0.030 + 0.040i\,\text{m}$.
+
+      א. מה האנרגיה הפוטנציאלית המרבית של הקפיץ, ומה הממוצע שלה על מחזור, $\langle U\rangle$, כאשר $U = \tfrac12kx^2$?
+
+      ב. סטודנט כותב $U = \operatorname{Re}\left(\tfrac12k\tilde A^2e^{2i\omega t}\right)$. כמה הוא מקבל ב-$t = 0$, ומה הממוצע של הביטוי שלו? הסבירו את הטעות.
+    answer: >-
+      א. $U_{\max} = 0.0625\,\text{J}$, $\langle U\rangle = 0.0313\,\text{J}$.
+
+      ב. ב-$t = 0$ הוא מקבל $(-0.0175)\,\text{J}$ (במקום $0.0225\,\text{J}$), והממוצע שלו אפס. החלק הממשי לא עובר דרך מכפלה.
+    solution:
+      - kind: law
+        text: >-
+          $x = |\tilde A|\cos(\omega t + \varphi)$; $\langle\cos^2\rangle = \tfrac12$ על מחזור; $\operatorname{Re}(zw) \ne \operatorname{Re}z\operatorname{Re}w$, ו-$\operatorname{Re}z = \tfrac12(z + \bar z)$.
+      - kind: manipulation
+        text: >-
+          א. $U = \tfrac12k|\tilde A|^2\cos^2(\omega t + \varphi)$, ולכן $U_{\max} = \tfrac12k|\tilde A|^2$ ו-$\langle U\rangle = \tfrac14k|\tilde A|^2$.
+
+          ב. בדרך הנכונה: $x^2 = \tfrac14\left(\tilde Ae^{i\omega t} + \bar{\tilde A}e^{-i\omega t}\right)^2 = \tfrac12|\tilde A|^2 + \tfrac12\operatorname{Re}\left(\tilde A^2e^{2i\omega t}\right)$. לביטוי של הסטודנט חסר האיבר הקבוע $\tfrac12|\tilde A|^2$, והאיבר שנשאר אצלו כפול 2. האיבר $e^{2i\omega t}$ ממוצע לאפס.
+      - kind: limit
+        text: >-
+          אילו $\tilde A$ היה ממשי ו-$t = 0$, הסטודנט היה מקבל $\tfrac12k\tilde A^2$, במקרה הערך הנכון: הטעות מסתתרת בדיוק במקרה הזה. עם $\tilde A$ מדומה ב-$t = 0$ הוא מקבל אנרגיה **שלילית**, וזה בלתי אפשרי ל-$\tfrac12kx^2$.
+      - kind: units
+        text: >-
+          $\text{N/m}\cdot\text{m}^2 = \text{J}$.
+      - kind: substitution
+        text: >-
+          $|\tilde A| = 0.050\,\text{m}$: $U_{\max} = \tfrac12\cdot50\cdot0.0025 = 0.0625\,\text{J}$, $\langle U\rangle = 0.0313\,\text{J}$. $\tilde A^2 = -0.0007 + 0.0024i\,\text{m}^2$, ולכן ב-$t = 0$ הסטודנט מקבל $\tfrac12\cdot50\cdot(-0.0007) = -0.0175\,\text{J}$, ובאמת $\tfrac12\cdot50\cdot0.030^2 = 0.0225\,\text{J}$.
+      - kind: result
+        text: >-
+          א. $0.0625\,\text{J}$ ו-$0.0313\,\text{J}$. ב. $(-0.0175)\,\text{J}$ וממוצע אפס: מכפלה מחשבים מ-$x$ הממשי, או מ-$\tfrac12(z + \bar z)$.
+
+  - id: W-0.6-10
+    level: bagrut
+    objectives: [OBJ-0.6-1]
+    prompt: >-
+      גלגל של אופניים, ברדיוס $R = 0.35\,\text{m}$, מתגלגל בלי להחליק ימינה במהירות $v = 3.0\,\text{m/s}$, ולכן מסתובב עם כיוון השעון במהירות זוויתית $\omega = v/R$. הציר $x$ ימינה, הציר $y$ למעלה, והראשית על הכביש. נקודה על השפה נוגעת בכביש ב-$t = 0$. כותבים את המקום שלה כמספר מרוכב:
+
+      $$
+      z(t) = vt + iR - iR\,e^{-i\omega t}
+      $$
+
+      א. הסבירו כל אחד משלושת האיברים, ובדקו ש-$z(0) = 0$.
+
+      ב. מצאו את המהירות $\dot z$, והראו שגודלה $2v\left|\sin\dfrac{\omega t}{2}\right|$. מה המהירות ברגע המגע, ומה בראש הגלגל?
+
+      ג. מה גודל התאוצה של הנקודה, ולאן היא פונה?
+    answer: >-
+      א. $vt$: המרכז נע ימינה; $iR$: המרכז בגובה $R$; $(-iR\,e^{-i\omega t})$: הנקודה ביחס למרכז, מתחילה למטה ומסתובבת עם כיוון השעון.
+
+      ב. $\dot z = v\left(1 - e^{-i\omega t}\right)$; אפס במגע, $6.0\,\text{m/s}$ בראש הגלגל.
+
+      ג. $v^2/R = 25.7\,\text{m/s}^2$, תמיד אל מרכז הגלגל.
+    solution:
+      - kind: given
+        text: >-
+          $R = 0.35\,\text{m}$, $v = 3.0\,\text{m/s}$, $\omega = v/R = 8.57\,\text{rad/s}$. סיבוב עם כיוון השעון הוא כפל ב-$e^{-i\omega t}$.
+      - kind: law
+        text: >-
+          $\dfrac{d}{dt}e^{-i\omega t} = -i\omega e^{-i\omega t}$; $|1 - e^{-i\theta}| = 2|\sin(\theta/2)|$ (מוציאים $e^{-i\theta/2}$ ומשתמשים בנוסחה של $\sin$).
+      - kind: manipulation
+        text: >-
+          א. האיבר $(-iR\,e^{-i\omega t})$ ב-$t = 0$ הוא $(-iR)$, נקודה $R$ מתחת למרכז, ולכן $z(0) = 0 + iR - iR = 0$.
+
+          ב. $\dot z = v - iR(-i\omega)e^{-i\omega t} = v - R\omega e^{-i\omega t} = v\left(1 - e^{-i\omega t}\right)$, כי $R\omega = v$. ו-$1 - e^{-i\theta} = e^{-i\theta/2}\left(e^{i\theta/2} - e^{-i\theta/2}\right) = e^{-i\theta/2}\cdot2i\sin\dfrac\theta2$.
+
+          ג. $\ddot z = v\cdot i\omega e^{-i\omega t} = -\omega^2\left(-iR\,e^{-i\omega t}\right)$: מינוס $\omega^2$ כפול המקום ביחס למרכז.
+      - kind: limit
+        text: >-
+          ב-$\omega t = 0$ (מגע) המהירות אפס: הנקודה שנוגעת בכביש עומדת ברגע זה, כמו שגלגול בלי החלקה דורש. ב-$\omega t = \pi$ (ראש הגלגל) $\dot z = 2v$, ימינה. וכש-$R \to \infty$ בקבוע $v$, $\omega \to 0$ והתאוצה $v^2/R \to 0$.
+      - kind: units
+        text: >-
+          $R\omega$ ב-$\text{m/s}$; $\omega^2R = v^2/R$ ב-$\text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          ב-$\omega t = 90^\circ$ (הנקודה בגובה המרכז, מאחוריו), $|\dot z| = 2\cdot3.0\sin45^\circ = 4.24\,\text{m/s}$, בזווית $45^\circ$. בראש: $6.0\,\text{m/s}$. $|\ddot z| = 3.0^2/0.35 = 25.7\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          ב. $|\dot z| = 2v|\sin(\omega t/2)|$: $0$ במגע, $6.0\,\text{m/s}$ בראש. ג. $25.7\,\text{m/s}^2$, אל מרכז הגלגל.
+
+challenge:
+  - id: W-0.6-c1
+    stars: 1
+    objectives: [OBJ-0.6-1, OBJ-0.6-2]
+    prompt: >-
+      חלקיק מתנודד לאורך הציר $x$ בתדירות זוויתית $\omega = 3.0\,\text{rad/s}$. בכל סעיף נתון אחד משלושת הגדלים, ההעתק, המהירות או התאוצה, בייצוג מרוכב או ממשי ($t$ בשניות). בייצוג המרוכב הגודל הפיזיקלי הוא החלק הממשי, וכשצריך לבצע אינטגרל קבועי האינטגרציה אפס.
+
+      א. ההעתק בייצוג מרוכב: $z(t) = Ae^{i(\omega t - \pi/2)}$, עם $A = 2.0\,\text{cm}$. כתבו את ההעתק, המהירות והתאוצה הממשיים בצורה $c\cos\omega t + d\sin\omega t$.
+
+      ב. המהירות בייצוג מרוכב: $\dot z(t) = -Bi\,e^{i(\omega t + \pi/6)}$, עם $B = 6.0\,\text{cm/s}$. כתבו את שלושת הגדלים הממשיים באותה צורה.
+
+      ג. ההעתק הממשי: $x(t) = \alpha\cos\omega t - \beta\sin\omega t$, עם $\alpha = 3.0\,\text{cm}$ ו-$\beta = 4.0\,\text{cm}$. כתבו את שלושת הגדלים בייצוג מרוכב, בצורה $Qe^{i(\omega t + \varphi)}$ עם $Q > 0$.
+
+      ד. המהירות הממשית: $\dot x(t) = -\gamma\sin\left(\omega t + \dfrac\pi3\right)$, עם $\gamma = 12\,\text{cm/s}$. כתבו את שלושת הגדלים בייצוג מרוכב, באותה צורה.
+    answer: >-
+      א. $x = 2.0\sin3t$, $v = 6.0\cos3t$, $a = -18\sin3t$.
+
+      ב. $x = -1.73\cos3t + 1.00\sin3t$, $v = 3.00\cos3t + 5.20\sin3t$, $a = 15.6\cos3t - 9.00\sin3t$.
+
+      ג. $z = 5.0e^{i(3t + 0.927)}$, $\dot z = 15e^{i(3t + 2.50)}$, $\ddot z = 45e^{i(3t - 2.21)}$.
+
+      ד. $z = 4.0e^{i(3t + \pi/3)}$, $\dot z = 12e^{i(3t + 5\pi/6)}$, $\ddot z = 36e^{i(3t - 2\pi/3)}$.
+    solution:
+      - kind: law
+        text: >-
+          $x = \operatorname{Re}(\tilde Ae^{i\omega t})$; גזירה כופלת ב-$i\omega$ ואינטגרל (בקבוע אפס) מחלק ב-$i\omega$. $c\cos\omega t + d\sin\omega t = \operatorname{Re}\left[(c - id)e^{i\omega t}\right]$, כלומר $c = \operatorname{Re}\tilde A$ ו-$d = -\operatorname{Im}\tilde A$.
+      - kind: manipulation
+        text: >-
+          א. $\tilde A = Ae^{-i\pi/2} = -2.0i$, ולכן $c = 0$, $d = 2.0$. $\tilde v = i\omega\tilde A = 6.0$ ו-$\tilde a = -\omega^2\tilde A = 18i$.
+
+          ב. $\tilde v = -Bie^{i\pi/6} = 6.0e^{-i\cdot60^\circ} = 3.00 - 5.20i$. $\tilde A = \tilde v/(i\omega) = 2.0e^{-i\cdot150^\circ} = -1.73 - 1.00i$. $\tilde a = i\omega\tilde v = 18e^{i\cdot30^\circ} = 15.6 + 9.00i$.
+
+          ג. $\tilde A = \alpha + i\beta = 3.0 + 4.0i$: ברביע הראשון, $Q = 5.0\,\text{cm}$, $\varphi = \arctan(4/3) = 0.927\,\text{rad}$. המהירות: כפל ב-$i\omega = 3.0e^{i\pi/2}$; התאוצה: כפל ב-$\omega^2e^{i\pi}$.
+
+          ד. $-\gamma\sin\theta = \operatorname{Re}(i\gamma e^{i\theta})$, ולכן $\tilde v = i\gamma e^{i\pi/3} = \gamma e^{i5\pi/6}$. $\tilde A = \tilde v/(i\omega) = (\gamma/\omega)e^{i\pi/3}$, $\tilde a = i\omega\tilde v = \gamma\omega e^{i4\pi/3}$, וזה $e^{-i2\pi/3}$.
+      - kind: limit
+        text: >-
+          בכל סעיף הפאזה של המהירות גדולה ב-$\pi/2$ מזו של ההעתק, ושל התאוצה ב-$\pi$: התאוצה תמיד הפוכה להעתק, $a = -\omega^2x$, כמו במתנד הרמוני. בדיקה מספרית ב-ג, ב-$t = 0.40\,\text{s}$: $3.0\cos1.2 - 4.0\sin1.2 = -2.64$, וגם $5.0\cos(1.2 + 0.927) = -2.64$.
+      - kind: units
+        text: >-
+          $\omega\cdot\text{cm} = \text{cm/s}$ ו-$\omega^2\cdot\text{cm} = \text{cm/s}^2$; חלוקה ב-$\omega$ מחזירה מ-$\text{cm/s}$ ל-$\text{cm}$.
+      - kind: substitution
+        text: >-
+          ג. $Q_v = 3.0\cdot5.0 = 15\,\text{cm/s}$, $\varphi_v = 0.927 + 1.571 = 2.50\,\text{rad}$; $Q_a = 9.0\cdot5.0 = 45\,\text{cm/s}^2$, $\varphi_a = 0.927 + 3.14 - 6.28 = -2.21\,\text{rad}$. ד. $\gamma/\omega = 4.0\,\text{cm}$, $\gamma\omega = 36\,\text{cm/s}^2$.
+      - kind: result
+        text: >-
+          א. $x = 2.0\sin3t$, $v = 6.0\cos3t$, $a = -18\sin3t$. ב. $x = -1.73\cos3t + 1.00\sin3t$, $v = 3.00\cos3t + 5.20\sin3t$, $a = 15.6\cos3t - 9.00\sin3t$. ג. $5.0e^{i(3t + 0.927)}$, $15e^{i(3t + 2.50)}$, $45e^{i(3t - 2.21)}$. ד. $4.0e^{i(3t + 1.05)}$, $12e^{i(3t + 2.62)}$, $36e^{i(3t - 2.09)}$.
+    source:
+      name: MIT OpenCourseWare, 8.03SC Physics III (Vibrations and Waves)
+      year: 2016
+      problem: 'Homework 1, Problem 1.2 (complex and real representations of displacement, velocity and acceleration; cases a, b, d and e, with numbers; the complex forms of a and b conjugated to the convention e^(+iωt), which leaves the real motion unchanged)'
+      url: https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/ba437a6236bc47b5675d8ec88ef5234b_MIT8_03SCF16_ProblemSet1.pdf
+      verified: '2026-11-17'
+      adapted: true
+
+  - id: W-0.6-c2
+    stars: 2
+    objectives: [OBJ-0.6-1, OBJ-0.6-2]
+    prompt: >-
+      א. השתמשו ב-$\left(e^{it}\right)^4 = e^{4it}$ ובנוסחת אוילר כדי לכתוב את $\cos4t$ כסכום של חזקות של $\cos t$ ושל $\sin t$. בדקו את התוצאה ב-$t = 0.30$.
+
+      ב. לכל אחת מהפונקציות הבאות מצאו מספר מרוכב $w = a + ib$ כך ש-$\operatorname{Re}\left(e^{wt}\right) = f(t)$, ותארו את המסלול של הנקודה $e^{wt}$ במישור המרוכב כש-$t$ גדל מ-$0$:
+
+      (1) $f(t) = \cos2\pi t$, תנודה בלי ריסון;
+
+      (2) $f(t) = e^{-t}$, דעיכה בלי תנודה;
+
+      (3) $f(t) = e^{-t}\cos2\pi t$, תנודה מרוסנת;
+
+      (4) $f(t) = 1$.
+
+      ג. בתנודה (3): פי כמה קטן המרחק של $e^{wt}$ מהראשית בכל סיבוב שלם?
+    answer: >-
+      א. $\cos4t = \cos^4t - 6\cos^2t\sin^2t + \sin^4t$; ב-$t = 0.30$ שני האגפים $0.362$.
+
+      ב. (1) $w = 2\pi i$ (או $-2\pi i$): מעגל היחידה, סיבוב בשנייה. (2) $w = -1$: קטע על הציר הממשי, מ-1 אל הראשית. (3) $w = -1 + 2\pi i$: ספירלה שמתכנסת אל הראשית. (4) $w = 0$: נקודה אחת, 1.
+
+      ג. פי $e = 2.72$ (המרחק מוכפל ב-$e^{-1} = 0.368$).
+    solution:
+      - kind: law
+        text: >-
+          $e^{i\theta} = \cos\theta + i\sin\theta$; $e^{(a + ib)t} = e^{at}e^{ibt}$: חץ באורך $e^{at}$ בזווית $bt$.
+      - kind: manipulation
+        text: >-
+          א. $(\cos t + i\sin t)^4$ בבינום של ניוטון: $\cos^4t + 4i\cos^3t\sin t - 6\cos^2t\sin^2t - 4i\cos t\sin^3t + \sin^4t$. החלק הממשי של $e^{4it}$ הוא $\cos4t$, ולכן $\cos4t = \cos^4t - 6\cos^2t\sin^2t + \sin^4t$ (ומהחלק המדומה, $\sin4t = 4\cos^3t\sin t - 4\cos t\sin^3t$).
+
+          ב. $\operatorname{Re}(e^{at}e^{ibt}) = e^{at}\cos bt$. (1) $a = 0$, $b = 2\pi$. (2) $a = -1$, $b = 0$. (3) $a = -1$, $b = 2\pi$. (4) $a = b = 0$. גם $b \to -b$ נותן אותו חלק ממשי: הצמוד מסתובב בכיוון ההפוך.
+
+          ג. אחרי סיבוב שלם, $bt = 2\pi$, כלומר $t = 1$, והאורך $e^{at} = e^{-1}$.
+      - kind: limit
+        text: >-
+          (3) מכיל את (1) ואת (2) כגבולות: בלי ריסון ($a = 0$) הספירלה הופכת למעגל, ובלי תנודה ($b = 0$) היא הופכת לקטע על הציר הממשי. ב-א, ב-$t = 0$ שני האגפים $1$.
+      - kind: units
+        text: >-
+          $wt$ חסר ממדים: כאן $t$ בשניות ו-$w$ ב-$\text{s}^{-1}$; $b = 2\pi\,\text{rad/s}$ הוא סיבוב בשנייה.
+      - kind: substitution
+        text: >-
+          א. $\cos1.2 = 0.362$, ו-$\cos^40.3 - 6\cos^20.3\sin^20.3 + \sin^40.3 = 0.362$. ג. $e^{-1} = 0.368$.
+      - kind: result
+        text: >-
+          א. $\cos4t = \cos^4t - 6\cos^2t\sin^2t + \sin^4t$. ב. $2\pi i$ (מעגל), $-1$ (קטע), $-1 + 2\pi i$ (ספירלה פנימה), $0$ (נקודה). ג. פי $e$ בכל סיבוב.
+    source:
+      name: MIT OpenCourseWare, 18.03SC Differential Equations
+      year: 2011
+      problem: 'Problem Set 2, Part II, Problem 2 (Complex exponentials, Sinusoids), parts (c) and (d)'
+      url: https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/864082930d636fece23e07ff8fb0895f_MIT18_03SCF11_ps2_II_s6q.pdf
+      verified: '2026-11-17'
+      adapted: true
