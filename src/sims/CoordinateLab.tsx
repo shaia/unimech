@@ -698,6 +698,9 @@ function drawSpace(ctx: CanvasRenderingContext2D, view: View, p: Palette, s: Sta
   L('O', O[0] - 12, O[1] + 12, p.ink2);
 
   const d = s.d;
+  // the unit vectors run along the element's edges from P, so with them on the edge labels would sit on the
+  // arrows' labels: the edges are then named in the readout under the figure (which lists all three) instead
+  const edgeLabels = !s.basis;
   if (s.system === 'sph') {
     const r = s.sr;
     // the sphere: its outline (a circle in this projection), the equator, P's latitude circle and meridian
@@ -733,9 +736,11 @@ function drawSpace(ctx: CanvasRenderingContext2D, view: View, p: Palette, s: Sta
     // the volume element r…r+d, θ…θ+d, φ…φ+d
     const atS = (i: number, j: number, k: number) => fromSpherical(r + i * d, s.sth + j * d, s.phi + k * d);
     element(atS, sc, ctx, p);
-    edgeLabel(ctx, p, view, sc, 'dr', atS(0, 0, 1), atS(1, 0, 1), atS(0.5, 0.5, 0.5));
-    edgeLabel(ctx, p, view, sc, 'r dθ', atS(1, 0, 1), atS(1, 1, 1), atS(0.5, 0.5, 0.5));
-    edgeLabel(ctx, p, view, sc, 'r sin θ dφ', atS(1, 1, 0), atS(1, 1, 1), atS(0.5, 0.5, 0.5));
+    if (edgeLabels) {
+      edgeLabel(ctx, p, view, sc, 'dr', atS(0, 0, 1), atS(1, 0, 1), atS(0.5, 0.5, 0.5));
+      edgeLabel(ctx, p, view, sc, 'r dθ', atS(1, 0, 1), atS(1, 1, 1), atS(0.5, 0.5, 0.5));
+      edgeLabel(ctx, p, view, sc, 'r sin θ dφ', atS(1, 1, 0), atS(1, 1, 1), atS(0.5, 0.5, 0.5));
+    }
 
     if (s.basis) {
       const b = sphericalBasis(s.sth, s.phi);
@@ -767,9 +772,11 @@ function drawSpace(ctx: CanvasRenderingContext2D, view: View, p: Palette, s: Sta
 
     const atC = (i: number, j: number, k: number) => fromCylindrical(sR + i * d, s.phi + j * d, z + k * d);
     element(atC, sc, ctx, p);
-    edgeLabel(ctx, p, view, sc, 'ds', atC(0, 0, 0), atC(1, 0, 0), atC(0.5, 0.5, 0.5));
-    edgeLabel(ctx, p, view, sc, 's dφ', atC(1, 0, 0), atC(1, 1, 0), atC(0.5, 0.5, 0.5));
-    edgeLabel(ctx, p, view, sc, 'dz', atC(1, 1, 0), atC(1, 1, 1), atC(0.5, 0.5, 0.5));
+    if (edgeLabels) {
+      edgeLabel(ctx, p, view, sc, 'ds', atC(0, 0, 0), atC(1, 0, 0), atC(0.5, 0.5, 0.5));
+      edgeLabel(ctx, p, view, sc, 's dφ', atC(1, 0, 0), atC(1, 1, 0), atC(0.5, 0.5, 0.5));
+      edgeLabel(ctx, p, view, sc, 'dz', atC(1, 1, 0), atC(1, 1, 1), atC(0.5, 0.5, 0.5));
+    }
 
     if (s.basis) {
       const b = cylindricalBasis(s.phi);

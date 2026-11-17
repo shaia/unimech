@@ -313,7 +313,15 @@ export default function ODELab(props: ODELabProps) {
       ctx.lineTo(box.x + box.w, Y);
       ctx.stroke();
       ctx.restore();
-      halo(ctx, p, `${F.y} = ${num(F.yEq)} ${F.yUnit}`, box.x + box.w - 4, Y - 10, p.ink2, 'right');
+      // a solid paper backing, so the field segments behind the label do not cut through it
+      const eqLabel = `${F.y} = ${num(F.yEq)} ${F.yUnit}`;
+      ctx.save();
+      ctx.font = `600 12.5px ${p.fontUi}`;
+      const tw = ctx.measureText(eqLabel).width;
+      ctx.fillStyle = withAlpha(p.paper, 0.95);
+      ctx.fillRect(box.x + box.w - 4 - tw - 5, Y - 19, tw + 10, 18);
+      ctx.restore();
+      halo(ctx, p, eqLabel, box.x + box.w - 4, Y - 10, p.ink2, 'right');
     }
 
     // the solution curves: older ones faint, the newest bold, each with its starting point
