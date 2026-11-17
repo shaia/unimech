@@ -1,0 +1,7 @@
+---
+/** Energy-momentum diagram for lesson MDX: <Spread fig="fig-10-2a" figure={FourMomentum} figureProps={{ ma: 140, tasks: [...] }}>. */
+import FourMomentum, { type FourMomentumProps } from './FourMomentum';
+type Props = FourMomentumProps;
+---
+
+<FourMomentum client:visible {...Astro.props} />

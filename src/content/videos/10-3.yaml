@@ -1,0 +1,35 @@
+# Videos of lesson 10.3. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel as returned; oEmbed writes a no-break space after "10.5"). The ids come from the transcript file
+# names on the MIT OCW 8.20 (IAP 2021) lecture pages (resources/lecture-10-4 and lecture-10-5), opened 2026-11-16,
+# which give the durations. `why` rests on the transcripts: the .srt of 10.5 (summarised) and the PDF transcript of
+# 10.6 (read in full). Neither video was watched. No Hebrew video on relativistic decays or threshold energies was
+# found. Caption tracks were not confirmed.
+#   Ac-0-yaHsAg: "10.5 Decay of a Pion", MIT OpenCourseWare (8.20, Markus Klute), 3:01. Per the transcript: a π⁰ at
+#     rest decaying into an electron and a positron (rarer than two photons); four-momenta and energy-momentum
+#     conservation in the pion's rest frame; equal masses, so equal γ = m_π/(2m_e) ≈ 132.
+#   0OnLn3Ito8o: "10.6 Creation of Particles", MIT OpenCourseWare (8.20, Markus Klute), 5:58. Per the transcript:
+#     p + p → p + n + π⁺ on a fixed target, solved in the CM frame (all products at rest), boosted back to the lab:
+#     about 300 MeV. Then p + p → p + p + p + p̄, fixed target against a collider. THE SECOND PART HAS AN ARITHMETIC
+#     SLIP: γ′ = 2 in the CM frame is stated with β′ = 0.75 (that is β′², the speed is 0.866), giving γ = 3.57 and
+#     2.57 GeV in the lab; the right values are γ = 7 and K = 6mc² = 5.63 GeV (.scratch/ch10/10-3/lesson.ts). The
+#     lesson's Watch text says so and makes finding it a task.
+
+- id: v-10-3-mit-pion-decay
+  youtubeId: Ac-0-yaHsAg
+  title: "10.5 Decay of a Pion"
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 3
+  why: 'קטע של כשלוש דקות מקורס 8.20 של MIT, באנגלית. בקטע, פיון ניטרלי נח דועך לאלקטרון ולפוזיטרון, והחשבון נעשה במערכת המנוחה של הפיון, משימור ארבעה-וקטור האנרגיה-תנע. התוצרים בעלי מסות שוות, ולכן הם מתחלקים באנרגיה שווה בשווה, כמו בדעיכה של K⁰ לשני פיונים בשיעור.'
+  verified: '2026-11-16'
+
+- id: v-10-3-mit-creation
+  youtubeId: 0OnLn3Ito8o
+  title: '10.6 Creation of Particles'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'קטע של כשש דקות מקורס 8.20 של MIT, באנגלית. בקטע מחשבים אנרגיית סף במערכת מרכז המסה, שבה כל התוצרים נחים, וחוזרים למעבדה בחיבור מהירויות: קודם ליצירת פיון טעון, ואחר כך ליצירת אנטי-פרוטון, במטרה נייחת ובהתנגשות חזיתית. בחלק השני יש טעות חשבון שכדאי למצוא בעצמכם.'
+  verified: '2026-11-16'

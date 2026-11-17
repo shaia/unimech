@@ -1,0 +1,459 @@
+# Workbook, lesson 10.5 (force in relativity: F = dp/dt, hyperbolic motion, work = ΔE). Format: CLAUDE.md,
+# "The solution format". Every number was recomputed by .scratch/ch10/10-5/workbook.ts with src/physics/constants.ts
+# (C_LIGHT = 3.0e8 m/s, M_ELECTRON = 9.11e-31 kg, M_PROTON = 1.67e-27 kg, G = 9.8 m/s², YEAR = 3.156e7 s),
+# src/physics/hyperbolic.ts and src/physics/relativity.ts:
+#   W02 electron, F = 1.6e-13 N: m_e c = 2.733e-22; t = 1.0 ns: u = 0.585, β = 0.505; t = 10 ns: u = 5.85, β = 0.986;
+#   W03 electron (0.511 MeV): K(0.60c) = 0.128 MeV (Newton 0.092), K(0.80c) = 0.341 MeV (Newton 0.164);
+#   W05 proton, F = 1.6e-13 N to 0.90c: γ = 2.29, γβ = 2.06, mc²/F = 939 m, x = 1216 m, t = 6.47 μs (Newton 2.82 μs,
+#       380 m);
+#   W06 electron at 0.95c: γ = 3.20, γ² = 10.3, γ³ = 32.9; F/m = 1.76e17, a∥ = 5.35e15, a⊥ = 5.48e16 m/s²;
+#   W07 electron, 8.0e-15 N over 0.50 m: W = 0.025 MeV, γ = 1.0489, β = 0.302, Newton 0.313 (3.6% high);
+#   W08 L = mc²/F = 939 m; a flash from x = −L/2 catches the proton at ct = 3L/4 = 704 m (t = 2.35 μs), x = L/4 = 235 m,
+#       where u = 3/4, β = 0.600;
+#   W09 proton, F = 1.6e-13 N: t = 10 μs: E = 3144, pc = 3000, E − pc = 144 MeV; 20 μs: 6073, 6000, 73; Fc = 300 MeV/μs;
+#   W10 proton at 0.95c against F = 1.6e-12 N (10 MeV/m): γ = 3.20, K = 2068 MeV, p₀ = γβmc = 1.524e-18 kg·m/s,
+#       d = 207 m, t = 0.953 μs (Newton 42.4 m, 0.297 μs);
+#   c1 c/g = 3.06e7 s = 0.970 yr; 0.99c: γβ = 7.02, t = 6.81 yr, τ = 2.57 yr (artanh 0.99 = 2.65); 0.999c: γβ = 22.3,
+#      t = 21.7 yr, τ = 3.69 yr (artanh 0.999 = 3.80); Newton 0.960 and 0.969 yr;
+#   c2 4.3 ly, half up, half down at g: c²/g = 0.970 ly, γ_mid = 3.22, γβ = 3.06, β_mid = 0.950; Earth time 5.93 yr,
+#      proper time 3.56 yr (Galilean 4.09 yr, peak speed 2.1c); constant speed with the same proper time: γβ = 1.21,
+#      β = 0.770; energy per kg at the midpoint (γ − 1)c² = 2.0e17 J/kg.
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-5/recompute.ts (every answer and solution
+#   number, both challenges). Fixed: W08 ct = 0.75·939 = 704 m (was 705) and the condition on the root (a spurious
+#   positive root for a > 2); W10 K₀ = 2068 MeV (was 2069), p₀ from γβmc, Newton's stopping time 0.297 μs (was 0.298).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '10.5'
+practice:
+  - id: W-10.5-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      כוח קבוע $F$ פועל על גוף שמתחיל ממנוחה, פעם במשך $2\,\text{s}$ ואחר כך עוד $2\,\text{s}$. קבעו ונמקו, לפי החוק השני
+      היחסותי:
+
+      א. האם התנע גדל באותה מידה בשני פרקי הזמן?
+
+      ב. האם המהירות גדלה באותה מידה בשני פרקי הזמן?
+
+      ג. האם מותר לכתוב $F = ma$ בפרק הזמן השני, עם $a$ התאוצה הממוצעת בו?
+    answer: >-
+      א. כן, $\Delta p = F\Delta t$ בכל אחד. ב. לא: בפרק השני המהירות גדלה פחות (בשווה רק כש-$v \ll c$ כל הזמן). ג. לא:
+      לכוח לאורך המהירות $F = \gamma^3ma$, ו-$\gamma$ גדל.
+    solution:
+      - kind: law
+        text: >-
+          $F = dp/dt$ עם $p = \gamma mv$; לכוח לאורך המהירות $F = \gamma^3m\,dv/dt$.
+      - kind: reasoning
+        text: >-
+          א: $F$ קבוע, ולכן $\Delta p = F\Delta t$ זהה בכל פרק זמן של $2\,\text{s}$. ב: $v = pc^2/E$ איננה פונקציה קווית של $p$:
+          ככל שהתנע גדל, אותה תוספת תנע נותנת תוספת מהירות קטנה יותר, כי $dv/dp = 1/(\gamma^3m)$. ג: בפרק השני $\gamma$ גדול
+          יותר, והתאוצה $F/(\gamma^3m)$ קטנה יותר; היחס $F/a$ איננו $m$.
+      - kind: limit
+        text: >-
+          אם כל הזמן $Ft \ll mc$, $\gamma \approx 1$, ושני פרקי הזמן נותנים אותה תוספת מהירות, $F\Delta t/m$, כמו אצל ניוטון.
+      - kind: result
+        text: >-
+          א. כן, $F\cdot2\,\text{s}$ בכל אחד. ב. לא, פחות בפרק השני. ג. לא: $F = \gamma^3ma$, ו-$F = ma$ רק כש-$v \ll c$.
+
+  - id: W-10.5-02
+    level: basic
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      אלקטרון ($m = 9.11\cdot10^{-31}\,\text{kg}$) מתחיל ממנוחה, וכוח קבוע $F = 1.6\cdot10^{-13}\,\text{N}$ פועל עליו. מה
+      מהירותו אחרי $1.0\,\text{ns}$, ומה אחרי $10\,\text{ns}$? השוו לניוטון.
+    answer: >-
+      $0.505c$ ו-$0.986c$ (ניוטון: $0.585c$ ו-$5.85c$).
+    solution:
+      - kind: given
+        text: >-
+          $m = 9.11\cdot10^{-31}\,\text{kg}$, $F = 1.6\cdot10^{-13}\,\text{N}$, $c = 3.0\cdot10^8\,\text{m/s}$; ציר $x$ בכיוון הכוח.
+      - kind: law
+        text: >-
+          $p = Ft$, ו-$\gamma\beta = p/(mc) = u$, ולכן $\beta = \dfrac{u}{\sqrt{1 + u^2}}$.
+      - kind: manipulation
+        text: >-
+          $mc = 2.73\cdot10^{-22}\,\text{kg·m/s}$. ב-$1.0\,\text{ns}$: $u = 1.6\cdot10^{-22}/2.73\cdot10^{-22} = 0.585$. ב-$10\,\text{ns}$:
+          $u = 5.85$.
+      - kind: limit
+        text: >-
+          כש-$u \ll 1$, $\beta \approx u$, המהירות של ניוטון. כאן כבר ב-$1.0\,\text{ns}$ $u$ אינו קטן, וניוטון גבוה ב-$16\%$.
+      - kind: units
+        text: >-
+          $Ft$ ב-$\text{N·s} = \text{kg·m/s}$, כמו $mc$; $u$ ו-$\beta$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $\beta = 0.585/\sqrt{1.342} = 0.505$; $\beta = 5.85/\sqrt{35.3} = 0.986$.
+      - kind: result
+        text: >-
+          $0.505c$ אחרי $1.0\,\text{ns}$ ו-$0.986c$ אחרי $10\,\text{ns}$; ניוטון היה נותן $0.585c$ ו-$5.85c$.
+
+  - id: W-10.5-03
+    level: basic
+    objectives: [OBJ-10.5-2]
+    prompt: >-
+      כמה עבודה צריך לעשות על אלקטרון ($m_ec^2 = 0.511\,\text{MeV}$) כדי להביא אותו ממנוחה ל-$0.60c$? ול-$0.80c$? מה
+      היו התשובות לפי $\tfrac12mv^2$?
+    answer: >-
+      $0.128\,\text{MeV}$ ו-$0.341\,\text{MeV}$ (לפי $\tfrac12mv^2$: $0.092$ ו-$0.164\,\text{MeV}$).
+    solution:
+      - kind: law
+        text: >-
+          משפט עבודה-אנרגיה ביחסות: $W = \Delta E = (\gamma - 1)m_ec^2$ ממנוחה.
+      - kind: manipulation
+        text: >-
+          $\gamma(0.60) = 1.25$, $\gamma(0.80) = 5/3$. לפי ניוטון $W = \tfrac12\beta^2\,m_ec^2$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\gamma - 1 \approx \tfrac12\beta^2$, ושתי התשובות מתלכדות. ב-$0.80c$ ההבדל כבר פי שניים.
+      - kind: units
+        text: >-
+          $\gamma - 1$ חסר ממדים, ולכן $W$ ב-$\text{MeV}$ כמו $m_ec^2$.
+      - kind: substitution
+        text: >-
+          $0.25\cdot0.511 = 0.128\,\text{MeV}$; $0.667\cdot0.511 = 0.341\,\text{MeV}$. ניוטון: $0.18\cdot0.511 = 0.092$ ו-$0.32\cdot0.511 = 0.164\,\text{MeV}$.
+      - kind: result
+        text: >-
+          $0.128\,\text{MeV}$ ל-$0.60c$ ו-$0.341\,\text{MeV}$ ל-$0.80c$; $\tfrac12mv^2$ נותן פחות, $0.092$ ו-$0.164\,\text{MeV}$.
+
+  - id: W-10.5-04
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.5-1, OBJ-10.5-2]
+    prompt: >-
+      שני פרוטונים נעים לאורך $+x$, אחד ב-$0.10c$ ואחד ב-$0.99c$. אותו כוח $F$ פועל על כל אחד מהם בכיוון התנועה.
+
+      א. אם הכוח פועל על כל אחד לאורך אותה דרך $d$: מי מקבל יותר אנרגיה? מי מקבל יותר מהירות?
+
+      ב. אם הכוח פועל על כל אחד אותו זמן $\Delta t$: מי מקבל יותר תנע? מי מקבל יותר אנרגיה?
+    answer: >-
+      א. אותה אנרגיה, $Fd$; האיטי מקבל הרבה יותר מהירות. ב. אותו תנע, $F\Delta t$; המהיר מקבל יותר אנרגיה, כי ההספק $Fv$
+      גדול יותר.
+    solution:
+      - kind: law
+        text: >-
+          $W = \int F\,dx = \Delta E$; $\Delta p = \int F\,dt$; $dE/dt = Fv$.
+      - kind: reasoning
+        text: >-
+          א: העבודה $Fd$ זהה, ולכן $\Delta E$ זהה. אבל ליד $c$ תוספת אנרגיה כמעט לא משנה את המהירות: $dv/dE = 1/(\gamma^3mv)$
+          קטן מאוד ב-$\gamma = 7.1$. ב: $\Delta p = F\Delta t$ זהה. בזמן הזה המהיר עובר דרך גדולה יותר (כמעט פי $10$), ולכן
+          הכוח עושה עליו יותר עבודה: $\Delta E = \int Fv\,dt$.
+      - kind: limit
+        text: >-
+          אם שניהם איטיים, $\Delta E = Fd$ ו-$\Delta p = F\Delta t$ עדיין נכונים, ותוספת המהירות $F\Delta t/m$ זהה לשניהם בפרק זמן
+          זהה. ההבדל בין "אותה דרך" ל"אותו זמן" הוא ההבדל בין עבודה למתקף, גם אצל ניוטון.
+      - kind: result
+        text: >-
+          א. אותה אנרגיה, והאיטי מקבל יותר מהירות. ב. אותו תנע, והמהיר מקבל יותר אנרגיה.
+
+  - id: W-10.5-05
+    level: mid
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      פרוטון ($m = 1.67\cdot10^{-27}\,\text{kg}$) מתחיל ממנוחה תחת כוח קבוע $F = 1.6\cdot10^{-13}\,\text{N}$. כמה זמן עובר
+      עד שהוא מגיע ל-$0.90c$, ואיזה מרחק הוא עובר? השוו לניוטון.
+    answer: >-
+      $6.47\,\mu\text{s}$ ו-$1216\,\text{m}$ (ניוטון: $2.82\,\mu\text{s}$ ו-$380\,\text{m}$).
+    solution:
+      - kind: given
+        text: >-
+          $m = 1.67\cdot10^{-27}\,\text{kg}$, $F = 1.6\cdot10^{-13}\,\text{N}$, $\beta = 0.90$; ציר $x$ בכיוון הכוח, מתחילים ב-$x = 0$.
+      - kind: law
+        text: >-
+          $p = Ft$ ו-$x = \dfrac{mc^2}{F}\left(\gamma - 1\right)$ (משפט עבודה-אנרגיה, $Fx = (\gamma - 1)mc^2$).
+      - kind: manipulation
+        text: >-
+          $t = \dfrac{\gamma\beta\,mc}{F}$, $x = (\gamma - 1)\dfrac{mc^2}{F}$. ניוטון: $t_N = \beta mc/F$, $x_N = \tfrac12\beta^2\,mc^2/F$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\gamma\beta \approx \beta$ ו-$\gamma - 1 \approx \tfrac12\beta^2$: התשובות של ניוטון. כש-$\beta \to 1$ שתיהן
+          שואפות לאינסוף.
+      - kind: units
+        text: >-
+          $mc/F$ ב-$(\text{kg·m/s})/\text{N} = \text{s}$; $mc^2/F$ ב-$\text{m}$.
+      - kind: substitution
+        text: >-
+          $mc/F = 3.13\,\mu\text{s}$, $mc^2/F = 939\,\text{m}$, $\gamma = 2.29$, $\gamma\beta = 2.06$: $t = 2.06\cdot3.13 = 6.47\,\mu\text{s}$,
+          $x = 1.29\cdot939 = 1216\,\text{m}$. ניוטון: $0.90\cdot3.13 = 2.82\,\mu\text{s}$ ו-$0.405\cdot939 = 380\,\text{m}$.
+      - kind: result
+        text: >-
+          $6.47\,\mu\text{s}$ ו-$1216\,\text{m}$: יותר מפי שניים מהזמן של ניוטון ופי $3.2$ מהדרך שלו.
+
+  - id: W-10.5-06
+    level: mid
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      אלקטרון ($m = 9.11\cdot10^{-31}\,\text{kg}$) נע ב-$0.95c$. מה התאוצה שנותן לו כוח $F = 1.6\cdot10^{-13}\,\text{N}$
+      בכיוון המהירות, ומה אותו כוח בניצב למהירות? השוו ל-$F/m$.
+    answer: >-
+      לאורך: $5.35\cdot10^{15}\,\text{m/s}^2$; בניצב: $5.48\cdot10^{16}\,\text{m/s}^2$; $F/m = 1.76\cdot10^{17}\,\text{m/s}^2$.
+    solution:
+      - kind: law
+        text: >-
+          $F = dp/dt$, $p = \gamma mv$: לאורך המהירות $a = F/(\gamma^3m)$, בניצב לה $a = F/(\gamma m)$.
+      - kind: manipulation
+        text: >-
+          $\gamma(0.95) = 3.20$, $\gamma^3 = 32.9$. $F/m = 1.6\cdot10^{-13}/9.11\cdot10^{-31}$.
+      - kind: limit
+        text: >-
+          כש-$v \to 0$ שתי התאוצות $F/m$. היחס ביניהן, $\gamma^2 = 10.3$, גדל בלי גבול כש-$v \to c$.
+      - kind: units
+        text: >-
+          $\text{N}/\text{kg} = \text{m/s}^2$.
+      - kind: substitution
+        text: >-
+          $F/m = 1.76\cdot10^{17}\,\text{m/s}^2$; לאורך $1.76\cdot10^{17}/32.9 = 5.35\cdot10^{15}$; בניצב $1.76\cdot10^{17}/3.20 = 5.48\cdot10^{16}\,\text{m/s}^2$.
+      - kind: result
+        text: >-
+          לאורך המהירות $5.35\cdot10^{15}\,\text{m/s}^2$, פי $32.9$ פחות מ-$F/m$; בניצב $5.48\cdot10^{16}\,\text{m/s}^2$, פי $3.20$
+          פחות. אותו כוח, תאוצות שונות פי $10.3$.
+
+  - id: W-10.5-07
+    level: mid
+    objectives: [OBJ-10.5-2]
+    prompt: >-
+      כוח קבוע $F = 8.0\cdot10^{-15}\,\text{N}$ פועל על אלקטרון ($m_ec^2 = 0.511\,\text{MeV}$) שמתחיל ממנוחה, לאורך
+      $0.50\,\text{m}$. מה מהירותו בסוף? בכמה אחוזים טועה החישוב לפי $\tfrac12mv^2 = Fd$? ($1\,\text{MeV} = 1.6\cdot10^{-13}\,\text{J}$.)
+    answer: >-
+      $0.302c$; החישוב של ניוטון נותן $0.313c$, גבוה ב-$3.6\%$.
+    solution:
+      - kind: given
+        text: >-
+          $F = 8.0\cdot10^{-15}\,\text{N}$, $d = 0.50\,\text{m}$, $m_ec^2 = 0.511\,\text{MeV}$, ממנוחה.
+      - kind: law
+        text: >-
+          $Fd = (\gamma - 1)m_ec^2$, ו-$\beta = \sqrt{1 - 1/\gamma^2}$.
+      - kind: manipulation
+        text: >-
+          $W = Fd = 4.0\cdot10^{-15}\,\text{J} = 0.025\,\text{MeV}$. $\gamma = 1 + W/(m_ec^2)$. ניוטון: $\beta_N = \sqrt{2W/(m_ec^2)}$.
+      - kind: limit
+        text: >-
+          כש-$W/(m_ec^2) \to 0$, $\beta \to \beta_N$; ההבדל היחסי הוא בקירוב $\tfrac34\cdot W/(m_ec^2) = 3.7\%$ כאן, מסדר
+          $\beta^2$. כש-$W \gg m_ec^2$, $\beta_N$ עובר את 1 ו-$\beta$ לא.
+      - kind: units
+        text: >-
+          $W/(m_ec^2)$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\gamma = 1.0489$, $\beta = \sqrt{1 - 1/1.0489^2} = 0.302$; $\beta_N = \sqrt{0.0978} = 0.313$; $(0.313 - 0.302)/0.302 = 3.6\%$.
+      - kind: result
+        text: >-
+          $0.302c$. החישוב של ניוטון גבוה ב-$3.6\%$: באנרגיה של $5\%$ מאנרגיית המנוחה, הוא עדיין קירוב סביר.
+
+  - id: W-10.5-08
+    level: bagrut
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      פרוטון ($mc^2/F = L = 939\,\text{m}$ עבור הכוח הנתון) מתחיל ממנוחה ב-$x = 0$, $t = 0$ ונע בתנועה היפרבולית,
+      $(x + L)^2 - (ct)^2 = L^2$. באותו רגע יוצא הבזק אור לאורך $+x$ מהנקודה $x = -L/2$.
+
+      א. האם ההבזק משיג את הפרוטון? אם כן, איפה ומתי, ומה מהירות הפרוטון ברגע הזה?
+
+      ב. מה קורה אם ההבזק יוצא מ-$x = -L$, או מנקודה עוד יותר שמאלה?
+    answer: >-
+      א. כן, ב-$ct = 3L/4 = 704\,\text{m}$ ($t = 2.35\,\mu\text{s}$), ב-$x = L/4 = 235\,\text{m}$, כשהפרוטון נע ב-$0.600c$. ב. הבזק
+      מ-$x = -L$ או משמאל לה לא משיג אותו לעולם.
+    solution:
+      - kind: given
+        text: >-
+          $L = 939\,\text{m}$; הפרוטון: $x = \sqrt{L^2 + (ct)^2} - L$; ההבזק: $x = -L/2 + ct$. ציר $x$ חיובי בכיוון הכוח.
+      - kind: law
+        text: >-
+          קו העולם של תנועה היפרבולית, $(x + L)^2 - (ct)^2 = L^2$, וקו העולם של אור, $x = x_0 + ct$.
+      - kind: manipulation
+        text: >-
+          משווים: $ct + L/2 = \sqrt{L^2 + (ct)^2}$. מעלים בריבוע: $(ct)^2 + Lct + L^2/4 = L^2 + (ct)^2$, ולכן $ct = 3L/4$ ו-$x = L/4$.
+          המהירות ברגע הזה: $u = Ft/(mc) = ct/L = 3/4$, ו-$\beta = u/\sqrt{1 + u^2} = 0.75/1.25 = 0.600$.
+      - kind: manipulation
+        text: >-
+          באופן כללי, להבזק מ-$x = -aL$: $ct + (1 - a)L = \sqrt{L^2 + (ct)^2}$, ולכן $2(1 - a)L\,ct + (1 - a)^2L^2 = L^2$, כלומר
+          $ct = \dfrac{a(2 - a)}{2(1 - a)}L$. זה פתרון אמיתי רק כש-$0 < a < 1$: אז $ct > 0$, וגם אגף שמאל שלפני ההעלאה בריבוע, $ct + (1 - a)L$, חיובי. (כש-$a > 2$ יוצא $ct > 0$, אבל אגף שמאל שלילי: פתרון מדומה שנוצר מההעלאה בריבוע.)
+      - kind: limit
+        text: >-
+          $a \to 0$: $ct \to 0$, ההבזק יוצא כמעט מהפרוטון עצמו ומשיג אותו מיד. $a \to 1$: $ct \to \infty$: ההבזק מ-$x = -L$ רץ לאורך
+          האסימפטוטה $x = ct - L$ של ההיפרבולה, והפרוטון תמיד לפניו. בדיקה ב-$a = 1/2$: $\tfrac12\cdot\tfrac32/(2\cdot\tfrac12) = \tfrac34$.
+      - kind: units
+        text: >-
+          $ct$, $x$ ו-$L$ במטרים; $a$ ו-$u$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $ct = 0.75\cdot939 = 704\,\text{m}$, $t = 704/3.0\cdot10^8 = 2.35\,\mu\text{s}$, $x = 235\,\text{m}$.
+      - kind: result
+        text: >-
+          א. כן: ב-$x = 235\,\text{m}$, אחרי $2.35\,\mu\text{s}$, כשהפרוטון נע ב-$0.600c$. ב. הבזק מ-$x = -L = -939\,\text{m}$ או
+          משמאל לה לא משיג את הפרוטון אף פעם, אף שהפרוטון איטי ממנו בכל רגע: המרחק ביניהם קטן ושואף ל-0 (מ-$x = -L$) או לערך חיובי.
+
+  - id: W-10.5-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-10.5-2]
+    prompt: >-
+      כוח קבוע $F = 1.6\cdot10^{-13}\,\text{N}$ פועל זמן רב על פרוטון ($mc^2 = 939\,\text{MeV}$) שהתחיל ממנוחה. הראו שבזמנים
+      ארוכים האנרגיה היחסותית גדלה בקצב קבוע כמעט, ומצאו אותו. הראו ש-$E - pc$ קטן עם הזמן, והסבירו מה זה אומר. (בדיקה
+      במספרים: אחרי $10\,\mu\text{s}$, $E = 3144\,\text{MeV}$ ו-$pc = 3000\,\text{MeV}$.)
+    answer: >-
+      $dE/dt = Fv \to Fc = 300\,\text{MeV}/\mu\text{s}$. $E - pc = (mc^2)^2/(E + pc) \to 0$: הפרוטון מתנהג כמעט כחלקיק חסר מסה, וכל
+      העבודה הולכת לאנרגיה ולתנע, לא למהירות.
+    solution:
+      - kind: law
+        text: >-
+          $dE/dt = Fv$ (מ-$dE/dp = v$ ו-$dp/dt = F$); $E^2 = (pc)^2 + (mc^2)^2$; $p = Ft$.
+      - kind: reasoning
+        text: >-
+          כש-$Ft \gg mc$, $v \to c$, ולכן $dE/dt \to Fc$, קבוע. במקביל $d(pc)/dt = Fc$ בדיוק, כל הזמן. מהקשר בין האנרגיה לתנע:
+          $(E - pc)(E + pc) = (mc^2)^2$, ולכן $E - pc = \dfrac{(mc^2)^2}{E + pc}$, שקטן כמו $1/t$ כש-$E$ ו-$pc$ גדלים קווית.
+      - kind: limit
+        text: >-
+          בזמנים קצרים $v \approx Ft/m$, ו-$dE/dt = F^2t/m$ גדל קווית מאפס: $E - mc^2 \approx (Ft)^2/(2m)$, האנרגיה של ניוטון. רק
+          כש-$Ft$ עובר את $mc$ ההספק מתיישר על $Fc$. ובגבול $m \to 0$, $E = pc$ מההתחלה.
+      - kind: units
+        text: >-
+          $Fc$ ב-$\text{N·m/s} = \text{W}$; ב-$\text{MeV}/\mu\text{s}$: $1.6\cdot10^{-13}\cdot3.0\cdot10^8\cdot10^{-6}/1.6\cdot10^{-13} = 300$.
+      - kind: substitution
+        text: >-
+          אחרי $10\,\mu\text{s}$: $E - pc = 144\,\text{MeV}$, ו-$939^2/(3144 + 3000) = 144\,\text{MeV}$. אחרי $20\,\mu\text{s}$: $E = 6073$,
+          $pc = 6000$, $E - pc = 73\,\text{MeV}$, בערך חצי: כמו $1/t$.
+      - kind: result
+        text: >-
+          בזמנים ארוכים $dE/dt \to Fc = 300\,\text{MeV}/\mu\text{s}$, ו-$E - pc = (mc^2)^2/(E + pc) \to 0$. המהירות כמעט לא משתנה, אבל
+          הכוח ממשיך לעשות עבודה, והיא הולכת לאנרגיה ולתנע, שגדלים יחד כמו אצל חלקיק חסר מסה.
+
+  - id: W-10.5-10
+    level: bagrut
+    objectives: [OBJ-10.5-1, OBJ-10.5-2]
+    prompt: >-
+      פרוטון ($m = 1.67\cdot10^{-27}\,\text{kg}$, $mc^2 = 939\,\text{MeV}$) נע ב-$0.95c$ ונכנס לאזור שבו כוח קבוע
+      $F = 1.6\cdot10^{-12}\,\text{N}$ פועל עליו נגד כיוון התנועה. איזה מרחק הוא עובר עד שהוא נעצר, וכמה זמן זה לוקח? השוו
+      לניוטון. ($1\,\text{MeV} = 1.6\cdot10^{-13}\,\text{J}$.)
+    answer: >-
+      $207\,\text{m}$ ו-$0.953\,\mu\text{s}$ (ניוטון: $42.4\,\text{m}$ ו-$0.297\,\mu\text{s}$).
+    solution:
+      - kind: given
+        text: >-
+          ציר $x$ חיובי בכיוון התנועה; הכוח $-F$, $F = 1.6\cdot10^{-12}\,\text{N} = 10\,\text{MeV/m}$; $\beta_0 = 0.95$.
+      - kind: law
+        text: >-
+          $W = \Delta E$: $-Fd = mc^2 - \gamma_0mc^2$. $F = dp/dt$: $-F\Delta t = 0 - p_0$.
+      - kind: manipulation
+        text: >-
+          $d = \dfrac{(\gamma_0 - 1)mc^2}{F}$, $\Delta t = \dfrac{\gamma_0\beta_0\,mc}{F}$.
+      - kind: limit
+        text: >-
+          כש-$\beta_0 \to 0$: $d \to \tfrac12mv_0^2/F$ ו-$\Delta t \to mv_0/F$, הבלימה של ניוטון. כש-$\beta_0 \to 1$ שניהם שואפים לאינסוף:
+          פרוטון מהיר מאוד לוקח הרבה דרך לעצור, אף שמהירותו כמעט לא גדולה יותר. בדיקה: המהירות הממוצעת $d/\Delta t$ צריכה להיות
+          בין $0$ ל-$0.95c$.
+      - kind: units
+        text: >-
+          $\text{MeV}/(\text{MeV/m}) = \text{m}$; $mc/F$ ב-$\text{s}$.
+      - kind: substitution
+        text: >-
+          $\gamma_0 = 3.20$: $K_0 = 2.20\cdot939 = 2068\,\text{MeV}$, $d = 2068/10 = 207\,\text{m}$. $\gamma_0\beta_0 = 3.04$ ו-$mc = 5.01\cdot10^{-19}\,\text{kg·m/s}$, ולכן
+          $p_0 = 1.524\cdot10^{-18}\,\text{kg·m/s}$, ו-$\Delta t = 1.524\cdot10^{-18}/1.6\cdot10^{-12} = 0.953\,\mu\text{s}$. ניוטון:
+          $\tfrac12\cdot0.9025\cdot939/10 = 42.4\,\text{m}$ ו-$0.95\cdot3.13\cdot10^{-7}\,\text{s} = 0.297\,\mu\text{s}$. המהירות הממוצעת:
+          $207\,\text{m}/0.953\,\mu\text{s} = 0.724c$.
+      - kind: result
+        text: >-
+          $207\,\text{m}$ ו-$0.953\,\mu\text{s}$, פי $4.9$ מהדרך ופי $3.2$ מהזמן של ניוטון.
+
+challenge:
+  - id: W-10.5-c1
+    stars: 1
+    objectives: [OBJ-10.5-1]
+    prompt: >-
+      חללית יוצאת ממנוחה, והמנוע שלה דוחף אותה בכוח קבוע $F = mg$ כפי שנמדד במערכת של כדור הארץ ($g = 9.8\,\text{m/s}^2$,
+      $m$ מסת החללית, שלא משתנה). (אפשר להראות שזה בדיוק המצב שבו הנוסעים מרגישים כל הזמן תאוצה $g$.)
+
+      א. כמה זמן, לפי השעונים של כדור הארץ, עובר עד שהחללית מגיעה ל-$0.99c$? ועד $0.999c$?
+
+      ב. כמה זמן עובר בזמנים האלה בשעון שעל החללית? השתמשו ב-$\tau = \dfrac{c}{g}\operatorname{arsinh}\dfrac{gt}{c}$.
+    answer: >-
+      א. $6.81$ שנים ו-$21.7$ שנים (ניוטון: $0.96$ ו-$0.97$ שנה). ב. $2.57$ שנים ו-$3.69$ שנים.
+    solution:
+      - kind: given
+        text: >-
+          $F/m = g = 9.8\,\text{m/s}^2$, $c = 3.0\cdot10^8\,\text{m/s}$, שנה $= 3.156\cdot10^7\,\text{s}$; מתחילים ממנוחה.
+      - kind: law
+        text: >-
+          $p = Ft$, כלומר $\gamma\beta = gt/c$; הזמן העצמי $d\tau = dt/\gamma$.
+      - kind: manipulation
+        text: >-
+          $t = \dfrac{c}{g}\gamma\beta$. מ-$\tau = \dfrac{c}{g}\operatorname{arsinh}(\gamma\beta)$, ומהזהות $\operatorname{arsinh}(\gamma\beta) = \operatorname{artanh}\beta$
+          (כי $\tanh\phi = \sinh\phi/\cosh\phi = \gamma\beta/\gamma$): $\tau = \dfrac{c}{g}\operatorname{artanh}\beta$.
+      - kind: limit
+        text: >-
+          כש-$\beta \ll 1$: $t \approx \tau \approx \beta c/g$, הזמן של ניוטון. כש-$\beta \to 1$: $t$ גדל כמו $\gamma$, ו-$\tau$ רק כמו
+          $\ln(2\gamma)$: הנוסעים מזדקנים לאט מאוד בדרך ל"כמעט $c$".
+      - kind: units
+        text: >-
+          $c/g$ ב-$\text{s}$; $\gamma\beta$ ו-$\operatorname{artanh}\beta$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $c/g = 3.06\cdot10^7\,\text{s} = 0.970$ שנה. $0.99c$: $\gamma\beta = 7.02$, $t = 6.81$ שנים, $\operatorname{artanh}0.99 = 2.65$,
+          $\tau = 2.57$ שנים. $0.999c$: $\gamma\beta = 22.3$, $t = 21.7$ שנים, $\operatorname{artanh}0.999 = 3.80$, $\tau = 3.69$ שנים.
+      - kind: result
+        text: >-
+          א. $6.81$ שנים ל-$0.99c$ ו-$21.7$ שנים ל-$0.999c$ בשעונים של כדור הארץ (ניוטון היה מגיע לשם בפחות משנה). ב. $2.57$ ו-$3.69$
+          שנים בשעון של החללית.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 4
+      year: 2008
+      problem: Problem 2 (Constant proper acceleration), parts b and c
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset4.pdf
+      verified: '2026-11-16'
+      adapted: true
+
+  - id: W-10.5-c2
+    stars: 2
+    objectives: [OBJ-10.5-1, OBJ-10.5-2]
+    prompt: >-
+      חללית יוצאת ממנוחה לכוכב אלפא קנטאורי, במרחק $4.3$ שנות אור. במחצית הראשונה של הדרך המנוע דוחף אותה בכוח $F = mg$
+      קדימה, ובמחצית השנייה בכוח $mg$ אחורה, כך שהיא מגיעה במנוחה ($g = 9.8\,\text{m/s}^2$; הכוח נמדד במערכת של כדור הארץ).
+
+      א. מה המהירות המרבית של החללית, באמצע הדרך?
+
+      ב. כמה זמן נמשך המסע לפי השעונים של כדור הארץ, וכמה בשעון של החללית? מה הייתה התשובה של ניוטון?
+
+      ג. אסטרונאוטית שנייה טסה לאותו כוכב במהירות קבועה, ובשעון שלה המסע נמשך אותו זמן כמו בשעון של החללית. באיזו מהירות היא
+      טסה?
+
+      ד. כמה אנרגיה צריך המנוע לתת לכל קילוגרם של החללית עד אמצע הדרך?
+    answer: >-
+      א. $0.950c$. ב. $5.93$ שנים בכדור הארץ, $3.56$ שנים בחללית (ניוטון: $4.09$ שנים, ובאמצע $2.1c$). ג. $0.770c$.
+      ד. $2.0\cdot10^{17}\,\text{J/kg}$.
+    solution:
+      - kind: given
+        text: >-
+          $D = 4.3$ שנות אור, מחצית $D/2 = 2.15$ שנות אור; $c^2/g = 0.970$ שנות אור, $c/g = 0.970$ שנה. ציר $x$ מכדור הארץ לכוכב.
+      - kind: law
+        text: >-
+          במחצית הראשונה תנועה היפרבולית: $x = \dfrac{c^2}{g}(\gamma - 1)$ (משפט עבודה-אנרגיה, $Fx = (\gamma - 1)mc^2$), $t = \dfrac{c}{g}\gamma\beta$,
+          $\tau = \dfrac{c}{g}\operatorname{arsinh}(\gamma\beta)$. המחצית השנייה היא תמונת ראי שלה בזמן, ולכן לוקחת אותו זמן.
+      - kind: manipulation
+        text: >-
+          א: $\gamma_{\text{mid}} = 1 + \dfrac{D/2}{c^2/g}$, $\beta_{\text{mid}} = \sqrt{1 - 1/\gamma_{\text{mid}}^2}$. ב: $t = 2\dfrac{c}{g}\gamma\beta$,
+          $\tau = 2\dfrac{c}{g}\operatorname{arsinh}(\gamma\beta)$; ניוטון: $t_N = 2\sqrt{D/g}$. ג: במהירות קבועה הזמן העצמי $D/(\gamma v)$,
+          ולכן $\gamma\beta = D/(c\tau)$. ד: $(\gamma_{\text{mid}} - 1)c^2$ לקילוגרם.
+      - kind: limit
+        text: >-
+          מרחק קצר, $D \ll c^2/g$: $\gamma_{\text{mid}} - 1 \approx \tfrac12\beta^2$ נותן $v_{\text{mid}} = \sqrt{gD}$, ו-$t \approx \tau \approx 2\sqrt{D/g}$,
+          התשובות של ניוטון. מרחק ארוך: $\gamma_{\text{mid}} \approx D/(2c^2/g)$ גדל, $t \approx D/c$, ו-$\tau$ גדל רק כמו $\ln D$.
+      - kind: units
+        text: >-
+          $D$ ו-$c^2/g$ בשנות אור, ולכן $\gamma$ חסר ממדים; $c/g$ בשנים; $(\gamma - 1)c^2$ ב-$\text{J/kg}$.
+      - kind: substitution
+        text: >-
+          א: $\gamma_{\text{mid}} = 1 + 2.15/0.970 = 3.22$, $\gamma\beta = 3.06$, $\beta = 0.950$. ב: $t = 2\cdot0.970\cdot3.06 = 5.93$ שנים;
+          $\operatorname{arsinh}3.06 = 1.84$, $\tau = 2\cdot0.970\cdot1.84 = 3.56$ שנים; $t_N = 4.09$ שנים, ו-$v_N = \sqrt{gD} = 2.1c$
+          באמצע. ג: $\gamma\beta = 4.3/3.56 = 1.21$, $\beta = 1.21/\sqrt{1 + 1.21^2} = 0.770$. ד: $2.22\cdot9.0\cdot10^{16} = 2.0\cdot10^{17}\,\text{J/kg}$.
+      - kind: result
+        text: >-
+          א. $0.950c$. ב. $5.93$ שנים לפי כדור הארץ ו-$3.56$ שנים בחללית (ניוטון: $4.09$ שנים, עם מהירות שיא $2.1c$, שאינה
+          אפשרית). ג. $0.770c$. ד. $2.0\cdot10^{17}\,\text{J}$ לכל קילוגרם, ועוד אותו דבר כדי לעצור.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 4
+      year: 2008
+      problem: Problem 4 (Hyperbolic space travel II), parts c and d
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset4.pdf
+      verified: '2026-11-16'
+      adapted: true

@@ -1,0 +1,504 @@
+# Workbook, lesson 10.4 (photons, Compton scattering, binding energy and the mass defect). Format: CLAUDE.md,
+# "The solution format". Every number was recomputed by .scratch/ch10/10-4/lesson.ts with src/physics/constants.ts
+# (H_PLANCK = 6.63e-34, C_LIGHT = 3.0e8, E_CHARGE = 1.6e-19) and src/physics/photon.ts; rest energies are the data
+# the prompts state (MeV: e 0.511, p 938.272, n 939.565, d 1875.613, t 2808.921, ³He 2808.391, ⁴He 3727.379):
+#   W01 633 nm: E = 3.14e-19 J = 1.96 eV, p = 1.05e-27 kg·m/s; 1.0 mW: 3.18e15 photons/s, F = P/c = 3.33e-12 N;
+#   W02 1.0e4 J: Δm = 1.11e-13 kg; 1.00 MeV: Δm = 1.78e-30 kg;
+#   W03 Δλ = 1.00 pm with λ_C = 2.43 pm: cos θ = 0.588, θ = 54.0°; the largest shift 2λ_C = 4.86 pm;
+#   W04 0.200 MeV at 120°: E′ = 0.126 MeV, λ = 6.21 pm → λ′ = 9.85 pm, K = 0.0740 MeV, cot φ = 2.41, φ = 22.5°;
+#   W05 B(³He) = 7.718 MeV (2.57 per nucleon), B(³H) = 8.481 MeV (2.83), difference 0.763 MeV;
+#   W06 2λ_C/λ: 500 nm 9.7e-6, 50 pm 0.097; E/mₑc² at 500 nm 4.9e-6;
+#   W07 d + t → ⁴He + n: Q = 17.59 MeV, Q/(m_d + m_t)c² = 3.75e-3, 3.38e14 J/kg, 7.3e6 × 4.6e7 J/kg;
+#   W08 0.662 MeV: Compton edge 0.478 MeV, backscattered photon 0.184 MeV;
+#   W09 symbolic (an electron at rest cannot emit a photon: mc² = E′ + √(…) > mc²);
+#   W10 14.4 keV, Mc² = 5.30e4 MeV: E_R = 1.96e-3 eV (E²/2Mc² to 3 figures), 1.36e-7 of the drop, v = 81.5 m/s;
+#   c1 4p + 2e → ⁴He: 26.73 MeV, 7.12e-3 of 4m_p c², 6.41e14 J per kg of protons; methane 890 kJ per 16.0 g
+#      = 5.56e7 J/kg → 1.15e7 kg;
+#   c2 E = 1.00 MeV, E′ = E/2: cos θ = 1 − mₑc²/E = 0.489, θ = 60.7°; possible only for E ≥ mₑc²/2 = 0.256 MeV.
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-4/recompute.ts; every number above confirmed
+#   except W04's wavelengths: with the prompt's data λ = λ_C·mₑc²/E = 2.43·0.511/0.200 = 6.209 pm (6.20 came from the
+#   unrounded λ_C = 2.4259 pm), λ′ = 6.21 + 1.5·2.43 = 9.854 pm; corrected to 6.21 and 9.85.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '10.4'
+practice:
+  - id: W-10.4-01
+    level: basic
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      לייזר הליום-ניאון פולט אור באורך גל $633\,\text{nm}$ בהספק $1.0\,\text{mW}$.
+
+      א. מה האנרגיה (בג׳אול וב-eV) ומה התנע של פוטון אחד?
+
+      ב. כמה פוטונים פולט הלייזר בשנייה?
+
+      ג. הקרן נבלעת כולה במסך שחור. באיזה כוח היא דוחפת אותו?
+    answer: >-
+      א. $3.14\cdot10^{-19}\,\text{J} = 1.96\,\text{eV}$; $1.05\cdot10^{-27}\,\text{kg·m/s}$. ב. $3.18\cdot10^{15}$ בשנייה. ג. $3.33\cdot10^{-12}\,\text{N}$.
+    solution:
+      - kind: given
+        text: >-
+          $\lambda = 633\,\text{nm}$, $P = 1.0\cdot10^{-3}\,\text{W}$, $h = 6.63\cdot10^{-34}\,\text{J·s}$, $c = 3.0\cdot10^8\,\text{m/s}$,
+          $1\,\text{eV} = 1.6\cdot10^{-19}\,\text{J}$. ציר $+x$ בכיוון הקרן.
+      - kind: law
+        text: >-
+          לפוטון $E = hc/\lambda$ ו-$p = E/c = h/\lambda$. הכוח על המסך הוא קצב התנע שהוא מקבל.
+      - kind: manipulation
+        text: >-
+          מספר הפוטונים בשנייה הוא ההספק חלקי האנרגיה של פוטון: $\dot N = P/E$. כל פוטון שנבלע מוסר תנע $E/c$, ולכן
+          $F = \dot N E/c = P/c$.
+      - kind: limit
+        text: >-
+          מסך שמחזיר את האור במקום לבלוע אותו היה מקבל $2P/c$. ככל ש-$\lambda$ קטן, כל פוטון נושא יותר אנרגיה, ובאותו הספק יש
+          פחות פוטונים; הכוח $P/c$ לא תלוי ב-$\lambda$.
+      - kind: units
+        text: >-
+          $\text{J·s}\cdot(\text{m/s})/\text{m} = \text{J}$; $\text{J·s}/\text{m} = \text{kg·m/s}$; $\text{W}/(\text{m/s}) = \text{N}$.
+      - kind: substitution
+        text: >-
+          $E = 6.63\cdot10^{-34}\cdot3.0\cdot10^8/(633\cdot10^{-9}) = 3.14\cdot10^{-19}\,\text{J} = 1.96\,\text{eV}$;
+          $p = 1.05\cdot10^{-27}\,\text{kg·m/s}$. $\dot N = 10^{-3}/3.14\cdot10^{-19} = 3.18\cdot10^{15}$.
+          $F = 10^{-3}/(3.0\cdot10^8) = 3.33\cdot10^{-12}\,\text{N}$.
+      - kind: result
+        text: >-
+          א. $1.96\,\text{eV}$, $1.05\cdot10^{-27}\,\text{kg·m/s}$. ב. $3.18\cdot10^{15}$ פוטונים בשנייה. ג. $3.33\cdot10^{-12}\,\text{N}$,
+          כמשקל של שליש מיליארדית הגרם בערך: אור דוחף, אבל חלש מאוד.
+
+  - id: W-10.4-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-10.4-2]
+    prompt: >-
+      קבעו ונמקו.
+
+      א. האם סוללה טעונה כבדה מאותה סוללה כשהיא ריקה? הסוללה אוגרת $1.0\cdot10^4\,\text{J}$.
+
+      ב. גרעין במצב מעורר פולט פוטון גמא באנרגיה $1.00\,\text{MeV}$, ונשאר כמעט נח. האם המסה שלו השתנתה, ובכמה?
+    answer: >-
+      א. כן, ב-$1.11\cdot10^{-13}\,\text{kg}$. ב. כן, היא קטנה ב-$1.00\,\text{MeV}/c^2 = 1.78\cdot10^{-30}\,\text{kg}$ (בקירוב טוב מאוד).
+    solution:
+      - kind: law
+        text: >-
+          המסה של מערכת היא האנרגיה הכוללת שלה במערכת המנוחה חלקי $c^2$: מערכת שמקבלת אנרגיה $\Delta E$ ונשארת במנוחה כבדה
+          יותר ב-$\Delta E/c^2$, ומערכת שמאבדת אנרגיה קלה יותר.
+      - kind: reasoning
+        text: >-
+          א: בסוללה טעונה יש אנרגיה כימית (אנרגיית קשר אחרת בין האטומים) שאין בסוללה ריקה. ב: הפוטון יוצא מהגרעין ונושא
+          איתו אנרגיה; מה שנשאר הוא גרעין באנרגיית מנוחה קטנה יותר.
+      - kind: limit
+        text: >-
+          כשהאנרגיה האגורה שואפת לאפס, אין הבדל. ובתהליך הפוך, גרעין שבולע פוטון נעשה כבד יותר: אותו קשר בשני הכיוונים.
+          (בדיוק: הגרעין גם נרתע, ולכן הפוטון יוצא קצת פחות מהירידה באנרגיית המנוחה; ראו שאלה 10.)
+      - kind: units
+        text: >-
+          $\text{J}/(\text{m/s})^2 = \text{kg}$; $1\,\text{MeV} = 1.6\cdot10^{-13}\,\text{J}$.
+      - kind: substitution
+        text: >-
+          א: $\Delta m = 1.0\cdot10^4/(3.0\cdot10^8)^2 = 1.11\cdot10^{-13}\,\text{kg}$. ב: $\Delta m = 1.6\cdot10^{-13}/(9.0\cdot10^{16}) = 1.78\cdot10^{-30}\,\text{kg}$,
+          כמעט פי שניים ממסת אלקטרון.
+      - kind: result
+        text: >-
+          א. כן, ב-$1.1\cdot10^{-13}\,\text{kg}$, הרבה מתחת לכל משקל. ב. כן, הגרעין קל יותר ב-$1.78\cdot10^{-30}\,\text{kg}$. אין כאן
+          הבדל בין כימיה לפיזיקה גרעינית: רק בגודל.
+
+  - id: W-10.4-03
+    level: basic
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      בניסוי פיזור קומפטון מאלקטרונים חופשיים ונייחים ($\lambda_C = 2.43\,\text{pm}$) מודדים שאורך הגל של הפוטון המפוזר גדל
+      ב-$1.00\,\text{pm}$.
+
+      א. באיזו זווית הוא נפזר?
+
+      ב. האם אפשר למדוד בניסוי כזה הגדלה של $6.00\,\text{pm}$? נמקו.
+    answer: >-
+      א. $\theta = 54.0^\circ$. ב. לא: ההגדלה הגדולה ביותר היא $2\lambda_C = 4.86\,\text{pm}$.
+    solution:
+      - kind: law
+        text: >-
+          $\Delta\lambda = \lambda_C(1 - \cos\theta)$, עם $\theta$ זווית הפיזור, מ-$0$ עד $180^\circ$.
+      - kind: manipulation
+        text: >-
+          $\cos\theta = 1 - \dfrac{\Delta\lambda}{\lambda_C}$. הגורם $1 - \cos\theta$ לכל היותר 2, ב-$\theta = 180^\circ$.
+      - kind: limit
+        text: >-
+          $\Delta\lambda = 0$ נותן $\theta = 0$; $\Delta\lambda = \lambda_C$ נותן $90^\circ$; $\Delta\lambda = 2\lambda_C$ נותן $180^\circ$.
+          כאן $\Delta\lambda$ בין $0$ ל-$\lambda_C$, ולכן הזווית בין $0$ ל-$90^\circ$.
+      - kind: units
+        text: >-
+          $\Delta\lambda/\lambda_C$ חסר ממדים, כמו קוסינוס.
+      - kind: substitution
+        text: >-
+          $\cos\theta = 1 - 1.00/2.43 = 0.588$, ולכן $\theta = 54.0^\circ$. $2\lambda_C = 4.86\,\text{pm} < 6.00\,\text{pm}$.
+      - kind: result
+        text: >-
+          א. $54.0^\circ$. ב. לא. פיזור מאלקטרון חופשי לא מאריך את הגל ביותר מ-$4.86\,\text{pm}$, בכל אנרגיה ובכל זווית.
+
+  - id: W-10.4-04
+    level: mid
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      פוטון באנרגיה $0.200\,\text{MeV}$ נפזר מאלקטרון חופשי ונייח ($m_ec^2 = 0.511\,\text{MeV}$, $\lambda_C = 2.43\,\text{pm}$) בזווית
+      $\theta = 120^\circ$. מצאו את האנרגיה ואת אורך הגל של הפוטון המפוזר, את האנרגיה הקינטית של האלקטרון, ואת הזווית שבה
+      האלקטרון נע ביחס לכיוון של הפוטון הפוגע.
+    answer: >-
+      $E' = 0.126\,\text{MeV}$, $\lambda' = 9.85\,\text{pm}$ (מ-$6.21\,\text{pm}$), $K = 0.0740\,\text{MeV}$, $\varphi = 22.5^\circ$ בצד
+      השני של הציר.
+    solution:
+      - kind: given
+        text: >-
+          $E = 0.200\,\text{MeV}$, $\epsilon = E/(m_ec^2) = 0.391$, $\theta = 120^\circ$, $1 - \cos\theta = 1.5$. ציר $+x$ בכיוון הפוטון
+          הפוגע.
+      - kind: law
+        text: >-
+          $E' = \dfrac{E}{1 + \epsilon(1 - \cos\theta)}$; $\lambda = \lambda_C\,m_ec^2/E$ (כי $\lambda_C\,m_ec^2 = hc$); $K = E - E'$;
+          $\cot\varphi = (1 + \epsilon)\tan(\theta/2)$.
+      - kind: manipulation
+        text: >-
+          $\lambda' = \lambda + 1.5\lambda_C$. בדיקה: $\lambda'/\lambda = E/E'$.
+      - kind: limit
+        text: >-
+          ב-$\theta = 0$ היינו מקבלים $E' = E$ ו-$K = 0$; ב-$180^\circ$, $E' = E/(1 + 2\epsilon) = 0.112\,\text{MeV}$. התשובה ב-$120^\circ$
+          צריכה להיות ביניהם, קרוב יותר לשני. האלקטרון נע קדימה, $\varphi < 90^\circ$, כמו תמיד.
+      - kind: units
+        text: >-
+          $\epsilon$ חסר ממדים; $E'$ ו-$K$ ב-MeV; $\lambda$ ב-pm.
+      - kind: substitution
+        text: >-
+          $E' = 0.200/(1 + 0.587) = 0.126\,\text{MeV}$; $K = 0.0740\,\text{MeV}$. $\lambda = 2.43\cdot0.511/0.200 = 6.21\,\text{pm}$,
+          $\lambda' = 6.21 + 1.5\cdot2.43 = 9.85\,\text{pm}$, ו-$9.85/6.21 = 1.59 = 0.200/0.126$. $\cot\varphi = 1.391\cdot\tan60^\circ = 2.41$,
+          $\varphi = 22.5^\circ$.
+      - kind: result
+        text: >-
+          $E' = 0.126\,\text{MeV}$, $\lambda' = 9.85\,\text{pm}$, $K = 0.0740\,\text{MeV}$, והאלקטרון נע ב-$22.5^\circ$ מכיוון הפוטון
+          הפוגע, בצד השני מהפוטון המפוזר.
+
+  - id: W-10.4-05
+    level: mid
+    objectives: [OBJ-10.4-2]
+    prompt: >-
+      שני גרעינים קלים בנויים משלושה נוקלאונים: הליום-3 (שני פרוטונים ונייטרון, $2808.391\,\text{MeV}$) וטריטון, הגרעין של טריטיום
+      (פרוטון ושני נייטרונים, $2808.921\,\text{MeV}$). אנרגיות המנוחה של פרוטון ונייטרון: $938.272$ ו-$939.565\,\text{MeV}$.
+
+      א. מה אנרגיית הקשר של כל אחד מהם, ומה אנרגיית הקשר לנוקלאון?
+
+      ב. איזה מהם קשור חזק יותר, ומה יכול להסביר את ההבדל?
+    answer: >-
+      א. הליום-3: $7.72\,\text{MeV}$ ($2.57$ לנוקלאון); טריטון: $8.48\,\text{MeV}$ ($2.83$ לנוקלאון). ב. הטריטון, ב-$0.76\,\text{MeV}$:
+      בהליום-3 שני פרוטונים, שדוחים זה את זה חשמלית.
+    solution:
+      - kind: law
+        text: >-
+          $B = \left(\sum_i m_i - M\right)c^2$: סכום אנרגיות המנוחה של החלקים החופשיים פחות זו של הגרעין.
+      - kind: manipulation
+        text: >-
+          הליום-3: $B = 2\cdot938.272 + 939.565 - 2808.391$. טריטון: $B = 938.272 + 2\cdot939.565 - 2808.921$. לכל נוקלאון מחלקים
+          ב-3.
+      - kind: limit
+        text: >-
+          אילו הכוח הגרעיני היה פועל לבד, בלי הכוח החשמלי, ובאותה עוצמה בין כל שני נוקלאונים, שני הגרעינים היו קשורים באותה
+          אנרגיה בקירוב. ההבדל קטן ($10\%$) לעומת $B$ עצמו, כמו שמתאים לתיקון.
+      - kind: units
+        text: >-
+          כל האנרגיות ב-MeV.
+      - kind: substitution
+        text: >-
+          הליום-3: $2816.109 - 2808.391 = 7.718\,\text{MeV}$, $2.57\,\text{MeV}$ לנוקלאון. טריטון: $2817.402 - 2808.921 = 8.481\,\text{MeV}$,
+          $2.83\,\text{MeV}$ לנוקלאון. ההפרש $0.763\,\text{MeV}$.
+      - kind: reasoning
+        text: >-
+          בשני הגרעינים שלושה נוקלאונים, שמחזיק יחד אותו כוח גרעיני. בהליום-3 יש גם דחייה חשמלית בין שני הפרוטונים, שמקטינה את
+          אנרגיית הקשר; בטריטון יש פרוטון אחד, ואין דחייה כזו.
+      - kind: result
+        text: >-
+          א. $B = 7.72\,\text{MeV}$ להליום-3 ו-$8.48\,\text{MeV}$ לטריטון. ב. הטריטון קשור חזק יותר, ב-$0.76\,\text{MeV}$, בעיקר כי
+          בהליום-3 שני הפרוטונים דוחים זה את זה.
+
+  - id: W-10.4-06
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      קבעו ונמקו: למה פיזור קומפטון של אור נראה ($\lambda = 500\,\text{nm}$) מאלקטרונים חופשיים לא משנה את הצבע שלו באופן
+      שאפשר להבחין בו, בעוד שבקרני X באורך גל $50\,\text{pm}$ השינוי גדול? ($\lambda_C = 2.43\,\text{pm}$, $m_ec^2 = 0.511\,\text{MeV}$.)
+    answer: >-
+      השינוי $\Delta\lambda \le 2\lambda_C$ זהה בשניהם; יחסית לאורך הגל הוא לכל היותר $10^{-5}$ באור נראה ו-$10\%$ בקרני X.
+      במילים של אנרגיה: לפוטון נראה $E/(m_ec^2) = 5\cdot10^{-6}$.
+    solution:
+      - kind: law
+        text: >-
+          $\Delta\lambda = \lambda_C(1 - \cos\theta) \le 2\lambda_C$, בלי קשר ל-$\lambda$. ובאנרגיה: $E' = E/(1 + \epsilon(1 - \cos\theta))$,
+          $\epsilon = E/(m_ec^2)$.
+      - kind: reasoning
+        text: >-
+          מה שקובע אם רואים שינוי הוא השינוי **היחסי**, $\Delta\lambda/\lambda \le 2\lambda_C/\lambda$, והוא שווה ל-$2\epsilon$: היחס בין
+          האנרגיה של הפוטון לאנרגיית המנוחה של האלקטרון. פוטון שהאנרגיה שלו זעירה לעומת $m_ec^2$ פוגע בו כמו כדור פינג-פונג בכדור
+          באולינג: הוא משנה כיוון, אבל כמעט לא מאבד אנרגיה.
+      - kind: limit
+        text: >-
+          כש-$\lambda/\lambda_C \to \infty$ חוזרים לפיזור הקלאסי של גלים, בלי שינוי צבע. כש-$\lambda$ קרוב ל-$\lambda_C$, השינוי באורך
+          הגל מאותו סדר גודל כמו אורך הגל עצמו.
+      - kind: units
+        text: >-
+          $\lambda_C/\lambda$ ו-$E/(m_ec^2)$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $500\,\text{nm}$: $2\lambda_C/\lambda = 4.86\cdot10^{-12}/5.00\cdot10^{-7} = 9.7\cdot10^{-6}$; $E = 2.49\,\text{eV}$,
+          $\epsilon = 4.9\cdot10^{-6}$. $50\,\text{pm}$: $2\lambda_C/\lambda = 0.097$.
+      - kind: result
+        text: >-
+          באור נראה השינוי באורך הגל הוא לכל היותר חלק מאה-אלף, ולכן הצבע לא משתנה; בקרני X הוא עד $10\%$. ההבדל הוא באנרגיה
+          של הפוטון ביחס ל-$m_ec^2$.
+
+  - id: W-10.4-07
+    level: mid
+    objectives: [OBJ-10.4-2]
+    prompt: >-
+      בכורים להיתוך מתכננים להשתמש בתגובה $d + t \to {}^4\text{He} + n$. אנרגיות המנוחה (MeV): דאוטרון $1875.613$, טריטון $2808.921$,
+      גרעין הליום-4 $3727.379$, נייטרון $939.565$.
+
+      א. כמה אנרגיה משתחררת בתגובה אחת?
+
+      ב. איזה חלק מאנרגיית המנוחה של הדלק ($d$ ו-$t$) משתחרר? כמה אנרגיה זה לכל קילוגרם של דלק?
+
+      ג. בשריפת בנזין משתחררים כ-$4.6\cdot10^7\,\text{J}$ לקילוגרם. פי כמה יותר נותן קילוגרם של דלק היתוך?
+    answer: >-
+      א. $17.6\,\text{MeV}$. ב. $3.75\cdot10^{-3}$; $3.38\cdot10^{14}\,\text{J/kg}$. ג. פי $7.3\cdot10^6$ בערך.
+    solution:
+      - kind: law
+        text: >-
+          $Q = \sum m_ic^2 - \sum m_fc^2$, אנרגיות המנוחה לפני התגובה פחות אחריה. החלק שמשתחרר הוא $Q/\sum m_ic^2$, וכל קילוגרם דלק נותן
+          את החלק הזה כפול $(1\,\text{kg})c^2$.
+      - kind: manipulation
+        text: >-
+          $Q = (1875.613 + 2808.921) - (3727.379 + 939.565)$. האנרגיה לקילוגרם: $\dfrac{Q}{\sum m_ic^2}\,c^2$.
+      - kind: limit
+        text: >-
+          אם התוצרים היו שוקלים כמו המגיבים, $Q = 0$. אם כל המסה הייתה הופכת לאנרגיה, החלק היה 1 והאנרגיה $c^2 = 9\cdot10^{16}\,\text{J/kg}$:
+          ההיתוך נותן פחות מאחוז מזה.
+      - kind: units
+        text: >-
+          $Q$ ב-MeV; היחס חסר ממדים; $c^2$ ב-$\text{m}^2/\text{s}^2 = \text{J/kg}$.
+      - kind: substitution
+        text: >-
+          $Q = 4684.534 - 4666.944 = 17.59\,\text{MeV}$. $17.59/4684.534 = 3.75\cdot10^{-3}$, ו-$3.75\cdot10^{-3}\cdot9.0\cdot10^{16} = 3.38\cdot10^{14}\,\text{J/kg}$.
+          $3.38\cdot10^{14}/4.6\cdot10^7 = 7.3\cdot10^6$.
+      - kind: result
+        text: >-
+          א. $17.6\,\text{MeV}$ לתגובה. ב. $0.375\%$ מאנרגיית המנוחה, $3.4\cdot10^{14}\,\text{J}$ לקילוגרם. ג. פי שבעה מיליון בערך מבנזין.
+
+  - id: W-10.4-08
+    level: bagrut
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      גלאי קרינה מואר בפוטונים של $0.662\,\text{MeV}$ (מקור צסיום-137), והם נפזרים בו מאלקטרונים חופשיים ונייחים
+      ($m_ec^2 = 0.511\,\text{MeV}$). הגלאי מודד את האנרגיה הקינטית של האלקטרונים.
+
+      א. הראו שהאנרגיה הקינטית הגדולה ביותר שפוטון באנרגיה $E$ יכול למסור לאלקטרון היא $K_{\max} = E\,\dfrac{2\epsilon}{1 + 2\epsilon}$,
+      $\epsilon = E/(m_ec^2)$.
+
+      ב. חשבו אותה כאן, ואת האנרגיה של הפוטון המפוזר באותו פיזור.
+    answer: >-
+      ב. $K_{\max} = 0.478\,\text{MeV}$; הפוטון יוצא לאחור עם $0.184\,\text{MeV}$.
+    solution:
+      - kind: law
+        text: >-
+          $K = E - E'$ עם $E' = \dfrac{E}{1 + \epsilon(1 - \cos\theta)}$.
+      - kind: manipulation
+        text: >-
+          $E'$ קטן ככל ש-$1 - \cos\theta$ גדול, ולכן $K$ הגדול ביותר בפיזור לאחור, $\theta = 180^\circ$: $E' = \dfrac{E}{1 + 2\epsilon}$,
+          ו-$K_{\max} = E - \dfrac{E}{1 + 2\epsilon} = E\,\dfrac{2\epsilon}{1 + 2\epsilon}$.
+      - kind: limit
+        text: >-
+          $\epsilon \to 0$: $K_{\max} \approx 2\epsilon E \to 0$, פוטון רך לא מעביר אנרגיה. $\epsilon \to \infty$: $K_{\max} \to E - m_ec^2/2$,
+          כמעט הכול, אבל אף פעם לא כל האנרגיה: תמיד יוצא פוטון.
+      - kind: units
+        text: >-
+          $\epsilon$ חסר ממדים, ו-$K_{\max}$ ביחידות של $E$.
+      - kind: substitution
+        text: >-
+          $\epsilon = 0.662/0.511 = 1.296$, $2\epsilon = 2.591$. $E' = 0.662/3.591 = 0.184\,\text{MeV}$, $K_{\max} = 0.662\cdot2.591/3.591 = 0.478\,\text{MeV}$.
+          בדיקה: $0.184 + 0.478 = 0.662$.
+      - kind: result
+        text: >-
+          $K_{\max} = 0.478\,\text{MeV}$, כשהפוטון חוזר לאחור עם $0.184\,\text{MeV}$. בספקטרום של הגלאי זו נקודה חדה שמעליה אין אלקטרונים
+          מפיזור יחיד.
+
+  - id: W-10.4-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-10.4-1, OBJ-10.4-2]
+    prompt: >-
+      קבעו ונמקו.
+
+      א. אלקטרון חופשי נע במהירות קבועה. האם הוא יכול לפלוט פוטון אחד, מעצמו, ולהמשיך לנוע? (רמז: עבדו במערכת שבה האלקטרון
+      נח לפני הפליטה.)
+
+      ב. אטום מימן במצב מעורר פולט פוטון ויורד למצב היסוד. מה ההבדל בינו לבין האלקטרון של סעיף א?
+    answer: >-
+      א. לא: במערכת המנוחה שלו האנרגיה לפני הפליטה $mc^2$, ואחריה לפחות $mc^2 + E_\gamma$. ב. לאטום המעורר יש מסה גדולה יותר
+      ממסת אטום במצב היסוד, וההפרש משלם על הפוטון.
+    solution:
+      - kind: law
+        text: >-
+          שימור האנרגיה והתנע בכל מערכת אינרציאלית; לכל חלקיק $E^2 = (pc)^2 + (mc^2)^2$, ולכן $E \ge mc^2$, עם שוויון רק במנוחה.
+      - kind: reasoning
+        text: >-
+          א: במערכת שבה האלקטרון נח לפני הפליטה, האנרגיה הכוללת $mc^2$ והתנע אפס. אחרי הפליטה יש פוטון באנרגיה $E_\gamma > 0$ ואלקטרון
+          באנרגיה של לפחות $mc^2$, ולכן האנרגיה לפחות $mc^2 + E_\gamma > mc^2$. אי אפשר. מכיוון שכל מערכת אינרציאלית שקולה, זה לא
+          אפשרי גם במהירות אחרת.
+      - kind: reasoning
+        text: >-
+          ב: לאטום המעורר יש אנרגיית מנוחה $M^*c^2$, גדולה מזו של אטום במצב היסוד, $Mc^2$, בדיוק באנרגיית העירור. מערכת מורכבת יכולה
+          לשנות את המסה שלה, ולכן ההפרש $M^* - M$ מממן את הפוטון ואת הרתיעה של האטום. לאלקטרון אין מבנה פנימי: המסה שלו קבועה.
+      - kind: limit
+        text: >-
+          אם $M^* = M$, אין עירור, וגם האטום לא יכול לפלוט: חוזרים לסעיף א. אותו נימוק בכיוון ההפוך מראה שאלקטרון חופשי לא יכול
+          לבלוע פוטון, ושאטום יכול, אם הפוטון מעלה אותו למצב שקיים.
+      - kind: units
+        text: >-
+          כל ההשוואות בין אנרגיות.
+      - kind: result
+        text: >-
+          א. לא. ב. האטום מורכב, ולמצב המעורר שלו יש מסה גדולה יותר; את ההפרש הוא מוסר לפוטון. אלקטרון חופשי פולט או בולע פוטונים
+          רק כשגוף נוסף, כמו גרעין, לוקח חלק מהתנע.
+
+  - id: W-10.4-10
+    level: bagrut
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      גרעין של ברזל-57 במצב מעורר, נח, יורד למצב היסוד ופולט פוטון גמא. ההפרש בין אנרגיות המנוחה של שני המצבים הוא
+      $14.4\,\text{keV}$, ואנרגיית המנוחה של הגרעין $5.30\cdot10^4\,\text{MeV}$.
+
+      א. כמה אנרגיה קינטית מקבל הגרעין ברתיעה, ובכמה האנרגיה של הפוטון קטנה מ-$14.4\,\text{keV}$?
+
+      ב. באיזו מהירות הגרעין נרתע?
+    answer: >-
+      א. $1.96\cdot10^{-3}\,\text{eV}$, חלק $1.4\cdot10^{-7}$ מ-$14.4\,\text{keV}$. ב. $81.5\,\text{m/s}$.
+    solution:
+      - kind: given
+        text: >-
+          $\Delta = 14.4\,\text{keV}$ (ההפרש באנרגיות המנוחה), $Mc^2 = 5.30\cdot10^4\,\text{MeV}$. ציר $+x$ בכיוון הפוטון.
+      - kind: law
+        text: >-
+          שימור התנע: הגרעין נח לפני, ולכן אחרי הפליטה $p_{\text{nuc}} = E_\gamma/c$, לכיוון $-x$. שימור האנרגיה: $\Delta = E_\gamma + K$.
+      - kind: manipulation
+        text: >-
+          $K \ll Mc^2$, ולכן $K = \dfrac{p^2}{2M} = \dfrac{E_\gamma^2}{2Mc^2} \approx \dfrac{\Delta^2}{2Mc^2}$. המהירות: $v = p/M = \dfrac{E_\gamma}{Mc^2}\,c$.
+          (בלי קירוב: $E_\gamma = \dfrac{(M^*c^2)^2 - (Mc^2)^2}{2M^*c^2}$, כמו בדוגמה 5 של השיעור.)
+      - kind: limit
+        text: >-
+          $M \to \infty$: $K \to 0$ ו-$E_\gamma \to \Delta$, גוף כבד מאוד לוקח תנע בלי אנרגיה. וגם $K/\Delta = \Delta/(2Mc^2)$: ככל שהפוטון
+          קשה יותר והגרעין קל יותר, הרתיעה חשובה יותר.
+      - kind: units
+        text: >-
+          $\text{MeV}^2/\text{MeV} = \text{MeV}$; $E_\gamma/(Mc^2)$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $K = (0.0144)^2/(2\cdot5.30\cdot10^4)\,\text{MeV} = 1.96\cdot10^{-9}\,\text{MeV} = 1.96\cdot10^{-3}\,\text{eV}$, ו-$K/\Delta = 1.36\cdot10^{-7}$.
+          $v = (0.0144/5.30\cdot10^4)\cdot3.0\cdot10^8 = 81.5\,\text{m/s}$.
+      - kind: result
+        text: >-
+          א. הגרעין לוקח $1.96\cdot10^{-3}\,\text{eV}$, והפוטון יוצא חלש בכך מ-$14.4\,\text{keV}$. ב. $81.5\,\text{m/s}$. השינוי זעיר, אבל
+          רוחב הקו של המעבר הזה עוד קטן ממנו, ולכן גרעין שני כזה לא יכול לבלוע את הפוטון: את זה פתר אפקט מסבאואר, שבו כל הגביש נרתע.
+
+challenge:
+  - id: W-10.4-c1
+    stars: 1
+    objectives: [OBJ-10.4-2]
+    prompt: >-
+      **אנרגיית השמש.** התוצאה הכוללת של תגובות ההיתוך בשמש היא שארבעה פרוטונים ושני אלקטרונים הופכים לגרעין הליום-4:
+      $4p + 2e^- \to {}^4\text{He}$. נוצרים גם חלקיקים נוספים (נייטרינו ופוטונים), אבל הניחו שכל מה שהם נושאים מופיע בסוף כאנרגיה.
+      אנרגיות המנוחה (MeV): פרוטון $938.272$, אלקטרון $0.511$, גרעין הליום-4 $3727.379$.
+
+      א. כמה אנרגיה משתחררת בכל תגובה כזו, ואיזה חלק היא מאנרגיית המנוחה של ארבעת הפרוטונים?
+
+      ב. כמה אנרגיה משתחררת כשקילוגרם של פרוטונים (עם האלקטרונים שדרושים לו) הופך כולו להליום?
+
+      ג. בשריפת מתאן משתחררים $890\,\text{kJ}$ לכל מול, ומסה מולרית של מתאן היא $16.0\,\text{g}$. כמה קילוגרם מתאן צריך לשרוף
+      כדי לקבל את האנרגיה של סעיף ב?
+    answer: >-
+      א. $26.7\,\text{MeV}$, $0.712\%$. ב. $6.41\cdot10^{14}\,\text{J}$. ג. $1.15\cdot10^7\,\text{kg}$, כ-$11{,}500$ טון.
+    solution:
+      - kind: law
+        text: >-
+          $Q = \sum m_ic^2 - \sum m_fc^2$. כל קילוגרם של חומר שמגיב משחרר את החלק $Q/\sum m_ic^2$ מ-$(1\,\text{kg})c^2$.
+      - kind: manipulation
+        text: >-
+          $Q = 4m_pc^2 + 2m_ec^2 - m_{\text{He}}c^2$. ב: לכל קילוגרם של פרוטונים, $\dfrac{Q}{4m_pc^2}\cdot(1\,\text{kg})\,c^2$ (האלקטרונים מוסיפים רק
+          $0.03\%$ למסה). ג: מתאן נותן $890\cdot10^3\,\text{J}/0.0160\,\text{kg}$ לקילוגרם; מחלקים.
+      - kind: limit
+        text: >-
+          אילו ההליום היה שוקל כמו ארבעה פרוטונים ושני אלקטרונים, $Q = 0$. החלק $0.7\%$ קטן בהרבה מ-1: גם ההיתוך ממיר רק חלק קטן
+          ממסת הדלק, ובכל זאת פי עשרה מיליון יותר מבעירה, שבה החלק הוא כ-$10^{-10}$.
+      - kind: units
+        text: >-
+          $Q$ ב-MeV, היחס חסר ממדים, $(1\,\text{kg})c^2$ בג׳אול; $\text{J/mol}$ חלקי $\text{kg/mol}$ נותן $\text{J/kg}$.
+      - kind: substitution
+        text: >-
+          א: $Q = 3753.088 + 1.022 - 3727.379 = 26.73\,\text{MeV}$, ו-$26.73/3753.088 = 7.12\cdot10^{-3}$. ב: $7.12\cdot10^{-3}\cdot9.0\cdot10^{16} = 6.41\cdot10^{14}\,\text{J}$.
+          ג: $890\cdot10^3/0.0160 = 5.56\cdot10^7\,\text{J/kg}$, ו-$6.41\cdot10^{14}/5.56\cdot10^7 = 1.15\cdot10^7\,\text{kg}$.
+      - kind: result
+        text: >-
+          א. $26.7\,\text{MeV}$ לתגובה, $0.71\%$ ממסת הפרוטונים. ב. $6.4\cdot10^{14}\,\text{J}$ לקילוגרם. ג. כ-$1.2\cdot10^7\,\text{kg}$ מתאן:
+          קילוגרם מימן בשמש שקול לכ-$11{,}500$ טון גז בוער.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 4
+      year: 2008
+      problem: Problem 8 (Solar Power)
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset4.pdf
+      verified: '2026-11-16'
+      adapted: true
+
+  - id: W-10.4-c2
+    stars: 2
+    objectives: [OBJ-10.4-1]
+    prompt: >-
+      **קומפטון בארבעה-וקטורים.** לשני ארבעה-וקטורים $A = (A^0, \vec A)$ ו-$B = (B^0, \vec B)$ מגדירים את המכפלה
+      $A\cdot B = A^0B^0 - \vec A\cdot\vec B$. היא זהה בכל מערכת ייחוס (כמו הגודל האינווריאנטי $A\cdot A$), ולכל חלקיק
+      $P\cdot P = (mc)^2$, כאשר $P = (E/c, \vec p)$.
+
+      א. פוטון באנרגיה $E$ נפזר מאלקטרון נייח. כתבו את שימור האנרגיה והתנע כמשוואה אחת, $P + P_e = P' + P_e'$, בודדו את $P_e'$,
+      העלו את שני הצדדים בריבוע (מכפלה של כל צד בעצמו), וגזרו את $\dfrac1{E'} - \dfrac1E = \dfrac{1 - \cos\theta}{m_ec^2}$.
+
+      ב. פוטון באנרגיה $1.00\,\text{MeV}$ נפזר כך שהוא והאלקטרון יוצאים עם אנרגיות שוות ($E' = K$). מה זווית הפיזור?
+      ($m_ec^2 = 0.511\,\text{MeV}$.)
+
+      ג. הראו שחלוקה שווה כזו אפשרית רק כש-$E \ge m_ec^2/2$.
+    answer: >-
+      ב. $\theta = 60.7^\circ$. ג. צריך $1 - \cos\theta = m_ec^2/E \le 2$.
+    solution:
+      - kind: given
+        text: >-
+          ציר $+x$ בכיוון הפוטון הפוגע; הפוטון המפוזר במישור $xy$ בזווית $\theta$. $P = (E/c,\ E/c,\ 0,\ 0)$, $P_e = (m_ec,\ 0,\ 0,\ 0)$,
+          $P' = (E'/c,\ (E'/c)\cos\theta,\ (E'/c)\sin\theta,\ 0)$.
+      - kind: law
+        text: >-
+          $P_e' = P + P_e - P'$, ומכפלת כל צד בעצמו: $P_e'\cdot P_e' = (m_ec)^2$, $P\cdot P = P'\cdot P' = 0$, $P_e\cdot P_e = (m_ec)^2$.
+      - kind: manipulation
+        text: >-
+          $(m_ec)^2 = 0 + (m_ec)^2 + 0 + 2P\cdot P_e - 2P\cdot P' - 2P_e\cdot P'$. המכפלות: $P\cdot P_e = Em_e$, $P_e\cdot P' = E'm_e$,
+          $P\cdot P' = \dfrac{EE'}{c^2}(1 - \cos\theta)$. לכן $Em_e - E'm_e = \dfrac{EE'}{c^2}(1 - \cos\theta)$, ומחלקים ב-$EE'm_e$.
+      - kind: manipulation
+        text: >-
+          ב: $E' = K$ ו-$E' + K = E$ נותנים $E' = E/2$, כלומר $1 + \epsilon(1 - \cos\theta) = 2$, ו-$\cos\theta = 1 - \dfrac{m_ec^2}{E}$.
+      - kind: limit
+        text: >-
+          ג: $1 - \cos\theta$ לכל היותר 2, ולכן צריך $m_ec^2/E \le 2$, כלומר $E \ge m_ec^2/2$. בדיוק ב-$E = m_ec^2/2$ החלוקה השווה קורית
+          רק בפיזור לאחור. פוטון רך יותר מוסר לאלקטרון תמיד פחות מחצי מהאנרגיה. בדיקה נוספת: ב-$\theta = 0$, $P\cdot P' = 0$ ו-$E' = E$.
+      - kind: units
+        text: >-
+          כל מכפלה ביחידות של תנע בריבוע; $m_ec^2/E$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $\cos\theta = 1 - 0.511/1.00 = 0.489$, ולכן $\theta = 60.7^\circ$, עם $E' = K = 0.500\,\text{MeV}$. הסף של ג: $0.256\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. נוסחת קומפטון, בלי משולש התנע: ארבעה-וקטורים חוסכים את האלקטרון בשורה אחת. ב. $60.7^\circ$. ג. רק כש-$E \ge 0.256\,\text{MeV}$.
+    source:
+      name: MIT 8.20 Special Relativity, Problem Set 4
+      year: 2008
+      problem: Problem 17 (Compton scattering), with the invariant product of Problem 19
+      url: https://stuff.mit.edu/afs/athena/course/8/8.20/www/psets/pset4.pdf
+      verified: '2026-11-16'
+      adapted: true

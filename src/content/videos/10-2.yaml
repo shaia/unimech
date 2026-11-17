@@ -1,0 +1,21 @@
+# Videos of lesson 10.2. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned; the title has a no-break space after "8.2", as oEmbed returns it).
+# `why` claims only what a transcript supports.
+#   Pf_PvckSdTg: MIT OpenCourseWare, 8.20 (IAP 2021, Markus Klute), "8.2 Introduction to 4-Vector Notation".
+#     Duration 5:44 and the transcript from a transcript page (rosetta.to/u/mitocw/8-2-introduction-to-4-vector-notation):
+#     0:00 time and space treated consistently, (ct, x, y, z) with upper and lower indices; 0:45–1:21 the
+#     summation convention and the four-vector product; 2:54 the metric diag(−1, 1, 1, 1) (the OPPOSITE sign to
+#     the course's: the product of the separation with itself is −c²t² + x² + y² + z²); 4:04 examples: the
+#     energy-momentum four-vector (E/c, p) and the four-potential (electromagnetism, not in this course);
+#     5:19 P·P = −m²c² gives E² = p²c² + m²c⁴, and E = mc² at rest. YouTube caption tracks were not confirmed,
+#     so `captions` lists nothing.
+
+- id: v-10-2-mit-four-vectors
+  youtubeId: Pf_PvckSdTg
+  title: '8.2 Introduction to 4-Vector Notation'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 6
+  why: 'הרצאה קצרה של MIT OpenCourseWare באנגלית. לפי התמליל, היא כותבת מקום וזמן כארבעה-וקטור, מגדירה מכפלה של שני ארבעה-וקטורים, ובסוף, בערך בדקה 5:20, מכפילה את ארבעה-וקטור האנרגיה-תנע בעצמו ומקבלת את הקשר בין אנרגיה, תנע ומסה. שימו לב: בהרצאה הסימן של המכפלה הפוך לשלנו.'
+  verified: '2026-11-16'

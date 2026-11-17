@@ -11,6 +11,14 @@
 #   p = 100 MeV/c: β = 1 (photon), 0.99999 (e), 0.686 (μ), 0.106 (p);
 #   β = 0.1: K/(½mv²) − 1 = 0.756% (series ¾β² = 0.75%; γ − 1 = 0.504%);
 #   muon with p = 200 MeV/c: E = 226 MeV, K = 120 MeV (p²/2m = 189 MeV), β = 0.884.
+#
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-1/recompute.ts (first principles, constants
+# from src/physics/constants.ts; relenergy.ts only cross-checked): every key, commonWrong and feedback number above
+# confirmed. Changes: Q-10.1-electron-vs-proton gains commonWrong 21.1 (γ_p rounded to 1.001 gives 21.06, 3.4% from
+# the key) with feedback that names the rounding, and a hint that K ≪ mc² lets Newton serve the proton
+# (β_p = √(2K/mc²) gives 20.38, inside the tolerance); Q-10.1-classical-error moves to mid (the lesson states the
+# series it needs); new exam-level Q-10.1-momentum-series: K/(p²/2m) = 2/(√(1 + x) + 1) = 0.99 gives x = 0.0404,
+# pc = 189.5 MeV (series ¼x = 0.01: 187.6; wrong ⅛x = 0.01: 265; ¾x = 0.01: 108; x = 0.01: 93.8), β = 0.198.
 
 chapter: 10
 questions:
@@ -153,8 +161,15 @@ questions:
       נותנת כמעט אותו דבר. לאלקטרון $K/(mc^2) \approx 2$, והנוסחה של ניוטון נותנת $\beta = 1.98$, מהיר מהאור.
     wrongFeedback: >-
       מצאו לכל חלקיק את $\gamma$ מתוך $K = (\gamma - 1)mc^2$, ואחר כך את $\beta$. זמן המעבר הוא $L/(\beta c)$, ולכן
-      היחס בין הזמנים הוא היחס ההפוך בין המהירויות.
+      היחס בין הזמנים הוא היחס ההפוך בין המהירויות. לפרוטון $\gamma - 1 = 1/938 \approx 1.07\cdot10^{-3}$ הוא כל
+      האפקט: שמרו בו שלוש ספרות משמעותיות, ולא רק את $\gamma \approx 1.001$.
     commonWrong:
+      - value: 21.1
+        feedback: >-
+          הדרך נכונה, אבל עיגלתם את $\gamma$ של הפרוטון ל-$1.001$. כש-$\gamma$ קרוב כל כך ל-1, המהירות תלויה רק
+          בהפרש $\gamma - 1$, ו-$0.001$ במקום $0.00107$ הוא שגיאה של $6\%$ בהפרש, ושל $3\%$ במהירות. שמרו את
+          $\gamma - 1 = 1/938$ במלואו, או השתמשו לפרוטון בנוסחה של ניוטון, $\beta = \sqrt{2K/(mc^2)} = 0.0462$, שמדויקת
+          כאן כי $K \ll mc^2$.
       - value: 42.8
         feedback: >-
           זה $\sqrt{938/0.511}$, היחס שנותנת $K = \tfrac12mv^2$ לשני החלקיקים. לפרוטון זה כמעט נכון, אבל לאלקטרון
@@ -164,7 +179,9 @@ questions:
         feedback: 'הפכתם את היחס. הפרוטון הכבד איטי בהרבה, ולכן הזמן שלו **ארוך** יותר: $t_p/t_e > 1$.'
     hints:
       - 'מ-$K$ מקבלים $\gamma = 1 + K/(mc^2)$, ומ-$\gamma$ את $\beta$.'
-      - 'לפני החישוב, בדקו לכל חלקיק אם $K \ll mc^2$.'
+      - >-
+        לפני החישוב, בדקו לכל חלקיק אם $K \ll mc^2$. אם כן, הנוסחה של ניוטון לאנרגיה הקינטית מספיקה לו, ואין צורך
+        לחשב $\gamma$ קרוב מאוד ל-1.
 
   # ---------------------------------------------------------------- OBJ-10.1-2 E² = (pc)² + (mc²)², the non-relativistic limit
   - id: Q-10.1-massless-speed
@@ -253,7 +270,7 @@ questions:
   - id: Q-10.1-classical-error
     type: numeric
     objectives: [OBJ-10.1-2]
-    level: bagrut
+    level: mid
     prompt: >-
       הביטוי של ניוטון $\tfrac12mv^2$ הוא קירוב לאנרגיה הקינטית היחסותית $K = (\gamma - 1)mc^2$. פתחו את $\gamma$
       בטור טיילור ב-$\beta^2$, ומצאו בכמה אחוזים $K$ גדול מ-$\tfrac12mv^2$ כש-$\beta = 0.10$.
@@ -284,3 +301,44 @@ questions:
     explanation: >-
       התיקון $\tfrac34\beta^2$ קטן מאחוז אחד עד $\beta \approx 0.1$, כלומר עד כ-$30{,}000\,\text{km/s}$. לכן המכניקה
       של ניוטון מספיקה לכל גוף יומיומי, ואפילו ללוויינים.
+
+  - id: Q-10.1-momentum-series
+    type: numeric
+    objectives: [OBJ-10.1-2]
+    level: bagrut
+    prompt: >-
+      לפרוטון, שאנרגיית המנוחה שלו $mc^2 = 938\,\text{MeV}$, יש תנע $p$. האנרגיה הקינטית שלו היא $K = E - mc^2$, כאשר
+      $E^2 = (pc)^2 + (mc^2)^2$, והביטוי של ניוטון $p^2/(2m)$ הוא קירוב לה.
+
+      (1) פתחו את $E$ בטור טיילור מסדר שני ב-$x = (pc/mc^2)^2$, והראו ש-$K \approx \dfrac{p^2}{2m}\left(1 - \tfrac14x\right)$.
+
+      (2) עד איזה תנע מתקיים $K \ge 0.99\cdot p^2/(2m)$, כלומר הקירוב של ניוטון שונה מ-$K$ בפחות מאחוז? ענו ב-$pc$,
+      ביחידות $\text{MeV}$.
+    answer: 189
+    unit: MeV
+    correctFeedback: >-
+      נכון. $E = mc^2\sqrt{1 + x} \approx mc^2\left(1 + \tfrac12x - \tfrac18x^2\right)$, ולכן
+      $$K = E - mc^2 \approx mc^2\left(\tfrac12x - \tfrac18x^2\right) = \frac{p^2}{2m}\left(1 - \tfrac14x\right)$$
+      התנאי $\tfrac14x \le 0.01$ נותן $x \le 0.04$, כלומר $pc \le 0.2\,mc^2 = 188\,\text{MeV}$; החישוב המדויק,
+      $K/(p^2/2m) = 2/(\sqrt{1 + x} + 1) = 0.99$, נותן $189\,\text{MeV}$. **בדיקת גבולות:** כש-$x \to 0$ התיקון מתאפס,
+      ו-$K \to p^2/(2m)$. שימו לב לסימן: באותו **תנע** ניוטון נותן אנרגיה קינטית גדולה מדי, אף שבאותה **מהירות** הוא
+      נותן אנרגיה קטנה מדי ($\tfrac12mv^2 < K$). המהירות של הפרוטון כאן היא $\beta = pc/E = 0.198$.
+    wrongFeedback: >-
+      כתבו $E = mc^2\sqrt{1 + x}$ ופתחו $\sqrt{1 + x} \approx 1 + \tfrac12x - \tfrac18x^2$. הפחיתו $mc^2$, הוציאו את
+      האיבר הראשון, $\tfrac12x\,mc^2 = p^2/(2m)$, מחוץ לסוגריים, ודרשו שהתיקון היחסי יהיה לכל היותר $0.01$.
+    commonWrong:
+      - value: 265
+        feedback: >-
+          פתרתם $\tfrac18x = 0.01$. אבל $\tfrac18x^2$ הוא האיבר השני ביחידות של $mc^2$, לא ביחס לאיבר הראשון. התיקון
+          היחסי הוא המנה $\tfrac18x^2/(\tfrac12x) = \tfrac14x$.
+      - value: 108
+        feedback: >-
+          זה $\tfrac34x = 0.01$: לקחתם את התיקון $\tfrac34\beta^2$ של הטור במהירות, ושמתם $pc/mc^2$ במקום $\beta$. בטור
+          בתנע התיקון הוא $\tfrac14(pc/mc^2)^2$, והוא מקטין את האנרגיה במקום להגדיל אותה.
+      - value: 93.8
+        feedback: >-
+          פתרתם $x = 0.01$, כאילו התיקון היחסי הוא $x$ עצמו. המקדם חשוב: התיקון הוא $\tfrac14x$, ולכן $x$ יכול להגיע
+          ל-$0.04$.
+    hints:
+      - 'הוציאו את $mc^2$ מהשורש: $E = mc^2\sqrt{1 + x}$.'
+      - 'פיתוח מסדר שני: $f(x) \approx f(0) + f''(0)\,x + \tfrac12f''''(0)\,x^2$.'

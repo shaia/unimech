@@ -1,0 +1,7 @@
+---
+/** Photon and mass-defect figure for lesson 10.4: <Spread fig="fig-10-4a" figure={ComptonLab} figureProps={{ mode: 'compton', tasks: [...] }}>. */
+import ComptonLab, { type ComptonLabProps } from './ComptonLab';
+type Props = ComptonLabProps;
+---
+
+<ComptonLab client:visible {...Astro.props} />

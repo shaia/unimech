@@ -1,0 +1,20 @@
+# Videos of lesson 10.5. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what a transcript supports.
+#   2jHK2MxGoio: MIT OpenCourseWare, 8.20 (IAP 2021, Markus Klute), "9.4 Forces and Kinetic Energy". The OCW page
+#     (resources/lecture-9-3) gives 06:46; its subtitle file on OCW (…_2jHK2MxGoio.srt) ends at 6:40: force as the
+#     change of momentum (0:34); kinetic energy as the work of an external force (1:01), the integral giving
+#     (γ − 1)m₀c² (3:36) and ½m₀v² at low speed (3:43); a spacecraft example (4:58–5:22); from about 5:30 the force is
+#     no longer parallel to the acceleration (6:35). YouTube caption tracks were not confirmed, so `captions` lists
+#     nothing.
+#   Not used: Bertozzi's 1962 film "The Ultimate Speed" (electrons of 0.5–15 MeV timed over a fixed distance) would
+#     suit the hook, but no YouTube id for it could be found and verified in this session.
+
+- id: v-10-5-mit-forces
+  youtubeId: 2jHK2MxGoio
+  title: '9.4 Forces and Kinetic Energy'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 7
+  why: 'הרצאה קצרה של MIT OpenCourseWare באנגלית. לפי התמליל, היא מגדירה כוח כקצב השינוי של התנע ואנרגיה קינטית כעבודה של כוח חיצוני, מקבלת באינטגרל את (γ − 1)mc², שחוזרת ל-½mv² במהירויות נמוכות, ובסוף מראה שהכוח והתאוצה כבר לא באותו כיוון.'
+  verified: '2026-11-16'

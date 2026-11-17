@@ -1,0 +1,456 @@
+# Workbook, lesson 10.2 (the energy-momentum four-vector, its Lorentz transformation, the Minkowski product and the
+# invariant mass). Format: CLAUDE.md, "The solution format". Every number was recomputed by
+# .scratch/ch10/10-2/workbook.ts with src/physics/fourvector.ts, src/physics/relativity.ts and
+# src/physics/constants.ts (C_LIGHT = 3.0e8); rest energies are data stated in the prompts (e 0.511, p 938 MeV):
+#   W01 electron K = 1.0 MeV: E = 1.511, pc = 1.422 MeV, √(E² − (pc)²) = 0.511, v = 0.941c;
+#   W02 illustration only (proton, p_y c = 500 MeV, β = 0.6): E′ = 1329, p′_x c = −797, p′_y c = 500 MeV;
+#   W03 E = 5.0, pc = 4.8 GeV: mc² = 1.40 GeV, v = 0.960c, γ = 3.57;
+#   W04 proton E = 2.0 GeV, pc = 1.766 GeV, frame at 0.5c along −x: E′ = 3.33 GeV, p′c = 3.19 GeV;
+#   W05 photon 3.0 MeV, frames ±0.6c: 1.5 and 6.0 MeV, product 9.0 = E²;
+#   W06 two 1.0 MeV photons, Mc² = 1.022 MeV: θ = 61.5°;
+#   W07 clay ball at 0.6c on an equal one at rest: M = √4.5 m = 2.12m, v_f = c/3, K_in = 0.25mc²,
+#       K_f = 0.129mc², heat 0.121mc² = (M − 2m)c²;
+#   W08 10 GeV proton on a proton at rest: pc = 9.956 GeV, √s = 4.53 GeV, β_cm = 0.910, γ_cm = 2.41, each proton
+#       2.26 GeV in the cm frame (|p|c = 2.06 GeV), checked by boosting both;
+#   W09 proton along +y at 0.6c (E = 1172.5, p_y c = 703.5), S′ at 0.8c along +x: E′ = 1954, p′_x c = −1563,
+#       p′_y c = 703.5 MeV, speed 0.877c (= transverse velocity addition (−0.8, 0.36)), 24.2° above −x′;
+#   W10 electron + 1 MeV photon (illustration): Mc² = √(0.511² + 2·0.511·1) = 1.13 MeV > 0.511;
+#   c1 π⁰ 135 MeV → γγ at ±45°: Eγ = 95.5 MeV each, p c = 135 MeV, γβ = 1, β = 0.707, γ = 1.41,
+#      mean length γβcτ = 2.52e-8 m with τ = 8.4e-17 s;
+#   c2 10 GeV elastic pp at 90° in the cm frame: s = 20.52, t = u = −8.50, s + t + u = 3.519 = 4m² (GeV²);
+#      E1 = (s − 2m²)/(2m) = 10.0 GeV.
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-2/recompute.ts (fourvector.ts, relativity.ts,
+#   C_LIGHT) reproduces every number above, W01–W10, c1 and c2 (including the explicit cm boosts of W08 and the
+#   t = u = −8.50 GeV² check of c2). Change: c1's prompt now states that the pion moves along the beam axis (the
+#   solution's "no transverse momentum" step needs it). The MIT 8.20 pset PDF still resolves at its URL (2026-11-17);
+#   its text could not be extracted in the review session, so the problem wording rests on the author's 2026-11-16 read.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '10.2'
+practice:
+  - id: W-10.2-01
+    level: basic
+    objectives: [OBJ-10.2-1]
+    prompt: >-
+      אלקטרון ($mc^2 = 0.511\,\text{MeV}$) נע במעבדה בכיוון $+x$ עם אנרגיה קינטית $1.0\,\text{MeV}$. כתבו את ארבעה-וקטור
+      האנרגיה-תנע שלו, ב-$\text{MeV}/c$, ובדקו שהגודל האינווריאנטי שלו נותן את אנרגיית המנוחה. באיזו מהירות הוא נע?
+    answer: >-
+      $P = (1.511,\ 1.422,\ 0,\ 0)\,\text{MeV}/c$; $\sqrt{1.511^2 - 1.422^2} = 0.511\,\text{MeV}$; $v = 0.941c$.
+    solution:
+      - kind: given
+        text: >-
+          $mc^2 = 0.511\,\text{MeV}$, $K = 1.0\,\text{MeV}$, תנועה לאורך $+x$.
+      - kind: law
+        text: >-
+          $P = (E/c,\ p_x,\ p_y,\ p_z)$; $E = mc^2 + K$; $E^2 = (pc)^2 + (mc^2)^2$; המהירות $v = pc^2/E$.
+      - kind: manipulation
+        text: >-
+          $E = 0.511 + 1.0 = 1.511\,\text{MeV}$, ולכן $p_xc = \sqrt{E^2 - (mc^2)^2}$, ו-$p_y = p_z = 0$.
+      - kind: limit
+        text: >-
+          כש-$K \to 0$, $p \to 0$ ו-$P \to (mc,\ 0,\ 0,\ 0)$; כש-$K \gg mc^2$, $pc \to E$ ו-$v \to c$.
+      - kind: units
+        text: >-
+          $E/c$ ו-$p$ שניהם ב-$\text{MeV}/c$; $v/c = pc/E$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $p_xc = \sqrt{1.511^2 - 0.511^2} = \sqrt{2.022} = 1.422\,\text{MeV}$; $v/c = 1.422/1.511 = 0.941$.
+      - kind: result
+        text: >-
+          $P = (1.511,\ 1.422,\ 0,\ 0)\,\text{MeV}/c$. הגודל האינווריאנטי, $\sqrt{1.511^2 - 1.422^2} = 0.511$, הוא אנרגיית
+          המנוחה, כמו שצריך. $v = 0.941c$.
+
+  - id: W-10.2-02
+    level: basic
+    qualitative: true
+    objectives: [OBJ-10.2-1]
+    prompt: >-
+      במערכת $S$ חלקיק נע בכיוון $+y$ בלבד: $p_x = 0$ ו-$p_y > 0$. מערכת $S'$ נעה ביחס ל-$S$ לאורך $+x$. קבעו ונמקו בלי
+      חישוב מספרי: האם ב-$S'$ יש לחלקיק תנע בכיוון $x$, ובאיזה סימן? האם $p'_y$ שונה מ-$p_y$? האם האנרגיה גדלה או
+      קטנה?
+    answer: >-
+      יש: $p'_x = -\gamma\beta E/c < 0$. $p'_y = p_y$. האנרגיה גדלה: $E' = \gamma E$.
+    solution:
+      - kind: law
+        text: >-
+          $E' = \gamma\left(E - \beta\,p_xc\right)$, $p'_xc = \gamma\left(p_xc - \beta E\right)$, $p'_y = p_y$, $p'_z = p_z$.
+      - kind: reasoning
+        text: >-
+          עם $p_x = 0$: $p'_xc = -\gamma\beta E$, שלילי כש-$\beta > 0$. ב-$S'$ החלקיק "נסחף אחורה", כי $S'$ עצמה נעה קדימה. הרכיב
+          הניצב לתנועת המערכת לא משתנה, ו-$E' = \gamma E > E$.
+      - kind: reasoning
+        text: >-
+          בדיקה: $E'^2 - (p'_xc)^2 - (p'_yc)^2 = \gamma^2E^2\left(1 - \beta^2\right) - (p_yc)^2 = E^2 - (p_yc)^2 = (mc^2)^2$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $p'_x \to 0$ ו-$E' \to E$; כשהחלקיק נח ($p_y = 0$), $p'_xc = -\gamma\beta mc^2$: הוא נע ב-$S'$ במהירות $\beta c$ אחורה.
+      - kind: result
+        text: >-
+          ב-$S'$ יש לחלקיק תנע $p'_x = -\gamma\beta E/c$, בכיוון $-x$; $p'_y = p_y$; והאנרגיה גדולה יותר, $\gamma E$.
+
+  - id: W-10.2-03
+    level: basic
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      בגלאי נמדד חלקיק עם אנרגיה $5.0\,\text{GeV}$ ותנע $4.8\,\text{GeV}/c$. מה אנרגיית המנוחה שלו? מה המהירות שלו, ומה
+      גורם לורנץ שלו?
+    answer: >-
+      $mc^2 = 1.40\,\text{GeV}$; $v = 0.960c$; $\gamma_u = 3.57$.
+    solution:
+      - kind: given
+        text: >-
+          $E = 5.0\,\text{GeV}$, $pc = 4.8\,\text{GeV}$.
+      - kind: law
+        text: >-
+          $\left(mc^2\right)^2 = E^2 - (pc)^2$, זהה בכל מערכת; $v/c = pc/E$; $\gamma_u = E/(mc^2)$.
+      - kind: manipulation
+        text: >-
+          $\left(mc^2\right)^2 = 25 - 23.04 = 1.96\,\text{GeV}^2$.
+      - kind: limit
+        text: >-
+          כש-$pc \to E$ אנרגיית המנוחה שואפת לאפס: חלקיק חסר מסה. כש-$pc \to 0$, $mc^2 \to E$: חלקיק נח.
+      - kind: units
+        text: >-
+          $E$ ו-$pc$ ב-$\text{GeV}$, ולכן $mc^2$ ב-$\text{GeV}$; $v/c$ ו-$\gamma_u$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $mc^2 = \sqrt{1.96} = 1.40\,\text{GeV}$; $v/c = 4.8/5.0 = 0.960$; $\gamma_u = 5.0/1.40 = 3.57$.
+      - kind: result
+        text: >-
+          $mc^2 = 1.40\,\text{GeV}$, $v = 0.960c$, $\gamma_u = 3.57$. הגודל האינווריאנטי נתן את המסה ישר מהמספרים של המעבדה.
+
+  - id: W-10.2-04
+    level: mid
+    objectives: [OBJ-10.2-1]
+    prompt: >-
+      פרוטון ($mc^2 = 0.938\,\text{GeV}$) נע במעבדה בכיוון $+x$ עם אנרגיה יחסותית $2.0\,\text{GeV}$. מה האנרגיה והתנע שלו
+      במערכת $S'$ שנעה ביחס למעבדה במהירות $0.50c$ בכיוון $-x$?
+    answer: >-
+      $E' = 3.33\,\text{GeV}$, $p'_x = 3.19\,\text{GeV}/c$ בכיוון $+x$.
+    solution:
+      - kind: given
+        text: >-
+          $E = 2.0\,\text{GeV}$, $mc^2 = 0.938\,\text{GeV}$; $S'$ נעה בכיוון $-x$, ולכן בטרנספורמציה $\beta = -0.50$, $\gamma = 1.155$.
+      - kind: law
+        text: >-
+          $E' = \gamma\left(E - \beta\,p_xc\right)$, $p'_xc = \gamma\left(p_xc - \beta E\right)$, ו-$p_xc = \sqrt{E^2 - (mc^2)^2}$.
+      - kind: manipulation
+        text: >-
+          $p_xc = \sqrt{4.0 - 0.880} = 1.766\,\text{GeV}$. עם $\beta < 0$ שני הסוגריים הופכים לסכומים: $E' = \gamma\left(E + 0.5\,p_xc\right)$,
+          $p'_xc = \gamma\left(p_xc + 0.5E\right)$.
+      - kind: limit
+        text: >-
+          מערכת שנעה נגד החלקיק רואה אותו מהר יותר: האנרגיה והתנע גדלים. כש-$\beta \to 0$, $E' \to E$.
+      - kind: units
+        text: >-
+          כל האיברים ב-$\text{GeV}$; $\beta$ ו-$\gamma$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $E' = 1.155\left(2.0 + 0.883\right) = 3.33\,\text{GeV}$; $p'_xc = 1.155\left(1.766 + 1.0\right) = 3.19\,\text{GeV}$. בדיקה:
+          $\sqrt{3.329^2 - 3.194^2} = 0.938\,\text{GeV}$.
+      - kind: result
+        text: >-
+          $E' = 3.33\,\text{GeV}$ ו-$p'_x = 3.19\,\text{GeV}/c$, בכיוון $+x$.
+
+  - id: W-10.2-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.2-1]
+    prompt: >-
+      פוטון באנרגיה $E$ נע במעבדה בכיוון $+x$. מערכת $S_1$ נעה ביחס למעבדה במהירות $\beta c$ בכיוון $+x$, ומערכת $S_2$
+      באותה מהירות בכיוון $-x$. באיזו מהן אנרגיית הפוטון גדולה יותר? הראו שמכפלת שתי האנרגיות שוות ל-$E^2$, ובדקו עם
+      $E = 3.0\,\text{MeV}$ ו-$\beta = 0.6$.
+    answer: >-
+      ב-$S_2$. $E_1E_2 = E^2$; עם המספרים: $1.5$ ו-$6.0\,\text{MeV}$.
+    solution:
+      - kind: law
+        text: >-
+          לפוטון בכיוון $+x$, $p_xc = E$, ולכן $E' = \gamma\left(E - \beta E\right) = E\sqrt{\dfrac{1 - \beta}{1 + \beta}}$, עם $\beta$ חיובי למערכת
+          שנעה בכיוון $+x$.
+      - kind: reasoning
+        text: >-
+          $S_1$ נעה עם הפוטון ורואה אותו מוסט לאדום, $E_1 = E\sqrt{(1 - \beta)/(1 + \beta)}$. $S_2$ נעה לקראתו ורואה הסטה לכחול,
+          $E_2 = E\sqrt{(1 + \beta)/(1 - \beta)}$. המכפלה: השורשים מבטלים זה את זה, $E_1E_2 = E^2$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ שתיהן $E$; כש-$\beta \to 1$, $E_1 \to 0$ ו-$E_2 \to \infty$, והמכפלה עדיין $E^2$.
+      - kind: substitution
+        text: >-
+          $E_1 = 3.0\sqrt{0.4/1.6} = 1.5\,\text{MeV}$, $E_2 = 3.0\sqrt{1.6/0.4} = 6.0\,\text{MeV}$, $E_1E_2 = 9.0 = 3.0^2$.
+      - kind: result
+        text: >-
+          ב-$S_2$, שנעה נגד הפוטון. $E_1E_2 = E^2$: $1.5$ ו-$6.0\,\text{MeV}$. אנרגיית פוטון אינה אינווריאנטית, ובכל מערכת הוא חסר מסה.
+
+  - id: W-10.2-06
+    level: mid
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      שני פוטונים, כל אחד באנרגיה $1.0\,\text{MeV}$, נעים בכיוונים שביניהם זווית $\theta$. באיזו זווית המסה האינווריאנטית
+      של המערכת שלהם שווה בדיוק לסכום המסות של אלקטרון ופוזיטרון, $2\cdot0.511\,\text{MeV}/c^2$?
+    answer: >-
+      $\theta = 61.5^\circ$.
+    solution:
+      - kind: given
+        text: >-
+          $E_1 = E_2 = 1.0\,\text{MeV}$; $Mc^2 = 1.022\,\text{MeV}$.
+      - kind: law
+        text: >-
+          לשני פוטונים $\left(Mc^2\right)^2 = 2E_1E_2\left(1 - \cos\theta\right)$, ממכפלת מינקובסקי עם $P_1\cdot P_1 = P_2\cdot P_2 = 0$.
+      - kind: manipulation
+        text: >-
+          $1 - \cos\theta = \dfrac{\left(Mc^2\right)^2}{2E_1E_2}$, ולכן $\cos\theta = 1 - \dfrac{1.022^2}{2}$.
+      - kind: limit
+        text: >-
+          כש-$\theta \to 0$, $M \to 0$; כש-$\theta = 180^\circ$, $Mc^2 = 2\,\text{MeV}$, הערך הגדול ביותר לשני פוטונים כאלה.
+          $1.022$ בין השניים, ולכן יש זווית כזו.
+      - kind: units
+        text: >-
+          $\left(Mc^2\right)^2$ ו-$E_1E_2$ ב-$\text{MeV}^2$: היחס חסר ממדים, כמו $\cos\theta$.
+      - kind: substitution
+        text: >-
+          $\cos\theta = 1 - 0.5222 = 0.4778$, $\theta = 61.5^\circ$.
+      - kind: result
+        text: >-
+          $\theta = 61.5^\circ$. בזווית גדולה מזו, למערכת של שני הפוטונים יש מספיק מסה כדי להפוך לזוג אלקטרון-פוזיטרון.
+
+  - id: W-10.2-07
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      כדור חימר בעל מסה $m$ נע במהירות $0.60c$ ופוגע בכדור חימר זהה שנח. הכדורים נדבקים. האם המסה של הגוש שנוצר היא
+      $2m$? חשבו אותה, ואת המהירות של הגוש. לאן הלכה האנרגיה הקינטית שחסרה?
+    answer: >-
+      לא: $M = 2.12m$; הגוש נע ב-$c/3$. ההפרש $0.121mc^2$ הפך לחום, והוא בדיוק $(M - 2m)c^2$.
+    solution:
+      - kind: given
+        text: >-
+          כדור A: $\beta = 0.6$, $\gamma = 1.25$, $E_A = 1.25mc^2$, $p_Ac = 0.75mc^2$. כדור B נח: $E_B = mc^2$.
+      - kind: law
+        text: >-
+          האנרגיה והתנע נשמרים, ולכן גם המסה האינווריאנטית: המסה של הגוש היא $Mc^2 = \sqrt{E_{\text{tot}}^2 - (p_{\text{tot}}c)^2}$ של שני
+          הכדורים לפני. המהירות שלו $\beta = p_{\text{tot}}c/E_{\text{tot}}$.
+      - kind: manipulation
+        text: >-
+          $E_{\text{tot}} = 2.25mc^2$, $p_{\text{tot}}c = 0.75mc^2$; $\left(Mc^2\right)^2 = (5.0625 - 0.5625)\left(mc^2\right)^2 = 4.5\left(mc^2\right)^2$.
+      - kind: limit
+        text: >-
+          באופן כללי $M = m\sqrt{2 + 2\gamma}$. כש-$\gamma \to 1$ (כדור איטי), $M \to 2m$: התוצאה של ניוטון.
+      - kind: units
+        text: >-
+          $M$ ביחידות של $m$; $\beta$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $M = \sqrt{4.5}\,m = 2.12m$; $\beta = 0.75/2.25 = 1/3$. אנרגיה קינטית לפני: $0.25mc^2$; אחרי: $E_{\text{tot}} - Mc^2 = 0.129mc^2$.
+      - kind: result
+        text: >-
+          לא: $M = 2.12m$, יותר מ-$2m$. הגוש נע ב-$c/3$. החסר באנרגיה הקינטית, $0.25 - 0.129 = 0.121mc^2$, הפך לחום בתוך הגוש,
+          והוא בדיוק $(M - 2m)c^2$: גוש חם כבד יותר מאותו גוש קר.
+
+  - id: W-10.2-08
+    level: bagrut
+    objectives: [OBJ-10.2-1, OBJ-10.2-2]
+    prompt: >-
+      פרוטון באנרגיה יחסותית $10\,\text{GeV}$ פוגע בפרוטון נייח ($mc^2 = 0.938\,\text{GeV}$).
+
+      א. מה $\sqrt s$, האנרגיה במערכת מרכז המסה?
+
+      ב. באיזו מהירות נעה מערכת מרכז המסה ביחס למעבדה, ומה גורם לורנץ שלה?
+
+      ג. העבירו את ארבעה-וקטור האנרגיה-תנע של כל אחד מהפרוטונים למערכת הזו, ובדקו שהתנע הכולל שם אפס.
+    answer: >-
+      א. $4.53\,\text{GeV}$. ב. $0.910c$, $\gamma = 2.41$. ג. לכל פרוטון $E' = 2.26\,\text{GeV}$, $p'c = \pm2.06\,\text{GeV}$.
+    solution:
+      - kind: given
+        text: >-
+          $E_1 = 10\,\text{GeV}$, $mc^2 = 0.938\,\text{GeV}$; פרוטון 2 נח. הציר החיובי: כיוון הקרן.
+      - kind: law
+        text: >-
+          $s = 2\left(mc^2\right)^2 + 2E_1mc^2$; $\beta_{\text{cm}} = p_{\text{tot}}c/E_{\text{tot}}$; $E' = \gamma(E - \beta\,p_xc)$, $p'_xc = \gamma(p_xc - \beta E)$.
+      - kind: manipulation
+        text: >-
+          $p_1c = \sqrt{100 - 0.880} = 9.956\,\text{GeV}$. $E_{\text{tot}} = 10.938\,\text{GeV}$, $p_{\text{tot}}c = 9.956\,\text{GeV}$. גם
+          $\gamma_{\text{cm}} = E_{\text{tot}}/\sqrt s$, כי במערכת מרכז המסה $E'_{\text{tot}} = \sqrt s$ ו-$E_{\text{tot}} = \gamma_{\text{cm}}E'_{\text{tot}}$.
+      - kind: limit
+        text: >-
+          כש-$E_1 \to mc^2$: $\sqrt s \to 2mc^2$ ו-$\beta_{\text{cm}} \to 0$. כש-$E_1 \gg mc^2$: $\beta_{\text{cm}} \to 1$, ו-$\sqrt s \approx \sqrt{2E_1mc^2}$.
+      - kind: units
+        text: >-
+          $s$ ב-$\text{GeV}^2$, $\sqrt s$ ב-$\text{GeV}$; $\beta_{\text{cm}}$ יחס בין שני גדלים ב-$\text{GeV}$.
+      - kind: substitution
+        text: >-
+          א. $s = 2\cdot0.880 + 2\cdot10\cdot0.938 = 20.52\,\text{GeV}^2$, $\sqrt s = 4.53\,\text{GeV}$. ב. $\beta_{\text{cm}} = 9.956/10.938 = 0.910$,
+          $\gamma_{\text{cm}} = 10.938/4.53 = 2.41$. ג. פרוטון 1: $E' = 2.41\left(10 - 0.910\cdot9.956\right) = 2.26\,\text{GeV}$,
+          $p'c = 2.41\left(9.956 - 0.910\cdot10\right) = 2.06\,\text{GeV}$. פרוטון 2: $E' = 2.41\cdot0.938 = 2.26\,\text{GeV}$,
+          $p'c = -2.41\cdot0.910\cdot0.938 = -2.06\,\text{GeV}$.
+      - kind: result
+        text: >-
+          א. $\sqrt s = 4.53\,\text{GeV}$, פחות מחצי מ-$10.94\,\text{GeV}$ שבמעבדה. ב. $0.910c$, $\gamma = 2.41$. ג. במערכת מרכז המסה
+          לכל פרוטון $2.26\,\text{GeV}$ ותנע $2.06\,\text{GeV}/c$, בכיוונים מנוגדים: הסכום אפס, והאנרגיה הכוללת $4.53\,\text{GeV} = \sqrt s$.
+
+  - id: W-10.2-09
+    level: bagrut
+    objectives: [OBJ-10.2-1]
+    prompt: >-
+      פרוטון ($mc^2 = 938\,\text{MeV}$) נע במערכת $S$ במהירות $0.60c$ בכיוון $+y$. מערכת $S'$ נעה ביחס ל-$S$ במהירות $0.80c$
+      בכיוון $+x$. מצאו את האנרגיה ואת רכיבי התנע של הפרוטון ב-$S'$, ומהם את גודל המהירות שלו שם ואת כיוונה. בדקו
+      בחיבור מהירויות לרוחב (שיעור 9.4).
+    answer: >-
+      $E' = 1954\,\text{MeV}$, $p'_xc = -1563\,\text{MeV}$, $p'_yc = 703.5\,\text{MeV}$; $0.877c$, בזווית $24.2^\circ$ מעל הכיוון השלילי של ציר $x'$.
+    solution:
+      - kind: given
+        text: >-
+          ב-$S$: $\gamma_u = 1.25$, $E = 1.25\cdot938 = 1172.5\,\text{MeV}$, $p_xc = 0$, $p_yc = 1.25\cdot0.6\cdot938 = 703.5\,\text{MeV}$. ל-$S'$:
+          $\beta = 0.8$, $\gamma = 5/3$.
+      - kind: law
+        text: >-
+          $E' = \gamma\left(E - \beta\,p_xc\right)$, $p'_xc = \gamma\left(p_xc - \beta E\right)$, $p'_y = p_y$; המהירות $\vec u' = \vec p'c^2/E'$.
+      - kind: manipulation
+        text: >-
+          $E' = \gamma E$, $p'_xc = -\gamma\beta E$, $p'_yc = p_yc$. לכן $u'_x/c = -\beta = -0.8$ ו-$u'_y/c = p_yc/(\gamma E) = 0.6/\gamma$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $\vec u' \to (0,\ 0.6c)$. וגם $E'^2 - (p'c)^2$ צריך לצאת $938^2$.
+      - kind: units
+        text: >-
+          האנרגיה ורכיבי $pc$ ב-$\text{MeV}$; $u'/c$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $E' = \tfrac53\cdot1172.5 = 1954\,\text{MeV}$; $p'_xc = -\tfrac53\cdot0.8\cdot1172.5 = -1563\,\text{MeV}$; $p'_yc = 703.5\,\text{MeV}$.
+          $|\vec p'|c = \sqrt{1563^2 + 703.5^2} = 1714\,\text{MeV}$, $u'/c = 1714/1954 = 0.877$; $\tan\phi = 703.5/1563$, $\phi = 24.2^\circ$.
+          בדיקות: $\sqrt{1954^2 - 1714^2} = 938\,\text{MeV}$; בחיבור מהירויות $u'_x = -0.8c$, $u'_y = 0.6c/\gamma = 0.36c$, $\sqrt{0.64 + 0.1296} = 0.877$.
+      - kind: result
+        text: >-
+          $E' = 1954\,\text{MeV}$, $p'_x = -1563\,\text{MeV}/c$, $p'_y = 703.5\,\text{MeV}/c$. הפרוטון נע ב-$S'$ במהירות $0.877c$, בזווית $24.2^\circ$ מעל
+          הכיוון השלילי של ציר $x'$, כמו שנותן חיבור המהירויות.
+
+  - id: W-10.2-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      הראו שאלקטרון חופשי לא יכול לבלוע פוטון ולהישאר אלקטרון בודד, בלי שום חלקיק נוסף, יהיו האנרגיה של הפוטון והמהירות
+      של האלקטרון אשר יהיו. היעזרו במסה האינווריאנטית של המערכת לפני הבליעה, ובחרו את מערכת הייחוס שבה החשבון הכי פשוט.
+    answer: >-
+      המסה האינווריאנטית לפני היא $\sqrt{(mc^2)^2 + 2mc^2E_\gamma} > mc^2$, ואחרי, אלקטרון בודד, $mc^2$. הן חייבות להיות שוות: סתירה.
+    solution:
+      - kind: law
+        text: >-
+          האנרגיה והתנע נשמרים, ולכן $P_e + P_\gamma = P'_e$, וגם הגודל האינווריאנטי של שני הצדדים שווה.
+      - kind: manipulation
+        text: >-
+          $c^2\left(P_e + P_\gamma\right)\cdot\left(P_e + P_\gamma\right) = (mc^2)^2 + 0 + 2c^2P_e\cdot P_\gamma$. נחשב את המכפלה במערכת
+          שבה האלקטרון נח לפני הבליעה: $c^2P_e\cdot P_\gamma = mc^2E_\gamma$, כש-$E_\gamma$ אנרגיית הפוטון שם.
+      - kind: reasoning
+        text: >-
+          לכן $\left(Mc^2\right)^2 = (mc^2)^2 + 2mc^2E_\gamma$, גדול מ-$(mc^2)^2$ לכל $E_\gamma > 0$. אבל אחרי הבליעה יש אלקטרון אחד,
+          שהגודל האינווריאנטי שלו $(mc^2)^2$. המכפלה זהה בכל המערכות, ולכן המסקנה נכונה בכל מערכת, ולכל מהירות של האלקטרון.
+      - kind: limit
+        text: >-
+          רק כש-$E_\gamma \to 0$, כלומר אין פוטון, שני הצדדים שווים. למשל, לפוטון של $1\,\text{MeV}$: $Mc^2 = \sqrt{0.511^2 + 2\cdot0.511} = 1.13\,\text{MeV}$, יותר
+          מפי שניים מ-$0.511$.
+      - kind: result
+        text: >-
+          הבליעה אסורה: המערכת לפני כבדה מאלקטרון אחד. אלקטרון בולע פוטון רק כשיש גוף נוסף שלוקח חלק מהתנע, למשל גרעין
+          באטום.
+
+challenge:
+  - id: W-10.2-c1
+    stars: 1
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      פיון ניטרלי, $\pi^0$, שאנרגיית המנוחה שלו $135\,\text{MeV}$, דועך לשני פוטונים. זמן החיים הממוצע שלו, במערכת שבה הוא
+      נח, הוא $8.4\cdot10^{-17}\,\text{s}$. בגלאי מודדים את שני הפוטונים של דעיכה אחת, וכל אחד מהם יוצא בזווית של $45^\circ$
+      מציר הקרן, אחד מעליו ואחד מתחתיו. הפיון נע לאורך ציר הקרן.
+
+      א. מה האנרגיה של כל פוטון?
+
+      ב. באיזו מהירות נע הפיון?
+
+      ג. מה המרחק הממוצע שפיון כזה עובר במעבדה מהרגע שנוצר ועד שדעך?
+    answer: >-
+      א. $95.5\,\text{MeV}$ כל אחד. ב. $0.707c$ ($\gamma\beta = 1$). ג. $2.5\cdot10^{-8}\,\text{m}$.
+    solution:
+      - kind: given
+        text: >-
+          $Mc^2 = 135\,\text{MeV}$, $\tau_\pi = 8.4\cdot10^{-17}\,\text{s}$; שני פוטונים בזוויות $\pm45^\circ$ מציר הקרן $x$, כלומר $90^\circ$ ביניהם.
+      - kind: law
+        text: >-
+          התנע בכיוון הניצב לקרן היה אפס, ולכן רכיבי $y$ של שני הפוטונים מבטלים זה את זה: $E_1\sin45^\circ = E_2\sin45^\circ$, $E_1 = E_2 = E_\gamma$.
+          המסה האינווריאנטית של הזוג היא מסת הפיון: $\left(Mc^2\right)^2 = 2E_\gamma^2\left(1 - \cos90^\circ\right)$.
+      - kind: manipulation
+        text: >-
+          $E_\gamma = Mc^2/\sqrt2$. התנע של הפיון: $pc = 2E_\gamma\cos45^\circ = \sqrt2\,E_\gamma = Mc^2$, ולכן $\gamma\beta = pc/(Mc^2) = 1$.
+          במערכת המנוחה הוא חי בממוצע $\tau_\pi$; במעבדה $\gamma\tau_\pi$, ובזמן הזה הוא עובר $L = \beta c\,\gamma\tau_\pi$.
+      - kind: limit
+        text: >-
+          פיון שנח דועך לשני פוטונים בכיוונים מנוגדים, $180^\circ$ ביניהם; ככל שהוא מהיר יותר, שניהם נדחקים קדימה והזווית ביניהם
+          קטנה. $90^\circ$ היא תנועה בינונית, $\gamma\beta = 1$. ואם $\beta \to 0$, $L \to 0$.
+      - kind: units
+        text: >-
+          $\gamma\beta$ חסר ממדים; $c\tau_\pi$ במטרים.
+      - kind: substitution
+        text: >-
+          א. $E_\gamma = 135/\sqrt2 = 95.5\,\text{MeV}$. ב. $\beta = 1/\sqrt2 = 0.707$, $\gamma = \sqrt2 = 1.41$. ג. $L = 1\cdot3.0\cdot10^8\cdot8.4\cdot10^{-17} = 2.52\cdot10^{-8}\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $95.5\,\text{MeV}$ לכל פוטון. ב. $0.707c$. ג. בערך $25\,\text{nm}$: גם במהירות קרובה לאור, פיון ניטרלי לא מתרחק כמעט
+          מהמקום שבו נוצר, ולכן רואים רק את הפוטונים.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 4
+      year: 2021
+      problem: 'Problem 2 (π0 Decay), part (c)'
+      url: https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/6f52a05ddc356a017d2b33a50ecd9908_MIT8_20iap21_pset4.pdf
+      verified: '2026-11-16'
+      adapted: true
+
+  - id: W-10.2-c2
+    stars: 2
+    objectives: [OBJ-10.2-2]
+    prompt: >-
+      בהתנגשות שני חלקיקים, 1 ו-2, נוצרים שני חלקיקים, 3 ו-4 (המסות $m_1, m_2, m_3, m_4$ יכולות להיות שונות). לארבעה-וקטורים
+      של האנרגיה-תנע שלהם $P_1, P_2, P_3, P_4$ מגדירים שלושה גדלים, ביחידות של אנרגיה בריבוע:
+      $s = c^2\left(P_1 + P_2\right)\cdot\left(P_1 + P_2\right)$, $t = c^2\left(P_1 - P_3\right)\cdot\left(P_1 - P_3\right)$ ו-$u = c^2\left(P_1 - P_4\right)\cdot\left(P_1 - P_4\right)$.
+
+      א. למה כל אחד מהם זהה בכל מערכת ייחוס?
+
+      ב. הראו ש-$s + t + u = \left(m_1^2 + m_2^2 + m_3^2 + m_4^2\right)c^4$.
+
+      ג. בניסוי עם מטרה נייחת (חלקיק 2 נח במעבדה), בטאו את האנרגיה של חלקיק 1 במעבדה בעזרת $s$ והמסות. בדקו עם
+      פרוטון של $10\,\text{GeV}$ על פרוטון נייח ($0.938\,\text{GeV}$).
+    answer: >-
+      א. מכפלות מינקובסקי של ארבעה-וקטורים. ב. משימור $P_1 + P_2 = P_3 + P_4$. ג. $E_1 = \dfrac{s - (m_1c^2)^2 - (m_2c^2)^2}{2m_2c^2}$; $s = 20.52\,\text{GeV}^2$ נותן $10.0\,\text{GeV}$.
+    solution:
+      - kind: law
+        text: >-
+          סכום והפרש של ארבעה-וקטורים הם ארבעה-וקטורים, ומכפלת מינקובסקי שלהם זהה בכל מערכת. לכל חלקיק
+          $c^2P_i\cdot P_i = (m_ic^2)^2$, והאנרגיה והתנע נשמרים: $P_1 + P_2 = P_3 + P_4$.
+      - kind: manipulation
+        text: >-
+          ב. מפתחים: $s + t + u = 3c^2P_1\cdot P_1 + c^2P_2\cdot P_2 + c^2P_3\cdot P_3 + c^2P_4\cdot P_4 + 2c^2P_1\cdot\left(P_2 - P_3 - P_4\right)$.
+          משימור, $P_2 - P_3 - P_4 = -P_1$, ולכן האיבר האחרון הוא $-2c^2P_1\cdot P_1$, ונשאר $c^2\left(P_1\cdot P_1 + P_2\cdot P_2 + P_3\cdot P_3 + P_4\cdot P_4\right)$.
+      - kind: manipulation
+        text: >-
+          ג. $s = (m_1c^2)^2 + (m_2c^2)^2 + 2c^2P_1\cdot P_2$, ובמעבדה, שבה חלקיק 2 נח, $c^2P_1\cdot P_2 = E_1m_2c^2$. מבודדים את $E_1$.
+      - kind: limit
+        text: >-
+          בסף, $\sqrt s = m_1c^2 + m_2c^2$, מקבלים $E_1 = m_1c^2$: קרן נייחת. ולפיזור אלסטי ($m_3 = m_1$, $m_4 = m_2$) בזווית אפס, $P_3 = P_1$,
+          ולכן $t = 0$, ו-$u = 2\left(m_1^2 + m_2^2\right)c^4 - s$.
+      - kind: units
+        text: >-
+          $s$, $t$, $u$ ו-$(m_ic^2)^2$ ב-$\text{GeV}^2$; $E_1$ ב-$\text{GeV}$.
+      - kind: substitution
+        text: >-
+          ג. $s = 2\cdot0.938^2 + 2\cdot10\cdot0.938 = 20.52\,\text{GeV}^2$, ובחזרה $E_1 = (20.52 - 1.760)/1.876 = 10.0\,\text{GeV}$. בדיקה של ב
+          לפיזור אלסטי ב-$90^\circ$ במערכת מרכז המסה: $t = u = -8.50\,\text{GeV}^2$, ו-$20.52 - 17.00 = 3.52 = 4\cdot0.938^2\,\text{GeV}^2$.
+      - kind: result
+        text: >-
+          א. כל אחד הוא מכפלת מינקובסקי. ב. $s + t + u = \sum_i(m_ic^2)^2$, משימור הארבעה-וקטור הכולל. ג. $E_1 = \dfrac{s - (m_1c^2)^2 - (m_2c^2)^2}{2m_2c^2}$.
+          את $s$ אפשר למדוד במערכת אחת ולהשתמש בו בכל אחרת.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 4
+      year: 2021
+      problem: 'Problem 3 (Review: Mendelstam Variables)'
+      url: https://ocw.mit.edu/courses/8-20-introduction-to-special-relativity-january-iap-2021/6f52a05ddc356a017d2b33a50ecd9908_MIT8_20iap21_pset4.pdf
+      verified: '2026-11-16'
+      adapted: true

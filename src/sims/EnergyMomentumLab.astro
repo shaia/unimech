@@ -1,0 +1,7 @@
+---
+/** Relativistic momentum and energy figure for lesson 10.1: <Spread fig="fig-10-1a" figure={EnergyMomentumLab} figureProps={{ mode: 'speed', tasks: [...] }}>. */
+import EnergyMomentumLab, { type EnergyMomentumLabProps } from './EnergyMomentumLab';
+type Props = EnergyMomentumLabProps;
+---
+
+<EnergyMomentumLab client:visible {...Astro.props} />

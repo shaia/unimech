@@ -1,0 +1,492 @@
+# Workbook, lesson 10.3 (two-body decays at rest and in flight; threshold energy, fixed target against head on).
+# Format: CLAUDE.md, "The solution format". Natural units, MeV (masses as rest energies, momenta as pc). Every number
+# was recomputed by .scratch/ch10/10-3/workbook.ts with src/physics/reldecay.ts, relativity.ts and constants.ts
+# (C_LIGHT = 3.0e8 m/s); rest energies are given in each prompt:
+#   W02 α (3727) + daughter (206 800), Q = 4.87: K_α = 4.7837, K_d = 0.0863 MeV (Newton 4.7838, relative 1.1e-5),
+#       pc = 188.9 MeV, β_α = 0.0506, β_d = 9.13e-4, speed ratio 55.4 (mass ratio 55.5);
+#   W03 e⁺e⁻ → pp̄: head on 937.5 MeV per beam; positron on electron at rest 3.44e6 MeV = 3.44 TeV;
+#   W04 K⁺ (494) → μ⁺ν: pc = 235.6, E_μ = 258.4, K_μ = 152.4 MeV, β = 0.912; K_ν = 235.6 of Q = 388;
+#   W05 p + X → p + X + π⁰: on a proton 279.7 (Newton 270 + 9.7), on ⁴He (3727) 171.4 (169.0 + 2.4), M → ∞ 135;
+#   W06 p + p → p + Λ⁰ + K⁺ (1116, 494): Σ = 2548, fixed 1584.7 MeV, head on 336 per beam (×4.72), β_cm = 0.677;
+#   W07 K⁰ → π⁺π⁻ at β = 0.8 along the line: p* = 205.9, β* = 0.827; forward E = 689.6 (pₓ 675.2), backward
+#       E = 140.4, pₓ = −11.2, K = 0.45 MeV; sums 830 = γM and 664 = γβM;
+#   W08 p (1000 MeV/c) and π⁻ (200 MeV/c) at 36°: E_p = 1371.1, E_π = 244.1, M = 1115.9 MeV/c² (0°: 1081.2, 90°: 1252.6);
+#   W09 LHC 2 × 6.8 TeV: √s = 13.6 TeV; fixed target E = 9.86e7 GeV (×14 500); the LHC beam on a fixed proton:
+#       √s = 113 GeV;
+#   W10 Δ⁺⁺ (1232) formed by π⁺ on p at rest: E_π = 329.6, K_π = 189.6 MeV, pc = 298.4, β_Δ = 0.235, γ = 1.029;
+#       its decay back: p* = 227.2 MeV/c;
+#   c1 (Oxford MT 2008 Problems 2, Q13) e⁻ 9.0 GeV, B⁰ 5.3 GeV: positron 3.12 GeV; E_tot = 12.12, p = 5.88 GeV,
+#       β = 0.485, γ = 1.144, γβ = 0.555, mean flight 0.555 · 3.0e8 · 1.5e-12 = 2.50e-4 m (cτ = 4.5e-4 m);
+#   c2 (Oxford MT 2008 Problems 2, Q15) D⁰ (1860) → K̄⁰ (500) + π⁰ (130): E_π = 867.3, K_π = 737.3, pc = 857.5 MeV,
+#       β = 0.9887, γ = 6.67; the photons of π⁰ → γγ: 4.90 to 862.4 MeV (sum 867.3), 65 each in the π⁰ frame.
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-3/recompute.ts; every answer and solution
+#   number above agrees, except W03's ratio, which was "×3700 of the sum of both beams": 3.44e6/937.5 = 3673 is the
+#   ratio to ONE beam; to the sum of both it is 1837 (now stated both ways). c2: the two photon extremes sit a factor
+#   γ(1 ± β) = 13.3 above and below 65 MeV. The lab transformation is written E = γ(E′ + βp′ₓc), as in the lesson.
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '10.3'
+practice:
+  - id: W-10.3-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      גרעין רדיואקטיבי נח פולט חלקיק אלפא והופך לגרעין אחר, כבד פי 55 בערך מחלקיק האלפא. אין תוצרים נוספים.
+
+      א. באילו כיוונים נעים שני התוצרים זה ביחס לזה?
+
+      ב. למי מהם יותר תנע? למי יותר אנרגיה קינטית? קבעו ונמקו.
+
+      ג. במדידה, כל חלקיקי האלפא מדעיכה כזו יוצאים עם אותה אנרגיה. מדוע?
+    answer: >-
+      א. גב אל גב. ב. התנעים שווים בגודלם; לחלקיק האלפא, הקל, כמעט כל האנרגיה הקינטית. ג. בדעיכה לשני חלקיקים שימור האנרגיה
+      והתנע קובעים את האנרגיות לגמרי.
+    solution:
+      - kind: law
+        text: >-
+          שימור התנע, $\vec p_\alpha + \vec p_d = 0$ (התנע לפני הדעיכה אפס), ושימור האנרגיה, $K_\alpha + K_d = Q$.
+      - kind: reasoning
+        text: >-
+          א: סכום התנעים אפס, ולכן הם הפוכים בכיוון. ב: שווים בגודלם. באותו תנע האנרגיה הקינטית קטנה עם המסה; במהירויות
+          קטנות $K = p^2/(2m)$, ולכן $K_\alpha/K_d = m_d/m_\alpha \approx 55$. ג: שלוש משוואות (שימור אנרגיה ושתי משוואות
+          האנרגיה-תנע) בשלושה נעלמים ($E_\alpha$, $E_d$ ו-$p$): פתרון אחד.
+      - kind: limit
+        text: >-
+          אילו שני התוצרים היו באותה מסה, כל אחד היה מקבל $Q/2$. וכשהגרעין הנותר כבד מאוד, הוא כמו קיר: האלפא מקבל כמעט את כל $Q$.
+      - kind: units
+        text: >-
+          היחס $K_\alpha/K_d$ חסר ממדים, כמו יחס המסות.
+      - kind: result
+        text: >-
+          א. גב אל גב. ב. אותו גודל תנע; לאלפא פי 55 יותר אנרגיה קינטית, כמעט כל $Q$, והגרעין הנותר נרתע לאט. ג. דעיכה לשני
+          חלקיקים נותנת אנרגיות קבועות, ולכן ספקטרום האלפא הוא קו חד.
+
+  - id: W-10.3-02
+    level: basic
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      בדעיכה של W-10.3-01 משתחררים $Q = 4.87\,\text{MeV}$. אנרגיות המנוחה: $3727\,\text{MeV}$ לחלקיק האלפא ו-$206\,800\,\text{MeV}$
+      לגרעין הנותר. חשבו את האנרגיה הקינטית של חלקיק האלפא פעם בנוסחה היחסותית ופעם בחלוקה של ניוטון, והשוו.
+    answer: >-
+      $4.784\,\text{MeV}$ בשתי הדרכים; ההפרש כאלפית האחוז.
+    solution:
+      - kind: given
+        text: >-
+          $m_1c^2 = 3727\,\text{MeV}$ (אלפא), $m_2c^2 = 206\,800\,\text{MeV}$, $Mc^2 = m_1c^2 + m_2c^2 + Q$.
+      - kind: law
+        text: >-
+          $E_1 = \dfrac{M^2 + m_1^2 - m_2^2}{2M}\,c^2$; ניוטון: $K_1 = Q\,\dfrac{m_2}{m_1 + m_2}$.
+      - kind: manipulation
+        text: >-
+          $K_1 = E_1 - m_1c^2$. בנוסחה המדויקת מחסירים מספרים גדולים קרובים, ולכן מחשבים בדיוק רב, או משתמשים בצורה
+          $K_1 = \dfrac{(pc)^2}{E_1 + m_1c^2}$ עם $pc$ מנוסחת התנע.
+      - kind: limit
+        text: >-
+          כאן $Q/(m_1c^2) \approx 10^{-3}$: התוצרים איטיים, $\beta_\alpha = 0.05$, ולכן ניוטון צריך להתאים עד סדר $Q/(mc^2)$,
+          כלומר עד אלפית או פחות.
+      - kind: units
+        text: >-
+          הכול ב-$\text{MeV}$.
+      - kind: substitution
+        text: >-
+          יחסותי: $pc = 188.9\,\text{MeV}$, $K_\alpha = 4.7837\,\text{MeV}$, $K_d = 0.0863\,\text{MeV}$. ניוטון:
+          $4.87\cdot\dfrac{206\,800}{210\,527} = 4.7838\,\text{MeV}$. הפרש יחסי $1.1\cdot10^{-5}$.
+      - kind: result
+        text: >-
+          $K_\alpha = 4.78\,\text{MeV}$, והגרעין הנותר $0.086\,\text{MeV}$. ניוטון מספיק לגמרי לדעיכות של גרעינים; את הנוסחה
+          היחסותית צריך כש-$Q$ אינו קטן לעומת אנרגיות המנוחה, כמו בדעיכות של חלקיקים.
+
+  - id: W-10.3-03
+    level: basic
+    objectives: [OBJ-10.3-2]
+    prompt: >-
+      במאיץ מתנגש, קרן של אלקטרונים וקרן של פוזיטרונים, באותה אנרגיה, נפגשות חזיתית ויוצרות זוג של פרוטון ואנטי-פרוטון:
+      $e^- + e^+ \to p + \bar p$. אנרגיות המנוחה: $0.511\,\text{MeV}$ לאלקטרון ולפוזיטרון, $938\,\text{MeV}$ לפרוטון ולאנטי-פרוטון.
+
+      א. מה האנרגיה הקינטית המזערית של כל קרן?
+
+      ב. מה הייתה האנרגיה הקינטית המזערית של פוזיטרון שפוגע באלקטרון נח?
+    answer: >-
+      א. $937.5\,\text{MeV}$. ב. $3.44\cdot10^6\,\text{MeV}$, כ-$3.4\,\text{TeV}$.
+    solution:
+      - kind: law
+        text: >-
+          חזיתית: $\sqrt s = 2E$, ובסף $\sqrt s = \sum m_fc^2$. מטרה נייחת: $K_{\text{th}} = \dfrac{\left(\sum m_f\right)^2 - (m + M)^2}{2M}\,c^2$.
+      - kind: manipulation
+        text: >-
+          א: $2E = 2m_pc^2$, כלומר $E = m_pc^2$ ו-$K = (m_p - m_e)c^2$. ב: $m = M = m_e$, $\sum m_f = 2m_p$.
+      - kind: limit
+        text: >-
+          אילו האלקטרון היה כבד כמו הפרוטון, א היה נותן $K = 0$: אין מסה חדשה. ב-ב, המטרה הקלה מעלה את המחיר פי
+          $\sum m_f/m_e$ בערך.
+      - kind: units
+        text: >-
+          מסה בריבוע חלקי מסה, כפול $c^2$: $\text{MeV}$.
+      - kind: substitution
+        text: >-
+          א: $938 - 0.511 = 937.5\,\text{MeV}$. ב: $\dfrac{1876^2 - 1.022^2}{1.022}\,\text{MeV} = 3.44\cdot10^6\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. $937.5\,\text{MeV}$ לכל קרן. ב. $3.4\,\text{TeV}$, פי 3700 בערך מהאנרגיה של קרן אחת בהתנגשות
+          החזיתית (ופי 1800 בערך מהסכום של שתיהן).
+
+  - id: W-10.3-04
+    level: mid
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      קאון $K^+$ נח ($m_Kc^2 = 494\,\text{MeV}$) דועך למיואון ($m_\mu c^2 = 106\,\text{MeV}$) ולנייטרינו חסר מסה. מה התנע של המיואון,
+      האנרגיה הקינטית שלו ומהירותו?
+    answer: >-
+      $p = 235.6\,\text{MeV}/c$, $K_\mu = 152.4\,\text{MeV}$, $\beta = 0.912$.
+    solution:
+      - kind: given
+        text: >-
+          $M = m_K$, $m_1 = m_\mu$, $m_2 = 0$. מערכת המנוחה של הקאון.
+      - kind: law
+        text: >-
+          תוצר חסר מסה: $pc = \dfrac{M^2 - m_1^2}{2M}\,c^2$, ו-$E_1 = Mc^2 - pc$. $\beta = pc/E$.
+      - kind: manipulation
+        text: >-
+          $E_1 = \dfrac{M^2 + m_1^2}{2M}\,c^2$ ו-$K_1 = E_1 - m_1c^2 = \dfrac{(M - m_1)^2}{2M}\,c^2$.
+      - kind: limit
+        text: >-
+          $M = m_1$: $p = 0$ ו-$K_1 = 0$. $m_1 \to 0$: $K_1 = Mc^2/2$, חלוקה שווה בין שני חלקיקים חסרי מסה.
+      - kind: units
+        text: >-
+          מסה בריבוע חלקי מסה, כפול $c^2$: אנרגיה.
+      - kind: substitution
+        text: >-
+          $pc = \dfrac{494^2 - 106^2}{988}\,\text{MeV} = 235.6\,\text{MeV}$; $E_\mu = 258.4\,\text{MeV}$, $K_\mu = 152.4\,\text{MeV}$;
+          $\beta = 235.6/258.4 = 0.912$. הנייטרינו לוקח $235.6\,\text{MeV}$ מתוך $Q = 388\,\text{MeV}$.
+      - kind: result
+        text: >-
+          $235.6\,\text{MeV}/c$, $152.4\,\text{MeV}$ ו-$0.912c$. גם כאן הקל (הנייטרינו) לוקח יותר, אבל המיואון כבר יחסותי.
+
+  - id: W-10.3-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.3-2]
+    prompt: >-
+      קרן פרוטונים ($938\,\text{MeV}$) יוצרת פיון ניטרלי ($135\,\text{MeV}$) בתגובה $p + X \to p + X + \pi^0$, כש-$X$ הוא החלקיק
+      שבמטרה, נח. השוו שלוש מטרות: פרוטון, גרעין הליום-4 ($3727\,\text{MeV}$, נחשיב אותו לחלקיק אחד בלי תנועה פנימית), וגרעין
+      כבד מאוד.
+
+      א. סדרו את שלוש אנרגיות הסף מהגדולה לקטנה, לפני חישוב, ונמקו.
+
+      ב. חשבו אותן.
+    answer: >-
+      א. פרוטון, הליום, גרעין כבד. ב. $280$, $171$ ו-$135\,\text{MeV}$.
+    solution:
+      - kind: law
+        text: >-
+          $K_{\text{th}} = \Delta\,\dfrac{m + M}{M}\,c^2 + \dfrac{\Delta^2}{2M}\,c^2$, עם $\Delta$ המסה החדשה.
+      - kind: reasoning
+        text: >-
+          א: התוצרים חייבים לשאת את התנע של הקרן. מטרה כבדה יותר מאטה את מרכז המסה, ולכן פחות אנרגיה הולכת לתנועה שלו. שני
+          האיברים יורדים עם $M$.
+      - kind: limit
+        text: >-
+          $M \to \infty$: $K_{\text{th}} \to \Delta c^2 = 135\,\text{MeV}$, הקיר. $\Delta \ll m + M$: האיבר הראשון, התשובה של ניוטון
+          (האנרגיה הזמינה של שיעור 4.2).
+      - kind: units
+        text: >-
+          כל איבר: מסה כפול מספר חסר ממדים, כפול $c^2$.
+      - kind: substitution
+        text: >-
+          פרוטון: $270 + 9.7 = 279.7\,\text{MeV}$. הליום: $135\cdot\dfrac{4665}{3727} + \dfrac{135^2}{7454} = 169.0 + 2.4 = 171.4\,\text{MeV}$.
+          גרעין כבד מאוד: $135\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. פרוטון, הליום, גרעין כבד. ב. $280$, $171$ ו-$135\,\text{MeV}$. מטרה כבדה מורידה את הסף לכיוון המסה החדשה עצמה.
+          (בגרעין אמיתי הנוקלאונים גם נעים בתוכו, וזה מוריד את הסף עוד; כאן התעלמנו מזה.)
+
+  - id: W-10.3-06
+    level: mid
+    objectives: [OBJ-10.3-2]
+    prompt: >-
+      בתגובה $p + p \to p + \Lambda^0 + K^+$ נוצרים שני חלקיקים &quot;מוזרים&quot; יחד. אנרגיות המנוחה: פרוטון $938\,\text{MeV}$,
+      $\Lambda^0$ $1116\,\text{MeV}$, $K^+$ $494\,\text{MeV}$.
+
+      א. מה אנרגיית הסף כשפרוטון מהקרן פוגע בפרוטון נייח?
+
+      ב. מה אנרגיית הסף של כל קרן בהתנגשות חזיתית של קרניים זהות? פי כמה היא קטנה?
+    answer: >-
+      א. $1585\,\text{MeV}$. ב. $336\,\text{MeV}$, פי $4.7$ פחות.
+    solution:
+      - kind: given
+        text: >-
+          $m = M = 938\,\text{MeV}/c^2$, $\sum m_f = 938 + 1116 + 494 = 2548\,\text{MeV}/c^2$; המסה החדשה $\Delta = 672\,\text{MeV}/c^2$.
+      - kind: law
+        text: >-
+          $K_{\text{th}} = \dfrac{\left(\sum m_f\right)^2 - (m + M)^2}{2M}\,c^2$; חזיתית $K_{\text{th}} = \tfrac12\sum m_fc^2 - mc^2$.
+      - kind: manipulation
+        text: >-
+          עם $m = M$: $K_{\text{th}} = \dfrac{\left(\sum m_f\right)^2 - 4m^2}{2m}\,c^2$.
+      - kind: limit
+        text: >-
+          $\sum m_f = 2m$: שתי התשובות אפס. ככל שהמסה החדשה גדלה, היחס בין שתי התשובות גדל, בערך כמו $\sum m_f/m$.
+      - kind: units
+        text: >-
+          $\text{MeV}$.
+      - kind: substitution
+        text: >-
+          א: $\dfrac{2548^2 - 1876^2}{1876}\,\text{MeV} = 1584.7\,\text{MeV}$. ב: $1274 - 938 = 336\,\text{MeV}$; $1584.7/336 = 4.72$.
+      - kind: result
+        text: >-
+          א. כ-$1.58\,\text{GeV}$. ב. $336\,\text{MeV}$ לכל קרן, פי $4.7$ פחות. במטרה נייחת התוצרים נעים בסף יחד במהירות $0.68c$.
+
+  - id: W-10.3-07
+    level: mid
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      קאון $K^0$ ($498\,\text{MeV}$) נע במעבדה במהירות $0.80c$ לאורך $+x$, ודועך לשני פיונים ($140\,\text{MeV}$ כל אחד), כך
+      שבמערכת המנוחה של הקאון $\pi^+$ יוצא קדימה, ב-$+x$, ו-$\pi^-$ אחורה.
+
+      א. מה האנרגיה והתנע של כל פיון במעבדה?
+
+      ב. לאן נע $\pi^-$ במעבדה? באיזו מהירות של הקאון הוא היה עומד?
+    answer: >-
+      א. $\pi^+$: $E = 690\,\text{MeV}$, $p_x = 675\,\text{MeV}/c$. $\pi^-$: $E = 140.4\,\text{MeV}$, $p_x = -11.2\,\text{MeV}/c$.
+      ב. לאט אחורה, עם $0.45\,\text{MeV}$ של אנרגיה קינטית; הוא היה עומד ב-$0.827c$.
+    solution:
+      - kind: given
+        text: >-
+          במערכת המנוחה $S'$: $E' = 249\,\text{MeV}$ ו-$p'c = 205.9\,\text{MeV}$ לכל פיון (דוגמה 2 של השיעור), $p'_x = \pm205.9\,\text{MeV}/c$.
+          $\beta = 0.80$, $\gamma = 5/3$.
+      - kind: law
+        text: >-
+          מהמערכת של הקאון למעבדה: $E = \gamma\left(E' + \beta\,p'_xc\right)$, $p_xc = \gamma\left(p'_xc + \beta E'\right)$.
+      - kind: manipulation
+        text: >-
+          $\pi^-$ עומד במעבדה כש-$p_x = 0$, כלומר $p'_xc = -\beta E'$: $\beta = p'c/E' = \beta'$, המהירות שלו במערכת המנוחה.
+      - kind: limit
+        text: >-
+          $\beta = 0$: חוזרים ל-$\pm205.9$. וסכום התוצרים חייב להיות האנרגיה והתנע של הקאון: $\gamma Mc^2 = 830\,\text{MeV}$,
+          $\gamma Mv = 664\,\text{MeV}/c$.
+      - kind: units
+        text: >-
+          $\beta$ חסר ממדים; $E$ ו-$pc$ ב-$\text{MeV}$.
+      - kind: substitution
+        text: >-
+          $\pi^+$: $E = \tfrac53(249 + 0.8\cdot205.9) = 689.6$, $p_xc = \tfrac53(205.9 + 0.8\cdot249) = 675.2$. $\pi^-$:
+          $E = \tfrac53(249 - 164.7) = 140.4$, $p_xc = \tfrac53(-205.9 + 199.2) = -11.2$. סכומים: $830$ ו-$664$.
+      - kind: result
+        text: >-
+          א. $689.6\,\text{MeV}$ ו-$675\,\text{MeV}/c$ ל-$\pi^+$; $140.4\,\text{MeV}$ ו-$(-11.2)\,\text{MeV}/c$ ל-$\pi^-$. ב. $\pi^-$ זוחל
+          אחורה, ב-$0.08c$ בערך; ב-$0.827c$ הוא היה נשאר במקום.
+
+  - id: W-10.3-08
+    level: bagrut
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      בתא בועות רואים צורה של האות V: שני מסלולים שיוצאים מנקודה אחת, בלי מסלול שמוביל אליה. לפי העקמומיות בשדה המגנטי, אחד
+      המסלולים של פרוטון עם תנע $1000\,\text{MeV}/c$, והשני של פיון $\pi^-$ עם תנע $200\,\text{MeV}/c$. הזווית ביניהם $36^\circ$.
+      אנרגיות המנוחה: $938$ ו-$140\,\text{MeV}$.
+
+      א. מה המסה של החלקיק הניטרלי שדעך שם?
+
+      ב. קבעו ונמקו: אם הזווית הייתה גדולה יותר, באותם תנעים, המסה שמתקבלת הייתה גדולה או קטנה יותר?
+    answer: >-
+      א. $1116\,\text{MeV}/c^2$: חלקיק $\Lambda^0$. ב. גדולה יותר.
+    solution:
+      - kind: law
+        text: >-
+          החלקיק שדעך נשא את האנרגיה והתנע הכוללים, ו-$Mc^2 = \sqrt{E_{\text{tot}}^2 - (p_{\text{tot}}c)^2}$ (שיעור 10.2).
+      - kind: manipulation
+        text: >-
+          $p_{\text{tot}}^2 = p_1^2 + p_2^2 + 2p_1p_2\cos\theta$ ו-$E_i^2 = (p_ic)^2 + (m_ic^2)^2$, ולכן
+          $M^2c^4 = (m_1^2 + m_2^2)c^4 + 2\left(E_1E_2 - p_1p_2c^2\cos\theta\right)$.
+      - kind: limit
+        text: >-
+          שני התוצרים נחים: $M = m_1 + m_2$, המינימום. $\theta$ גדלה, $\cos\theta$ קטן, ו-$M$ גדלה; היא הכי גדולה גב אל גב.
+      - kind: units
+        text: >-
+          $E_1E_2$ ו-$p_1p_2c^2$ באנרגיה בריבוע.
+      - kind: substitution
+        text: >-
+          $E_p = \sqrt{1000^2 + 938^2} = 1371.1\,\text{MeV}$, $E_\pi = \sqrt{200^2 + 140^2} = 244.1\,\text{MeV}$, $E_{\text{tot}} = 1615.2\,\text{MeV}$,
+          $p_{\text{tot}}c = 1167.7\,\text{MeV}$, $Mc^2 = \sqrt{1615.2^2 - 1167.7^2} = 1116\,\text{MeV}$. ב-$0^\circ$ היה יוצא $1081$, וב-$90^\circ$ $1253$.
+      - kind: result
+        text: >-
+          א. $1116\,\text{MeV}/c^2$, המסה של $\Lambda^0$: זו הדעיכה $\Lambda^0 \to p + \pi^-$, בתנועה. ב. גדולה יותר. כך מזהים חלקיקים
+          ניטרליים, שלא משאירים מסלול, מהתוצרים שלהם.
+
+  - id: W-10.3-09
+    level: bagrut
+    objectives: [OBJ-10.3-2]
+    prompt: >-
+      ב-LHC מתנגשות חזיתית שתי קרניים של פרוטונים, כל פרוטון באנרגיה $6.8\,\text{TeV}$ ($1\,\text{TeV} = 10^6\,\text{MeV}$,
+      ואנרגיית המנוחה של פרוטון $938\,\text{MeV}$, זניחה כאן).
+
+      א. מה $\sqrt s$?
+
+      ב. איזו אנרגיה צריכה להיות לקרן פרוטונים על מטרה של פרוטונים נייחים כדי להגיע לאותו $\sqrt s$?
+
+      ג. ומה $\sqrt s$ אם מפנים קרן אחת של ה-LHC אל מטרה נייחת? הסבירו בשורה אחת את ההבדל.
+    answer: >-
+      א. $13.6\,\text{TeV}$. ב. $9.9\cdot10^7\,\text{GeV}$, פי $14\,500$ מקרן אחת. ג. $113\,\text{GeV}$.
+    solution:
+      - kind: law
+        text: >-
+          חזיתית: $\sqrt s = 2E$. מטרה נייחת: $s = (m^2 + M^2)c^4 + 2EMc^2$.
+      - kind: manipulation
+        text: >-
+          ב: $E = \dfrac{s - (m^2 + M^2)c^4}{2Mc^2} \approx \dfrac{s}{2Mc^2}$. ג: $\sqrt s \approx \sqrt{2EMc^2}$.
+      - kind: limit
+        text: >-
+          ב-$E$ קטן, במטרה נייחת $\sqrt s \to (m + M)c^2$: אנרגיות המנוחה בלבד. ב-$E$ גדול, $\sqrt s \propto \sqrt E$ במטרה נייחת
+          ו-$\propto E$ בחזיתית.
+      - kind: units
+        text: >-
+          $s$ באנרגיה בריבוע; $s/(Mc^2)$ באנרגיה.
+      - kind: substitution
+        text: >-
+          א: $2\cdot6.8 = 13.6\,\text{TeV}$. ב: $\dfrac{(1.36\cdot10^7)^2}{2\cdot938}\,\text{MeV} = 9.86\cdot10^{10}\,\text{MeV} = 9.9\cdot10^7\,\text{GeV}$.
+          ג: $\sqrt{2\cdot938\cdot6.8\cdot10^6}\,\text{MeV} = 1.13\cdot10^5\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. $13.6\,\text{TeV}$. ב. כ-$10^8\,\text{GeV}$, פי $14\,500$. ג. $113\,\text{GeV}$, פחות מאחוז מ-$13.6\,\text{TeV}$: במטרה נייחת
+          כמעט כל האנרגיה של הקרן הולכת לתנועה של מרכז המסה.
+
+  - id: W-10.3-10
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-10.3-1, OBJ-10.3-2]
+    prompt: >-
+      פיון $\pi^+$ ($140\,\text{MeV}$) פוגע בפרוטון נייח ($938\,\text{MeV}$) ויכול להתאחד איתו לחלקיק אחד, $\Delta^{++}$, שאנרגיית
+      המנוחה שלו $1232\,\text{MeV}$: $\pi^+ + p \to \Delta^{++}$.
+
+      א. קבעו ונמקו: בתגובה שיוצרת **שני** תוצרים או יותר יש סף, וכל אנרגיה מעליו טובה. מדוע כאן התגובה קורית רק באנרגיה
+      **אחת** של הפיון?
+
+      ב. מהי האנרגיה הקינטית הזו?
+
+      ג. ה-$\Delta^{++}$ דועך מיד בחזרה לפיון ולפרוטון. באיזה גודל תנע יוצאים הם במערכת המנוחה שלו? השוו לתנע של הפיון
+      במעבדה.
+    answer: >-
+      א. לתוצר יחיד $\sqrt s$ חייב להיות בדיוק המסה שלו. ב. $189.6\,\text{MeV}$. ג. $227\,\text{MeV}/c$, לעומת $298\,\text{MeV}/c$
+      במעבדה.
+    solution:
+      - kind: reasoning
+        text: >-
+          א: במערכת מרכז המסה התוצר היחיד נח, ולכן האנרגיה שם היא בדיוק $Mc^2$: $\sqrt s = Mc^2$, לא יותר. עם שני תוצרים או יותר,
+          עודף של $\sqrt s$ מעל סכום המסות הולך לתנועה היחסית שלהם.
+      - kind: law
+        text: >-
+          $s = (m_\pi^2 + m_p^2)c^4 + 2E_\pi m_pc^2 = M^2c^4$. הדעיכה: $pc = \dfrac{\sqrt{[M^2 - (m_1 + m_2)^2][M^2 - (m_1 - m_2)^2]}}{2M}\,c^2$.
+      - kind: manipulation
+        text: >-
+          $E_\pi = \dfrac{M^2 - m_\pi^2 - m_p^2}{2m_p}\,c^2$; $K_\pi = E_\pi - m_\pi c^2$. ה-$\Delta^{++}$ נע במעבדה במהירות $p_\pi c/(E_\pi + m_pc^2)$.
+      - kind: limit
+        text: >-
+          אילו $M = m_\pi + m_p$, היה יוצא $K_\pi = 0$: אין עודף. וב-ג, אותה דעיכה במנוחה מחזירה תנע $p'$ שזהה בכל כיוון, בלי
+          קשר לכיוון שממנו הגיע הפיון.
+      - kind: units
+        text: >-
+          מסה בריבוע חלקי מסה, כפול $c^2$: $\text{MeV}$.
+      - kind: substitution
+        text: >-
+          $E_\pi = \dfrac{1232^2 - 140^2 - 938^2}{1876}\,\text{MeV} = 329.6\,\text{MeV}$, $K_\pi = 189.6\,\text{MeV}$, $p_\pi c = 298.4\,\text{MeV}$.
+          ה-$\Delta^{++}$ נע ב-$0.235c$. בדעיכה: $p'c = 227.2\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. תוצר יחיד מחייב $\sqrt s = Mc^2$ בדיוק. ב. $K_\pi = 190\,\text{MeV}$; בניסוי רואים שם שיא חד בהסתברות לתגובה, ברוחב שנובע
+          מאורך החיים הקצר של ה-$\Delta^{++}$. ג. $227\,\text{MeV}/c$ במערכת המנוחה, פחות מ-$298\,\text{MeV}/c$ במעבדה.
+
+challenge:
+  - id: W-10.3-c1
+    stars: 1
+    objectives: [OBJ-10.3-2]
+    prompt: >-
+      במאיץ אסימטרי אלקטרון באנרגיה $9.0\,\text{GeV}$ פוגע חזיתית בפוזיטרון באנרגיה $E$, ונוצר זוג של חלקיק $B^0$ והאנטי-חלקיק שלו,
+      $\bar B^0$, כל אחד בעל אנרגיית מנוחה $5.3\,\text{GeV}$. הזניחו את אנרגיות המנוחה של האלקטרון והפוזיטרון.
+
+      א. מה האנרגיה המזערית $E$ של הפוזיטרון?
+
+      ב. בסף, מה המרחק הממוצע שחלקיק $B^0$ עובר במעבדה לפני שהוא דועך? זמן החיים הממוצע שלו, הזמן העצמי, $1.5\cdot10^{-12}\,\text{s}$.
+
+      ג. למה בונים מאיץ אסימטרי, ולא שתי קרניים של $5.3\,\text{GeV}$?
+    answer: >-
+      א. $3.12\,\text{GeV}$. ב. $2.5\cdot10^{-4}\,\text{m}$, רבע מילימטר. ג. בקרניים סימטריות ה-$B$ נוצרים כמעט במנוחה ולא מתרחקים
+      מנקודת ההתנגשות, ואי אפשר למדוד את זמן הדעיכה מהמרחק.
+    solution:
+      - kind: given
+        text: >-
+          $E_1 = 9.0\,\text{GeV}$ ב-$+x$, $E_2 = E$ בכיוון השלילי של $x$; חלקיקים חסרי מסה בקירוב, ולכן $p_ic = E_i$. $m_Bc^2 = 5.3\,\text{GeV}$, $\tau = 1.5\cdot10^{-12}\,\text{s}$.
+      - kind: law
+        text: >-
+          $s = (E_1 + E_2)^2 - (E_1 - E_2)^2 = 4E_1E_2$; בסף $\sqrt s = 2m_Bc^2$. התוצרים נחים במערכת מרכז המסה, ולכן נעים יחד
+          במהירות $\beta = p_{\text{tot}}c/E_{\text{tot}}$. המרחק הממוצע $\gamma\beta c\tau$ (התארכות זמן).
+      - kind: manipulation
+        text: >-
+          $E = \dfrac{(2m_Bc^2)^2}{4E_1} = \dfrac{(m_Bc^2)^2}{E_1}$. בסף כל $B$ נושא חצי מהתנע הכולל, ולכן
+          $\gamma\beta = \dfrac{p_{\text{tot}}c/2}{m_Bc^2} = \dfrac{E_1 - E}{2m_Bc^2}$.
+      - kind: limit
+        text: >-
+          קרניים סימטריות, $E_1 = E = m_Bc^2$: $\gamma\beta = 0$, וה-$B$ לא זזים. ובאסימטריה גדולה, $E_1 \gg E$, $\gamma\beta \approx E_1/(2m_Bc^2)$.
+      - kind: units
+        text: >-
+          $\text{GeV}^2/\text{GeV} = \text{GeV}$; $\gamma\beta c\tau$ ב-$\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $E = 5.3^2/9.0\,\text{GeV} = 3.12\,\text{GeV}$. $E_{\text{tot}} = 12.12\,\text{GeV}$, $p_{\text{tot}}c = 5.88\,\text{GeV}$, $\beta = 0.485$, $\gamma = 1.144$,
+          $\gamma\beta = 0.555$. $c\tau = 3.0\cdot10^8\cdot1.5\cdot10^{-12} = 4.5\cdot10^{-4}\,\text{m}$, והמרחק $0.555\cdot4.5\cdot10^{-4} = 2.5\cdot10^{-4}\,\text{m}$.
+      - kind: result
+        text: >-
+          א. $3.12\,\text{GeV}$. ב. כ-$0.25\,\text{mm}$, מרחק שגלאי מדויק יכול למדוד. ג. האסימטריה נותנת למרכז המסה מהירות, וכך זמני
+          הדעיכה הופכים למרחקים.
+    source:
+      name: 'University of Oxford, First Year Relativity, Problems 2 (Dr R. A. Taylor)'
+      year: 2008
+      problem: 'Problem 13 (B0 meson pair at threshold)'
+      url: https://users.physics.ox.ac.uk/~rtaylor/teaching/srlprob2new.pdf
+      verified: '2026-11-16'
+      adapted: true
+
+  - id: W-10.3-c2
+    stars: 2
+    objectives: [OBJ-10.3-1]
+    prompt: >-
+      חלקיק $D^0$ נח ($1.86\,\text{GeV}$) דועך לחלקיק $\bar K^0$ ($0.50\,\text{GeV}$) ולפיון ניטרלי $\pi^0$ ($0.13\,\text{GeV}$).
+
+      א. מה האנרגיה והמהירות של הפיון?
+
+      ב. הפיון דועך מיד לשני חלקיקים חסרי מסה, $\pi^0 \to \gamma + \gamma$. מה האנרגיה המרבית והאנרגיה המזערית שיכולה להיות
+      לאחד מהם, במערכת המנוחה של $D^0$?
+    answer: >-
+      א. $E_\pi = 0.867\,\text{GeV}$, $\beta = 0.989$. ב. בין $4.9\,\text{MeV}$ ל-$862\,\text{MeV}$.
+    solution:
+      - kind: given
+        text: >-
+          $M = 1860\,\text{MeV}$, $m_1 = 500\,\text{MeV}$ ($\bar K^0$), $m_2 = 130\,\text{MeV}$ ($\pi^0$), במערכת המנוחה $S$ של $D^0$.
+          בדעיכה השנייה, במערכת המנוחה $S'$ של הפיון, כל אחד מהתוצרים חסרי המסה מקבל $m_2c^2/2 = 65\,\text{MeV}$.
+      - kind: law
+        text: >-
+          $E_2 = \dfrac{M^2 + m_2^2 - m_1^2}{2M}\,c^2$, $\beta = pc/E$. מ-$S'$ ל-$S$: $E = \gamma\left(E' + \beta\,p'_xc\right)$, ולחלקיק חסר מסה
+          $p'_xc = E'\cos\theta'$.
+      - kind: manipulation
+        text: >-
+          $E = \gamma E'(1 + \beta\cos\theta')$, ולכן הקצוות הם $\gamma(1 \pm \beta)E'$ ב-$\theta' = 0$ ו-$180^\circ$. סכומם
+          $2\gamma E' = \gamma m_2c^2 = E_\pi$, כפי ששימור האנרגיה דורש.
+      - kind: limit
+        text: >-
+          פיון נח, $\beta = 0$: שניהם $65\,\text{MeV}$. $\beta \to 1$: המזערית שואפת לאפס, והמרבית לכל אנרגיית הפיון.
+      - kind: units
+        text: >-
+          $\gamma$ ו-$\beta$ חסרי ממדים; הכול ב-$\text{MeV}$.
+      - kind: substitution
+        text: >-
+          $E_\pi = \dfrac{1860^2 + 130^2 - 500^2}{3720}\,\text{MeV} = 867.3\,\text{MeV}$, $pc = \sqrt{867.3^2 - 130^2} = 857.5\,\text{MeV}$,
+          $\beta = 0.9887$, $\gamma = 6.67$. $\gamma(1 + \beta)\cdot65 = 862.4\,\text{MeV}$ ו-$\gamma(1 - \beta)\cdot65 = 4.9\,\text{MeV}$.
+      - kind: result
+        text: >-
+          א. $867\,\text{MeV}$ (אנרגיה קינטית $737\,\text{MeV}$), ו-$0.989c$. ב. בין $4.9$ ל-$862\,\text{MeV}$: הקצוות רחוקים מ-$65\,\text{MeV}$ פי
+          $13.3$, אחד למעלה ואחד למטה (כי $\gamma(1 + \beta) \cdot \gamma(1 - \beta) = 1$). דעיכה לשני חלקיקים במנוחה נותנת אנרגיה אחת; בתנועה היא נותנת טווח.
+    source:
+      name: 'University of Oxford, First Year Relativity, Problems 2 (Dr R. A. Taylor)'
+      year: 2008
+      problem: 'Problem 15 (D0 decay and pi0 decay)'
+      url: https://users.physics.ox.ac.uk/~rtaylor/teaching/srlprob2new.pdf
+      verified: '2026-11-16'
+      adapted: true

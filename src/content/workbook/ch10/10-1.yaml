@@ -1,0 +1,469 @@
+# Workbook, lesson 10.1 (relativistic momentum and energy; E² = (pc)² + (mc²)² and its limits). Format: CLAUDE.md,
+# "The solution format". Every number was recomputed by .scratch/ch10/10-1/numbers.ts with src/physics/relenergy.ts,
+# src/physics/relativity.ts and src/physics/constants.ts (C_LIGHT = 3.0e8 m/s, M_ELECTRON = 9.11e-31 kg,
+# E_CHARGE = 1.6e-19 J/eV); rest energies are data stated in the prompts (electron 0.511, muon 106, pion 140,
+# proton 938 MeV):
+#   W01 β = 0.5: γ = 1.155, p = 0.577 mc, K = 0.155 mc² (½mv² = 0.125 mc²);
+#   W02 electron at 0.60c: pc = 0.383, E = 0.639, K = 0.128 MeV (Newton 0.307, 0.0920); p = 2.05e-22 kg·m/s;
+#       M_ELECTRON·c² = 0.512 MeV;
+#   W03 E = 5.0 GeV, pc = 4.0 GeV: mc² = 3.0 GeV, β = 0.80, γ = 5/3, K = 2.0 GeV;
+#   W04 K = 1.10·½mv² at β = 0.346 (series ¾β² = 0.1 gives 0.365), v = 1.04e8 m/s;
+#   W06 p = mc: E = 1.414, K = 0.414 mc², β = 0.707; p = 2mc: E = 2.236, K = 1.236 mc², β = 0.894;
+#       K ×2.98, v ×1.26 (Newton ×4, ×2);
+#   W07 muon E = 1.0 GeV: pc = 994 MeV, β = 0.9944, γβ = 9.38, γβcτ = 6.19 km for τ = 2.2 μs (βcτ = 656 m);
+#   W08 proton pc = mc²: K = (pc)²/((γ + 1)mc²) = 388.5 MeV = (√2 − 1)·938 (Newton 469);
+#   W09 masses m at ±0.60c stick: in B's frame A moves at 0.882c, γ = 2.125, p = 1.875 mc; the lump moves at 0.60c
+#       with M = 2.5m: p = 1.25·2.5·0.6 = 1.875 mc (with M = 2m: 1.50 mc; Newton: 0.882 m·c vs 1.2 m·c);
+#   W10 pc = 500 MeV over 10 m: proton β = 0.4704, t = 70.9 ns; pion β = 0.963, t = 34.6 ns;
+#       from t = 70.9 ns: β = 0.4701, mc² = pc√(1/β² − 1) = 939 MeV;
+#   c1 10 GeV muon: γ = 94.3, 1 − β = 5.62e-5; 100 GeV electron: γ = 1.96e5, 1 − β = 1.31e-11;
+#   c2 proton, η = 1, 2, 3, 10: E = 1447, 3529, 9443 MeV, 1.03e7 MeV (β = 0.762, 0.964, 0.995, 1 − 4e-9);
+#      K = 1 GeV: γ = 2.066, β = 0.875, η = 1.354.
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-1/recompute.ts (first principles, constants
+# from src/physics/constants.ts; relenergy.ts only cross-checked): every answer, solution number and challenge value
+# above confirmed (W04 exact root β = 0.346 by bisection; W10 939 MeV from the rounded 70.9 ns, 938 exact; c2 cosh 3
+# gives 9443.5 → 9443). Changes: W04 states which error is meant (K/(½mv²) < 1.10; the other reading,
+# 1 − ½mv²/K < 0.1, would give β = 0.363); W09 no longer calls B's frame S′, since it moves along −x and the course
+# keeps primes for the frame moving at +v. Left: W02's p from the kg mass (2.05e-22) and from 0.383 MeV/c (2.04e-22)
+# differ by the gap between 0.511 MeV and M_ELECTRON·c² = 0.5124 MeV (the kg route is the one asked).
+# In a >- block consecutive lines fold into one paragraph: every part (א, ב, …) starts after a blank line.
+
+lesson: '10.1'
+practice:
+  - id: W-10.1-01
+    level: basic
+    qualitative: true
+    objectives: [OBJ-10.1-1]
+    prompt: >-
+      קבעו ונמקו: נכון או לא נכון?
+
+      א. לגוף נח אין אנרגיה.
+
+      ב. גוף שנע במהירות $0.5c$ יש לו תנע $0.5\,mc$.
+
+      ג. האנרגיה הקינטית של גוף היא האנרגיה היחסותית שלו פחות אנרגיית המנוחה.
+
+      ד. גוף שנע במהירות $0.5c$ יש לו אנרגיה קינטית $\tfrac12m(0.5c)^2 = 0.125\,mc^2$.
+    answer: >-
+      א. לא נכון: $E = mc^2$. ב. לא נכון: $p = 0.577\,mc$. ג. נכון: $K = E - mc^2$. ד. לא נכון: $K = 0.155\,mc^2$.
+    solution:
+      - kind: law
+        text: >-
+          $p = \gamma mv$, $E = \gamma mc^2$, $K = E - mc^2 = (\gamma - 1)mc^2$, עם $\gamma = 1/\sqrt{1 - \beta^2}$.
+      - kind: reasoning
+        text: >-
+          א: במנוחה $\gamma = 1$, ולכן $E = mc^2$, אנרגיית המנוחה; רק האנרגיה **הקינטית** אפס. ב: ב-$\beta = 0.5$,
+          $\gamma = 1/\sqrt{0.75} = 1.155$, ולכן $p = \gamma\beta\,mc = 0.577\,mc$, לא $0.5\,mc$. ג: זו ההגדרה. ד:
+          $K = (\gamma - 1)mc^2 = 0.155\,mc^2$; $\tfrac12mv^2$ הוא רק האיבר הראשון בפיתוח, וב-$0.5c$ הוא כבר קטן ב-$19\%$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$ הטענות ב ו-ד נעשות נכונות בקירוב: $p \to mv$ ו-$K \to \tfrac12mv^2$. הטענה א אינה נכונה באף
+          מהירות.
+      - kind: units
+        text: >-
+          $p$ ביחידות של $mc$, $K$ ו-$E$ ביחידות של $mc^2$.
+      - kind: result
+        text: >-
+          רק ג נכונה. א: $E = mc^2$; ב: $p = 0.577\,mc$; ד: $K = 0.155\,mc^2$.
+
+  - id: W-10.1-02
+    level: basic
+    objectives: [OBJ-10.1-1]
+    prompt: >-
+      אלקטרון ($mc^2 = 0.511\,\text{MeV}$) נע במהירות $0.60c$. חשבו את התנע שלו (ב-$\text{MeV}/c$ וב-$\text{kg}\cdot\text{m/s}$),
+      את האנרגיה היחסותית שלו ואת האנרגיה הקינטית שלו, והשוו לביטויים של ניוטון. המסה של אלקטרון
+      $9.11\cdot10^{-31}\,\text{kg}$.
+    answer: >-
+      $p = 0.383\,\text{MeV}/c = 2.05\cdot10^{-22}\,\text{kg}\cdot\text{m/s}$, $E = 0.639\,\text{MeV}$, $K = 0.128\,\text{MeV}$
+      (ניוטון: $0.307\,\text{MeV}/c$ ו-$0.092\,\text{MeV}$).
+    solution:
+      - kind: given
+        text: >-
+          $\beta = 0.60$, $mc^2 = 0.511\,\text{MeV}$, $m = 9.11\cdot10^{-31}\,\text{kg}$, $c = 3.0\cdot10^8\,\text{m/s}$.
+      - kind: law
+        text: >-
+          $p = \gamma mv$, $E = \gamma mc^2$, $K = (\gamma - 1)mc^2$.
+      - kind: manipulation
+        text: >-
+          $\gamma = 1/\sqrt{1 - 0.36} = 1.25$. ביחידות של חלקיקים $pc = \gamma\beta\,mc^2$.
+      - kind: limit
+        text: >-
+          ב-$\beta \to 0$, $\gamma \to 1$ והביטויים של ניוטון נכונים. כאן $\gamma - 1 = 0.25$ אינו קטן, ולכן ההבדל ניכר:
+          התנע גדול ב-$25\%$ והאנרגיה הקינטית ב-$39\%$.
+      - kind: units
+        text: >-
+          $pc$, $E$ ו-$K$ ב-$\text{MeV}$; $p = \gamma mv$ ב-$\text{kg}\cdot\text{m/s}$.
+      - kind: substitution
+        text: >-
+          $pc = 1.25\cdot0.6\cdot0.511 = 0.383\,\text{MeV}$; $p = 1.25\cdot9.11\cdot10^{-31}\cdot1.8\cdot10^8 = 2.05\cdot10^{-22}\,\text{kg}\cdot\text{m/s}$.
+          $E = 1.25\cdot0.511 = 0.639\,\text{MeV}$, $K = 0.25\cdot0.511 = 0.128\,\text{MeV}$. ניוטון: $mv$ נותן
+          $0.6\cdot0.511 = 0.307\,\text{MeV}/c$, ו-$\tfrac12mv^2 = 0.18\cdot0.511 = 0.092\,\text{MeV}$.
+      - kind: result
+        text: >-
+          $p = 0.383\,\text{MeV}/c = 2.05\cdot10^{-22}\,\text{kg}\cdot\text{m/s}$, $E = 0.639\,\text{MeV}$, $K = 0.128\,\text{MeV}$.
+
+  - id: W-10.1-03
+    level: basic
+    objectives: [OBJ-10.1-2]
+    prompt: >-
+      לחלקיק אנרגיה יחסותית $E = 5.0\,\text{GeV}$ ותנע $p = 4.0\,\text{GeV}/c$ ($1\,\text{GeV} = 1000\,\text{MeV}$). מצאו את
+      אנרגיית המנוחה שלו, את המהירות, את $\gamma$ ואת האנרגיה הקינטית.
+    answer: >-
+      $mc^2 = 3.0\,\text{GeV}$, $\beta = 0.80$, $\gamma = 5/3$, $K = 2.0\,\text{GeV}$.
+    solution:
+      - kind: law
+        text: >-
+          $E^2 = (pc)^2 + (mc^2)^2$, $\beta = pc/E$, $\gamma = E/(mc^2)$, $K = E - mc^2$.
+      - kind: manipulation
+        text: >-
+          $mc^2 = \sqrt{E^2 - (pc)^2}$: משולש ישר-זווית עם יתר $5$ וניצב $4$, ולכן הניצב השני $3$.
+      - kind: limit
+        text: >-
+          אם $pc$ היה שווה ל-$E$, היה יוצא $mc^2 = 0$ ו-$\beta = 1$: חלקיק חסר מסה. ואם $pc = 0$, $E = mc^2$ ו-$K = 0$.
+      - kind: units
+        text: >-
+          כל האנרגיות ו-$pc$ ב-$\text{GeV}$; $\beta$ ו-$\gamma$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $mc^2 = \sqrt{25 - 16} = 3.0\,\text{GeV}$, $\beta = 4/5 = 0.80$, $\gamma = 5/3$ (ואכן $1/\sqrt{1 - 0.64} = 5/3$),
+          $K = 5.0 - 3.0 = 2.0\,\text{GeV}$.
+      - kind: result
+        text: >-
+          $mc^2 = 3.0\,\text{GeV}$, $\beta = 0.80$, $\gamma = 5/3$, $K = 2.0\,\text{GeV}$.
+
+  - id: W-10.1-04
+    level: mid
+    objectives: [OBJ-10.1-1]
+    prompt: >-
+      מהנדסת מוכנה לחשב אנרגיה קינטית לפי $\tfrac12mv^2$ כל עוד האנרגיה הקינטית האמיתית $K$ גדולה מ-$\tfrac12mv^2$ בפחות
+      מ-$10\%$, כלומר $K/(\tfrac12mv^2) < 1.10$. עד איזו מהירות זה מותר? הערכה מהירה בעזרת האיבר הראשון של התיקון,
+      ואחר כך חישוב מדויק (מספרית).
+    answer: >-
+      עד $\beta \approx 0.35$, כלומר $v \approx 1.0\cdot10^8\,\text{m/s}$ (ההערכה $\tfrac34\beta^2 = 0.1$ נותנת $0.37$).
+    solution:
+      - kind: law
+        text: >-
+          $K = (\gamma - 1)mc^2 = \tfrac12mv^2\left(1 + \tfrac34\beta^2 + \tfrac58\beta^4 + \dots\right)$.
+      - kind: manipulation
+        text: >-
+          רוצים $K/(\tfrac12mv^2) = 1.10$. הערכה: $\tfrac34\beta^2 = 0.10$, $\beta = \sqrt{0.10/0.75} = 0.365$. החישוב
+          המדויק פותר $2(\gamma - 1)/\beta^2 = 1.10$; הצד השמאלי עולה עם $\beta$, ולכן חצייה של הקטע או ניסוי וטעייה
+          מוצאים את השורש.
+      - kind: limit
+        text: >-
+          כשהטעות המותרת קטנה, $\beta \approx \sqrt{\tfrac43\varepsilon}$ והאיברים הבאים זניחים. כאן $\varepsilon = 0.1$ כבר
+          לא קטנה מאוד, ולכן האיבר $\tfrac58\beta^4$ מוריד את התשובה מעט מתחת להערכה.
+      - kind: units
+        text: >-
+          היחס חסר ממדים; $v = \beta c$ ב-$\text{m/s}$.
+      - kind: substitution
+        text: >-
+          המדויק: $\beta = 0.346$, $v = 0.346\cdot3.0\cdot10^8 = 1.04\cdot10^8\,\text{m/s}$.
+      - kind: result
+        text: >-
+          עד $\beta = 0.346$, כ-$1.0\cdot10^8\,\text{m/s}$: שליש ממהירות האור.
+
+  - id: W-10.1-05
+    level: mid
+    qualitative: true
+    objectives: [OBJ-10.1-2]
+    prompt: >-
+      בגרף של האנרגיה $E$ לפי $pc$ (איור 10.1ב) כל חלקיק בעל מסה מצייר היפרבולה, $E = \sqrt{(pc)^2 + (mc^2)^2}$.
+
+      א. הראו שהשיפוע של העקומה, $dE/d(pc)$, הוא $\beta$.
+
+      ב. קבעו ונמקו: למה העקומה מתחילה אופקית, ולמה היא לעולם לא חוצה את הקו $E = pc$?
+
+      ג. מה המשמעות של נקודה **מתחת** לקו $E = pc$?
+    answer: >-
+      א. $dE/d(pc) = pc/E = \beta$. ב. ב-$p = 0$ השיפוע $0$ (גוף נח), והשיפוע $\beta < 1$ תמיד, כך ש-$E - pc$ קטן אבל נשאר
+      חיובי. ג. $pc > E$: אין חלקיק כזה; זו טעות בחישוב.
+    solution:
+      - kind: law
+        text: >-
+          $E^2 = (pc)^2 + (mc^2)^2$, $\beta = pc/E$.
+      - kind: manipulation
+        text: >-
+          גוזרים את הקשר לפי $pc$, עם $mc^2$ קבוע: $2E\,\dfrac{dE}{d(pc)} = 2pc$, ולכן $\dfrac{dE}{d(pc)} = \dfrac{pc}{E} = \beta$.
+      - kind: reasoning
+        text: >-
+          ב-$p = 0$, $\beta = 0$: המשיק אופקי, וזה הקירוב $E \approx mc^2 + p^2/(2m)$, פרבולה. כש-$p$ גדל השיפוע עולה לעבר 1
+          ולא מגיע אליו. ההפרש $E - pc = (mc^2)^2/(E + pc)$ חיובי תמיד ושואף ל-0: הקו $E = pc$ הוא אסימפטוטה. מתחת לקו
+          $E < pc$, כלומר $(mc^2)^2 < 0$, מסה מדומה: אין חלקיק כזה.
+      - kind: limit
+        text: >-
+          כש-$m \to 0$ ההיפרבולה מתקפלת אל הקו $E = pc$, ששיפועו $1$ בכל מקום: חלקיק חסר מסה נע ב-$c$ בכל אנרגיה.
+      - kind: units
+        text: >-
+          $E$ ו-$pc$ באותן יחידות, ולכן השיפוע חסר ממדים, כמו $\beta$.
+      - kind: result
+        text: >-
+          א. $dE/d(pc) = \beta$. ב. מתחיל ב-$\beta = 0$ ונצמד מלמעלה לקו $E = pc$ בלי לחצות אותו, כי $\beta < 1$. ג. נקודה כזו
+          אינה חלקיק.
+
+  - id: W-10.1-06
+    level: mid
+    objectives: [OBJ-10.1-1, OBJ-10.1-2]
+    prompt: >-
+      לגוף תנע $p = mc$. מכפילים את התנע שלו פי 2. פי כמה גדלה האנרגיה הקינטית, ופי כמה המהירות? השוו לניוטון.
+    answer: >-
+      $K$ גדלה פי $2.98$ (מ-$0.414\,mc^2$ ל-$1.236\,mc^2$), המהירות פי $1.26$ (מ-$0.707c$ ל-$0.894c$). ניוטון: פי 4 ופי 2.
+    solution:
+      - kind: law
+        text: >-
+          $E = \sqrt{(pc)^2 + (mc^2)^2}$, $K = E - mc^2$, $\beta = pc/E$.
+      - kind: manipulation
+        text: >-
+          ביחידות של $mc^2$: $p = mc$ נותן $E = \sqrt2$, ו-$p = 2mc$ נותן $E = \sqrt5$.
+      - kind: limit
+        text: >-
+          כש-$p \ll mc$, $K \approx p^2/(2m)$ והכפלת התנע מכפילה את $K$ פי 4 ואת $v$ פי 2, כמו אצל ניוטון. כש-$p \gg mc$,
+          $K \approx pc$ גדלה פי 2 בלבד, והמהירות כמעט לא משתנה. כאן אנחנו באמצע, ושני היחסים בין הקצוות.
+      - kind: units
+        text: >-
+          כל האנרגיות ביחידות של $mc^2$; $\beta$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $K_1 = \sqrt2 - 1 = 0.414$, $K_2 = \sqrt5 - 1 = 1.236$, היחס $2.98$. $\beta_1 = 1/\sqrt2 = 0.707$, $\beta_2 = 2/\sqrt5 = 0.894$,
+          היחס $1.26$.
+      - kind: result
+        text: >-
+          האנרגיה הקינטית גדלה פי $2.98$, המהירות פי $1.26$; לפי ניוטון פי 4 ופי 2.
+
+  - id: W-10.1-07
+    level: mid
+    objectives: [OBJ-10.1-2]
+    prompt: >-
+      מיואון ($mc^2 = 106\,\text{MeV}$, זמן חיים ממוצע $2.2\,\mu\text{s}$ במערכת שלו) נוצר באטמוספרה עם אנרגיה יחסותית
+      $E = 1.0\,\text{GeV}$. מה התנע ומה המהירות שלו? כמה הוא עובר, בממוצע, לפני שהוא דועך?
+    answer: >-
+      $pc = 994\,\text{MeV}$, $\beta = 0.994$; בממוצע $6.2\,\text{km}$.
+    solution:
+      - kind: law
+        text: >-
+          $pc = \sqrt{E^2 - (mc^2)^2}$, $\beta = pc/E$. במערכת הקרקע זמן החיים ארוך פי $\gamma$ (שיעור 9.2), ולכן המרחק
+          $\gamma\beta c\tau$.
+      - kind: manipulation
+        text: >-
+          $\gamma\beta = \dfrac{E}{mc^2}\cdot\dfrac{pc}{E} = \dfrac{pc}{mc^2}$, ולכן המרחק $d = \dfrac{pc}{mc^2}\,c\tau$: התנע
+          לבדו קובע אותו.
+      - kind: limit
+        text: >-
+          מיואון איטי, $pc \ll mc^2$, עובר $d \approx v\tau$, כמו בלי יחסות. ובלי התארכות הזמן היינו מקבלים רק $\beta c\tau = 656\,\text{m}$.
+      - kind: units
+        text: >-
+          $pc/(mc^2)$ חסר ממדים; $c\tau$ במטרים.
+      - kind: substitution
+        text: >-
+          $pc = \sqrt{1000^2 - 106^2} = 994\,\text{MeV}$, $\beta = 0.994$, $pc/(mc^2) = 9.38$, $c\tau = 660\,\text{m}$, ו-$d = 6.19\,\text{km}$.
+      - kind: result
+        text: >-
+          $p = 994\,\text{MeV}/c$, $v = 0.994c$, ומרחק ממוצע של $6.2\,\text{km}$.
+
+  - id: W-10.1-08
+    level: bagrut
+    objectives: [OBJ-10.1-2]
+    prompt: >-
+      א. הראו שלכל חלקיק בעל מסה $K = \dfrac{p^2}{(\gamma + 1)m}$.
+
+      ב. מה נותן הביטוי הזה כש-$v \ll c$ וכש-$v \to c$?
+
+      ג. לפרוטון ($mc^2 = 938\,\text{MeV}$) תנע $p = 938\,\text{MeV}/c$. חשבו את $K$ בנוסחה הזו ובדקו מול $E - mc^2$.
+    answer: >-
+      א. מ-$E^2 - (mc^2)^2 = (pc)^2$. ב. $p^2/(2m)$; $K \approx pc$. ג. $K = 389\,\text{MeV}$ ($p^2/(2m)$ נותן $469\,\text{MeV}$).
+    solution:
+      - kind: law
+        text: >-
+          $E^2 = (pc)^2 + (mc^2)^2$, $E = \gamma mc^2$, $K = E - mc^2$.
+      - kind: manipulation
+        text: >-
+          $(pc)^2 = E^2 - (mc^2)^2 = (E - mc^2)(E + mc^2) = K\,(\gamma + 1)mc^2$. מחלקים ב-$(\gamma + 1)mc^2$:
+          $K = \dfrac{p^2c^2}{(\gamma + 1)mc^2} = \dfrac{p^2}{(\gamma + 1)m}$.
+      - kind: limit
+        text: >-
+          $v \ll c$: $\gamma \to 1$ ו-$K \to p^2/(2m)$, הביטוי של ניוטון. $v \to c$: $\gamma \gg 1$, $K \approx p^2/(\gamma m) = pv \approx pc$.
+          הנוסחה מראה שהתיקון לניוטון הוא החלפת 2 ב-$\gamma + 1$.
+      - kind: units
+        text: >-
+          $p^2/m$ ביחידות של $\text{kg}\cdot\text{m}^2/\text{s}^2$, אנרגיה.
+      - kind: substitution
+        text: >-
+          $E = \sqrt{938^2 + 938^2} = 938\sqrt2\,\text{MeV}$, $\gamma = \sqrt2$. $K = 938^2/((\sqrt2 + 1)\cdot938) = 938/2.414 = 389\,\text{MeV}$.
+          בדיקה: $E - mc^2 = 938(\sqrt2 - 1) = 389\,\text{MeV}$.
+      - kind: result
+        text: >-
+          $K = p^2/((\gamma + 1)m)$; לפרוטון $K = 389\,\text{MeV}$, ולא $469\,\text{MeV}$ של ניוטון.
+
+  - id: W-10.1-09
+    level: bagrut
+    qualitative: true
+    objectives: [OBJ-10.1-1]
+    prompt: >-
+      שני גושים זהים, כל אחד במסה $m$, נעים זה לקראת זה במעבדה, כל אחד במהירות $0.60c$, מתנגשים ונדבקים. במעבדה הגוש
+      המשותף נח. נתבונן בהתנגשות גם במערכת שבה גוש B נח לפני ההתנגשות (המערכת של B).
+
+      א. מה המהירות של גוש A במערכת הזו? מה המהירות של הגוש המשותף אחרי ההתנגשות?
+
+      ב. הראו שאם המסה של הגוש המשותף היא $2m$, הסכום של $mv$ לא נשמר, וגם הסכום של $\gamma mv$ לא נשמר.
+
+      ג. מה צריכה להיות המסה של הגוש המשותף כדי שהתנע היחסותי יישמר? קבעו ונמקו: מאיפה באה המסה הנוספת?
+    answer: >-
+      א. $0.882c$; $0.60c$. ב. לפני: $1.875\,mc$ (יחסותי); אחרי עם $2m$: $1.50\,mc$. ג. $M = 2.5m$: האנרגיה הקינטית של
+      הגושים הפכה לאנרגיית מנוחה (חום) של הגוש המשותף.
+    solution:
+      - kind: given
+        text: >-
+          במעבדה A ב-$+0.60c$, B ב-$(-0.60c)$, והגוש המשותף נח. המערכת של B (לפני ההתנגשות) נעה ביחס למעבדה במהירות
+          $0.60c$ בכיוון השלילי של $x$.
+      - kind: law
+        text: >-
+          חיבור מהירויות יחסותי (שיעור 9.4), $p = \gamma mv$.
+      - kind: manipulation
+        text: >-
+          במערכת של B: $u_A =\dfrac{0.6 + 0.6}{1 + 0.36}c = 0.882c$, $\gamma_A = 2.125$, ולכן לפני ההתנגשות $p = 2.125\cdot0.882\,mc = 1.875\,mc$.
+          הגוש המשותף, שנח במעבדה, נע במערכת של B ב-$+0.60c$, עם $\gamma = 1.25$. עם מסה $M$: $p = 1.25\cdot0.6\,Mc = 0.75\,Mc$.
+          השוויון $0.75\,M = 1.875\,m$ נותן $M = 2.5m$.
+      - kind: reasoning
+        text: >-
+          ניוטון עם $M = 2m$: לפני $0.882\,mc$, אחרי $1.2\,mc$. התנע היחסותי עם $M = 2m$: לפני $1.875\,mc$, אחרי $1.50\,mc$.
+          שניהם לא נשמרים. במעבדה, לעומת זאת, התנע אפס לפני ואחרי בכל הגדרה, ולכן רק $M = 2.5m$ שומר על התנע היחסותי
+          **בשתי** המערכות. האנרגיה היחסותית במעבדה לפני ההתנגשות היא $2\gamma mc^2 = 2.5\,mc^2$, ואחריה $Mc^2$: אותו מספר.
+          האנרגיה הקינטית $0.5\,mc^2$ לא נעלמה; היא נעשתה חום בתוך הגוש, וחום הוא אנרגיית מנוחה (שיעור 10.4).
+      - kind: limit
+        text: >-
+          במהירויות קטנות $M = 2\gamma m \approx 2m + 2\cdot\tfrac12mv^2/c^2$: המסה הנוספת היא האנרגיה הקינטית חלקי $c^2$,
+          קטנה מכדי שנבחין בה, ולכן בפרק 4 התנגשות פלסטית שמרה גם את המסה.
+      - kind: units
+        text: >-
+          כל התנעים ביחידות של $mc$.
+      - kind: result
+        text: >-
+          א. $0.882c$ ו-$0.60c$. ב. עם $M = 2m$ לא נשמר אף אחד מהם. ג. $M = 2.5m$; התוספת היא האנרגיה הקינטית שהפכה לחום,
+          חלקי $c^2$.
+
+  - id: W-10.1-10
+    level: bagrut
+    objectives: [OBJ-10.1-2]
+    prompt: >-
+      בגלאי, לחלקיק טעון תנע $p = 500\,\text{MeV}/c$, והוא עובר $10.0\,\text{m}$ ב-$70.9\,\text{ns}$.
+
+      א. מצאו נוסחה לאנרגיית המנוחה מתוך $pc$ ו-$\beta$.
+
+      ב. איזה חלקיק זה: פיון ($140\,\text{MeV}$) או פרוטון ($938\,\text{MeV}$)? כמה זמן היה לוקח לחלקיק השני, עם אותו תנע?
+    answer: >-
+      א. $mc^2 = pc\sqrt{1/\beta^2 - 1}$. ב. $\beta = 0.470$, $mc^2 = 939\,\text{MeV}$: פרוטון. פיון עם אותו תנע: $34.6\,\text{ns}$.
+    solution:
+      - kind: law
+        text: >-
+          $\beta = pc/E$ ו-$E^2 = (pc)^2 + (mc^2)^2$.
+      - kind: manipulation
+        text: >-
+          $E = pc/\beta$, ולכן $(mc^2)^2 = (pc)^2/\beta^2 - (pc)^2$, כלומר $mc^2 = pc\sqrt{1/\beta^2 - 1}$. לחלקיק אחר, עם אותו
+          $pc$: $\beta = pc/\sqrt{(pc)^2 + (mc^2)^2}$ ו-$t = L/(\beta c)$.
+      - kind: limit
+        text: >-
+          $\beta \to 1$ נותן $mc^2 \to 0$: חלקיק חסר מסה. $\beta \ll 1$ נותן $mc^2 \approx pc/\beta$, כלומר $p \approx mv$ של ניוטון.
+      - kind: units
+        text: >-
+          $pc$ ב-$\text{MeV}$ והשורש חסר ממדים; $L/(\beta c)$ בשניות.
+      - kind: substitution
+        text: >-
+          $\beta = \dfrac{10.0}{70.9\cdot10^{-9}\cdot3.0\cdot10^8} = 0.470$, $mc^2 = 500\sqrt{1/0.470^2 - 1} = 939\,\text{MeV}$. פיון:
+          $\beta = 500/\sqrt{500^2 + 140^2} = 0.963$, $t = 10.0/(0.963\cdot3.0\cdot10^8) = 34.6\,\text{ns}$.
+      - kind: result
+        text: >-
+          פרוטון ($mc^2 \approx 939\,\text{MeV}$, בגבול הדיוק של זמן המעבר). פיון עם אותו תנע היה עובר את המרחק ב-$34.6\,\text{ns}$.
+
+challenge:
+  - id: W-10.1-c1
+    stars: 1
+    objectives: [OBJ-10.1-1, OBJ-10.1-2]
+    prompt: >-
+      למיואון אנרגיה יחסותית $10\,\text{GeV}$, ולאלקטרון $100\,\text{GeV}$. אנרגיות המנוחה: מיואון $106\,\text{MeV}$, אלקטרון
+      $0.511\,\text{MeV}$.
+
+      א. קבעו ונמקו: למי מהם מסה גדולה יותר?
+
+      ב. מי מהם מהיר יותר? מצאו לכל אחד את $1 - \beta$.
+    answer: >-
+      א. למיואון: המסה היא $mc^2$, לא $E$. ב. האלקטרון: $1 - \beta = 1.3\cdot10^{-11}$, לעומת $5.6\cdot10^{-5}$ למיואון.
+    solution:
+      - kind: law
+        text: >-
+          $E = \gamma mc^2$; המסה $m$ זהה בכל מערכת ובכל מהירות. $1 - \beta = \dfrac{1}{\gamma^2(1 + \beta)} \approx \dfrac{1}{2\gamma^2}$.
+      - kind: reasoning
+        text: >-
+          א. האנרגיה היחסותית תלויה במהירות; המסה לא. המסה של מיואון, $106\,\text{MeV}/c^2$, גדולה פי 207 ממסת האלקטרון,
+          בכל אנרגיה. "יותר אנרגיה, יותר מסה" נכון רק בתמונה של "מסה יחסותית", שהקורס לא משתמש בה.
+      - kind: manipulation
+        text: >-
+          ב. $\gamma = E/(mc^2)$. מחשבון נותן $\beta = 1$ לשניהם, ולכן מחשבים את $1 - \beta$ בפירוק $1 - \beta^2 = (1 - \beta)(1 + \beta)$.
+      - kind: limit
+        text: >-
+          הקירוב $1 + \beta \approx 2$ טוב כש-$\gamma \gg 1$, וכאן $\gamma \approx 94$ ו-$2\cdot10^5$. מה שקובע את המהירות הוא $E/(mc^2)$,
+          לא $E$: חלקיק קל עם אותה אנרגיה מהיר יותר.
+      - kind: units
+        text: >-
+          $\gamma$ ו-$1 - \beta$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          מיואון: $\gamma = 10^4/106 = 94.3$, $1 - \beta = 1/(2\cdot94.3^2) = 5.6\cdot10^{-5}$. אלקטרון: $\gamma = 10^5/0.511 = 1.96\cdot10^5$,
+          $1 - \beta = 1.3\cdot10^{-11}$.
+      - kind: result
+        text: >-
+          א. למיואון מסה גדולה יותר. ב. האלקטרון מהיר יותר: $1 - \beta = 1.3\cdot10^{-11}$, לעומת $5.6\cdot10^{-5}$ למיואון.
+    source:
+      name: MIT 8.033 Relativity, Problem Set 6
+      year: 2006
+      problem: 'Problem 3(c) (Concept questions: a 10 GeV muon or a 100 GeV electron)'
+      url: https://ocw.mit.edu/courses/8-033-relativity-fall-2006/f22a62baf0427648bcd52b062877a999_ps6.pdf
+      verified: '2026-11-16'
+      adapted: true
+
+  - id: W-10.1-c2
+    stars: 2
+    objectives: [OBJ-10.1-1, OBJ-10.1-2]
+    prompt: >-
+      לכל מהירות $|\beta| < 1$ נגדיר גודל חסר ממדים $\eta$ כך ש-$\beta = \tanh\eta$, כמו בתרגיל W-9.4-08, שבו ראינו שהגודל
+      הזה מתחבר כמו מספר רגיל בחיבור מהירויות. ($\tanh x = \dfrac{e^x - e^{-x}}{e^x + e^{-x}}$, $\cosh x = \dfrac{e^x + e^{-x}}{2}$,
+      $\sinh x = \dfrac{e^x - e^{-x}}{2}$.)
+
+      א. הראו ש-$\gamma = \cosh\eta$ ו-$\gamma\beta = \sinh\eta$, ולכן $E = mc^2\cosh\eta$ ו-$pc = mc^2\sinh\eta$. מה הקשר
+      $E^2 - (pc)^2 = (mc^2)^2$ אומר במונחים של $\eta$?
+
+      ב. לפרוטון ($mc^2 = 938\,\text{MeV}$): מה האנרגיה היחסותית כש-$\eta = 1, 2, 3, 10$?
+
+      ג. לפרוטון אנרגיה קינטית $1\,\text{GeV}$. מה ה-$\eta$ שלו?
+    answer: >-
+      א. $\cosh^2\eta - \sinh^2\eta = 1$. ב. $1447$, $3529$, $9443\,\text{MeV}$ ו-$1.03\cdot10^7\,\text{MeV}$. ג. $\eta = 1.35$.
+    solution:
+      - kind: law
+        text: >-
+          $\gamma = 1/\sqrt{1 - \beta^2}$, $E = \gamma mc^2$, $pc = \gamma\beta\,mc^2$, ו-$\cosh^2\eta - \sinh^2\eta = 1$.
+      - kind: manipulation
+        text: >-
+          א. $1 - \tanh^2\eta = \dfrac{\cosh^2\eta - \sinh^2\eta}{\cosh^2\eta} = \dfrac{1}{\cosh^2\eta}$, ולכן $\gamma = \cosh\eta$ ו-$\gamma\beta = \cosh\eta\tanh\eta = \sinh\eta$.
+          הקשר $E^2 - (pc)^2 = (mc^2)^2$ הוא הזהות $\cosh^2\eta - \sinh^2\eta = 1$ כפול $(mc^2)^2$: הנקודה $(pc, E)$ רצה על
+          ההיפרבולה, ו-$\eta$ הוא הפרמטר שלה. ג. $\cosh\eta = \gamma = 1 + K/(mc^2)$, ולכן $\eta = \operatorname{arcosh}\gamma = \ln\dfrac{E + pc}{mc^2}$.
+      - kind: limit
+        text: >-
+          $\eta \ll 1$: $\tanh\eta \approx \eta$, ולכן $\eta \approx \beta$, ו-$E \approx mc^2(1 + \tfrac12\eta^2)$ נותן $K \approx \tfrac12mv^2$.
+          $\eta \gg 1$: $\cosh\eta \approx \sinh\eta \approx \tfrac12e^\eta$, ולכן $E \approx pc$ והאנרגיה גדלה אקספוננציאלית ב-$\eta$, בעוד ש-$\beta \to 1$.
+      - kind: units
+        text: >-
+          $\eta$ חסר ממדים; $E$ ו-$pc$ ביחידות של $mc^2$.
+      - kind: substitution
+        text: >-
+          ב. $E = 938\cosh\eta$: $1447$, $3529$, $9443\,\text{MeV}$ ו-$1.03\cdot10^7\,\text{MeV}$ (מהירויות $0.762$, $0.964$, $0.995$, ו-$1 - 4\cdot10^{-9}$).
+          ג. $\gamma = 1 + 1000/938 = 2.066$, $\beta = 0.875$, $\eta = \operatorname{arcosh}2.066 = 1.35$.
+      - kind: result
+        text: >-
+          א. $E = mc^2\cosh\eta$, $pc = mc^2\sinh\eta$, והקשר הוא $\cosh^2\eta - \sinh^2\eta = 1$. ב. $1447$, $3529$, $9443\,\text{MeV}$,
+          $1.03\cdot10^7\,\text{MeV}$. ג. $\eta = 1.35$.
+    source:
+      name: MIT 8.20 Introduction to Special Relativity, Problem Set 3
+      year: 2005
+      problem: Problem 19 (Rapidity)
+      url: https://ocw.iti.hr/courses/physics/8-20-introduction-to-special-relativity-january-iap-2005/assignments/ps3.pdf
+      verified: '2026-11-16'
+      adapted: true

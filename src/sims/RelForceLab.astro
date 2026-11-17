@@ -1,0 +1,7 @@
+---
+/** A proton under a constant force, for lesson MDX: <Spread fig="fig-10-5a" figure={RelForceLab} figureProps={{ F: 1.6, tasks: [...] }}>. */
+import RelForceLab, { type RelForceLabProps } from './RelForceLab';
+type Props = RelForceLabProps;
+---
+
+<RelForceLab client:visible {...Astro.props} />

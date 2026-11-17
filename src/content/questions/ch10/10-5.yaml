@@ -8,8 +8,13 @@
 #     x = (mc²/F)(√(1 + (Ft/mc)²) − 1) = 939.4·0.884 = 830 m (classical ½(F/m)t² = 1198 m, ct = 1500 m);
 #   electron (0.511 MeV), F = 1.6e-13 N over 2.0 m: W = 2.0 MeV, pc = √(2.511² − 0.511²) = 2.46 MeV
 #     (classical √(2mK) = 1.43, pc = W = 2.00);
-#   proton (938 MeV): W(0 → 0.90c) = 1214 MeV, W(0.90c → 0.99c) = 4497 MeV, ratio 3.70
-#     (classical 0.21; W(0 → 0.99c)/W₁ = 4.70).
+#   proton (939 MeV, the lesson's value from M_PROTON): W(0 → 0.90c) = 1215 MeV, W(0.90c → 0.99c) = 4502 MeV,
+#     ratio 3.70 (classical 0.21; W(0 → 0.99c)/W₁ = 4.70);
+#   perpendicular push at 0.80c: γ = 5/3, a⊥ = F/(γm) = 0.600 F/m (Newton 1; along the velocity 1/γ³ = 0.216).
+# Reviewed 2026-11-17: independent recompute in .scratch/review/ch10/10-5/recompute.ts (every answer, commonWrong and
+#   feedback number). Fixed: last-percent's rest energy 938 → 939 MeV to match the lesson (W₁ 1.21 → 1.22 GeV;
+#   the ratio is unchanged); hyperbolic-distance stands alone and its late-time sentence names the flash from the
+#   start; added Q-10.5-perpendicular-push (a⊥ = F/(γm)), which the ladder lacked.
 
 chapter: 10
 questions:
@@ -41,7 +46,7 @@ questions:
           קצב השינוי של האנרגיה הוא ההספק, $dE/dt = Fv$, והוא גדל עם המהירות. רק בזמנים ארוכים, כש-$v \approx c$,
           האנרגיה גדלה בקירוב קווית.
     hints:
-      - 'אינטגרלו את $F = dp/dt$ עם $F$ קבוע ועם $p(0) = 0$.'
+      - 'בצעו אינטגרציה ל-$F = dp/dt$ לפי הזמן, עם $F$ קבוע ועם $p(0) = 0$.'
 
   - id: Q-10.5-proton-speed
     type: numeric
@@ -108,13 +113,45 @@ questions:
     hints:
       - 'גזרו את $p = \gamma mv$ לפי הזמן, וזכרו ש-$\gamma$ תלוי ב-$v$.'
 
+  - id: Q-10.5-perpendicular-push
+    type: numeric
+    objectives: [OBJ-10.5-1]
+    level: mid
+    prompt: >-
+      פרוטון נע במהירות $0.80c$ לאורך ציר $x$. ברגע מסוים מתחיל לפעול עליו כוח $F$ לאורך $y$ בלבד, ניצב למהירות. החוק
+      השני ביחסות הוא חוק וקטורי, $\vec F = d\vec p/dt$ עם $\vec p = \gamma m\vec v$, והוא מתקיים בכל רכיב בנפרד. מה גודל
+      התאוצה של הפרוטון ברגע הזה? ענו ביחידות של $F/m$.
+    answer: 0.6
+    unit: F/m
+    correctFeedback: >-
+      נכון. $\gamma(0.80) = 5/3$. ברגע הזה $p_x$ לא משתנה (אין כוח לאורך $x$) ו-$p_y = 0$, ולכן $\gamma$, שתלוי ב-$p_x^2 + p_y^2$,
+      לא משתנה. מרכיב ה-$y$ של החוק השני, $F = d(\gamma mv_y)/dt = \gamma m\,dv_y/dt$:
+      $$a_\perp = \frac{F}{\gamma m} = 0.600\,\frac{F}{m}$$
+      אילו אותו כוח פעל לאורך המהירות, התאוצה הייתה $F/(\gamma^3m) = 0.216\,F/m$, פי $\gamma^2 = 2.78$ פחות: אין "מסה
+      יחסותית" אחת שכופלים בתאוצה. **בדיקת גבולות:** כש-$v \to 0$, $\gamma \to 1$, ושתי התאוצות הן $F/m$ של ניוטון.
+    wrongFeedback: >-
+      כתבו את רכיב ה-$y$ של החוק השני: $F = dp_y/dt$ עם $p_y = \gamma mv_y$. כוח ניצב למהירות לא משנה ברגע הזה את גודל
+      המהירות, ולכן $\gamma$ קבוע, וכל הכוח הולך ל-$\gamma m\,dv_y/dt$.
+    commonWrong:
+      - value: 1
+        feedback: >-
+          זה $F/m$, התאוצה של ניוטון. ביחסות $p_y = \gamma mv_y$, ולכן הכוח צריך להגדיל גם את $\gamma$ שכופל את $v_y$: התאוצה
+          קטנה פי $\gamma$.
+      - value: 0.216
+        feedback: >-
+          זה $F/(\gamma^3m)$, התאוצה תחת כוח לאורך המהירות. שם $\gamma$ גדל יחד עם $v$, ומכאן $\gamma^3$. כאן הכוח ניצב,
+          $\gamma$ לא משתנה ברגע הזה, ונשאר $\gamma$ אחד.
+    hints:
+      - 'ברגע הזה $p_x$ לא משתנה ו-$p_y = 0$. מה זה אומר על $\gamma$?'
+      - 'גזרו את $p_y = \gamma mv_y$ לפי הזמן, עם $\gamma$ קבוע.'
+
   - id: Q-10.5-hyperbolic-distance
     type: numeric
     objectives: [OBJ-10.5-1]
     level: bagrut
     prompt: >-
-      הפרוטון מהשאלה הקודמת ($m = 1.67\cdot10^{-27}\,\text{kg}$, $F = 1.6\cdot10^{-13}\,\text{N}$, מתחיל ממנוחה) נע
-      בתנועה היפרבולית:
+      פרוטון ($m = 1.67\cdot10^{-27}\,\text{kg}$) מתחיל ממנוחה, וכוח קבוע $F = 1.6\cdot10^{-13}\,\text{N}$ פועל עליו בכיוון
+      קבוע ($c = 3.0\cdot10^8\,\text{m/s}$). לפי החוק השני היחסותי, $F = dp/dt$ עם $p = \gamma mv$, מהירותו היא
       $$v(t) = \frac{Ft/m}{\sqrt{1 + \left(\dfrac{Ft}{mc}\right)^2}}$$
       איזה מרחק הוא עובר ב-$5.0\,\mu\text{s}$ הראשונות?
     answer: 830
@@ -123,11 +160,14 @@ questions:
       נכון. אינטגרל של $v(t)$ מ-0 עד $t$:
       $$x(t) = \frac{mc^2}{F}\left[\sqrt{1 + \left(\frac{Ft}{mc}\right)^2} - 1\right] = 939\cdot\left(\sqrt{1 + 1.60^2} - 1\right) = 830\,\text{m}$$
       **בדיקת גבולות:** כש-$Ft \ll mc$, $\sqrt{1 + u^2} - 1 \approx u^2/2$, ו-$x \approx \tfrac12(F/m)t^2$, תנועה בתאוצה
-      קבועה. כש-$Ft \gg mc$, $x \approx ct - mc^2/F$: הגוף נע כמעט ב-$c$, ומפגר אחרי האור במרחק קבוע.
+      קבועה. כש-$Ft \gg mc$, $x \approx ct - mc^2/F$: הגוף נע כמעט ב-$c$, והפער בינו לבין הבזק אור שיצא איתו מנקודת
+      ההתחלה מתקרב ל-$mc^2/F$.
       ובדיקה בדרך אחרת: $Fx = (\gamma - 1)mc^2$, משפט עבודה-אנרגיה.
     wrongFeedback: >-
-      הציבו $u = Ft/(mc)$. אז $v\,dt = \dfrac{mc^2}{F}\cdot\dfrac{u\,du}{\sqrt{1 + u^2}}$, והאינטגרל של
-      $u/\sqrt{1 + u^2}$ הוא $\sqrt{1 + u^2}$.
+      הדרך הקצרה היא משפט עבודה-אנרגיה: $Fx = (\gamma - 1)mc^2$, עם $\gamma = \sqrt{1 + (Ft/(mc))^2}$ (כי
+      $\gamma\beta = p/(mc) = Ft/(mc)$ ו-$\gamma^2 = 1 + \gamma^2\beta^2$). ובאינטגרל: $x = \int_0^t v(s)\,ds$, ועם
+      $w = Fs/(mc)$ מקבלים $v\,ds = \dfrac{mc^2}{F}\cdot\dfrac{w\,dw}{\sqrt{1 + w^2}}$. הפונקציה הקדומה של
+      $w/\sqrt{1 + w^2}$ היא $\sqrt{1 + w^2}$: בדקו בגזירה, בכלל השרשרת.
     commonWrong:
       - value: 1198
         feedback: >-
@@ -136,8 +176,8 @@ questions:
       - value: 1500
         feedback: 'זה $ct$, המרחק שהאור עובר. הפרוטון מתחיל ממנוחה ותמיד איטי מהאור, ולכן הוא עובר פחות.'
     hints:
-      - 'הציבו $u = Ft/(mc)$ באינטגרל של $v\,dt$.'
-      - 'אפשר גם בלי אינטגרל: לפי משפט עבודה-אנרגיה, $Fx$ שווה לשינוי באנרגיה היחסותית.'
+      - 'אפשר בלי אינטגרל: לפי משפט עבודה-אנרגיה, $Fx$ שווה לשינוי באנרגיה היחסותית, $(\gamma - 1)mc^2$. את $\gamma$ נותן התנע $p = Ft$.'
+      - 'ובאינטגרל: $x = \int_0^t v(s)\,ds$; החליפו משתנה ל-$w = Fs/(mc)$.'
 
   # ---------------------------------------------------------------- OBJ-10.5-2 work equals the change in E; why no body reaches c
   - id: Q-10.5-why-not-c
@@ -164,7 +204,9 @@ questions:
           והכוח ממשיך להגדיל אותם: התנע גדל בקצב $F$, תמיד.
         misconception: MC-10-relativistic-mass
       - text: כי בקרבת מהירות האור הגוף פולט קרינה שמאטה אותו.
-        feedback: 'גוף ניטרלי לא פולט קרינה, וגם בלי שום הפסד הוא לא מגיע ל-$c$. הסיבה היא באנרגיה ובתנע עצמם, לא בהפסדים.'
+        feedback: >-
+          מטען מואץ אכן פולט קרינה, אבל במאיץ קווי ההפסד הזה זעיר. וגוף ניטרלי, שלא פולט כלל, גם הוא לא מגיע ל-$c$. הסיבה
+          היא באנרגיה ובתנע עצמם, לא בהפסדים.
     hints:
       - 'כמה עבודה צריך כדי להביא גוף ממנוחה למהירות $v$? מה קורה לה כש-$v \to c$?'
 
@@ -234,14 +276,14 @@ questions:
     objectives: [OBJ-10.5-2]
     level: bagrut
     prompt: >-
-      מאיץ מביא פרוטון ($mc^2 = 938\,\text{MeV}$) ממנוחה ל-$0.90c$ בעבודה $W_1$, ואחר כך מ-$0.90c$ ל-$0.99c$ בעבודה
+      מאיץ מביא פרוטון ($mc^2 = 939\,\text{MeV}$) ממנוחה ל-$0.90c$ בעבודה $W_1$, ואחר כך מ-$0.90c$ ל-$0.99c$ בעבודה
       נוספת $W_2$. מה היחס $W_2/W_1$?
     answer: 3.70
     unit: ''
     correctFeedback: >-
       נכון. לפי משפט עבודה-אנרגיה, $W = \Delta E = mc^2\,\Delta\gamma$. $\gamma(0.90) = 2.29$ ו-$\gamma(0.99) = 7.09$, ולכן
       $$\frac{W_2}{W_1} = \frac{7.09 - 2.29}{2.29 - 1} = 3.70$$
-      $W_1 = 1.21\,\text{GeV}$ ו-$W_2 = 4.50\,\text{GeV}$: תוספת של $10\%$ במהירות דורשת פי $3.7$ יותר עבודה.
+      $W_1 = 1.22\,\text{GeV}$ ו-$W_2 = 4.50\,\text{GeV}$: תוספת של $10\%$ במהירות דורשת פי $3.7$ יותר עבודה.
       **בדיקת גבולות:** במהירויות נמוכות $\Delta\gamma \approx \Delta(\beta^2)/2$, והיחס חוזר לזה של ניוטון,
       $(v_2^2 - v_1^2)/v_1^2$. כש-$v_2 \to c$, $\gamma(v_2) \to \infty$ ו-$W_2 \to \infty$.
     wrongFeedback: >-

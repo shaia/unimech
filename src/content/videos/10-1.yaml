@@ -1,0 +1,32 @@
+# Videos of lesson 10.1. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what a summary of the video's transcript supports
+# (rosetta.to's pages for each video, opened 2026-11-16); neither video was watched. No Hebrew video on relativistic
+# momentum and energy was searched out in this session. Caption tracks were not confirmed.
+# Reviewed 2026-11-17: the learner-facing `why` and the lesson's Watch notes no longer say "per the transcript
+# summary" (a note to authors); they claim nothing beyond the summaries recorded below.
+#   NnMIhxWRGNw: minutephysics, "E=mc² is Incomplete", 2:07. Per the transcript summary: E² = (mc²)² + (pc)² drawn as a
+#     right triangle with E the hypotenuse; p = 0 gives E = mc², m = 0 gives E = pc; v = c·pc/E, which approaches c
+#     as p grows but never reaches it when there is mass ("the hypotenuse of a right triangle is longer than its legs").
+#   aQAhRAn6ewc: MIT OpenCourseWare, "9.1 Momentum Conservation" (8.20, Markus Klute), 4:06. Per the transcript
+#     summary: the sum of m·u is not conserved in a boosted frame; momentum is redefined with the proper velocity
+#     (velocity with respect to proper time), and the boosted conservation law then reduces to the original one.
+
+- id: v-10-1-minutephysics-triangle
+  youtubeId: NnMIhxWRGNw
+  title: 'E=mc² is Incomplete'
+  channel: minutephysics
+  lang: en
+  start: 0
+  minutes: 3
+  why: 'סרטון של כשתי דקות של minutephysics, באנגלית. הוא מצייר את הקשר בין אנרגיה, תנע ומסה כמשולש ישר-זווית, כמו באיור 10.1ב, ומסיק ממנו את E = mc² לגוף נח, את E = pc לאור, ואת המהירות v = c·pc/E, שלא מגיעה ל-c כשיש מסה.'
+  verified: '2026-11-16'
+
+- id: v-10-1-mit-momentum
+  youtubeId: aQAhRAn6ewc
+  title: '9.1 Momentum Conservation'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'קטע של כארבע דקות מקורס 8.20 של MIT, באנגלית. סכום המכפלות mu לא נשמר כשעוברים למערכת ייחוס נעה, ולכן מגדירים את התנע בעזרת המהירות ביחס לזמן העצמי, כמו בשיעור. המרצה משתמש בכתיב של ארבעה-וקטורים, של שיעור 10.2.'
+  verified: '2026-11-16'

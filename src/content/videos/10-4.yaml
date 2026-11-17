@@ -1,0 +1,32 @@
+# Videos of lesson 10.4. Every id was checked against YouTube oEmbed on the `verified` date (exists, embeddable;
+# title and channel exactly as returned). `why` claims only what a summary of the video's transcript supports
+# (rosetta.to's pages for each video, opened 2026-11-16); neither video was watched. No Hebrew video on Compton
+# scattering or on nuclear binding energy was found. Caption tracks were not confirmed.
+#   Sa1DMeTf8U8: MIT OpenCourseWare, "10.7 Compton Effect" (8.20, Markus Klute), 4:51. Per the transcript summary:
+#     energy and momentum conservation written as one four-vector equation, the unknown four-vector isolated and
+#     squared, c = 1, the photon's zero mass and the electron's invariant mass cancel terms; E = hf turns the
+#     energy relation into Δλ = (h/mₑc)(1 − cos θ). No numbers.
+#   BCQ9h1PxW08: MIT OpenCourseWare, "L9.2 Nuclear Physics: Binding Energies" (8.701, 2020), 9:31. Per the
+#     transcript summary: binding energy = the constituents' masses minus the nucleus's mass, in MeV; the binding
+#     energy per nucleon against the mass number, about 7.5–9 MeV, largest near iron; fission and fusion as the two
+#     ways to release energy; then the semi-empirical (liquid-drop) mass formula, beyond this course.
+
+- id: v-10-4-mit-compton
+  youtubeId: Sa1DMeTf8U8
+  title: '10.7 Compton Effect'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 5
+  why: 'קטע של כחמש דקות מקורס 8.20 של MIT, באנגלית. לפי סיכום התמליל, הוא גוזר את נוסחת קומפטון בדרך השנייה שהזכרנו: כותבים את שימור האנרגיה והתנע כמשוואה אחת של ארבעה-וקטורים, מבודדים את הארבעה-וקטור של האלקטרון ומעלים בריבוע, ואז E = hf מעביר לאורכי גל. השוו לדרך של משולש התנע שלנו: אותה תוצאה, פחות אלגברה.'
+  verified: '2026-11-16'
+
+- id: v-10-4-mit-binding
+  youtubeId: BCQ9h1PxW08
+  title: 'L9.2 Nuclear Physics: Binding Energies'
+  channel: MIT OpenCourseWare
+  lang: en
+  start: 0
+  minutes: 10
+  why: 'הרצאה של כעשר דקות מקורס 8.701 של MIT (פיזיקה גרעינית), באנגלית, להעשרה. לפי סיכום התמליל, היא מגדירה את אנרגיית הקשר כמו שהגדרנו, סכום המסות של החלקים פחות המסה של הגרעין, ב-MeV, ומראה את אנרגיית הקשר לנוקלאון כפונקציה של מספר הנוקלאונים: כ-7.5 עד 9 MeV, הגבוהה ביותר ליד ברזל. מכאן שגם היתוך של גרעינים קלים וגם ביקוע של כבדים משחררים אנרגיה. החלק השני, נוסחת המסה של טיפת הנוזל, מעבר לקורס.'
+  verified: '2026-11-16'

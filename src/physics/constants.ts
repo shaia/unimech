@@ -22,6 +22,9 @@ export const C_LIGHT = 3.0e8;
 /** Elementary charge [C]; also joules per electron-volt. */
 export const E_CHARGE = 1.6e-19;
 
+/** Planck's constant [J·s]; hc ≈ 1240 eV·nm. */
+export const H_PLANCK = 6.63e-34;
+
 /** Electron mass [kg]; rest energy ≈ 0.511 MeV. */
 export const M_ELECTRON = 9.11e-31;
 
