@@ -1,0 +1,333 @@
+# Past 77101 exams mapped onto the objectives of src/course.ts (the /exam-map skill).
+#
+# Source: the course page of Prof. Nir Shaviv, the 77101 coordinator, as archived by the Internet Archive on
+# 2023-12-07 (http://web.archive.org/web/20231207125029/http://old.phys.huji.ac.il/~shaviv/students/77101/index.html;
+# the live server refused connections). The four newest regular exams linked there were downloaded from the same
+# snapshot and read on 2026-11-17:
+#   2016-moed-a  .../77101-MoedA-2016.pdf            (7.2.2016, Prof. Re'em Sari and Prof. Nir Shaviv)
+#   2016-moed-b  .../77101-moed-beit-2016.pdf        (12.4.2016, same lecturers)
+#   2014-moed-a  .../77101-MoedA-regular-2014.pdf    (תשע"ד, Dr. Guy Ron and Prof. Nir Shaviv; the regular, not Talpiot)
+#   2014-moed-b  .../2014-77101-MoedB-Reg.pdf        (תשע"ד, same lecturers)
+# Each has a published solution on the same page (not needed for mapping).
+#
+# Format (all four): 3 hours; no aids except the student's own 2 formula sheets (4 A4 pages), a calculator, an
+# integral table or mathematical handbook, a dictionary; every answer must be justified. 2016: answer 4 of 5
+# questions (equal weight, 25 points each). 2014: part A 2 of 3 questions at 35 points, part B 2 of 3 at 15 points.
+# No formula or constants sheet is supplied: the numbers a question needs are given in it.
+#
+# Questions are paraphrased in one line, never copied (the exams are the university's). `objectives: []` is a gap.
+# skills: derive | compute | show-that | explain | graph | diagram | estimate
+
+# ---------------------------------------------------------------- 2016 moed A
+- exam: 2016-moed-a
+  q: 1
+  part: a
+  topic: 'שתי תיבות שוות מסה על גלגלת קבועה; בתוך אחת מהן מדרון ועליו מסה: התאוצות של התיבות'
+  skills: [derive]
+  objectives: [OBJ-2.2-2, OBJ-2.5-1, OBJ-2.5-2]
+- exam: 2016-moed-a
+  q: 1
+  part: b
+  topic: 'אותה מערכת: המתיחות בחוט'
+  skills: [compute]
+  objectives: [OBJ-2.3-2, OBJ-2.2-2]
+- exam: 2016-moed-a
+  q: 1
+  part: c
+  topic: 'התאוצה של המסה על המדרון כפי שמודד צופה שנח ביחס לתיבה'
+  skills: [derive]
+  objectives: [OBJ-1.5-1, OBJ-7.1-1, OBJ-2.5-2]
+- exam: 2016-moed-a
+  q: 1
+  part: d
+  topic: 'כמה זמן נמשכת התנועה לאורך המדרון'
+  skills: [compute]
+  objectives: [OBJ-1.2-1]
+- exam: 2016-moed-a
+  q: 2
+  part: a
+  topic: 'קובייה שעומדת על קודקוד ונופלת, עם חיכוך ובלי החלקה: המהירות הזוויתית כשהיא נוחתת על פאה'
+  skills: [derive]
+  objectives: [OBJ-8.3-2, OBJ-8.2-2, OBJ-3.3-1]
+- exam: 2016-moed-a
+  q: 2
+  part: b
+  topic: 'אותה קובייה על רצפה חלקה: מרכז המסה נופל אנכית; המהירות הזוויתית בנחיתה'
+  skills: [derive]
+  objectives: [OBJ-3.4-2, OBJ-3.8-2, OBJ-8.1-1, OBJ-3.3-1]
+- exam: 2016-moed-a
+  q: 3
+  part: a
+  topic: 'פוטנציאל בין שני חלקיקים מסכום של חזקה שלילית ולוגריתם: תנאי לשיווי משקל, המרחק בו ויציבותו'
+  skills: [derive, explain]
+  objectives: [OBJ-3.3-2, OBJ-3.2-2]
+- exam: 2016-moed-a
+  q: 3
+  part: b
+  topic: 'תדירות התנודות הקטנות של המרחק סביב שיווי המשקל'
+  skills: [derive]
+  objectives: [OBJ-5.2-2, OBJ-6.2-1]
+- exam: 2016-moed-a
+  q: 3
+  part: c
+  topic: 'היחס בין האמפליטודות של שני החלקיקים'
+  skills: [derive]
+  objectives: [OBJ-6.2-1, OBJ-3.4-2]
+- exam: 2016-moed-a
+  q: 4
+  part: a
+  topic: 'תיבה שמסתובבת סביב ציר קבוע הנוטה לצירים הראשיים שלה: וקטור התנע הזוויתי במערכת הצירים הראשיים'
+  skills: [derive]
+  objectives: [OBJ-8.8-1, OBJ-8.2-1, OBJ-8.2-2]
+- exam: 2016-moed-a
+  q: 4
+  part: b
+  topic: 'המומנט שהציר מפעיל על התיבה כדי לשמור על הסיבוב'
+  skills: [derive]
+  objectives: [OBJ-8.8-1, OBJ-7.2-1, OBJ-3.8-1]
+- exam: 2016-moed-a
+  q: 5
+  part: a
+  topic: 'חללית לכוכב במרחק כמה שנות אור במהירות קבועה: זמן הנסיעה בכדור הארץ ובחללית'
+  skills: [compute]
+  objectives: [OBJ-9.2-1, OBJ-9.2-2]
+- exam: 2016-moed-a
+  q: 5
+  part: b
+  topic: 'מהירות החללית כפי שנמדדת מחללית שנייה שנעה בזווית לקו התנועה של הראשונה (חיבור מהירויות לא קוויות)'
+  skills: [compute]
+  objectives: []
+
+# ---------------------------------------------------------------- 2016 moed B
+- exam: 2016-moed-b
+  q: 1
+  part: a
+  topic: 'גוף על קפיץ שכוח קוסינוסי מאלץ מרגע אפס: משוואת התנועה'
+  skills: [derive]
+  objectives: [OBJ-5.4-1, OBJ-2.1-2]
+- exam: 2016-moed-b
+  q: 1
+  part: b
+  topic: 'המקום כפונקציה של הזמן כשהגוף מתחיל במנוחה בשיווי המשקל (מעבר ועוד מצב יציב)'
+  skills: [derive]
+  objectives: [OBJ-5.4-2, OBJ-5.1-1, OBJ-0.5-3]
+- exam: 2016-moed-b
+  q: 1
+  part: c
+  topic: 'אילוץ קרוב לתהודה: המקום אחרי מאות מחזורים, כלומר פעימות בין התדירות המאלצת לעצמית'
+  skills: [compute]
+  objectives: [OBJ-5.4-2, OBJ-5.5-2]
+- exam: 2016-moed-b
+  q: 1
+  part: d
+  topic: 'מה משנה ריסון קטן שמשמעותי על פני זמן ארוך'
+  skills: [explain]
+  objectives: [OBJ-5.4-2, OBJ-5.3-2]
+- exam: 2016-moed-b
+  q: 2
+  part: a
+  topic: 'משקולת מסתובבת על שולחן חלק, ומסה שלישית פוגעת בקצה ונדבקת: המהירות הזוויתית אחרי ההתנגשות'
+  skills: [derive]
+  objectives: [OBJ-8.6-2, OBJ-3.8-1, OBJ-3.5-2, OBJ-3.4-1]
+- exam: 2016-moed-b
+  q: 2
+  part: b
+  topic: 'התנאי שהמערכת תהיה במנוחה אחרי ההתנגשות'
+  skills: [derive]
+  objectives: [OBJ-3.5-2, OBJ-8.6-2]
+- exam: 2016-moed-b
+  q: 2
+  part: c
+  topic: 'האנרגיה שאבדה בהתנגשות כשהסיבוב נעצר'
+  skills: [compute]
+  objectives: [OBJ-4.1-2, OBJ-3.8-2]
+- exam: 2016-moed-b
+  q: 3
+  part: a
+  topic: 'שני גלילים חלולים קואקסיאליים; חול עובר בקצב קבוע מהפנימי המסתובב לחיצוני: המהירויות הזוויתיות כפונקציה של הזמן'
+  skills: [derive]
+  objectives: [OBJ-8.6-1, OBJ-3.6-2, OBJ-3.8-1]
+- exam: 2016-moed-b
+  q: 3
+  part: b
+  topic: 'האנרגיה של המערכת כפונקציה של הזמן'
+  skills: [derive]
+  objectives: [OBJ-8.3-2]
+- exam: 2016-moed-b
+  q: 4
+  part: a
+  topic: 'חללית במסלול מעגלי מקבלת דחיפה משיקית קצרה: פי כמה להגדיל את המהירות כדי שזמן המחזור יוכפל'
+  skills: [derive]
+  objectives: [OBJ-6.5-2, OBJ-6.6-1]
+- exam: 2016-moed-b
+  q: 4
+  part: b
+  topic: 'האקסצנטריות של המסלול החדש'
+  skills: [compute]
+  objectives: [OBJ-6.4-2, OBJ-6.6-1]
+- exam: 2016-moed-b
+  q: 5
+  part: a
+  topic: 'חלקיק נייח מתפרק לשני חלקיקים זהים: מהירות האחד כפי שהשני מודד'
+  skills: [derive]
+  objectives: [OBJ-10.3-1, OBJ-9.4-1]
+- exam: 2016-moed-b
+  q: 5
+  part: b
+  topic: 'התפרקות במרכז כדור: התנאי שהתוצרים יצאו מהכדור לפני שהם עצמם מתפרקים'
+  skills: [derive]
+  objectives: [OBJ-9.2-1, OBJ-10.1-1]
+
+# ---------------------------------------------------------------- 2014 moed A (regular)
+- exam: 2014-moed-a
+  q: 1
+  part: a
+  topic: 'מוט על שני גלילים שמסתובבים זה לקראת זה, עם חיכוך קינטי: משוואת התנועה של מרכז המוט ופתרונה'
+  skills: [derive]
+  objectives: [OBJ-2.4-1, OBJ-2.4-2, OBJ-8.5-1, OBJ-5.1-2, OBJ-5.1-1]
+- exam: 2014-moed-a
+  q: 1
+  part: b
+  topic: 'אותו מוט כשכיוון הסיבוב של הגלילים הפוך: משוואת התנועה ופתרונה (התרחקות אקספוננציאלית)'
+  skills: [derive]
+  objectives: [OBJ-2.4-1, OBJ-0.5-3]
+- exam: 2014-moed-a
+  q: 2
+  part: a
+  topic: 'שלושה מוטות מחוברים בזוויות שוות על שולחן חלק, ושני קליעים נצמדים לקצוות: מקום מרכז המסה כפונקציה של הזמן'
+  skills: [derive]
+  objectives: [OBJ-3.4-1, OBJ-3.4-2, OBJ-3.5-2]
+- exam: 2014-moed-a
+  q: 2
+  part: b
+  topic: 'המהירות הזוויתית סביב מרכז המסה'
+  skills: [derive]
+  objectives: [OBJ-8.6-2, OBJ-8.2-2, OBJ-3.8-2]
+- exam: 2014-moed-a
+  q: 2
+  part: c
+  topic: 'המהירות המרבית של קצה בלי קליע ביחס לשולחן, ומתי היא מתקבלת'
+  skills: [derive]
+  objectives: [OBJ-8.1-1, OBJ-1.5-1]
+- exam: 2014-moed-a
+  q: 3
+  part: a
+  topic: 'מיואונים מהאטמוספרה: האנרגיה המזערית שבה מיואון מגיע לקרקע בתוך זמן החיים שלו'
+  skills: [compute]
+  objectives: [OBJ-9.2-2, OBJ-10.1-1]
+- exam: 2014-moed-a
+  q: 3
+  part: b
+  topic: 'פרוטון אנרגטי ופוטון של קרינת הרקע יוצרים פיון: אנרגיית הסף, בקירוב אנרגיה גבוהה שמוכיחים קודם'
+  skills: [show-that, compute]
+  objectives: [OBJ-10.3-2, OBJ-10.4-1, OBJ-10.2-2]
+- exam: 2014-moed-a
+  q: 4
+  part: '-'
+  topic: 'חרוז על חישוק שמסתובב בקצב קבוע, בלי כובד: תדירות התנודות הקטנות סביב הנקודות הרחוקות מהציר'
+  skills: [derive]
+  objectives: [OBJ-7.3-2, OBJ-7.3-1, OBJ-5.2-2]
+- exam: 2014-moed-a
+  q: 5
+  part: '-'
+  topic: 'נקיפת ציר הסיבוב של כדור הארץ: המומנט הממוצע מזמן מחזור הנקיפה, וכיוונו'
+  skills: [compute, explain]
+  objectives: [OBJ-8.8-2]
+- exam: 2014-moed-a
+  q: 6
+  part: '-'
+  topic: 'שני כדורים מחוברים בשני קפיצים במקביל, נזרקים באוויר: התדירות הזוויתית של התנודה'
+  skills: [derive]
+  objectives: [OBJ-5.1-2, OBJ-6.2-1, OBJ-7.1-2]
+
+# ---------------------------------------------------------------- 2014 moed B (regular)
+- exam: 2014-moed-b
+  q: 1
+  part: a
+  topic: 'מטוטלת שתלויה מעגלה שנעה בלי חיכוך: האנרגיה הכוללת'
+  skills: [derive]
+  objectives: [OBJ-3.3-1, OBJ-3.8-2]
+- exam: 2014-moed-b
+  q: 1
+  part: b
+  topic: 'שתי משוואות תנועה בלתי תלויות (אחת מהן שימור רכיב התנע האופקי)'
+  skills: [derive]
+  objectives: [OBJ-3.5-2, OBJ-2.2-2]
+- exam: 2014-moed-b
+  q: 1
+  part: c
+  topic: 'פתרון בקירוב תנודות קטנות לזווית ולמקום העגלה'
+  skills: [derive]
+  objectives: [OBJ-5.5-1, OBJ-5.2-2, OBJ-5.1-1]
+- exam: 2014-moed-b
+  q: 1
+  part: d
+  topic: 'נקודת התלייה מורעדת בתדירות ובאמפליטודה נתונות: האמפליטודה של הזווית אחרי זמן רב'
+  skills: [derive]
+  objectives: [OBJ-5.4-1, OBJ-7.1-1]
+- exam: 2014-moed-b
+  q: 2
+  part: a
+  topic: 'כדור מתגלגל בלי החלקה במורד ומתנגש בגוש שמחליק עם חיכוך: המרחק שהגוש עובר, בהתנגשות פלסטית'
+  skills: [derive]
+  objectives: [OBJ-8.4-1, OBJ-4.1-1, OBJ-4.4-2]
+- exam: 2014-moed-b
+  q: 2
+  part: b
+  topic: 'אותו מרחק בהתנגשות אלסטית'
+  skills: [derive]
+  objectives: [OBJ-4.1-1, OBJ-4.4-2]
+- exam: 2014-moed-b
+  q: 2
+  part: c
+  topic: 'אותו מרחק עם מקדם תקומה נתון'
+  skills: [derive]
+  objectives: [OBJ-4.1-2, OBJ-4.4-2]
+- exam: 2014-moed-b
+  q: 3
+  part: a
+  topic: 'אפקט פוינטינג-רוברטסון: שטף האנרגיה של השמש במרחק נתון (השטח של ספרה; רמז בשאלה)'
+  skills: [derive]
+  objectives: [OBJ-0.7-2]
+- exam: 2014-moed-b
+  q: 3
+  part: b
+  topic: 'ההספק שגוף כדורי במסלול מעגלי סופג'
+  skills: [derive]
+  objectives: [OBJ-0.7-2, OBJ-3.3-1]
+- exam: 2014-moed-b
+  q: 3
+  part: c
+  topic: 'הכיוון של פוטון מהשמש במערכת של הגוף הנע (אברציה יחסותית)'
+  skills: [derive]
+  objectives: []
+- exam: 2014-moed-b
+  q: 3
+  part: d
+  topic: 'רכיב הכוח בכיוון התנועה שהפוטונים מפעילים על הגוף'
+  skills: [derive]
+  objectives: [OBJ-10.4-1, OBJ-3.5-1]
+- exam: 2014-moed-b
+  q: 3
+  part: e
+  topic: 'קצב איבוד האנרגיה של הגוף בגלל כוח הגרר הזה'
+  skills: [compute]
+  objectives: [OBJ-3.3-1]
+- exam: 2014-moed-b
+  q: 4
+  part: '-'
+  topic: 'חוט וגלגלות עם שתי מסות: מצב שיווי המשקל, והוכחה שהוא יציב או לא'
+  skills: [derive, show-that]
+  objectives: [OBJ-3.3-2, OBJ-2.3-1, OBJ-8.5-1]
+- exam: 2014-moed-b
+  q: 5
+  part: '-'
+  topic: 'רכבת הרים עם תחתית מעגלית: היחס בין גובה ההתחלה לרדיוס כך שהתאוצה לא תעלה על ארבע g'
+  skills: [derive]
+  objectives: [OBJ-2.6-2, OBJ-3.3-1]
+- exam: 2014-moed-b
+  q: 6
+  part: '-'
+  topic: 'חלקיק נייח בולע פוטון ועובר לרמה מעוררת: אנרגיית הפוטון הדרושה, בלי להזניח את הרתע'
+  skills: [derive]
+  objectives: [OBJ-10.4-1, OBJ-10.2-2, OBJ-10.4-2]
