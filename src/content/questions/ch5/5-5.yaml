@@ -1,5 +1,6 @@
-# Lesson 5.5 question bank: the comprehension ladder of "מתנדים מצומדים ואופני תנודה" (enrichment: its place in
-# 77101 is unverified). Every objective has ≥ 3 questions, one of them qualitative; basic → mid → bagrut (exam level).
+# Lesson 5.5 question bank: the comprehension ladder of "מתנדים מצומדים ואופני תנודה" (part of 77101: past
+# exams ask for beats and for a pendulum hung from a moving cart; see
+# src/content/exam-map.yaml). Every objective has ≥ 3 questions, one of them qualitative; basic → mid → bagrut (exam level).
 # The system throughout: two masses m on a frictionless line, an outer spring k from each wall to its mass, and a
 # coupling spring k_c between the masses; x1, x2 measured from equilibrium. Modes: in phase (1, 1) with ω1² = k/m,
 # opposite (1, −1) with ω2² = (k + 2k_c)/m.
