@@ -2,23 +2,41 @@
 # level, 25 points each. Each problem joins at least two lessons; together they touch 3.1–3.8:
 #   1 rocket energy accounting: 3.6, 3.1, 3.3      2 puck on a string through a hole: 3.7, 3.1
 #   3 a person on a raft: 3.4, 3.5, 3.8, 3.3        4 a puck in a "hat" potential: 3.2, 3.3, 3.7
+#   5 a block on a quarter-circle track cut in a free cart: 3.3, 3.4, 3.5 with 1.5, 2.1, 2.2, 2.6
+#     (a 77101-style question in symbols)
+# Rework 2026-11-18 toward the exam (/exam-map: 39 of 51 parts derive): open parts carry ≥ 13 of 25 points,
+# the first part stays auto-graded, the last part is a symbolic result with a limit check.
+#   1: numeric 4, open 7, numeric 5, open 9 (was numeric 5, numeric 5, open 9, numeric 6): open 16
+#   2: numeric 4, twotier 5, open 9, open 7 (was numeric 7 last): open 16
+#   3: numeric 4, mc 5, open 6, open 10 (was numeric 6 at ג): open 16
+#   4: mc 4, numeric 6, open 6, open 9 (was numeric 6 at ג): open 15
+#   5: mc 4, open 7, open 8, open 6 (new): open 21
 # Open parts are solved in the course format: law → manipulation → limit → units → substitution (only when
 # numbers are asked) → result.
 #
-# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/review.ts:
+# Every number was computed with src/physics/constants.ts (G = 9.8), in .scratch/ch3/review.ts and
+# .scratch/ch3/review-rework.ts (the rework: every changed or new part, closed forms checked by an independent route):
 #   1: m0 = 1200 kg, 900 kg fuel, u = 2000 m/s: Δv = u ln 4 = 2773 m/s (1500 from uΔm/m0, 6000 from uΔm/m,
-#      575 from u ln(m0/Δm)); K_rocket = 1.153·10⁹ J, ½u²Δm = 1.80·10⁹ J, η = 64.1% (256% with m0, 35.9% the
-#      exhaust's share); η(r) = (ln r)²/(r − 1) peaks where 2(1 − 1/r) = ln r: r = 4.92, η = 64.8%, fuel
+#      575 from u ln(m0/Δm)); ב (now open) K_rocket = 1.153·10⁹ J, ½u²Δm = 1.80·10⁹ J, η = (ln r)²/(r − 1)
+#      = 1.922/3 = 0.641; ג η(r) peaks where 2(1 − 1/r) = ln r: r = 4.92, η = 64.8%, fuel
 #      1 − 1/r = 79.7% (86.5% at r = e², which maximises K per initial mass; 63.2% at r = e, momentum per initial
-#      mass; 75% the given rocket; 20.3% = 1/r);
+#      mass; 75% the given rocket; 20.3% = 1/r); ד (now open) K_gas = (u²m0/2r)[(r − 1) − (ln r)²]
+#      = 6.47·10⁸ J = 35.9% of E_f; a discrete burn in 2·10⁵ steps gives K_rocket + K_gas = E_f to 1e-5;
 #   2: m = 0.25 kg, r0 = 0.50 m, v0 = 2.0 m/s: at 0.25 m v = 4.0 m/s (1.0 from v ∝ r, 2.83 from 1/√r, 8.0 from
-#      1/r²), T = 16 N, W = ½mv0²(r0²/r² − 1) = 1.50 J = ΔK; T = mv0²r0²/r³ = 20 N at r = 0.232 m (0.050 with v
-#      fixed, 0.158 from v ∝ 1/√r);
-#   3: m = 70 kg, M = 280 kg, L = 5.0 m: raft moves mL/(m + M) = 1.00 m (1.25 from mL/M); jump at u = 4.0 m/s
-#      relative: raft 0.80 m/s, person 3.20 m/s (1.00 from mu/M); K = ½μu² = 448 J, μ = 56 kg (560 J on land);
+#      1/r²), T = 16 N, W = ½mv0²(r0²/r² − 1) = 1.50 J = ΔK; ד (now open) r_b = (mv0²r0²/Tmax)^(1/3), r_b³ =
+#      0.0125 m³, r_b = 0.232 m, v there 4.31 m/s, L = 0.25 kg·m²/s, T(r_b) = 20 N; 0.050 m with v fixed;
+#      r_b → r0 as Tmax → T0 = mv0²/r0 = 2.0 N;
+#   3: m = 70 kg, M = 280 kg, L = 5.0 m: raft moves mL/(m + M) = 1.00 m (1.25 from mL/M); ג (now open) jump at
+#      u = 4.0 m/s relative: v_r = −mu/(m + M) = −0.80 m/s, v_p = Mu/(m + M) = 3.2 m/s; K = ½μu² = 448 J,
+#      μ = 56 kg (560 J on land);
 #   4: U = U0[(r/a)⁴ − 2(r/a)²], U0 = 2.0 J, a = 0.50 m, m = 0.10 kg: at (0.45, 0.60) m r = 0.75 m,
-#      dU/dr = 30 N, F_x = −18 N (F_y = −24 N); crossing O from r = a needs v > √(2U0/m) = 6.32 m/s (4.47 without
-#      the ½, 8.94 from a 4.0 J barrier); circular orbit at 0.75 m: v = √(r·dU/dr / m) = 15.0 m/s.
+#      dU/dr = 30 N, F_x = −18 N (F_y = −24 N); ג (now open) crossing O from r = a needs v > √(2U0/m) = 6.32 m/s
+#      (RK4 along x: crosses at 1.01 v_min, turns back at 0.99 v_min); circular orbit at 0.75 m:
+#      v = √(r·dU/dr / m) = 15.0 m/s;
+#   5: symbols only. v = √(2gRM/(M + m)), V = −(m/M)v, u = v − V = √(2gR(M + m)/M), N = mg(3 + 2m/M),
+#      N_f = Mg + N; checked at m = 1, M = 3, R = 1 against RK4 of the Lagrange equations for (X, φ):
+#      v = 3.83, V = −1.28 m/s, N = m(g + Rφ̇²) = 35.9 N, cart acceleration 0 at the bottom, cart displacement
+#      −mR/(M + m); N_f − (M + m)g = mu²/R = 26.1 N (centre-of-mass check).
 
 chapter: 3
 questions:
@@ -35,7 +53,7 @@ questions:
     parts:
       - label: א
         type: numeric
-        points: 5
+        points: 4
         level: basic
         objectives: [OBJ-3.6-1]
         prompt: מה מהירות הרקטה אחרי שכל הדלק נשרף?
@@ -54,62 +72,42 @@ questions:
           - 'מה המסה של הרקטה כשהדלק נגמר?'
 
       - label: ב
-        type: numeric
-        points: 5
+        type: open
+        points: 7
         level: mid
         standalone: false
         objectives: [OBJ-3.3-1, OBJ-3.6-1]
         prompt: >-
-          איזה אחוז מהאנרגיה $E_f$ שהדלק שחרר נמצא בסוף באנרגיה הקינטית של הרקטה עצמה (בלי הגזים)?
-        answer: 64.1
-        unit: '%'
-        correctFeedback: >-
-          נכון. $K_{\text{r}} = \tfrac12\cdot300\cdot2773^2 = 1.15\cdot10^9\,\text{J}$, ו-
-          $E_f = \tfrac12\cdot2000^2\cdot900 = 1.80\cdot10^9\,\text{J}$. היחס $64.1\%$. היתר, $35.9\%$, נמצא בגזים.
-        wrongFeedback: 'חשבו את האנרגיה הקינטית של הרקטה במסה הסופית ובמהירות מחלק א, וחלקו ב-$E_f$.'
-        commonWrong:
-          - value: 256
-            feedback: 'השתמשתם במסה ההתחלתית. בסוף השריפה מסת הרקטה $300\,\text{kg}$. ואחוז מעל 100 היה סותר את שימור האנרגיה.'
-          - value: 35.9
-            feedback: 'זה החלק שנשאר בגזים, $100\% - 64.1\%$. השאלה שואלת על הרקטה.'
+          (1) בטאו את החלק $\eta$ של האנרגיה $E_f$ שנמצא בסוף השריפה באנרגיה הקינטית של הרקטה עצמה (בלי הגזים),
+          באמצעות $r = m_0/m$ בלבד, כאשר $m$ המסה הסופית של הרקטה.
+
+          (2) בדקו את הביטוי בגבולות $r \to 1$ ו-$r \to \infty$, ובדקו יחידות.
+
+          (3) חשבו את $\eta$ לרקטה שבשאלה.
         hints:
-          - '$K_{\text{r}} = \tfrac12m\,v^2$ עם $m = 300\,\text{kg}$.'
+          - 'האנרגיה הקינטית של הרקטה בסוף היא $\tfrac12m\,\Delta v^2$ עם המסה **הסופית** $m$, ולא $m_0$: עם $m_0$ יוצא חלק גדול מ-1.'
+          - '$m_0 - m$ היא מסת הדלק. חלקו מונה ומכנה ב-$m$.'
+        solution:
+          - { kind: law, text: 'משוואת הרקטה (חלק א): $\Delta v = u\ln\dfrac{m_0}{m} = u\ln r$. האנרגיה הקינטית של הרקטה בסוף: $K_{\text{r}} = \tfrac12m\,\Delta v^2$. האנרגיה של הדלק: $E_f = \tfrac12u^2(m_0 - m)$.' }
+          - { kind: manipulation, text: '$$\eta = \frac{K_{\text{r}}}{E_f} = \frac{\tfrac12mu^2(\ln r)^2}{\tfrac12u^2(m_0 - m)} = \frac{(\ln r)^2}{m_0/m - 1} = \frac{(\ln r)^2}{r - 1}$$ $u$ מצטמצם: החלק תלוי רק ביחס המסות.' }
+          - { kind: limit, text: 'כש-$r \to 1$ (מעט דלק): $\ln r \approx r - 1$, ו-$\eta \approx r - 1 \to 0$. הרקטה עוד כמעט עומדת, והגז יוצא אחורה ב-$u$ ולוקח כמעט את כל האנרגיה. כש-$r \to \infty$: $(\ln r)^2$ גדל לאט מ-$r$, ו-$\eta \to 0$: הרקטה שנשארת זעירה. ביניהם יש מקסימום (חלק ג). ותמיד $\eta < 1$, כמו ששימור אנרגיה דורש.' }
+          - { kind: units, text: '$K_{\text{r}}$ ו-$E_f$ שניהם ב-$\text{J}$, ו-$\eta$ חסר ממדים, כמו שצריך לחלק מאנרגיה.' }
+          - { kind: substitution, text: '$r = 1200/300 = 4$: $\eta = (\ln4)^2/3 = 1.922/3 = 0.641$. בדיקה: $K_{\text{r}} = \tfrac12\cdot300\cdot2773^2 = 1.15\cdot10^9\,\text{J}$ ו-$E_f = \tfrac12\cdot2000^2\cdot900 = 1.80\cdot10^9\,\text{J}$.' }
+          - { kind: result, text: '$\eta = \dfrac{(\ln r)^2}{r - 1} = 0.641$: $64.1\%$ מהאנרגיה של הדלק מגיע לרקטה, והיתר, $35.9\%$, נשאר בגזים (חלק ד).' }
+        rubric:
+          - text: 'כתבתי $K_{\text{r}} = \tfrac12m(u\ln r)^2$ עם המסה הסופית, וחילקתי ב-$E_f = \tfrac12u^2(m_0 - m)$.'
+          - text: 'הגעתי ל-$\eta = (\ln r)^2/(r - 1)$, בלי $u$.'
+          - text: 'בדקתי ש-$\eta \to 0$ גם כש-$r \to 1$ וגם כש-$r \to \infty$, והסברתי למה.'
+          - text: 'חישבתי $\eta \approx 0.641$ לרקטה שבשאלה.'
 
       - label: ג
-        type: open
-        points: 9
-        level: bagrut
-        standalone: false
-        objectives: [OBJ-3.6-1, OBJ-3.1-2, OBJ-3.3-1]
-        prompt: >-
-          (1) הראו שכשהרקטה פולטת מסה $|dM|$, האנרגיה הקינטית הכוללת של הרקטה ושל כל הגזים שנפלטו גדלה ב-$\tfrac12u^2|dM|$,
-          כך שבסוף השריפה היא בדיוק $E_f$.
-
-          (2) הראו שהחלק של $E_f$ שמגיע לרקטה הוא $\eta = \dfrac{(\ln r)^2}{r - 1}$, כאשר $r = m_0/m$, ובדקו את הביטוי
-          בגבולות $r \to 1$ ו-$r \to \infty$.
-        hints:
-          - 'כתבו את השינוי ב-$\tfrac12Mv^2$ ואת האנרגיה של הגז שנפלט, $\tfrac12(-dM)(v - u)^2$, והשתמשו ב-$M\,dv = -u\,dM$.'
-        solution:
-          - { kind: law, text: 'שימור התנע בפרק זמן קצר נותן את משוואת הרקטה, $M\,dv = -u\,dM$, כאשר $dM < 0$ והגז שנפלט נע במהירות $v - u$. האנרגיה הקינטית הכוללת היא של הרקטה ועוד של כל הגז שנפלט עד כה.' }
-          - { kind: manipulation, text: 'הרקטה: $d\left(\tfrac12Mv^2\right) = \tfrac12v^2dM + Mv\,dv = \tfrac12v^2dM - uv\,dM$. הגז החדש: $\tfrac12(-dM)(v - u)^2 = -\tfrac12v^2dM + uv\,dM - \tfrac12u^2dM$. הגז הישן לא משתנה. בסכום, האיברים עם $v$ מתבטלים: $dK_{\text{tot}} = -\tfrac12u^2dM$. עושים אינטגרל מ-$m_0$ עד $m$: $K_{\text{tot}} = \tfrac12u^2(m_0 - m) = E_f$.' }
-          - { kind: manipulation, text: 'לרקטה עצמה: $K_{\text{r}} = \tfrac12m(u\ln r)^2$. לכן $$\eta = \frac{K_{\text{r}}}{E_f} = \frac{\tfrac12mu^2(\ln r)^2}{\tfrac12u^2(m_0 - m)} = \frac{(\ln r)^2}{m_0/m - 1} = \frac{(\ln r)^2}{r - 1}$$' }
-          - { kind: limit, text: 'כש-$r \to 1$ (מעט דלק): $\ln r \approx r - 1$, ו-$\eta \approx r - 1 \to 0$. הרקטה עוד כמעט עומדת, והגז יוצא אחורה ב-$u$ ולוקח כמעט את כל האנרגיה. כש-$r \to \infty$: $(\ln r)^2$ גדל לאט מ-$r$, ו-$\eta \to 0$: הרקטה שנשארת זעירה. ביניהם יש מקסימום. ב-$r = 4$ יוצא $\eta = (\ln4)^2/3 = 0.641$, כמו בחלק ב.' }
-          - { kind: units, text: '$\tfrac12u^2\,dM$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$. $\eta$ חסר ממדים, כמו שצריך לחלק מאנרגיה.' }
-          - { kind: result, text: 'האנרגיה הקינטית הכוללת של רקטה + גזים היא $\tfrac12u^2(m_0 - m) = E_f$: אף ג׳ול לא הולך לאיבוד, רק מתחלק. החלק של הרקטה הוא $\eta = (\ln r)^2/(r - 1)$, שמתאפס בשני הקצוות, ו-$0.641$ כאן.' }
-        rubric:
-          - text: כתבתי את השינוי באנרגיה הקינטית של הרקטה ושל הגז שנפלט, עם מהירות הגז $v - u$ במערכת האינרציאלית.
-          - text: השתמשתי ב-$M\,dv = -u\,dM$ והראיתי שהאיברים עם $v$ מתבטלים, ו-$dK_{\text{tot}} = -\tfrac12u^2dM$.
-          - text: הגעתי ל-$\eta = (\ln r)^2/(r - 1)$.
-          - text: בדקתי ש-$\eta \to 0$ גם כש-$r \to 1$ וגם כש-$r \to \infty$, והסברתי למה.
-
-      - label: ד
         type: numeric
-        points: 6
+        points: 5
         level: bagrut
         standalone: false
         objectives: [OBJ-3.3-1, OBJ-3.6-1]
         prompt: >-
-          מהנדסת רוצה שהחלק $\eta$ יהיה גדול ככל האפשר. איזה אחוז מהמסה ההתחלתית של הרקטה צריך להיות דלק כדי ש-$\eta$
+          מהנדסת רוצה שהחלק $\eta$ של חלק ב יהיה גדול ככל האפשר. איזה אחוז מהמסה ההתחלתית של הרקטה צריך להיות דלק כדי ש-$\eta$
           יהיה מרבי? (המשוואה שתתקבל נפתרת במספרים.)
         answer: 79.7
         unit: '%'
@@ -132,6 +130,39 @@ questions:
         hints:
           - 'אחרי הגזירה וההשוואה לאפס, חלקו ב-$\ln r$.'
           - 'בדקו את ההפרש $2(1 - 1/r) - \ln r$ ב-$r = 4$ וב-$r = 6$. איפה הוא מחליף סימן?'
+
+      - label: ד
+        type: open
+        points: 9
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-3.6-1, OBJ-3.1-2, OBJ-3.3-1]
+        prompt: >-
+          לאן הולך שאר האנרגיה של הדלק?
+
+          (1) הראו שכשהרקטה, במהירות $v$, פולטת מסה $|dM|$, האנרגיה הקינטית הכוללת של הרקטה ושל כל הגזים שנפלטו גדלה
+          ב-$\tfrac12u^2|dM|$, בלי תלות ב-$v$, ולכן בסוף השריפה היא בדיוק $E_f$.
+
+          (2) בטאו את האנרגיה הקינטית $K_{\text{g}}$ של כל הגזים בסוף השריפה באמצעות $u$, $m_0$ ו-$r$. בדקו את
+          התוצאה של (1) ברגע הראשון, $v = 0$, ואת $K_{\text{g}}$ בגבול $r \to 1$, ובדקו יחידות.
+
+          (3) חשבו את $K_{\text{g}}$.
+        hints:
+          - 'כתבו את השינוי ב-$\tfrac12Mv^2$ ואת האנרגיה של הגז שנפלט, $\tfrac12(-dM)(v - u)^2$, והשתמשו ב-$M\,dv = -u\,dM$.'
+          - '$K_{\text{g}} = E_f - K_{\text{r}} = E_f(1 - \eta)$, עם $\eta$ מחלק ב.'
+        solution:
+          - { kind: law, text: 'שימור התנע בפרק זמן קצר נותן את משוואת הרקטה, $M\,dv = -u\,dM$, כאשר $dM < 0$ והגז שנפלט נע במהירות $v - u$ ביחס למערכת האינרציאלית. האנרגיה הקינטית הכוללת היא של הרקטה ועוד של כל הגז שנפלט עד כה.' }
+          - { kind: manipulation, text: 'הרקטה: $d\left(\tfrac12Mv^2\right) = \tfrac12v^2dM + Mv\,dv = \tfrac12v^2dM - uv\,dM$. הגז החדש: $\tfrac12(-dM)(v - u)^2 = -\tfrac12v^2dM + uv\,dM - \tfrac12u^2dM$. הגז הישן לא משתנה. בסכום, האיברים עם $v$ מתבטלים: $dK_{\text{tot}} = -\tfrac12u^2dM = \tfrac12u^2|dM|$. אינטגרל מ-$m_0$ עד $m$: $K_{\text{tot}} = \tfrac12u^2(m_0 - m) = E_f$.' }
+          - { kind: manipulation, text: 'לגזים נשאר $K_{\text{g}} = E_f - K_{\text{r}} = \tfrac12u^2(m_0 - m) - \tfrac12m(u\ln r)^2$. עם $m = m_0/r$: $$K_{\text{g}} = \frac{u^2m_0}{2r}\left[(r - 1) - (\ln r)^2\right]$$' }
+          - { kind: limit, text: 'ב-$v = 0$, הרגע הראשון: רקטה במנוחה זורקת $|dM|$ אחורה ב-$u$. הגז מקבל $\tfrac12u^2|dM|$, והרקטה רק $\tfrac12M\,dv^2$, מסדר שני, אפס בגבול. זו בדיוק התוצאה של (1): היא לא תלויה ב-$v$, ולכן בכל רגע החשבון זהה לחשבון במערכת שבה הרקטה עומדת באותו רגע. כש-$r \to 1$: $(\ln r)^2 \approx (r - 1)^2$ זניח לעומת $r - 1$, ו-$K_{\text{g}} \to \tfrac12u^2(m_0 - m) = E_f$: כמעט כל האנרגיה בגזים, כמו ש-$\eta \to 0$ בחלק ב.' }
+          - { kind: units, text: '$\tfrac12u^2\,dM$ ו-$u^2m_0$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$, והסוגריים חסרי ממדים.' }
+          - { kind: substitution, text: '$r = 4$, $m_0/r = 300\,\text{kg}$: $K_{\text{g}} = \tfrac12\cdot2000^2\cdot300\cdot(3 - 1.922) = 6.47\cdot10^8\,\text{J}$. בדיקה: $1.80\cdot10^9 - 1.15\cdot10^9 = 6.5\cdot10^8\,\text{J}$, $35.9\%$ מ-$E_f$.' }
+          - { kind: result, text: 'האנרגיה הקינטית הכוללת של רקטה + גזים היא $\tfrac12u^2(m_0 - m) = E_f$: אף ג׳ול לא הולך לאיבוד, רק מתחלק. לגזים $K_{\text{g}} = \dfrac{u^2m_0}{2r}\left[(r - 1) - (\ln r)^2\right] = 6.47\cdot10^8\,\text{J}$, $35.9\%$ מהאנרגיה של הדלק.' }
+        rubric:
+          - text: כתבתי את השינוי באנרגיה הקינטית של הרקטה ושל הגז שנפלט, עם מהירות הגז $v - u$ במערכת האינרציאלית.
+          - text: 'השתמשתי ב-$M\,dv = -u\,dM$ והראיתי שהאיברים עם $v$ מתבטלים, ו-$dK_{\text{tot}} = \tfrac12u^2|dM|$.'
+          - text: 'בדקתי שב-$v = 0$ מתקבלת הפליטה מרקטה עומדת, ושכש-$r \to 1$ כמעט כל האנרגיה בגזים.'
+          - text: 'חישבתי $K_{\text{g}} \approx 6.47\cdot10^8\,\text{J}$, ובדקתי שהיא $E_f - K_{\text{r}}$.'
 
   # ------------------------------------------------------------ 2: a puck on a string through a hole
   - id: Q-3-bagrut-2
@@ -222,26 +253,33 @@ questions:
           - text: בדקתי את הגבולות $r_1 \to r_0$ ו-$r_1 \to 0$ ואת היחידות.
 
       - label: ד
-        type: numeric
+        type: open
         points: 7
         level: bagrut
+        standalone: false
         objectives: [OBJ-3.7-2, OBJ-3.7-1]
-        prompt: ממשיכים למשוך. באיזה רדיוס החוט נקרע?
-        answer: 0.232
-        unit: m
-        correctFeedback: >-
-          נכון. $T(r) = \dfrac{mv_0^2r_0^2}{r^3} = 20\,\text{N}$ נותן
-          $r^3 = \dfrac{0.25\cdot4.0\cdot0.25}{20} = 0.0125\,\text{m}^3$, ו-$r = 0.232\,\text{m}$. שם המהירות $4.31\,\text{m/s}$.
-          אחרי הקריעה הדסקית נעה בקו ישר, משיק למעגל, והתנע הזוויתי שלה ביחס ל-$O$ נשאר $0.25\,\text{kg·m}^2/\text{s}$.
-        wrongFeedback: 'השוו את $T(r)$ מחלק ג ל-$20\,\text{N}$ ובודדו את $r$. שימו לב לשורש השלישי.'
-        commonWrong:
-          - value: 0.05
-            feedback: 'השתמשתם ב-$T = mv_0^2/r$, כאילו המהירות נשארת $v_0$. משימור $L$ המהירות גדלה, והמתיחות גדלה כמו $1/r^3$.'
-            misconception: MC-3-central-force-no-work
-          - value: 0.158
-            feedback: 'הנחתם $v \propto 1/\sqrt r$, ולכן $T \propto 1/r^2$. משימור $L = mrv$, $v \propto 1/r$ ו-$T \propto 1/r^3$.'
+        prompt: >-
+          ממשיכים למשוך.
+
+          (1) בטאו את הרדיוס $r_b$ שבו החוט נקרע באמצעות $m$, $v_0$, $r_0$ והמתיחות המרבית $T_{\max}$ שהחוט עומד בה.
+
+          (2) בדקו את הביטוי בגבולות $T_{\max} \to mv_0^2/r_0$ ו-$T_{\max} \to \infty$, ובדקו יחידות.
+
+          (3) חשבו את $r_b$ עבור $T_{\max} = 20\,\text{N}$, ותארו את התנועה של הדסקית אחרי הקריעה.
         hints:
-          - '$T(r) = mv_0^2r_0^2/r^3$.'
+          - 'השוו את $T(r)$ מחלק ג ל-$T_{\max}$. שימו לב: המהירות לא נשארת $v_0$, ולכן $T$ לא $mv_0^2/r$.'
+        solution:
+          - { kind: law, text: 'מחלק ג: $L$ ביחס ל-$O$ נשמר, ולכן $v = v_0r_0/r$, והמתיחות במסלול כמעט מעגלי היא $T(r) = \dfrac{mv^2}{r} = \dfrac{mv_0^2r_0^2}{r^3}$. החוט נקרע כש-$T(r_b) = T_{\max}$.' }
+          - { kind: manipulation, text: '$\dfrac{mv_0^2r_0^2}{r_b^3} = T_{\max}$, ולכן $$r_b = \left(\frac{mv_0^2r_0^2}{T_{\max}}\right)^{1/3} = r_0\left(\frac{T_0}{T_{\max}}\right)^{1/3},\qquad T_0 = \frac{mv_0^2}{r_0}$$ $T_0$ היא המתיחות בהתחלה. מי שמניח שהמהירות נשארת $v_0$ מקבל $T \propto 1/r$ ורדיוס קטן בהרבה, $0.050\,\text{m}$ כאן: המתיחות גדלה מהר יותר, כי המתיחות עושה עבודה והדסקית מאיצה.' }
+          - { kind: limit, text: 'כש-$T_{\max} \to T_0$: $r_b \to r_0$. החוט בקושי מחזיק את התנועה ההתחלתית, ונקרע מיד כשמתחילים למשוך. כש-$T_{\max} \to \infty$: $r_b \to 0$, חוט שלא נקרע אפשר למשוך עד החור, אבל המתיחות והמהירות שואפות לאינסוף, כמו בחלק ג.' }
+          - { kind: units, text: '$\dfrac{\text{kg}\cdot\text{m}^2/\text{s}^2\cdot\text{m}^2}{\text{N}} = \text{m}^3$, ולכן $r_b$ במטרים.' }
+          - { kind: substitution, text: '$r_b^3 = \dfrac{0.25\cdot4.0\cdot0.25}{20} = 0.0125\,\text{m}^3$, ולכן $r_b = 0.232\,\text{m}$. שם $v = 2.0\cdot0.50/0.232 = 4.31\,\text{m/s}$.' }
+          - { kind: result, text: '$r_b = \left(mv_0^2r_0^2/T_{\max}\right)^{1/3} = 0.232\,\text{m}$. אחרי הקריעה לא פועל כוח אופקי: הדסקית נעה בקו ישר, משיק למעגל, ב-$4.31\,\text{m/s}$. התנע הזוויתי שלה ביחס ל-$O$ נשאר $0.25\,\text{kg}\cdot\text{m}^2/\text{s}$, והמרחק הקטן ביותר של הקו מ-$O$ הוא $r_b$.' }
+        rubric:
+          - text: 'השתמשתי ב-$T(r) = mv_0^2r_0^2/r^3$, עם המהירות משימור $L$, ולא ב-$mv_0^2/r$.'
+          - text: 'בודדתי $r_b = (mv_0^2r_0^2/T_{\max})^{1/3}$, עם השורש השלישי.'
+          - text: 'בדקתי ש-$r_b \to r_0$ כש-$T_{\max} \to mv_0^2/r_0$, ו-$r_b \to 0$ כש-$T_{\max} \to \infty$.'
+          - text: 'חישבתי $r_b \approx 0.232\,\text{m}$, ותיארתי תנועה בקו ישר משיק אחרי הקריעה.'
 
   # ------------------------------------------------------------ 3: a person on a raft
   - id: Q-3-bagrut-3
@@ -300,27 +338,35 @@ questions:
           - 'מה התנע הכולל בהתחלה, ואיזה כוח חיצוני יכול לשנות אותו?'
 
       - label: ג
-        type: numeric
+        type: open
         points: 6
         level: mid
         objectives: [OBJ-3.5-2]
         prompt: >-
-          עכשיו האדם עומד שוב במנוחה על הרפסודה העומדת, וקופץ ממנה אופקית למים. הוא עוזב אותה במהירות אופקית
-          $u = 4.0\,\text{m/s}$ **ביחס לרפסודה**. מה מהירות הרפסודה מיד אחרי?
-        answer: 0.8
-        unit: m/s
-        correctFeedback: >-
-          נכון. תנע אופקי: $mv_{\text{p}} + Mv_{\text{r}} = 0$, ומהירות יחסית: $v_{\text{p}} - v_{\text{r}} = u$. לכן
-          $v_{\text{r}} = -\dfrac{mu}{m + M} = -\dfrac{70\cdot4.0}{350} = -0.80\,\text{m/s}$, ו-$v_{\text{p}} = 3.2\,\text{m/s}$.
-        wrongFeedback: 'כתבו שתי משוואות: שימור התנע (עם מהירויות ביחס למים) והקשר בין המהירות היחסית למהירויות ביחס למים.'
-        commonWrong:
-          - value: 1
-            feedback: 'חישבתם $mu/M$, כאילו האדם עוזב ב-$4.0\,\text{m/s}$ ביחס למים. ביחס למים הוא נע לאט יותר, כי הרפסודה נרתעת לאחור.'
-            misconception: MC-3-relative-as-ground-displacement
-          - value: 3.2
-            feedback: 'זו המהירות של האדם ביחס למים. השאלה שואלת על הרפסודה.'
+          עכשיו האדם עומד שוב במנוחה על הרפסודה העומדת, וקופץ ממנה אופקית למים. הוא עוזב אותה במהירות אופקית $u$
+          **ביחס לרפסודה**.
+
+          (1) בטאו את מהירות הרפסודה $v_{\text{r}}$ ואת מהירות האדם $v_{\text{p}}$ ביחס למים, מיד אחרי הקפיצה,
+          באמצעות $m$, $M$ ו-$u$.
+
+          (2) בדקו את הביטויים בגבולות $M \to \infty$ ו-$M \to 0$, ובדקו יחידות.
+
+          (3) חשבו את $v_{\text{r}}$ ואת $v_{\text{p}}$ עבור $u = 4.0\,\text{m/s}$.
         hints:
-          - 'אם מהירות הרפסודה $v_{\text{r}}$, מה מהירות האדם ביחס למים?'
+          - 'כתבו שתי משוואות: שימור התנע, עם מהירויות ביחס למים, והקשר בין המהירות היחסית למהירויות ביחס למים.'
+          - 'האדם לא עוזב ב-$u$ ביחס למים: הרפסודה נרתעת לאחור בזמן הקפיצה.'
+        solution:
+          - { kind: law, text: 'אין כוח חיצוני אופקי, והכול מתחיל במנוחה, ולכן רכיב ה-$x$ של התנע נשמר ונשאר אפס (ציר $x$ בכיוון הקפיצה): $mv_{\text{p}} + Mv_{\text{r}} = 0$. המהירות היחסית: $v_{\text{p}} - v_{\text{r}} = u$.' }
+          - { kind: manipulation, text: 'מציבים $v_{\text{p}} = u + v_{\text{r}}$: $m(u + v_{\text{r}}) + Mv_{\text{r}} = 0$, ולכן $$v_{\text{r}} = -\frac{mu}{m + M},\qquad v_{\text{p}} = \frac{Mu}{m + M}$$' }
+          - { kind: limit, text: 'כש-$M \to \infty$ (רציף): $v_{\text{r}} \to 0$ ו-$v_{\text{p}} \to u$, הקפיצה הרגילה. כש-$M \to 0$: $v_{\text{p}} \to 0$ ו-$v_{\text{r}} \to -u$: הרגליים רק דוחפות את הרפסודה אחורה, והאדם לא זז. מי שמחשב $mu/M$, כאילו $u$ ביחס למים, מקבל ב-$M \to 0$ מהירות אינסופית.' }
+          - { kind: units, text: 'המנות $m/(m + M)$ ו-$M/(m + M)$ חסרות ממדים, ולכן שתי המהירויות ביחידות של $u$.' }
+          - { kind: substitution, text: '$v_{\text{r}} = -\dfrac{70\cdot4.0}{350} = -0.80\,\text{m/s}$ ו-$v_{\text{p}} = \dfrac{280\cdot4.0}{350} = 3.2\,\text{m/s}$. בדיקה: $3.2 - (-0.80) = 4.0\,\text{m/s}$, ו-$70\cdot3.2 = 224 = 280\cdot0.80$.' }
+          - { kind: result, text: '$v_{\text{r}} = -\dfrac{mu}{m + M} = -0.80\,\text{m/s}$ (אחורה), ו-$v_{\text{p}} = \dfrac{Mu}{m + M} = 3.2\,\text{m/s}$.' }
+        rubric:
+          - text: 'כתבתי את שימור התנע עם מהירויות ביחס למים, ואת $v_{\text{p}} - v_{\text{r}} = u$.'
+          - text: 'קיבלתי $v_{\text{r}} = -mu/(m + M)$ ו-$v_{\text{p}} = Mu/(m + M)$.'
+          - text: 'בדקתי את הגבולות $M \to \infty$ ו-$M \to 0$ ואת היחידות.'
+          - text: 'חישבתי $v_{\text{r}} = -0.80\,\text{m/s}$ ו-$v_{\text{p}} = 3.2\,\text{m/s}$.'
 
       - label: ד
         type: open
@@ -405,27 +451,34 @@ questions:
           - '$\dfrac{\partial r}{\partial x} = \dfrac xr$, ולכן $\dfrac{\partial U}{\partial x} = \dfrac{dU}{dr}\cdot\dfrac xr$. ביחד עם $y$, זה $\vec F = -\dfrac{dU}{dr}\,\hat r$ (שיעור 3.2).'
 
       - label: ג
-        type: numeric
+        type: open
         points: 6
         level: mid
         objectives: [OBJ-3.3-2, OBJ-3.3-1]
         prompt: >-
-          הדסקית נחה בתחתית התעלה, בנקודה $(a,\,0)$, ומקבלים לה מהירות לאורך ציר $x$, אל $O$. מה המהירות המזערית שבה
-          היא עוברת מעל הגבעה ומגיעה לצד השני של התעלה?
-        answer: 6.32
-        unit: m/s
-        correctFeedback: >-
-          נכון. התנועה לאורך ציר $x$, דרך $O$ (התנע הזוויתי אפס), ולכן זו בעיה בממד אחד. המחסום הוא הגבעה: $U(0) = 0$,
-          גבוה ב-$U_0 = 2.0\,\text{J}$ מהתחתית. צריך $\tfrac12mv^2 > U_0$, כלומר $v > \sqrt{\dfrac{2U_0}{m}} = \sqrt{\dfrac{4.0}{0.10}} = 6.32\,\text{m/s}$.
-          במהירות קטנה יותר יש לה נקודת מפנה לפני $O$, והיא חוזרת.
-        wrongFeedback: 'מצאו את הגובה של המחסום, $U(0) - U(a)$, והשוו אותו לאנרגיה הקינטית ההתחלתית.'
-        commonWrong:
-          - value: 4.47
-            feedback: 'שכחתם את ה-$\tfrac12$: $\tfrac12mv^2 = U_0$ נותן $v = \sqrt{2U_0/m}$.'
-          - value: 8.94
-            feedback: 'לקחתם מחסום של $2U_0 = 4.0\,\text{J}$. הגבעה ב-$O$ נמצאת ב-$U = 0$, והתחתית ב-$U = -U_0$: ההפרש $U_0$ בלבד.'
+          הדסקית נחה בתחתית התעלה, בנקודה $(a,\,0)$, ומקבלת מהירות לאורך ציר $x$, אל $O$.
+
+          (1) בטאו את המהירות המזערית $v_{\min}$ שבה היא עוברת מעל הגבעה ומגיעה לצד השני של התעלה, באמצעות $U_0$
+          ו-$m$. מה קורה במהירות קטנה יותר?
+
+          (2) בדקו את הביטוי בגבול $U_0 \to 0$, ובדקו יחידות.
+
+          (3) חשבו את $v_{\min}$.
         hints:
-          - 'מה הערכים של $U$ ב-$r = a$ וב-$r = 0$?'
+          - 'מה הערכים של $U$ ב-$r = a$ וב-$r = 0$? המחסום הוא ההפרש ביניהם, לא $U$ בגבעה לבדו.'
+          - 'אל תשכחו את ה-$\tfrac12$ באנרגיה הקינטית.'
+        solution:
+          - { kind: law, text: 'הכוח משמר ואין חיכוך, ולכן $\tfrac12mv^2 + U$ נשמרת. המהירות ההתחלתית לאורך ציר $x$, דרך $O$: התנע הזוויתי ביחס ל-$O$ אפס, הכוח רדיאלי, והדסקית נשארת על ציר $x$. זו בעיה בממד אחד עם $U(|x|)$.' }
+          - { kind: manipulation, text: 'המחסום בין התחתית לגבעה: $U(0) - U(a) = 0 - (-U_0) = U_0$. כדי להגיע ל-$O$ עם מהירות חיובית צריך $\tfrac12mv^2 > U_0$, כלומר $$v > v_{\min} = \sqrt{\frac{2U_0}{m}}$$ במהירות קטנה יותר יש נקודת מפנה $x_t$ בין $0$ ל-$a$, שבה $U(x_t) = -U_0 + \tfrac12mv^2$, והדסקית חוזרת אל התעלה.' }
+          - { kind: limit, text: 'כש-$U_0 \to 0$ השולחן שטוח, ו-$v_{\min} \to 0$: כל מהירות מספיקה. גוף כבד יותר צריך מהירות קטנה יותר, כי המחסום נתון באנרגיה. ו-$v_{\min}$ לא תלויה ב-$a$: כובע רחב יותר באותו עומק נותן אותו סף.' }
+          - { kind: units, text: '$\sqrt{\text{J}/\text{kg}} = \sqrt{\text{m}^2/\text{s}^2} = \text{m/s}$.' }
+          - { kind: substitution, text: '$v_{\min} = \sqrt{\dfrac{2\cdot2.0}{0.10}} = \sqrt{40} = 6.32\,\text{m/s}$.' }
+          - { kind: result, text: '$v_{\min} = \sqrt{2U_0/m} = 6.32\,\text{m/s}$. במהירות קטנה יותר הדסקית נעצרת לפני $O$ וחוזרת.' }
+        rubric:
+          - text: 'מצאתי את גובה המחסום, $U(0) - U(a) = U_0$, ולא $2U_0$.'
+          - text: 'כתבתי שימור אנרגיה וקיבלתי $v_{\min} = \sqrt{2U_0/m}$.'
+          - text: 'בדקתי ש-$v_{\min} \to 0$ כש-$U_0 \to 0$, ובדקתי יחידות.'
+          - text: 'חישבתי $v_{\min} \approx 6.32\,\text{m/s}$.'
 
       - label: ד
         type: open
@@ -451,3 +504,118 @@ questions:
           - text: השוויתי $mv^2/r$ לכוח הרדיאלי פנימה, $dU/dr$, והגעתי ל-$v(r)$.
           - text: הסברתי שמסלול מעגלי אפשרי רק ב-$r > a$, כי בתוך התעלה הכוח פונה החוצה.
           - text: בדקתי את הגבול $r \to a$ ואת היחידות, והצבתי ב-$r = 0.75\,\text{m}$ וקיבלתי $15\,\text{m/s}$.
+
+  # ------------------------------------------------------------ 5: a block on a quarter-circle track cut in a free cart (joins 1.5, 2.x and 3.x)
+  - id: Q-3-bagrut-5
+    type: bagrut
+    title: גוש במסילה של עגלה חופשית
+    prompt: >-
+      בתוך עגלה בעלת מסה $M$ חצובה מסילה חלקה בצורת רבע מעגל ברדיוס $R$. הקצה העליון של המסילה נמצא בגובה $R$ מעל
+      הנקודה התחתונה שלה, ושם המסילה אנכית; בנקודה התחתונה היא אופקית. העגלה עומדת על רצפה אופקית חלקה. גוש קטן בעל
+      מסה $m$ משוחרר ממנוחה בקצה העליון של המסילה, כשגם העגלה במנוחה. ציר $x$ אופקי, בכיוון שבו הגוש נע כשהוא מגיע
+      לנקודה התחתונה, וציר $y$ כלפי מעלה.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-3.5-2, OBJ-3.3-1]
+        prompt: מה נשמר במערכת גוש + עגלה בזמן שהגוש מחליק במסילה?
+        choices:
+          - text: 'רכיב ה-$x$ של התנע, והאנרגיה המכנית של המערכת; רכיב ה-$y$ של התנע לא נשמר.'
+            correct: true
+            feedback: >-
+              נכון. הכוחות החיצוניים, הכובד והנורמלי של הרצפה, אנכיים, ולכן $P_x$ נשמר. אבל הם לא מאוזנים: הגוש יורד
+              ואחר כך נעצר אנכית, ולכן $P_y$ משתנה. המסילה והרצפה חלקות, והנורמלי בין הגוש למסילה עושה על הגוש ועל
+              העגלה עבודות שסכומן אפס, ולכן האנרגיה המכנית של שניהם יחד נשמרת.
+          - text: התנע כולו, והאנרגיה המכנית.
+            feedback: >-
+              הכובד והנורמלי של הרצפה הם כוחות חיצוניים. הם אנכיים, ולכן רק $P_x$ נשמר. בכיוון האנכי הם לא מאוזנים:
+              הגוש מתחיל במנוחה, צובר מהירות כלפי מטה, ומגיע לנקודה התחתונה עם מהירות אופקית בלבד, ולכן $P_y$ משתנה.
+            misconception: MC-3-momentum-always-conserved
+          - text: 'רכיב ה-$x$ של התנע, והאנרגיה המכנית של הגוש לבדו, כי הנורמלי ניצב למסילה ולא עושה עליו עבודה.'
+            feedback: >-
+              הנורמלי ניצב למסילה, אבל המסילה זזה. מהירות הגוש ביחס לרצפה היא מהירותו ביחס למסילה ועוד מהירות העגלה,
+              והנורמלי לא ניצב לה. הוא עושה על הגוש עבודה שלילית ועל העגלה עבודה חיובית, שווה בגודלה. רק האנרגיה של
+              שניהם יחד נשמרת.
+            misconception: MC-3-moving-surface-no-work
+          - text: 'רק האנרגיה המכנית: התנע לא נשמר, כי הגוש דוחף את העגלה.'
+            feedback: >-
+              הדחיפה בין הגוש לעגלה היא זוג כוחות פנימיים. היא מעבירה תנע מגוף לגוף, אבל לא משנה את התנע הכולל. בכיוון
+              האופקי אין כוח חיצוני, ולכן $P_x$ נשמר.
+        hints:
+          - 'אילו כוחות חיצוניים פועלים על המערכת, ובאיזה כיוון?'
+
+      - label: ב
+        type: open
+        points: 7
+        level: mid
+        objectives: [OBJ-3.5-2, OBJ-3.3-1, OBJ-1.5-1]
+        prompt: >-
+          (1) בטאו את מהירות הגוש $v$ ואת מהירות העגלה $V$ ביחס לרצפה, ברגע שהגוש מגיע לנקודה התחתונה, ואת מהירות
+          הגוש ביחס לעגלה באותו רגע, $u = v - V$, באמצעות $m$, $M$, $g$ ו-$R$.
+
+          (2) בדקו את הביטויים בגבול $M \to \infty$ ובמקרה $m = M$, ובדקו יחידות.
+        hints:
+          - 'בנקודה התחתונה המסילה אופקית, ולכן שתי המהירויות אופקיות. כתבו שימור של $P_x$ ושימור אנרגיה.'
+        solution:
+          - { kind: law, text: 'שימור רכיב ה-$x$ של התנע, מאפס: $mv + MV = 0$. שימור אנרגיה מכנית, עם הגובה $R$ שהגוש יורד: $mgR = \tfrac12mv^2 + \tfrac12MV^2$. בנקודה התחתונה שתי המהירויות אופקיות. המהירות היחסית (שיעור 1.5): $u = v - V$.' }
+          - { kind: manipulation, text: 'מהראשונה $V = -\dfrac mMv$. מציבים בשנייה: $mgR = \tfrac12mv^2\left(1 + \dfrac mM\right)$, ולכן $$v = \sqrt{\frac{2gRM}{M + m}},\qquad V = -\frac mM\,v,\qquad u = v\left(1 + \frac mM\right) = \sqrt{\frac{2gR(M + m)}{M}}$$' }
+          - { kind: limit, text: 'כש-$M \to \infty$: $v \to \sqrt{2gR}$, $V \to 0$ ו-$u \to \sqrt{2gR}$, מסילה קבועה. כש-$m = M$: $v = \sqrt{gR}$ ו-$V = -\sqrt{gR}$, והמהירות היחסית $2\sqrt{gR}$, גדולה מ-$\sqrt{2gR}$ של מסילה קבועה. והיחס בין האנרגיות הקינטיות, $\tfrac12mv^2 : \tfrac12MV^2 = M : m$: הגוף הקל מקבל את רוב האנרגיה.' }
+          - { kind: units, text: '$gR$ ביחידות $\text{m}^2/\text{s}^2$, ויחסי המסות חסרי ממדים, ולכן שלוש המהירויות ב-$\text{m/s}$.' }
+          - { kind: result, text: '$v = \sqrt{2gRM/(M + m)}$, $V = -(m/M)\,v$ (העגלה נרתעת לאחור), ו-$u = \sqrt{2gR(M + m)/M}$.' }
+        rubric:
+          - text: 'כתבתי שימור של $P_x$ ושימור אנרגיה של המערכת כולה, עם מהירויות ביחס לרצפה.'
+          - text: 'מצאתי את $v$ ואת $V$, וחישבתי את $u = v - V$ כהפרש, לא כסכום של הגדלים.'
+          - text: 'בדקתי שכש-$M \to \infty$ מתקבלת המסילה הקבועה, $\sqrt{2gR}$, ובדקתי את המקרה $m = M$ ואת היחידות.'
+
+      - label: ג
+        type: open
+        points: 8
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-2.6-2, OBJ-1.5-1, OBJ-2.1-1]
+        prompt: >-
+          (1) הראו שברגע שהגוש בנקודה התחתונה, תאוצת העגלה אפס.
+
+          (2) בטאו את הכוח הנורמלי $N$ שהמסילה מפעילה על הגוש באותו רגע באמצעות $m$, $M$ ו-$g$.
+
+          (3) בדקו את התוצאה בגבול $M \to \infty$, ובדקו יחידות.
+        hints:
+          - 'מהו הכוח האופקי היחיד על העגלה, ולאן הוא פונה כשהגוש בנקודה התחתונה?'
+          - 'ביחס לעגלה הגוש נע על מעגל ברדיוס $R$. איזו מהירות קובעת את התאוצה הצנטריפטלית שלו, $v$ או $u$?'
+        solution:
+          - { kind: law, text: 'על העגלה פועלים אופקית רק הכוח של הגוש (הרצפה חלקה, והכוח שלה אנכי). בנקודה התחתונה המסילה אופקית, ולכן הכוח בין הגוש למסילה אנכי, ותאוצת העגלה אפס באותו רגע. התאוצות (שיעור 1.5): $\vec a_{\text{block}} = \vec a_{\text{rel}} + \vec A_{\text{cart}} = \vec a_{\text{rel}}$. ביחס לעגלה הגוש נע על מעגל ברדיוס $R$ במהירות $u$, ולכן לתאוצה היחסית יש רכיב $u^2/R$ אל המרכז, כלפי מעלה; רכיב אופקי אין לה, כי גם על הגוש לא פועל שם כוח אופקי.' }
+          - { kind: manipulation, text: 'החוק השני לגוש, בכיוון $y$: $N - mg = \dfrac{mu^2}{R}$. עם $u^2 = 2gR(M + m)/M$ מחלק ב: $$N = mg + 2mg\,\frac{M + m}{M} = mg\left(3 + \frac{2m}{M}\right)$$ להציב $v^2/R$ במקום $u^2/R$ זו טעות: המסלול של הגוש ביחס לרצפה אינו מעגל ברדיוס $R$; רק ביחס לעגלה הוא כזה, ורק משום שהעגלה לא מאיצה באותו רגע מותר להשתמש בתאוצה היחסית כתאוצה.' }
+          - { kind: limit, text: 'כש-$M \to \infty$: $N \to 3mg$, התוצאה של מסילה קבועה ($v^2 = 2gR$, $N = mg + 2mg$). כשהעגלה קלה יותר, $N > 3mg$, כי העגלה נרתעת והמהירות היחסית גדלה.' }
+          - { kind: units, text: '$3 + 2m/M$ חסר ממדים, ולכן $N$ ביחידות של $mg$, ניוטון.' }
+          - { kind: result, text: 'בנקודה התחתונה תאוצת העגלה אפס, ו-$N = mg\left(3 + \dfrac{2m}{M}\right)$, כלפי מעלה.' }
+        rubric:
+          - text: 'נימקתי שהכוח של הגוש על העגלה אנכי בנקודה התחתונה, ולכן העגלה לא מאיצה באותו רגע.'
+          - text: 'השתמשתי במהירות היחסית $u$, ולא ב-$v$, בתאוצה הצנטריפטלית $u^2/R$.'
+          - text: 'קיבלתי $N = mg(3 + 2m/M)$, ובדקתי שכש-$M \to \infty$ מתקבל $3mg$.'
+
+      - label: ד
+        type: open
+        points: 6
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-2.2-1, OBJ-3.4-2]
+        prompt: >-
+          (1) בטאו את הכוח $N_f$ שהרצפה מפעילה על העגלה באותו רגע, באמצעות $m$, $M$ ו-$g$.
+
+          (2) הראו שהתוצאה מתאימה לתנועה של מרכז המסה של המערכת: $N_f - (M + m)g$ שווה למסה הכוללת כפול רכיב ה-$y$ של
+          תאוצת מרכז המסה. בדקו את התוצאה בגבול $m \to 0$, ובדקו יחידות.
+        hints:
+          - 'מה הזוג של הכוח $N$ שהמסילה מפעילה על הגוש, ועל איזה גוף הוא פועל?'
+        solution:
+          - { kind: law, text: 'החוק השלישי: הגוש דוחף את המסילה כלפי מטה בכוח $N$, הזוג של הכוח שהמסילה מפעילה עליו. העגלה נעה רק אופקית, ולכן הכוחות האנכיים עליה מאוזנים: $N_f = Mg + N$.' }
+          - { kind: manipulation, text: 'עם $N$ מחלק ג: $$N_f = Mg + mg\left(3 + \frac{2m}{M}\right) = (M + 3m)\,g + \frac{2m^2g}{M}$$ בדיקה ממרכז המסה: הכוחות החיצוניים האנכיים נותנים $N_f - (M + m)g = (M + m)\,a_{\text{cm},y} = m\,a_{\text{block},y} + M\cdot0 = \dfrac{mu^2}{R}$. מחלק ב, $\dfrac{mu^2}{R} = 2mg + \dfrac{2m^2g}{M}$, ובדיוק זה $N_f - (M + m)g$.' }
+          - { kind: limit, text: 'כש-$m \to 0$: $N_f \to Mg$, עגלה ריקה. כש-$M \to \infty$: $N_f - Mg \to 3mg$, הכוח של גוש על מסילה קבועה. הרצפה דוחפת יותר מהמשקל הכולל, $(M + m)g$, כי באותו רגע מרכז המסה מאיץ כלפי מעלה.' }
+          - { kind: units, text: 'כל איבר הוא מסה כפול $g$ (גם $m^2/M$ הוא מסה), ולכן $N_f$ בניוטון.' }
+          - { kind: result, text: '$N_f = (M + 3m)\,g + \dfrac{2m^2g}{M}$, גדול מ-$(M + m)g$ בדיוק ב-$mu^2/R$, כמו שמשפט מרכז המסה דורש.' }
+        rubric:
+          - text: 'השתמשתי בחוק השלישי: הגוש דוחף את המסילה כלפי מטה ב-$N$, וכתבתי $N_f = Mg + N$.'
+          - text: 'בדקתי ש-$N_f - (M + m)g = mu^2/R$, מהתנועה של מרכז המסה.'
+          - text: 'בדקתי את הגבולות $m \to 0$ ו-$M \to \infty$ ואת היחידות.'

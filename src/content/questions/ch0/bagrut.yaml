@@ -5,6 +5,20 @@
 #   · 4 (planet with a density profile): 0.1, 0.3, 0.4, 0.7.
 # Open parts are solved in the course format: general law (law) → derivation (manipulation) → limit check (limit)
 # → unit check (units) → numbers (substitution) only when asked, ending in a result step.
+# Part types and points (exam-style rework, 2026-11-18: open parts ≥ 13 of 25, the first part auto-graded, the last
+# a symbolic result with its limit check; chapter 0 has no fifth problem, there is no earlier chapter to join):
+#   1: mc 4 · open 8 · numeric 6 · open 7 (was numeric)  = open 15
+#   2: numeric 5 · numeric 5 · open 7 · open 8 (was numeric)  = open 15
+#   3: numeric 5 · open 8 · numeric 5 · open 7 (was numeric)  = open 15
+#   4: mc 4 · open 9 · vector 4 · open 8 (was numeric)  = open 17
+# The four converted parts were recomputed in .scratch/ch0/review-rework.ts, each closed form against a second route:
+#   1ד x(t) = v_t[t − τ(1 − e^{−t/τ})] against RK4 of dv/dt = g − v/τ plus trapezoid accumulation (agree to 1e-6),
+#      x ≈ ½gt² at t = 0.01τ; T = H/v_t + τ against Newton on x(T) = H (agree to 1e-9): 8.27e4 s = 23.0 h, τ = 1.2 ms,
+#      free fall 14.3 s;
+#   2ד L = 2πN√(R² + (u/ω)²) against a sum of 2e5 chords of the helix: 58.5 m (6πR 56.5, drop 15.1, sum 71.6);
+#   3ד tan δ = bω/(k − mω²), δ = arg(k − mω² + ibω) against RK4 of the driven ODE projected on cos/sin over ten periods
+#      at steady state (|Ã| 5.45 cm and δ agree to 1e-3): δ = 1.06 rad = 60.6°, ω₀ = 10 rad/s;
+#   4ד mgh/ΔU − 1 = h/R with M_EARTH, R_EARTH, G_NEWTON: 1.57% (agrees to 1e-9), 0.157% at 10 km, 2h/R 3.14%.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
 # Every number was computed in .scratch/ch0/review.ts with src/physics/constants.ts (G = 9.8, G_NEWTON, M_EARTH, R_EARTH),
@@ -117,32 +131,34 @@ questions:
           - '$D = 2\cdot10^{-5}\,\text{m}$, ולכן $D^3 = 8\cdot10^{-15}\,\text{m}^3$.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 7
         level: bagrut
         standalone: false
-        objectives: [OBJ-0.4-1, OBJ-0.1-2]
+        objectives: [OBJ-0.4-1, OBJ-0.3-2, OBJ-0.1-2]
         prompt: >-
-          הטיפה מתחילה ליפול ממנוחה מבסיס של ענן בגובה $1.0\,\text{km}$. כתבו את המרחק שעברה עד הרגע $t$ כאינטגרל
-          של $v(t)$ וחשבו אותו. כמה זמן, בשעות, נמשכת הנפילה עד הקרקע?
-        answer: 23
-        unit: h
-        correctFeedback: >-
-          נכון. $x(t) = \displaystyle\int_0^tv_t\left(1 - e^{-t'/\tau}\right)dt' = v_t\left[t - \tau\left(1 - e^{-t/\tau}\right)\right]$.
-          כש-$t \gg \tau$ האקספוננט זניח, ו-$x \approx v_t(t - \tau)$: הטיפה "מאחרת" רק ב-$\tau = 1.2\,\text{ms}$ לעומת
-          תנועה במהירות $v_t$ מההתחלה. לכן $T \approx \dfrac{H}{v_t} = \dfrac{1000}{0.0121} = 8.3\cdot10^4\,\text{s} \approx 23\,\text{h}$.
-          **בדיקת גבולות:** כש-$\tau \to 0$ הטיפה מגיעה ל-$v_t$ מייד, ו-$T = H/v_t$ בדיוק. בפועל זרמי אוויר ואידוי
-          משפיעים הרבה לפני כן: טיפות ערפל לא מגיעות לקרקע בנפילה.
-        wrongFeedback: >-
-          המרחק הוא האינטגרל של המהירות מ-0 עד $T$. השוו אותו ל-$1000\,\text{m}$. כמה זמן נמשך השלב שבו הטיפה עוד
-          מאיצה, לעומת כל הנפילה?
-        commonWrong:
-          - value: 0.00397
-            feedback: 'זה $\sqrt{2H/g} = 14\,\text{s}$, נפילה חופשית בלי אוויר. הגרר עוצר את ההאצה אחרי כמילישנייה, והטיפה נופלת לאט מאוד.'
-          - value: 1378
-            feedback: 'זה הזמן בדקות. התבקשתם שעות: $1378/60 \approx 23$.'
+          (1) כתבו את המרחק $x(t)$ שהטיפה עברה עד הרגע $t$ כאינטגרל של $v(t)$ מחלק ב, וחשבו אותו.
+
+          (2) הראו שכש-$t \gg \tau$, $x \approx v_t(t - \tau)$, ובטאו בעזרת $H$, $v_t$ ו-$\tau$ את זמן הנפילה $T$ מגובה $H$.
+
+          (3) בדקו את $x(t)$ בגבול $t \ll \tau$, בפיתוח טיילור של האקספוננט עד סדר שני, ואת $T$ בגבול $\tau \to 0$.
+
+          (4) הטיפה נופלת מבסיס של ענן בגובה $H = 1.0\,\text{km}$. כמה זמן, בשעות, נמשכת הנפילה עד הקרקע?
         hints:
           - 'השוו את $\tau$ לזמן הנפילה כולו. אפשר להזניח את השלב שבו הטיפה מאיצה?'
+          - 'כש-$s \ll 1$: $e^{-s} \approx 1 - s + \tfrac12s^2$.'
+        solution:
+          - { kind: law, text: 'המרחק הוא הצבירה של המהירות: $x(t) = \displaystyle\int_0^tv(t'')\,dt''$, עם $x(0) = 0$ ועם $v(t'') = v_t\left(1 - e^{-t''/\tau}\right)$ מחלק ב.' }
+          - { kind: manipulation, text: '$x(t) = v_t\left[t'' + \tau e^{-t''/\tau}\right]_0^t = v_t\left[t - \tau\left(1 - e^{-t/\tau}\right)\right]$. כש-$t \gg \tau$ האקספוננט זניח, ו-$x \approx v_t(t - \tau)$: הטיפה מאחרת ב-$\tau$ לעומת גוף שנע במהירות $v_t$ מההתחלה. לכן $H = v_t(T - \tau)$, ו-$$T = \frac{H}{v_t} + \tau$$' }
+          - { kind: limit, text: 'כש-$t \ll \tau$: $1 - e^{-t/\tau} \approx \dfrac t\tau - \dfrac{t^2}{2\tau^2}$, ולכן $x \approx \dfrac{v_t}{2\tau}t^2 = \tfrac12gt^2$ (כי $v_t = g\tau$): נפילה חופשית, כמו בגבול הזמן הקצר של חלק ב. כש-$\tau \to 0$: $T \to H/v_t$, הטיפה מגיעה ל-$v_t$ מייד ונעה בה כל הדרך.' }
+          - { kind: units, text: '$v_tt$ ו-$v_t\tau$ במטרים, כמו $x$. $H/v_t$ ו-$\tau$ בשניות, כמו $T$.' }
+          - { kind: substitution, text: '$T = \dfrac{1000}{0.0121} + 0.0012 = 8.27\cdot10^4\,\text{s} = 23.0\,\text{h}$. התיקון $\tau = 1.2\,\text{ms}$ זניח לגמרי. בלי אוויר הנפילה הייתה נמשכת $\sqrt{2H/g} = 14\,\text{s}$ בלבד.' }
+          - { kind: result, text: '$x(t) = v_t\left[t - \tau\left(1 - e^{-t/\tau}\right)\right]$ ו-$T = H/v_t + \tau \approx 23\,\text{h}$. בפועל זרמי אוויר ואידוי משפיעים הרבה לפני כן: טיפות ערפל לא מגיעות לקרקע בנפילה.' }
+        rubric:
+          - text: 'כתבתי את $x(t)$ כאינטגרל של $v(t)$ וקיבלתי $v_t\left[t - \tau\left(1 - e^{-t/\tau}\right)\right]$.'
+          - text: הראיתי שבזמן ארוך $x \approx v_t(t - \tau)$, וקיבלתי $T = H/v_t + \tau$.
+          - text: בדקתי שבזמן קצר $x \approx \tfrac12gt^2$, ושכש-$\tau \to 0$ נשאר $T = H/v_t$.
+          - text: הצבתי וקיבלתי כ-$23\,\text{h}$, וראיתי ש-$\tau$ זניח לעומת $H/v_t$.
 
   # ------------------------------------------------------------ 2: a helical slide: vector derivatives, angles, arc length
   - id: Q-0-bagrut-2
@@ -226,33 +242,36 @@ questions:
           - text: בדקתי שב-$u \to 0$ מתקבלת תאוצה של תנועה מעגלית, וב-$\omega \to 0$ תאוצה אפס.
 
       - label: ד
-        type: numeric
+        type: open
         points: 8
         level: bagrut
         objectives: [OBJ-0.7-2, OBJ-0.4-1]
         prompt: >-
-          מה האורך של המגלשה, לאורך שלושת הסיבובים? אפשר לצבור את הדרך באינטגרל $\int|\vec v|\,dt$, או לכתוב את אלמנט
-          האורך בקואורדינטות גליליות, $d\ell^2 = ds^2 + s^2d\varphi^2 + dz^2$.
-        answer: 58.5
-        unit: m
-        correctFeedback: >-
-          נכון. על הסליל $s = R$ קבוע, $ds = 0$, ו-$dz = -(u/\omega)\,d\varphi$, ולכן $d\ell = \sqrt{R^2 + (u/\omega)^2}\,d\varphi$
-          ו-$L = 6\pi\sqrt{9 + 0.64} = 58.5\,\text{m}$. אותו דבר מ-$|\vec v|\cdot T = 3.10\cdot6\pi$, כי הגודל קבוע.
-          **בדיקת גבולות:** כש-$u \to 0$, $L \to 6\pi R$, שלושה היקפים של מעגל. כש-$R \to 0$, $L \to 6\pi u/\omega$,
-          הירידה האנכית בלבד.
-        wrongFeedback: 'בכל סיבוב $\varphi$ גדלה ב-$2\pi$, והמגלש יורד $2\pi u/\omega$. כתבו את $d\ell$ בעזרת $d\varphi$ ואנטגרלו על $6\pi$.'
-        commonWrong:
-          - value: 56.5
-            feedback: 'זה $6\pi R$, ההיקפים האופקיים בלבד. בכל סיבוב המגלש גם יורד $5.0\,\text{m}$, והדרך ארוכה יותר.'
-          - value: 71.6
-            feedback: 'חיברתם את הדרך האופקית ($56.5\,\text{m}$) ואת הירידה ($15.1\,\text{m}$) כמספרים. בכל קטע קטן הם ניצבים זה לזה, ומתחברים בפיתגורס.'
-            misconception: MC-0-magnitudes-add
-          - value: 19.5
-            feedback: 'זה סיבוב אחד. המגלשה עושה שלושה.'
-          - value: 15.1
-            feedback: 'זו רק הירידה האנכית, $6\pi u/\omega$. רוב הדרך היא סביב העמוד.'
+          (1) כתבו את אלמנט האורך לאורך הסליל בקואורדינטות גליליות, $d\ell^2 = ds^2 + s^2d\varphi^2 + dz^2$, ובטאו אותו
+          בעזרת $d\varphi$.
+
+          (2) בטאו את האורך $L$ של מגלשה שעושה $N$ סיבובים באמצעות $R$, $u$, $\omega$ ו-$N$. בדקו את הביטוי בדרך שנייה,
+          בצבירה $\int|\vec v|\,dt$.
+
+          (3) בדקו את הביטוי בגבולות $u \to 0$ ו-$R \to 0$, ובדקו יחידות.
+
+          (4) מה האורך של המגלשה, לאורך שלושת הסיבובים?
         hints:
-          - 'זמן שלושה סיבובים הוא $T = 6\pi/\omega$.'
+          - 'בכל סיבוב $\varphi$ גדלה ב-$2\pi$, והמגלש יורד $2\pi u/\omega$.'
+          - 'את הדרך סביב העמוד ואת הירידה אי אפשר לחבר כמספרים: בכל קטע קטן הן ניצבות זו לזו.'
+        solution:
+          - { kind: law, text: 'האורך של מסלול הוא סכום אלמנטי האורך שלו: $L = \displaystyle\int d\ell$, עם $d\ell^2 = ds^2 + s^2d\varphi^2 + dz^2$ בקואורדינטות גליליות.' }
+          - { kind: manipulation, text: 'על הסליל $s = R$ קבוע, ולכן $ds = 0$. $\varphi = \omega t$ ו-$z = H - ut$, ולכן $dz = -u\,dt = -\dfrac{u}{\omega}\,d\varphi$. מכאן $d\ell = \sqrt{R^2 + (u/\omega)^2}\,d\varphi$, שלא תלוי ב-$\varphi$, ובאינטגרל על $N$ סיבובים, $\varphi$ מ-$0$ עד $2\pi N$: $$L = 2\pi N\sqrt{R^2 + \left(\frac{u}{\omega}\right)^2}$$ בדרך השנייה: $|\vec v| = \sqrt{R^2\omega^2 + u^2}$ קבוע (חלק א), והזמן של $N$ סיבובים $2\pi N/\omega$, ולכן $L = |\vec v|\cdot\dfrac{2\pi N}{\omega}$, אותו ביטוי.' }
+          - { kind: manipulation, text: 'בדיקה בציור: פורשים את הגליל למישור. כל סיבוב נעשה קו ישר, היתר של משולש ישר זווית שניצביו $2\pi R$ (ההיקף) ו-$2\pi u/\omega$ (הירידה בסיבוב). היתר הוא בדיוק $2\pi\sqrt{R^2 + (u/\omega)^2}$.' }
+          - { kind: limit, text: 'כש-$u \to 0$: $L \to 2\pi NR$, $N$ היקפים של מעגל אופקי. כש-$R \to 0$: $L \to 2\pi Nu/\omega$, הירידה האנכית בלבד, לאורך הציר.' }
+          - { kind: units, text: '$u/\omega$ ביחידות $\dfrac{\text{m/s}}{\text{1/s}} = \text{m}$, כמו $R$, ולכן $L$ במטרים.' }
+          - { kind: substitution, text: '$L = 6\pi\sqrt{3.0^2 + 0.80^2} = 6\pi\cdot3.10 = 58.5\,\text{m}$. שלושת ההיקפים לבדם $6\pi R = 56.5\,\text{m}$, והירידה $6\pi u/\omega = 15.1\,\text{m}$. הסכום שלהם, $71.6\,\text{m}$, גדול מדי.' }
+          - { kind: result, text: '$L = 2\pi N\sqrt{R^2 + (u/\omega)^2}$, ועם שלושה סיבובים $58.5\,\text{m}$.' }
+        rubric:
+          - text: 'כתבתי את $d\ell$ על הסליל עם $ds = 0$ ו-$dz = -(u/\omega)\,d\varphi$, וקיבלתי $L = 2\pi N\sqrt{R^2 + (u/\omega)^2}$.'
+          - text: בדקתי שאותו ביטוי יוצא מ-$|\vec v|$ כפול זמן הנסיעה.
+          - text: 'בדקתי שב-$u \to 0$ יוצאים $N$ היקפים, וב-$R \to 0$ הירידה האנכית בלבד.'
+          - text: הצבתי וקיבלתי $58.5\,\text{m}$.
 
   # ------------------------------------------------------------ 3: a driven damped oscillator: roots and complex amplitudes
   - id: Q-0-bagrut-3
@@ -339,29 +358,36 @@ questions:
           - 'חשבו קודם את המכנה $k - m\omega^2 + ib\omega$ כמספר מרוכב.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 7
         level: bagrut
         standalone: false
         objectives: [OBJ-0.6-1, OBJ-0.6-2]
         prompt: >-
           כתבו $\tilde A = |\tilde A|e^{-i\delta}$, כך ש-$x = |\tilde A|\cos(\omega t - \delta)$: התזוזה מפגרת אחרי הכוח
-          בפאזה $\delta$. מה $\delta$, ברדיאנים, ב-$\omega = 8.0\,\text{rad/s}$?
-        answer: 1.06
-        unit: rad
-        correctFeedback: >-
-          נכון. $\arg\tilde A = -\arg(18 + 32i)$, ולכן $\delta = \arctan\dfrac{b\omega}{k - m\omega^2} = \arctan\dfrac{32}{18} = 1.06\,\text{rad}$
-          ($60.6^\circ$). **בדיקת גבולות:** כש-$\omega \to 0$, $\delta \to 0$: המסה זזה יחד עם הכוח. ב-$\omega = \sqrt{k/m} = 10\,\text{rad/s}$
-          המכנה מדומה לגמרי ו-$\delta = \pi/2$. כש-$\omega \to \infty$, $\delta \to \pi$: המסה נעה נגד הכוח. כאן
-          $\omega < 10\,\text{rad/s}$, ולכן $\delta < \pi/2$, כמו שיצא.
-        wrongFeedback: 'הארגומנט של מנה הוא הארגומנט של המונה פחות זה של המכנה. המכנה $18 + 32i$ ברביע הראשון.'
-        commonWrong:
-          - value: 0.512
-            feedback: 'זה $\arctan(18/32)$, המנה הפוכה. הארגומנט של $a + ib$ הוא $\arctan(b/a)$, החלק המדומה חלקי הממשי.'
-          - value: 60.6
-            feedback: 'זו הזווית במעלות. התבקשתם רדיאנים.'
+          בפאזה $\delta$.
+
+          (1) בטאו את $\tan\delta$ באמצעות $k$, $m$, $b$ ו-$\omega$, והסבירו למה $\delta$ תמיד בין $0$ ל-$\pi$.
+
+          (2) בדקו את $\delta$ בשלושה גבולות, $\omega \to 0$, $\omega = \omega_0$ ו-$\omega \to \infty$, ותארו בכל אחד מהם
+          איך המסה נעה ביחס לכוח.
+
+          (3) מה $\delta$, ברדיאנים, ב-$\omega = 8.0\,\text{rad/s}$?
         hints:
-          - 'אם $\tilde A = F_0/z$, אז $\arg\tilde A = -\arg z$.'
+          - 'אם $\tilde A = F_0/z$ ו-$F_0$ ממשי וחיובי, אז $\arg\tilde A = -\arg z$.'
+          - 'הארגומנט של $a + ib$ מקיים $\tan\varphi = b/a$: החלק המדומה חלקי הממשי, ולא ההפך. באיזה רביע נמצא המכנה?'
+        solution:
+          - { kind: law, text: 'הארגומנט של מנה הוא הארגומנט של המונה פחות זה של המכנה. כאן $\tilde A = F_0/z$, עם $z = (k - m\omega^2) + ib\omega$ ו-$F_0$ ממשי וחיובי, ולכן $\arg\tilde A = -\arg z$, כלומר $\delta = \arg z$.' }
+          - { kind: manipulation, text: '$$\tan\delta = \frac{\operatorname{Im}z}{\operatorname{Re}z} = \frac{b\omega}{k - m\omega^2}$$ החלק המדומה, $b\omega$, חיובי תמיד, ולכן $z$ בחצי העליון של המישור המרוכב ו-$0 < \delta < \pi$. כש-$\omega < \omega_0$ החלק הממשי חיובי, ו-$z$ ברביע הראשון. כש-$\omega > \omega_0$ הוא שלילי, $z$ ברביע השני, ו-$\delta = \pi + \arctan\dfrac{b\omega}{k - m\omega^2}$: לא הערך השלילי שהמחשבון נותן.' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $\tan\delta \to 0^+$ ו-$\delta \to 0$, המסה זזה יחד עם הכוח, כמו קפיץ שנמתח לאט. ב-$\omega = \omega_0 = \sqrt{k/m}$: החלק הממשי מתאפס ו-$\delta = \pi/2$, התזוזה מפגרת ברבע מחזור, והמהירות בפאזה עם הכוח. כש-$\omega \to \infty$: $-m\omega^2$ גובר על $b\omega$, ו-$\delta \to \pi$: המסה נעה נגד הכוח, וההתמד שלה קובע את התנועה.' }
+          - { kind: units, text: '$b\omega$ ו-$k - m\omega^2$ שניהם ביחידות $\text{N/m}$, ולכן $\tan\delta$ חסר ממדים, כמו שצריך.' }
+          - { kind: substitution, text: '$\tan\delta = \dfrac{4.0\cdot8.0}{50 - 0.50\cdot8.0^2} = \dfrac{32}{18}$. כאן $\omega = 8.0\,\text{rad/s} < \omega_0 = 10\,\text{rad/s}$, הרביע הראשון, ו-$\delta = \arctan1.78 = 1.06\,\text{rad} = 60.6^\circ$.' }
+          - { kind: result, text: '$\tan\delta = \dfrac{b\omega}{k - m\omega^2}$ עם $0 < \delta < \pi$, ו-$\delta = 1.06\,\text{rad}$ ב-$\omega = 8.0\,\text{rad/s}$, קצת פחות מ-$\pi/2$, כי $\omega$ קצת מתחת ל-$\omega_0$.' }
+        rubric:
+          - text: 'קיבלתי $\tan\delta = b\omega/(k - m\omega^2)$ מ-$\delta = \arg\left(k - m\omega^2 + ib\omega\right)$.'
+          - text: נימקתי ש-$b\omega > 0$ ולכן $0 < \delta < \pi$, ושמעל $\omega_0$ צריך להוסיף $\pi$ לערך של $\arctan$.
+          - text: 'בדקתי ש-$\delta \to 0$ בתדירות נמוכה, $\delta = \pi/2$ ב-$\omega_0$ ו-$\delta \to \pi$ בתדירות גבוהה.'
+          - text: הצבתי וקיבלתי $\delta \approx 1.06\,\text{rad}$.
 
   # ------------------------------------------------------------ 4: a planet with a density profile: shells, gradient, Taylor
   - id: Q-0-bagrut-4
@@ -447,29 +473,35 @@ questions:
         wrongFeedback: '$U$ תלוי רק ב-$r$. באיזה כיוון $r$ גדל, והאם $-GMm/r$ גדל או קטן איתו?'
 
       - label: ד
-        type: numeric
+        type: open
         points: 8
         level: bagrut
         objectives: [OBJ-0.3-2, OBJ-0.1-2]
         prompt: >-
-          ליד פני השטח מקרבים $U(R + h) - U(R) \approx mgh$, עם $g = GM/R^2$. בכמה אחוזים הקירוב $mgh$ גדול מההפרש
-          המדויק $U(R + h) - U(R)$, כשמרימים גוף לגובה $h = 100\,\text{km}$ מעל כוכב לכת ברדיוס $R = 6.37\cdot10^6\,\text{m}$?
-        answer: 1.57
-        unit: '%'
-        correctFeedback: >-
-          נכון. $\Delta U = GMm\left(\dfrac1R - \dfrac{1}{R + h}\right) = \dfrac{GMmh}{R(R + h)}$, ולכן
-          $\dfrac{mgh}{\Delta U} = \dfrac{R + h}{R} = 1 + \dfrac{h}{R}$: הקירוב גדול ב-$h/R = 1.57\%$. בפיתוח טיילור,
-          $\dfrac{1}{R + h} = \dfrac1R\left(1 - \dfrac hR + \dfrac{h^2}{R^2} - \dots\right)$: $mgh$ הוא האיבר הראשון, והאיבר הבא
-          קטן ממנו פי $h/R$. **בדיקת גבולות:** כש-$h \to 0$ השגיאה נעלמת. כש-$h \gg R$, $mgh$ גדל בלי גבול, וההפרש המדויק
-          שואף ל-$GMm/R$. בגובה טיסה, $10\,\text{km}$, השגיאה $0.16\%$ בלבד.
-        wrongFeedback: 'חשבו את ההפרש המדויק, $GMm\left(\dfrac1R - \dfrac1{R + h}\right)$, וחלקו בו את $mgh = \dfrac{GMm}{R^2}h$.'
-        commonWrong:
-          - value: 3.14
-            feedback: 'זה $2h/R$, הירידה היחסית ב-$g$ עצמו בגובה $h$. כאן משווים אנרגיות, ו-$1/r$ יורד לאט יותר מ-$1/r^2$: השגיאה היא $h/R$.'
-          - value: 0.785
-            feedback: >-
-              זה $h/(2R)$: כך יוצא בפיתוח טיילור לסדר שני כששוכחים את המעריך בנגזרת של $1/r^2$. הנגזרת היא
-              $\dfrac{d}{dr}\dfrac{1}{r^2} = -\dfrac{2}{r^3}$, ולכן $\dfrac{d^2U}{dr^2} = -\dfrac{2GMm}{R^3}$, והאיבר מסדר
-              שני הוא $\tfrac12\dfrac{d^2U}{dr^2}h^2 = -mgh\cdot\dfrac hR$. המנה המדויקת היא $1 + h/R$.
+          ליד פני השטח מקרבים $U(R + h) - U(R) \approx mgh$, עם $g = GM/R^2$.
+
+          (1) חשבו את ההפרש המדויק $\Delta U = U(R + h) - U(R)$, והראו ש-$\dfrac{mgh}{\Delta U} = 1 + \dfrac hR$ בדיוק.
+
+          (2) פתחו את $U(R + h)$ בטור טיילור ב-$h$ עד סדר שני, וזהו את $mgh$ כאיבר מסדר ראשון. פי כמה קטן האיבר מסדר שני
+          מהאיבר מסדר ראשון?
+
+          (3) בדקו את התוצאות בגבולות $h \to 0$ ו-$h \gg R$, ובדקו יחידות.
+
+          (4) בכמה אחוזים הקירוב $mgh$ גדול מההפרש המדויק, כשמרימים גוף לגובה $h = 100\,\text{km}$ מעל כוכב לכת ברדיוס
+          $R = 6.37\cdot10^6\,\text{m}$?
         hints:
           - '$\dfrac1R - \dfrac{1}{R + h} = \dfrac{h}{R(R + h)}$.'
+          - 'הנגזרת של $1/r^2$ היא $-2/r^3$. אל תשכחו את ה-2.'
+        solution:
+          - { kind: law, text: 'מחוץ לכוכב הלכת $U(r) = -\dfrac{GMm}{r}$. פיתוח טיילור סביב $R$: $U(R + h) \approx U(R) + U''(R)\,h + \tfrac12U''''(R)\,h^2$.' }
+          - { kind: manipulation, text: 'ההפרש המדויק: $\Delta U = GMm\left(\dfrac1R - \dfrac{1}{R + h}\right) = \dfrac{GMmh}{R(R + h)}$. עם $mgh = \dfrac{GMm}{R^2}h$: $$\frac{mgh}{\Delta U} = \frac{R(R + h)}{R^2} = 1 + \frac hR$$' }
+          - { kind: manipulation, text: 'טיילור: $U''(r) = \dfrac{GMm}{r^2}$, ולכן $U''(R) = mg$; $U''''(r) = -\dfrac{2GMm}{r^3}$, ולכן $U''''(R) = -\dfrac{2mg}{R}$. מכאן $\Delta U \approx mgh - \dfrac{mgh^2}{R} = mgh\left(1 - \dfrac hR\right)$: $mgh$ הוא האיבר מסדר ראשון, והאיבר מסדר שני קטן ממנו פי $R/h$. זה מתאים לתוצאה המדויקת, כי $\dfrac{1}{1 - h/R} \approx 1 + \dfrac hR$.' }
+          - { kind: limit, text: 'כש-$h \to 0$: המנה שואפת ל-1, והשגיאה נעלמת: ליד הקרקע $mgh$ מדויק. כש-$h \gg R$: $mgh$ גדל בלי גבול, אבל $\Delta U \to \dfrac{GMm}{R}$, ערך סופי (האנרגיה הדרושה כדי להתרחק לאינסוף). המנה $1 + h/R$ גדלה בלי גבול, והקירוב חסר ערך.' }
+          - { kind: units, text: '$\dfrac{GMm}{R^2}h$ ביחידות $\text{N}\cdot\text{m} = \text{J}$, כמו $\Delta U$. $h/R$ חסר ממדים, כמו שגיאה יחסית.' }
+          - { kind: substitution, text: '$\dfrac hR = \dfrac{1.00\cdot10^5}{6.37\cdot10^6} = 1.57\%$. בגובה טיסה, $10\,\text{km}$, רק $0.157\%$. (זה לא $2h/R = 3.14\%$, הירידה היחסית ב-$g$ עצמו: $1/r$ יורד לאט יותר מ-$1/r^2$.)' }
+          - { kind: result, text: '$\dfrac{mgh}{\Delta U} = 1 + \dfrac hR$: הקירוב גדול מהערך המדויק ב-$h/R$, $1.57\%$ בגובה $100\,\text{km}$.' }
+        rubric:
+          - text: 'חישבתי $\Delta U = GMmh/\left(R(R + h)\right)$ והראיתי ש-$mgh/\Delta U = 1 + h/R$.'
+          - text: 'בפיתוח טיילור מצאתי $U''''(R) = -2mg/R$ ואיבר מסדר שני $-mgh\cdot h/R$.'
+          - text: בדקתי שהשגיאה נעלמת כש-$h \to 0$, ושכש-$h \gg R$ הקירוב נכשל כי $\Delta U$ שואף לערך סופי.
+          - text: הצבתי וקיבלתי $1.57\%$.

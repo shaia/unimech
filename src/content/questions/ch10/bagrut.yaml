@@ -1,6 +1,19 @@
 # Chapter 10 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each, the parts
 # climbing basic → mid → bagrut (exam level). Each problem joins objectives from at least two lessons, and the four
-# together touch every lesson: 1 (10.1, 10.2, 10.3), 2 (10.2, 10.3, 10.5), 3 (10.1, 10.2, 10.4), 4 (10.1, 10.5).
+# together touch every lesson: 1 (10.1, 10.2, 10.3), 2 (10.2, 10.3, 10.5), 3 (10.1, 10.2, 10.4), 4 (10.1, 10.5),
+# 5 (exam format, in symbols: a relativistic elastic collision of equal masses, 10.1, 10.2 with 4.2, 4.3).
+# Reworked 2026-11-18 toward the 77101 exams (src/content/exam-map.yaml): open parts carry ≥ 13 of 25 points, the
+# first part stays auto-graded, the last is a symbolic result with a limit check. 1 already met the rules
+# (unchanged). Converted to open: 2ה (γ = Σm_f/(2m), β = √(1 − (2m/Σm_f)²)), 3ד (β_e(ε) at 90°), 4ד (x(t)).
+# Recomputed in .scratch/ch10/review-rework.ts: 2ה γ = 2659/1876 = 1.417, β = 0.709 (= reldecay.cmBetaFixedTarget),
+# E_tot = Σ²/(2m) = 3768.8, products' kinetic 1109.8 MeV; 3ד ε = 0.783, β = ε√((1+ε)²+1)/(1+ε+ε²) = 0.668 (= photon.
+# compton, also at ε = 1e-3, 10, 1000), √2ε limit, classical 0.829; 4ד x = (mc²/F)(√(1+(Ft/mc)²) − 1) = 31.2 m by
+# closed form, (γ − 1)mc²/F and a quadrature of v(t); ct = 36.0, ct − mc²/F = 30.8, Newton 2.51 m.
+#   5: cos φ = K₃K₄/(p₃c·p₄c) checked against a CM-frame construction boosted with fourvector.boostX at four (γ, θ*)
+#      (agreement ≤ 1e-12); P₁·P₂ = P₃·P₄; symmetric γ = 3 (K = 2mc²): cos φ = 1/3, φ = 70.5°, γ_c = √2, β_c = 0.707,
+#      half-angle 35.3° = atan(1/γ_c); φ(γ = 1.0001) = 90.0°, φ(γ = 100) = 16.0°.
+#   Misconceptions: the tags dropped by the conversions (MC-10-classical-ke on 3ד and 4ד: no longer tagged here, still
+#   detected in three lesson banks, and named in the limit steps; MC-10-threshold-is-mass-gain on 2ה: still in 2א, 2ב, 2ד).
 # Open parts are solved in the course format: law → manipulation → limit → units → substitution → result.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
@@ -293,7 +306,7 @@ questions:
 
       - label: ד
         type: numeric
-        points: 4
+        points: 3
         level: mid
         standalone: false
         objectives: [OBJ-10.5-2]
@@ -315,31 +328,49 @@ questions:
             misconception: MC-10-total-vs-kinetic
 
       - label: ה
-        type: numeric
-        points: 5
+        type: open
+        points: 6
         level: bagrut
         standalone: false
         objectives: [OBJ-10.2-2, OBJ-10.3-2]
         prompt: >-
-          במטרה הנייחת, באנרגיית הסף, שלושת התוצרים נעים יחד. מה מהירותם במעבדה? ענו ביחידות של $c$.
-        answer: 0.709
-        unit: c
-        correctFeedback: >-
-          נכון. התוצרים נעים יחד במהירות של מרכז המסה. $E_{\text{tot}} = E_{\text{th}} + mc^2 = 3768.8\,\text{MeV}$ ו-$p_{\text{tot}}c = \sqrt{2830.8^2 - 938^2} = 2670.9\,\text{MeV}$,
-          ולכן $\beta = \dfrac{p_{\text{tot}}c}{E_{\text{tot}}} = 0.709$, עם $\gamma = \dfrac{E_{\text{tot}}}{\sqrt s} = \dfrac{3768.8}{2659} = 1.417$. בדיקה:
-          $(2m + m_\omega)c^2\cdot\gamma = E_{\text{tot}}$, והאנרגיה נשמרת. מתוך $1892.8\,\text{MeV}$ של אנרגיה קינטית, $1109.8\,\text{MeV}$
-          נשארים בתנועה של התוצרים.
-        wrongFeedback: >-
-          מהירות של מערכת היא $\beta = p_{\text{tot}}c/E_{\text{tot}}$, כמו $v = pc^2/E$ לחלקיק אחד. בסף $E_{\text{tot}} = E_{\text{th}} + mc^2$,
-          ו-$p_{\text{tot}}c = \sqrt{E_{\text{th}}^2 - (mc^2)^2}$.
-        commonWrong:
-          - value: 0.944
-            feedback: 'זו המהירות של פרוטון הקרן לבד, עם $E = E_{\text{th}}$. אחרי ההתנגשות אותו תנע מתחלק על אנרגיה גדולה יותר, והמהירות קטנה.'
-          - value: 0
-            feedback: 'התוצרים נחים רק במערכת מרכז המסה. במעבדה הם חייבים לשאת את התנע של הקרן.'
-            misconception: MC-10-threshold-is-mass-gain
+          במטרה הנייחת, באנרגיית הסף, שלושת התוצרים נעים יחד. הראו שגורם לורנץ שלהם במעבדה הוא
+          $\gamma = \dfrac{\sum m_f}{2m}$, בטאו את מהירותם באמצעות $m$ ו-$\sum m_f$, ובדקו את הביטוי בגבולות $\sum m_f \to 2m$
+          ו-$\sum m_f \gg m$. אחר כך הציבו, וחשבו גם כמה מהאנרגיה הקינטית של הקרן נשארת בתנועה של התוצרים.
         hints:
-          - 'המהירות של מרכז המסה היא $\beta = p_{\text{tot}}c/E_{\text{tot}}$.'
+          - 'בסף כל התוצרים נחים במערכת מרכז המסה, ולכן הם נעים במעבדה במהירות שלה, עם $\gamma = E_{\text{tot}}/\sqrt s$.'
+          - 'את $E_{\text{th}}$ כבר מצאתם בחלק ג. מה $E_{\text{tot}} = E_{\text{th}} + mc^2$?'
+        solution:
+          - kind: law
+            text: >-
+              בסף התוצרים נחים במערכת מרכז המסה, ולכן הם נעים במעבדה יחד, במהירות שלה. לכל מערכת $E_{\text{tot}} = \gamma\sqrt s$,
+              כאשר $\sqrt s = \left(\sum m_f\right)c^2$ בסף, ו-$\beta = p_{\text{tot}}c/E_{\text{tot}}$, כמו $v = pc^2/E$ לחלקיק אחד.
+          - kind: manipulation
+            text: >-
+              מחלק ג, $E_{\text{th}} = \dfrac{\left(\sum m_f\right)^2 - 2m^2}{2m}c^2$, ולכן
+              $E_{\text{tot}} = E_{\text{th}} + mc^2 = \dfrac{\left(\sum m_f\right)^2c^2}{2m}$. מחלקים ב-$\sqrt s$:
+              $$\gamma = \frac{E_{\text{tot}}}{\left(\sum m_f\right)c^2} = \frac{\sum m_f}{2m},\qquad \beta = \sqrt{1 - \frac{1}{\gamma^2}} = \sqrt{1 - \left(\frac{2m}{\sum m_f}\right)^2}$$
+              האנרגיה הקינטית שנשארת בתנועת התוצרים היא $(\gamma - 1)\left(\sum m_f\right)c^2$.
+          - kind: limit
+            text: >-
+              כש-$\sum m_f \to 2m$, תגובה שלא יוצרת דבר, $\gamma \to 1$ ו-$\beta \to 0$: אנרגיית הסף אפס, הקרן נחה, ואין מה
+              שינוע. כש-$\sum m_f \gg m$, $\beta \to 1$: כדי ליצור מסה גדולה ממטרה קלה צריך קרן מהירה מאוד, והתוצרים ממשיכים
+              קדימה כמעט ב-$c$. התוצרים לא נחים במעבדה: הם חייבים לשאת את התנע של הקרן.
+          - kind: units
+            text: '$\gamma$ ו-$\beta$ הם יחסים של מסות, חסרי ממדים, ו-$(\gamma - 1)\left(\sum m_f\right)c^2$ באנרגיה.'
+          - kind: substitution
+            text: >-
+              $\gamma = \dfrac{2659}{1876} = 1.417$, $\beta = \sqrt{1 - 1/1.417^2} = 0.709$. בדיקה בדרך אחרת:
+              $E_{\text{tot}} = 2830.8 + 938 = 3768.8\,\text{MeV}$ ו-$p_{\text{tot}}c = \sqrt{2830.8^2 - 938^2} = 2670.9\,\text{MeV}$, ו-$2670.9/3768.8 = 0.709$.
+              בתנועה נשארים $(1.417 - 1)\cdot2659 = 1109.8\,\text{MeV}$ מתוך $1892.8\,\text{MeV}$. (פרוטון הקרן לבד נע ב-$0.944c$.)
+          - kind: result
+            text: >-
+              $\gamma = \sum m_f/(2m) = 1.417$ ו-$\beta = \sqrt{1 - \left(2m/\sum m_f\right)^2} = 0.709$: התוצרים נעים יחד במעבדה
+              ב-$0.709c$, ונושאים $1109.8\,\text{MeV}$ של אנרגיה קינטית שלא הפכה למסה.
+        rubric:
+          - text: קבעתי שבסף התוצרים נעים במהירות של מרכז המסה, ומצאתי $E_{\text{tot}} = \left(\sum m_f\right)^2c^2/(2m)$.
+          - text: חילקתי ב-$\sqrt s = \left(\sum m_f\right)c^2$ וקיבלתי $\gamma = \sum m_f/(2m)$ ו-$\beta = \sqrt{1 - (2m/\sum m_f)^2}$.
+          - text: בדקתי שב-$\sum m_f \to 2m$ התוצרים נחים ושב-$\sum m_f \gg m$ הם נעים כמעט ב-$c$, וקיבלתי $0.709c$.
 
   # ------------------------------------------------------------ 3: Compton scattering at a right angle
   - id: Q-10-bagrut-3
@@ -414,7 +445,7 @@ questions:
 
       - label: ג
         type: numeric
-        points: 6
+        points: 5
         level: mid
         standalone: false
         objectives: [OBJ-10.4-1]
@@ -432,35 +463,51 @@ questions:
             feedback: 'זו האנרגיה הקינטית של האלקטרון, $E - E''$. השאלה שואלת על הפוטון המפוזר.'
 
       - label: ד
-        type: numeric
-        points: 6
+        type: open
+        points: 7
         level: bagrut
         standalone: false
-        objectives: [OBJ-10.1-1, OBJ-10.1-2]
+        objectives: [OBJ-10.1-1, OBJ-10.1-2, OBJ-10.4-1]
         prompt: >-
-          מה המהירות של האלקטרון אחרי הפיזור? ענו ביחידות של $c$. (רמז: התנע של האלקטרון הוא ההפרש בין התנע של הפוטון
-          לפני הפיזור לבין התנע שלו אחריו.)
-        answer: 0.668
-        unit: c
-        correctFeedback: >-
-          נכון. התנעים של הפוטון לפני ואחרי ניצבים זה לזה, ולכן $p_ec = \sqrt{0.400^2 + 0.224^2} = 0.459\,\text{MeV}$. האנרגיה
-          של האלקטרון $E_e = 0.511 + 0.176 = 0.687\,\text{MeV}$, ולכן $\beta = \dfrac{p_ec}{E_e} = 0.668$.
-          בדיקה: $\sqrt{E_e^2 - (p_ec)^2} = 0.511\,\text{MeV}$, אנרגיית המנוחה של האלקטרון. שימור התנע ושימור האנרגיה מסכימים.
-        wrongFeedback: >-
-          מצאו את התנע של האלקטרון כהפרש וקטורי, $\vec p_e = \vec p - \vec p\,'$, ואת האנרגיה שלו, $m_ec^2 + (E - E')$. אז
-          $\beta = p_ec/E_e$.
-        commonWrong:
-          - value: 0.829
-            feedback: >-
-              זה $\sqrt{2K/(m_ec^2)}$ עם $K = 0.176\,\text{MeV}$, הקשר של ניוטון. $K$ הוא כשליש מ-$m_ec^2$, והקירוב כבר לא
-              טוב: הוא מגזים במהירות ב-$24\%$.
-            misconception: MC-10-classical-ke
-          - value: 0.583
-            feedback: >-
-              לקחתם רק את התנע ההתחלתי של הפוטון, $0.400\,\text{MeV}/c$. הפוטון המפוזר נושא תנע בכיוון ניצב, והאלקטרון נושא
-              את ההפרש הווקטורי, שגודלו $0.459\,\text{MeV}/c$.
+          מה המהירות של האלקטרון אחרי פיזור בזווית $90^\circ$? סמנו $\varepsilon = E/(m_ec^2)$, והראו ש-
+          $$\beta_e = \frac{\varepsilon\sqrt{(1 + \varepsilon)^2 + 1}}{1 + \varepsilon + \varepsilon^2}$$
+          בדקו את הביטוי בגבולות $\varepsilon \ll 1$ (השוו לחישוב של ניוטון) ו-$\varepsilon \gg 1$, ואחר כך הציבו את הנתונים.
         hints:
-          - 'המהירות של חלקיק היא $v = pc^2/E$, כלומר $\beta = pc/E$.'
+          - 'התנע של האלקטרון הוא ההפרש הווקטורי $\vec p - \vec p\,''$, והתנעים של הפוטון לפני ואחרי ניצבים זה לזה.'
+          - 'מחלק ב, ב-$90^\circ$, $E'' = E/(1 + \varepsilon)$. המהירות של חלקיק היא $\beta = pc/E$.'
+        solution:
+          - kind: law
+            text: >-
+              שימור התנע, $\vec p_e = \vec p - \vec p\,'$, ושימור האנרגיה, $E_e = m_ec^2 + E - E'$. המהירות של חלקיק,
+              $\beta = pc/E$ (שיעור 10.1). ובזווית $90^\circ$, מחלק ב, $\dfrac1{E'} = \dfrac1E + \dfrac1{m_ec^2}$, כלומר $E' = \dfrac{E}{1 + \varepsilon}$.
+          - kind: manipulation
+            text: >-
+              התנעים של הפוטון ניצבים, ולכן $(p_ec)^2 = E^2 + E'^2 = E^2\left(1 + \dfrac{1}{(1 + \varepsilon)^2}\right)$, כלומר
+              $p_ec = \dfrac{E\sqrt{(1 + \varepsilon)^2 + 1}}{1 + \varepsilon}$. והאנרגיה,
+              $E_e = m_ec^2 + E - \dfrac{E}{1 + \varepsilon} = m_ec^2\left(1 + \dfrac{\varepsilon^2}{1 + \varepsilon}\right) = m_ec^2\,\dfrac{1 + \varepsilon + \varepsilon^2}{1 + \varepsilon}$.
+              מחלקים, עם $E = \varepsilon m_ec^2$:
+              $$\beta_e = \frac{p_ec}{E_e} = \frac{\varepsilon\sqrt{(1 + \varepsilon)^2 + 1}}{1 + \varepsilon + \varepsilon^2}$$
+          - kind: limit
+            text: >-
+              $\varepsilon \ll 1$: $\beta_e \approx \sqrt2\,\varepsilon$. אצל ניוטון הפוטון כמעט לא מאבד אנרגיה, $E' \approx E$,
+              והאלקטרון מקבל תנע $\sqrt2\,E/c$ ומהירות $\sqrt2\,E/(m_ec)$: אותה תוצאה. $\varepsilon \gg 1$: המונה והמכנה שניהם
+              כמו $\varepsilon^2$, ו-$\beta_e \to 1$, תמיד מתחת ל-$c$. כאן $\varepsilon = 0.78$, באמצע, ושני הקירובים נכשלים:
+              הקשר של ניוטון, $\sqrt{2K/(m_ec^2)}$ עם $K = 0.176\,\text{MeV}$, נותן $0.829$, גדול ב-$24\%$.
+          - kind: units
+            text: '$\varepsilon$ הוא יחס של שתי אנרגיות, חסר ממדים, ולכן גם $\beta_e$, כמו מהירות ביחידות של $c$.'
+          - kind: substitution
+            text: >-
+              $\varepsilon = 0.400/0.511 = 0.783$: $\beta_e = \dfrac{0.783\sqrt{1.783^2 + 1}}{1 + 0.783 + 0.613} = 0.668$. בדיקה
+              במספרים: $p_ec = \sqrt{0.400^2 + 0.224^2} = 0.459\,\text{MeV}$, $E_e = 0.511 + 0.176 = 0.687\,\text{MeV}$, $0.459/0.687 = 0.668$,
+              ו-$\sqrt{0.687^2 - 0.459^2} = 0.511\,\text{MeV}$, אנרגיית המנוחה של האלקטרון.
+          - kind: result
+            text: >-
+              $\beta_e = \varepsilon\sqrt{(1 + \varepsilon)^2 + 1}/(1 + \varepsilon + \varepsilon^2) = 0.668$: האלקטרון נע
+              ב-$0.668c$.
+        rubric:
+          - text: מצאתי את $p_ec$ מהסכום הניצב של שני תנעי הפוטון, ואת $E_e$ משימור האנרגיה, עם $E' = E/(1 + \varepsilon)$.
+          - text: חילקתי $\beta = p_ec/E_e$ וקיבלתי את הביטוי ב-$\varepsilon$.
+          - text: בדקתי שב-$\varepsilon \ll 1$ יוצא $\sqrt2\,\varepsilon$, כמו אצל ניוטון, ושב-$\varepsilon \gg 1$ המהירות שואפת ל-$c$, וקיבלתי $0.668$.
 
   # ------------------------------------------------------------ 4: an electron under a constant force
   - id: Q-10-bagrut-4
@@ -534,7 +581,7 @@ questions:
 
       - label: ג
         type: numeric
-        points: 6
+        points: 5
         level: mid
         standalone: false
         objectives: [OBJ-10.5-1]
@@ -554,27 +601,220 @@ questions:
           - '$\gamma\beta = \beta/\sqrt{1 - \beta^2}$.'
 
       - label: ד
-        type: numeric
+        type: open
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-10.5-2, OBJ-10.5-1, OBJ-10.1-1]
+        prompt: >-
+          מצאו את המקום $x(t)$ של האלקטרון, שמתחיל ב-$x = 0$, בשתי דרכים: באינטגרל של $v(t)$ מחלק ב, וממשפט עבודה-אנרגיה
+          עם האנרגיה היחסותית. בדקו את הביטוי בזמנים קצרים ובזמנים ארוכים, והשוו בזמנים ארוכים לקרן אור שיוצאת מ-$x = 0$ ברגע
+          $t = 0$. כמה מטרים עובר האלקטרון עד שהוא מגיע ל-$0.99c$?
+        hints:
+          - 'הציבו $u = 1 + (Ft/(mc))^2$: הנגזרת של $\sqrt u$ מופיעה במונה של $v(t)$.'
+          - 'העבודה של כוח קבוע לאורך $x$ היא $Fx$. למה היא שווה, ומה $E$ כשהתנע הוא $p = Ft$?'
+        solution:
+          - kind: law
+            text: >-
+              $x(t) = \displaystyle\int_0^t v\,dt'$ עם $v(t)$ מחלק ב. ולחלופין משפט עבודה-אנרגיה ביחסות, $Fx = \Delta E = E - mc^2$
+              (שיעור 10.5), עם $E = \sqrt{(pc)^2 + (mc^2)^2}$ ו-$p = Ft$.
+          - kind: manipulation
+            text: >-
+              אינטגרל: $\dfrac{d}{dt}\sqrt{1 + \left(\dfrac{Ft}{mc}\right)^2} = \dfrac{F^2t/(m^2c^2)}{\sqrt{1 + (Ft/(mc))^2}} = \dfrac{F}{mc^2}\,v(t)$,
+              ולכן
+              $$x(t) = \frac{mc^2}{F}\left(\sqrt{1 + \left(\frac{Ft}{mc}\right)^2} - 1\right)$$
+              עבודה-אנרגיה: $Fx = \sqrt{(Ftc)^2 + (mc^2)^2} - mc^2$, ומחלקים ב-$F$: אותו ביטוי. ובמונחים של המהירות שהגיע אליה,
+              $x = (\gamma - 1)\,mc^2/F$.
+          - kind: limit
+            text: >-
+              זמנים קצרים, $Ft \ll mc$: $\sqrt{1 + y^2} \approx 1 + y^2/2$, ולכן $x \approx \tfrac12(F/m)t^2$, תאוצה קבועה של ניוטון.
+              זמנים ארוכים, $Ft \gg mc$: $x \approx ct - mc^2/F$. האלקטרון נע כמעט ב-$c$, אבל נשאר כל הזמן מאחורי קרן האור
+              $x = ct$, ובסוף במרחק קבוע $mc^2/F$ ממנה.
+          - kind: units
+            text: '$Ft/(mc)$ חסר ממדים, ו-$mc^2/F$ ביחידות $\text{J/N} = \text{m}$: אורך, כמו $x$.'
+          - kind: substitution
+            text: >-
+              ב-$0.99c$, $\gamma = 7.09$ ו-$Ft/(mc) = \gamma\beta = 7.02$ (חלק ג), ולכן $x = (7.09 - 1)\cdot5.12 = 31.2\,\text{m}$. לשם
+              השוואה: $ct = 36.0\,\text{m}$, ו-$ct - mc^2/F = 30.8\,\text{m}$, כבר קרוב. בתאוצה קבועה של ניוטון האלקטרון היה מגיע
+              ל-$0.99c$ אחרי $\tfrac12(0.99)^2\cdot5.12 = 2.51\,\text{m}$ בלבד.
+          - kind: result
+            text: >-
+              $x(t) = \dfrac{mc^2}{F}\left(\sqrt{1 + (Ft/(mc))^2} - 1\right) = (\gamma - 1)\dfrac{mc^2}{F}$: $31.2\,\text{m}$ עד $0.99c$. התנועה
+              היא $\tfrac12(F/m)t^2$ בהתחלה, ובסוף כמעט ב-$c$, במרחק $mc^2/F$ מאחורי קרן אור.
+        rubric:
+          - text: אינטגרלתי את $v(t)$ וקיבלתי $x(t) = (mc^2/F)\left(\sqrt{1 + (Ft/(mc))^2} - 1\right)$.
+          - text: קיבלתי את אותו ביטוי ממשפט עבודה-אנרגיה, $Fx = E - mc^2$, עם $p = Ft$.
+          - text: בדקתי שבזמנים קצרים יוצא $\tfrac12(F/m)t^2$, ושבזמנים ארוכים האלקטרון נשאר $mc^2/F$ מאחורי קרן האור.
+          - text: קיבלתי $31.2\,\text{m}$ עד $0.99c$.
+
+  # ------------------------------------------------------------ 5: an elastic collision of equal masses (joins 10.1, 10.2 with 4.2, 4.3)
+  - id: Q-10-bagrut-5
+    type: bagrut
+    title: התנגשות אלסטית של מסות שוות, עד מהירות האור
+    prompt: >-
+      חלקיק שמסתו $m$ ואנרגיה קינטית $K$ פוגע בחלקיק זהה שנח במעבדה. ההתנגשות אלסטית: המסות לא משתנות, ולא נוצרים
+      חלקיקים חדשים. אחרי ההתנגשות שני החלקיקים נעים במישור, עם תנעים $\vec p_3$ ו-$\vec p_4$, אנרגיות יחסותיות $E_3$ ו-$E_4$
+      ואנרגיות קינטיות $K_3$ ו-$K_4$, ו-$\varphi$ היא הזווית בין כיווני התנועה שלהם. גורם לורנץ של החלקיק הפוגע הוא
+      $\gamma = 1 + K/(mc^2)$. כמו בשיעור 10.2, מכפלת מינקובסקי של שני ארבעה-וקטורים של אנרגיה-תנע היא
+      $P\cdot Q = E_PE_Q/c^2 - \vec p_P\cdot\vec q_Q$, ו-$P\cdot P = m^2c^2$.
+    parts:
+      - label: א
+        type: mc
+        points: 5
+        level: basic
+        qualitative: true
+        objectives: [OBJ-4.3-2]
+        prompt: >-
+          לפי המכניקה של ניוטון (שיעור 4.3), מה הזווית $\varphi$ בין כיווני התנועה של שני החלקיקים אחרי ההתנגשות, כששניהם
+          נעים?
+        choices:
+          - text: $90^\circ$, בכל פרמטר פגיעה ובכל מהירות.
+            correct: true
+            feedback: >-
+              נכון. שימור התנע נותן $\vec p_1 = \vec p_3 + \vec p_4$, ושימור האנרגיה הקינטית עם מסות שוות נותן
+              $p_1^2 = p_3^2 + p_4^2$. מעלים את הראשונה בריבוע ומשווים: $\vec p_3\cdot\vec p_4 = 0$. בחלקים הבאים תראו מה נשאר
+              מזה ביחסות.
+          - text: $90^\circ$ רק כששני החלקיקים יוצאים בזוויות שוות מכיוון הפגיעה. אחרת הזווית אחרת.
+            feedback: >-
+              בחישוב $\vec p_3\cdot\vec p_4 = 0$ לא הנחנו שום סימטריה: הוא נכון לכל פרמטר פגיעה. רק החלוקה של $90^\circ$ בין
+              שתי הזוויות משתנה.
+          - text: היא קטנה כשהמהירות של החלקיק הפוגע גדלה.
+            feedback: >-
+              אצל ניוטון כל המשוואות נשארות נכונות כשמכפילים את כל המהירויות באותו מספר, ולכן הזוויות לא תלויות במהירות.
+              תלות כזו מופיעה רק ביחסות, כמו שתראו בחלק ג.
+          - text: $180^\circ$, כי שני החלקיקים מתרחקים זה מזה.
+            feedback: >-
+              בהתנגשות חזיתית בממד אחד החלקיק הפוגע נעצר ומעביר את כל המהירות לשני (שיעור 4.1), ואז אין שני כיווני תנועה.
+              בכל התנגשות אחרת שניהם נעים קדימה, בזווית ישרה זה לזה.
+        hints:
+          - 'כתבו את שימור התנע כמשוואה וקטורית ואת שימור האנרגיה הקינטית, והעלו את הראשונה בריבוע.'
+
+      - label: ב
+        type: open
+        points: 7
+        level: mid
+        objectives: [OBJ-10.2-2, OBJ-10.1-2, OBJ-4.3-2]
+        prompt: >-
+          עכשיו ביחסות. הראו משימור ארבעה-וקטור האנרגיה-תנע ש-
+          $$\cos\varphi = \frac{K_3K_4}{(p_3c)(p_4c)}$$
+          והסיקו שאם שני החלקיקים נעים, $\varphi < 90^\circ$. בדקו שבגבול הלא-יחסותי חוזרת התוצאה של חלק א, ובדקו את
+          היחידות.
+        hints:
+          - 'סמנו $P_1$, $P_2$ לפני ו-$P_3$, $P_4$ אחרי. העלו בריבוע את $P_1 + P_2 = P_3 + P_4$: מה נשאר?'
+          - 'את $P_1\cdot P_2$ חשבו במעבדה, שבה החלקיק השני נח. את $E_1$ החליפו בעזרת שימור האנרגיה.'
+        solution:
+          - kind: law
+            text: >-
+              שימור ארבעה-וקטור האנרגיה-תנע, $P_1 + P_2 = P_3 + P_4$. לכל חלקיק $P\cdot P = m^2c^2$, וזה $m$ לכל הארבעה, כי
+              ההתנגשות אלסטית. ומכפלת מינקובסקי זהה בכל מערכת, כך שמותר לחשב אותה במעבדה.
+          - kind: manipulation
+            text: >-
+              מעלים בריבוע את שני האגפים: $2m^2c^2 + 2P_1\cdot P_2 = 2m^2c^2 + 2P_3\cdot P_4$, ולכן $P_1\cdot P_2 = P_3\cdot P_4$.
+              במעבדה החלקיק השני נח, $P_2 = (mc,\ \vec 0)$, ולכן $P_1\cdot P_2 = E_1m$. ו-$P_3\cdot P_4 = E_3E_4/c^2 - p_3p_4\cos\varphi$.
+              מכאן $p_3p_4c^2\cos\varphi = E_3E_4 - mc^2E_1$. שימור האנרגיה, $E_1 = E_3 + E_4 - mc^2$, נותן
+              $$E_3E_4 - mc^2(E_3 + E_4) + (mc^2)^2 = (E_3 - mc^2)(E_4 - mc^2) = K_3K_4$$
+              ולכן $\cos\varphi = \dfrac{K_3K_4}{(p_3c)(p_4c)}$. כששני החלקיקים נעים, $K_3, K_4 > 0$, ולכן $\cos\varphi > 0$ ו-$\varphi < 90^\circ$.
+          - kind: limit
+            text: >-
+              מהקשר של שיעור 10.1, $(pc)^2 = K^2 + 2Kmc^2$. בגבול הלא-יחסותי, $K \ll mc^2$, $(pc)^2 \approx 2Kmc^2$, ולכן
+              $\cos\varphi \approx \dfrac{K_3K_4}{2mc^2\sqrt{K_3K_4}} = \dfrac{\sqrt{K_3K_4}}{2mc^2} \to 0$: הזווית הישרה של חלק א. הסטייה
+              ממנה היא מסדר $K/(mc^2)$: היא בולטת רק כשהאנרגיה הקינטית משתווה לאנרגיית המנוחה.
+          - kind: units
+            text: '$K_3K_4$ ו-$(p_3c)(p_4c)$ שניהם באנרגיה בריבוע, ולכן $\cos\varphi$ חסר ממדים, כמו שצריך.'
+          - kind: result
+            text: >-
+              $\cos\varphi = K_3K_4/\left((p_3c)(p_4c)\right) > 0$: ביחסות שני החלקיקים יוצאים בזווית **חדה** זה לזה, ולא ישרה.
+              בגבול האיטי הזווית חוזרת ל-$90^\circ$.
+        rubric:
+          - text: העליתי בריבוע את שימור הארבעה-וקטור וקיבלתי $P_1\cdot P_2 = P_3\cdot P_4$.
+          - text: חישבתי את שתי המכפלות במעבדה, הצבתי את שימור האנרגיה, וזיהיתי את $(E_3 - mc^2)(E_4 - mc^2) = K_3K_4$.
+          - text: בדקתי שבגבול $K \ll mc^2$ יוצא $\cos\varphi \to 0$, הזווית הישרה של ניוטון.
+
+      - label: ג
+        type: open
+        points: 7
+        level: mid
+        standalone: false
+        objectives: [OBJ-10.1-2, OBJ-4.3-1]
+        prompt: >-
+          בהתנגשות סימטרית שני החלקיקים יוצאים בזוויות שוות משני צדי כיוון הפגיעה. הראו ש-
+          $$\cos\varphi = \frac{K}{K + 4mc^2} = \frac{\gamma - 1}{\gamma + 3}$$
+          בדקו את הביטוי בגבולות $\gamma \to 1$ ו-$\gamma \to \infty$, ומצאו את $\varphi$ כש-$K = 2mc^2$.
+        hints:
+          - 'רכיב התנע הניצב לכיוון הפגיעה היה אפס לפני ההתנגשות. מה זה אומר על $p_3$ ועל $p_4$ כשהזוויות שוות?'
+        solution:
+          - kind: law
+            text: >-
+              שימור רכיב התנע הניצב לכיוון הפגיעה, ששווה לאפס לפני ההתנגשות (שיעור 4.3); שימור האנרגיה; והקשר
+              $(pc)^2 = K^2 + 2Kmc^2$ (שיעור 10.1). והתוצאה של חלק ב.
+          - kind: manipulation
+            text: >-
+              בזוויות שוות $\alpha$ משני הצדדים, $p_3\sin\alpha = p_4\sin\alpha$, ולכן $p_3 = p_4$, $K_3 = K_4$, ומשימור האנרגיה
+              $K_3 = K_4 = K/2$. לכן $(p_3c)^2 = \dfrac K2\left(\dfrac K2 + 2mc^2\right)$, ומחלק ב
+              $$\cos\varphi = \frac{(K/2)^2}{\dfrac K2\left(\dfrac K2 + 2mc^2\right)} = \frac{K}{K + 4mc^2} = \frac{\gamma - 1}{\gamma + 3}$$
+              עם $K = (\gamma - 1)mc^2$.
+          - kind: limit
+            text: >-
+              $\gamma \to 1$: $\cos\varphi \to 0$, $\varphi \to 90^\circ$, ניוטון. $\gamma \to \infty$: $\cos\varphi \to 1$ ו-$\varphi \to 0$:
+              בהתנגשות מהירה מאוד שני החלקיקים ממשיכים כמעט באותו כיוון, קדימה. הזווית יורדת בהדרגה בין שני הגבולות.
+          - kind: units
+            text: '$K$ ו-$4mc^2$ שניהם אנרגיות, ו-$\gamma$ חסר ממדים, ולכן $\cos\varphi$ חסר ממדים.'
+          - kind: substitution
+            text: >-
+              $K = 2mc^2$, כלומר $\gamma = 3$: $\cos\varphi = \dfrac{2}{6} = \dfrac13$, ו-$\varphi = 70.5^\circ$, כל חלקיק $35.3^\circ$ מכיוון
+              הפגיעה.
+          - kind: result
+            text: >-
+              $\cos\varphi = K/(K + 4mc^2) = (\gamma - 1)/(\gamma + 3)$. כש-$K = 2mc^2$, $\varphi = 70.5^\circ$ במקום $90^\circ$.
+        rubric:
+          - text: הסקתי מהסימטריה ומשימור התנע הניצב ש-$K_3 = K_4 = K/2$.
+          - text: הצבתי $(pc)^2 = K^2 + 2Kmc^2$ בביטוי של חלק ב וקיבלתי $K/(K + 4mc^2)$.
+          - text: בדקתי שב-$\gamma \to 1$ הזווית $90^\circ$ ושב-$\gamma \to \infty$ היא שואפת לאפס, וקיבלתי $70.5^\circ$ כש-$K = 2mc^2$.
+
+      - label: ד
+        type: open
         points: 6
         level: bagrut
         standalone: false
-        objectives: [OBJ-10.5-2, OBJ-10.1-1]
-        prompt: איזה מרחק עובר האלקטרון עד שהוא מגיע ל-$0.99c$?
-        answer: 31.2
-        unit: m
-        correctFeedback: >-
-          נכון. לפי משפט עבודה-אנרגיה, $Fx = \Delta E = (\gamma - 1)mc^2$, ולכן $x = (\gamma - 1)\dfrac{mc^2}{F} = 6.09\cdot5.12 = 31.2\,\text{m}$.
-          אותו דבר נותן האינטגרל של $v(t)$ מחלק ב. **בדיקת גבולות:** כש-$\beta \ll 1$, $(\gamma - 1) \approx \beta^2/2$, ו-$x \approx v^2/(2a)$
-          עם $a = F/m$, כמו אצל ניוטון.
-        wrongFeedback: >-
-          אין צורך באינטגרל: העבודה של כוח קבוע לאורך $x$ היא $Fx$, והיא שווה לשינוי באנרגיה היחסותית.
-        commonWrong:
-          - value: 2.51
-            feedback: >-
-              זה $v^2/(2a) = \tfrac12(0.99)^2\,mc^2/F$, המרחק בתאוצה קבועה. האנרגיה הקינטית ב-$0.99c$ גדולה פי 12 מ-$\tfrac12mv^2$,
-              ולכן גם המרחק.
-            misconception: MC-10-classical-ke
-          - value: 36.0
-            feedback: 'זה $ct$ עם $t = 120\,\text{ns}$, כאילו האלקטרון נע ב-$c$ כל הדרך. הוא התחיל ממנוחה, ולכן עבר פחות.'
+        objectives: [OBJ-4.2-1, OBJ-10.2-1]
+        prompt: >-
+          קבלו את אותה זווית במערכת מרכז המסה, כמו בשיעור 4.2. (1) מצאו את מהירות מרכז המסה, $\beta_c$, ואת $\gamma_c$ שלו,
+          באמצעות $\gamma$. (2) במערכת מרכז המסה החלקיקים מתקרבים בתנעים שווים והפוכים, ובהתנגשות אלסטית רק מסתובבים.
+          ההתנגשות הסימטרית של חלק ג היא סיבוב ב-$90^\circ$. העבירו את הארבעה-וקטור של חלקיק אחד אחרי ההתנגשות בטרנספורמציית
+          לורנץ חזרה למעבדה, והראו ש-$\tan(\varphi/2) = 1/\gamma_c$. בדקו בגבול $\gamma_c \to 1$, ובדקו שזה מתאים לחלק ג.
         hints:
-          - 'מה העבודה שהכוח עושה לאורך $x$? למה היא שווה?'
+          - 'מהירות מרכז המסה היא $\beta_c = p_{\text{tot}}c/E_{\text{tot}}$, ובמערכת מרכז המסה כל חלקיק נע ב-$\beta_c$, כי החלקיק השני נח במעבדה.'
+          - 'הרכיב הניצב לכיוון התנועה של המערכת לא משתנה בטרנספורמציית לורנץ.'
+        solution:
+          - kind: law
+            text: >-
+              מהירות מרכז המסה, $\beta_c = p_{\text{tot}}c/E_{\text{tot}}$. טרנספורמציית לורנץ של ארבעה-וקטור האנרגיה-תנע לאורך $x$
+              (שיעור 10.2): מהמערכת שנעה ב-$+\beta_c$ למעבדה, $p_xc = \gamma_c\left(p^*_xc + \beta_cE^*\right)$, ו-$p_y$ לא משתנה.
+          - kind: manipulation
+            text: >-
+              $E_{\text{tot}} = (\gamma + 1)mc^2$ ו-$p_{\text{tot}}c = \sqrt{\gamma^2 - 1}\,mc^2$, ולכן
+              $\beta_c = \sqrt{\dfrac{\gamma - 1}{\gamma + 1}}$ ו-$\gamma_c = \sqrt{\dfrac{\gamma + 1}{2}}$. במערכת מרכז המסה החלקיק
+              שנח במעבדה נע ב-$-\beta_c$, ולכן גם הפוגע ב-$+\beta_c$: לכל אחד $E^* = \gamma_cmc^2$ ו-$p^*c = \gamma_c\beta_cmc^2$. אחרי
+              סיבוב ב-$90^\circ$, $p^*_x = 0$ ו-$p^*_yc = \gamma_c\beta_cmc^2$. במעבדה:
+              $$p_xc = \gamma_c\beta_cE^* = \gamma_c^2\beta_cmc^2,\qquad p_yc = \gamma_c\beta_cmc^2,\qquad \tan\frac\varphi2 = \frac{p_y}{p_x} = \frac{1}{\gamma_c}$$
+              החלקיק השני יוצא בזווית שווה מהצד השני, ולכן הזווית ביניהם $\varphi$. בדיקה מול חלק ג: $\tan^2(\varphi/2) = 2/(\gamma + 1)$, ו-
+              $\cos\varphi = \dfrac{1 - \tan^2(\varphi/2)}{1 + \tan^2(\varphi/2)} = \dfrac{\gamma - 1}{\gamma + 3}$.
+          - kind: limit
+            text: >-
+              $\gamma_c \to 1$: $\tan(\varphi/2) = 1$, $\varphi = 90^\circ$. זו התמונה של ניוטון בשיעור 4.2: במערכת מרכז המסה מהירות
+              $V$ ניצבת, ומוסיפים $V$ לאורך $x$, כך שכל חלקיק יוצא ב-$45^\circ$. ביחסות הרכיב לאורך $x$ גדל פי $\gamma_c$ והרכיב
+              הניצב לא, ולכן שני החלקיקים נלחצים קדימה. כש-$\gamma_c \to \infty$, $\varphi \to 0$, כמו בחלק ג.
+          - kind: units
+            text: '$\beta_c$, $\gamma_c$ ו-$\tan(\varphi/2)$ חסרי ממדים, ו-$p_x/p_y$ יחס של שני תנעים.'
+          - kind: substitution
+            text: >-
+              $\gamma = 3$: $\gamma_c = \sqrt2$, $\beta_c = 0.707$, $\tan(\varphi/2) = 0.707$, $\varphi/2 = 35.3^\circ$ ו-$\varphi = 70.5^\circ$, כמו
+              בחלק ג.
+          - kind: result
+            text: >-
+              $\tan(\varphi/2) = 1/\gamma_c = \sqrt{2/(\gamma + 1)}$, שקול ל-$\cos\varphi = (\gamma - 1)/(\gamma + 3)$: הזווית קטנה
+              מ-$90^\circ$ כי טרנספורמציית לורנץ מגדילה את רכיב התנע לאורך התנועה פי $\gamma_c$ ומשאירה את הרכיב הניצב.
+        rubric:
+          - text: מצאתי $\beta_c = \sqrt{(\gamma - 1)/(\gamma + 1)}$ ו-$\gamma_c = \sqrt{(\gamma + 1)/2}$.
+          - text: העברתי את הארבעה-וקטור אחרי סיבוב ב-$90^\circ$ למעבדה, עם $p_y$ שלא משתנה, וקיבלתי $\tan(\varphi/2) = 1/\gamma_c$.
+          - text: בדקתי שב-$\gamma_c \to 1$ חוזרת הזווית הישרה, ושהתוצאה שקולה לזו של חלק ג.

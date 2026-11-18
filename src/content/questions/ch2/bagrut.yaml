@@ -1,24 +1,40 @@
 # Chapter 2 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each,
 # climbing basic → mid → bagrut (exam level). Each problem joins objectives from at least two lessons,
-# and the four together touch every lesson of the chapter: 1 (2.2, 2.3, 2.4, 2.5), 2 (2.1, 2.4, 2.6),
-# 3 (2.7, 2.8), 4 (2.2, 2.3, 2.6). Open parts follow the course format: law → manipulation → limit →
-# units → substitution → result.
+# and the problems together touch every lesson of the chapter: 1 (2.2, 2.3, 2.4, 2.5), 2 (2.1, 2.4, 2.6),
+# 3 (2.7, 2.8), 4 (2.2, 2.3, 2.6), 5 (2.1, 2.2, 2.3, 2.6 with 1.4 and 0.5: a 77101-style question in symbols).
+# Rework 2026-11-18 toward the exam (/exam-map: 39 of 51 parts derive): open parts carry ≥ 13 of 25 points,
+# the first part stays auto-graded, the last part is a symbolic result with a limit check. Open parts follow
+# the course format: law → manipulation → limit → units → substitution → result.
+#   1: mc 4, numeric 4, mc 3, open 8, open 6 (was open 9 + numeric 5): open 14
+#   2: mc 4, open 6, twotier 5, open 10 (was mc 4, numeric 5, open 10, twotier 6): open 16
+#   3: numeric 4, numeric 5, open 9, open 7 (was numeric 4, numeric 6, open 10, mc 5): open 16
+#   4: mc 4, numeric 5, open 10, open 6 (was numeric 6 last): open 16
+#   5: mc 4, open 6, open 8, open 7 (new): open 21
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
-# Every number was computed with src/physics/constants.ts (G = 9.8), script .scratch/ch2/review.ts:
+# Every number was computed with src/physics/constants.ts (G = 9.8), scripts .scratch/ch2/review.ts and
+# .scratch/ch2/review-rework.ts (the rework: every changed or new part, closed forms checked by an independent route):
 #   1: m1 = 2.0 kg on a 30° incline, μs = 0.40, μk = 0.30, m2 = 6.0 kg on a movable pulley (a1 = 2a2):
 #      held at rest T = m2g/2 = 29.4 N, friction needed 29.4 - 9.8 = 19.6 N (part ב) > μs m1 g cos30° = 6.79 N
-#      (part ג, an mc since the review: the decision is checked, not only the number); parts 4 + 4 + 3 + 9 + 5 = 25;
-#      a2 = g(m2 - 2m1(sinθ + μk cosθ))/(m2 + 4m1) = 2.07 m/s², a1 = 4.15 m/s², T = 23.2 N
-#      (a1 = a2 assumed: T = 20.7; no acceleration term: 14.9);
-#   2: R = 80 m, θ = 20°, μs = 0.25: v0 = √(gR tanθ) = 16.9 m/s (gR tanθ = 285, √(gR/tanθ) = 46.4);
-#      v_max = √(gR(sinθ+μcosθ)/(cosθ-μsinθ)) = 23.0 m/s (82.8 km/h), v_min = 9.05 m/s;
+#      (part ג); a2 = g(m2 - 2m1 s)/(m2 + 4m1) = 2.07 m/s², s = sinθ + μk cosθ = 0.760, a1 = 4.15 m/s²;
+#      ה (now open): T = m1 m2 g (2 + s)/(m2 + 4m1) = 23.2 N, equal to m1(a1 + gs) and to (m2 g - m2 a2)/2;
+#      T < m2g/2 ⇔ 2m1 s < m2 ⇔ a2 > 0; limits s = 1: 3m1m2g/(m2 + 4m1), s = 0: 2m1m2g/(m2 + 4m1) (lesson 2.5);
+#   2: R = 80 m, θ = 20°, μs = 0.25: ב (now open) v0 = √(gR tanθ) = √285 = 16.9 m/s (60.8 km/h);
+#      ד v_max = √(gR(sinθ+μcosθ)/(cosθ-μsinθ)) = 23.0 m/s (82.8 km/h), v_min = 9.05 m/s;
 #   3: boat 500 kg, v0 = 10 m/s, b = 100 kg/s: τ = 5.0 s, stopping distance m v0/b = 50 m
-#      (constant deceleration b v0/m: 25 m; distance in one τ: 31.6 m);
+#      (constant deceleration b v0/m: 25 m; distance in one τ: 31.6 m); ג x(10 s) = 43.2 m;
+#      ד (now open, quadratic drag, c = b/v0 = 10 kg/m): v = v0 e^(-cx/m), x(t) = (m/c) ln(1 + c v0 t/m),
+#      cv0/m = 0.20 1/s, m/c = 50 m, x(10 s) = 50 ln 3 = 54.9 m, v(10 s) = 3.33 m/s (RK4 agrees to 1e-12);
 #   4: R = 1.0 m, bucket 1.0 kg, water 2.0 kg: v_top,min = √(gR) = 3.13 m/s (√(5gR) = 7.00);
 #      at the top at 4.0 m/s: N = m(v²/R - g) = 12.4 N, T = (M+m)(v²/R - g) = 18.6 N;
-#      at the bottom at 7.43 m/s (= √(4² + 4gR), the energy result of chapter 3): T = 3(9.8 + 55.2) = 195 N
-#      (minus g: 136; without g: 166; water only: 130).
+#      ד (now open) at the bottom at 7.43 m/s (= √(4² + 4gR), the energy result of chapter 3): v²/R = 55.2,
+#      T_b = (M+m)(g + v²/R) = 195 N (6.63 weights), N_b = m(g + v²/R) = 130 N;
+#   5: bead (m) on a spring (k, ℓ0) on a smooth rod turning at ω about its end, ω0 = √(k/m):
+#      ב r_eq = ℓ0/(1 - ω²/ω0²); m = 0.20 kg, k = 20 N/m, ℓ0 = 0.30 m, ω = 6.0 rad/s: ω0 = 10 rad/s,
+#      1 - ω²/ω0² = 0.64, r_eq = 0.469 m, spring force 3.38 N = mω²r_eq; ג ẍ + (ω0² - ω²)x = 0, Ω = 8.0 rad/s
+#      at those values (RK4 period agrees), ω > ω0: cosh(√(ω² - ω0²) t) (RK4 at ω = 12 agrees), k → 0: r0 cosh ωt;
+#      ד F_θ = 2mωṙ = -2mωΩA sin Ωt (m a_θ from the RK4 path in Cartesian coordinates agrees to 3.5e-6 N),
+#      max 2mωΩA = 0.192 N at A = 0.01 m (not asked as a number).
 
 chapter: 2
 questions:
@@ -119,7 +135,7 @@ questions:
 
       - label: ד
         type: open
-        points: 9
+        points: 8
         level: bagrut
         objectives: [OBJ-2.5-2, OBJ-2.4-2, OBJ-2.2-2]
         prompt: >-
@@ -147,30 +163,34 @@ questions:
           - text: 'חישבתי $a_2 \approx 2.07\,\text{m/s}^2$ ו-$a_1 \approx 4.15\,\text{m/s}^2$, ובדקתי שהסימן מתאים לכיוון שהנחתי.'
 
       - label: ה
-        type: numeric
-        points: 5
+        type: open
+        points: 6
         level: bagrut
         standalone: false
         objectives: [OBJ-2.3-1, OBJ-2.2-2]
-        prompt: מה המתיחות בחוט בזמן התנועה?
-        answer: 23.2
-        unit: N
-        correctFeedback: >-
-          נכון. $T = m_1\left(a_1 + g(\sin\theta + \mu_k\cos\theta)\right) = 2.0\cdot(4.15 + 7.45) = 23.2\,\text{N}$. בדיקה מהגוש
-          השני: $m_2g - 2T = 58.8 - 46.4 = 12.4\,\text{N} = m_2a_2$. המתיחות קטנה מ-$29.4\,\text{N}$ של המנוחה, כי $m_2$ מאיץ
-          כלפי מטה.
-        wrongFeedback: 'הציבו את $a_1$ מחלק ד במשוואה של $m_1$ לאורך המדרון, ובדקו את התוצאה במשוואה של $m_2$.'
-        commonWrong:
-          - value: 29.4
-            feedback: 'זו המתיחות במנוחה, $m_2g/2$. בזמן התנועה $m_2$ מאיץ כלפי מטה, ולכן $2T < m_2g$.'
-            misconception: MC-2-tension-equals-hanging-weight
-          - value: 20.7
-            feedback: >-
-              זו המתיחות אם שני הגושים מאיצים באותה תאוצה. אבל $m_1$ נע מהר פי 2 מ-$m_2$, ולכן צריך יותר כוח כדי להאיץ
-              אותו.
-            misconception: MC-2-constraint-equal-accel
-          - value: 14.9
-            feedback: 'שכחתם את האיבר $m_1a_1$: זה הכוח שהיה מושך את $m_1$ במהירות קבועה. הגוש מאיץ, ולכן המתיחות גדולה יותר.'
+        prompt: >-
+          (1) בטאו את המתיחות $T$ בחוט בזמן התנועה באמצעות $m_1$, $m_2$, $\theta$, $\mu_k$ ו-$g$, כמנה אחת.
+
+          (2) הראו ש-$T$ קטנה מהמתיחות במנוחה, $m_2g/2$, בדיוק כאשר $a_2 > 0$. בדקו את הביטוי בגבול $m_1 \to 0$ ובמדרון
+          אנכי חלק, ובדקו יחידות.
+
+          (3) חשבו את $T$.
+        hints:
+          - 'הציבו $a_1 = 2a_2$ ואת $a_2$ מחלק ד במשוואה של $m_1$ לאורך המדרון, וכתבו הכול על המכנה $m_2 + 4m_1$.'
+          - 'אל תניחו ש-$T = m_2g/2$: זה נכון רק כש-$m_2$ לא מאיץ.'
+        solution:
+          - { kind: law, text: 'החוק השני לגוש $m_1$ לאורך המדרון, עם $a_1 = 2a_2$: $T = m_1\left(2a_2 + gs\right)$, כאשר $s = \sin\theta + \mu_k\cos\theta$. מחלק ד: $a_2 = g\,\dfrac{m_2 - 2m_1s}{m_2 + 4m_1}$.' }
+          - { kind: manipulation, text: 'על המכנה המשותף: $T = m_1g\,\dfrac{2(m_2 - 2m_1s) + s(m_2 + 4m_1)}{m_2 + 4m_1}$. האיברים $-4m_1s$ ו-$+4m_1s$ מתבטלים, ונשאר $$T = \frac{m_1m_2\,g\,(2 + s)}{m_2 + 4m_1}$$' }
+          - { kind: manipulation, text: 'השוואה למנוחה: $T < \dfrac{m_2g}{2}$ אם ורק אם $2m_1(2 + s) < m_2 + 4m_1$, כלומר $2m_1s < m_2$, וזה בדיוק התנאי ש-$a_2 > 0$. כש-$m_2$ מאיץ כלפי מטה, שני קטעי החוט מחזיקים פחות מהמשקל שלו. ההנחה ש-$T = m_2g/2$ גם בזמן התנועה מתעלמת מהתאוצה.' }
+          - { kind: limit, text: 'כש-$m_1 \to 0$: $T \to 0$. אין מה למשוך, ו-$m_2$ נופל חופשית, כמו בחלק ד. מדרון אנכי חלק ($s = 1$): $T = \dfrac{3m_1m_2}{m_2 + 4m_1}\,g$, המתיחות של גלגלת נעה עם גוש תלוי בקצה החופשי (שיעור 2.5). ושולחן אופקי חלק ($s = 0$): $T = \dfrac{2m_1m_2}{m_2 + 4m_1}\,g$, גם היא משיעור 2.5.' }
+          - { kind: units, text: '$\dfrac{m_1m_2}{m_2 + 4m_1}$ ביחידות $\text{kg}$, ו-$2 + s$ חסר ממדים, ולכן $T$ ביחידות $\text{kg}\cdot\text{m/s}^2 = \text{N}$.' }
+          - { kind: substitution, text: '$s = 0.760$: $T = \dfrac{2.0\cdot6.0\cdot9.8\cdot2.76}{14} = 23.2\,\text{N}$. בדיקה מהגוש השני: $m_2g - 2T = 58.8 - 46.4 = 12.4\,\text{N} = m_2a_2$.' }
+          - { kind: result, text: '$T = \dfrac{m_1m_2\,g\,(2 + \sin\theta + \mu_k\cos\theta)}{m_2 + 4m_1} = 23.2\,\text{N}$, פחות מ-$29.4\,\text{N}$ של המנוחה, כי $m_2$ מאיץ כלפי מטה.' }
+        rubric:
+          - text: 'הצבתי $a_1 = 2a_2$, ולא $a_1 = a_2$, במשוואה של $m_1$, וקיבלתי $T = m_1m_2g(2 + s)/(m_2 + 4m_1)$.'
+          - text: 'הראיתי ש-$T < m_2g/2$ בדיוק כש-$a_2 > 0$.'
+          - text: 'בדקתי את הגבולות: $T \to 0$ כש-$m_1 \to 0$, והמתיחות של גלגלת נעה משיעור 2.5 במדרון אנכי חלק.'
+          - text: 'חישבתי $T \approx 23.2\,\text{N}$ ובדקתי אותה במשוואה של $m_2$.'
 
   # ------------------------------------------------------------ 2: a banked curve, and a plumb line inside the car
   - id: Q-2-bagrut-2
@@ -209,57 +229,38 @@ questions:
             misconception: MC-2-acceleration-along-velocity
 
       - label: ב
-        type: numeric
-        points: 5
+        type: open
+        points: 6
         level: mid
-        objectives: [OBJ-2.6-2]
-        prompt: באיזו מהירות המכונית עוברת את העקומה בלי שום חיכוך לרוחב הכביש?
-        answer: 16.9
-        unit: m/s
-        correctFeedback: >-
-          נכון. $N\cos\theta = mg$ ו-$N\sin\theta = mv_0^2/R$, ולכן $v_0 = \sqrt{gR\tan\theta} = \sqrt{9.8\cdot80\cdot0.364} = 16.9\,\text{m/s}$,
-          כ-61 קילומטר לשעה.
-        wrongFeedback: 'בלי חיכוך, הנורמלי לבד צריך לתת גם את האיזון האנכי וגם את הכוח הרדיאלי. פרקו אותו לאנך ולאופק.'
-        commonWrong:
-          - value: 285
-            feedback: 'זה $gR\tan\theta$, ביחידות $\text{m}^2/\text{s}^2$. הוציאו שורש.'
-          - value: 46.4
-            feedback: 'חישבתם $\sqrt{gR/\tan\theta}$. הרכיב האופקי של הנורמלי הוא $N\sin\theta$, ולכן $\tan\theta$ במונה.'
+        objectives: [OBJ-2.6-2, OBJ-2.1-2]
+        prompt: >-
+          (1) בטאו את המהירות $v_0$ שבה המכונית עוברת את העקומה בלי שום חיכוך לרוחב הכביש, באמצעות $g$, $R$ ו-$\theta$.
+
+          (2) בדקו את הביטוי בגבולות $\theta \to 0$ ו-$\theta \to 90^\circ$, ובדקו יחידות.
+
+          (3) חשבו את $v_0$.
         hints:
-          - 'חלקו את המשוואה האופקית באנכית.'
+          - 'בלי חיכוך, הנורמלי לבד צריך לתת גם את האיזון האנכי וגם את הכוח הרדיאלי. פרקו אותו לאנך ולאופק, ולא לאורך הכביש.'
+          - 'חלקו את המשוואה האופקית באנכית. הרכיב האופקי של הנורמלי הוא $N\sin\theta$: איפה יוצא $\tan\theta$, במונה או במכנה?'
+        solution:
+          - { kind: law, text: 'החוק השני באנך ובאופק (לעבר המרכז). על המכונית פועלים רק הכובד והנורמלי, והנורמלי נטוי ב-$\theta$ מהאנך. התאוצה $v_0^2/R$, אופקית אל המרכז.' }
+          - { kind: manipulation, text: 'באנך: $N\cos\theta = mg$. באופק: $N\sin\theta = \dfrac{mv_0^2}{R}$. מחלקים את השנייה בראשונה, ו-$N$ ו-$m$ מצטמצמים: $\tan\theta = \dfrac{v_0^2}{gR}$, ולכן $$v_0 = \sqrt{gR\tan\theta}$$' }
+          - { kind: limit, text: 'כש-$\theta \to 0$: $v_0 \to 0$. בכביש שטוח בלי חיכוך אי אפשר לפנות בשום מהירות. כש-$\theta \to 90^\circ$: $v_0 \to \infty$. הנורמלי כמעט אופקי, וכדי שהרכיב האנכי הקטן שלו יישא את המשקל הוא חייב להיות עצום, ואיתו הכוח הרדיאלי. והמסה לא מופיעה: אותה מהירות למשאית ולאופנוע.' }
+          - { kind: units, text: '$gR$ ביחידות $\text{m/s}^2\cdot\text{m} = \text{m}^2/\text{s}^2$, ו-$\tan\theta$ חסר ממדים, ולכן $v_0$ ב-$\text{m/s}$.' }
+          - { kind: substitution, text: '$\tan20^\circ = 0.364$: $v_0 = \sqrt{9.8\cdot80\cdot0.364} = \sqrt{285\,\text{m}^2/\text{s}^2} = 16.9\,\text{m/s}$.' }
+          - { kind: result, text: '$v_0 = \sqrt{gR\tan\theta} = 16.9\,\text{m/s}$, כ-61 קילומטר לשעה.' }
+        rubric:
+          - text: פירקתי את הנורמלי לרכיב אנכי ולרכיב אופקי, וכתבתי את החוק השני באנך ובאופק.
+          - text: 'קיבלתי $v_0 = \sqrt{gR\tan\theta}$, עם $\tan\theta$ במונה ובלי $m$.'
+          - text: 'בדקתי את הגבולות $\theta \to 0$ ו-$\theta \to 90^\circ$ ואת היחידות.'
+          - text: 'חישבתי $v_0 \approx 16.9\,\text{m/s}$.'
 
       - label: ג
-        type: open
-        points: 10
-        level: bagrut
-        objectives: [OBJ-2.6-2, OBJ-2.4-2]
-        prompt: >-
-          (1) מצאו ביטוי למהירות המרבית שבה המכונית עוברת את העקומה בלי להחליק, בעזרת $g$, $R$, $\theta$ ו-$\mu_s$.
-
-          (2) בדקו את הביטוי בגבולות $\mu_s \to 0$ ו-$\theta \to 0$, ובדקו יחידות.
-
-          (3) חשבו את המהירות המרבית.
-        hints:
-          - 'במהירות המרבית המכונית נוטה להחליק החוצה, במעלה השיפוע. לאן פונה החיכוך?'
-        solution:
-          - { kind: law, text: 'החוק השני באנך ובאופק (לעבר המרכז). במהירות המרבית החיכוך הסטטי מגיע לגבול שלו, $\mu_sN$, ופונה במורד השיפוע. הנורמלי נטוי ב-$\theta$ מהאנך, והחיכוך ב-$\theta$ מהאופק.' }
-          - { kind: manipulation, text: 'באנך: $N\cos\theta - \mu_sN\sin\theta = mg$. באופק: $N\sin\theta + \mu_sN\cos\theta = \dfrac{mv^2}{R}$. מחלקים את השנייה בראשונה, ו-$N$ ו-$m$ מצטמצמים: $$v_{\max}^2 = gR\,\frac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}$$' }
-          - { kind: limit, text: 'כש-$\mu_s \to 0$: $v_{\max}^2 \to gR\tan\theta$, המהירות של חלק ב. כש-$\theta \to 0$: $v_{\max}^2 \to \mu_sgR$, הכביש השטוח. ואם $\mu_s \to \cot\theta$, המכנה מתאפס: בשיפוע כזה החיכוך מחזיק בכל מהירות.' }
-          - { kind: units, text: 'המנה חסרת ממדים, ו-$gR$ ביחידות $\text{m/s}^2\cdot\text{m} = \text{m}^2/\text{s}^2$, ולכן $v_{\max}$ ב-$\text{m/s}$.' }
-          - { kind: substitution, text: '$\sin20^\circ = 0.342$, $\cos20^\circ = 0.940$: $v_{\max}^2 = 9.8\cdot80\cdot\dfrac{0.342 + 0.235}{0.940 - 0.0855} = 784\cdot0.675 = 530\,\text{m}^2/\text{s}^2$.' }
-          - { kind: result, text: '$v_{\max} = \sqrt{gR\,\dfrac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}} = 23.0\,\text{m/s}$, כ-83 קילומטר לשעה. (באותו אופן, עם החיכוך במעלה, המהירות המינימלית $9.05\,\text{m/s}$.)' }
-        rubric:
-          - text: קבעתי שבמהירות המרבית החיכוך הוא $\mu_sN$ ופונה במורד השיפוע.
-          - text: כתבתי את החוק השני באנך ובאופק, לא לאורך הכביש, עם הרכיבים של הנורמלי ושל החיכוך.
-          - text: חילקתי את המשוואות, וקיבלתי ביטוי בלי $N$ ובלי $m$.
-          - text: בדקתי שהביטוי חוזר ל-$gR\tan\theta$ בלי חיכוך ול-$\mu_sgR$ בכביש שטוח.
-          - text: 'חישבתי $v_{\max} \approx 23\,\text{m/s}$.'
-
-      - label: ד
         type: twotier
-        points: 6
+        points: 5
         level: bagrut
         qualitative: true
+        standalone: false
         objectives: [OBJ-2.1-1, OBJ-2.1-2, OBJ-2.6-2]
         prompt: >-
           המכונית נוסעת במהירות של חלק ב, שבה אין חיכוך לרוחב הכביש. באיזה כיוון נטוי החוט של המשקולת, ביחס למכונית?
@@ -295,6 +296,33 @@ questions:
             feedback: 'החוט אנכי רק כשהמכונית לא מאיצה. במכונית שמאיצה בקו ישר, או סובבת, הוא נטוי.'
             misconception: MC-2-uniform-motion-inertial
 
+      - label: ד
+        type: open
+        points: 10
+        level: bagrut
+        objectives: [OBJ-2.6-2, OBJ-2.4-2]
+        prompt: >-
+          (1) מצאו ביטוי למהירות המרבית שבה המכונית עוברת את העקומה בלי להחליק, בעזרת $g$, $R$, $\theta$ ו-$\mu_s$.
+
+          (2) בדקו את הביטוי בגבולות $\mu_s \to 0$ ו-$\theta \to 0$, ובדקו יחידות.
+
+          (3) חשבו את המהירות המרבית.
+        hints:
+          - 'במהירות המרבית המכונית נוטה להחליק החוצה, במעלה השיפוע. לאן פונה החיכוך?'
+        solution:
+          - { kind: law, text: 'החוק השני באנך ובאופק (לעבר המרכז). במהירות המרבית החיכוך הסטטי מגיע לגבול שלו, $\mu_sN$, ופונה במורד השיפוע. הנורמלי נטוי ב-$\theta$ מהאנך, והחיכוך ב-$\theta$ מהאופק.' }
+          - { kind: manipulation, text: 'באנך: $N\cos\theta - \mu_sN\sin\theta = mg$. באופק: $N\sin\theta + \mu_sN\cos\theta = \dfrac{mv^2}{R}$. מחלקים את השנייה בראשונה, ו-$N$ ו-$m$ מצטמצמים: $$v_{\max}^2 = gR\,\frac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}$$' }
+          - { kind: limit, text: 'כש-$\mu_s \to 0$: $v_{\max}^2 \to gR\tan\theta$, המהירות של חלק ב. כש-$\theta \to 0$: $v_{\max}^2 \to \mu_sgR$, הכביש השטוח. ואם $\mu_s \to \cot\theta$, המכנה מתאפס: בשיפוע כזה החיכוך מחזיק בכל מהירות.' }
+          - { kind: units, text: 'המנה חסרת ממדים, ו-$gR$ ביחידות $\text{m/s}^2\cdot\text{m} = \text{m}^2/\text{s}^2$, ולכן $v_{\max}$ ב-$\text{m/s}$.' }
+          - { kind: substitution, text: '$\sin20^\circ = 0.342$, $\cos20^\circ = 0.940$: $v_{\max}^2 = 9.8\cdot80\cdot\dfrac{0.342 + 0.235}{0.940 - 0.0855} = 784\cdot0.675 = 530\,\text{m}^2/\text{s}^2$.' }
+          - { kind: result, text: '$v_{\max} = \sqrt{gR\,\dfrac{\sin\theta + \mu_s\cos\theta}{\cos\theta - \mu_s\sin\theta}} = 23.0\,\text{m/s}$, כ-83 קילומטר לשעה. (באותו אופן, עם החיכוך במעלה, המהירות המינימלית $9.05\,\text{m/s}$.)' }
+        rubric:
+          - text: קבעתי שבמהירות המרבית החיכוך הוא $\mu_sN$ ופונה במורד השיפוע.
+          - text: כתבתי את החוק השני באנך ובאופק, לא לאורך הכביש, עם הרכיבים של הנורמלי ושל החיכוך.
+          - text: חילקתי את המשוואות, וקיבלתי ביטוי בלי $N$ ובלי $m$.
+          - text: בדקתי שהביטוי חוזר ל-$gR\tan\theta$ בלי חיכוך ול-$\mu_sgR$ בכביש שטוח.
+          - text: 'חישבתי $v_{\max} \approx 23\,\text{m/s}$.'
+
   # ------------------------------------------------------------ 3: a boat coasting against water drag
   - id: Q-2-bagrut-3
     type: bagrut
@@ -322,7 +350,7 @@ questions:
 
       - label: ב
         type: numeric
-        points: 6
+        points: 5
         level: mid
         objectives: [OBJ-2.8-2]
         prompt: >-
@@ -350,7 +378,7 @@ questions:
 
       - label: ג
         type: open
-        points: 10
+        points: 9
         level: bagrut
         objectives: [OBJ-2.7-1, OBJ-2.8-2]
         prompt: >-
@@ -375,36 +403,36 @@ questions:
           - text: 'חישבתי $x(10\,\text{s}) \approx 43\,\text{m}$.'
 
       - label: ד
-        type: mc
-        points: 5
+        type: open
+        points: 7
         level: bagrut
-        qualitative: true
         objectives: [OBJ-2.7-2, OBJ-2.8-2]
         prompt: >-
-          במהירויות גבוהות הגרר של המים קרוב יותר לגרר ריבועי, $F = -cv^2$ (כאן $v \gt 0$; בכל כיוון תנועה, $F = -c|v|v$).
-          נניח שהגרר ריבועי בכל המהירויות. מה משתנה במרחק העצירה?
-        choices:
-          - text: 'הסירה לא נעצרת בשום מרחק סופי: $v = v_0e^{-cx/m}$, והמהירות דועכת אקספוננציאלית עם הדרך.'
-            correct: true
-            feedback: >-
-              נכון. $mv\,\dfrac{dv}{dx} = -cv^2$, ולכן $\dfrac{dv}{v} = -\dfrac cm\,dx$, ו-$v = v_0e^{-cx/m}$: המהירות אף פעם לא
-              מתאפסת. גם $x(t) = \dfrac mc\ln\left(1 + \dfrac{cv_0}{m}t\right)$ גדל בלי גבול, לאט מאוד. במהירות נמוכה הגרר
-              הריבועי חלש מהליניארי, ולכן הוא לבד לא עוצר את הסירה.
-          - text: 'היא נעצרת במרחק $m/c$, כמו בגרר הליניארי עם $b$ במקום $c$.'
-            feedback: >-
-              בגרר ליניארי $v$ מצטמצם, ו-$dv/dx$ קבוע. בגרר ריבועי נשאר $v$ אחד, ו-$dv/dx = -(c/m)v$: המהירות יורדת
-              עם הדרך לאט יותר ככל שהיא קטנה.
-            misconception: MC-2-drag-always-linear
-          - text: היא נעצרת מוקדם יותר, כי גרר ריבועי חזק יותר מליניארי.
-            feedback: >-
-              גרר ריבועי חזק יותר רק במהירות גבוהה. כשהסירה מאטה, $cv^2$ קטן מהר יותר מ-$bv$, והסירה כמעט מפסיקה
-              להאט.
-            misconception: MC-2-drag-always-quadratic
-          - text: היא נעצרת במרחק סופי, אבל אחרי זמן אינסופי.
-            feedback: 'זה המצב בגרר **ליניארי**: $50\,\text{m}$ בזמן אינסופי. בגרר ריבועי גם המרחק אינסופי.'
-        explanation: >-
-          בסירה אמיתית שני הגררים קיימים יחד. במהירות גבוהה הריבועי שולט, ובמהירות נמוכה הליניארי, והוא שעוצר את
-          הסירה במרחק סופי. מודל של גרר אחד טוב רק בתחום המהירויות שבו הוא שולט.
+          במהירויות גבוהות הגרר של המים קרוב יותר לגרר ריבועי, $F = -cv^2$ (כאן $v \gt 0$). נניח שהגרר ריבועי בכל
+          המהירויות, עם $c = b/v_0 = 10\,\text{kg/m}$, כך שברגע $t = 0$ הוא שווה לגרר הליניארי.
+
+          (1) מצאו את $v$ כפונקציה של $x$ בעזרת כלל השרשרת, ואת $x(t)$, באמצעות $m$, $c$ ו-$v_0$. האם הסירה נעצרת במרחק
+          סופי?
+
+          (2) בדקו את $x(t)$ בגבול $c \to 0$ וביחידות.
+
+          (3) איזה מרחק עברה הסירה אחרי $10\,\text{s}$? השוו לחלק ג.
+        hints:
+          - 'עם $a = v\,dv/dx$: $mv\,\dfrac{dv}{dx} = -cv^2$. הפעם $v$ אחד נשאר אחרי הצמצום.'
+          - 'ל-$x(t)$: הפרידו משתנים בזמן, $\dfrac{dv}{v^2} = -\dfrac cm\,dt$, ואחר כך בצעו אינטגרציה של $v(t)$.'
+        solution:
+          - { kind: law, text: 'החוק השני בכיוון התנועה, $m\,\dfrac{dv}{dt} = -cv^2$, עם $v(0) = v_0$ ו-$x(0) = 0$. לשאלה על מרחק, כלל השרשרת: $\dfrac{dv}{dt} = v\,\dfrac{dv}{dx}$.' }
+          - { kind: manipulation, text: 'במקום: $mv\,\dfrac{dv}{dx} = -cv^2$, ולכן $\dfrac{dv}{v} = -\dfrac cm\,dx$ ו-$v = v_0e^{-cx/m}$. בזמן: $\displaystyle\int_{v_0}^{v}\frac{dv''}{v''^2} = -\frac cm\,t$ נותן $\dfrac1v = \dfrac1{v_0} + \dfrac{ct}{m}$, כלומר $v = \dfrac{v_0}{1 + cv_0t/m}$. אינטגרציה נוספת: $$x(t) = \frac mc\ln\left(1 + \frac{cv_0}{m}\,t\right)$$' }
+          - { kind: manipulation, text: '$v = v_0e^{-cx/m}$ לא מתאפסת באף $x$ סופי, ו-$x(t)$ גדל בלי גבול, לאט מאוד: הסירה לא נעצרת בשום מרחק סופי. גרר ריבועי חזק מהליניארי רק במהירות גבוהה; כשהסירה מאטה, $cv^2$ קטן מהר יותר מ-$bv$, והוא לבד לא עוצר אותה. לכן אי אפשר להעתיק את התוצאה של הגרר הליניארי, מרחק $m/c$, עם $c$ במקום $b$, ואי אפשר להניח שגרר ריבועי עוצר מוקדם יותר.' }
+          - { kind: limit, text: 'כש-$c \to 0$: $\ln(1 + \epsilon) \approx \epsilon$ עם $\epsilon = cv_0t/m$, ולכן $x \approx v_0t$, תנועה במהירות קבועה. אותו פיתוח נותן $x \approx v_0t$ גם בזמן קצר, $t \ll m/(cv_0)$, כשהגרר עוד לא הספיק להאט.' }
+          - { kind: units, text: '$c$ ביחידות $\text{N}/(\text{m/s})^2 = \text{kg/m}$, ולכן $m/c$ ב-$\text{m}$ ו-$cv_0t/m$ חסר ממדים.' }
+          - { kind: substitution, text: '$\dfrac{cv_0}{m} = \dfrac{10\cdot10}{500} = 0.20\,\text{s}^{-1}$ ו-$\dfrac mc = 50\,\text{m}$. ב-$t = 10\,\text{s}$: $x = 50\ln3 = 54.9\,\text{m}$, ו-$v = \dfrac{10}{3} = 3.33\,\text{m/s}$.' }
+          - { kind: result, text: '$v = v_0e^{-cx/m}$ ו-$x(t) = \dfrac mc\ln\left(1 + \dfrac{cv_0}{m}t\right)$: אין מרחק עצירה סופי. אחרי $10\,\text{s}$ הסירה עברה $54.9\,\text{m}$, יותר מ-$43.2\,\text{m}$ בגרר הליניארי, ויותר מכל מרחק העצירה שלו, $50\,\text{m}$, כי באותו כוח התחלתי הגרר הריבועי נחלש מהר יותר עם המהירות.' }
+        rubric:
+          - text: 'הפעלתי את כלל השרשרת ומצאתי $v = v_0e^{-cx/m}$, שלא מתאפסת באף מרחק סופי.'
+          - text: 'מצאתי את $x(t) = (m/c)\ln(1 + cv_0t/m)$, כולל קבוע האינטגרציה עם $x(0) = 0$.'
+          - text: 'בדקתי שכש-$c \to 0$ מתקבל $x \approx v_0t$, ובדקתי יחידות של $c$.'
+          - text: 'חישבתי $x(10\,\text{s}) \approx 54.9\,\text{m}$ והשוויתי ל-$43.2\,\text{m}$ של חלק ג.'
 
   # ------------------------------------------------------------ 4: a bucket of water on a vertical circle
   - id: Q-2-bagrut-4
@@ -493,23 +521,160 @@ questions:
           - text: 'חישבתי $N \approx 12.4\,\text{N}$ ו-$T \approx 18.6\,\text{N}$.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 6
         level: bagrut
         objectives: [OBJ-2.6-2, OBJ-2.3-1]
         prompt: >-
-          בנקודה התחתונה מהירות הדלי $7.43\,\text{m/s}$. מה המתיחות בחבל שם?
-        answer: 195
-        unit: N
-        correctFeedback: >-
-          נכון. בנקודה התחתונה המרכז מעל הדלי. המתיחות כלפי מעלה, אל המרכז, והכובד כלפי מטה:
-          $T - (M + m)g = \dfrac{(M + m)v^2}{R}$, ולכן $T = 3.0\cdot(9.8 + 55.2) = 195\,\text{N}$, פי 6.6 מהכובד של הדלי והמים.
-          (המהירות הזו היא בדיוק מה ששימור אנרגיה, בפרק 3, נותן מהנקודה העליונה.)
-        wrongFeedback: 'בנקודה התחתונה המתיחות והכובד פונים לכיוונים הפוכים. מי מהם פונה אל המרכז?'
-        commonWrong:
-          - value: 136
-            feedback: 'חיסרתם את $g$, כמו בנקודה העליונה. למטה הכובד פונה **הרחק** מהמרכז, והמתיחות צריכה להתגבר גם עליו.'
-          - value: 166
-            feedback: 'זה $(M + m)v^2/R$ בלבד. המתיחות צריכה גם לשאת את הכובד, $(M + m)g = 29.4\,\text{N}$.'
-          - value: 130
-            feedback: 'זה הכוח שהדלי מפעיל על המים. החבל מושך את הדלי ואת המים יחד, $M + m = 3.0\,\text{kg}$.'
+          בנקודה התחתונה מהירות הדלי $v_b$.
+
+          (1) בטאו את המתיחות $T_b$ בחבל שם, ואת הכוח $N_b$ שתחתית הדלי מפעילה על המים, באמצעות $M$, $m$, $v_b$, $R$ ו-$g$.
+
+          (2) בדקו את הביטויים בגבול $v_b \to 0$ וביחידות.
+
+          (3) חשבו את $T_b$ ואת $N_b$ עבור $v_b = 7.43\,\text{m/s}$.
+        hints:
+          - 'בנקודה התחתונה המרכז מעל הדלי. מי מהכוחות פונה אל המרכז, ומי הרחק ממנו?'
+          - 'החבל מושך את הדלי ואת המים יחד: למערכת הזו המסה $M + m$.'
+        solution:
+          - { kind: law, text: 'החוק השני ברכיב הרדיאלי, הפעם כלפי מעלה אל המרכז: $\sum F_r = \dfrac{mv^2}{R}$ לכל גוף. בנקודה התחתונה המתיחות והכוח של התחתית פונים אל המרכז, והכובד הרחק ממנו.' }
+          - { kind: manipulation, text: 'למערכת דלי + מים: $T_b - (M + m)g = \dfrac{(M + m)v_b^2}{R}$, ולכן $T_b = (M + m)\left(g + \dfrac{v_b^2}{R}\right)$. למים לבד: $N_b - mg = \dfrac{mv_b^2}{R}$, ולכן $N_b = m\left(g + \dfrac{v_b^2}{R}\right)$.' }
+          - { kind: manipulation, text: 'בנקודה העליונה $g$ הופיע עם סימן מינוס, כי שם הכובד פונה אל המרכז ועוזר; למטה הוא פונה הרחק מהמרכז, והחבל צריך להתגבר גם עליו. מי שמעתיק את הביטוי של חלק ג ומחסר $g$ מקבל מתיחות קטנה מדי.' }
+          - { kind: limit, text: 'כש-$v_b \to 0$: $T_b \to (M + m)g$ ו-$N_b \to mg$, דלי שתלוי במנוחה ונושא את המשקל של עצמו ושל המים. כש-$v_b^2/R \gg g$ הכובד זניח, ושוב מתקבל $(M + m)v_b^2/R$ של מעגל אופקי.' }
+          - { kind: units, text: '$v_b^2/R$ ביחידות $\text{m/s}^2$, כמו $g$, ולכן שני הביטויים בניוטון.' }
+          - { kind: substitution, text: '$v_b^2/R = 7.43^2/1.0 = 55.2\,\text{m/s}^2$. $T_b = 3.0\cdot(9.8 + 55.2) = 195\,\text{N}$, פי 6.6 מהכובד של הדלי והמים, ו-$N_b = 2.0\cdot65.0 = 130\,\text{N}$.' }
+          - { kind: result, text: '$T_b = (M + m)\left(g + v_b^2/R\right) = 195\,\text{N}$ ו-$N_b = m\left(g + v_b^2/R\right) = 130\,\text{N}$. (המהירות $7.43\,\text{m/s}$ היא בדיוק מה ששימור אנרגיה, בפרק 3, נותן מהנקודה העליונה במהירות $4.0\,\text{m/s}$.)' }
+        rubric:
+          - text: 'כתבתי את החוק השני כלפי מעלה, אל המרכז, עם המתיחות חיובית והכובד שלילי.'
+          - text: 'השתמשתי במסה $M + m$ לחבל ובמסה $m$ לכוח על המים.'
+          - text: 'בדקתי שבגבול $v_b \to 0$ מתקבל המשקל של דלי תלוי, ובדקתי יחידות.'
+          - text: 'חישבתי $T_b \approx 195\,\text{N}$ ו-$N_b \approx 130\,\text{N}$.'
+
+  # ------------------------------------------------------------ 5: a bead on a spring, on a rotating rod (joins 0.5, 1.4 and 2.x)
+  - id: Q-2-bagrut-5
+    type: bagrut
+    title: חרוז על קפיץ, על מוט מסתובב
+    prompt: >-
+      מוט ישר, דק וחלק מונח אופקית ומסתובב סביב ציר אנכי שעובר בקצה שלו, $O$, במהירות זוויתית קבועה $\omega$ (מנוע
+      שומר עליה קבועה). על המוט מושחל חרוז קטן בעל מסה $m$, והוא מחובר ל-$O$ בקפיץ קל בעל קבוע $k$ ואורך רפוי
+      $\ell_0$, שמונח לאורך המוט. החרוז מחליק על המוט בלי חיכוך. סמנו $\omega_0 = \sqrt{k/m}$, ואת המרחק של החרוז
+      מ-$O$ ב-$r$. עבדו במערכת הקרקע, בקואורדינטות קוטביות סביב $O$, כאשר הזווית של המוט היא $\theta = \omega t$.
+    parts:
+      - label: א
+        type: mc
+        points: 4
+        level: basic
+        qualitative: true
+        objectives: [OBJ-2.6-1, OBJ-1.4-2]
+        prompt: >-
+          החרוז מסתובב עם המוט במרחק קבוע $r$ מ-$O$. איזה כוח נותן לו את הכוח השקול הרדיאלי, ולאן הכוח הזה פונה?
+        choices:
+          - text: 'הקפיץ, שמתוח מעבר ל-$\ell_0$ ומושך את החרוז אל $O$ בכוח $k(r - \ell_0) = m\omega^2r$.'
+            correct: true
+            feedback: >-
+              נכון. במרחק קבוע $\dot r = \ddot r = 0$, ולכן $a_r = \ddot r - r\dot\theta^2 = -r\omega^2$: תאוצה אל $O$. המוט חלק,
+              ולכן הכוח שלו ניצב למוט ואין לו רכיב רדיאלי, והכובד אנכי. נשאר הקפיץ, והוא מושך פנימה, כלומר מתוח:
+              $r > \ell_0$.
+          - text: 'אין כוח שקול רדיאלי: $r$ קבוע, ולכן $\ddot r = 0$, והתאוצה הרדיאלית אפס.'
+            feedback: >-
+              הרכיב הרדיאלי של התאוצה הוא $\ddot r - r\dot\theta^2$, ולא $\ddot r$ (שיעור 1.4). כש-$r$ קבוע נשאר
+              $-r\omega^2$: החרוז נע במעגל, ולכן הוא מאיץ אל $O$.
+            misconception: MC-1-rddot-is-radial-acceleration
+          - text: המוט דוחף את החרוז אל $O$, והקפיץ רפוי.
+            feedback: >-
+              המוט חלק: הכוח שלו ניצב למוט, ואין לו רכיב לאורך המוט, שהוא הכיוון הרדיאלי. בלי הקפיץ שום כוח לא היה
+              מושך את החרוז פנימה, והוא היה מחליק החוצה, כמו החרוז החופשי של שיעור 1.4.
+          - text: הקפיץ דוחף את החרוז החוצה, ומאזן את הכוח הצנטריפוגלי.
+            feedback: >-
+              במערכת הקרקע אין כוח צנטריפוגלי. החרוז נע במעגל, ולכן הכוח השקול עליו פונה **אל** $O$, והקפיץ מושך
+              פנימה: הוא מתוח, לא דחוס.
+            misconception: MC-2-centrifugal-in-inertial
+        hints:
+          - 'כתבו את הרכיב הרדיאלי של התאוצה בקואורדינטות קוטביות (שיעור 1.4) כש-$r$ קבוע.'
+
+      - label: ב
+        type: open
+        points: 6
+        level: mid
+        objectives: [OBJ-2.6-1, OBJ-2.3-1]
+        prompt: >-
+          (1) בטאו את המרחק $r_{\text{eq}}$ שבו החרוז יכול להסתובב עם המוט במרחק קבוע, באמצעות $\ell_0$, $\omega$
+          ו-$\omega_0$. באילו מהירויות זוויתיות מרחק כזה קיים?
+
+          (2) בדקו את הביטוי בגבולות $\omega \to 0$ ו-$\omega \to \omega_0$, ובדקו יחידות.
+
+          (3) חשבו את $r_{\text{eq}}$ עבור $m = 0.20\,\text{kg}$, $k = 20\,\text{N/m}$, $\ell_0 = 0.30\,\text{m}$
+          ו-$\omega = 6.0\,\text{rad/s}$.
+        hints:
+          - 'הכוח הרדיאלי היחיד הוא כוח הקפיץ, $-k(r - \ell_0)$ בכיוון $\hat r$.'
+        solution:
+          - { kind: law, text: 'החוק השני ברכיב הרדיאלי, $\sum F_r = ma_r$ עם $a_r = \ddot r - r\dot\theta^2$ (שיעור 1.4). הכוח הרדיאלי היחיד הוא של הקפיץ, $F_r = -k(r - \ell_0)$. במרחק קבוע $\ddot r = 0$ ו-$\dot\theta = \omega$, ולכן $-k(r - \ell_0) = -m\omega^2r$.' }
+          - { kind: manipulation, text: '$kr - k\ell_0 = m\omega^2r$, ולכן $r(k - m\omega^2) = k\ell_0$. מחלקים ב-$k$: $$r_{\text{eq}} = \frac{\ell_0}{1 - \omega^2/\omega_0^2}$$ מרחק חיובי, ולכן אפשרי, רק כש-$\omega < \omega_0$.' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $r_{\text{eq}} \to \ell_0$, קפיץ רפוי על מוט שעומד. כש-$\omega \to \omega_0$ מלמטה: $r_{\text{eq}} \to \infty$. גם כוח הקפיץ וגם הכוח הרדיאלי הדרוש, $m\omega^2r$, גדלים קווית עם $r$; כש-$\omega \ge \omega_0$ הדרוש גדל מהר יותר, והקפיץ לא מספיק באף מרחק.' }
+          - { kind: units, text: '$\omega^2/\omega_0^2$ חסר ממדים ($\omega_0^2 = k/m$ ביחידות $\text{s}^{-2}$, כמו $\omega^2$), ולכן $r_{\text{eq}}$ ביחידות של $\ell_0$, מטרים.' }
+          - { kind: substitution, text: '$\omega_0 = \sqrt{20/0.20} = 10\,\text{rad/s}$, ולכן $1 - \omega^2/\omega_0^2 = 1 - 36/100 = 0.64$, ו-$r_{\text{eq}} = 0.30/0.64 = 0.469\,\text{m}$. בדיקה: כוח הקפיץ $20\cdot0.169 = 3.38\,\text{N}$, ו-$m\omega^2r_{\text{eq}} = 0.20\cdot36\cdot0.469 = 3.38\,\text{N}$.' }
+          - { kind: result, text: '$r_{\text{eq}} = \ell_0/(1 - \omega^2/\omega_0^2)$, שקיים רק כש-$\omega < \omega_0$; כאן $0.469\,\text{m}$.' }
+        rubric:
+          - text: 'כתבתי את החוק השני ברכיב הרדיאלי עם $a_r = -r\omega^2$, והקפיץ הוא הכוח הרדיאלי היחיד.'
+          - text: 'קיבלתי $r_{\text{eq}} = \ell_0/(1 - \omega^2/\omega_0^2)$, וקבעתי שהוא קיים רק כש-$\omega < \omega_0$.'
+          - text: 'בדקתי את הגבולות $\omega \to 0$ ו-$\omega \to \omega_0$ ואת היחידות.'
+          - text: 'חישבתי $r_{\text{eq}} \approx 0.469\,\text{m}$ ובדקתי שכוח הקפיץ שווה ל-$m\omega^2r_{\text{eq}}$.'
+
+      - label: ג
+        type: open
+        points: 8
+        level: bagrut
+        objectives: [OBJ-1.4-1, OBJ-2.1-2, OBJ-0.5-3]
+        prompt: >-
+          החרוז מוזז מעט מ-$r_{\text{eq}}$, למרחק $r_{\text{eq}} + A$, ומשוחרר במנוחה ביחס למוט. המוט ממשיך להסתובב
+          ב-$\omega$ קבועה.
+
+          (1) כתבו את משוואת התנועה הרדיאלית, והראו שעבור $x = r - r_{\text{eq}}$ היא $\ddot x + (\omega_0^2 - \omega^2)x = 0$.
+
+          (2) פתרו אותה בניחוש של פתרון אקספוננציאלי (שיעור 0.5) כש-$\omega < \omega_0$, ומצאו את $x(t)$. מה קורה
+          כש-$\omega > \omega_0$?
+
+          (3) בדקו את התוצאה בגבולות $\omega \to 0$ ו-$k \to 0$.
+        hints:
+          - 'הציבו $r = r_{\text{eq}} + x$, והשתמשו בתנאי של חלק ב כדי לבטל את האיברים הקבועים.'
+          - 'הניחוש $x = e^{st}$ נותן $s^2 = -(\omega_0^2 - \omega^2)$. מה סוג השורשים בכל אחד משני המקרים?'
+        solution:
+          - { kind: law, text: 'החוק השני ברכיב הרדיאלי עם התאוצה הקוטבית (שיעור 1.4), $a_r = \ddot r - r\dot\theta^2$ ו-$\dot\theta = \omega$: $m\left(\ddot r - r\omega^2\right) = -k(r - \ell_0)$. תנאי ההתחלה: $x(0) = A$ ו-$\dot x(0) = 0$.' }
+          - { kind: manipulation, text: 'מחלקים ב-$m$: $\ddot r + (\omega_0^2 - \omega^2)\,r = \omega_0^2\ell_0$. לפי חלק ב, $(\omega_0^2 - \omega^2)\,r_{\text{eq}} = \omega_0^2\ell_0$. מציבים $r = r_{\text{eq}} + x$, והאיברים הקבועים מתבטלים: $$\ddot x + (\omega_0^2 - \omega^2)\,x = 0$$' }
+          - { kind: manipulation, text: 'הניחוש $x = e^{st}$ נותן $s^2 = -(\omega_0^2 - \omega^2)$. כש-$\omega < \omega_0$: $s = \pm i\Omega$ עם $\Omega = \sqrt{\omega_0^2 - \omega^2}$, והפתרון הממשי שמתאים לתנאי ההתחלה הוא $x = A\cos\Omega t$: החרוז מתנודד סביב $r_{\text{eq}}$. כש-$\omega > \omega_0$: $s = \pm\kappa$ עם $\kappa = \sqrt{\omega^2 - \omega_0^2}$, והפתרון $\cosh\kappa t$ גדל באקספוננט: החרוז בורח החוצה, ואין מרחק שבו הוא יכול לנוח, כמו שמצאנו בחלק ב.' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $\Omega \to \omega_0 = \sqrt{k/m}$ ו-$r_{\text{eq}} \to \ell_0$: גוף על קפיץ, על מוט שעומד. כש-$k \to 0$: $\omega_0 \to 0$ ו-$r_{\text{eq}} \to 0$, ולכן $x = r$, והמשוואה נעשית $\ddot r = \omega^2r$, עם $r = r_0\cosh\omega t$: החרוז החופשי של שיעור 1.4. וכש-$\omega \to \omega_0$, $\Omega \to 0$: הכוח המחזיר נעלם, כמו ש-$r_{\text{eq}} \to \infty$ בחלק ב.' }
+          - { kind: units, text: '$\omega_0^2 - \omega^2$ ביחידות $\text{s}^{-2}$, ולכן $\ddot x$ ו-$(\omega_0^2 - \omega^2)x$ שניהם ב-$\text{m/s}^2$, ו-$\Omega t$ חסר ממדים.' }
+          - { kind: result, text: 'כש-$\omega < \omega_0$: $x(t) = A\cos\left(\sqrt{\omega_0^2 - \omega^2}\,t\right)$, תנודה סביב $r_{\text{eq}}$ בתדירות זוויתית $\sqrt{\omega_0^2 - \omega^2}$, נמוכה מזו של הקפיץ לבד. כש-$\omega > \omega_0$ הפתרון גדל כמו $\cosh\left(\sqrt{\omega^2 - \omega_0^2}\,t\right)$, והחרוז בורח.' }
+        rubric:
+          - text: 'כתבתי $m(\ddot r - r\omega^2) = -k(r - \ell_0)$, עם הרכיב הרדיאלי הנכון של התאוצה הקוטבית.'
+          - text: 'הצבתי $r = r_{\text{eq}} + x$ והראיתי שהאיברים הקבועים מתבטלים.'
+          - text: 'פתרתי בניחוש $e^{st}$, והפרדתי בין תנודה ($\omega < \omega_0$) לבריחה ($\omega > \omega_0$).'
+          - text: 'בדקתי שכש-$\omega \to 0$ מתקבל קפיץ רגיל, וכש-$k \to 0$ החרוז החופשי של שיעור 1.4.'
+
+      - label: ד
+        type: open
+        points: 7
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-1.4-2, OBJ-2.2-1, OBJ-2.3-1]
+        prompt: >-
+          במצב של חלק ג, עם $\omega < \omega_0$:
+
+          (1) מצאו את רכיב הכוח שהמוט מפעיל על החרוז בכיוון $\hat\theta$ (אופקי וניצב למוט), $F_\theta(t)$, ואת ערכו
+          המרבי, באמצעות $m$, $\omega$, $\omega_0$ ו-$A$. אילו עוד רכיבים יש לכוח של המוט?
+
+          (2) בדקו את הביטוי בגבולות $\omega \to 0$ ו-$\omega \to \omega_0$, ובדקו יחידות.
+        hints:
+          - 'הקפיץ רדיאלי והכובד אנכי. מי נותן לחרוז את הרכיב $a_\theta = r\ddot\theta + 2\dot r\dot\theta$ של התאוצה?'
+        solution:
+          - { kind: law, text: 'החוק השני ברכיב $\hat\theta$: $F_\theta = ma_\theta = m\left(r\ddot\theta + 2\dot r\dot\theta\right)$ (שיעור 1.4). הקפיץ רדיאלי והכובד אנכי, ולכן הכוח היחיד בכיוון $\hat\theta$ הוא של המוט.' }
+          - { kind: manipulation, text: '$\dot\theta = \omega$ קבועה, ולכן $\ddot\theta = 0$ ו-$F_\theta = 2m\omega\dot r = 2m\omega\dot x$. מחלק ג, $x = A\cos\Omega t$, ולכן $$F_\theta(t) = -2m\omega\Omega A\sin\Omega t,\qquad |F_\theta|_{\max} = 2m\omega A\sqrt{\omega_0^2 - \omega^2}$$' }
+          - { kind: manipulation, text: 'בכיוון האנכי החרוז לא זז, ולכן המוט דוחף אותו גם כלפי מעלה ב-$mg$. לאורך המוט אין למוט רכיב, כי הוא חלק. כשהחרוז נע החוצה, $F_\theta > 0$: המוט דוחף אותו קדימה, בכיוון הסיבוב, כי במרחק גדול יותר המהירות המשיקית $r\omega$ גדולה יותר. לפי החוק השלישי החרוז דוחף את המוט אחורה, ולכן המנוע צריך לפעול כדי לשמור על $\omega$ קבועה.' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $F_\theta \to 0$; מוט שעומד לא צריך לדחוף הצידה. כש-$\omega \to \omega_0$: $\Omega \to 0$ ו-$F_\theta \to 0$, כי התנודה איטית מאוד ו-$\dot r$ זעיר. וכש-$A \to 0$ החרוז במעגל ב-$r_{\text{eq}}$, ואין צורך בכוח הצידה.' }
+          - { kind: units, text: '$m\omega\Omega A$ ביחידות $\text{kg}\cdot\text{s}^{-1}\cdot\text{s}^{-1}\cdot\text{m} = \text{N}$.' }
+          - { kind: result, text: '$F_\theta = 2m\omega\dot r = -2m\omega A\sqrt{\omega_0^2 - \omega^2}\,\sin\left(\sqrt{\omega_0^2 - \omega^2}\,t\right)$, עם ערך מרבי $2m\omega A\sqrt{\omega_0^2 - \omega^2}$. בנוסף המוט דוחף את החרוז כלפי מעלה ב-$mg$, ואין לו רכיב לאורך המוט.' }
+        rubric:
+          - text: 'זיהיתי שהמוט הוא הכוח היחיד בכיוון $\hat\theta$, וכתבתי $F_\theta = m(r\ddot\theta + 2\dot r\dot\theta) = 2m\omega\dot r$.'
+          - text: 'הצבתי את $x(t)$ של חלק ג וקיבלתי ערך מרבי $2m\omega A\sqrt{\omega_0^2 - \omega^2}$.'
+          - text: 'ציינתי את הרכיב האנכי $mg$ של כוח המוט, ושאין לו רכיב לאורך המוט.'
+          - text: 'בדקתי ש-$F_\theta \to 0$ גם כש-$\omega \to 0$ וגם כש-$\omega \to \omega_0$, ובדקתי יחידות.'

@@ -222,6 +222,8 @@ const glossaryIds = new Set(glossary.map((g) => g.id));
 /* ------------------------------------------------------------- questions */
 
 const REVIEW_POINTS = 25;
+/** the exam asks for derivations (src/content/exam-map.yaml: 39 of 51 parts), so open parts carry over half */
+const MIN_OPEN_POINTS = 13;
 const seenQ = new Set<string>();
 const detected = new Set<string>();
 const pending: string[] = [];
@@ -247,6 +249,11 @@ for (const { q: bq, file } of questions.filter(({ q }) => q.type === 'bagrut')) 
   // the 77101 exam format is not verified yet; until /exam-map reads one, a review problem is worth 25
   const total = parts.reduce((n, p) => n + (p.points ?? 0), 0);
   if (total !== REVIEW_POINTS) fail(w, `parts add up to ${total} points; a review problem is worth ${REVIEW_POINTS}`, true);
+  const open = parts.filter((p) => p.type === 'open').reduce((n, p) => n + (p.points ?? 0), 0);
+  if (open < MIN_OPEN_POINTS) fail(w, `open parts carry ${open} points; a review problem gives derivations ≥ ${MIN_OPEN_POINTS}`, true);
+  const last = parts.at(-1);
+  if (last && (last.type !== 'open' || !last.solution?.some((s) => s.kind === 'limit')))
+    fail(w, 'the last part is a symbolic result: an open part whose solution has a limit step', true);
 }
 for (const { q, file, part, parent } of units) {
   const w = `${file} ${q.id}`;

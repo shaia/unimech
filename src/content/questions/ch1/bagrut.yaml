@@ -1,8 +1,32 @@
 # Chapter 1 review problems (שאלות חזרה): a scenario with lettered parts (א, ב, ג…), 25 points each, graded
 # easy → hard. Each problem joins at least two lessons, and the four together touch every lesson:
 #   1 (projectile seen by a radar): 1.2, 1.3, 1.4;   2 (launcher on a flatcar, then braking): 1.2, 1.5;
-#   3 (ring pushed along a rotating rod): 1.1, 1.3, 1.4;   4 (boat across a river with a curved current): 1.1, 1.3, 1.5.
+#   3 (ring pushed along a rotating rod): 1.1, 1.3, 1.4;   4 (boat across a river with a curved current): 1.1, 1.3, 1.5;
+#   5 (a moth spirals into a lamp, in symbols, in the format of a 77101 exam question): 1.1, 1.3, 1.4 with chapter 0
+#     (0.2 dot product, 0.4 accumulation, 0.5 separation of variables, 0.7 polar arc length).
 # Open parts follow the course format: law → derivation → limit check → unit check → numbers → result.
+# Part types and points (exam-style rework, 2026-11-18: open parts ≥ 13 of 25, the first part auto-graded, the last
+# a symbolic result with its limit check):
+#   1: numeric 5 · numeric 5 · open 8 · open 7 (was numeric)  = open 15
+#   2: vector 3 · numeric 4 · open 6 (was numeric) · mc 4 (was ה, now introduces the braking) · open 8 (was ד, now
+#      in symbols)  = open 14
+#   3: numeric 4 · open 7 · numeric 6 · open 8 (was numeric)  = open 15
+#   4: numeric 4 · numeric 4 · open 10 · open 7 (was numeric)  = open 17
+#   5: numeric 5 · open 6 · open 6 · open 8 (new)  = open 20
+# The rework was recomputed in .scratch/ch1/review-rework.ts, each closed form against a second route:
+#   1ד r̈ = (|v|² − ṙ² + r·a)/r = a_r + rθ̇² against finite differences of r(t) (1e-5): −3.55 m/s² (|v|² − ṙ² = 69.2,
+#      −gy = −200, a_r = −5.44, rθ̇² = 1.88);
+#   2ג D = 2|u_x|u_y/g against the ground-frame ball − launcher difference: 22.0 m (T = 2.45 s, 7.35 and 29.4 over ground);
+#   2ה x_rel(T) = (2u_y/g)(u_x + Au_y/g) against ground-frame positions with braking: −16.0 m; car at 7.10 m/s;
+#   3ד ρ = (u² + r²ω²)^{3/2}/(ω(2u² + r²ω²)) against tangentNormal of the Cartesian path by finite differences: 0.368 m
+#      (|v|²/|a| 0.347, |v|²/|a_r| 0.625); r → 0 gives u/(2ω) = 0.15 m, checked by tangentNormal near the centre;
+#   4ד ρ(y) = (u² + c²)^{3/2}/(u²|c′|) against the graph formula of x(y) at y = 0, 10, 20 m: ρ(0) = ud/(4c₀) = 20 m
+#      (a = 0.20 m/s², dc/dy 0.10 s⁻¹ gives 40);
+#   5 (v = 2.0 m/s, α = 120°, r₀ = 3.0 m in א only): T = r₀/(v|cos α|) = 3.00 s (sin 1.73, r₀/v 1.50, > 3% apart);
+#      the flight integrated by RK4 in Cartesian coordinates: r after one turn = r₀e^{2π cot α} = 0.0797 m (a factor
+#      37.6 per turn), time and path length down to r = 1 cm agree with (r₀ − r)/(v|cos α|) and (r₀ − r)/|cos α|
+#      (1e-4), L = r₀/|cos α| = 6.0 m; a_r, a_θ from polar.ts polarAcceleration agree with −v² sin²α/r and
+#      v² sin α cos α/r, pathComponents gives a_t = 0, ρ = v²/a_n = r/sin α.
 # YAML note: never use "…" for TeX; in a single-quoted string a prime is written ''.
 #
 # Every number was computed in .scratch/ch1/q.ts with src/physics/constants.ts (G = 9.8):
@@ -101,32 +125,37 @@ questions:
           - text: 'מצאתי את המקום בשיא, $(30.6,\ 20.4)\,\text{m}$, וקיבלתי $\dot r \approx 12.5\,\text{m/s}$ ו-$\dot\theta \approx -0.226\,\text{rad/s}$, עם הסימן.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 7
         level: bagrut
         standalone: false
-        objectives: [OBJ-1.4-2]
+        objectives: [OBJ-1.4-2, OBJ-1.4-1]
         prompt: >-
-          חשבו את $\ddot r$, הנגזרת השנייה של המרחק שהמכ״ם מודד, ברגע שהכדור בנקודה הגבוהה ביותר. היעזרו בתוצאות של
-          חלק ג.
-        answer: -3.55
-        unit: m/s²
-        correctFeedback: >-
-          נכון. התאוצה היא $\vec g = (0,\ -g)$, והרכיב הרדיאלי שלה $a_r = \vec g\cdot\hat r = -\dfrac{gy}{r} = -\dfrac{9.8\cdot20.4}{36.8} = -5.44\,\text{m/s}^2$.
-          בתאוצה הקוטבית $a_r = \ddot r - r\dot\theta^2$, ולכן
-          $\ddot r = a_r + r\dot\theta^2 = -5.44 + 36.8\cdot0.226^2 = -5.44 + 1.88 = -3.55\,\text{m/s}^2$. הכדור עדיין מתרחק מהמכ״ם,
-          $\dot r > 0$, אבל ההתרחקות מאטה.
-        wrongFeedback: 'חשבו קודם את $a_r = \vec g\cdot\hat r$, ואז בודדו את $\ddot r$ מ-$a_r = \ddot r - r\dot\theta^2$.'
-        commonWrong:
-          - value: -5.44
-            feedback: 'זה $a_r$, הרכיב הרדיאלי של התאוצה. $\ddot r$ שונה ממנו ב-$r\dot\theta^2$: גם כש-$\vec a = 0$, $\ddot r$ לא חייב להיות אפס.'
-            misconception: MC-1-rddot-is-radial-acceleration
-          - value: -9.8
-            feedback: 'זו כל התאוצה, $\vec g$, שפונה מטה. רק הרכיב שלה לאורך $\hat r$ נכנס ל-$a_r$, והוא $a_r = -gy/r$.'
-          - value: -7.32
-            feedback: 'חיסרתם $r\dot\theta^2$ במקום להוסיף: מ-$a_r = \ddot r - r\dot\theta^2$ יוצא $\ddot r = a_r + r\dot\theta^2$.'
+          המכ״ם מודד גם את $\ddot r$, הנגזרת השנייה של המרחק אל הכדור.
+
+          (1) גזרו פעמיים לפי הזמן את $r^2 = \vec r\cdot\vec r$, והראו ש-$$\ddot r = \frac{|\vec v|^2 - \dot r^2 + \vec r\cdot\vec a}{r}$$
+
+          (2) הראו שהביטוי מתאים לרכיב הרדיאלי של התאוצה הקוטבית, $a_r = \ddot r - r\dot\theta^2$.
+
+          (3) בדקו את הביטוי בגבול $g \to 0$, כשהכדור חולף ליד O בקו ישר ובמהירות קבועה. מה הסימן של $\ddot r$, ולמה?
+
+          (4) חשבו את $\ddot r$ ברגע שהכדור בנקודה הגבוהה ביותר, בעזרת התוצאות של חלק ג.
         hints:
-          - 'מה הרכיב של $\vec g$ בכיוון $\hat r$, כש-$\hat r = (x,\ y)/r$?'
+          - '$\dfrac{d}{dt}\left(\vec r\cdot\vec r\right) = 2\vec r\cdot\vec v$, ו-$\dfrac{d}{dt}\left(\vec r\cdot\vec v\right) = |\vec v|^2 + \vec r\cdot\vec a$.'
+          - 'בקואורדינטות קוטביות, $|\vec v|^2 = \dot r^2 + r^2\dot\theta^2$ ו-$\vec r\cdot\vec a = ra_r$.'
+        solution:
+          - { kind: law, text: '$r^2 = \vec r\cdot\vec r$, עם $\dot{\vec r} = \vec v$ ו-$\dot{\vec v} = \vec a$. בתאוצה הקוטבית $a_r = \ddot r - r\dot\theta^2$.' }
+          - { kind: manipulation, text: 'גזירה ראשונה: $2r\dot r = 2\vec r\cdot\vec v$, כלומר $r\dot r = \vec r\cdot\vec v$. גזירה שנייה: $\dot r^2 + r\ddot r = |\vec v|^2 + \vec r\cdot\vec a$, ומכאן $$\ddot r = \frac{|\vec v|^2 - \dot r^2 + \vec r\cdot\vec a}{r}$$' }
+          - { kind: manipulation, text: 'עם $|\vec v|^2 - \dot r^2 = r^2\dot\theta^2$ ו-$\vec r\cdot\vec a = ra_r$: $\ddot r = r\dot\theta^2 + a_r$, כלומר $a_r = \ddot r - r\dot\theta^2$. לכן $\ddot r$ אינו הרכיב הרדיאלי של התאוצה: הם שונים ב-$r\dot\theta^2$.' }
+          - { kind: limit, text: 'כש-$g \to 0$, $\vec a = 0$ ו-$\ddot r = \dfrac{|\vec v|^2 - \dot r^2}{r} = r\dot\theta^2 \ge 0$, אף שאין תאוצה. כך צריך להיות: גוף שחולף ליד O בקו ישר מתקרב, עובר במרחק המינימלי ומתרחק, והגרף של $r(t) = \sqrt{b^2 + v^2t^2}$ (עם $b$ המרחק המינימלי) קעור כלפי מעלה. רק בתנועה לאורך קו שעובר דרך O, $\dot\theta = 0$ ו-$\ddot r = a_r$.' }
+          - { kind: units, text: '$\dfrac{\text{m}^2/\text{s}^2}{\text{m}} = \text{m/s}^2$, וגם $\vec r\cdot\vec a/r$ ביחידות של תאוצה.' }
+          - { kind: substitution, text: 'בשיא: $\vec v = (15,\ 0)\,\text{m/s}$, $\dot r = 12.5\,\text{m/s}$, $r = 36.8\,\text{m}$, ו-$\vec r\cdot\vec a = -gy = -9.8\cdot20.4 = -200\,\text{m}^2/\text{s}^2$. לכן $|\vec v|^2 - \dot r^2 = 225 - 155.8 = 69.2$ ו-$\ddot r = \dfrac{69.2 - 200}{36.8} = -3.55\,\text{m/s}^2$. בדרך הקוטבית: $a_r = -gy/r = -5.44\,\text{m/s}^2$ ו-$r\dot\theta^2 = 36.8\cdot0.226^2 = 1.88\,\text{m/s}^2$, וסכומם אותו $-3.55\,\text{m/s}^2$.' }
+          - { kind: result, text: '$\ddot r = \dfrac{|\vec v|^2 - \dot r^2 + \vec r\cdot\vec a}{r} = a_r + r\dot\theta^2$, ובשיא $-3.55\,\text{m/s}^2$: הכדור עדיין מתרחק מהמכ״ם, $\dot r > 0$, אבל ההתרחקות מאטה.' }
+        rubric:
+          - text: 'גזרתי פעמיים את $r^2 = \vec r\cdot\vec r$ וקיבלתי $\dot r^2 + r\ddot r = |\vec v|^2 + \vec r\cdot\vec a$.'
+          - text: 'הראיתי שזה $\ddot r = a_r + r\dot\theta^2$, ולכן $\ddot r$ שונה מ-$a_r$.'
+          - text: בדקתי שבתנועה ישרה ואחידה שחולפת ליד O יוצא $\ddot r \ge 0$, אף ש-$\vec a = 0$, והסברתי למה.
+          - text: 'הצבתי בשיא וקיבלתי $\ddot r \approx -3.55\,\text{m/s}^2$, עם הסימן.'
 
   # ------------------------------------------------------------ 2: a launcher on a flatcar, then the car brakes
   - id: Q-1-bagrut-2
@@ -183,64 +212,47 @@ questions:
             feedback: 'חיברתם את הגדלים, $15 + 12$. מהירויות מחברים כווקטורים, רכיב-רכיב.'
 
       - label: ג
-        type: numeric
+        type: open
         points: 6
         level: mid
         objectives: [OBJ-1.5-1, OBJ-1.2-2]
-        prompt: באיזה מרחק מהמשגר, לאורך הקרון, נוחת הכדור?
-        answer: 22
-        unit: m
-        correctFeedback: >-
-          נכון. הכי פשוט לעבוד במערכת של הקרון: שם הכדור הוא זריקה רגילה עם $\vec g$. זמן התעופה
-          $T = \dfrac{2\cdot12}{9.8} = 2.45\,\text{s}$, ובזמן הזה הוא נע $9.0\cdot2.45 = 22.0\,\text{m}$ מערבה, מאחורי המשגר.
-        wrongFeedback: 'עברו למערכת של הקרון. מה זמן התעופה, ומה המהירות האופקית של הכדור במערכת הזו?'
-        commonWrong:
-          - value: 7.35
-            feedback: 'זה המרחק שהכדור עבר **ביחס לקרקע**, $3.0\cdot2.45$, מזרחה. בזמן הזה המשגר עבר $29.4\,\text{m}$, והכדור נשאר $22.0\,\text{m}$ מאחוריו.'
-          - value: 29.4
-            feedback: 'זה המרחק שהקרון עבר ביחס לקרקע, $VT$. את המרחק לאורך הקרון קובעת המהירות של הכדור **ביחס לקרון**.'
+        prompt: >-
+          סמנו ב-$u_x$ וב-$u_y$ את רכיבי המהירות ההתחלתית של הכדור ביחס לקרון ($u_x < 0$: מערבה).
+
+          (1) עבדו במערכת של הקרון, ובטאו באמצעות $u_x$, $u_y$ ו-$g$ את זמן התעופה $T$ ואת המרחק $D$ מהמשגר, לאורך הקרון,
+          שבו הכדור נוחת.
+
+          (2) קבלו את אותו $D$ במערכת של הקרקע, מהמקום של הכדור ומהמקום של המשגר ברגע הנחיתה. האם $D$ תלוי ב-$V$?
+
+          (3) בדקו את הביטוי בגבולות $u_x \to 0$ ו-$u_y \to 0$, ובדקו יחידות.
+
+          (4) באיזה מרחק מהמשגר נוחת הכדור?
         hints:
           - 'במערכת של הקרון התנועה האנכית זהה לתנועה האנכית במערכת של הקרקע.'
+          - 'המרחק לאורך הקרון אינו המרחק שהכדור עבר ביחס לקרקע: גם המשגר זז בזמן התעופה.'
+        solution:
+          - { kind: law, text: 'טרנספורמציית גליליי: $\vec v_{\text{ball,ground}} = \vec v_{\text{ball,car}} + \vec V$. כש-$\vec V$ קבוע, לכדור אותה תאוצה, $\vec g$, בשתי המערכות (חלק א). לכן במערכת של הקרון הכדור הוא זריקה רגילה, עם מהירות התחלתית $(u_x,\ u_y)$.' }
+          - { kind: manipulation, text: 'במערכת של הקרון: $y = u_yt - \tfrac12gt^2$ חוזר לגובה הירי ב-$T = \dfrac{2u_y}{g}$, ובזמן הזה $x = u_xT$. לכן הכדור נוחת מאחורי המשגר, במרחק $$D = |u_x|T = \frac{2|u_x|u_y}{g}$$ במערכת של הקרקע: הכדור נמצא ב-$(u_x + V)T$ והמשגר ב-$VT$. ההפרש $u_xT$, ו-$V$ מתבטל: $D$ לא תלוי במהירות הקרון.' }
+          - { kind: limit, text: 'כש-$u_x \to 0$ (ירי אנכי ביחס לקרון): $D \to 0$, הכדור חוזר אל המשגר, אף שביחס לקרקע הוא עף קדימה $VT$, כמו כדור שזורקים למעלה ברכבת נוסעת. כש-$u_y \to 0$: $T \to 0$ ו-$D \to 0$, הכדור נוחת מייד.' }
+          - { kind: units, text: '$\dfrac{(\text{m/s})(\text{m/s})}{\text{m/s}^2} = \text{m}$.' }
+          - { kind: substitution, text: '$T = \dfrac{2\cdot12}{9.8} = 2.45\,\text{s}$ ו-$D = 9.0\cdot2.45 = 22.0\,\text{m}$ מאחורי המשגר. ביחס לקרקע הכדור עבר $3.0\cdot2.45 = 7.35\,\text{m}$ מזרחה, והמשגר $12\cdot2.45 = 29.4\,\text{m}$.' }
+          - { kind: result, text: '$T = 2u_y/g$ ו-$D = 2|u_x|u_y/g$, בלי $V$: $22.0\,\text{m}$ מאחורי המשגר.' }
+        rubric:
+          - text: עבדתי במערכת של הקרון, שבה התאוצה $\vec g$, וקיבלתי $T = 2u_y/g$ ו-$D = 2|u_x|u_y/g$.
+          - text: הראיתי שבמערכת של הקרקע $V$ מתבטל בהפרש בין המקום של הכדור למקום של המשגר.
+          - text: בדקתי שב-$u_x \to 0$ הכדור חוזר אל המשגר, וב-$u_y \to 0$ נוחת מייד.
+          - text: הצבתי וקיבלתי $22.0\,\text{m}$ מאחורי המשגר.
 
       - label: ד
-        type: open
-        points: 8
-        level: bagrut
-        standalone: false
-        objectives: [OBJ-1.5-1, OBJ-1.2-1]
-        prompt: >-
-          הפעם הקרון מתחיל לבלום בדיוק ברגע הירי, בתאוצה קבועה שגודלה $A = 2.0\,\text{m/s}^2$, והוא עדיין נע מזרחה כשהכדור
-          נוחת. הירי זהה ביחס לקרון.
-
-          (1) מה התאוצה של הכדור ביחס לקרון?
-
-          (2) באיזה מרחק מהמשגר נוחת הכדור עכשיו?
-
-          (3) בדקו את התוצאה בגבול $A \to 0$, ובדקו שהקרון אכן עדיין נע כשהכדור נוחת.
-        hints:
-          - 'גזרו פעמיים את המקום היחסי, $\vec r_{\text{ball}} - \vec r_{\text{car}}$.'
-        solution:
-          - { kind: law, text: 'מקום יחסי: $\vec r_{\text{rel}} = \vec r_{\text{ball}} - \vec r_{\text{car}}$, ובגזירה פעמיים $\vec a_{\text{rel}} = \vec a_{\text{ball}} - \vec a_{\text{car}}$.' }
-          - { kind: manipulation, text: 'ביחס לקרקע $\vec a_{\text{ball}} = (0,\ -g)$ ו-$\vec a_{\text{car}} = (-A,\ 0)$, כי הקרון נע מזרחה ומאט. לכן $\vec a_{\text{rel}} = (A,\ -g)$: $2.0\,\text{m/s}^2$ מזרחה ו-$9.8\,\text{m/s}^2$ מטה, קבועה. אינטגרציה עם $\vec r_{\text{rel}}(0) = 0$ ו-$\vec v_{\text{rel}}(0) = (-9.0,\ 12)\,\text{m/s}$ נותנת $x_{\text{rel}} = u_xt + \tfrac12At^2$ ו-$y_{\text{rel}} = u_yt - \tfrac12gt^2$. הרכיב האנכי לא השתנה, ולכן גם זמן התעופה לא: $T = 2u_y/g = 2.45\,\text{s}$.' }
-          - { kind: limit, text: 'כש-$A \to 0$, $x_{\text{rel}}(T) = u_xT = -22.0\,\text{m}$, התשובה של חלק ג. והקרון ברגע הנחיתה נע ב-$V - AT = 12 - 2.0\cdot2.45 = 7.1\,\text{m/s}$, עדיין מזרחה, כך שההנחה של תאוצה קבועה נכונה כל זמן התעופה.' }
-          - { kind: units, text: '$\tfrac12AT^2$ ביחידות $\text{m/s}^2\cdot\text{s}^2 = \text{m}$, כמו $u_xT$.' }
-          - { kind: substitution, text: '$x_{\text{rel}}(T) = -9.0\cdot2.45 + \tfrac12\cdot2.0\cdot2.45^2 = -22.0 + 6.0 = -16.0\,\text{m}$.' }
-          - { kind: result, text: 'ביחס לקרון התאוצה של הכדור היא $(A,\ -g)$, והוא נוחת $16.0\,\text{m}$ מאחורי המשגר, $6.0\,\text{m}$ קרוב יותר מאשר בנסיעה אחידה. במערכת של הקרון הבולם המסלול עדיין פרבולה, אבל הציר שלה נוטה בכיוון $(A,\ -g)$.' }
-        rubric:
-          - text: 'כתבתי $\vec a_{\text{rel}} = \vec a_{\text{ball}} - \vec a_{\text{car}} = (A,\ -g)$, עם הסימן הנכון לבלימה.'
-          - text: נימקתי שזמן התעופה לא משתנה, כי הרכיב האנכי של התאוצה היחסית עדיין $a_{\text{rel},y} = -g$.
-          - text: 'קיבלתי $x_{\text{rel}} = u_xT + \tfrac12AT^2 \approx -16.0\,\text{m}$, כלומר $16.0\,\text{m}$ מאחורי המשגר.'
-          - text: בדקתי שב-$A \to 0$ חוזרת התשובה של חלק ג, ושהקרון עדיין נע מזרחה כשהכדור נוחת.
-
-      - label: ה
         type: mc
         points: 4
-        level: bagrut
+        level: mid
         qualitative: true
         objectives: [OBJ-1.5-2]
         prompt: >-
-          נוסע על הקרון הבולם אומר: "במערכת שלי הכדור מאיץ מזרחה ב-$2.0\,\text{m/s}^2$, אף שאין עליו שום השפעה אופקית.
-          לכן חוקי התנועה של ניוטון שגויים." מה נכון?
+          הפעם הקרון מתחיל לבלום בדיוק ברגע הירי, בתאוצה קבועה שגודלה $A$, והוא עדיין נע מזרחה כשהכדור נוחת. הירי זהה
+          ביחס לקרון. נוסע על הקרון הבולם אומר: "במערכת שלי הכדור מאיץ מזרחה, אף שאין עליו שום השפעה אופקית. לכן חוקי
+          התנועה של ניוטון שגויים." מה נכון?
         choices:
           - text: 'הקרון הבולם אינו נע במהירות קבועה ביחס לקרקע, ולכן התאוצה בו שונה, $\vec a'' = \vec a - \vec A$. חוקי ניוטון בצורתם הרגילה תקפים במערכת של הקרקע ובמערכות שנעות ביחס אליה במהירות קבועה.'
             correct: true
@@ -249,13 +261,44 @@ questions:
               $\vec a' = \vec a - d\vec V/dt$. כדי להשתמש בחוקי ניוטון במערכת שמאיצה צריך לתקן אותם, ופרק 7 עוסק בזה.
           - text: הנוסע טועה בעובדות. התאוצה של הכדור זהה בכל מערכת ייחוס, ולכן גם בקרון הבולם אין לו תאוצה אופקית.
             feedback: >-
-              התאוצה זהה רק במערכות שנעות זו ביחס לזו במהירות **קבועה**. בחלק ד מצאתם שביחס לקרון הבולם לכדור יש תאוצה
-              אופקית של $2.0\,\text{m/s}^2$, ובגללה הוא נחת קרוב יותר.
+              התאוצה זהה רק במערכות שנעות זו ביחס לזו במהירות **קבועה**. הקרון מאט, כלומר מאיץ מערבה ב-$A$, ולכן ביחס
+              אליו לכדור יש תאוצה אופקית $A$ מזרחה, $\vec a' = \vec a - \vec A$.
             misconception: MC-1-any-frame-is-galilean
           - text: הנוסע צודק. התוצאה מראה שחוקי ניוטון לא נכונים כשהמהירויות גדולות.
             feedback: 'המהירויות כאן קטנות מאוד ביחס למהירות האור. הבעיה לא בחוקים אלא במערכת: הקרון הבולם מאיץ ביחס לקרקע.'
           - text: יש על הכדור השפעה אופקית שהנוסע לא שם לב אליה, מהתנועה של הקרון.
             feedback: 'הכדור לא נוגע בקרון בזמן התעופה, ואין התנגדות אוויר. מה שמאיץ "מזרחה" הוא לא הכדור אלא הקרון, שמאט מתחתיו.'
+
+      - label: ה
+        type: open
+        points: 8
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-1.5-1, OBJ-1.2-1]
+        prompt: >-
+          הקרון בולם, כמו בחלק ד.
+
+          (1) מה התאוצה של הכדור ביחס לקרון?
+
+          (2) בטאו באמצעות $u_x$, $u_y$, $g$ ו-$A$ את המקום $x_{\text{rel}}(T)$ שבו הכדור נוחת, ביחס למשגר.
+
+          (3) בדקו את הביטוי בגבול $A \to 0$, ומצאו תנאי על $V$ שמבטיח שהקרון עדיין נע כשהכדור נוחת.
+
+          (4) באיזה מרחק מהמשגר נוחת הכדור כש-$A = 2.0\,\text{m/s}^2$? האם הקרון עדיין נע אז?
+        hints:
+          - 'גזרו פעמיים את המקום היחסי, $\vec r_{\text{ball}} - \vec r_{\text{car}}$.'
+        solution:
+          - { kind: law, text: 'מקום יחסי: $\vec r_{\text{rel}} = \vec r_{\text{ball}} - \vec r_{\text{car}}$, ובגזירה פעמיים $\vec a_{\text{rel}} = \vec a_{\text{ball}} - \vec a_{\text{car}}$.' }
+          - { kind: manipulation, text: 'ביחס לקרקע $\vec a_{\text{ball}} = (0,\ -g)$ ו-$\vec a_{\text{car}} = (-A,\ 0)$, כי הקרון נע מזרחה ומאט. לכן $\vec a_{\text{rel}} = (A,\ -g)$, קבועה. אינטגרציה עם $\vec r_{\text{rel}}(0) = 0$ ו-$\vec v_{\text{rel}}(0) = (u_x,\ u_y)$ נותנת $x_{\text{rel}} = u_xt + \tfrac12At^2$ ו-$y_{\text{rel}} = u_yt - \tfrac12gt^2$. הרכיב האנכי לא השתנה, ולכן גם זמן התעופה לא: $T = 2u_y/g$. לכן $$x_{\text{rel}}(T) = u_xT + \tfrac12AT^2 = \frac{2u_y}{g}\left(u_x + \frac{Au_y}{g}\right)$$' }
+          - { kind: limit, text: 'כש-$A \to 0$: $x_{\text{rel}}(T) = 2u_xu_y/g = -D$, התשובה של חלק ג. המודל של תאוצה קבועה נכון רק כל עוד הקרון נע: $V - AT > 0$, כלומר $V > \dfrac{2Au_y}{g}$. אחרי שהקרון נעצר הוא כבר לא מאט.' }
+          - { kind: units, text: '$\dfrac{Au_y}{g}$ ביחידות של מהירות, כמו $u_x$, ו-$\dfrac{2u_y}{g}$ בשניות, ולכן $x_{\text{rel}}$ במטרים.' }
+          - { kind: substitution, text: '$T = 2.45\,\text{s}$ ו-$x_{\text{rel}}(T) = 2.45\cdot\left(-9.0 + \dfrac{2.0\cdot12}{9.8}\right) = 2.45\cdot(-9.0 + 2.45) = -16.0\,\text{m}$. הקרון ברגע הנחיתה נע ב-$V - AT = 12 - 2.0\cdot2.45 = 7.1\,\text{m/s}$, עדיין מזרחה.' }
+          - { kind: result, text: 'ביחס לקרון התאוצה של הכדור היא $(A,\ -g)$, והוא נוחת ב-$x_{\text{rel}} = \dfrac{2u_y}{g}\left(u_x + \dfrac{Au_y}{g}\right)$: $16.0\,\text{m}$ מאחורי המשגר, $6.0\,\text{m}$ קרוב יותר מאשר בנסיעה אחידה. במערכת של הקרון הבולם המסלול עדיין פרבולה, אבל הציר שלה נוטה בכיוון $(A,\ -g)$.' }
+        rubric:
+          - text: 'כתבתי $\vec a_{\text{rel}} = \vec a_{\text{ball}} - \vec a_{\text{car}} = (A,\ -g)$, עם הסימן הנכון לבלימה.'
+          - text: נימקתי שזמן התעופה לא משתנה, כי הרכיב האנכי של התאוצה היחסית עדיין $a_{\text{rel},y} = -g$.
+          - text: 'קיבלתי $x_{\text{rel}}(T) = \dfrac{2u_y}{g}\left(u_x + \dfrac{Au_y}{g}\right)$, כלומר $16.0\,\text{m}$ מאחורי המשגר.'
+          - text: 'בדקתי שב-$A \to 0$ חוזרת התשובה של חלק ג, ושהקרון עדיין נע מזרחה כשהכדור נוחת, $V > 2Au_y/g$.'
 
   # ------------------------------------------------------------ 3: a ring pushed along a rotating rod
   - id: Q-1-bagrut-3
@@ -344,32 +387,34 @@ questions:
           - 'במכפלה סקלרית ברכיבים קוטביים: $\vec a\cdot\vec v = a_rv_r + a_\theta v_\theta$.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 8
         level: bagrut
         standalone: false
-        objectives: [OBJ-1.3-2]
-        prompt: מה רדיוס העקמומיות של המסלול של הטבעת, במערכת של הרצפה, באותו רגע?
-        answer: 0.368
-        unit: m
-        correctFeedback: >-
-          נכון. הרכיב הניצב של התאוצה הוא $a_\perp = \sqrt{|\vec a|^2 - a_t^2} = \sqrt{8.32 - 0.92} = 2.72\,\text{m/s}^2$ (או
-          $|v_ra_\theta - v_\theta a_r|/|\vec v| = 0.60\cdot2.4 + 0.80\cdot1.6 = 2.72$), ולכן $\rho = \dfrac{|\vec v|^2}{a_\perp} = \dfrac{1.00}{2.72} = 0.368\,\text{m}$.
-          **בדיקת גבולות:** כש-$u \to 0$ הטבעת נעה על מעגל, ו-$\rho \to r$. כאן $u$ לא קטן, והספירלה עקומה יותר מהמעגל
-          שעובר דרך הטבעת סביב O, ולכן $\rho < r$.
-        wrongFeedback: 'השתמשו בחלק ג: $a_\perp^2 = |\vec a|^2 - a_t^2$, ו-$\rho = |\vec v|^2/a_\perp$.'
-        commonWrong:
-          - value: 0.4
-            feedback: 'זה המרחק של הטבעת מ-O. הוא היה רדיוס העקמומיות אילו הטבעת נעה על מעגל סביב O, אבל היא גם מתרחקת ממנו.'
-            misconception: MC-1-curvature-radius-is-a-distance
-          - value: 0.347
-            feedback: 'חילקתם ב-$|\vec a| = 2.88\,\text{m/s}^2$. רק הרכיב הניצב למהירות מעקם את המסלול, $2.72\,\text{m/s}^2$.'
-            misconception: MC-1-curvature-from-total-acceleration
-          - value: 0.625
-            feedback: 'חילקתם ב-$|a_r| = 1.6\,\text{m/s}^2$. $\hat r$ אינו הכיוון הניצב למהירות, כי המהירות לא בכיוון $\hat\theta$.'
-            misconception: MC-1-theta-component-is-tangential
+        objectives: [OBJ-1.3-2, OBJ-1.4-2]
+        prompt: >-
+          (1) בטאו את רדיוס העקמומיות $\rho$ של המסלול של הטבעת, במערכת של הרצפה, באמצעות $u$, $\omega$ ו-$r$. היעזרו
+          ב-$\rho = |\vec v|^2/a_\perp$, וברכיבי התאוצה מחלק ב.
+
+          (2) בדקו את הביטוי בשלושה גבולות: $u \to 0$, $\omega \to 0$ ו-$r \to 0$ (הטבעת עוברת דרך O). בגבול האחרון השוו
+          לחישוב ישיר: מה $\vec v$ ומה $\vec a$ של טבעת שנמצאת ב-O?
+
+          (3) חשבו את $\rho$ ברגע $t = 0.50\,\text{s}$, והשוו אותו למרחק $r$ של הטבעת מ-O.
         hints:
           - 'במישור, $|\vec v\times\vec a| = |v_ra_\theta - v_\theta a_r| = |\vec v|\,a_\perp$.'
+          - 'רק הרכיב של התאוצה שניצב למהירות מעקם את המסלול, ו-$\hat r$ אינו ניצב למהירות כשהטבעת מתרחקת מ-O.'
+        solution:
+          - { kind: law, text: 'רדיוס העקמומיות: $\rho = \dfrac{|\vec v|^2}{a_\perp}$, עם $a_\perp = \dfrac{|\vec v\times\vec a|}{|\vec v|}$, ולכן $\rho = \dfrac{|\vec v|^3}{|\vec v\times\vec a|}$. ברכיבים קוטביים $|\vec v\times\vec a| = |v_ra_\theta - v_\theta a_r|$.' }
+          - { kind: manipulation, text: 'כאן $v_r = u$ ו-$v_\theta = r\omega$, ומחלק ב $a_r = -r\omega^2$ ו-$a_\theta = 2u\omega$. לכן $v_ra_\theta - v_\theta a_r = 2u^2\omega + r^2\omega^3 = \omega\left(2u^2 + r^2\omega^2\right)$ ו-$|\vec v|^2 = u^2 + r^2\omega^2$: $$\rho = \frac{\left(u^2 + r^2\omega^2\right)^{3/2}}{\omega\left(2u^2 + r^2\omega^2\right)}$$' }
+          - { kind: limit, text: 'כש-$u \to 0$: $\rho = \dfrac{r^3\omega^3}{\omega\cdot r^2\omega^2} = r$, תנועה על מעגל סביב O. כש-$\omega \to 0$: $\rho \to \infty$, קו ישר לאורך מוט שעומד. כש-$r \to 0$: $\rho \to \dfrac{u^3}{2u^2\omega} = \dfrac{u}{2\omega}$. ובחישוב ישיר: ב-O המהירות $u$ לאורך המוט, והתאוצה היחידה $2u\omega$, ניצבת לה, ולכן $\rho = \dfrac{u^2}{2u\omega} = \dfrac{u}{2\omega}$, אותו דבר.' }
+          - { kind: units, text: '$\dfrac{(\text{m}^2/\text{s}^2)^{3/2}}{\text{s}^{-1}\cdot\text{m}^2/\text{s}^2} = \dfrac{\text{m}^3/\text{s}^3}{\text{m}^2/\text{s}^3} = \text{m}$.' }
+          - { kind: substitution, text: '$|\vec v|^2 = 0.60^2 + 0.40^2\cdot2.0^2 = 1.00\,\text{m}^2/\text{s}^2$ ו-$2u^2 + r^2\omega^2 = 0.72 + 0.64 = 1.36\,\text{m}^2/\text{s}^2$, ולכן $\rho = \dfrac{1.00}{2.0\cdot1.36} = 0.368\,\text{m}$. (חלוקה ב-$|\vec a| = 2.88\,\text{m/s}^2$ הייתה נותנת $0.347\,\text{m}$, וב-$|a_r|$, $0.625\,\text{m}$: אף אחד מהם אינו הרכיב הניצב, $a_\perp = 2.72\,\text{m/s}^2$.)' }
+          - { kind: result, text: '$\rho = \dfrac{\left(u^2 + r^2\omega^2\right)^{3/2}}{\omega\left(2u^2 + r^2\omega^2\right)}$, ובאותו רגע $0.368\,\text{m}$, פחות מ-$r = 0.40\,\text{m}$: הספירלה עקומה יותר מהמעגל סביב O שעובר דרך הטבעת.' }
+        rubric:
+          - text: 'כתבתי $\rho = |\vec v|^3/|v_ra_\theta - v_\theta a_r|$ והצבתי את הרכיבים מחלק ב.'
+          - text: 'קיבלתי $\rho = \left(u^2 + r^2\omega^2\right)^{3/2}\big/\left(\omega\left(2u^2 + r^2\omega^2\right)\right)$.'
+          - text: 'בדקתי שב-$u \to 0$ יוצא $\rho = r$, ב-$\omega \to 0$ קו ישר, וב-$r \to 0$ $u/(2\omega)$, כמו בחישוב ישיר ב-O.'
+          - text: 'הצבתי וקיבלתי $0.368\,\text{m}$, פחות מ-$r = 0.40\,\text{m}$.'
 
   # ------------------------------------------------------------ 4: a boat across a river whose current varies with the width
   - id: Q-1-bagrut-4
@@ -447,28 +492,155 @@ questions:
           - text: 'בדקתי שזרם אחיד היה נותן $45\,\text{m}$, והסברתי שהפרופיל נותן את הממוצע שלו, $\tfrac23c_0$.'
 
       - label: ד
-        type: numeric
+        type: open
         points: 7
         level: bagrut
-        objectives: [OBJ-1.3-2]
+        objectives: [OBJ-1.3-2, OBJ-1.1-1]
         prompt: >-
-          מה רדיוס העקמומיות של המסלול של הסירה, במערכת של הקרקע, ברגע שהיא יוצאת מהגדה?
-        answer: 20
-        unit: m
-        correctFeedback: >-
-          נכון. ליד הגדה $c = 0$, ולכן $\vec v = (0,\ u)$. התאוצה היא $\vec a = \left(\dfrac{d}{dt}c(y(t)),\ 0\right)$, ובכלל השרשרת
-          $\dfrac{dc}{dt} = \dfrac{dc}{dy}\cdot\dot y = \dfrac{4c_0}{d}\left(1 - \dfrac{2y}{d}\right)u$, ובגדה, $y = 0$,
-          היא $\dfrac{4c_0u}{d} = 0.20\,\text{m/s}^2$. היא ניצבת למהירות כולה, ולכן
-          $\rho = \dfrac{u^2}{4c_0u/d} = \dfrac{ud}{4c_0} = \dfrac{2.0\cdot60}{6.0} = 20\,\text{m}$.
-          **בדיקת גבולות:** כש-$c_0 \to 0$, $\rho \to \infty$, קו ישר. ובאמצע הנהר $dc/dy = 0$, התאוצה אפס, והמסלול שם
-          ישר לרגע: זו נקודת פיתול. עד האמצע המסלול מתעקם במורד הזרם, ומשם הוא מתעקם לצד השני, עד שבגדה השנייה הסירה
-          שוב נעה ישר לרוחב הנהר.
-        wrongFeedback: 'מצאו את $\vec v$ ואת $\vec a$ ברגע היציאה. את $dc/dt$ מקבלים מ-$dc/dy$ בכלל השרשרת.'
-        commonWrong:
-          - value: 40
-            feedback: 'השתמשתם ב-$dc/dy = 4c_0/d = 0.10\,\text{s}^{-1}$ כאילו הוא התאוצה. התאוצה היא $dc/dt = \dfrac{dc}{dy}\cdot\dot y$, ובה גם $\dot y = u$.'
-          - value: 30
-            feedback: 'זה חצי מרוחב הנהר, המרחק אל המקום שבו הזרם מרבי. רדיוס העקמומיות נקבע מהמהירות ומהתאוצה בנקודה עצמה.'
-            misconception: MC-1-curvature-radius-is-a-distance
+          (1) מצאו את $\vec v$ ואת $\vec a$ של הסירה ביחס לקרקע, כפונקציות של המרחק $y$ מהגדה. את $dc/dt$ מקבלים בכלל
+          השרשרת.
+
+          (2) בטאו את רדיוס העקמומיות $\rho(y)$ של המסלול באמצעות $u$, $c(y)$ ו-$dc/dy$, ומצאו אותו ברגע היציאה מהגדה,
+          באמצעות $u$, $d$ ו-$c_0$.
+
+          (3) בדקו את הביטוי בגבול $c_0 \to 0$. מה קורה ל-$\rho$ באמצע הנהר, ומה זה אומר על צורת המסלול?
+
+          (4) מה רדיוס העקמומיות ברגע היציאה מהגדה?
         hints:
           - 'ברגע היציאה, מה הזווית בין $\vec v$ לבין $\vec a$?'
+          - 'התאוצה היא $dc/dt$, לא $dc/dy$: כלל השרשרת מוסיף את $\dot y = u$.'
+        solution:
+          - { kind: law, text: 'ביחס לקרקע $\vec v = \left(c(y),\ u\right)$ (חלק ג), $\vec a = d\vec v/dt$, ורדיוס העקמומיות $\rho = \dfrac{|\vec v|^3}{|\vec v\times\vec a|}$.' }
+          - { kind: manipulation, text: 'הרכיב $u$ קבוע, ולכן $\vec a = \left(\dfrac{dc}{dt},\ 0\right)$, ובכלל השרשרת $\dfrac{dc}{dt} = \dfrac{dc}{dy}\,\dot y = u\dfrac{dc}{dy}$, עם $\dfrac{dc}{dy} = \dfrac{4c_0}{d}\left(1 - \dfrac{2y}{d}\right)$. אז $|\vec v\times\vec a| = |c\cdot0 - u\cdot u\,c''| = u^2\left|\dfrac{dc}{dy}\right|$, ו-$$\rho(y) = \frac{\left(u^2 + c^2\right)^{3/2}}{u^2\left|dc/dy\right|}$$ ברגע היציאה $c = 0$ ו-$dc/dy = 4c_0/d$: $\rho = \dfrac{u^3}{u^2\cdot4c_0/d} = \dfrac{ud}{4c_0}$. שם התאוצה, $4c_0u/d$, ניצבת למהירות כולה.' }
+          - { kind: limit, text: 'כש-$c_0 \to 0$: $\rho \to \infty$, קו ישר לרוחב נהר עומד. באמצע הנהר, $y = d/2$: $dc/dy = 0$, התאוצה אפס ו-$\rho \to \infty$: המסלול ישר לרגע, נקודת פיתול. עד האמצע המסלול מתעקם במורד הזרם, ומשם לצד השני, עד שבגדה השנייה הסירה שוב נעה ישר לרוחב הנהר.' }
+          - { kind: units, text: '$\dfrac{ud}{c_0}$ ביחידות $\dfrac{(\text{m/s})\cdot\text{m}}{\text{m/s}} = \text{m}$.' }
+          - { kind: substitution, text: '$\rho = \dfrac{2.0\cdot60}{4\cdot1.5} = 20\,\text{m}$, עם תאוצה $\dfrac{4c_0u}{d} = 0.20\,\text{m/s}^2$. (מי שלוקח את $dc/dy = 0.10\,\text{s}^{-1}$ כאילו הוא התאוצה מקבל $40\,\text{m}$.)' }
+          - { kind: result, text: '$\rho(y) = \dfrac{\left(u^2 + c^2\right)^{3/2}}{u^2\left|dc/dy\right|}$, וביציאה מהגדה $\rho = \dfrac{ud}{4c_0} = 20\,\text{m}$. באמצע הנהר המסלול ישר לרגע.' }
+        rubric:
+          - text: 'מצאתי $\vec a = \left(u\,dc/dy,\ 0\right)$ בכלל השרשרת.'
+          - text: 'קיבלתי $\rho(y) = \left(u^2 + c^2\right)^{3/2}\big/\left(u^2|dc/dy|\right)$, ובגדה $\rho = ud/(4c_0)$.'
+          - text: בדקתי שבלי זרם $\rho \to \infty$, ושבאמצע הנהר המסלול ישר לרגע, נקודת פיתול.
+          - text: הצבתי וקיבלתי $20\,\text{m}$.
+
+  # ------------------------------------------------------------ 5: a moth spirals into a lamp (joins chapter 0)
+  - id: Q-1-bagrut-5
+    type: bagrut
+    title: עש מסתחרר אל פנס
+    prompt: >-
+      במודל פשוט של עש שעף סביב פנס, העש עף במישור אופקי, במהירות שגודלה $v$ קבוע, ושומר כל הזמן על זווית קבועה
+      $\alpha$ בין וקטור המהירות שלו לבין $\hat r$, הכיוון מהפנס אליו, כאשר $90^\circ < \alpha < 180^\circ$. מתארים את
+      התנועה בקואורדינטות קוטביות סביב הפנס, שנמצא בנקודה O. העש סובב נגד כיוון השעון, כך ש-$\dot\theta > 0$, וברגע
+      $t = 0$ הוא במרחק $r_0$ מהפנס, בזווית $\theta = 0$. כלומר
+      $$\vec v = v\cos\alpha\,\hat r + v\sin\alpha\,\hat\theta$$
+    parts:
+      - label: א
+        type: numeric
+        points: 5
+        level: basic
+        objectives: [OBJ-1.4-1, OBJ-0.2-2]
+        prompt: >-
+          כתבו את $\dot r$ בעזרת מכפלה סקלרית, $\dot r = \vec v\cdot\hat r$. עם $v = 2.0\,\text{m/s}$, $\alpha = 120^\circ$
+          ו-$r_0 = 3.0\,\text{m}$: אחרי כמה שניות העש מגיע לפנס?
+        answer: 3
+        unit: s
+        correctFeedback: >-
+          נכון. $\dot r = \vec v\cdot\hat r = v\cos\alpha = -1.0\,\text{m/s}$, קבוע: המרחק מהפנס יורד בקצב קבוע,
+          $r = r_0 + vt\cos\alpha$, ומתאפס ב-$T = \dfrac{r_0}{v|\cos\alpha|} = \dfrac{3.0}{2.0\cdot0.50} = 3.0\,\text{s}$,
+          אף שהעש לא עף ישר אל הפנס.
+        wrongFeedback: '$\dot r$ הוא ההיטל של המהירות על $\hat r$, והזווית ביניהם $\alpha$ קבועה. האם $\dot r$ משתנה בזמן?'
+        commonWrong:
+          - value: 1.73
+            feedback: >-
+              השתמשתם ב-$\sin\alpha$. את העש מקרב אל הפנס ההיטל של המהירות על $\hat r$, $v\cos\alpha$. הרכיב
+              $v\sin\alpha$, בכיוון $\hat\theta$, רק מסובב אותו סביב הפנס.
+          - value: 1.5
+            feedback: 'זה $r_0/v$, כאילו העש עף ישר אל הפנס. רק חלק מהמהירות, $v|\cos\alpha|$, מקרב אותו.'
+        hints:
+          - '$\vec v\cdot\hat r = |\vec v|\cos\alpha$, ו-$\cos120^\circ = -0.50$.'
+
+      - label: ב
+        type: open
+        points: 6
+        level: mid
+        objectives: [OBJ-0.5-2, OBJ-1.4-1]
+        prompt: >-
+          (1) כתבו את $\dot r$ ואת $\dot\theta$ באמצעות $v$, $\alpha$ ו-$r$, והראו שהמסלול מקיים את המשוואה הדיפרנציאלית
+          $\dfrac{dr}{d\theta} = r\cot\alpha$.
+
+          (2) פתרו אותה בהפרדת משתנים, עם $r(0) = r_0$.
+
+          (3) בדקו את הפתרון בגבולות $\alpha \to 90^\circ$ ו-$\alpha \to 180^\circ$.
+
+          (4) כמה סיבובים סביב הפנס עושה העש עד שהוא מגיע אליו? הסבירו איך זה מתיישב עם זמן התעופה הסופי של חלק א.
+        hints:
+          - 'בכלל השרשרת, $\dfrac{dr}{d\theta} = \dfrac{\dot r}{\dot\theta}$.'
+          - 'כש-$90^\circ < \alpha < 180^\circ$, $\cot\alpha < 0$. מה צריך לקרות ל-$\theta$ כדי ש-$r$ יגיע לאפס?'
+        solution:
+          - { kind: law, text: 'המהירות בקואורדינטות קוטביות: $\vec v = \dot r\hat r + r\dot\theta\hat\theta$. בהשוואה לנתון, $\dot r = v\cos\alpha$ ו-$r\dot\theta = v\sin\alpha$. ובכלל השרשרת $\dfrac{dr}{d\theta} = \dfrac{\dot r}{\dot\theta}$.' }
+          - { kind: manipulation, text: '$\dot\theta = \dfrac{v\sin\alpha}{r}$, ולכן $\dfrac{dr}{d\theta} = \dfrac{v\cos\alpha}{v\sin\alpha/r} = r\cot\alpha$. מפרידים משתנים: $\dfrac{dr}{r} = \cot\alpha\,d\theta$, ומאנטגרלים מ-$r_0$ עד $r$ ומ-$0$ עד $\theta$: $\ln\dfrac{r}{r_0} = \theta\cot\alpha$, כלומר $$r = r_0e^{\theta\cot\alpha}$$ ספירלה לוגריתמית. כאן $\cot\alpha < 0$, ולכן $r$ קטן כש-$\theta$ גדלה.' }
+          - { kind: manipulation, text: 'מספר הסיבובים: $r \to 0$ דורש $\theta\cot\alpha \to -\infty$, כלומר $\theta \to \infty$: העש עושה אינסוף סיבובים. ובכל זאת הזמן סופי, כי $\dot\theta = v\sin\alpha/r$ גדל בלי גבול כש-$r \to 0$. בכל סיבוב $r$ קטן פי $e^{2\pi\cot\alpha}$ (בערך פי 38 ב-$\alpha = 120^\circ$), וזמן הסיבוב, $\Delta r/(v|\cos\alpha|)$, קטן באותו יחס. סכום הזמנים הוא טור הנדסי מתכנס, ושווה ל-$T$ של חלק א.' }
+          - { kind: limit, text: 'כש-$\alpha \to 90^\circ$: $\cot\alpha \to 0$ ו-$r = r_0$ קבוע, מעגל סביב הפנס, כמו שצריך כש-$\dot r = v\cos\alpha = 0$. כש-$\alpha \to 180^\circ$: $\cot\alpha \to -\infty$, ו-$r$ יורד לאפס כבר בזווית קטנה מאוד: העש עף ישר אל הפנס לאורך רדיוס, בלי להסתובב.' }
+          - { kind: units, text: '$\theta\cot\alpha$ חסר ממדים, כמו שמעריך חייב להיות, ו-$r$ ביחידות של $r_0$.' }
+          - { kind: result, text: '$r = r_0e^{\theta\cot\alpha}$: ספירלה לוגריתמית אל הפנס, עם אינסוף סיבובים בזמן סופי, $T = r_0/(v|\cos\alpha|)$.' }
+        rubric:
+          - text: 'כתבתי $\dot r = v\cos\alpha$ ו-$r\dot\theta = v\sin\alpha$, וקיבלתי $dr/d\theta = r\cot\alpha$ בכלל השרשרת.'
+          - text: הפרדתי משתנים וקיבלתי $r = r_0e^{\theta\cot\alpha}$.
+          - text: 'בדקתי שב-$\alpha \to 90^\circ$ יוצא מעגל, וב-$\alpha \to 180^\circ$ קו ישר אל הפנס.'
+          - text: הסברתי שמספר הסיבובים אינסופי, ושהזמן סופי כי $\dot\theta$ גדל בלי גבול ליד הפנס.
+
+      - label: ג
+        type: open
+        points: 6
+        level: mid
+        standalone: false
+        objectives: [OBJ-0.7-2, OBJ-0.4-1, OBJ-1.1-1]
+        prompt: >-
+          (1) כתבו את אלמנט האורך בקואורדינטות קוטביות, $d\ell^2 = dr^2 + r^2d\theta^2$, לאורך המסלול של חלק ב, ובטאו
+          אותו בעזרת $dr$ ו-$\alpha$.
+
+          (2) בטאו באמצעות $r_0$ ו-$\alpha$ את האורך $L$ של המסלול של העש עד הפנס, ובדקו את התוצאה בדרך שנייה, בעזרת
+          חלק א.
+
+          (3) בדקו את $L$ בגבולות $\alpha \to 180^\circ$ ו-$\alpha \to 90^\circ$.
+        hints:
+          - 'מ-$\dfrac{dr}{d\theta} = r\cot\alpha$ יוצא $r\,d\theta = \tan\alpha\,dr$.'
+        solution:
+          - { kind: law, text: 'אורך המסלול הוא סכום אלמנטי האורך: $L = \displaystyle\int d\ell$, עם $d\ell^2 = dr^2 + r^2d\theta^2$ בקואורדינטות קוטביות.' }
+          - { kind: manipulation, text: 'מחלק ב, $r\,d\theta = \tan\alpha\,dr$, ולכן $d\ell^2 = \left(1 + \tan^2\alpha\right)dr^2 = \dfrac{dr^2}{\cos^2\alpha}$, ו-$d\ell = \dfrac{|dr|}{|\cos\alpha|}$. לאורך המסלול $r$ יורד מ-$r_0$ עד $0$: $$L = \int_0^{r_0}\frac{dr}{|\cos\alpha|} = \frac{r_0}{|\cos\alpha|}$$ בדרך השנייה: גודל המהירות $v$ קבוע, והתעופה נמשכת $T = \dfrac{r_0}{v|\cos\alpha|}$ (חלק א), ולכן $L = vT = \dfrac{r_0}{|\cos\alpha|}$, אותו דבר. אינסוף סיבובים, אבל אורך סופי: אורכי הסיבובים יורדים כמו טור הנדסי.' }
+          - { kind: limit, text: 'כש-$\alpha \to 180^\circ$: $|\cos\alpha| \to 1$ ו-$L \to r_0$, הדרך הישרה אל הפנס, הקצרה ביותר. כש-$\alpha \to 90^\circ$: $L \to \infty$, העש מסתובב במעגל ולא מתקרב.' }
+          - { kind: units, text: '$r_0/|\cos\alpha|$ במטרים, כמו אורך.' }
+          - { kind: result, text: '$d\ell = |dr|/|\cos\alpha|$ ו-$L = \dfrac{r_0}{|\cos\alpha|} = vT$.' }
+        rubric:
+          - text: 'כתבתי $r\,d\theta = \tan\alpha\,dr$ וקיבלתי $d\ell = |dr|/|\cos\alpha|$.'
+          - text: 'קיבלתי $L = r_0/|\cos\alpha|$, ובדקתי שזה $vT$ עם $T$ של חלק א.'
+          - text: 'בדקתי שב-$\alpha \to 180^\circ$ יוצא $L = r_0$, וב-$\alpha \to 90^\circ$ $L \to \infty$.'
+
+      - label: ד
+        type: open
+        points: 8
+        level: bagrut
+        standalone: false
+        objectives: [OBJ-1.4-2, OBJ-1.3-2]
+        prompt: >-
+          (1) בטאו את $\dot\theta$ ואת $\ddot\theta$ באמצעות $v$, $\alpha$ ו-$r$.
+
+          (2) חשבו את הרכיבים הקוטביים של התאוצה, $a_r$ ו-$a_\theta$, והראו ש-$\vec a \perp \vec v$. הסבירו למה זה היה
+          צריך לצאת גם בלי חישוב.
+
+          (3) בטאו את רדיוס העקמומיות $\rho$ של המסלול באמצעות $r$ ו-$\alpha$, ובדקו אותו בגבולות $\alpha \to 90^\circ$
+          ו-$\alpha \to 180^\circ$.
+        hints:
+          - 'גזרו את $\dot\theta = v\sin\alpha/r$ לפי הזמן, עם $\dot r = v\cos\alpha$.'
+          - 'מה $\dfrac{d}{dt}|\vec v|^2 = 2\vec v\cdot\vec a$, כשגודל המהירות קבוע?'
+        solution:
+          - { kind: law, text: 'התאוצה בקואורדינטות קוטביות: $\vec a = \left(\ddot r - r\dot\theta^2\right)\hat r + \left(r\ddot\theta + 2\dot r\dot\theta\right)\hat\theta$. רדיוס העקמומיות: $\rho = |\vec v|^2/a_\perp$.' }
+          - { kind: manipulation, text: '$\dot r = v\cos\alpha$ קבוע, ולכן $\ddot r = 0$. $\dot\theta = \dfrac{v\sin\alpha}{r}$, ו-$\ddot\theta = -\dfrac{v\sin\alpha}{r^2}\dot r = -\dfrac{v^2\sin\alpha\cos\alpha}{r^2}$. לכן $$a_r = -r\dot\theta^2 = -\frac{v^2\sin^2\alpha}{r},\qquad a_\theta = -\frac{v^2\sin\alpha\cos\alpha}{r} + \frac{2v^2\sin\alpha\cos\alpha}{r} = \frac{v^2\sin\alpha\cos\alpha}{r}$$' }
+          - { kind: manipulation, text: '$\vec a\cdot\vec v = a_rv\cos\alpha + a_\theta v\sin\alpha = \dfrac{v^3}{r}\left(-\sin^2\alpha\cos\alpha + \sin^2\alpha\cos\alpha\right) = 0$. בלי חישוב: גודל המהירות קבוע, ו-$\dfrac{d}{dt}|\vec v|^2 = 2\vec v\cdot\vec a = 0$, כך שאין לתאוצה רכיב לאורך המהירות. לכן כל התאוצה ניצבת למהירות: $a_\perp = |\vec a| = \dfrac{v^2\sin\alpha}{r}\sqrt{\sin^2\alpha + \cos^2\alpha} = \dfrac{v^2\sin\alpha}{r}$, ו-$$\rho = \frac{v^2}{a_\perp} = \frac{r}{\sin\alpha}$$' }
+          - { kind: limit, text: 'כש-$\alpha \to 90^\circ$: $\rho \to r$, מעגל סביב הפנס, ו-$a_r \to -v^2/r$, התאוצה הצנטריפטלית. כש-$\alpha \to 180^\circ$: $\sin\alpha \to 0$ ו-$\rho \to \infty$, קו ישר אל הפנס, בלי תאוצה. ובכל $\alpha$, כש-$r \to 0$ התאוצה גדלה בלי גבול: עש אמיתי לא יכול לעקוב אחרי הספירלה עד הסוף, והוא פוגע בפנס.' }
+          - { kind: units, text: '$v^2/r$ ביחידות $\text{m/s}^2$, ו-$\rho = r/\sin\alpha$ במטרים.' }
+          - { kind: result, text: '$a_r = -\dfrac{v^2\sin^2\alpha}{r}$ ו-$a_\theta = \dfrac{v^2\sin\alpha\cos\alpha}{r}$: תאוצה בגודל $\dfrac{v^2\sin\alpha}{r}$, ניצבת למהירות, ורדיוס עקמומיות $\rho = \dfrac{r}{\sin\alpha}$, גדול מ-$r$.' }
+        rubric:
+          - text: 'מצאתי $\ddot r = 0$, $\dot\theta = v\sin\alpha/r$ ו-$\ddot\theta = -v^2\sin\alpha\cos\alpha/r^2$.'
+          - text: 'קיבלתי $a_r = -v^2\sin^2\alpha/r$ ו-$a_\theta = v^2\sin\alpha\cos\alpha/r$, והראיתי ש-$\vec a\cdot\vec v = 0$.'
+          - text: נימקתי שגודל המהירות קבוע, ולכן התאוצה ניצבת למהירות.
+          - text: 'קיבלתי $\rho = r/\sin\alpha$ ובדקתי שב-$\alpha \to 90^\circ$ יוצא $r$, וב-$\alpha \to 180^\circ$ קו ישר.'
