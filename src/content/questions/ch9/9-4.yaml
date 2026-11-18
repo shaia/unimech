@@ -23,6 +23,13 @@
 # approaching; receding β = −0.8 and −0.6; the answer of doppler-beta is the speed, 0.6). Added the mid rung
 # Q-9.4-inverse-speed (0.9c seen from 0.6c: 0.3/0.46 = 0.652c; wrong 0.300, 0.3/1.54 = 0.195, 1.5/1.54 = 0.974) so
 # the inverse rule is practised before the exam rung Q-9.4-launch-speed.
+# OBJ-9.4-3 (added 2026-11-18 after /exam-map found velocity addition at an angle and aberration on past exams),
+# .scratch/ch9/9-4/aberration.ts with relativity.ts (transverseVelocity, aberrationCos):
+#   sideways 0.8c from 0.6c: u_y = 0.8/1.25 = 0.640c, |u| = 0.877c (wrong unchanged 0.800, ×γ 1.00, ×β 0.480);
+#   light at θ′ = 120° from a source at β = 0.8: cos θ = 0.3/0.6 = 0.5, θ = 60.0° (also from transverseVelocity:
+#   (0.500, 0.866), |u| = 1) (wrong unchanged 120, Galilean atan2(0.866, 0.3) = 70.9, with −β 158.2).
+#   (A first exam rung, light sent sideways at β = 0.6 → 53.1°, was replaced after a student read: the lesson
+#   text works exactly that case.)
 
 chapter: 9
 questions:
@@ -344,3 +351,112 @@ questions:
           פתרתם $\dfrac{1 + \beta}{1 - \beta} = \dfrac12$ ושכחתם את השורש. העלו את שני האגפים בריבוע: $\tfrac12$ הופך ל-$\tfrac14$.
     hints:
       - 'העלו את שני האגפים בריבוע לפני שמבודדים את $\beta$.'
+
+  # ---------------------------------------------------------------- OBJ-9.4-3 velocity at an angle, aberration
+  - id: Q-9.4-sideways-speed
+    type: numeric
+    objectives: [OBJ-9.4-3]
+    level: basic
+    prompt: >-
+      חללית נעה במהירות $0.6c$ לאורך $+x$ ביחס לכדור הארץ, ומשגרת גשושית ישר הצידה, בכיוון $+y'$, במהירות $0.8c$ ביחס
+      לחללית. מה רכיב המהירות $u_y$ של הגשושית במערכת של כדור הארץ? ענו ביחידות של $c$.
+    answer: 0.64
+    unit: c
+    correctFeedback: >-
+      נכון. עם $u'_x = 0$ המכנה הוא 1, ו-$u_y = \dfrac{u'_y}{\gamma} = \dfrac{0.8c}{1.25} = 0.64c$. לאורך $x$ הגשושית
+      נעה עם החללית, $u_x = 0.6c$, וגודל המהירות $\sqrt{0.36 + 0.4096}\,c = 0.877c$, פחות מ-$c$.
+    wrongFeedback: >-
+      $\Delta y = \Delta y'$, אבל הזמן שבו הגשושית עוברת את המרחק הזה שונה בשתי המערכות. השתמשו ב-$u_y = u'_y/\left(\gamma(1 + u'_xv/c^2)\right)$.
+    commonWrong:
+      - value: 0.8
+        feedback: >-
+          הנחתם שהרכיב הניצב לא משתנה כי $y = y'$. המרחק הצידה אכן זהה, אבל במערכת של כדור הארץ השעונים של החללית
+          מפגרים, והגשושית עוברת אותו מרחק בזמן ארוך פי $\gamma$.
+        misconception: MC-9-transverse-unchanged
+      - value: 1
+        feedback: 'הכפלתם ב-$\gamma$ במקום לחלק. במערכת של כדור הארץ עובר **יותר** זמן, ולכן המהירות הצידה **קטנה**.'
+      - value: 0.48
+        feedback: 'הכפלתם ב-$v/c = 0.6$. הגורם הנכון הוא $1/\gamma = \sqrt{1 - 0.36} = 0.8$.'
+    hints:
+      - 'מה $\gamma$ של $0.6c$? ומה המכנה $1 + u''_xv/c^2$ כש-$u''_x = 0$?'
+
+  - id: Q-9.4-sideways-why
+    type: twotier
+    objectives: [OBJ-9.4-3]
+    qualitative: true
+    level: mid
+    prompt: >-
+      חללית נעה לאורך $x$ ביחס לכדור הארץ ומשגרת גשושית ישר הצידה, בכיוון $y'$. איך משתווה רכיב המהירות $u_y$ במערכת
+      של כדור הארץ לרכיב $u'_y$ במערכת של החללית?
+    choices:
+      - text: $u_y$ קטן מ-$u'_y$.
+        correct: true
+        feedback: 'נכון. $u_y = u''_y/\gamma$ כש-$u''_x = 0$.'
+      - text: $u_y = u'_y$.
+        feedback: >-
+          כך בגליליי. ביחסות המרחק הצידה אכן זהה בשתי המערכות, אבל הזמן לא: המהירות היא מנה של שניהם.
+        misconception: MC-9-transverse-unchanged
+      - text: $u_y$ גדול מ-$u'_y$.
+        feedback: 'בדקו את המקרה של אור שנשלח הצידה: אם $u_y$ היה גדל, יחד עם $u_x = v$ הוא היה נותן מהירות גדולה מ-$c$.'
+    reasons:
+      - text: 'המרחק בכיוון $y$ זהה בשתי המערכות, אבל במערכת של כדור הארץ הוא נעבר בזמן ארוך יותר, כי השעונים של החללית מפגרים.'
+        correct: true
+        feedback: 'זה הנימוק: $\Delta y = \Delta y''$, ו-$\Delta t = \gamma\Delta t''$ כש-$u''_x = 0$.'
+      - text: 'אורכים בכיוון $y$ מתקצרים פי $\gamma$, כמו אורכים בכיוון התנועה.'
+        feedback: 'התקצרות האורך היא רק בכיוון התנועה. בכיוון הניצב, $y = y''$: זה הטיעון של המברשת והקו על הקיר משיעור 9.2.'
+      - text: 'אין תנועה יחסית בכיוון $y$, ולכן שום גודל בכיוון $y$ לא משתנה.'
+        feedback: 'אורכים בכיוון $y$ באמת לא משתנים, אבל מהירות היא אורך חלקי זמן, והזמן משתנה גם כשהתנועה היחסית לאורך $x$.'
+        misconception: MC-9-transverse-unchanged
+
+  - id: Q-9.4-telescope-tilt
+    type: mc
+    objectives: [OBJ-9.4-3]
+    qualitative: true
+    level: mid
+    prompt: >-
+      טלסקופ על כדור הארץ נע (עם כדור הארץ) לאורך $+x$ במערכת של השמש. כוכב רחוק נמצא, במערכת של השמש, בדיוק בכיוון $+y$,
+      בניצב לתנועה. לאן צריך להטות את הטלסקופ מהכיוון $+y$ כדי לראות את הכוכב?
+    choices:
+      - text: 'קדימה, לכיוון $+x$: במערכת של הטלסקופ האור נע מעט אחורה, ולכן מגיע מלפנים.'
+        correct: true
+        feedback: >-
+          נכון. במערכת של הטלסקופ $\cos\theta' = (\cos\theta - \beta)/(1 - \beta\cos\theta) = -\beta$: לאור יש רכיב מהירות $-v$.
+          מכוונים את הטלסקופ אל הכיוון שממנו האור מגיע, ההפוך לכיוון שבו הוא נע: קדימה, בזווית $\alpha$ עם $\sin\alpha = \beta$.
+      - text: 'אחורה, לכיוון $-x$: במערכת של הטלסקופ האור נע מעט אחורה.'
+        feedback: >-
+          האור אכן **נע** אחורה במערכת של הטלסקופ. אבל טלסקופ מכוונים אל הכיוון **שממנו** האור מגיע, וזה הכיוון ההפוך:
+          קדימה. חשבו על מטרייה בגשם כשהולכים מהר.
+      - text: 'לא צריך להטות: האור מגיע בניצב לתנועה, ומהירות האור זהה בכל מערכת.'
+        feedback: >-
+          גודל המהירות זהה, $c$, אבל הכיוון לא. במערכת של הטלסקופ לאור יש רכיב $u'_x = -v$, כמו בכלל החיבור ההפוך.
+        misconception: MC-9-transverse-unchanged
+
+  - id: Q-9.4-headlight
+    type: numeric
+    objectives: [OBJ-9.4-3]
+    level: bagrut
+    prompt: >-
+      מקור אור נע במהירות $0.8c$ לאורך $+x$ במערכת המעבדה. במערכת שבה המקור נח, הוא שולח הבזק בזווית $120^\circ$ לציר $+x'$,
+      כלומר מעט אחורה. באיזו זווית לציר $+x$ נע ההבזק במערכת המעבדה? ענו במעלות.
+    answer: 60
+    unit: '°'
+    correctFeedback: >-
+      נכון. $\cos\theta = \dfrac{\cos\theta' + \beta}{1 + \beta\cos\theta'} = \dfrac{-0.5 + 0.8}{1 - 0.4} = 0.5$, ולכן $\theta = 60^\circ$:
+      הבזק ששולחים אחורה במערכת של המקור נע קדימה במעבדה. בדיקה ברכיבים: $u_x = 0.3c/0.6 = 0.5c$,
+      $u_y = 0.866c/(1.667\cdot0.6) = 0.866c$, והגודל $c$. **בדיקת גבולות:** כש-$\beta \to 0$, $\theta \to 120^\circ$; כש-$\beta \to 1$,
+      $\cos\theta \to 1$ ו-$\theta \to 0$: מקור מהיר שולח כמעט הכול קדימה.
+    wrongFeedback: >-
+      במערכת של המקור $\cos\theta' = -0.5$. הציבו בנוסחת האברציה, עם המכנה $1 + \beta\cos\theta'$.
+    commonWrong:
+      - value: 120
+        feedback: 'הנחתם שהכיוון לא משתנה. במעבדה מוסיפים להבזק את התנועה של המקור, ובכלל החיבור היחסותי.'
+        misconception: MC-9-transverse-unchanged
+      - value: 70.9
+        feedback: >-
+          חיברתם בגליליי: $(-0.5c + 0.8c,\ 0.866c)$. אבל אז גודל המהירות הוא $0.92c$ ולא $c$. ביחסות כל רכיב מתחלק במכנה
+          $1 + \beta\cos\theta' = 0.6$, ו-$u_y$ גם ב-$\gamma$.
+      - value: 158
+        feedback: 'השתמשתם ב-$(-\beta)$: זו הנוסחה ההפוכה, מהמעבדה למערכת של המקור. כאן הזווית ידועה במערכת של המקור.'
+    hints:
+      - 'מה $\cos 120^\circ$? הציבו בנוסחת האברציה.'
+      - 'אפשר גם ברכיבים: $u''_x = c\cos\theta''$ ו-$u''_y = c\sin\theta''$, וכלל המהירות בזווית.'

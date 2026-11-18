@@ -39,6 +39,7 @@ import {
   survivalFraction,
   toPrimedDiagram,
   transverseVelocity,
+  aberrationCos,
   twinTrip,
   velocityInFrame,
   worldlineProperTime,
@@ -133,6 +134,28 @@ describe('analytic limits', () => {
       const [ux, uy] = transverseVelocity(Math.cos(th), Math.sin(th), 0.7, 1);
       close(Math.hypot(ux, uy), 1, 1e-12);
     }
+  });
+
+  it('aberration: the angle of light from transverseVelocity is the aberration formula', () => {
+    for (const th of [0.3, 1.2, Math.PI / 2, 2.6]) {
+      const [ux] = transverseVelocity(Math.cos(th), Math.sin(th), 0.6, 1);
+      close(aberrationCos(Math.cos(th), 0.6), ux, 1e-12);
+    }
+  });
+
+  it('aberration: light sent sideways in S′ goes forward at cos θ = β in S; no change at β = 0 or along x', () => {
+    close(aberrationCos(0, 0.6), 0.6);
+    close(aberrationCos(Math.cos(1.1), 0), Math.cos(1.1), 1e-12);
+    close(aberrationCos(1, 0.9), 1);
+    close(aberrationCos(-1, 0.9), -1);
+  });
+
+  it('aberration of a star overhead tilts its light by sin α = β (≈ β, the classical tan α = v/c, at small β)', () => {
+    // in S the light falls straight down (cos θ = 0); the observer's frame moves at +β: transform with −β
+    const b = 1e-4;
+    const cosObs = aberrationCos(0, -b);
+    close(Math.asin(-cosObs), Math.asin(b), 1e-12);
+    close(Math.asin(-cosObs), Math.atan(b), 1e-6);
   });
 
   it('the interval classifies timelike, spacelike and lightlike pairs', () => {

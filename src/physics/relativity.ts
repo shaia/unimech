@@ -181,6 +181,12 @@ export function transverseVelocity(uxPrime: number, uyPrime: number, v: number, 
 }
 
 /**
+ * Aberration: light moves at angle θ′ to +x′ in S′ (moving at βc along x); the angle θ to +x in S has
+ * cos θ = (cos θ′ + β)/(1 + β cos θ′). The direction of propagation, not the direction one looks (its opposite).
+ */
+export const aberrationCos = (cosThetaPrime: number, b: number): number => (cosThetaPrime + b) / (1 + b * cosThetaPrime);
+
+/**
  * Longitudinal Doppler factor f_received/f_emitted = √((1 + β)/(1 − β)), with β > 0 when source and observer
  * approach each other and β < 0 when they recede. Only the relative velocity enters: no medium.
  */

@@ -16,6 +16,7 @@
 # No formula or constants sheet is supplied: the numbers a question needs are given in it.
 #
 # Questions are paraphrased in one line, never copied (the exams are the university's). `objectives: []` is a gap.
+# The two gaps of the first mapping (velocity at an angle, aberration) were closed by OBJ-9.4-3 (2026-11-18).
 # skills: derive | compute | show-that | explain | graph | diagram | estimate
 
 # ---------------------------------------------------------------- 2016 moed A
@@ -96,7 +97,7 @@
   part: b
   topic: 'מהירות החללית כפי שנמדדת מחללית שנייה שנעה בזווית לקו התנועה של הראשונה (חיבור מהירויות לא קוויות)'
   skills: [compute]
-  objectives: []
+  objectives: [OBJ-9.4-3]
 
 # ---------------------------------------------------------------- 2016 moed B
 - exam: 2016-moed-b
@@ -300,7 +301,7 @@
   part: c
   topic: 'הכיוון של פוטון מהשמש במערכת של הגוף הנע (אברציה יחסותית)'
   skills: [derive]
-  objectives: []
+  objectives: [OBJ-9.4-3]
 - exam: 2014-moed-b
   q: 3
   part: d
