@@ -48,6 +48,21 @@
 #      released at x = r/r_g: e = |1 − x³| and r_p = r x³/(2 − x³) for x < 1 (elementsFromState, turningRadii at
 #      x = 0.5, 0.9, 1.1, 1.2, 2^{1/3}; at x = ½ an RK4 run in the Earth frame reaches r_p = r/15 = 1.41e6 m);
 #      escape from r_e = 2^{1/3} r_g = 5.31e7 m, e = 1 there.
+# Independent review 2026-11-18 (.scratch/review/ch7/indep.ts, own routes): about 65 numbers and 19 symbolic results
+#   recomputed. Own RK4 in the station frame (t 0.5596 s, d 17.60 cm; at R = 3.0e4 m d = 1.000 cm); ω from a numeric
+#   ring-sum volume (6.600 rad/s); plumb angle from the g_eff vector (0.08886°, 45°: 0.0991°); the Jerusalem drop by
+#   RK4 with g_eff and Coriolis in local axes (5.280 cm east, 0.004 cm north); ζ = e^{−iΩt}η by RK4 vs the rotated lab
+#   ellipse (4e-12 m; Coriolis alone 2.3 cm off); r_g by a scan of u(r); e, r_p, r_e via elementsFromState at six x.
+#   Every value agreed. Changed: 4ד, 5ב, 5ג are standalone: false (4ד needs part א's turntable result, 5ב/5ג the r_g
+#   of part א).
+# After the student read (same day): 4: the bob is released from rest in the lab frame (a release at rest on the
+#   turntable gives it Ωr₀ and a narrow ellipse); 4א counts a full turn of the plane (the line itself after π/Ω =
+#   31.4 s); 4ג's limit and 4ד corrected: with Coriolis alone ζ = e^{−iΩt}η gives η̈ + (ω₀² + Ω²)η = 0, so the plane
+#   still turns at exactly Ω and only the swing frequency shifts at second order (4ד replaces "to first order in ω"
+#   with that argument); 1ג has its own Taylor step for tan φ − φ ≈ φ³/3; 2ד's limit R → ∞ replaces an observation;
+#   3ד's limit states d/h = ⅔ωt cosλ ≈ 3e-4; "centrifugal acceleration" → "centrifugal force per unit mass" as in the
+#   lessons; 3ג's second distractor says where the mark is; rubric lines added for 4ג's interpretation and 5ב's
+#   direction of motion.
 
 chapter: 7
 questions:
@@ -58,7 +73,7 @@ questions:
     prompt: >-
       תחנת חלל היא טבעת ברדיוס $R = 100\,\text{m}$, רחוק מכל כוכב, ומסתובבת סביב הציר שלה במהירות זוויתית קבועה
       $\omega$. האסטרונאוטים עומדים על הדופן החיצונית של הטבעת, שהיא ה״רצפה״ שלהם, והראש שלהם פונה אל הציר. מהירות
-      הסיבוב נבחרה כך שבמערכת הייחוס של התחנה התאוצה הצנטריפוגלית על הרצפה שווה ל-$g = 9.8\,\text{m/s}^2$. אסטרונאוטית מחזיקה כדור בגובה
+      הסיבוב נבחרה כך שבמערכת הייחוס של התחנה הכוח הצנטריפוגלי ליחידת מסה על הרצפה שווה ל-$g = 9.8\,\text{m/s}^2$. אסטרונאוטית מחזיקה כדור בגובה
       $h = 1.5\,\text{m}$ מעל הרצפה, כלומר במרחק $R - h$ מהציר, ומשחררת אותו ממנוחה ביחס לתחנה. בתחנה אין אוויר שמשפיע
       על הכדור.
     parts:
@@ -73,7 +88,7 @@ questions:
         correctFeedback: >-
           נכון. $\omega^2R = g$, ולכן $\omega = \sqrt{\dfrac{g}{R}} = \sqrt{\dfrac{9.8}{100}} = 0.313\,\text{rad/s}$: סיבוב שלם בכל
           $2\pi/\omega = 20.1\,\text{s}$.
-        wrongFeedback: 'השוו את התאוצה הצנטריפוגלית על הרצפה, $\omega^2R$, ל-$g$, ובודדו את $\omega$.'
+        wrongFeedback: 'השוו את הכוח הצנטריפוגלי ליחידת מסה על הרצפה, $\omega^2R$, ל-$g$, ובודדו את $\omega$.'
         commonWrong:
           - value: 0.098
             feedback: 'זה $g/R = \omega^2$. הוציאו שורש.'
@@ -125,7 +140,8 @@ questions:
           - { kind: law, text: 'במערכת אינרציאלית אין כובד בתחנה ואין כוח על הכדור אחרי השחרור. לפי החוק הראשון הוא נע בקו ישר, במהירות שהייתה לו ברגע השחרור.' }
           - { kind: manipulation, text: 'ברגע השחרור הכדור נע עם התחנה, במרחק $R - h$ מהציר: מהירותו $v = \omega(R - h)$, משיקה. הקו הישר פוגש את הרצפה בנקודה שהרדיוס אליה יוצר זווית $\varphi$ עם רדיוס השחרור, $\cos\varphi = \dfrac{R - h}{R}$, אחרי דרך $s = R\sin\varphi$. לכן $t = \dfrac{s}{v} = \dfrac{R\sin\varphi}{\omega R\cos\varphi} = \dfrac{\tan\varphi}{\omega}$.' }
           - { kind: manipulation, text: 'באותו זמן הרגליים של האסטרונאוטית, על הרצפה ועל רדיוס השחרור, מסתובבות בזווית $\omega t = \tan\varphi$, גדולה מ-$\varphi$. הכדור נוחת בזווית $\varphi$, ולכן מאחורי הרגליים, במרחק $d = R(\tan\varphi - \varphi)$ לאורך הרצפה.' }
-          - { kind: limit, text: 'כש-$h \ll R$: $\varphi \approx \sqrt{2h/R}$ ו-$\tan\varphi - \varphi \approx \varphi^3/3$. אז $t \approx \dfrac{\varphi}{\omega} = \sqrt{\dfrac{2h}{R}}\sqrt{\dfrac{R}{g}} = \sqrt{\dfrac{2h}{g}}$, זמן הנפילה על כדור הארץ, ו-$d \approx \dfrac{R}{3}\left(\dfrac{2h}{R}\right)^{3/2} = \dfrac{(2h)^{3/2}}{3\sqrt R}$, שמתאפס כש-$R \to \infty$: תחנה ענקית מתנהגת כמו רצפה שטוחה בכובד אחיד.' }
+          - { kind: manipulation, text: 'פיתוח טיילור לזווית קטנה, $\varphi \ll 1$: $\cos\varphi \approx 1 - \tfrac12\varphi^2 = 1 - \dfrac hR$, ולכן $\varphi \approx \sqrt{2h/R}$. ו-$\tan\varphi = \dfrac{\sin\varphi}{\cos\varphi} \approx \left(\varphi - \tfrac16\varphi^3\right)\left(1 + \tfrac12\varphi^2\right) \approx \varphi + \tfrac13\varphi^3$, ולכן $\tan\varphi - \varphi \approx \tfrac13\varphi^3$.' }
+          - { kind: limit, text: 'כש-$h \ll R$, עם הפיתוח הזה: אז $t \approx \dfrac{\varphi}{\omega} = \sqrt{\dfrac{2h}{R}}\sqrt{\dfrac{R}{g}} = \sqrt{\dfrac{2h}{g}}$, זמן הנפילה על כדור הארץ, ו-$d \approx \dfrac{R}{3}\left(\dfrac{2h}{R}\right)^{3/2} = \dfrac{(2h)^{3/2}}{3\sqrt R}$, שמתאפס כש-$R \to \infty$: תחנה ענקית מתנהגת כמו רצפה שטוחה בכובד אחיד.' }
           - { kind: units, text: '$\tan\varphi - \varphi$ חסר ממדים, ולכן $d$ במטרים כמו $R$. $\tan\varphi/\omega$ בשניות.' }
           - { kind: substitution, text: '$\cos\varphi = \dfrac{98.5}{100} = 0.985$, $\varphi = 0.17342\,\text{rad}$, $\tan\varphi = 0.17518$. $t = \dfrac{0.17518}{0.313} = 0.560\,\text{s}$, לעומת $\sqrt{2h/g} = 0.553\,\text{s}$ על כדור הארץ. $d = 100\cdot(0.17518 - 0.17342) = 0.176\,\text{m}$.' }
           - { kind: result, text: 'הכדור פוגע ברצפה אחרי $0.560\,\text{s}$, כמעט כמו על כדור הארץ, ונוחת כ-$17.6\,\text{cm}$ מאחורי הרגליים, בכיוון הפוך לסיבוב.' }
@@ -269,7 +285,7 @@ questions:
           - { kind: law, text: 'נפח המים קבוע, $\pi R^2h_0$. מחלק ג, במערכת המסתובבת פני המים הם $z(r) = z_0 + \dfrac{\omega^2r^2}{2g}$, ואת הנפח מתחתם מחשבים בטבעות דקות, $dV = z(r)\,2\pi r\,dr$.' }
           - { kind: manipulation, text: '$$V = \int_0^R\left(z_0 + \frac{\omega^2r^2}{2g}\right)2\pi r\,dr = \pi R^2\left(z_0 + \frac{\omega^2R^2}{4g}\right) = \pi R^2h_0$$ ולכן $z_0 = h_0 - \dfrac{\omega^2R^2}{4g}$. פני המים נוגעים בתחתית כש-$z_0 = 0$: $$\omega = \frac{2\sqrt{gh_0}}{R}$$ ואז בדופן $z(R) = \dfrac{\omega^2R^2}{2g} = 2h_0$.' }
           - { kind: manipulation, text: 'פני המים לא יורדים במרכז באותה מידה שהם עולים בדופן: הגובה הממוצע של הפרבולואיד מעל $z_0$ הוא $\omega^2R^2/(4g)$, חצי מההפרש בין הדופן למרכז. לכן כשהמרכז יורד ב-$h_0$, הדופן עולה ב-$h_0$, וההפרש ביניהם $2h_0$.' }
-          - { kind: limit, text: 'כש-$\omega \to 0$: $z_0 \to h_0$, המים שטוחים בגובה ההתחלתי. כש-$h_0 \to 0$: $\omega \to 0$, שכבת מים דקה חושפת את התחתית כמעט מיד. וגובה המים בדופן, $2h_0$, לא תלוי ב-$R$ וב-$g$: את הגובה קובעים רק הצורה הפרבולית והנפח.' }
+          - { kind: limit, text: 'כש-$\omega \to 0$: $z_0 \to h_0$, המים שטוחים בגובה ההתחלתי. כש-$h_0 \to 0$: $\omega \to 0$, שכבת מים דקה חושפת את התחתית כמעט מיד. כש-$R \to \infty$: $\omega \to 0$, כי במכל רחב מאוד הפרבולואיד, שעולה כמו $r^2$, מגיע לגובה $2h_0$ בדופן כבר בסיבוב איטי.' }
           - { kind: units, text: '$\dfrac{\sqrt{gh_0}}{R}$ ביחידות $\dfrac{\sqrt{\text{m/s}^2\cdot\text{m}}}{\text{m}} = \text{s}^{-1}$, כמו מהירות זוויתית.' }
           - { kind: substitution, text: '$\omega = \dfrac{2\sqrt{9.8\cdot0.10}}{0.30} = 6.60\,\text{rad/s}$, כסיבוב בשנייה, ובדופן המים בגובה $2h_0 = 0.20\,\text{m}$.' }
           - { kind: result, text: '$\omega = \dfrac{2\sqrt{gh_0}}{R} = 6.60\,\text{rad/s}$, ואז המים בדופן בגובה $2h_0 = 0.20\,\text{m}$.' }
@@ -293,7 +309,7 @@ questions:
         points: 4
         level: basic
         objectives: [OBJ-7.4-1]
-        prompt: מה גודל התאוצה הצנטריפוגלית בירושלים, במערכת הייחוס של כדור הארץ?
+        prompt: מה גודל הכוח הצנטריפוגלי ליחידת מסה בירושלים, במערכת הייחוס של כדור הארץ?
         answer: 0.0288
         unit: m/s²
         correctFeedback: >-
@@ -304,7 +320,7 @@ questions:
           - value: 0.0339
             feedback: 'זה $\omega^2R$, הערך בקו המשווה. בקו רוחב $\lambda$ המרחק מהציר קטן יותר, $R\cos\lambda$.'
           - value: 0.0245
-            feedback: 'זה $\omega^2R\cos^2\lambda$, רק הרכיב של התאוצה לאורך הקו מהמרכז. השאלה שואלת על הגודל כולו.'
+            feedback: 'זה $\omega^2R\cos^2\lambda$, רק הרכיב שלו לאורך הקו מהמרכז. השאלה שואלת על הגודל כולו.'
           - value: 0.0178
             feedback: 'השתמשתם ב-$\sin\lambda$. בקוטב, $\lambda = 90^\circ$, המרחק מהציר אפס, ולכן הגורם הוא $\cos\lambda$.'
         hints:
@@ -320,11 +336,11 @@ questions:
           התוצאה בקו המשווה ובקוטב. חשבו את $\alpha$ במעלות, ובכמה סנטימטרים, לאורך $200\,\text{m}$, האנך מתרחק מהקו אל
           המרכז.
         hints:
-          - 'פרקו את התאוצה מחלק א לרכיב לאורך הקו מהמרכז ולרכיב ניצב לו.'
+          - 'פרקו את הכוח הצנטריפוגלי ליחידת מסה מחלק א לרכיב לאורך הקו מהמרכז ולרכיב ניצב לו.'
           - 'הרכיב הניצב של $\omega^2R\cos\lambda$ הוא $\omega^2R\cos\lambda\sin\lambda$.'
         solution:
           - { kind: law, text: 'במערכת כדור הארץ המשקולת במנוחה: המתיחות מאזנת את הכובד ואת הכוח הצנטריפוגלי, כוח מדומה, ולכן החוט פונה לאורך $\vec g_{\text{eff}} = \vec g - \vec\omega\times(\vec\omega\times\vec r)$, כאשר $\vec g$ פונה אל המרכז. כוח קוריוליס על המשקולת אפס, כי היא במנוחה במערכת הזו.' }
-          - { kind: manipulation, text: 'התאוצה הצנטריפוגלית, $\omega^2R\cos\lambda$, פונה הרחק מהציר. ביחס לקו מהמרכז היא מתפרקת לרכיב לאורכו, החוצה, $\omega^2R\cos^2\lambda$, ולרכיב ניצב לו, לכיוון קו המשווה, $\omega^2R\sin\lambda\cos\lambda$. לכן $$\tan\alpha = \frac{\omega^2R\sin\lambda\cos\lambda}{g - \omega^2R\cos^2\lambda}$$ והמשקולת מוסטת מהקו אל המרכז לכיוון קו המשווה: דרומה בחצי הכדור הצפוני.' }
+          - { kind: manipulation, text: 'הכוח הצנטריפוגלי ליחידת מסה, $\omega^2R\cos\lambda$, פונה הרחק מהציר. ביחס לקו מהמרכז הוא מתפרק לרכיב לאורכו, החוצה, $\omega^2R\cos^2\lambda$, ולרכיב ניצב לו, לכיוון קו המשווה, $\omega^2R\sin\lambda\cos\lambda$. לכן $$\tan\alpha = \frac{\omega^2R\sin\lambda\cos\lambda}{g - \omega^2R\cos^2\lambda}$$ והמשקולת מוסטת מהקו אל המרכז לכיוון קו המשווה: דרומה בחצי הכדור הצפוני.' }
           - { kind: limit, text: 'בקו המשווה, $\lambda = 0$, $\sin\lambda = 0$; בקוטב, $\lambda = 90^\circ$, $\cos\lambda = 0$. בשניהם $\alpha = 0$: בקו המשווה הכוח הצנטריפוגלי לאורך הקו מהמרכז, ובקוטב הוא אפס. ביניהם $\sin\lambda\cos\lambda = \tfrac12\sin2\lambda$ מרבי ב-$45^\circ$. וכש-$\omega \to 0$ גם $\alpha \to 0$, והאנך מצביע אל המרכז.' }
           - { kind: units, text: '$\omega^2R$ ביחידות $\text{s}^{-2}\cdot\text{m} = \text{m/s}^2$, כמו $g$, ולכן $\tan\alpha$ חסר ממדים.' }
           - { kind: substitution, text: '$\omega^2R\sin\lambda\cos\lambda = 0.01516\,\text{m/s}^2$ ו-$\omega^2R\cos^2\lambda = 0.0245\,\text{m/s}^2$, ולכן $\tan\alpha = \dfrac{0.01516}{9.8 - 0.0245} = 1.55\cdot10^{-3}$ ו-$\alpha = 0.0889^\circ$ (המרבי, בקו רוחב $45^\circ$, הוא $0.0991^\circ$). לאורך $200\,\text{m}$: $200\cdot1.55\cdot10^{-3} = 0.310\,\text{m}$.' }
@@ -353,8 +369,8 @@ questions:
               $\vec g_{\text{eff}}$. רק כוח קוריוליס, שתלוי במהירות, מבדיל בין אבן נופלת למשקולת במנוחה.
           - text: הטענה נכונה, והאבן נוחתת כ-$31\,\text{cm}$ דרומה מהסימון, ועוד כמה סנטימטרים מזרחה.
             feedback: >-
-              הנטייה של האנך כבר כוללת את ההשפעה הצנטריפוגלית. אם נמדוד מהנקודה שמתחת לקו אל המרכז, האבן אכן תנחת דרומה
-              ממנה, אבל הסימון נמצא שם בדיוק.
+              הנטייה של האנך כבר כוללת את ההשפעה הצנטריפוגלית. האבן אכן תנחת כ-$31\,\text{cm}$ דרומה מהנקודה שהקו אל
+              המרכז היה מגיע אליה, אבל הסימון עצמו כבר נמצא שם, כי סימנו אותו מתחת לאנך. לכן מהסימון האבן מוסטת רק מזרחה.
             misconception: MC-7-plumb-points-to-center
           - text: הטענה שגויה, כי האבן נוחתת $31\,\text{cm}$ **צפונה** מהסימון, לכיוון ההפוך.
             feedback: 'במערכת כדור הארץ הכוח הצנטריפוגלי ליחידת מסה על האבן ועל המשקולת זהה בכיוונו ובגודלו, ולכן אין סיבה לסטייה צפונה או דרומה בסדר ראשון ב-$\omega$.'
@@ -381,7 +397,7 @@ questions:
           - { kind: law, text: 'במערכת כדור הארץ: $m\vec a'' = m\vec g_{\text{eff}} - 2m\vec\omega\times\vec v''$. האיבר האחרון הוא כוח קוריוליס, כוח מדומה. הכוח המדומה השני, הכוח הצנטריפוגלי, כבר בתוך $\vec g_{\text{eff}}$, שפונה לאורך האנך, כלפי מטה. אין כוח אוילר, כי $\vec\omega$ קבועה.' }
           - { kind: manipulation, text: 'בקו רוחב $\lambda$: $\vec\omega = \omega\left(\cos\lambda\,\hat n + \sin\lambda\,\hat u\right)$. בסדר אפס $\vec v'' = -gt\,\hat u$, ולכן $\vec\omega\times\vec v'' = -gt\,\omega\cos\lambda\,(\hat n\times\hat u) = -gt\,\omega\cos\lambda\,\hat e$, כי $\hat u\times\hat u = 0$ ו-$\hat n\times\hat u = \hat e$.' }
           - { kind: manipulation, text: 'התאוצה המזרחית: $a''_e = -2(\vec\omega\times\vec v'')_e = 2\omega gt\cos\lambda$. מאינטגרציה ממנוחה: $v''_e = \omega gt^2\cos\lambda$, ו-$x_e = \tfrac13\omega gt^3\cos\lambda$. עם $t = \sqrt{2h/g}$: $d = \tfrac13\omega\cos\lambda\sqrt{\dfrac{8h^3}{g}}$.' }
-          - { kind: limit, text: 'בקוטב, $\lambda = 90^\circ$, $\vec\omega$ מקבילה למהירות, $\cos\lambda = 0$ ו-$d = 0$. כש-$\omega \to 0$ גם $d \to 0$. הקירוב מסדר ראשון סביר כי $d \ll h$: $5\,\text{cm}$ לעומת $200\,\text{m}$.' }
+          - { kind: limit, text: 'בקוטב, $\lambda = 90^\circ$, $\vec\omega$ מקבילה למהירות, $\cos\lambda = 0$ ו-$d = 0$. כש-$\omega \to 0$ גם $d \to 0$. הקירוב מסדר ראשון סביר כי $d/h = \tfrac23\,\omega t\cos\lambda \ll 1$, כלומר כדור הארץ מסתובב רק זווית קטנה, $\omega t \approx 5\cdot10^{-4}\,\text{rad}$, בזמן הנפילה: $5\,\text{cm}$ לעומת $200\,\text{m}$.' }
           - { kind: units, text: '$[\omega gt^3] = \text{s}^{-1}\cdot\text{m}\,\text{s}^{-2}\cdot\text{s}^3 = \text{m}$.' }
           - { kind: substitution, text: '$t = \sqrt{\dfrac{2\cdot200}{9.8}} = 6.39\,\text{s}$, ו-$d = \tfrac13\cdot7.29\cdot10^{-5}\cdot9.8\cdot6.39^3\cdot\cos31.8^\circ = 0.0528\,\text{m} = 5.28\,\text{cm}$.' }
           - { kind: result, text: '$d = \tfrac13\omega gt^3\cos\lambda = \tfrac13\omega\cos\lambda\sqrt{8h^3/g}$, מזרחה מהנקודה שמתחת לאנך, בחצי הכדור הצפוני וגם בדרומי. במגדל בירושלים $d = 5.28\,\text{cm}$.' }
@@ -399,7 +415,8 @@ questions:
     prompt: >-
       במעבדה תולים מטוטלת בעלת מסה $m = 2.0\,\text{kg}$ מנקודה שנמצאת בדיוק מעל מרכז של פטיפון גדול, על ציר הסיבוב שלו.
       הפטיפון מסתובב, במבט מלמעלה, נגד כיוון השעון, במהירות זוויתית קבועה $\Omega = 0.10\,\text{rad/s}$. סטודנטית
-      שעומדת על הפטיפון מסיטה את המטוטלת ומשחררת אותה, והיא מתנודדת תנודות קטנות דרך המרכז. בהמשך משווים אותה למטוטלת
+      שעומדת על הפטיפון מסיטה את המטוטלת ומשחררת אותה כך שבמערכת המעבדה היא מתחילה ממנוחה, והיא מתנודדת תנודות קטנות
+      דרך המרכז. בהמשך משווים אותה למטוטלת
       פוקו, שתלויה מתקרה ומתנודדת על פני כדור הארץ המסתובב, $\omega = 7.29\cdot10^{-5}\,\text{rad/s}$.
     parts:
       - label: א
@@ -409,11 +426,13 @@ questions:
         objectives: [OBJ-7.3-2]
         prompt: מה רואה הסטודנטית שעל הפטיפון?
         choices:
-          - text: מישור התנודה מסתובב עם כיוון השעון, וחוזר למקומו ביחס לפטיפון אחרי $62.8\,\text{s}$.
+          - text: מישור התנודה מסתובב עם כיוון השעון, ומשלים סיבוב שלם ביחס לפטיפון אחרי $62.8\,\text{s}$.
             correct: true
             feedback: >-
               נכון. במערכת המעבדה הכוחות על המטוטלת, הכובד והמתיחות, נמצאים במישור התנודה, ולכן המישור קבוע. הפטיפון מסתובב
               מתחתיו נגד כיוון השעון, ולכן לסטודנטית המישור מסתובב בקצב $\Omega$ עם כיוון השעון: סיבוב שלם ב-$2\pi/\Omega = 62.8\,\text{s}$.
+              קו התנודה עצמו, כקו דרך המרכז, מתלכד עם עצמו כבר אחרי חצי סיבוב, $\pi/\Omega = 31.4\,\text{s}$, אבל אז המטוטלת
+              מתחילה את ההלוך מהצד השני.
           - text: מישור התנודה מסתובב איתה, נגד כיוון השעון, ולכן היא רואה אותו קבוע.
             feedback: >-
               נקודת התלייה על הציר, ולכן הפטיפון לא יכול לסובב את המטוטלת. במעבדה המישור קבוע, והפטיפון זה שמסתובב.
@@ -475,23 +494,25 @@ questions:
           - { kind: law, text: 'במערכת הפטיפון, שמסתובבת ב-$\vec\Omega = \Omega\hat z$ הקבועה: $m\vec a'' = -m\omega_0^2\vec r\,'' + \vec F_{\text{cf}} + \vec F_{\text{cor}}$, עם הכוח הצנטריפוגלי $\vec F_{\text{cf}} = m\Omega^2\vec r\,''$ (במישור האופקי, החוצה מהציר) וכוח קוריוליס $\vec F_{\text{cor}} = -2m\vec\Omega\times\vec v''$; שניהם כוחות מדומים. אין כוח אוילר, כי $\Omega$ קבועה.' }
           - { kind: manipulation, text: 'במישור, $\hat z\times(x, y) = (-y, x)$: סיבוב ב-$90^\circ$, ובשפה המרוכבת כפל ב-$i$. לכן $\vec\Omega\times\vec v'' \to i\Omega\dot\zeta$, והחוק השני הוא $\ddot\zeta = -\omega_0^2\zeta + \Omega^2\zeta - 2i\Omega\dot\zeta$, כלומר $$\ddot\zeta + 2i\Omega\dot\zeta + \left(\omega_0^2 - \Omega^2\right)\zeta = 0$$' }
           - { kind: manipulation, text: 'עם $\zeta = e^{-i\Omega t}\eta$: $\dot\zeta = e^{-i\Omega t}\left(\dot\eta - i\Omega\eta\right)$ ו-$\ddot\zeta = e^{-i\Omega t}\left(\ddot\eta - 2i\Omega\dot\eta - \Omega^2\eta\right)$. מציבים ומחלקים ב-$e^{-i\Omega t}$: $$\ddot\eta - 2i\Omega\dot\eta - \Omega^2\eta + 2i\Omega\dot\eta + 2\Omega^2\eta + \left(\omega_0^2 - \Omega^2\right)\eta = \ddot\eta + \omega_0^2\eta = 0$$ האיברים עם $\Omega$ מתבטלים בדיוק, בלי שום הזנחה: $\eta$ היא תנועת המטוטלת במעבדה, ו-$\zeta = e^{-i\Omega t}\eta$ היא אותה תנועה מסובבת בזווית $\Omega t$ לאחור, הפוך לסיבוב הפטיפון. לכן הסטודנטית רואה את מסלול המעבדה מסתובב בקצב $\Omega$ עם כיוון השעון, כמו בחלק א.' }
-          - { kind: limit, text: 'כש-$\Omega \to 0$: $\zeta = \eta$, ושתי המערכות זהות. ובלי הכוח הצנטריפוגלי, עם כוח קוריוליס לבדו, היה נשאר איבר $\Omega^2\eta$, והתשובה הייתה נכונה רק בסדר ראשון ב-$\Omega$: שני הכוחות המדומים יחד נותנים אותה בדיוק.' }
+          - { kind: limit, text: 'כש-$\Omega \to 0$: $\zeta = \eta$, ושתי המערכות זהות. ובלי הכוח הצנטריפוגלי, עם כוח קוריוליס לבדו, אותה הצבה הייתה נותנת $\ddot\eta + \left(\omega_0^2 + \Omega^2\right)\eta = 0$: גם אז $\eta$ מתנודדת לאורך קו קבוע, והמישור מסתובב בקצב $\Omega$ בדיוק; רק תדירות התנודה הייתה משתנה, בסדר שני ב-$\Omega$. הכוח הצנטריפוגלי משפיע על תדירות התנודה, וכוח קוריוליס לבדו קובע את סיבוב המישור.' }
           - { kind: units, text: '$\Omega\dot\zeta$, $\Omega^2\zeta$ ו-$\omega_0^2\zeta$ ביחידות $\text{s}^{-1}\cdot\text{m/s} = \text{s}^{-2}\cdot\text{m} = \text{m/s}^2$, כמו $\ddot\zeta$, ו-$\Omega t$ חסר ממדים: זווית.' }
           - { kind: result, text: '$\zeta(t) = e^{-i\Omega t}\eta(t)$ עם $\ddot\eta + \omega_0^2\eta = 0$: במערכת הפטיפון התנועה היא תנועת המעבדה, מסובבת בקצב $\Omega$ בכיוון ההפוך לסיבוב הפטיפון. מישור התנודה קבוע במעבדה, ומסתובב עם כיוון השעון ביחס לסטודנטית.' }
         rubric:
           - text: 'כתבתי את החוק השני במערכת הפטיפון עם הכוח הצנטריפוגלי ועם כוח קוריוליס, וקראתי לשניהם כוחות מדומים.'
           - text: 'תרגמתי את $\hat z\times$ לכפל ב-$i$, וקיבלתי את המשוואה ל-$\zeta$.'
           - text: 'הצבתי $\zeta = e^{-i\Omega t}\eta$ והראיתי שכל האיברים עם $\Omega$ מתבטלים.'
+          - text: 'פירשתי: הסטודנטית רואה את תנועת המעבדה מסובבת בזווית $\Omega t$, עם כיוון השעון, כמו בחלק א.'
           - text: 'בדקתי שכש-$\Omega \to 0$ שתי המערכות זהות.'
 
       - label: ד
         type: open
         points: 9
         level: bagrut
+        standalone: false
         objectives: [OBJ-7.4-2, OBJ-7.2-2]
         prompt: >-
-          הסבירו בעזרת כוח קוריוליס מדוע מישור התנודה של מטוטלת פוקו בקו רוחב $\lambda$ מסתובב בדיוק כמו מישור התנודה
-          של מטוטלת על פטיפון שמסתובב סביב האנך בקצב $\Omega = \omega\sin\lambda$. בדקו את התוצאה בקוטב, בקו המשווה ובחצי
+          הסבירו בעזרת כוח קוריוליס מדוע מישור התנודה של מטוטלת פוקו בקו רוחב $\lambda$ מסתובב באותו קצב
+          כמו מישור התנודה של מטוטלת על פטיפון שמסתובב סביב האנך בקצב $\Omega = \omega\sin\lambda$. בדקו את התוצאה בקוטב, בקו המשווה ובחצי
           הכדור הדרומי, ובדקו את היחידות. בטאו באמצעות $\omega$ ו-$\lambda$ את הזמן שבו המישור משלים סיבוב, וחשבו בפריז, בקו
           רוחב $\lambda = 48.85^\circ$, את קצב הסיבוב במעלות לשעה ואת הזמן לסיבוב שלם.
         hints:
@@ -500,7 +521,7 @@ questions:
         solution:
           - { kind: law, text: 'במערכת כדור הארץ: $m\vec a'' = m\vec g_{\text{eff}} + \vec T - 2m\vec\omega\times\vec v''$, כאשר $\vec T$ המתיחות בחוט, והאיבר האחרון הוא כוח קוריוליס, כוח מדומה. הכוח המדומה השני, הכוח הצנטריפוגלי, בתוך $\vec g_{\text{eff}}$.' }
           - { kind: manipulation, text: 'בצירים מקומיים: $\vec\omega = \omega\cos\lambda\,\hat n + \omega\sin\lambda\,\hat u$. בתנודות קטנות $\vec v''$ כמעט אופקית. הרכיב $\omega\sin\lambda\,\hat u\times\vec v''$ אופקי וניצב ל-$\vec v''$. הרכיב $\omega\cos\lambda\,\hat n\times\vec v''$ מקביל ל-$\hat u$, כי מכפלה של שני וקטורים אופקיים אנכית, והוא רק משנה מעט את המתיחות הדרושה.' }
-          - { kind: manipulation, text: 'לכן התנועה האופקית מקיימת את אותה משוואה כמו מטוטלת על פטיפון שמסתובב סביב האנך בקצב $\Omega = \omega\sin\lambda$: כוח קוריוליס אופקי $\vec F_{\text{cor}} = -2m\Omega\hat u\times\vec v''$. מחלקים א ו-ג, מישור התנודה מסתובב ביחס לפטיפון בקצב $\Omega$ בכיוון ההפוך לסיבוב שלו, כלומר עם כיוון השעון בחצי הכדור הצפוני.' }
+          - { kind: manipulation, text: 'לכן על התנועה האופקית פועלים הכוח המחזיר $-m\omega_0^2\vec r\,''$ וכוח קוריוליס אופקי $\vec F_{\text{cor}} = -2m\Omega\hat u\times\vec v''$, עם $\Omega = \omega\sin\lambda$, כמו על פטיפון שמסתובב סביב האנך בקצב הזה. ההבדל היחיד: כאן הכוח הצנטריפוגלי כבר בתוך $\vec g_{\text{eff}}$, ולכן במשוואה של חלק ג חסר האיבר $-\Omega^2\zeta$. ההצבה $\zeta = e^{-i\Omega t}\eta$ נותנת אז $\ddot\eta + \left(\omega_0^2 + \Omega^2\right)\eta = 0$: $\eta$ עדיין מתנודדת לאורך קו קבוע, ורק התדירות שלה זזה בסדר שני, זניח לגמרי. לכן, כמו בחלקים א ו-ג, מישור התנודה מסתובב ביחס לקרקע בקצב $\Omega$ בדיוק, בכיוון ההפוך לסיבוב, כלומר עם כיוון השעון בחצי הכדור הצפוני.' }
           - { kind: limit, text: 'בקוטב, $\lambda = 90^\circ$: $\Omega = \omega$, והקרקע היא ממש פטיפון שמסתובב מתחת למטוטלת, סיבוב שלם ביום כוכבי, $2\pi/\omega = 23.9\,\text{h}$. בקו המשווה, $\lambda = 0$: $\Omega = 0$, והמישור לא מסתובב. בחצי הכדור הדרומי $\sin\lambda < 0$, והמישור מסתובב נגד כיוון השעון.' }
           - { kind: units, text: '$\omega\sin\lambda$ ביחידות $\text{rad/s}$, כמו מהירות זוויתית, ו-$2\pi/(\omega\sin\lambda)$ בשניות.' }
           - { kind: substitution, text: '$\omega = 7.29\cdot10^{-5}\,\text{rad/s}$ הם $15.04^\circ$ לשעה, ולכן בפריז המישור מסתובב ב-$15.04\cdot\sin48.85^\circ = 11.3^\circ$ לשעה. $T = \dfrac{2\pi}{\omega\sin\lambda} = \dfrac{2\pi}{7.29\cdot10^{-5}\cdot\sin48.85^\circ} = 1.14\cdot10^{5}\,\text{s} = 31.8\,\text{h}$.' }
@@ -553,6 +574,7 @@ questions:
         type: open
         points: 6
         level: mid
+        standalone: false
         objectives: [OBJ-7.3-1, OBJ-7.3-2, OBJ-3.3-2]
         prompt: >-
           במערכת כדור הארץ, לאורך המגדל, הכבידה והכוח הצנטריפוגלי הם שניהם כוחות שתלויים רק ב-$r$ ופונים לאורך הקו מהמרכז.
@@ -573,6 +595,7 @@ questions:
         rubric:
           - text: 'כתבתי $u(r) = -GM_E/r - \tfrac12\omega^2r^2$, ובדקתי ש-$F_r/m = -du/dr$ הוא הכבידה ועוד הכוח הצנטריפוגלי.'
           - text: 'הראיתי ש-$u$ מרבית ב-$r_g$: שיווי משקל לא יציב.'
+          - text: 'קבעתי מסימן הכוח השקול, $-du/dr$, שמתחת ל-$r_g$ הגוף מתחיל ליפול פנימה ומעליו מתחיל לנוע החוצה.'
           - text: 'נימקתי שכוח קוריוליס אפס ברגע השחרור, כי הגוף במנוחה במערכת כדור הארץ.'
           - text: 'בדקתי שכש-$\omega \to 0$ כל גוף ששוחרר נופל.'
 
@@ -580,6 +603,7 @@ questions:
         type: open
         points: 7
         level: bagrut
+        standalone: false
         objectives: [OBJ-7.3-2, OBJ-6.3-2, OBJ-6.4-2]
         prompt: >-
           פתרו עכשיו **במערכת האינרציאלית** את התנועה של גוף ששוחרר במרחק $r < r_g$. סמנו $x = r/r_g$.

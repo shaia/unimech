@@ -49,6 +49,27 @@
 #      s_max = u√(μ/k) = mv√(M/(k(M + m)(2M + m))); v_B = V(1 − cos ωt), v_A = V(1 + M cos ωt/(M + m)). All checked by
 #      RK4 at (m, M, k, v) = (0.2, 1, 50, 3), (1, 0.5, 20, 2), (0.05, 2, 200, 10): s_max to 1e-6, both velocity laws
 #      to 1e-10, min v_A = Vm/(M + m), max v_B = 2V; limits m → ∞ (s_max → v√(M/k)) and m ≪ M (mv/√(2kM)).
+# Independent review 2026-11-18 (.scratch/review/ch5/indep.ts, own RK4 of every equation of motion): 1 free decay
+#   and driven runs (A 0.07213 m at 200 s, x/(A sin ω0t) = 1.000, exact FWHM of A² 0.27727 ≈ γ, transient formula
+#   within 0.13 % of A0 over 30 s; t5% 21.61 s, 68.8 oscillations, 10.80, 7.21); 2 the fall onto the spring (x_max
+#   0.159458 m, t1 0.143572 s; 0.0325 + 0.1111, 0.0786, 0.222); 3 the full pendulum (v_max 0.31292 vs 0.31305), a
+#   damped run of 50 periods at Q = 226.6 (θ 0.0500), the tick count (43.2108 s; 86.4), the cycle average of mγv²
+#   (1.354e-4 W); 4 the coupled pair (Δω 0.044947, 0.045175, 0.02253, T_s 69.895, 69.54, 139.8, 34.948, 49.5
+#   oscillations); 5 the blocks at three (m, M, k, v). Every number agrees. Changed: 5ב's limit m ≫ M said ΔK → 0,
+#   but ΔK → ½Mv²: only the fraction M/(M + m) vanishes; 1ד's second limit was "Q = 1 gives F0/k, as expected" and
+#   is now the real static limit ω → 0 of the complex amplitude; inline math no longer starts with a sign next to
+#   Hebrew (stem of 1, 3ה, 5ג).
+#   After the student read (.scratch/review/ch5/indep2.ts): 1ה was lesson 5.4's ex-5-4-5 (start from rest, the same
+#   C = 0, D ≈ −A0 and the same γ → 0 limit), so the body is now released from x(0) = A0 as the motor starts: x ≈
+#   A0[(1 − e^(−γt/2)) sin ω0t + e^(−γt/2) cos ω0t], the amplitude dips to A0/√2 = 5.10 cm at t* = 2Q ln2/ω0 = 5.00 s
+#   (about 16 oscillations; RK4 of the full equation: minimum 5.095 cm at 4.99 s, formula within 0.7 % of A0); the
+#   1ה lines above about t5% are superseded. 5ג was ex-5-5-5 (μ s̈ = −ks for a kicked pair), so it now asks s_max by
+#   the energy split of lesson 4.2 and the stored fraction η = mM/((M + m)(2M + m)), largest at m = √2 M, 3 − 2√2 =
+#   0.172 (scan in m, and RK4 at two (m, M, k, v)); the equation of motion moved into ד (7 + 8 points). Also: 1ד names
+#   δ and its limits and asks to show Δω ≈ γ; 2 says why the sticking loses no energy (μ → 0) and names d in א; 2ד
+#   writes y = A sin(ω0t − α) and finds α step by step; 3ה's per-oscillation check uses e^(−2π/Q) ≈ 1 − 2π/Q in place
+#   of an untaught (1 − 2π/Q)^Q; 4ג's result separates the exact 0.0449 from the approximation 0.0452; 4ד speaks of
+#   the envelope of bob 1 and "almost all" the energy (bob 1's energy at T_s is about (Δω/2ω̄)² ≈ 3·10⁻⁵ of it).
 
 chapter: 5
 questions:
@@ -57,8 +78,8 @@ questions:
     type: bagrut
     title: מקדם איכות מדעיכה, ומה הוא מנבא לתהודה
     prompt: >-
-      גוף בעל מסה $m = 0.25\,\text{kg}$ קשור לקפיץ אופקי בעל קבוע קפיץ $k = 100\,\text{N/m}$, ועל הגוף פועל ריסון חלש
-      $-b\dot x$. נכתוב את משוואת התנועה בצורה $\ddot x + \gamma\dot x + \omega_0^2x = \dfrac{F(t)}{m}$, עם $\gamma = b/m$,
+      גוף בעל מסה $m = 0.25\,\text{kg}$ קשור לקפיץ אופקי בעל קבוע קפיץ $k = 100\,\text{N/m}$, ועל הגוף פועל כוח ריסון
+      חלש $F_b = -b\dot x$. נכתוב את משוואת התנועה בצורה $\ddot x + \gamma\dot x + \omega_0^2x = \dfrac{F(t)}{m}$, עם $\gamma = b/m$,
       $\omega_0^2 = k/m$ ומקדם איכות $Q = \omega_0/\gamma$.
 
       בשלב הראשון אין כוח חיצוני, $F = 0$. מושכים את הגוף ומשחררים, ומודדים שהאמפליטודה יורדת מ-$4.0\,\text{cm}$
@@ -91,8 +112,8 @@ questions:
         answer: 0.277
         unit: 1/s
         correctFeedback: >-
-          נכון. האמפליטודה דועכת כמו $e^{-\gamma t/2}$, ולכן $e^{-\gamma\cdot10/2} = \dfrac{1.0}{4.0}$, ו-
-          $\gamma = \dfrac{2\ln4}{10.0} = 0.277\,\text{s}^{-1}$. בזמן הזה הגוף מבצע כ-32 תנודות.
+          נכון. האמפליטודה דועכת כמו $e^{-\gamma t/2}$, ולכן $e^{-\gamma\cdot10/2} = \dfrac{1.0}{4.0}$,
+          ולכן $\gamma = \dfrac{2\ln4}{10.0} = 0.277\,\text{s}^{-1}$. בזמן הזה הגוף מבצע כ-32 תנודות.
         wrongFeedback: 'כתבו את יחס האמפליטודות כאקספוננט, $A(t)/A(0) = e^{-\gamma t/2}$, וקחו לוגריתם טבעי.'
         commonWrong:
           - value: 0.139
@@ -134,18 +155,19 @@ questions:
         prompt: >-
           בשלב השני המנוע פועל בתדירות $\omega = \omega_0$.
 
-          (1) מצאו בשיטה המרוכבת את האמפליטודה ואת הפאזה של המצב היציב, וכתבו את האמפליטודה בעזרת $Q$ ו-$F_0/k$.
-          בדקו את התוצאה בגבול $\gamma \to 0$ ואת היחידות שלה.
+          (1) מצאו בשיטה המרוכבת את האמפליטודה של המצב היציב ואת הפיגור $\delta$ של ההעתק אחרי הכוח, וכתבו את
+          האמפליטודה בעזרת $Q$ ו-$F_0/k$. בדקו את התוצאה בגבולות $\gamma \to 0$ ו-$\omega \to 0$ ואת היחידות שלה.
 
-          (2) חשבו את האמפליטודה בתהודה ואת רוחב התהודה $\Delta\omega$, הרוחב המלא של $A^2(\omega)$ בחצי הגובה.
+          (2) הראו שרוחב התהודה $\Delta\omega$, הרוחב המלא של $A^2(\omega)$ בחצי הגובה, הוא בערך $\gamma = \omega_0/Q$,
+          וחשבו את האמפליטודה בתהודה ואת $\Delta\omega$.
         hints:
           - 'הציבו $z = \tilde Xe^{i\omega t}$ ב-$\ddot z + \gamma\dot z + \omega_0^2z = (F_0/m)e^{i\omega t}$.'
           - 'ליד התהודה $\omega_0^2 - \omega^2 \approx 2\omega_0(\omega_0 - \omega)$.'
         solution:
           - { kind: law, text: 'החוק השני: $m\ddot x = -kx - b\dot x + F_0\cos\omega t$, כלומר $\ddot x + \gamma\dot x + \omega_0^2x = \dfrac{F_0}{m}\cos\omega t$. פותרים $\ddot z + \gamma\dot z + \omega_0^2z = \dfrac{F_0}{m}e^{i\omega t}$ ולוקחים $x = \operatorname{Re}z$.' }
-          - { kind: manipulation, text: 'הצבת $z = \tilde Xe^{i\omega t}$ נותנת $\left(\omega_0^2 - \omega^2 + i\gamma\omega\right)\tilde X = F_0/m$. ב-$\omega = \omega_0$ נשאר $i\gamma\omega_0\tilde X = F_0/m$, ולכן $\tilde X = -i\dfrac{F_0}{m\gamma\omega_0}$: $$x(t) = \frac{F_0}{m\gamma\omega_0}\cos\left(\omega_0t - \frac{\pi}{2}\right) = Q\frac{F_0}{k}\sin\omega_0t$$ כי $\dfrac{F_0}{m\gamma\omega_0} = \dfrac{\omega_0}{\gamma}\cdot\dfrac{F_0}{m\omega_0^2} = Q\dfrac{F_0}{k}$. הארגומנט של $\tilde X$ הוא $-\pi/2$: ההעתק מפגר אחרי הכוח בפיגור $\delta = \pi/2$.' }
+          - { kind: manipulation, text: 'הצבת $z = \tilde Xe^{i\omega t}$ נותנת $\left(\omega_0^2 - \omega^2 + i\gamma\omega\right)\tilde X = F_0/m$. ב-$\omega = \omega_0$ נשאר $i\gamma\omega_0\tilde X = F_0/m$, ולכן $\tilde X = -i\dfrac{F_0}{m\gamma\omega_0}$: $$x(t) = \frac{F_0}{m\gamma\omega_0}\cos\left(\omega_0t - \frac{\pi}{2}\right) = Q\frac{F_0}{k}\sin\omega_0t$$ כי $\dfrac{F_0}{m\gamma\omega_0} = \dfrac{\omega_0}{\gamma}\cdot\dfrac{F_0}{m\omega_0^2} = Q\dfrac{F_0}{k}$. הארגומנט של $\tilde X$ הוא $\arg\tilde X = -\pi/2$: ההעתק מפגר אחרי הכוח בפיגור $\delta = \pi/2$.' }
           - { kind: manipulation, text: 'רוחב: $A^2 = \dfrac{(F_0/m)^2}{\left(\omega_0^2 - \omega^2\right)^2 + \gamma^2\omega^2}$. ליד התהודה המכנה $\approx 4\omega_0^2(\omega_0 - \omega)^2 + \gamma^2\omega_0^2$, והוא כפול מערכו בשיא כש-$\left|\omega - \omega_0\right| = \gamma/2$. הרוחב המלא $\Delta\omega \approx \gamma = \omega_0/Q$.' }
-          - { kind: limit, text: 'כש-$\gamma \to 0$, $Q \to \infty$ והאמפליטודה בתהודה שואפת לאין-סוף: בלי ריסון אין מצב יציב בתהודה, והתנודה גדלה בלי גבול. והתוצאה $QF_0/k$ מדויקת ב-$\omega = \omega_0$ (רק הרוחב מקורב): כש-$Q = 1$ היא בדיוק ההתארכות הסטטית $F_0/k$, כמו שמצפים כשאין תהודה של ממש.' }
+          - { kind: limit, text: 'כש-$\gamma \to 0$, $Q \to \infty$ והאמפליטודה בתהודה שואפת לאין-סוף: בלי ריסון אין מצב יציב בתהודה, והתנודה גדלה בלי גבול. והתוצאה $QF_0/k$ מדויקת ב-$\omega = \omega_0$ (רק הרוחב מקורב). ואותה משוואה לאמפליטודה המרוכבת, $\left(\omega_0^2 - \omega^2 + i\gamma\omega\right)\tilde X = F_0/m$, נותנת כש-$\omega \to 0$ את $\tilde X = \dfrac{F_0}{m\omega_0^2} = \dfrac{F_0}{k}$: כוח קבוע מותח את הקפיץ בדיוק ב-$F_0/k$, בלי פיגור. בתהודה האמפליטודה גדולה מזה פי $Q$.' }
           - { kind: units, text: '$\dfrac{F_0}{m\gamma\omega_0}$ ביחידות $\dfrac{\text{N}}{\text{kg}\cdot\text{s}^{-1}\cdot\text{s}^{-1}} = \dfrac{\text{kg}\cdot\text{m/s}^2}{\text{kg/s}^2} = \text{m}$. ו-$Q$ חסר ממדים, כך ש-$QF_0/k$ באותן יחידות כמו $F_0/k$, מטרים.' }
           - { kind: substitution, text: '$A = 72.1\cdot\dfrac{0.10}{100} = 0.0721\,\text{m}$, ו-$\Delta\omega \approx \gamma = 0.277\,\text{rad/s}$. היחס $\Delta\omega/\omega_0 = 1/Q \approx 1.4\%$.' }
           - { kind: result, text: 'בתהודה $x = Q\dfrac{F_0}{k}\sin\omega_0t$: אמפליטודה $7.2\,\text{cm}$, פי 72 מההתארכות הסטטית $0.10\,\text{cm}$, וההעתק מפגר ב-$90^\circ$ אחרי הכוח. רוחב התהודה $\Delta\omega \approx 0.28\,\text{rad/s}$: מספיק להזיז את המנוע ב-$0.14\,\text{rad/s}$ מהתהודה כדי ש-$A^2$ ירד לחצי.' }
@@ -153,7 +175,7 @@ questions:
           - text: הצבתי $z = \tilde Xe^{i\omega t}$ וקיבלתי $\left(\omega_0^2 - \omega^2 + i\gamma\omega\right)\tilde X = F_0/m$.
           - text: מצאתי שבתהודה $\left|\tilde X\right| = \dfrac{F_0}{m\gamma\omega_0} = QF_0/k$ ושההעתק מפגר אחרי הכוח ב-$\delta = \pi/2$.
           - text: הראיתי שרוחב התהודה המלא הוא בערך $\gamma = \omega_0/Q$.
-          - text: בדקתי שבגבול $\gamma \to 0$ האמפליטודה בתהודה שואפת לאין-סוף, ושהיחידות מטרים.
+          - text: בדקתי שבגבול $\gamma \to 0$ האמפליטודה בתהודה שואפת לאין-סוף, שב-$\omega \to 0$ מתקבלת ההתארכות הסטטית $F_0/k$, ושהיחידות מטרים.
           - text: קיבלתי אמפליטודה של כ-$7.2\,\text{cm}$ ורוחב של כ-$0.28\,\text{rad/s}$.
 
       - label: ה
@@ -163,61 +185,70 @@ questions:
         standalone: false
         objectives: [OBJ-5.4-2, OBJ-5.3-1]
         prompt: >-
-          המנוע מופעל ברגע $t = 0$, בתדירות $\omega = \omega_0$, כשהגוף במנוחה בנקודת שיווי המשקל: $x(0) = 0$ ו-$\dot x(0) = 0$.
+          הפעם מפעילים את המנוע ברגע $t = 0$, בתדירות $\omega = \omega_0$, אבל הגוף לא מתחיל במנוחה בשיווי המשקל: מושכים
+          אותו קודם להעתק $A_0 = Q\dfrac{F_0}{k}$, האמפליטודה של המצב היציב מחלק ד, ומשחררים אותו ממנוחה בדיוק כשהמנוע
+          מתחיל לפעול. כלומר $x(0) = A_0$ ו-$\dot x(0) = 0$.
 
-          (1) כתבו את התנועה כמצב היציב של חלק ד ועוד תגובה מעברית, קבעו את התגובה המעברית מתנאי ההתחלה, והראו שבריסון
-          חלש, $\gamma \ll \omega_0$,
-          $$x(t) \approx Q\frac{F_0}{k}\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t$$
+          (1) כתבו את התנועה כמצב היציב של חלק ד ועוד תגובה מעברית,
+          $x_h = e^{-\gamma t/2}\left(C\cos\omega_dt + D\sin\omega_dt\right)$ עם $\omega_d = \sqrt{\omega_0^2 - \gamma^2/4}$
+          (שיעור 5.3). קבעו את $C$ ואת $D$ מתנאי ההתחלה, והראו שבריסון חלש, $\gamma \ll \omega_0$,
+          $$x(t) \approx A_0\left[\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t + e^{-\gamma t/2}\cos\omega_0t\right]$$
 
-          (2) בטאו באמצעות $Q$ ו-$\omega_0$ את הזמן שבו האמפליטודה של התגובה המעברית יורדת ל-5% מזו של המצב היציב.
-          בדקו את הביטוי של (1) בגבול $\gamma \to 0$ ואת היחידות, וחשבו את הזמן.
+          (2) האמפליטודה של התנועה לא נשארת $A_0$ לאורך כל הדרך. הראו שהיא יורדת עד $A_0/\sqrt2$, ובטאו באמצעות $Q$
+          ו-$\omega_0$ את הרגע $t^*$ שבו זה קורה. בדקו את האמפליטודה ב-$t = 0$ וכש-$t \gg 2/\gamma$, את $t^*$ בגבול
+          $\gamma \to 0$, ואת היחידות; וחשבו את $t^*$ ואת האמפליטודה המזערית.
         hints:
+          - 'התגובה המעברית פותרת את המשוואה בלי הכוח המאלץ. בריסון חלש $\omega_d \approx \omega_0$.'
           - >-
-            התגובה המעברית פותרת את המשוואה בלי הכוח המאלץ: $e^{-\gamma t/2}\left(C\cos\omega_dt + D\sin\omega_dt\right)$, עם
-            $\omega_d \approx \omega_0$ בריסון חלש.
-          - 'כש-$x \ll 1$, $1 - e^{-x} \approx x$.'
+            כשהמקדמים $a(t)$ ו-$b(t)$ של $\sin\omega_0t$ ושל $\cos\omega_0t$ משתנים לאט לעומת המחזור, האמפליטודה היא
+            $\sqrt{a^2 + b^2}$. סמנו $\varepsilon = e^{-\gamma t/2}$, ומצאו את המינימום כפונקציה של $\varepsilon$.
         solution:
           - kind: law
             text: >-
               המשוואה ליניארית, ולכן הפתרון הכללי הוא פתרון פרטי ועוד הפתרון הכללי של המשוואה ההומוגנית (שיעור 5.4): המצב
               היציב $x_p = A_0\sin\omega_0t$ עם $A_0 = Q\dfrac{F_0}{k}$ (חלק ד), ועוד התגובה המעברית, תנודה חופשית מרוסנת
-              $x_h = e^{-\gamma t/2}\left(C\cos\omega_dt + D\sin\omega_dt\right)$ (שיעור 5.3).
+              $x_h = e^{-\gamma t/2}\left(C\cos\omega_dt + D\sin\omega_dt\right)$ (שיעור 5.3). תנאי ההתחלה חלים על הסכום.
           - kind: manipulation
             text: >-
-              $x(0) = 0 + C = 0$, ולכן $C = 0$. $\dot x(0) = A_0\omega_0 + D\omega_d = 0$, ולכן $D = -A_0\omega_0/\omega_d \approx -A_0$,
-              כי $\omega_d = \omega_0\sqrt{1 - 1/(4Q^2)} \approx \omega_0$ כש-$Q \gg 1$. עם $\sin\omega_dt \approx \sin\omega_0t$:
-              $$x(t) \approx A_0\sin\omega_0t - A_0e^{-\gamma t/2}\sin\omega_0t = Q\frac{F_0}{k}\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t$$
+              $x(0) = 0 + C = A_0$, ולכן $C = A_0$. הנגזרת ב-$t = 0$:
+              $\dot x(0) = A_0\omega_0 - \tfrac12\gamma C + D\omega_d = 0$, ולכן $D = -\dfrac{A_0\left(\omega_0 - \gamma/2\right)}{\omega_d} \approx -A_0$,
+              כי $\gamma \ll \omega_0$ ו-$\omega_d \approx \omega_0$. עם $\omega_d \approx \omega_0$:
+              $$x(t) \approx A_0\sin\omega_0t + A_0e^{-\gamma t/2}\left(\cos\omega_0t - \sin\omega_0t\right) = A_0\left[\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t + e^{-\gamma t/2}\cos\omega_0t\right]$$
           - kind: manipulation
             text: >-
-              האמפליטודה של התגובה המעברית היא $A_0e^{-\gamma t/2}$, ו-5% מהמצב היציב כש-$e^{-\gamma t/2} = 0.05$:
-              $$t_{5\%} = \frac{2\ln20}{\gamma} = \frac{2Q\ln20}{\omega_0}$$
-              האמפליטודה, לא האנרגיה, היא שדועכת כמו $e^{-\gamma t/2}$; ו-$2/\gamma$ הוא רק קבוע הזמן, שאחריו נשארים עוד
-              $e^{-1} \approx 37\%$.
+              עם $\varepsilon = e^{-\gamma t/2}$ המקדמים הם $A_0(1 - \varepsilon)$ ו-$A_0\varepsilon$, והם משתנים לאט, ולכן
+              האמפליטודה היא $a = A_0\sqrt{(1 - \varepsilon)^2 + \varepsilon^2}$. הנגזרת לפי $\varepsilon$ מתאפסת כש-$2\varepsilon - 2(1 - \varepsilon) = 0$,
+              כלומר $\varepsilon = \tfrac12$, ושם $a_{\min} = A_0\sqrt{\tfrac14 + \tfrac14} = \dfrac{A_0}{\sqrt2}$. הרגע:
+              $e^{-\gamma t^*/2} = \tfrac12$, ולכן
+              $$t^* = \frac{2\ln2}{\gamma} = \frac{2Q\ln2}{\omega_0}$$
+              הסיבה: התנודה החופשית שמתחילה ב-$x = A_0$ היא קוסינוס, והמצב היציב הוא סינוס, מוזז ב-$90^\circ$. האמפליטודות
+              שלהם מתחברות בריבוע, ובזמן שהאחת דועכת והשנייה נבנית, באמצע הדרך כל אחת מהן $A_0/2$, והסכום
+              בריבוע נותן $A_0/\sqrt2$. באותו רגע נשאר במתנד רק חצי מהאנרגיה של המצב היציב, כי האנרגיה היא $\tfrac12ka^2$.
           - kind: limit
             text: >-
-              כש-$\gamma \to 0$: $1 - e^{-\gamma t/2} \approx \gamma t/2$, ו-$Q\dfrac{F_0}{k}\cdot\dfrac{\gamma t}{2} = \dfrac{\omega_0}{\gamma}\cdot\dfrac{F_0}{m\omega_0^2}\cdot\dfrac{\gamma t}{2} = \dfrac{F_0t}{2m\omega_0}$:
-              $x \approx \dfrac{F_0}{2m\omega_0}\,t\sin\omega_0t$, האמפליטודה גדלה ליניארית בלי סוף, התהודה בלי ריסון. גם
-              $t_{5\%} \to \infty$: מתנד בלי ריסון אף פעם לא מגיע למצב יציב. וכש-$t \gg 2/\gamma$, $x \to A_0\sin\omega_0t$.
+              ב-$t = 0$: $\varepsilon = 1$ ו-$a = A_0$, ההעתק ההתחלתי. כש-$t \gg 2/\gamma$: $\varepsilon \to 0$ ו-$a \to A_0$,
+              והתנועה היא $A_0\sin\omega_0t$, המצב היציב של חלק ד, שלא זוכר את תנאי ההתחלה. כש-$\gamma \to 0$: $t^* \to \infty$,
+              כי בלי ריסון התנודה החופשית לעולם לא דועכת. (ואילו היינו מתחילים ב-$x(0) = 0$, $\dot x(0) = A_0\omega_0$, המצב
+              של $x_p$ עצמו ב-$t = 0$, היה יוצא $C = D = 0$: בלי תגובה מעברית, והאמפליטודה $A_0$ כל הזמן.)
           - kind: units
             text: >-
-              $\gamma t$ חסר ממדים, ולכן האקספוננט מוגדר; $Q$ חסר ממדים ו-$F_0/k$ במטרים. $\dfrac{2Q\ln20}{\omega_0}$ ביחידות
-              $1/\text{s}^{-1} = \text{s}$, ו-$\dfrac{F_0t}{2m\omega_0}$ ביחידות $\dfrac{\text{N}\cdot\text{s}}{\text{kg}\cdot\text{s}^{-1}} = \text{m}$.
+              $\gamma t$ חסר ממדים, ולכן $\varepsilon$ ו-$\sqrt{(1 - \varepsilon)^2 + \varepsilon^2}$ חסרי ממדים, ו-$a$ במטרים כמו
+              $A_0$. $\dfrac{2Q\ln2}{\omega_0}$ ביחידות $1/\text{s}^{-1} = \text{s}$.
           - kind: substitution
             text: >-
-              $t_{5\%} = \dfrac{2\cdot72.1\cdot3.00}{20.0} = \dfrac{2\cdot3.00}{0.277} = 21.6\,\text{s}$, כ-69 תנודות. (טעות של
-              קצב האנרגיה, $\ln20/\gamma$, הייתה נותנת $10.8\,\text{s}$, וקבוע הזמן $2/\gamma$ רק $7.2\,\text{s}$.)
+              $t^* = \dfrac{2\cdot72.1\cdot0.693}{20.0} = \dfrac{2\cdot0.693}{0.277} = 5.00\,\text{s}$, כ-16 תנודות, ו-$a_{\min} = \dfrac{7.21}{\sqrt2} = 5.10\,\text{cm}$.
           - kind: result
             text: >-
-              $x \approx Q\dfrac{F_0}{k}\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t$: האמפליטודה עולה בהדרגה אל $QF_0/k$, ו-95%
-              ממנה אחרי $t_{5\%} = \dfrac{2Q\ln20}{\omega_0} = 21.6\,\text{s}$. ככל ש-$Q$ גדול יותר, השיא גבוה יותר, אבל גם
-              מגיעים אליו לאט יותר.
+              $x \approx A_0\left[\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t + e^{-\gamma t/2}\cos\omega_0t\right]$: האמפליטודה יורדת
+              מ-$A_0$ ל-$A_0/\sqrt2 = 5.10\,\text{cm}$ ברגע $t^* = \dfrac{2Q\ln2}{\omega_0} = 5.00\,\text{s}$, וחוזרת ל-$A_0$. מתחילים
+              באמפליטודה הנכונה אבל בפאזה הלא נכונה, ומשלמים על זה בחצי מהאנרגיה.
         rubric:
-          - text: כתבתי את הפתרון כמצב יציב ועוד תגובה מעברית מרוסנת, וקבעתי $C = 0$ ו-$D \approx -QF_0/k$ מתנאי ההתחלה.
+          - text: כתבתי את הפתרון כמצב יציב ועוד תגובה מעברית, וקבעתי $C = A_0$ ו-$D \approx -A_0$ מתנאי ההתחלה של הסכום.
+          - text: קיבלתי $x \approx A_0\left[\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t + e^{-\gamma t/2}\cos\omega_0t\right]$.
           - text: >-
-              קיבלתי $x \approx Q\dfrac{F_0}{k}\left(1 - e^{-\gamma t/2}\right)\sin\omega_0t$, ו-$t_{5\%} = \dfrac{2Q\ln20}{\omega_0}$,
-              עם $e^{-\gamma t/2}$ של האמפליטודה.
-          - text: בדקתי שב-$\gamma \to 0$ מתקבלת האמפליטודה שגדלה ליניארית, $\dfrac{F_0t}{2m\omega_0}$, ובדקתי את היחידות.
-          - text: חישבתי כ-$21.6\,\text{s}$.
+              כתבתי את האמפליטודה $A_0\sqrt{(1 - \varepsilon)^2 + \varepsilon^2}$, מצאתי את המינימום $A_0/\sqrt2$ ב-$\varepsilon = \tfrac12$,
+              ו-$t^* = \dfrac{2Q\ln2}{\omega_0}$.
+          - text: בדקתי את $t = 0$, את $t \gg 2/\gamma$ (המצב היציב) ואת $\gamma \to 0$, ואת היחידות; חישבתי $5.00\,\text{s}$ ו-$5.10\,\text{cm}$.
 
   # ------------------------------------------------------------ 2: a ball dropped onto a spring
   - id: Q-5-bagrut-2
@@ -225,8 +256,9 @@ questions:
     title: כדור שנופל על קפיץ
     prompt: >-
       קפיץ אנכי בעל קבוע קפיץ $k = 100\,\text{N/m}$ עומד על הרצפה, ועל הקצה העליון שלו לוחית שהמסה שלה זניחה. כדור
-      בעל מסה $m = 0.50\,\text{kg}$ משתחרר ממנוחה בגובה $h = 0.10\,\text{m}$ מעל הלוחית, נופל עליה ונדבק אליה. מכיוון
-      שהמסה של הלוחית זניחה, ההתנגשות לא מאבדת אנרגיה. אחר כך הכדור והלוחית נעים יחד, והכדור לא ניתק מהלוחית. הזניחו
+      בעל מסה $m = 0.50\,\text{kg}$ משתחרר ממנוחה בגובה $h = 0.10\,\text{m}$ מעל הלוחית, נופל עליה ונדבק אליה. ההתנגשות
+      לא מאבדת אנרגיה: המסה של הלוחית זניחה, ולכן המסה המצומצמת של הכדור והלוחית, וגם האנרגיה הזמינה בהתנגשות,
+      $\tfrac12\mu v^2$, שואפות לאפס (שיעור 4.2). אחר כך הכדור והלוחית נעים יחד, והכדור לא ניתק מהלוחית. הזניחו
       את התנגדות האוויר.
     parts:
       - label: א
@@ -234,7 +266,7 @@ questions:
         points: 4
         level: basic
         objectives: [OBJ-5.1-2]
-        prompt: בכמה סנטימטרים מכווץ הקפיץ כשהכדור מונח עליו בשיווי משקל?
+        prompt: 'בכמה סנטימטרים, $d$, מכווץ הקפיץ כשהכדור מונח עליו בשיווי משקל?'
         answer: 4.90
         unit: cm
         correctFeedback: 'נכון. בשיווי המשקל $kd = mg$, ולכן $d = \dfrac{mg}{k} = \dfrac{0.50\cdot9.8}{100} = 0.049\,\text{m} = 4.90\,\text{cm}$.'
@@ -316,12 +348,13 @@ questions:
           - kind: law
             text: >-
               סביב נקודת שיווי המשקל, עם $y$ כלפי מטה, $\ddot y = -\omega_0^2y$ ו-$\omega_0 = \sqrt{k/m}$, ולכן
-              $y = A\cos\left(\omega_0t + \varphi\right)$, ו-$t = 0$ ברגע המגע. תנאי ההתחלה (חלק ב): $y_0 = -d$ (הכדור מעל
-              שיווי המשקל) ו-$\dot y_0 = v_0 > 0$ (נע מטה).
+              נכתוב $y = A\sin\left(\omega_0t - \alpha\right)$, עם $t = 0$ ברגע המגע. תנאי ההתחלה (חלק ב): $y_0 = -d$ (הכדור
+              מעל שיווי המשקל) ו-$\dot y_0 = v_0 > 0$ (נע מטה).
           - kind: manipulation
             text: >-
-              $\cos\varphi = y_0/A = -d/A < 0$ ו-$\sin\varphi = -\dfrac{v_0}{A\omega_0} < 0$: $\varphi$ ברביע השלישי,
-              $\varphi = -\left(\dfrac\pi2 + \arcsin\dfrac dA\right)$. הכיווץ המרבי הוא $y = A$, כש-$\omega_0t + \varphi = 0$:
+              ב-$t = 0$: $y_0 = -A\sin\alpha$, ולכן $\sin\alpha = d/A$; ו-$\dot y_0 = A\omega_0\cos\alpha = v_0 > 0$, ולכן
+              $\cos\alpha > 0$. זווית שהסינוס שלה $d/A$ והקוסינוס שלה חיובי היא $\alpha = \arcsin(d/A)$, בין $0$ ל-$\pi/2$.
+              כלומר הכדור יגיע לשיווי המשקל, $y = 0$, כש-$\omega_0t = \alpha$. הכיווץ המרבי הוא $y = A$, כש-$\omega_0t - \alpha = \pi/2$:
               $$t_1 = \frac{1}{\omega_0}\left(\frac\pi2 + \arcsin\frac dA\right)$$
               כלומר $\arcsin(d/A)/\omega_0$ מהמגע עד שיווי המשקל, ועוד רבע מחזור עד הקצה.
           - kind: manipulation
@@ -493,12 +526,12 @@ questions:
 
           (2) בדקו את התוצאה בגבול $Q \to \infty$ ואת היחידות שלה, וחשבו את ההספק שהמנגנון צריך לספק.
         hints:
-          - 'כוח הריסון על המשקולת הוא $-m\gamma v$ (מהצורה של המשוואה), וההספק שלו $m\gamma v^2$.'
+          - 'כוח הריסון על המשקולת הוא $F_b = -m\gamma v$ (מהצורה של המשוואה), וההספק שלו $m\gamma v^2$.'
           - 'הממוצע של $\sin^2$ על מחזור הוא $\tfrac12$.'
         solution:
-          - { kind: law, text: 'ההספק של כוח הוא $\vec F\cdot\vec v$. מהמשוואה, כוח הריסון על המשקולת לאורך הקשת הוא $-m\gamma v$, ולכן הוא מפזר הספק $m\gamma v^2$.' }
+          - { kind: law, text: 'ההספק של כוח הוא $\vec F\cdot\vec v$. מהמשוואה, כוח הריסון על המשקולת לאורך הקשת הוא $F_b = -m\gamma v$, ולכן הוא מפזר הספק $m\gamma v^2$.' }
           - { kind: manipulation, text: 'באמפליטודה קבועה $v = v_{\max}\sin(\omega_0t + \varphi)$, והממוצע של $\sin^2$ על מחזור הוא $\tfrac12$: $$\langle P\rangle = \tfrac12m\gamma v_{\max}^2 = \gamma\cdot\tfrac12mv_{\max}^2 = \gamma E$$ כי האנרגיה כולה קינטית בתחתית. בתנודה אחת, בזמן $2\pi/\omega_0$, הולך לאיבוד $\gamma E\cdot\dfrac{2\pi}{\omega_0} = \dfrac{2\pi}{Q}E$.' }
-          - { kind: limit, text: 'כש-$Q \to \infty$ ($\gamma \to 0$): $P \to 0$, מטוטלת בלי ריסון לא צריכה מנגנון. וההפסד לתנודה $2\pi/Q$ מסכים עם הדעיכה החופשית: אחרי $Q$ תנודות האנרגיה יורדת פי $e^{2\pi}$, כמו $\left(1 - 2\pi/Q\right)^Q \approx e^{-2\pi}$.' }
+          - { kind: limit, text: 'כש-$Q \to \infty$ ($\gamma \to 0$): $P \to 0$, מטוטלת בלי ריסון לא צריכה מנגנון. וההפסד לתנודה $2\pi/Q$ מסכים עם הדעיכה החופשית של שיעור 5.3: שם האנרגיה דועכת כמו $e^{-\gamma t}$, ובמחזור אחד, $t = 2\pi/\omega_0$, נשאר ממנה $e^{-2\pi/Q}$. כש-$Q \gg 1$, $e^{-2\pi/Q} \approx 1 - 2\pi/Q$ (פיתוח טיילור, שיעור 0.3), כלומר הולך לאיבוד $2\pi/Q$, אותו חלק.' }
           - { kind: units, text: '$\gamma$ ב-$\text{s}^{-1}$ ו-$E$ ב-$\text{J}$, ולכן $\gamma E$ ב-$\text{J/s} = \text{W}$.' }
           - { kind: substitution, text: '$E = \tfrac12mgL\theta_0^2 = \tfrac12\cdot0.20\cdot9.8\cdot1.00\cdot0.010 = 9.8\cdot10^{-3}\,\text{J}$, $\gamma = \dfrac{\omega_0}{Q} = \dfrac{3.13}{227} = 0.0138\,\text{s}^{-1}$, ולכן $P = 0.0138\cdot9.8\cdot10^{-3} = 1.35\cdot10^{-4}\,\text{W}$. בכל תנודה הולך לאיבוד $2\pi/227 = 2.8\%$ מהאנרגיה.' }
           - { kind: result, text: '$P = \gamma E = \dfrac{\omega_0}{Q}E \approx 1.4\cdot10^{-4}\,\text{W}$, והפסד של $2\pi/Q \approx 2.8\%$ מהאנרגיה בכל תנודה. זה ההספק שהמנגנון צריך להכניס כדי שהאמפליטודה לא תדעך.' }
@@ -600,7 +633,7 @@ questions:
               (עם $k_c$ במקום $2k_c$, כאילו הקפיץ מתארך רק ב-$x_1$, היה יוצא חצי, $0.0225\,\text{rad/s}$.)
           - kind: result
             text: >-
-              $\omega_2 = \sqrt{g/L + 2k_c/m}$, ו-$\Delta\omega = \sqrt{g/L + 2k_c/m} - \sqrt{g/L} \approx \dfrac{k_c}{m\omega_1} = 0.0449\,\text{rad/s}$:
+              $\omega_2 = \sqrt{g/L + 2k_c/m}$, ו-$\Delta\omega = \sqrt{g/L + 2k_c/m} - \sqrt{g/L} = 0.0449\,\text{rad/s}$, ובצימוד חלש $\Delta\omega \approx \dfrac{k_c}{m\omega_1} = 0.0452\,\text{rad/s}$:
               הפרש של כ-$1\%$ בין התדירויות של שני האופנים.
         rubric:
           - text: הצבתי $x_2 = -x_1$ וזיהיתי שהקפיץ מתארך ב-$2x_1$, ולכן $\omega_2^2 = g/L + 2k_c/m$.
@@ -618,7 +651,8 @@ questions:
           מסיטים רק את משקולת 1 למרחק $a$, מחזיקים את משקולת 2 במקומה, ומשחררים את שתיהן ממנוחה.
 
           (1) כתבו את $x_1(t)$ ואת $x_2(t)$ כסופרפוזיציה של שני אופני התנודה, והראו שהן תנודות מהירות בתוך מעטפות איטיות.
-          מצאו ביטוי לזמן $T_s$ מהשחרור עד שמשקולת 1 נעצרת לראשונה וכל האנרגיה במשקולת 2.
+          מצאו ביטוי לזמן $T_s$ מהשחרור עד שהמעטפת של התנודה של משקולת 1 מתאפסת לראשונה, וכמעט כל האנרגיה עברה
+          למשקולת 2.
 
           (2) בדקו את הביטוי בגבול $k_c \to 0$ ואת היחידות שלו, וחשבו את $T_s$ בשניות עם הנתונים.
         hints:
@@ -630,8 +664,8 @@ questions:
           - { kind: manipulation, text: 'עם $\bar\omega = \tfrac12(\omega_1 + \omega_2)$ ו-$\Delta\omega = \omega_2 - \omega_1$: $$x_1 = a\cos\frac{\Delta\omega\,t}{2}\cos\bar\omega t,\qquad x_2 = a\sin\frac{\Delta\omega\,t}{2}\sin\bar\omega t$$ תנודה מהירה, $\bar\omega$, בתוך מעטפת איטית. המעטפת של $x_1$ מתאפסת לראשונה כש-$\Delta\omega\,t/2 = \pi/2$, ובאותו רגע המעטפת של $x_2$ מרבית: $T_s = \dfrac{\pi}{\omega_2 - \omega_1} \approx \dfrac{\pi m\omega_1}{k_c}$.' }
           - { kind: limit, text: 'כש-$k_c \to 0$: $\omega_2 \to \omega_1$, $\Delta\omega \to 0$ ו-$T_s \to \infty$. ואכן $x_2 = a\sin(\Delta\omega\,t/2)\sin\bar\omega t \to 0$: בלי קפיץ, משקולת 2 נשארת במקום, ומשקולת 1 מתנודדת לבד, $x_1 \to a\cos\omega_1t$. וב-$t = 0$ מתקבל $x_1 = a$, $x_2 = 0$, כפי שנדרש.' }
           - { kind: units, text: '$\Delta\omega$ ב-$\text{s}^{-1}$, ולכן $\pi/\Delta\omega$ בשניות. ובקירוב: $\dfrac{m\omega_1}{k_c}$ ביחידות $\dfrac{\text{kg}\cdot\text{s}^{-1}}{\text{kg}\cdot\text{s}^{-2}} = \text{s}$.' }
-          - { kind: substitution, text: '$T_s = \dfrac{\pi}{0.0449} = 69.9\,\text{s}$ (בקירוב $\pi m\omega_1/k_c = 69.5\,\text{s}$). בזמן הזה משקולת 1 מבצעת כ-50 תנודות, שהולכות וקטנות עד עצירה. שימו לב: $2\pi/\Delta\omega = 140\,\text{s}$ הוא הזמן עד שהאנרגיה **חוזרת** למשקולת 1, ו-$\pi/(2\Delta\omega) = 34.9\,\text{s}$ שוכח שהמעטפת היא $\cos(\Delta\omega\,t/2)$.' }
-          - { kind: result, text: '$x_1 = a\cos\dfrac{\Delta\omega\,t}{2}\cos\bar\omega t$, $x_2 = a\sin\dfrac{\Delta\omega\,t}{2}\sin\bar\omega t$, והאנרגיה עוברת כולה למשקולת 2 אחרי $T_s = \dfrac{\pi}{\omega_2 - \omega_1} = 69.9\,\text{s}$ (בצימוד חלש $T_s \approx \pi m\omega_1/k_c$), וחוזרת אחרי $2T_s$.' }
+          - { kind: substitution, text: '$T_s = \dfrac{\pi}{0.0449} = 69.9\,\text{s}$ (בקירוב $\pi m\omega_1/k_c = 69.5\,\text{s}$). בזמן הזה משקולת 1 מבצעת כ-50 תנודות, שהולכות וקטנות עד שהמעטפת שלהן מתאפסת. (משקולת 1 עוצרת לרגע בכל קצה של תנודה מהירה, אבל רק ב-$T_s$ היא נשארת כמעט בלי אנרגיה. "כמעט", כי ב-$T_s$ עצמו $x_1 = 0$ אבל המהירות שלה, $\tfrac12a\Delta\omega$ כפול קוסינוס מהיר, לא בדיוק אפס: אנרגיה שקטנה פי $(\Delta\omega/2\bar\omega)^2$ בערך, כ-$3\cdot10^{-5}$.) שימו לב: $2\pi/\Delta\omega = 140\,\text{s}$ הוא הזמן עד שהאנרגיה **חוזרת** למשקולת 1, ו-$\pi/(2\Delta\omega) = 34.9\,\text{s}$ שוכח שהמעטפת היא $\cos(\Delta\omega\,t/2)$.' }
+          - { kind: result, text: '$x_1 = a\cos\dfrac{\Delta\omega\,t}{2}\cos\bar\omega t$, $x_2 = a\sin\dfrac{\Delta\omega\,t}{2}\sin\bar\omega t$, והאנרגיה עוברת כמעט כולה למשקולת 2 אחרי $T_s = \dfrac{\pi}{\omega_2 - \omega_1} = 69.9\,\text{s}$ (בצימוד חלש $T_s \approx \pi m\omega_1/k_c$), וחוזרת אחרי $2T_s$.' }
         rubric:
           - text: פירקתי את תנאי ההתחלה $(a, 0)$ לשני האופנים, חצי מכל אחד.
           - text: כתבתי את $x_1$ ואת $x_2$ כמכפלה של מעטפת איטית, בתדירות $\Delta\omega/2$, ותנודה מהירה $\bar\omega$.
@@ -695,7 +729,9 @@ questions:
           - kind: limit
             text: >-
               כש-$m \ll M$: $V \approx \dfrac{mv}{2M} \to 0$, וכמעט כל האנרגיה של הכדור אובדת, כמו קליע שנתקע בגוש כבד.
-              כש-$m \gg M$: $V \to v$ ו-$\Delta K \to 0$: הכדור הכבד כמעט לא מרגיש את A וממשיך כמעט באותה מהירות.
+              כש-$m \gg M$: $V \to v$, והחלק שאובד, $\dfrac{M}{M + m}$, שואף לאפס: הכדור הכבד כמעט לא מרגיש את A וממשיך
+              כמעט באותה מהירות. ($\Delta K$ עצמו לא שואף לאפס אלא ל-$\tfrac12Mv^2$: במערכת של הכדור הכבד A מתקרבת
+              ב-$v$ ונעצרת עליו. אבל זה חלק זעיר מ-$\tfrac12mv^2$.)
           - kind: units
             text: '$\dfrac{m}{2M + m}$ ו-$\dfrac{M}{M + m}$ חסרי ממדים, ולכן $V$ במטר לשנייה ו-$\Delta K$ בג׳ול, כמו $\tfrac12mv^2$.'
           - kind: result
@@ -709,107 +745,130 @@ questions:
 
       - label: ג
         type: open
-        points: 8
+        points: 7
         level: bagrut
         standalone: false
-        objectives: [OBJ-5.1-2, OBJ-4.2-2, OBJ-5.5-1]
+        objectives: [OBJ-4.2-2, OBJ-4.1-2]
         prompt: >-
           נסמן ב-$s$ את הכיווץ של הקפיץ ($s > 0$ כשהוא מכווץ).
 
-          (1) כתבו את משוואות התנועה של A (עם הכדור) ושל B, והראו ש-$\mu\ddot s = -ks$, עם
-          $\mu = \dfrac{(M + m)M}{2M + m}$. מה התדירות הזוויתית $\omega$ של התנודה?
+          (1) בעזרת הפירוק של האנרגיה הקינטית לאנרגיה של מרכז המסה ולאנרגיה של התנועה היחסית (שיעור 4.2), ובלי לפתור
+          את משוואות התנועה, בטאו את הכיווץ המרבי $s_{\max}$ באמצעות $m$, $M$, $k$ ו-$v$.
 
-          (2) בטאו את הכיווץ המרבי $s_{\max}$ באמצעות $m$, $M$, $k$ ו-$v$, ובדקו שהאנרגיה בקפיץ אז שווה לאנרגיה
-          הזמינה מיד אחרי ההתנגשות.
+          (2) הראו שהחלק מהאנרגיה הקינטית ההתחלתית של הכדור שנאגר בקפיץ ברגע הכיווץ המרבי הוא
+          $$\eta = \frac{mM}{(M + m)(2M + m)}$$
+          באיזו מסה $m$ של הכדור, באמצעות $M$, החלק הזה הכי גדול, ומה ערכו?
 
-          (3) בדקו את התוצאות בגבולות $m \to \infty$ ו-$m \ll M$ ואת היחידות.
+          (3) בדקו את $\eta$ בגבולות $m \ll M$ ו-$m \gg M$, ואת היחידות של $s_{\max}$.
         hints:
-          - 'קפיץ מכווץ דוחף את A לאחור ואת B קדימה, באותו גודל $ks$.'
-          - 'תנאי ההתחלה של $s$ מחלק א: $s(0) = 0$, ו-$\dot s(0)$ הוא מהירות ההתקרבות של A ל-B.'
+          - 'מה המהירויות של A ושל B מיד אחרי ההתנגשות (חלק א)? ומה המהירות היחסית שלהן ברגע הכיווץ המרבי?'
+          - 'כתבו $\eta$ באמצעות $x = m/M$, וגזרו לפי $x$.'
         solution:
           - kind: law
             text: >-
-              החוק השני לכל גוף. הקפיץ המכווץ ב-$s$ מפעיל על A כוח $-ks$ ועל B כוח $+ks$ (זוג כוחות של החוק השלישי דרך
-              קפיץ קל): $(M + m)\ddot x_A = -ks$ ו-$M\ddot x_B = +ks$, עם $s = \ell_0 - \left(x_B - x_A\right)$.
+              אחרי ההתנגשות אין כוח חיצוני אופקי, ולכן מרכז המסה נע במהירות קבועה $V$ (חלק ב), והאנרגיה שלו,
+              $\tfrac12(2M + m)V^2$, לא יכולה להשתנות. האנרגיה הקינטית מתפרקת:
+              $K = \tfrac12(2M + m)V^2 + \tfrac12\mu v_{\text{rel}}^2$, עם המסה המצומצמת של A עם הכדור ושל B,
+              $\mu = \dfrac{(M + m)M}{2M + m}$ (שיעור 4.2). אחרי ההתנגשות כוח הקפיץ משמר, ולכן האנרגיה המכנית נשמרת.
           - kind: manipulation
             text: >-
-              $\ddot s = \ddot x_A - \ddot x_B = -ks\left(\dfrac{1}{M + m} + \dfrac1M\right) = -\dfrac{ks}{\mu}$, עם
-              $\mu = \dfrac{(M + m)M}{2M + m}$, המסה המצומצמת של A עם הכדור ושל B. זו משוואת המתנד:
-              $$\omega = \sqrt{\frac k\mu} = \sqrt{\frac{k(2M + m)}{M(M + m)}}$$
-              זה אחד משני אופני התנודה של המערכת; השני, $\ddot x_{\text{cm}} = 0$, הוא תנועה של כולה יחד בתדירות אפס.
-          - kind: manipulation
-            text: >-
-              מחלק א: $s(0) = 0$ ו-$\dot s(0) = u - 0 = u = \dfrac{mv}{M + m}$, ולכן $s(t) = \dfrac u\omega\sin\omega t$ ו-
+              (1) מיד אחרי ההתנגשות (חלק א) A עם הכדור נעה ב-$u = \dfrac{mv}{M + m}$ ו-B עומדת: $v_{\text{rel}} = u$. ברגע
+              הכיווץ המרבי $s$ לא גדל ולא קטן, ולכן לשני הגושים אותה מהירות, והאנרגיה היחסית כולה בקפיץ:
+              $\tfrac12ks_{\max}^2 = \tfrac12\mu u^2$, ולכן
               $$s_{\max} = u\sqrt{\frac\mu k} = mv\sqrt{\frac{M}{k(M + m)(2M + m)}}$$
-              אנרגיה: $\tfrac12ks_{\max}^2 = \tfrac12\mu u^2$, האנרגיה הזמינה של התנועה היחסית מיד אחרי ההתנגשות (שיעור
-              4.2). השאר, $\tfrac12(2M + m)V^2$, נשאר בתנועה של מרכז המסה.
+          - kind: manipulation
+            text: >-
+              (2) $\eta = \dfrac{\tfrac12\mu u^2}{\tfrac12mv^2} = \dfrac{(M + m)M}{2M + m}\cdot\dfrac{m}{(M + m)^2} = \dfrac{mM}{(M + m)(2M + m)}$.
+              זו מכפלה של שני הפסדים: $\dfrac{m}{M + m}$ מהאנרגיה של הכדור שורד את ההתנגשות הפלסטית (חלק ב), ומזה רק
+              החלק $\dfrac{\mu}{M + m} = \dfrac{M}{2M + m}$ הוא אנרגיה יחסית. עם $x = m/M$:
+              $\eta = \dfrac{x}{(1 + x)(2 + x)}$, והנגזרת מתאפסת כש-$(1 + x)(2 + x) - x(3 + 2x) = 2 - x^2 = 0$, כלומר
+              $x = \sqrt2$:
+              $$m = \sqrt2\,M,\qquad \eta_{\max} = \frac{\sqrt2}{\left(1 + \sqrt2\right)\left(2 + \sqrt2\right)} = \frac{\sqrt2}{4 + 3\sqrt2} = 3 - 2\sqrt2 \approx 0.17$$
+              (בדיקה: $\left(3 - 2\sqrt2\right)\left(4 + 3\sqrt2\right) = 12 + 9\sqrt2 - 8\sqrt2 - 12 = \sqrt2$.)
           - kind: limit
             text: >-
-              כש-$m \to \infty$: $\mu \to M$, $\omega \to \sqrt{k/M}$ ו-$s_{\max} \to v\sqrt{M/k}$: A עם הכדור הכבד נעה
-              ב-$v$ בלי להאט, ו-B מתנודדת על קפיץ שקצהו השני נע במהירות קבועה; במערכת של A היא מתקרבת ב-$v$ ונעצרת כולה.
-              כש-$m \ll M$: $\mu \to M/2$, $\omega \to \sqrt{2k/M}$, שני גושים שווים, ו-$s_{\max} \approx \dfrac{mv}{\sqrt{2kM}} \to 0$.
+              כש-$m \ll M$: $\eta \approx \dfrac{m}{2M} \to 0$: כמעט כל האנרגיה של כדור קל אובדת בהתנגשות הפלסטית, כמו קליע
+              שנתקע בגוש כבד. כש-$m \gg M$: $\eta \approx \dfrac Mm \to 0$: הכדור הכבד כמעט לא מאבד אנרגיה בהתנגשות, אבל
+              כמעט כולה נשארת בתנועה של מרכז המסה, והמערכת פשוט ממשיכה הלאה. אפס בשני הקצוות, ולכן יש מקסימום ביניהם,
+              ב-$m = \sqrt2\,M$.
           - kind: units
             text: >-
-              $\mu$ ביחידות מסה, ו-$\sqrt{k/\mu}$ ביחידות $\sqrt{\text{kg}\cdot\text{s}^{-2}/\text{kg}} = \text{s}^{-1}$.
+              $\eta$ הוא מסה בריבוע חלקי מסה בריבוע, חסר ממדים, כמו שחלק צריך להיות.
               $\sqrt{\dfrac{M}{k(M + m)(2M + m)}}$ ביחידות $\sqrt{\dfrac{1}{(\text{kg/s}^2)\,\text{kg}}} = \dfrac{\text{s}}{\text{kg}}$, ולכן
               $s_{\max}$ ביחידות $\text{kg}\cdot\dfrac{\text{m}}{\text{s}}\cdot\dfrac{\text{s}}{\text{kg}} = \text{m}$.
           - kind: result
             text: >-
-              $\mu\ddot s = -ks$, $\omega = \sqrt{\dfrac{k(2M + m)}{M(M + m)}}$, ו-$s_{\max} = mv\sqrt{\dfrac{M}{k(M + m)(2M + m)}}$:
-              הקפיץ אוגר רק את האנרגיה הזמינה, $\tfrac12\mu u^2$.
+              $s_{\max} = mv\sqrt{\dfrac{M}{k(M + m)(2M + m)}}$, והקפיץ אוגר את החלק $\eta = \dfrac{mM}{(M + m)(2M + m)}$
+              מהאנרגיה של הכדור: לכל היותר $3 - 2\sqrt2 \approx 17\%$, כש-$m = \sqrt2\,M$.
         rubric:
-          - text: כתבתי את החוק השני ל-A עם הכדור (מסה $M + m$) ול-B, עם כוחות קפיץ הפוכים.
-          - text: חיסרתי את המשוואות וקיבלתי $\mu\ddot s = -ks$ עם המסה המצומצמת, ו-$\omega = \sqrt{k/\mu}$.
           - text: >-
-              מצאתי $s_{\max} = u\sqrt{\mu/k}$ מתנאי ההתחלה $s(0) = 0$, $\dot s(0) = u$, ובדקתי ש-$\tfrac12ks_{\max}^2$ היא
-              האנרגיה הזמינה.
-          - text: בדקתי את הגבולות $m \to \infty$ ו-$m \ll M$ ואת היחידות.
+              פירקתי את האנרגיה הקינטית שאחרי ההתנגשות לחלק של מרכז המסה ולחלק היחסי, $\tfrac12\mu u^2$, ונימקתי שברגע
+              הכיווץ המרבי החלק היחסי כולו בקפיץ.
+          - text: קיבלתי $s_{\max} = u\sqrt{\mu/k} = mv\sqrt{M/(k(M + m)(2M + m))}$.
+          - text: הראיתי ש-$\eta = \dfrac{mM}{(M + m)(2M + m)}$, ומצאתי שהוא מרבי ב-$m = \sqrt2\,M$, עם $\eta_{\max} = 3 - 2\sqrt2 \approx 0.17$.
+          - text: בדקתי ש-$\eta \to 0$ גם ב-$m \ll M$ וגם ב-$m \gg M$, והסברתי למה, ובדקתי את היחידות.
 
       - label: ד
         type: open
-        points: 7
+        points: 8
         level: bagrut
         standalone: false
-        objectives: [OBJ-5.1-1, OBJ-3.4-2, OBJ-5.5-2]
+        objectives: [OBJ-5.5-1, OBJ-5.1-1, OBJ-3.4-2, OBJ-5.5-2]
         prompt: >-
-          (1) הראו שהמהירות של B היא $v_B(t) = V\left(1 - \cos\omega t\right)$, כאשר $t = 0$ רגע ההתנגשות, ומצאו את
-          $v_A(t)$ באמצעות $V$, $m$, $M$ ו-$\omega$.
+          (1) כתבו את משוואות התנועה של A (עם הכדור) ושל B, והראו ש-$\mu\ddot s = -ks$, עם $\mu$ של חלק ג. מה התדירות
+          הזוויתית $\omega$ של התנודה?
 
-          (2) האם A או B נעים אי-פעם לאחור, נגד ציר $x$? מה המהירות המרבית של B, ומתי היא מתקבלת? בדקו את
+          (2) הראו שהמהירות של B היא $v_B(t) = V\left(1 - \cos\omega t\right)$, כאשר $t = 0$ רגע ההתנגשות, מצאו את
+          $v_A(t)$ באמצעות $V$, $m$, $M$ ו-$\omega$, ובדקו שהתנע הכולל נשמר בכל רגע.
+
+          (3) האם A או B נעים אי-פעם לאחור, נגד ציר $x$? מה המהירות המרבית של B, ומתי היא מתקבלת? בדקו את
           התוצאות בגבולות $m \to \infty$ ו-$m \ll M$.
         hints:
+          - 'קפיץ מכווץ דוחף את A לאחור ואת B קדימה, באותו גודל $ks$.'
           - 'כתבו את המקום של B כמקום מרכז המסה ועוד חלק מהמרחק בין A ל-B. איזה חלק?'
         solution:
           - kind: law
             text: >-
-              מרכז המסה נע במהירות קבועה $V$ (חלק ב), והתנועה היחסית היא התנודה של חלק ג, $\dot s = u\cos\omega t$. מהגדרת
-              מרכז המסה, $x_B - x_{\text{cm}} = \dfrac{M + m}{2M + m}\left(x_B - x_A\right)$ ו-$x_A - x_{\text{cm}} = -\dfrac{M}{2M + m}\left(x_B - x_A\right)$.
+              החוק השני לכל גוף. הקפיץ המכווץ ב-$s$ מפעיל על A כוח $F_A = -ks$ ועל B כוח $F_B = +ks$ (זוג כוחות של החוק
+              השלישי דרך קפיץ קל): $(M + m)\ddot x_A = -ks$ ו-$M\ddot x_B = +ks$, עם $s = \ell_0 - \left(x_B - x_A\right)$.
+              מרכז המסה נע במהירות קבועה $V$ (חלק ב).
           - kind: manipulation
             text: >-
-              $\dfrac{d}{dt}\left(x_B - x_A\right) = -\dot s$, ולכן
+              (1) $\ddot s = \ddot x_A - \ddot x_B = -ks\left(\dfrac{1}{M + m} + \dfrac1M\right) = -\dfrac{ks}{\mu}$: משוואת המתנד,
+              $$\omega = \sqrt{\frac k\mu} = \sqrt{\frac{k(2M + m)}{M(M + m)}}$$
+              זה אחד משני אופני התנודה של המערכת; השני, $\ddot x_{\text{cm}} = 0$, הוא תנועה של כולה יחד בתדירות אפס.
+              מחלק א: $s(0) = 0$ ו-$\dot s(0) = u - 0 = u$, ולכן $s = \dfrac u\omega\sin\omega t$ ו-$\dot s = u\cos\omega t$.
+          - kind: manipulation
+            text: >-
+              (2) מהגדרת מרכז המסה, $x_B - x_{\text{cm}} = \dfrac{M + m}{2M + m}\left(x_B - x_A\right)$ ו-$x_A - x_{\text{cm}} = -\dfrac{M}{2M + m}\left(x_B - x_A\right)$,
+              ו-$\dfrac{d}{dt}\left(x_B - x_A\right) = -\dot s$. לכן
               $v_B = V - \dfrac{M + m}{2M + m}\,u\cos\omega t$ ו-$v_A = V + \dfrac{M}{2M + m}\,u\cos\omega t$. אבל
               $\dfrac{M + m}{2M + m}\,u = \dfrac{mv}{2M + m} = V$, ולכן
               $$v_B = V\left(1 - \cos\omega t\right),\qquad v_A = V\left(1 + \frac{M}{M + m}\cos\omega t\right)$$
               בדיקה: ב-$t = 0$, $v_B = 0$ ו-$v_A = V\dfrac{2M + m}{M + m} = u$, כמו בחלק א; והתנע
-              $(M + m)v_A + Mv_B = (2M + m)V = mv$ בכל רגע.
+              $(M + m)v_A + Mv_B = (2M + m)V + \left(M - M\right)V\cos\omega t = mv$ בכל רגע.
           - kind: manipulation
             text: >-
-              $v_B \ge 0$ תמיד, ומקסימום $2V$ כש-$\omega t = \pi$, כלומר חצי מחזור אחרי ההתנגשות, כשהקפיץ חוזר לאורכו
-              הרפוי. $v_A$ מינימלית באותו רגע, $V\dfrac{m}{M + m} > 0$. לכן אף גוש לא נע לאחור: B מתקדמת בקפיצות, נעצרת
-              לרגע בכל מחזור, ו-A מאטה ומאיצה.
+              (3) $v_B \ge 0$ תמיד, ומקסימום $2V$ כש-$\omega t = \pi$, כלומר חצי מחזור אחרי ההתנגשות, כשהקפיץ חוזר לאורכו
+              הרפוי ($s = 0$). $v_A$ מינימלית באותו רגע, $V\dfrac{m}{M + m} > 0$. לכן אף גוש לא נע לאחור: B מתקדמת בקפיצות,
+              נעצרת לרגע בכל מחזור, ו-A מאטה ומאיצה.
           - kind: limit
             text: >-
-              כש-$m \to \infty$: $V \to v$, $v_A \to v$ קבועה, ו-$v_B = v(1 - \cos\omega t)$ מגיעה ל-$2v$: כמו גוף קל
-              שנפגע אלסטית מגוף כבד, שהמהירות היחסית שלהם מתהפכת. כש-$m \ll M$: $v_A \approx V(1 + \cos\omega t)$
-              ו-$v_B = V(1 - \cos\omega t)$: שני גושים שווים, שמחליפים ביניהם את המהירות בכל חצי מחזור סביב $V$.
+              כש-$m \to \infty$: $\mu \to M$, $V \to v$, $v_A \to v$ קבועה, ו-$v_B = v(1 - \cos\omega t)$ מגיעה ל-$2v$: כמו גוף קל
+              שנפגע אלסטית מגוף כבד, שהמהירות היחסית שלהם מתהפכת. כש-$m \ll M$: $\mu \to M/2$, $\omega \to \sqrt{2k/M}$,
+              $v_A \approx V(1 + \cos\omega t)$ ו-$v_B = V(1 - \cos\omega t)$: שני גושים שווים, שמחליפים ביניהם את המהירות בכל
+              חצי מחזור סביב $V$.
           - kind: units
-            text: '$\cos\omega t$ ו-$\dfrac{M}{M + m}$ חסרי ממדים, ולכן $v_A$ ו-$v_B$ במטר לשנייה, כמו $V$.'
+            text: >-
+              $\mu$ ביחידות מסה, ו-$\sqrt{k/\mu}$ ביחידות $\sqrt{\text{kg}\cdot\text{s}^{-2}/\text{kg}} = \text{s}^{-1}$. $\cos\omega t$
+              ו-$\dfrac{M}{M + m}$ חסרי ממדים, ולכן $v_A$ ו-$v_B$ במטר לשנייה, כמו $V$.
           - kind: result
             text: >-
-              $v_B = V(1 - \cos\omega t)$ ו-$v_A = V\left(1 + \dfrac{M}{M + m}\cos\omega t\right)$, עם $V = \dfrac{mv}{2M + m}$.
-              אף גוש לא נע לאחור; B מגיעה ל-$2V$ בכל $\omega t = \pi, 3\pi, \dots$, כשהקפיץ רפוי.
+              $\mu\ddot s = -ks$ עם $\omega = \sqrt{\dfrac{k(2M + m)}{M(M + m)}}$; $v_B = V(1 - \cos\omega t)$ ו-$v_A = V\left(1 + \dfrac{M}{M + m}\cos\omega t\right)$,
+              עם $V = \dfrac{mv}{2M + m}$. אף גוש לא נע לאחור; B מגיעה ל-$2V$ בכל $\omega t = \pi, 3\pi, \dots$, כשהקפיץ רפוי.
         rubric:
+          - text: כתבתי את החוק השני ל-A עם הכדור (מסה $M + m$) ול-B עם כוחות קפיץ הפוכים, וקיבלתי $\mu\ddot s = -ks$ ו-$\omega = \sqrt{k/\mu}$.
           - text: כתבתי את המהירויות כמהירות מרכז המסה ועוד חלק מהמהירות היחסית, עם המקדמים $\dfrac{M + m}{2M + m}$ ו-$\dfrac{M}{2M + m}$.
-          - text: זיהיתי ש-$\dfrac{M + m}{2M + m}\,u = V$, וקיבלתי $v_B = V(1 - \cos\omega t)$ ואת $v_A$.
+          - text: זיהיתי ש-$\dfrac{M + m}{2M + m}\,u = V$, קיבלתי $v_B = V(1 - \cos\omega t)$ ואת $v_A$, ובדקתי את התנע בכל רגע.
           - text: הראיתי ששתי המהירויות לא שליליות, ושהמרבית של B היא $2V$ כשהקפיץ רפוי.
-          - text: בדקתי את הגבולות $m \to \infty$ ו-$m \ll M$, ואת התנע בכל רגע.
+          - text: בדקתי את הגבולות $m \to \infty$ ו-$m \ll M$.

@@ -14,6 +14,16 @@
 #      half-angle 35.3° = atan(1/γ_c); φ(γ = 1.0001) = 90.0°, φ(γ = 100) = 16.0°.
 #   Misconceptions: the tags dropped by the conversions (MC-10-classical-ke on 3ד and 4ד: no longer tagged here, still
 #   detected in three lesson banks, and named in the limit steps; MC-10-threshold-is-mass-gain on 2ה: still in 2א, 2ב, 2ד).
+# Independent review 2026-11-18 (.scratch/review/ch10/indep.ts, own routes): 46 numbers and 10 symbolic results
+#   recomputed, all agree: 1 by a bisection for p′ and fourvector.boostX back to the lab (conservation and the boost
+#   agree, mass 106.000); 2 K_th by a bisection on √s, γ and β from the lab totals; 3 the Compton relation checked
+#   on four-vectors at θ = 1.1 rad, β_e from photon.compton at ε = 0.783, 1e-3, 10, 1000; 4 x by a Simpson
+#   quadrature of v(t) (31.2014 m = (γ − 1)mc²/F); 5 cos φ = K₃K₄/(p₃c·p₄c) and P₁·P₂ = P₃·P₄ on CM events boosted
+#   to the lab at (γ, θ*) = (3, 90°), (3, 0.7), (1.5, 2.2), (20, 1.3). Every commonWrong > 3% from its key (closest
+#   490 vs 469.6, 4.3%). Solutions, limits, frames and the ladder checked; no physics error. After the student
+#   read: limits named in the prompts of 1ב, 2ג, 3ד; rubric lines for 2ה's 1109.8 MeV and 5ב's φ < 90° and units;
+#   1ד's invariant labelled a check, not a limit; 4 hints use w (u is a velocity) and "חשבו את האינטגרל"; 5's prompt
+#   writes p⃗_P·p⃗_Q; 5ד says why the symmetric case is a 90° rotation in the CM frame.
 # Open parts are solved in the course format: law → manipulation → limit → units → substitution → result.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
@@ -83,7 +93,7 @@ questions:
         objectives: [OBJ-10.3-1]
         prompt: >-
           עברו למערכת המנוחה של הפיון, $S'$. מצאו בה, בביטוי כללי ובמספרים, את האנרגיה היחסותית $E'_\mu$ של המיואון ואת
-          גודל התנע $p'$ של שני התוצרים. בדקו את הביטוי לתנע בשני גבולות ובדקו את היחידות.
+          גודל התנע $p'$ של שני התוצרים. בדקו את הביטוי לתנע בגבולות $m_\mu \to 0$ ו-$m_\mu \to m_\pi$, ובדקו את היחידות.
         hints:
           - 'במערכת המנוחה של הפיון התנע הכולל אפס. מה זה אומר על התנעים של שני התוצרים?'
         solution:
@@ -181,8 +191,9 @@ questions:
               מהמיואון ב-$S'$.
           - kind: limit
             text: >-
-              בגבול $\beta \to 0$, פיון נח, הטרנספורמציה מחזירה את $E'_\mu$ ואת התנע $p_{\mu x} = -p'$ של חלק ב, והשימור נותן
-              $E_\nu = p'c$, כמו שם. והגודל האינווריאנטי בשתי הדרכים: $E_\mu^2 - (p_{\mu x}c)^2 = \gamma^2(1 - \beta^2)\left(E'^2_\mu - (p'c)^2\right) = (m_\mu c^2)^2$.
+              גבול: אם הפיון היה נח, $\beta \to 0$ (נתון אחר מזה של השאלה), הטרנספורמציה מחזירה את $E'_\mu$ ואת התנע
+              $p_{\mu x} = -p'$ של חלק ב, והשימור נותן $E_\nu = p'c$, כמו שם. ובדיקה נוספת, לא של גבול: הגודל האינווריאנטי
+              בשתי הדרכים, $E_\mu^2 - (p_{\mu x}c)^2 = \gamma^2(1 - \beta^2)\left(E'^2_\mu - (p'c)^2\right) = (m_\mu c^2)^2$.
           - kind: units
             text: 'כל האנרגיות ב-$\text{MeV}$, וכל התנעים ב-$\text{MeV}/c$, ולכן $p_\mu c$ ב-$\text{MeV}$ ומותר להחסיר אותו מ-$E_\mu$ בריבוע.'
           - kind: substitution
@@ -266,7 +277,7 @@ questions:
         prompt: >-
           מצאו בעזרת הגודל האינווריאנטי $s = E_{\text{tot}}^2 - (p_{\text{tot}}c)^2$ את אנרגיית הסף $K_{\text{th}}$ במטרה
           נייחת. כתבו קודם ביטוי כללי לקרן ולמטרה בעלות אותה מסה $m$ ותוצרים שסכום המסות שלהם $\sum m_f$, כמו בשיעור 10.3,
-          ובדקו אותו בגבול. פי כמה גדולה $K_{\text{th}}$ מהאנרגיה הקינטית הכוללת של שתי הקרניים בהתנגשות החזיתית?
+          ובדקו אותו בגבול $\sum m_f \to 2m$, תגובה שלא יוצרת דבר. פי כמה גדולה $K_{\text{th}}$ מהאנרגיה הקינטית הכוללת של שתי הקרניים בהתנגשות החזיתית?
         hints:
           - 'חשבו את $s$ במעבדה, לפני ההתנגשות, ובמערכת מרכז המסה בסף, אחריה.'
         solution:
@@ -371,6 +382,9 @@ questions:
           - text: קבעתי שבסף התוצרים נעים במהירות של מרכז המסה, ומצאתי $E_{\text{tot}} = \left(\sum m_f\right)^2c^2/(2m)$.
           - text: חילקתי ב-$\sqrt s = \left(\sum m_f\right)c^2$ וקיבלתי $\gamma = \sum m_f/(2m)$ ו-$\beta = \sqrt{1 - (2m/\sum m_f)^2}$.
           - text: בדקתי שב-$\sum m_f \to 2m$ התוצרים נחים ושב-$\sum m_f \gg m$ הם נעים כמעט ב-$c$, וקיבלתי $0.709c$.
+          - text: >-
+              חישבתי שבתנועת התוצרים נשארים $(\gamma - 1)\left(\sum m_f\right)c^2 \approx 1110\,\text{MeV}$ מתוך
+              $1892.8\,\text{MeV}$ של הקרן.
 
   # ------------------------------------------------------------ 3: Compton scattering at a right angle
   - id: Q-10-bagrut-3
@@ -471,7 +485,8 @@ questions:
         prompt: >-
           מה המהירות של האלקטרון אחרי פיזור בזווית $90^\circ$? סמנו $\varepsilon = E/(m_ec^2)$, והראו ש-
           $$\beta_e = \frac{\varepsilon\sqrt{(1 + \varepsilon)^2 + 1}}{1 + \varepsilon + \varepsilon^2}$$
-          בדקו את הביטוי בגבולות $\varepsilon \ll 1$ (השוו לחישוב של ניוטון) ו-$\varepsilon \gg 1$, ואחר כך הציבו את הנתונים.
+          בדקו את הביטוי בגבולות $\varepsilon \ll 1$, שבו הוא צריך להתאים לחישוב של ניוטון באותו גבול, ו-$\varepsilon \gg 1$. אחר כך
+          הציבו את הנתונים.
         hints:
           - 'התנע של האלקטרון הוא ההפרש הווקטורי $\vec p - \vec p\,''$, והתנעים של הפוטון לפני ואחרי ניצבים זה לזה.'
           - 'מחלק ב, ב-$90^\circ$, $E'' = E/(1 + \varepsilon)$. המהירות של חלקיק היא $\beta = pc/E$.'
@@ -554,7 +569,7 @@ questions:
         prompt: >-
           פתרו את החוק השני, $F = dp/dt$, ומצאו את $v(t)$. בדקו את התוצאה בזמנים קצרים ובזמנים ארוכים, ובדקו את היחידות.
         hints:
-          - 'אינטגרלו פעם אחת וקבלו $\gamma mv = Ft$. אחר כך בודדו את $v$.'
+          - 'חשבו את האינטגרל של שני האגפים לפי $t$ וקבלו $\gamma mv = Ft$. אחר כך בודדו את $v$.'
         solution:
           - kind: law
             text: 'החוק השני ביחסות: $F = \dfrac{dp}{dt}$, עם התנע היחסותי $p = \gamma mv = \dfrac{mv}{\sqrt{1 - v^2/c^2}}$.'
@@ -574,7 +589,7 @@ questions:
               $v(t) = \dfrac{Ft/m}{\sqrt{1 + (Ft/(mc))^2}}$: עולה כמו $Ft/m$ בהתחלה, ומתקרבת ל-$c$ בלי להגיע אליה. הזמן
               האופייני הוא $mc/F = 17.1\,\text{ns}$.
         rubric:
-          - text: כתבתי $F = dp/dt$ עם $p = \gamma mv$, ואינטגרלתי ל-$\gamma mv = Ft$.
+          - text: כתבתי $F = dp/dt$ עם $p = \gamma mv$, וחישבתי את האינטגרל, $\gamma mv = Ft$.
           - text: בודדתי את $v$ בלי לשכוח ש-$\gamma$ תלוי ב-$v$, וקיבלתי את הביטוי.
           - text: בדקתי שבזמנים קצרים $v \approx Ft/m$ ושבזמנים ארוכים $v \to c$.
           - text: בדקתי ש-$Ft/(mc)$ חסר ממדים.
@@ -611,7 +626,7 @@ questions:
           עם האנרגיה היחסותית. בדקו את הביטוי בזמנים קצרים ובזמנים ארוכים, והשוו בזמנים ארוכים לקרן אור שיוצאת מ-$x = 0$ ברגע
           $t = 0$. כמה מטרים עובר האלקטרון עד שהוא מגיע ל-$0.99c$?
         hints:
-          - 'הציבו $u = 1 + (Ft/(mc))^2$: הנגזרת של $\sqrt u$ מופיעה במונה של $v(t)$.'
+          - 'סמנו $w = 1 + (Ft/(mc))^2$: הנגזרת של $\sqrt w$ לפי $t$ מופיעה במונה של $v(t)$.'
           - 'העבודה של כוח קבוע לאורך $x$ היא $Fx$. למה היא שווה, ומה $E$ כשהתנע הוא $p = Ft$?'
         solution:
           - kind: law
@@ -642,7 +657,7 @@ questions:
               $x(t) = \dfrac{mc^2}{F}\left(\sqrt{1 + (Ft/(mc))^2} - 1\right) = (\gamma - 1)\dfrac{mc^2}{F}$: $31.2\,\text{m}$ עד $0.99c$. התנועה
               היא $\tfrac12(F/m)t^2$ בהתחלה, ובסוף כמעט ב-$c$, במרחק $mc^2/F$ מאחורי קרן אור.
         rubric:
-          - text: אינטגרלתי את $v(t)$ וקיבלתי $x(t) = (mc^2/F)\left(\sqrt{1 + (Ft/(mc))^2} - 1\right)$.
+          - text: חישבתי את האינטגרל של $v(t)$ וקיבלתי $x(t) = (mc^2/F)\left(\sqrt{1 + (Ft/(mc))^2} - 1\right)$.
           - text: קיבלתי את אותו ביטוי ממשפט עבודה-אנרגיה, $Fx = E - mc^2$, עם $p = Ft$.
           - text: בדקתי שבזמנים קצרים יוצא $\tfrac12(F/m)t^2$, ושבזמנים ארוכים האלקטרון נשאר $mc^2/F$ מאחורי קרן האור.
           - text: קיבלתי $31.2\,\text{m}$ עד $0.99c$.
@@ -656,7 +671,7 @@ questions:
       חלקיקים חדשים. אחרי ההתנגשות שני החלקיקים נעים במישור, עם תנעים $\vec p_3$ ו-$\vec p_4$, אנרגיות יחסותיות $E_3$ ו-$E_4$
       ואנרגיות קינטיות $K_3$ ו-$K_4$, ו-$\varphi$ היא הזווית בין כיווני התנועה שלהם. גורם לורנץ של החלקיק הפוגע הוא
       $\gamma = 1 + K/(mc^2)$. כמו בשיעור 10.2, מכפלת מינקובסקי של שני ארבעה-וקטורים של אנרגיה-תנע היא
-      $P\cdot Q = E_PE_Q/c^2 - \vec p_P\cdot\vec q_Q$, ו-$P\cdot P = m^2c^2$.
+      $P\cdot Q = E_PE_Q/c^2 - \vec p_P\cdot\vec p_Q$, ו-$P\cdot P = m^2c^2$.
     parts:
       - label: א
         type: mc
@@ -728,7 +743,8 @@ questions:
         rubric:
           - text: העליתי בריבוע את שימור הארבעה-וקטור וקיבלתי $P_1\cdot P_2 = P_3\cdot P_4$.
           - text: חישבתי את שתי המכפלות במעבדה, הצבתי את שימור האנרגיה, וזיהיתי את $(E_3 - mc^2)(E_4 - mc^2) = K_3K_4$.
-          - text: בדקתי שבגבול $K \ll mc^2$ יוצא $\cos\varphi \to 0$, הזווית הישרה של ניוטון.
+          - text: הסקתי ש-$\cos\varphi > 0$ כששני החלקיקים נעים, ולכן $\varphi < 90^\circ$.
+          - text: בדקתי שבגבול $K \ll mc^2$ יוצא $\cos\varphi \to 0$, הזווית הישרה של ניוטון, ושהביטוי חסר ממדים.
 
       - label: ג
         type: open
@@ -794,8 +810,10 @@ questions:
             text: >-
               $E_{\text{tot}} = (\gamma + 1)mc^2$ ו-$p_{\text{tot}}c = \sqrt{\gamma^2 - 1}\,mc^2$, ולכן
               $\beta_c = \sqrt{\dfrac{\gamma - 1}{\gamma + 1}}$ ו-$\gamma_c = \sqrt{\dfrac{\gamma + 1}{2}}$. במערכת מרכז המסה החלקיק
-              שנח במעבדה נע ב-$-\beta_c$, ולכן גם הפוגע ב-$+\beta_c$: לכל אחד $E^* = \gamma_cmc^2$ ו-$p^*c = \gamma_c\beta_cmc^2$. אחרי
-              סיבוב ב-$90^\circ$, $p^*_x = 0$ ו-$p^*_yc = \gamma_c\beta_cmc^2$. במעבדה:
+              שנח במעבדה נע ב-$-\beta_c$, ולכן גם הפוגע ב-$+\beta_c$: לכל אחד $E^* = \gamma_cmc^2$ ו-$p^*c = \gamma_c\beta_cmc^2$.
+              למה סיבוב ב-$90^\circ$: אחרי סיבוב בזווית $\theta^*$ החלקיקים יוצאים עם $p^*_x = \pm p^*\cos\theta^*$ ועם אותו
+              $|p_y|$, ובמעבדה $p_xc = \gamma_c\left(\pm p^*c\cos\theta^* + \beta_cE^*\right)$. הזוויות במעבדה שוות רק כששני
+              ה-$p_x$ שווים, כלומר $\cos\theta^* = 0$. אחרי סיבוב ב-$90^\circ$, $p^*_x = 0$ ו-$p^*_yc = \gamma_c\beta_cmc^2$. במעבדה:
               $$p_xc = \gamma_c\beta_cE^* = \gamma_c^2\beta_cmc^2,\qquad p_yc = \gamma_c\beta_cmc^2,\qquad \tan\frac\varphi2 = \frac{p_y}{p_x} = \frac{1}{\gamma_c}$$
               החלקיק השני יוצא בזווית שווה מהצד השני, ולכן הזווית ביניהם $\varphi$. בדיקה מול חלק ג: $\tan^2(\varphi/2) = 2/(\gamma + 1)$, ו-
               $\cos\varphi = \dfrac{1 - \tan^2(\varphi/2)}{1 + \tan^2(\varphi/2)} = \dfrac{\gamma - 1}{\gamma + 3}$.

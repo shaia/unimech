@@ -37,6 +37,18 @@
 #      2π√(2L/(3g)) = 1.80 s (simple L 2.20, L/2 1.55, I_cm 0.898).
 #   4: ring M = 2.0 kg, R = 0.30 m, ω = 40 rad/s: L = 7.2 (disc 3.6) kg·m²/s; stool I = 3.0 kg·m²: 2L/I = 4.8 rad/s
 #      (forgot 2: 2.4); string at r = 0.15 m: Ω = Mgr/L = 0.408 rad/s, period 15.4 s, ω/Ω = 98, horizontal force MΩ²r = 0.05 N.
+# Independent review 2026-11-18 (.scratch/review/ch8/indep.ts, own routes; the authors' scripts not opened): 59 numbers
+#   and 24 symbolic results recomputed, all correct. Routes: I by numeric integration (rod, disc); 1 by blowFree of
+#   physpendulum.ts and a sum of ½dm v² over the rod at b = 0.1–0.4 m; 2c by integrating the descent; 3 statics by
+#   netTorque about three points, 3ד by smallPeriod/periodAt and an own RK4; 5 by a 1200² grid sum of r × v about E
+#   (L_E = 1.25 Mv0R, I_E = 1.50 MR²), an RK4 of the climb (climbs at 1.01 v_min, not at 0.99), the floor contact point
+#   rising after the impact (v_y > 0), and v_min/√(4gh/3) → 1 as h → 0. No wrong value. Changed: 1ב, 3ג, 3ד name the
+#   limit they check (the derived expressions have no free parameter); 3ג standalone: false (compares with ב), α written
+#   12.25 (exact), and why a_cm and F share the number 7.35; 3ב says the hinge's horizontal component balances the
+#   cable's; 4ב says the wheel enters I_s only as carried mass, and calls the θ tilt a generalisation; 5 gets a diagram
+#   (E, φ0, R − h); 5א says why the floor force stays finite; 5ב gives the r × v reason both terms add; 5ג rubric adds
+#   h → R and units; 5ד limit is the ratio v_min/√(4gh/3) → 1, and the stays-on-the-edge check is labelled an assumption
+#   check (a manipulation step) with φ0 defined; "היקף" for the cylinder's rim, "שפה" only for the step's edge.
 # Reviewed 2026-11-12: every number above recomputed independently from closed forms in
 # .scratch/review/ch8/bagrut/r.ts (g = 9.8, 3-sig-fig rounding by toPrecision, commonWrong separation > 3%).
 
@@ -77,7 +89,8 @@ questions:
         objectives: [OBJ-8.6-2, OBJ-8.1-1]
         prompt: >-
           מצאו את מהירות מרכז המסה $v_{cm}$ ואת המהירות הזוויתית $\omega$ של המוט מיד אחרי המכה, קודם כביטויים
-          ב-$J$, $M$ ו-$L$ ואחר כך כמספרים. בדקו את הביטויים בגבול ובדקו יחידות.
+          ב-$J$, $M$ ו-$L$ ואחר כך כמספרים. בדקו את הדרך בגבול של מכה במרכז המוט (מה היא נותנת למכה במרחק $b$
+          מהמרכז, כש-$b \to 0$?), ובדקו יחידות.
         hints:
           - 'מתקף משנה את התנע הקווי. והמומנט של המתקף סביב מרכז המסה משנה את התנע הזוויתי סביבו.'
         solution:
@@ -133,7 +146,7 @@ questions:
           הקינטית של המוט אחרי המכה שהוא אנרגיה של סיבוב סביב מרכז המסה, $\dfrac{K_r}{K_t + K_r}$, באמצעות $b$ ו-$L$.
           האם הוא תלוי ב-$J$ או ב-$M$? בדקו את הביטוי בגבול, ואחר כך הציבו את המכה של השאלה, בקצה.
         hints:
-          - 'אנרגיה קינטית של גוף צפיד היא $\tfrac12Mv_{cm}^2 + \tfrac12I_{cm}\omega^2$. את $v_{cm}$ ואת $\omega$ מצאתם בחלק ב, עם זרוע $L/2$ במקום $b$.'
+          - 'אנרגיה קינטית של גוף צפיד היא $\tfrac12Mv_{cm}^2 + \tfrac12I_{cm}\omega^2$. בחלק ב מצאתם $v_{cm}$ ו-$\omega$ למכה בזרוע $L/2$. כאן הזרוע היא $b$: החליפו את $L/2$ ב-$b$.'
           - 'השאלה מבקשת את החלק מהאנרגיה **הכוללת**, $\dfrac{K_r}{K_t + K_r}$, ולא את היחס $K_r/K_t$.'
         solution:
           - { kind: law, text: 'האנרגיה הקינטית של גוף צפיד מתפרקת לאנרגיה של תנועת מרכז המסה ולאנרגיה של הסיבוב סביבו: $K = \tfrac12Mv_{cm}^2 + \tfrac12I_{cm}\omega^2$. מחלק ב, עם זרוע $b$: $v_{cm} = \dfrac JM$ ו-$\omega = \dfrac{Jb}{I_{cm}}$, עם $I_{cm} = \tfrac{1}{12}ML^2$.' }
@@ -287,7 +300,8 @@ questions:
         correctFeedback: >-
           נכון. הדרך המהירה: מומנטים סביב הקצה שבו מחובר הכבל. שם $T$ נעלם, וגם הרכיב האופקי של כוח הציר, שעובר לאורך
           המוט: $F_y\cdot L = Mg\cdot\dfrac L2$, ולכן $F_y = \dfrac{Mg}{2} = 14.7\,\text{N}$, כלפי מעלה. או מהכוחות:
-          $F_y = Mg - T\sin30^\circ = 29.4 - 14.7$. הרכיב האופקי, $T\cos30^\circ = 25.5\,\text{N}$, דוחף את המוט הרחק מהקיר.
+          $F_y = Mg - T\sin30^\circ = 29.4 - 14.7$. הכבל מושך את המוט גם אופקית, אל הקיר, ב-$T\cos30^\circ = 25.5\,\text{N}$,
+          ולכן הרכיב האופקי של כוח הציר שווה לו בגודלו ודוחף את המוט הרחק מהקיר.
         wrongFeedback: 'בחרו נקודה שדרכה עוברים גם הכבל וגם הרכיב האופקי של כוח הציר, או השתמשו בסכום הכוחות האנכיים.'
         commonWrong:
           - value: 29.4
@@ -301,10 +315,12 @@ questions:
         type: open
         points: 8
         level: bagrut
+        standalone: false
         objectives: [OBJ-8.3-1]
         prompt: >-
           חותכים את הכבל. מצאו את התאוצה הזוויתית של המוט ואת הכוח שהציר מפעיל עליו **ברגע הראשון** אחרי החיתוך,
-          כביטויים ואחר כך כמספרים. השוו לכוח האנכי של הציר מחלק ב, ובדקו את הביטוי בגבול.
+          כביטויים ואחר כך כמספרים, והשוו לכוח האנכי של הציר מחלק ב. בדקו את הדרך בגבול שבו כל המסה מרוכזת בקצה
+          החופשי של מוט חסר מסה: מה היא נותנת אז לכוח הציר?
         hints:
           - 'ברגע הראשון המוט עוד במנוחה, $\omega = 0$: למרכז המסה אין תאוצה צנטריפטלית, רק משיקית.'
         solution:
@@ -312,8 +328,8 @@ questions:
           - { kind: manipulation, text: 'סביב הציר רק הכובד יוצר מומנט: $Mg\dfrac L2 = \tfrac13ML^2\alpha$, ולכן $\alpha = \dfrac{3g}{2L}$. ברגע הראשון $\omega = 0$, ולכן מרכז המסה מאיץ רק בניצב למוט, כלומר כלפי מטה: $a_{cm} = \alpha\dfrac L2 = \tfrac34g$. ציר אנכי כלפי מטה: $Mg - F = M\cdot\tfrac34g$, ולכן $F = \tfrac14Mg$ כלפי מעלה. הרכיב האופקי אפס, כי אין תאוצה אופקית.' }
           - { kind: limit, text: 'אילו כל המסה הייתה בקצה החופשי ($I = ML^2$, מומנט $MgL$): $\alpha = g/L$, הקצה נופל ב-$g$, ו-$F = 0$: נפילה חופשית, והציר לא נחוץ. אילו כל המסה הייתה על הציר: $a_{cm} = 0$ ו-$F = Mg$. המוט האחיד, $F = \tfrac14Mg$, בין שני הקצוות.' }
           - { kind: units, text: '$\dfrac{3g}{2L}$: $\dfrac{\text{m/s}^2}{\text{m}} = \text{s}^{-2}$, יחידות של תאוצה זוויתית. $\tfrac14Mg$ בניוטון.' }
-          - { kind: substitution, text: '$\alpha = \dfrac{3\cdot9.8}{2\cdot1.2} = 12.25 \approx 12.3\,\text{rad/s}^2$, $a_{cm} = 7.35\,\text{m/s}^2$, ו-$F = \tfrac14\cdot3.0\cdot9.8 = 7.35\,\text{N}$.' }
-          - { kind: result, text: '$\alpha = \dfrac{3g}{2L} = 12.3\,\text{rad/s}^2$, וכוח הציר $\tfrac14Mg = 7.35\,\text{N}$, אנכי כלפי מעלה. הוא ירד בחצי, מ-$14.7\,\text{N}$, ברגע החיתוך: הציר לא צריך עוד להחזיק את המוט, רק להאט את הנפילה של הקצה הקרוב.' }
+          - { kind: substitution, text: '$\alpha = \dfrac{3\cdot9.8}{2\cdot1.2} = 12.25\,\text{rad/s}^2$ (בדיוק), $a_{cm} = \tfrac34\cdot9.8 = 7.35\,\text{m/s}^2$, ו-$F = \tfrac14\cdot3.0\cdot9.8 = 7.35\,\text{N}$. שני המספרים שווים רק במקרה: $F = \tfrac13Ma_{cm}$, ו-$\tfrac13M$ כאן הוא בדיוק $1.0\,\text{kg}$.' }
+          - { kind: result, text: '$\alpha = \dfrac{3g}{2L} = 12.25\,\text{rad/s}^2$, וכוח הציר $\tfrac14Mg = 7.35\,\text{N}$, אנכי כלפי מעלה. הוא ירד בחצי, מ-$14.7\,\text{N}$, ברגע החיתוך: הציר לא צריך עוד להחזיק את המוט, רק להאט את הנפילה של הקצה הקרוב.' }
         rubric:
           - text: כתבתי $\tau = I\alpha$ סביב הציר עם $I = \tfrac13ML^2$ וזרוע $L/2$, וקיבלתי $\alpha = \dfrac{3g}{2L}$.
           - text: קבעתי שברגע הראשון $\omega = 0$, ולכן $a_{cm} = \alpha L/2 = \tfrac34g$ כלפי מטה, בלי רכיב אופקי.
@@ -328,7 +344,8 @@ questions:
         prompt: >-
           מורידים את המוט מהקיר ותולים אותו באותו קצה על ציר אופקי בלי חיכוך, הרחק מכל קיר, כך שהוא תלוי אנכית
           מתחת לציר וחופשי להתנודד לשני הצדדים. גזרו את זמן המחזור $T_0$ של תנודות בזוויות קטנות סביב המצב הזה ואת
-          האורך השקול $\ell$ של המוט, באמצעות $L$ ו-$g$. בדקו את התוצאה בגבול, ואחר כך הציבו.
+          האורך השקול $\ell$ של המוט, באמצעות $L$ ו-$g$. בדקו את הדרך בגבול שבו כל המסה מרוכזת בקצה התחתון, ואחר כך
+          הציבו.
         hints:
           - 'מה מומנט ההתמד של המוט סביב הציר, ובאיזה מרחק ממנו נמצא מרכז המסה?'
           - 'האורך השקול הוא האורך של מטוטלת פשוטה עם אותו זמן מחזור. הוא לא המרחק מהציר למרכז המסה.'
@@ -380,17 +397,18 @@ questions:
         prompt: >-
           סטודנט יושב במנוחה על כיסא שמסתובב בלי חיכוך סביב ציר אנכי, ומחזיק את הגלגל כשהסרן אנכי ו-$\vec L$ כלפי
           מעלה. הוא הופך את הגלגל, כך שהתנע הזוויתי של הסיבוב העצמי של הגלגל, כפי שהוא נמדד ביחס לקרקע, שווה בגודלו
-          לזה שהיה לו ופונה כלפי מטה. מומנט ההתמד של הסטודנט, הכיסא והגלגל סביב ציר הכיסא, בלי הסיבוב העצמי של
-          הגלגל, הוא $I_s = 3.0\,\text{kg}\cdot\text{m}^2$. בטאו את המהירות הזוויתית $\Omega_s$ של הכיסא אחרי ההיפוך
-          באמצעות $L$ ו-$I_s$. בדקו את הביטוי בגבול: מה היה קורה אילו הסטודנט היה מטה את הסרן רק בזווית $\theta$
-          מהאנך? אחר כך הציבו.
+          לזה שהיה לו ופונה כלפי מטה. מומנט ההתמד של הסטודנט והכיסא סביב ציר הכיסא, יחד עם הגלגל כמסה שהסטודנט נושא
+          איתו, הוא $I_s = 3.0\,\text{kg}\cdot\text{m}^2$. הסיבוב של הגלגל סביב הסרן לא נכלל ב-$I_s$: הוא כולו בתנע
+          הזוויתי $\pm L$ של הגלגל, ולכן אינו נספר פעמיים. בטאו את המהירות הזוויתית $\Omega_s$ של הכיסא אחרי ההיפוך
+          באמצעות $L$ ו-$I_s$. בדקו את הביטוי דרך הכללה: מה היה קורה אילו הסטודנט היה מטה את הסרן רק בזווית $\theta$
+          מהאנך, ומה נותנת ההכללה ב-$\theta = 0$ וב-$\theta = 180^\circ$? אחר כך הציבו.
         hints:
           - 'כתבו את רכיב התנע הזוויתי הכולל לאורך הציר האנכי לפני ההיפוך ואחריו, עם סימנים.'
           - 'השינוי בתנע הזוויתי של הגלגל הוא $2L$, לא $L$: מ-$+L$ ל-$-L$.'
         solution:
           - { kind: law, text: 'ציר חיובי כלפי מעלה. הכוחות החיצוניים על הסטודנט, הכיסא והגלגל (הכובד, והכוח של הציר והרצפה על הכיסא) לא יוצרים מומנט סביב הציר האנכי של הכיסא, שמסתובב בלי חיכוך. לכן רכיב התנע הזוויתי הכולל לאורך הציר הזה נשמר, אף שהסטודנט מפעיל על הגלגל מומנטים פנימיים גדולים.' }
           - { kind: manipulation, text: 'לפני: הכיסא במנוחה, והגלגל תורם $+L$. אחרי: הגלגל תורם $-L$, והכיסא $I_s\Omega_s$. מכאן $L = -L + I_s\Omega_s$, ו-$$\Omega_s = \frac{2L}{I_s}$$ חיובי: הכיסא מסתובב בכיוון שבו הגלגל הסתובב בהתחלה.' }
-          - { kind: limit, text: 'אם הסרן מוטה רק בזווית $\theta$ מהאנך, הגלגל תורם $L\cos\theta$, ו-$\Omega_s = \dfrac{L(1 - \cos\theta)}{I_s}$. ב-$\theta = 0$, $\Omega_s = 0$: שום דבר לא השתנה. ב-$\theta = 90^\circ$, סרן אופקי, $\Omega_s = L/I_s$. ב-$\theta = 180^\circ$ חוזרים ל-$2L/I_s$. וכש-$I_s \to \infty$ (כיסא מקובע לרצפה), $\Omega_s \to 0$, והרצפה סופגת את השינוי.' }
+          - { kind: limit, text: 'הכללה שבודקת את התוצאה: אם הסרן מוטה רק בזווית $\theta$ מהאנך, הגלגל תורם לרכיב האנכי $L\cos\theta$, ו-$\Omega_s = \dfrac{L(1 - \cos\theta)}{I_s}$. ב-$\theta = 0$, $\Omega_s = 0$: שום דבר לא השתנה. ב-$\theta = 90^\circ$, סרן אופקי, $\Omega_s = L/I_s$. ב-$\theta = 180^\circ$ חוזרים ל-$2L/I_s$. וכש-$I_s \to \infty$ (כיסא מקובע לרצפה), $\Omega_s \to 0$, והרצפה סופגת את השינוי.' }
           - { kind: units, text: '$\dfrac{\text{kg}\cdot\text{m}^2/\text{s}}{\text{kg}\cdot\text{m}^2} = \text{s}^{-1}$, יחידות של מהירות זוויתית.' }
           - { kind: substitution, text: 'עם $L = 7.2\,\text{kg}\cdot\text{m}^2/\text{s}$ מחלק א: $\Omega_s = \dfrac{2\cdot7.2}{3.0} = 4.8\,\text{rad/s}$. האנרגיה של הכיסא, $\tfrac12\cdot3.0\cdot4.8^2 = 34.6\,\text{J}$, באה מהעבודה של הסטודנט בזמן שהפך את הגלגל: תנע זוויתי נשמר, אנרגיה קינטית לא.' }
           - { kind: result, text: '$\Omega_s = \dfrac{2L}{I_s} = 4.8\,\text{rad/s}$, בכיוון הסיבוב ההתחלתי של הגלגל.' }
@@ -463,6 +481,35 @@ questions:
       $E$ של מדרגה בגובה $h < R$, שניצבת לכיוון התנועה. השפה מחוספסת: ברגע הפגיעה הגליל נצמד אליה, לא מחליק עליה
       ולא קופץ ממנה, ומכאן הוא מסתובב סביבה כמו סביב ציר קבוע. הפגיעה קצרה מאוד. הניחו שהגליל נשאר צמוד לשפה עד
       שהוא עולה על המדרגה, והזניחו את התנגדות האוויר.
+    diagramAlt: >-
+      מבט מהצד ברגע הפגיעה. גליל, עיגול ברדיוס $R$, עומד על רצפה אופקית ונוגע מימינו בשפה $E$ של מדרגה בגובה $h$.
+      חץ אופקי ימינה ממרכז הגליל מסמן את מהירות המרכז $v_0$, וחץ מעוקל סביב המרכז מסמן סיבוב עם כיוון השעון. קו מקווקו
+      מחבר את $E$ למרכז, באורכו $R$, ויוצר עם קו אנכי מקווקו דרך $E$ את הזווית $\varphi_0$. סימון אנכי מראה שהמרכז
+      נמצא בגובה $R - h$ מעל $E$.
+    diagram: |
+      <svg viewBox="0 0 420 180" width="420" height="180" font-size="14" aria-hidden="true">
+        <path d="M10,165 H178 V141 H410" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="130" cy="105" r="60" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="130" cy="105" r="3" fill="currentColor"/>
+        <circle cx="178" cy="141" r="3.5" fill="currentColor"/>
+        <text x="184" y="157" fill="currentColor" font-style="italic">E</text>
+        <line x1="178" y1="141" x2="130" y2="105" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text x="136" y="134" fill="currentColor" font-style="italic">R</text>
+        <line x1="178" y1="141" x2="178" y2="85" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="158" y="119" fill="currentColor" font-style="italic">φ₀</text>
+        <line x1="130" y1="105" x2="232" y2="105" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="226" y1="105" x2="226" y2="141" stroke="currentColor" stroke-width="1"/>
+        <line x1="220" y1="141" x2="232" y2="141" stroke="currentColor" stroke-width="1"/>
+        <text x="234" y="128" fill="currentColor" font-style="italic">R − h</text>
+        <line x1="380" y1="141" x2="380" y2="165" stroke="currentColor" stroke-width="1"/>
+        <line x1="374" y1="165" x2="386" y2="165" stroke="currentColor" stroke-width="1"/>
+        <text x="388" y="158" fill="currentColor" font-style="italic">h</text>
+        <line x1="130" y1="30" x2="170" y2="30" stroke="var(--velocity)" stroke-width="2.5"/>
+        <polygon points="170,24 183,30 170,36" fill="var(--velocity)"/>
+        <text x="146" y="20" fill="var(--velocity)" font-style="italic">v₀</text>
+        <path d="M113,88 A24,24 0 0,1 147,88" fill="none" stroke="currentColor" stroke-width="1.3"/>
+        <polygon points="152,93 148,83 142,89" fill="currentColor"/>
+      </svg>
     parts:
       - label: א
         type: mc
@@ -476,7 +523,9 @@ questions:
             correct: true
             feedback: >-
               נכון. בזמן הפגיעה פועלים על הגליל הכובד, הכוח מהרצפה והכוח של השפה. רק הכוח של השפה מתקפי, גדול מאוד
-              לזמן קצר מאוד. הכובד והכוח מהרצפה סופיים, והמתקף שלהם שואף לאפס עם משך הפגיעה. הכוח של השפה פועל
+              לזמן קצר מאוד. הכובד סופי. גם הכוח מהרצפה סופי: הרצפה יכולה רק לדחוף, והפגיעה מרימה את הגליל ממנה (אחריה
+              הגליל מסתובב סביב $E$, ונקודת המגע שלו עם הרצפה נעה כלפי מעלה), ולכן אין צורך בדחיפה גדולה מהרצפה. המתקף
+              של שני הכוחות הסופיים שואף לאפס עם משך הפגיעה. הכוח של השפה פועל
               ב-$E$ עצמה, ולכן אין לו מומנט סביבה, והתנע הזוויתי סביב $E$ נשמר.
           - text: 'התנע של הגליל, כי הפגיעה קצרה ומותר להזניח בה את הכוחות החיצוניים.'
             feedback: >-
@@ -486,8 +535,8 @@ questions:
             misconception: MC-4-external-always-negligible
           - text: 'התנע הזוויתי סביב מרכז הגליל, כי הכוח של השפה מכוון אל המרכז.'
             feedback: >-
-              רק הרכיב הניצב לשפת הגליל של הכוח הזה מכוון אל המרכז. כדי שהגליל לא יחליק על השפה, היא מפעילה עליו גם
-              כוח חיכוך, משיק לשפת הגליל, ולו יש זרוע $R$ סביב המרכז.
+              רק הרכיב של הכוח הזה שניצב להיקף הגליל מכוון אל המרכז. כדי שהגליל לא יחליק על השפה, היא מפעילה עליו גם
+              כוח חיכוך, משיק להיקף הגליל, ולו יש זרוע $R$ סביב המרכז.
           - text: 'האנרגיה הקינטית, כי הגליל לא מחליק על השפה ואין חיכוך שמחמם.'
             feedback: >-
               אי-החלקה לא מבטיחה שימור אנרגיה. הגליל נצמד לשפה, כמו גופים שנדבקים זה לזה בהתנגשות פלסטית, ואנרגיה
@@ -509,7 +558,7 @@ questions:
           - 'השפה נמצאת על היקף הגליל, במרחק $R$ מהמרכז. מה מומנט ההתמד סביבה?'
         solution:
           - { kind: law, text: 'חיובי בכיוון שבו הגליל מסתובב (עם כיוון השעון כשהוא נע ימינה). התנע הזוויתי סביב $E$ נשמר בפגיעה (חלק א). לפניה הוא סכום של חלק מרכז המסה ושל הסיבוב סביב מרכז המסה: $L_E = Mv_0\,d_\perp + I_{cm}\omega_0$, כאשר $d_\perp$ המרחק של $E$ מהקו שלאורכו נע מרכז המסה. אחריה הגליל מסתובב סביב $E$: $L_E = I_E\Omega$.' }
-          - { kind: manipulation, text: 'מרכז המסה נע אופקית בגובה $R$, והשפה בגובה $h$, ולכן $d_\perp = R - h$. בגלגול $\omega_0 = v_0/R$, ו-$I_{cm} = \tfrac12MR^2$. שני האיברים באותו כיוון: $L_E = Mv_0(R - h) + \tfrac12MRv_0 = Mv_0\left(\tfrac32R - h\right)$. לפי משפט הצירים המקבילים, $I_E = \tfrac12MR^2 + MR^2 = \tfrac32MR^2$. לכן $$\Omega = \frac{Mv_0\left(\tfrac32R - h\right)}{\tfrac32MR^2} = \frac{v_0}{R}\left(1 - \frac{2h}{3R}\right)$$' }
+          - { kind: manipulation, text: 'מרכז המסה נע אופקית בגובה $R$, והשפה בגובה $h$, ולכן $d_\perp = R - h$. בגלגול $\omega_0 = v_0/R$, ו-$I_{cm} = \tfrac12MR^2$. שני האיברים באותו כיוון: מרכז המסה נמצא מעל $E$ (ומשמאלה) ונע ימינה, ולכן $\vec r\times M\vec v_0$ סביב $E$ פונה עם כיוון השעון, כמו הסיבוב העצמי. $L_E = Mv_0(R - h) + \tfrac12MRv_0 = Mv_0\left(\tfrac32R - h\right)$. לפי משפט הצירים המקבילים, $I_E = \tfrac12MR^2 + MR^2 = \tfrac32MR^2$. לכן $$\Omega = \frac{Mv_0\left(\tfrac32R - h\right)}{\tfrac32MR^2} = \frac{v_0}{R}\left(1 - \frac{2h}{3R}\right)$$' }
           - { kind: limit, text: 'כש-$h \to 0$, $\Omega \to v_0/R = \omega_0$: שפה בגובה אפס היא נקודת המגע עם הרצפה, שסביבה הגליל ממילא מסתובב בגלגול, ושום דבר לא משתנה. כש-$h \to R$, לתנועת מרכז המסה אין זרוע סביב $E$, ונשאר רק הסיבוב העצמי: $\Omega = \tfrac13\omega_0$. בין שני הקצוות $\Omega$ קטנה ככל שהמדרגה גבוהה יותר. $M$ מתבטלת.' }
           - { kind: units, text: '$\dfrac{v_0}{R}$ ב-$\dfrac{\text{m/s}}{\text{m}} = \text{s}^{-1}$, ו-$\dfrac hR$ חסר ממדים.' }
           - { kind: result, text: '$\Omega = \dfrac{v_0}{R}\left(1 - \dfrac{2h}{3R}\right)$, באותו כיוון סיבוב כמו לפני הפגיעה.' }
@@ -539,7 +588,7 @@ questions:
           - { kind: result, text: '$f = 1 - \left(1 - \dfrac{2h}{3R}\right)^2$, מ-0 כש-$h \to 0$ עד $\tfrac89$ כש-$h \to R$.' }
         rubric:
           - text: כתבתי $K_0 = \tfrac34Mv_0^2$, עם האנרגיה של הסיבוב, ו-$K_1 = \tfrac12I_E\Omega^2$ עם $\Omega$ מחלק ב.
-          - text: קיבלתי $f = 1 - \left(1 - \dfrac{2h}{3R}\right)^2$ ובדקתי ש-$f \to 0$ כש-$h \to 0$.
+          - text: קיבלתי $f = 1 - \left(1 - \dfrac{2h}{3R}\right)^2$ ובדקתי ש-$f \to 0$ כש-$h \to 0$ ו-$f \to \tfrac89$ כש-$h \to R$, ושהוא חסר ממדים.
           - text: הסברתי שהאנרגיה אובדת כי הגליל נצמד לשפה, כמו בהתנגשות פלסטית.
 
       - label: ד
@@ -558,13 +607,13 @@ questions:
         solution:
           - { kind: law, text: 'התהליך בשני שלבים (שיעור 4.4). בפגיעה נשמר התנע הזוויתי סביב $E$ (חלק ב). אחריה הגליל מסתובב סביב $E$: הכוח של השפה פועל בנקודה שנמצאת במנוחה ולכן לא עושה עבודה, והאנרגיה המכנית נשמרת.' }
           - { kind: manipulation, text: 'ציר אנכי כלפי מעלה, מהרצפה. מרכז הגליל עולה מגובה $R$ לגובה $R + h$, הגובה שלו כשהוא בדיוק מעל $E$, ומשם הוא עובר אל המדרגה. הוא עובר את הנקודה הזו אם $\tfrac12I_E\Omega^2 \ge Mgh$, כלומר $\tfrac34MR^2\Omega^2 \ge Mgh$, או $\Omega \ge \dfrac{2}{R}\sqrt{\dfrac{gh}{3}}$. הצבה של $\Omega$ מחלק ב: $$v_{\min} = \sqrt{\frac{4gh}{3}}\;\frac{1}{1 - \dfrac{2h}{3R}} = \frac{2R\sqrt{3gh}}{3R - 2h}$$' }
-          - { kind: limit, text: 'כש-$h \ll R$, הגורם $\dfrac{1}{1 - 2h/(3R)} \to 1$, ו-$v_{\min} \to \sqrt{4gh/3}$: בדיוק המהירות שבה גליל מתגלגל עולה לגובה $h$ במדרון, בלי פגיעה, מ-$\tfrac34Mv^2 = Mgh$. במדרגה נמוכה האנרגיה שאובדת בפגיעה זניחה (חלק ג). ככל ש-$h$ גדל הגורם גדל מעל 1: הפגיעה גוזלת אנרגיה, וצריך להגיע מהר יותר. וכש-$h \to 0$, $v_{\min} \to 0$.' }
-          - { kind: limit, text: 'בדיקת ההנחה שהגליל נשאר צמוד לשפה: מיד אחרי הפגיעה מרכז הגליל נע במעגל ברדיוס $R$ סביב $E$, וצריך כוח צנטריפטלי $M\Omega^2R$ לכיוון $E$. הכובד נותן בכיוון הזה $Mg\dfrac{R - h}{R}$, והשפה יכולה רק לדחוף, לא למשוך. לכן צריך $\Omega^2R \le g\dfrac{R - h}{R}$, ובהמשך העלייה התנאי רק נעשה קל יותר. ב-$v_{\min}$, $\Omega^2 = \dfrac{4gh}{3R^2}$, והתנאי הוא $h \le \tfrac37R$.' }
+          - { kind: manipulation, text: 'בדיקת ההנחה של השאלה (לא בדיקת גבולות) שהגליל נשאר צמוד לשפה: מיד אחרי הפגיעה הקו מ-$E$ אל מרכז הגליל יוצר עם האנך זווית $\varphi_0$ (באיור), עם $\cos\varphi_0 = \dfrac{R - h}{R}$, ומרכז הגליל נע במעגל ברדיוס $R$ סביב $E$. לכך צריך כוח צנטריפטלי $M\Omega^2R$ לכיוון $E$. הכובד נותן בכיוון הזה $Mg\cos\varphi_0$, והשפה יכולה רק לדחוף, לא למשוך. לכן צריך $\Omega^2R \le g\cos\varphi_0$, ובהמשך העלייה התנאי רק נעשה קל יותר: $\Omega$ קטנה ו-$\varphi$ קטנה. ב-$v_{\min}$, $\Omega^2 = \dfrac{4gh}{3R^2}$, והתנאי הוא $h \le \tfrac37R$.' }
+          - { kind: limit, text: 'במדרגה נמוכה גם $v_{\min}$ וגם $\sqrt{4gh/3}$ שואפים לאפס, ולכן משווים את היחס ביניהם: $\dfrac{v_{\min}}{\sqrt{4gh/3}} = \dfrac{1}{1 - 2h/(3R)} \to 1$ כש-$h \ll R$. ו-$\sqrt{4gh/3}$ היא בדיוק המהירות שבה גליל מתגלגל עולה לגובה $h$ במדרון, בלי פגיעה, מ-$\tfrac34Mv^2 = Mgh$: במדרגה נמוכה האנרגיה שאובדת בפגיעה זניחה (חלק ג). ככל ש-$h$ גדל היחס גדל מעל 1 (ב-$h = R$ הוא 3): הפגיעה גוזלת אנרגיה, וצריך להגיע מהר יותר.' }
           - { kind: units, text: '$\sqrt{gh}$ ביחידות $\sqrt{\text{m/s}^2\cdot\text{m}} = \text{m/s}$, והגורם $\dfrac{R}{3R - 2h}$ חסר ממדים.' }
           - { kind: substitution, text: '$v_{\min} = \dfrac{2\cdot0.20\sqrt{3\cdot9.8\cdot0.050}}{3\cdot0.20 - 2\cdot0.050} = 0.970\,\text{m/s}$, לעומת $\sqrt{4gh/3} = 0.808\,\text{m/s}$ בלי הפגיעה. כאן $h/R = 0.25$, פחות מ-$\tfrac37$, ולכן הגליל אכן נשאר צמוד לשפה. בפגיעה אובד $f = 0.306$ מהאנרגיה.' }
-          - { kind: result, text: '$v_{\min} = \dfrac{2R\sqrt{3gh}}{3R - 2h} = 0.970\,\text{m/s}$. במדרגה נמוכה היא שואפת ל-$\sqrt{4gh/3}$, המהירות של עלייה לגובה $h$ בלי פגיעה.' }
+          - { kind: result, text: '$v_{\min} = \dfrac{2R\sqrt{3gh}}{3R - 2h} = 0.970\,\text{m/s}$. במדרגה נמוכה היחס שלה ל-$\sqrt{4gh/3}$, המהירות של עלייה לגובה $h$ בלי פגיעה, שואף ל-1.' }
         rubric:
           - text: הפרדתי את התהליך לפגיעה, שבה נשמר התנע הזוויתי סביב השפה, ולעלייה שאחריה, שבה נשמרת האנרגיה, ולא כתבתי שימור אנרגיה דרך הפגיעה.
           - text: כתבתי $\tfrac12I_E\Omega^2 \ge Mgh$ עם $I_E = \tfrac32MR^2$ וקיבלתי $v_{\min} = \dfrac{2R\sqrt{3gh}}{3R - 2h}$.
-          - text: בדקתי שבמדרגה נמוכה $v_{\min} \to \sqrt{4gh/3}$, המהירות של גליל שעולה לגובה $h$ בלי פגיעה, ובדקתי יחידות.
+          - text: בדקתי שבמדרגה נמוכה היחס $v_{\min}/\sqrt{4gh/3}$ שואף ל-1, כש-$\sqrt{4gh/3}$ המהירות של גליל שעולה לגובה $h$ בלי פגיעה, ובדקתי יחידות.
           - text: הצבתי וקיבלתי $0.970\,\text{m/s}$.

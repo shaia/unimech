@@ -2,7 +2,7 @@
 # basic to exam level, 25 points each. Each problem joins at least two lessons; together they touch 6.1–6.6.
 #   1: a tangential kick (6.3, 6.4, 6.5, 6.6)   2: a binary star from Doppler speeds (6.2, 6.5)
 #   3: a tunnel through the Earth and a grazing satellite (6.1, 6.5, 6.6)   4: Earth to Ceres (6.5, 6.6)
-#   5: a satellite hit by radially falling debris, in symbols (3.5, 3.8, 4.1, 4.2, 4.4 with 6.3, 6.4)
+#   5: a satellite hit by radially falling debris, in symbols (3.5, 3.8, 4.2, 4.3, 4.4 with 6.3, 6.4)
 # Open parts follow the course format: law → manipulation → limit → units → substitution → result.
 # Rework 2026-11-18 (toward the 77101 exams, src/content/exam-map.yaml): open parts carry ≥ 13 of 25 points, the
 # first part stays auto-graded, the last part is a symbolic result with its limit check. Points before → after:
@@ -28,6 +28,21 @@
 #      elementsFromState and turningRadii at two sample points. m = M/4, v_d = v_c: κ = 0.8, w/v_c = 0.2,
 #      e² = 0.155, e = 0.394, r_p = 0.459 r₀ (r_a 1.056 r₀), KE lost 32 %; r₀ = 2R_E gives r_p = 0.918 R_E.
 #      Limits: v_d = 0 → e = 1 − κ² (= |λ² − 1| of problem 1); κ → 1 → e = w/v_c (w = 0.01 v_c gives 0.0100).
+# Independent review 2026-11-18 (.scratch/review/ch6/indep.ts, own routes): about 75 numbers and 20 symbolic results
+#   recomputed. Own RK4 orbit for the kicked satellite (T = 231.98 min, T/T₀ 2.3863, phase 139.05°, r_a 1.80e7 m) and
+#   for half the transfer ellipse (474.0 d, lead 78.95°); binary masses by Kepler III from a and T, tilted case through
+#   v = K/sin i (1.234e31 kg); tunnel by Verlet (half period 42.19 min, v 7.906 km/s) and U(r) by a numeric integral at
+#   0.37 R_E and 0; Δv's from h and energy conservation (6.320, 4.860, 11.18 km/s); problem 5 by vector momentum
+#   conservation into elementsFromState/turningRadii at three (M, m, v_d). Every value agreed. Changed: 5ב maps to
+#   OBJ-4.3-1 (a collision in two components) instead of OBJ-4.1-1 (one dimension); the scenario no longer calls the
+#   debris "small", since 5ד takes m = M/4 and 5ב checks m ≪ M as a limit.
+# After the student read (same day): 1ב asks for ε as ½ṙ² + u_eff and its value, and for the range λ < √2 (no
+#   largest λ); 2ד's law step shows why the line-of-sight maximum is v sin i; 3ב asks the mass/depth independence its
+#   rubric checks (Kepler III left in the solution only); 3ד's prompt and correct choice reworded; 3ה(2) asks the
+#   speed the ball must have at the centre, and its limit is now v(r) = √(GM_E(3R_E² − r²)/R_E³) → surface escape
+#   speed at r = R_E; 4ד's rubric has the symbolic φ and a units line; 5ב's reduced mass is μ_Mm (μ ≈ m is problem
+#   1's); 5ג's bound limit fixed (κ < 1 always, so w < v_c suffices) and its rubric has the bound condition; 5ד(2)
+#   says κ → 1 at fixed w means m → 0, v_d → ∞.
 # Notation as in lessons 6.3–6.6: per unit mass ε, h, u_eff; μ, e, p, a, GM; r⃗ = r⃗₁ − r⃗₂. YAML note: never "…" for TeX.
 #
 # Every number is computed from the values the prompt prints (GM_E = 3.98e14 and GM_S = 1.33e20 m³/s² where printed,
@@ -91,15 +106,16 @@ questions:
         qualitative: true
         objectives: [OBJ-6.3-1, OBJ-6.3-2]
         prompt: >-
-          (1) כתבו את $\varepsilon$ של הלוויין אחרי הדחיפה בעזרת הפוטנציאל האפקטיבי ליחידת מסה, $u_{\text{eff}}(r)$, והראו ש-P
-          היא נקודת הקרבה של המסלול החדש.
+          (1) כתבו את $\varepsilon$ של הלוויין אחרי הדחיפה כסכום של $\tfrac12\dot r^2$ ושל הפוטנציאל האפקטיבי ליחידת מסה,
+          $u_{\text{eff}}(r)$, והראו ש-P היא נקודת הקרבה של המסלול החדש.
 
-          (2) הראו שהמסלול החדש קשור, ומצאו את ה-$\lambda$ הגדול ביותר שבו הוא עדיין קשור.
+          (2) בטאו את $\varepsilon$ באמצעות $\lambda$ ו-$GM_E/r_0$, הראו שהמסלול החדש קשור, ומצאו לאילו ערכים של $\lambda$
+          המסלול נשאר קשור.
         hints:
           - 'מה $\dot r$ מיד אחרי הדחיפה? ואיפה נמצא עכשיו המינימום של $u_{\text{eff}}$, ביחס ל-$r_0$?'
         solution:
           - { kind: law, text: 'בכוח מרכזי $\varepsilon$ ו-$h$ נשמרים, ו-$\varepsilon = \tfrac12\dot r^2 + u_{\text{eff}}(r)$ עם $u_{\text{eff}}(r) = \dfrac{h^2}{2r^2} - \dfrac{GM_E}{r}$.' }
-          - { kind: manipulation, text: 'מיד אחרי הדחיפה המהירות משיקה למעגל, ניצבת לרדיוס: $\dot r = 0$, ולכן P היא נקודת מפנה, $\varepsilon = u_{\text{eff}}(r_0)$. התנע הזוויתי החדש $h = r_0\lambda v_c$, והמינימום של $u_{\text{eff}}$ זז ל-$r = \dfrac{h^2}{GM_E} = \lambda^2r_0 > r_0$, כי $v_c^2 = GM_E/r_0$. P נמצאת משמאל למינימום, בצד הפנימי של הבור: זו נקודת המפנה הפנימית, נקודת הקרבה.' }
+          - { kind: manipulation, text: 'מיד אחרי הדחיפה המהירות משיקה למעגל, ניצבת לרדיוס: $\dot r = 0$, ולכן P היא נקודת מפנה, $\varepsilon = u_{\text{eff}}(r_0)$. התנע הזוויתי החדש $h = r_0\lambda v_c$, והמינימום של $u_{\text{eff}}$ זז ל-$r = \dfrac{h^2}{GM_E} = \lambda^2r_0 > r_0$, כי $v_c^2 = GM_E/r_0$. P נמצאת ב-$r$ קטן מזה של המינימום, בצד הפנימי של הבור: זו נקודת המפנה הפנימית, נקודת הקרבה.' }
           - { kind: manipulation, text: 'האנרגיה: $\varepsilon = \tfrac12\lambda^2v_c^2 - \dfrac{GM_E}{r_0} = \left(\dfrac{\lambda^2}{2} - 1\right)\dfrac{GM_E}{r_0}$. המסלול קשור כש-$\varepsilon < 0$, כלומר כש-$\lambda < \sqrt2$. עם $\lambda = 1.20$: $\varepsilon = -0.28\,GM_E/r_0 < 0$.' }
           - { kind: limit, text: 'כש-$\lambda = 1$: $\varepsilon = -\dfrac{GM_E}{2r_0}$, המינימום של $u_{\text{eff}}$, והמסלול נשאר המעגל. כש-$\lambda = \sqrt2$: $\varepsilon = 0$, והלוויין בורח בפרבולה, ו-$\lambda v_c = \sqrt{2GM_E/r_0}$ היא מהירות המילוט.' }
           - { kind: units, text: '$\dfrac{GM_E}{r_0}$ ביחידות $\dfrac{\text{m}^3/\text{s}^2}{\text{m}} = \text{m}^2/\text{s}^2 = \text{J/kg}$, כמו $\varepsilon$, ו-$\lambda$ חסר ממדים.' }
@@ -262,7 +278,7 @@ questions:
           - 'איך משתנים $a$ וסכום המסות כשכל המהירויות גדלות פי $1/\sin i$ וזמן המחזור נשאר?'
           - 'החלק של $m_1$ בסכום המסות: $\dfrac{m_1}{m_1 + m_2} = \dfrac{r_2}{r_1 + r_2}$.'
         solution:
-          - { kind: law, text: 'המהירויות האמיתיות הן $v_1 = K_1/\sin i$ ו-$v_2 = K_2/\sin i$. מחלק ג, $m_1 + m_2 = \dfrac{(v_1 + v_2)^3T}{2\pi G}$. ממרכז המסה, כמו בחלק א, $\dfrac{m_1}{m_1 + m_2} = \dfrac{r_2}{r_1 + r_2} = \dfrac{v_2}{v_1 + v_2}$.' }
+          - { kind: law, text: 'המהירות של כוכב נמצאת במישור המסלול. קו הראייה יוצר זווית $i$ עם הניצב למישור, ולכן זווית $90^\circ - i$ עם ההיטל שלו על המישור. הרכיב של המהירות לאורך קו הראייה מרבי כשהמהירות פונה לאורך ההיטל הזה, ואז הוא $v\cos(90^\circ - i) = v\sin i$. לכן המהירויות האמיתיות הן $v_1 = K_1/\sin i$ ו-$v_2 = K_2/\sin i$. מחלק ג, $m_1 + m_2 = \dfrac{(v_1 + v_2)^3T}{2\pi G}$. ממרכז המסה, כמו בחלק א, $\dfrac{m_1}{m_1 + m_2} = \dfrac{r_2}{r_1 + r_2} = \dfrac{v_2}{v_1 + v_2}$.' }
           - { kind: manipulation, text: 'כופלים: $$m_1 = \frac{v_2(v_1 + v_2)^2T}{2\pi G} = \frac{K_2(K_1 + K_2)^2T}{2\pi G\sin^3 i}$$ כל המהירויות גדלות פי $1/\sin i$ ו-$T$ לא משתנה, ולכן המסה גדלה פי $1/\sin^3 i$. מלבד $\sin^3 i$, באגף ימין רק גדלים שנמדדו: מהמדידות לבדן יוצא $m_1\sin^3 i = \dfrac{K_2(K_1 + K_2)^2T}{2\pi G}$.' }
           - { kind: limit, text: 'ב-$i = 90^\circ$, $\sin i = 1$, וחוזרים למסה של חלק ג. כש-$i \to 0$ מסתכלים על המסלול מלמעלה, כל $K \to 0$, ודופלר לא מראה כלום. מכיוון ש-$\sin^3 i \le 1$, כשהנטייה לא ידועה הערך $K_2(K_1 + K_2)^2T/(2\pi G)$ הוא גבול תחתון למסה.' }
           - { kind: units, text: 'כמו בחלק ג: $\dfrac{(\text{m/s})^3\cdot\text{s}}{\text{N}\cdot\text{m}^2/\text{kg}^2} = \text{kg}$, ו-$\sin i$ חסר ממדים.' }
@@ -312,8 +328,8 @@ questions:
         level: mid
         objectives: [OBJ-6.1-2]
         prompt: >-
-          הראו שהכדור נע בתנועה הרמונית, ומצאו ביטוי לזמן המחזור שלה. בדקו את היחידות של הביטוי, וחשבו את זמן המחזור
-          בדקות.
+          הראו שהכדור נע בתנועה הרמונית, ומצאו ביטוי לזמן המחזור שלה. בדקו אם הוא תלוי במסת הכדור ובעומק שממנו
+          משחררים אותו, בדקו את היחידות של הביטוי, וחשבו את זמן המחזור בדקות.
         hints:
           - 'כתבו את הכוח על הכדור במרחק $x$ מהמרכז לאורך המנהרה. האם הוא מהצורה $F = -\kappa x$?'
         solution:
@@ -326,7 +342,7 @@ questions:
         rubric:
           - text: השתמשתי במשפט הקליפה, וכתבתי את המסה המושכת $M_E x^3/R_E^3$.
           - text: קיבלתי כוח מחזיר ליניארי, $F_x = -\dfrac{GM_Em}{R_E^3}x$, וזיהיתי תנועה הרמונית עם $\omega^2 = GM_E/R_E^3$.
-          - text: בדקתי ש-$T$ לא תלוי במסת הכדור ובאמפליטודה, ושהוא החוק השלישי של קפלר למסלול ברדיוס $R_E$.
+          - text: בדקתי ש-$T$ לא תלוי במסת הכדור ובאמפליטודה, כלומר בעומק שממנו משחררים אותו.
           - text: בדקתי שהיחידות של $T$ הן שניות.
           - text: חישבתי $T \approx 84$ דקות.
 
@@ -358,9 +374,9 @@ questions:
         qualitative: true
         objectives: [OBJ-6.5-2, OBJ-6.1-2]
         prompt: >-
-          בלי תוספת מהירות, הכדור מחלק ב חוזר על התנועה שלו. איפה נמצא הלוויין כשהכדור עובר, בפעם הראשונה, במרכז כדור הארץ?
+          הכדור מחלק ב נע הלוך ושוב במנהרה. איפה נמצא הלוויין כשהכדור עובר, בפעם הראשונה, במרכז כדור הארץ?
         choices:
-          - text: 'ברבע הדרך סביב כדור הארץ, מעל המרכז בכיוון הניצב למנהרה; ושם מהירותו שווה למהירות הכדור, ומקבילה לה.'
+          - text: 'רבע סיבוב אחרי A: מעל המרכז, על הקו שניצב למנהרה; ושם מהירותו שווה למהירות הכדור, ומקבילה לה.'
             correct: true
             feedback: >-
               נכון. לזמן המחזור של הלוויין, מהחוק השלישי עם $a = R_E$, אותו ערך כמו של הכדור. אם הוא במקום
@@ -388,8 +404,8 @@ questions:
           (1) בחרו $U(\infty) = 0$, והראו שבתוך כדור הארץ, במרחק $r \le R_E$ מהמרכז, האנרגיה הפוטנציאלית של הכדור היא
           $$U(r) = -\frac{GM_Em}{2R_E^3}\left(3R_E^2 - r^2\right)$$
 
-          (2) בטאו באמצעות $G$, $M_E$ ו-$R_E$ את המהירות המינימלית שצריך לתת לכדור במרכז כדור הארץ, לאורך המנהרה, כדי
-          שייצא ממנה וימשיך עד אינסוף. חשבו אותה ב-$\text{km/s}$.
+          (2) בטאו באמצעות $G$, $M_E$ ו-$R_E$ את המהירות המינימלית שצריכה להיות לכדור כשהוא עובר במרכז כדור הארץ, לאורך
+          המנהרה, כדי שייצא ממנה וימשיך עד אינסוף. חשבו אותה ב-$\text{km/s}$.
         hints:
           - 'מה העבודה של הכוח מחלק ב, $F_r = -\dfrac{GM_Em}{R_E^3}\,r$, בדרך מ-$R_E$ עד $r$?'
           - 'חברו אנרגיות, לא מהירויות: בדרך מהמרכז עד אינסוף $U$ עולה מ-$U(0)$ עד אפס.'
@@ -397,14 +413,14 @@ questions:
           - { kind: law, text: 'אנרגיה פוטנציאלית של כוח משמר: $U(r) = U(R_E) - \displaystyle\int_{R_E}^{r}F_r(s)\,ds$. מחוץ לכדור $U(R_E) = -\dfrac{GM_Em}{R_E}$, ובתוכו, מחלק ב, $F_r(s) = -\dfrac{GM_Em}{R_E^3}\,s$.' }
           - { kind: manipulation, text: '$$U(r) = -\frac{GM_Em}{R_E} + \frac{GM_Em}{R_E^3}\int_{R_E}^{r}s\,ds = -\frac{GM_Em}{R_E} + \frac{GM_Em}{2R_E^3}\left(r^2 - R_E^2\right) = -\frac{GM_Em}{2R_E^3}\left(3R_E^2 - r^2\right)$$ ובמרכז $U(0) = -\dfrac{3GM_Em}{2R_E}$.' }
           - { kind: manipulation, text: 'שימור אנרגיה מהמרכז עד אינסוף, שם $U = 0$ ובמהירות המינימלית גם האנרגיה הקינטית מגיעה לאפס: $\tfrac12mv^2 - \dfrac{3GM_Em}{2R_E} = 0$, ולכן $$v = \sqrt{\frac{3GM_E}{R_E}}$$' }
-          - { kind: limit, text: 'ב-$r = R_E$ הביטוי נותן $U(R_E) = -GM_Em/R_E$, הערך שמחוץ לכדור: $U$ רציפה על פני השטח. ו-$v^2 = \dfrac{GM_E}{R_E} + \dfrac{2GM_E}{R_E}$: ריבוע המהירות במרכז מחלק ג ועוד ריבוע מהירות המילוט מפני השטח. בלי החלק שבתוך המנהרה נשארת מהירות המילוט מפני השטח, ולכן התשובה גדולה ממנה.' }
+          - { kind: limit, text: 'ב-$r = R_E$ הביטוי נותן $U(R_E) = -GM_Em/R_E$, הערך שמחוץ לכדור: $U$ רציפה על פני השטח. ואותו חישוב מעומק כלשהו, $r$, נותן את המהירות המינימלית $v(r) = \sqrt{2|U(r)|/m} = \sqrt{GM_E\left(3R_E^2 - r^2\right)/R_E^3}$: ב-$r = R_E$ זו מהירות המילוט מפני השטח, $\sqrt{2GM_E/R_E}$, וב-$r = 0$ התשובה שלנו, גדולה ממנה.' }
           - { kind: units, text: '$\dfrac{GM_E}{R_E}$ ביחידות $\dfrac{\text{N}\cdot\text{m}^2/\text{kg}^2\cdot\text{kg}}{\text{m}} = \dfrac{\text{N}\cdot\text{m}}{\text{kg}} = \text{m}^2/\text{s}^2$, ולכן $v$ ב-$\text{m/s}$.' }
           - { kind: substitution, text: '$v = \sqrt{\dfrac{3\cdot6.67\cdot10^{-11}\cdot5.97\cdot10^{24}}{6.37\cdot10^{6}}} = 13.7\,\text{km/s}$, לעומת $11.2\,\text{km/s}$ מפני השטח. חיבור המהירויות, $7.91 + 11.2 = 19.1$, שגוי: האנרגיות מתחברות, לא המהירויות.' }
           - { kind: result, text: 'בתוך כדור הארץ $U(r) = -\dfrac{GM_Em}{2R_E^3}(3R_E^2 - r^2)$, ובמרכז היא עמוקה פי $1.5$ מאשר על פני השטח. המהירות המינימלית מהמרכז היא $v = \sqrt{3GM_E/R_E} = 13.7\,\text{km/s}$.' }
         rubric:
           - text: 'כתבתי את $U(r)$ כאינטגרל של הכוח מחלק ב, החל מ-$U(R_E) = -GM_Em/R_E$, וקיבלתי את הביטוי.'
           - text: 'השתמשתי בשימור אנרגיה מהמרכז עד אינסוף, וקיבלתי $v = \sqrt{3GM_E/R_E}$.'
-          - text: 'בדקתי ש-$U$ רציפה ב-$R_E$, ושהתוצאה גדולה ממהירות המילוט מפני השטח.'
+          - text: 'בדקתי ש-$U$ רציפה ב-$R_E$, ושמאותו חישוב מפני השטח, $r = R_E$, חוזרת מהירות המילוט $\sqrt{2GM_E/R_E}$.'
           - text: 'חישבתי כ-$13.7\,\text{km/s}$.'
 
   # ------------------------------------------------------------ 4: a Hohmann transfer from the Earth to Ceres
@@ -511,17 +527,18 @@ questions:
           - { kind: substitution, text: '$t = \pi\sqrt{\dfrac{(2.83\cdot10^{11})^3}{1.33\cdot10^{20}}} = 4.10\cdot10^{7}\,\text{s}$, כ-474 ימים. $(1.885/2.77)^{3/2} = 0.561$, ולכן קרס עובר $101.0^\circ$, ו-$\varphi = 79.0^\circ$.' }
           - { kind: result, text: 'הדרך נמשכת כ-474 ימים, יותר משנה. ברגע היציאה קרס צריך להקדים את כדור הארץ בכ-$79^\circ$.' }
         rubric:
-          - text: חישבתי את זמן הדרך כחצי זמן המחזור של אליפסת המעבר, עם $a = 1.885\,\text{AU}$, וקיבלתי כ-474 ימים.
-          - text: חישבתי את הזווית שקרס עובר בזמן הדרך, כ-$101^\circ$, מזמן המחזור שלו.
-          - text: הבנתי שהחללית מגיעה לנקודה שמול נקודת היציאה, וקיבלתי הקדמה של כ-$79^\circ$.
-          - text: בדקתי גבול, למשל ש-$r_2 \to r_1$ נותן הקדמה אפס.
+          - text: 'כתבתי את זמן הדרך כחצי זמן המחזור של אליפסת המעבר, $t = \pi\sqrt{a^3/(GM_S)}$ עם $a = (r_1 + r_2)/2$.'
+          - text: 'הבנתי שהחללית מגיעה לנקודה שמול נקודת היציאה, וקיבלתי $\varphi = 180^\circ\left[1 - \left(\dfrac{r_1 + r_2}{2r_2}\right)^{3/2}\right]$.'
+          - text: 'בדקתי גבול, למשל ש-$r_2 \to r_1$ נותן הקדמה אפס.'
+          - text: 'בדקתי ש-$t$ יוצא בשניות ו-$\varphi$ חסרת ממדים.'
+          - text: 'חישבתי כ-474 ימים, תנועה של כ-$101^\circ$ של קרס, והקדמה של כ-$79^\circ$.'
 
   # ------------------------------------------------------------ 5: a satellite hit by debris falling toward the Earth
   - id: Q-6-bagrut-5
     type: bagrut
     title: לוויין שנפגע מגוש פסולת
     prompt: >-
-      לוויין בעל מסה $M$ נע סביב כדור הארץ במסלול מעגלי ברדיוס $r_0$, במהירות $v_c = \sqrt{GM_E/r_0}$. גוש פסולת קטן
+      לוויין בעל מסה $M$ נע סביב כדור הארץ במסלול מעגלי ברדיוס $r_0$, במהירות $v_c = \sqrt{GM_E/r_0}$. גוש פסולת
       בעל מסה $m$ נע בקו ישר אל מרכז כדור הארץ, במהירות $v_d$, פוגע בלוויין ונצמד אליו. ההתנגשות קצרה מאוד לעומת זמן
       המחזור, ומתרחשת במרחק $r_0$ מהמרכז. מסות הלוויין והגוש זניחות לעומת מסת כדור הארץ, ולכן כדור הארץ נשאר במנוחה
       במערכת ייחוס אינרציאלית. $\hat r$ פונה מהמרכז החוצה, ו-$\hat\theta$ בכיוון התנועה של הלוויין.
@@ -561,7 +578,7 @@ questions:
         type: open
         points: 6
         level: mid
-        objectives: [OBJ-3.5-2, OBJ-4.1-1, OBJ-4.2-2]
+        objectives: [OBJ-3.5-2, OBJ-4.3-1, OBJ-4.2-2]
         prompt: >-
           בטאו באמצעות $M$, $m$, $v_d$ ו-$v_c$ את הרכיבים $V_r$ ו-$V_\theta$ של מהירות הגוף המשותף מיד אחרי ההתנגשות,
           ואת האנרגיה הקינטית $\Delta K$ שהלכה לאיבוד בהתנגשות.
@@ -570,13 +587,13 @@ questions:
         solution:
           - { kind: law, text: 'שימור התנע בזמן ההתנגשות (חלק א). מיד לפניה תנע הלוויין $Mv_c\,\hat\theta$ ותנע הגוש $\vec p_d = -mv_d\,\hat r$, פנימה; אחריה יש גוף אחד, בעל מסה $M + m$ ומהירות $\vec V$: $(M + m)\vec V = Mv_c\,\hat\theta - mv_d\,\hat r$.' }
           - { kind: manipulation, text: 'ברכיבים: $V_\theta = \dfrac{M}{M + m}v_c$ ו-$V_r = -\dfrac{m}{M + m}v_d$. הגוף המשותף איטי מ-$v_c$ ונע מעט פנימה.' }
-          - { kind: manipulation, text: 'לפני: $K_0 = \tfrac12Mv_c^2 + \tfrac12mv_d^2$. אחרי: $K_1 = \dfrac{M^2v_c^2 + m^2v_d^2}{2(M + m)}$. על מכנה משותף: $$\Delta K = K_0 - K_1 = \frac{(M + m)(Mv_c^2 + mv_d^2) - M^2v_c^2 - m^2v_d^2}{2(M + m)} = \frac12\,\frac{Mm}{M + m}\left(v_c^2 + v_d^2\right)$$ זה $\tfrac12\mu v_{\text{rel}}^2$, עם המסה המצומצמת $\mu$ וגודל המהירות היחסית $\sqrt{v_c^2 + v_d^2}$ (שתי המהירויות ניצבות): בהתנגשות פלסטית כל האנרגיה של התנועה היחסית הולכת לאיבוד.' }
-          - { kind: limit, text: 'כש-$m \ll M$: $V_\theta \to v_c$, $V_r \to 0$ ו-$\Delta K \to \tfrac12m(v_c^2 + v_d^2)$, כל האנרגיה הקינטית של הגוש במערכת של הלוויין: לוויין כבד כמעט לא מרגיש את הפגיעה. וכש-$v_d = 0$, גוש שעומד במערכת האינרציאלית, $\Delta K = \tfrac12\mu v_c^2$.' }
+          - { kind: manipulation, text: 'לפני: $K_0 = \tfrac12Mv_c^2 + \tfrac12mv_d^2$. אחרי: $K_1 = \dfrac{M^2v_c^2 + m^2v_d^2}{2(M + m)}$. על מכנה משותף: $$\Delta K = K_0 - K_1 = \frac{(M + m)(Mv_c^2 + mv_d^2) - M^2v_c^2 - m^2v_d^2}{2(M + m)} = \frac12\,\frac{Mm}{M + m}\left(v_c^2 + v_d^2\right)$$ זה $\tfrac12\mu_{Mm}v_{\text{rel}}^2$, עם המסה המצומצמת של הלוויין והגוש, $\mu_{Mm} = \dfrac{Mm}{M + m}$, וגודל המהירות היחסית $\sqrt{v_c^2 + v_d^2}$ (שתי המהירויות ניצבות): בהתנגשות פלסטית כל האנרגיה של התנועה היחסית הולכת לאיבוד.' }
+          - { kind: limit, text: 'כש-$m \ll M$: $V_\theta \to v_c$, $V_r \to 0$ ו-$\Delta K \to \tfrac12m(v_c^2 + v_d^2)$, כל האנרגיה הקינטית של הגוש במערכת של הלוויין: לוויין כבד כמעט לא מרגיש את הפגיעה. וכש-$v_d = 0$, גוש שעומד במערכת האינרציאלית, $\Delta K = \tfrac12\mu_{Mm}v_c^2$.' }
           - { kind: units, text: '$\dfrac{Mm}{M + m}$ ביחידות $\text{kg}$, ולכן $\Delta K$ ב-$\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.' }
           - { kind: result, text: '$V_\theta = \dfrac{Mv_c}{M + m}$ ו-$V_r = -\dfrac{mv_d}{M + m}$ (פנימה). האנרגיה שהלכה לאיבוד: $\Delta K = \tfrac12\dfrac{Mm}{M + m}\left(v_c^2 + v_d^2\right)$.' }
         rubric:
           - text: 'כתבתי שימור תנע וקטורי ופירקתי אותו לרכיב משיקי ולרכיב רדיאלי.'
-          - text: 'קיבלתי $\Delta K = \tfrac12\mu(v_c^2 + v_d^2)$, וזיהיתי בו את האנרגיה של התנועה היחסית.'
+          - text: 'קיבלתי $\Delta K = \tfrac12\mu_{Mm}(v_c^2 + v_d^2)$, וזיהיתי בו את האנרגיה של התנועה היחסית.'
           - text: 'בדקתי שכש-$m \ll M$ מהירות הלוויין כמעט לא משתנה.'
 
       - label: ג
@@ -600,13 +617,14 @@ questions:
           - { kind: law, text: 'בכוח מרכזי נשמרים $h = rV_\theta$ ו-$\varepsilon = \tfrac12V^2 - \dfrac{GM_E}{r} = \tfrac12\dot r^2 + u_{\text{eff}}(r)$, עם $u_{\text{eff}}(r) = \dfrac{h^2}{2r^2} - \dfrac{GM_E}{r}$. בזמן ההתנגשות הכוח החיצוני היחיד הוא הכבידה, שהמומנט שלה סביב המרכז אפס, ולכן התנע הזוויתי הכולל של שני הגופים נשמר.' }
           - { kind: manipulation, text: '$h = r_0\kappa v_c$. בדרך השנייה: לגוש, שנע לאורך הרדיוס, אין תנע זוויתי סביב המרכז, ולכן $(M + m)h = Mr_0v_c$, ושוב $h = \kappa r_0v_c$. עם $GM_E/r_0 = v_c^2$: $$\varepsilon = \tfrac12\left(\kappa^2v_c^2 + w^2\right) - v_c^2$$' }
           - { kind: manipulation, text: 'מיד אחרי הפגיעה $\dot r = V_r = -w \ne 0$, ולכן זו לא נקודת מפנה: לא נקודת קרבה ולא נקודת ריחוק. $\dot r < 0$: הגוף מתקרב לכדור הארץ, בדרך אל נקודת הקרבה. המסלול קשור כש-$\varepsilon < 0$, כלומר כש-$\kappa^2v_c^2 + w^2 < 2v_c^2$.' }
-          - { kind: limit, text: 'כש-$m \to 0$: $\kappa \to 1$ ו-$w \to 0$, ולכן $\varepsilon \to -\tfrac12v_c^2 = -\dfrac{GM_E}{2r_0}$, האנרגיה של המסלול המעגלי, ו-$\dot r \to 0$: הלוויין נשאר על המעגל. גוש קל ואיטי משאיר את המסלול קשור, כי אז $\kappa < 1$ ו-$w \ll v_c$.' }
+          - { kind: limit, text: 'כש-$m \to 0$: $\kappa \to 1$ ו-$w \to 0$, ולכן $\varepsilon \to -\tfrac12v_c^2 = -\dfrac{GM_E}{2r_0}$, האנרגיה של המסלול המעגלי, ו-$\dot r \to 0$: הלוויין נשאר על המעגל. ותמיד $\kappa < 1$, כלומר $2 - \kappa^2 > 1$, ולכן המסלול קשור בוודאות כש-$w < v_c$: כל גוש שהתנע שלו, $mv_d$, קטן מ-$(M + m)v_c$.' }
           - { kind: units, text: '$h$ ביחידות $\text{m}\cdot\text{m/s} = \text{m}^2/\text{s}$, ו-$\varepsilon$ ביחידות $\text{m}^2/\text{s}^2 = \text{J/kg}$.' }
           - { kind: result, text: '$h = \kappa r_0v_c$ ו-$\varepsilon = \tfrac12(\kappa^2v_c^2 + w^2) - v_c^2$. נקודת הפגיעה אינה נקודת מפנה, והגוף נע ממנה אל נקודת הקרבה. המסלול קשור כש-$\kappa^2v_c^2 + w^2 < 2v_c^2$.' }
         rubric:
           - text: 'כתבתי $h = \kappa r_0v_c$ ובדקתי אותו משימור התנע הזוויתי של שני הגופים, שבו לגוש תנע זוויתי אפס.'
           - text: 'כתבתי את $\varepsilon$ עם שני רכיבי המהירות והשתמשתי ב-$GM_E/r_0 = v_c^2$.'
           - text: 'נימקתי מ-$\dot r \ne 0$ שנקודת הפגיעה אינה נקודת מפנה, ומ-$\dot r < 0$ שהגוף נע אל נקודת הקרבה.'
+          - text: 'דרשתי $\varepsilon < 0$ וקיבלתי את תנאי הקשירה $\kappa^2v_c^2 + w^2 < 2v_c^2$.'
           - text: 'בדקתי שכש-$m \to 0$ חוזרים לאנרגיה של המסלול המעגלי.'
 
       - label: ד
@@ -621,7 +639,7 @@ questions:
           ובטאו את המרחק הקטן ביותר מהמרכז, $r_p$, באמצעות $\kappa$, $e$ ו-$r_0$.
 
           (2) בדקו את הביטוי ל-$e$ בשלושה גבולות: $m \to 0$; גוש שעומד במערכת האינרציאלית, $v_d = 0$; ולוויין שמקבל רק
-          דחיפה רדיאלית, $\kappa \to 1$ כש-$w$ קבוע (גוש קל ומהיר מאוד).
+          דחיפה רדיאלית, $\kappa \to 1$ כש-$w$ קבוע (גוש קל ומהיר מאוד: $m \to 0$ ו-$v_d \to \infty$, כך ש-$mv_d$ נשאר סופי).
 
           (3) חשבו את $e$ ואת $r_p/r_0$ כש-$m = M/4$ ו-$v_d = v_c$. האם לוויין שנע במסלול ברדיוס $r_0 = 2R_E$ יפגע בכדור
           הארץ?

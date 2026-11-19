@@ -19,6 +19,22 @@
 #   Misconceptions: every tag dropped by a conversion (proper-time-rest-frame on 3ב, classical-doppler on 2ב, sign
 #   and γ slips on 1ג/4ג) is still detected in the lesson banks; 5א adds detectors for MC-9-acceleration-slows-clock
 #   and MC-9-twins-same-age.
+# Independent review 2026-11-18 (.scratch/review/ch9/indep.ts, own routes): 31 numbers and 9 symbolic results
+#   recomputed, all agree: 1 by the Lorentz module and a bisection for the light/ship meeting (both frames);
+#   2 by simulating every signal's emission and arrival (10 received, 3 + 3 seen) and N₁, N₂ at (0.6, 0.9),
+#   (0.5, 0.99); 3 by emission events and doppler.receivedProperPeriod (γ_u identity also at three other pairs);
+#   4 by lorentz/simultaneityShift/interval (β*: exit strike at x′ = 400 m = L₀); 5 Δ exact vs first order, and 5ד
+#   by RK4 of the Kepler orbit (∮v²dt = GMT/a and ∮dt/r = T/a to 1e-7 at e = 0, 0.3, 0.7, 0.9). Changed:
+#   standalone: false on 1ג, 2ד, 3ד, 4ד (each checks against or uses an earlier part); 5ג's aside on real satellites
+#   was too general (in a low orbit the motion wins) and now names this orbit and a ground clock: gravity gains
+#   GM/c²(1/R_E − 1/r) = 45.6 μs/day against the 7.2 lost, net +38 μs/day fast (sign and net checked against
+#   Ashby's NTS-2 result, +446.5e-12, opened at pmc.ncbi.nlm.nih.gov/articles/PMC5253894); 5ד names the point of h.
+#   After the student read: 1ד shows X/(γ(1+β)) = γX(1−β); 2 states D's receding convention in ד's prompt and law and
+#   writes ב in 9.4's (f = f₀D(−β)); 2ג commonWrong 9 (the signal at the turn forgotten); 3ד prompt reworded, (1)'s
+#   2.0 μs stated, the u′ = c check done on the final formula; 3ב small-speed step written out; 4ד(3) checks the ends
+#   in S′ directly (x′ = γ*ℓ₀ = L₀), the moving tunnel kept as the picture; 5 prompt sentence split, 5א feedback no
+#   longer leans on ג's approximation; 5ג names x as the small quantity and its limit returns 9.2's v²/(2c²); 5ד uses
+#   ∫₀^T, writes the change of variable and the h = √(GMp) reduction as steps, and checks e → 0 against ג and e → 1.
 # YAML note: plain, single-quoted and >- strings keep backslashes literally; never use "…" for TeX.
 #
 # Every number was computed with src/physics/constants.ts (C_LIGHT = 3.0e8), .scratch/ch9/review.ts:
@@ -100,6 +116,7 @@ questions:
         type: open
         points: 7
         level: mid
+        standalone: false
         objectives: [OBJ-9.3-2, OBJ-9.3-1]
         prompt: >-
           ב-$S$, ההבזק של B בו-זמני עם המעבר של החללית ליד A. מצאו את הזמן $t'$ ואת המקום $x'$ של מאורע ההבזק במערכת של
@@ -163,7 +180,7 @@ questions:
           - kind: law
             text: >-
               טרנספורמציית לורנץ, $x' = \gamma(x - \beta ct)$ ו-$ct' = \gamma(ct - \beta x)$, ומהירות האור $c$ בשתי המערכות.
-              הקבלה של ההבזק בחללית היא מאורע אחד, במקום אחד, ולכן כל המערכות חייבות להסכים על מה שהשעון שלה מראה בו.
+              הקליטה של ההבזק בחללית היא מאורע אחד, במקום אחד, ולכן כל המערכות חייבות להסכים על מה שהשעון שלה מראה בו.
           - kind: manipulation
             text: >-
               ב-$S$: האור יוצא מ-$x = X$ ב-$t = 0$ ונע שמאלה, $x = X - t$. החללית ב-$x = \beta t$. הם נפגשים כש-$X - t = \beta t$,
@@ -175,8 +192,11 @@ questions:
               $15$ דקות אור אל החללית הנחה, ומגיע אחרי 15 דקות, כשהשעון מראה $15 - 9 = 6.0\,\text{min}$. אותה תשובה.
           - kind: manipulation
             text: >-
-              באופן כללי, $t' = \gamma X(1 - \beta) = X\sqrt{\dfrac{1 - \beta}{1 + \beta}} = X/D(\beta)$, עם גורם דופלר $D(\beta)$ של
-              שיעור 9.4: החללית מתקרבת ל-B. בדיאגרמה:
+              באופן כללי, הדרך ב-$S$ נותנת $t' = \dfrac{X}{\gamma(1 + \beta)}$, והדרך ב-$S'$ נותנת
+              $t' = \gamma X - \gamma\beta X = \gamma X(1 - \beta)$. שני הביטויים שווים, כי
+              $$\frac{1}{\gamma(1 + \beta)} = \frac{\sqrt{(1 - \beta)(1 + \beta)}}{1 + \beta} = \sqrt{\frac{1 - \beta}{1 + \beta}} = \frac{(1 - \beta)}{\sqrt{(1 - \beta)(1 + \beta)}} = \gamma(1 - \beta)$$
+              ולכן $t' = X\sqrt{\dfrac{1 - \beta}{1 + \beta}} = X/D(\beta)$, עם גורם דופלר $D(\beta)$ של שיעור 9.4: החללית
+              מתקרבת ל-B. בדיאגרמה:
               קו העולם של החללית הוא ציר $ct'$, שנוטה ב-$31^\circ$ מציר $ct$. ציר $x'$ הוא הקו $ct = 0.6x$, שנוטה ב-$31^\circ$
               מעל ציר $x$. מאורע ההבזק, $(x, ct) = (12, 0)$, נמצא על ציר $x$, כלומר **מתחת** לציר $x'$: במערכת של החללית הוא
               קרה לפני $t' = 0$. ממנו יוצא קו ב-$45^\circ$, למעלה ושמאלה, ופוגש את קו העולם של החללית ב-$(4.5,\ 7.5)$.
@@ -197,7 +217,9 @@ questions:
         rubric:
           - text: מצאתי במערכת $S$ את נקודת המפגש בין קו העולם של האור לקו העולם של החללית, וחילקתי את הזמן ב-$\gamma$.
           - text: חזרתי על החשבון ב-$S'$, מהזמן ומהמקום של ההבזק בחלק ג, וקיבלתי אותה תשובה.
-          - text: כתבתי ביטוי כללי, $\gamma X(1 - \beta)$ או בצורה השקולה $X\sqrt{(1 - \beta)/(1 + \beta)}$, ובדקתי את הגבולות $\beta \to 0$ ו-$\beta \to 1$.
+          - text: >-
+              כתבתי ביטוי כללי, $X/(\gamma(1 + \beta))$ מ-$S$ ו-$\gamma X(1 - \beta)$ מ-$S'$, הראיתי ששניהם
+              $X\sqrt{(1 - \beta)/(1 + \beta)}$, ובדקתי את הגבולות $\beta \to 0$ ו-$\beta \to 1$.
           - text: שרטטתי את ציר $ct'$ ואת ציר $x'$ נוטים לקראת קו האור, וקבעתי שמאורע ההבזק מתחת לציר $x'$.
 
   # ------------------------------------------------------------ 2: twins who send a signal every year
@@ -254,8 +276,9 @@ questions:
           - kind: manipulation
             text: >-
               שתי השפעות נכנסות: $T/(1 - \beta)$ הוא העיכוב של אות שרודף אחרי מישהי שמתרחקת, כמו בקול, והשעון שלה מפגר פי
-              $\gamma$. נוסחה קלאסית, $T/(1 - \beta)$ או $T(1 + \beta)$, מחמיצה את אחת מהן. התוצאה היא גורם דופלר
-              $D(\beta)$ בהתרחקות (במוסכמה של שיעור 9.4, עם $\beta > 0$ בהתקרבות, $f = f_0D(-0.8) = f_0/3$).
+              $\gamma$. נוסחה קלאסית, $T/(1 - \beta)$ או $T(1 + \beta)$, מחמיצה את אחת מהן. זה אפקט דופלר היחסותי של
+              שיעור 9.4 בהתרחקות. שם $\beta > 0$ בהתקרבות ו-$f = f_0D(\beta)$, ולכן כאן התדירות $f_0D(-\beta)$, והזמן בין
+              האותות $T/D(-\beta) = T\sqrt{(1 + \beta)/(1 - \beta)}$: ב-$\beta = 0.8$, $f = f_0/3$.
           - kind: limit
             text: >-
               כש-$\beta \to 0$, $\Delta\tau \to T$: אות בכל שנה, כמו שנשלח. כש-$\beta \to 1$, $\Delta\tau \to \infty$: אות לא יכול
@@ -298,11 +321,16 @@ questions:
               חילקתם את 6 השנים שלה ב-$\gamma$. זה מה שהשעון של האח מתקדם בשתי הדרכים לפי קו הבו-זמניות של הנוסעת, בלי
               הקפיצה בסיבוב. האותות שהיא מקבלת
               סופרים את כל 10 השנים, וחושפים את הקפיצה: 9 מהם מגיעים בדרך החזרה.
+          - value: 9
+            feedback: >-
+              שכחתם אות אחד: האות הראשון של האח, שנשלח כשהשעון שלו מראה שנה, מגיע אליה בדיוק ברגע הסיבוב, אחרי 3 שנים
+              שלה. השאלה מבקשת לספור גם אותו.
 
       - label: ד
         type: open
         points: 8
         level: bagrut
+        standalone: false
         objectives: [OBJ-9.6-1, OBJ-9.4-2]
         prompt: >-
           עכשיו מהצד של האח. (1) מתי, לפי השעון של כדור הארץ, רואה האח את אחותו מסתובבת? (2) כמה אותות הוא מקבל ממנה לפני
@@ -310,14 +338,18 @@ questions:
           לחלק א. (3) במסע אחר היא יוצאת במהירות $\beta_1c$ לאותו כוכב, במרחק $L$, וחוזרת במהירות **אחרת**, $\beta_2c$. מצאו
           בביטוי כללי, עם $L$, $\beta_1$ ו-$\beta_2$, כמה שנים של השעון שלה האח רואה עוברות לפני שהוא רואה את הסיבוב וכמה
           אחרי, והראו שהסכום הוא הזמן העצמי של הנוסעת בכל המסע. בדקו את הביטוי בגבולות $\beta_2 = \beta_1$ ו-$\beta_2 \to 1$.
+          בחלק הזה, כמו בשיעור 9.6, $\beta$ הוא גודל המהירות ו-$D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$ הוא היחס בין
+          הזמן בין שני אותות שנקלטים לבין הזמן בין השליחות שלהם כשהמקור **מתרחק** (בסימון של שיעור 9.4, שבו $\beta > 0$
+          בהתקרבות, זה $1/D(-\beta)$). כשהמקור מתקרב, היחס הוא $1/D(\beta)$.
         hints:
           - 'הסיבוב קורה במערכת של כדור הארץ ב-$t = 5$ שנים, 4 שנות אור מכאן. מתי האור ממנו מגיע לכדור הארץ?'
           - 'ב-(3) עבדו כמו ב-(1) ו-(2), אבל עם $D(\beta_1)$ לפני שהאח רואה את הסיבוב ועם $D(\beta_2)$ אחריו. מתי היא חוזרת לכדור הארץ?'
         solution:
           - kind: law
             text: >-
-              אפקט דופלר היחסותי: אותות ממקור שמתרחק במהירות $\beta c$ נקלטים בקצב קטן פי $D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$
-              מקצב השליחה בשעון של המקור, ואותות ממקור שמתקרב באותה מהירות בקצב גדול פי $D(\beta)$. האח נשאר במערכת אינרציאלית
+              אפקט דופלר היחסותי, עם $D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$ ו-$\beta$ גודל המהירות, כמו בשאלה: אותות ממקור
+              שמתרחק במהירות $\beta c$ נקלטים בקצב קטן פי $D(\beta)$ מקצב השליחה בשעון של המקור, ואותות ממקור שמתקרב באותה
+              מהירות בקצב גדול פי $D(\beta)$. האח נשאר במערכת אינרציאלית
               אחת, ולכן מותר לו לחשב הכול במערכת שלו, $S$, בשנים ובשנות אור ($c = 1$).
           - kind: manipulation
             text: >-
@@ -415,6 +447,8 @@ questions:
             text: >-
               $v \to 0$: $\gamma_v = 1$ והגורם $1 + u'v/c^2 \to 1$, ולכן $\gamma_u = \gamma_{u'}$: החללית נחה ביחס לכדור הארץ.
               $u' \to 0$: $\gamma_u = \gamma_v$: הגשושית נוסעת יחד עם החללית. ובמהירויות קטנות, עם $\gamma \approx 1 + \beta^2/2$,
+              באגף שמאל $\gamma_u \approx 1 + \beta^2/2$, ובאגף ימין, אחרי שמשמיטים איברים מסדר שלישי ומעלה,
+              $(1 + \beta_1^2/2)(1 + \beta_2^2/2)(1 + \beta_1\beta_2) \approx 1 + \beta_1^2/2 + \beta_2^2/2 + \beta_1\beta_2$. משווים:
               $\beta^2 \approx \beta_1^2 + \beta_2^2 + 2\beta_1\beta_2 = (\beta_1 + \beta_2)^2$: החיבור של גליליי.
           - kind: units
             text: '$u''v/c^2$ חסר ממדים, וגם כל $\gamma$, ולכן $\Delta t$ ביחידות של $T_0$.'
@@ -462,11 +496,13 @@ questions:
         type: open
         points: 8
         level: bagrut
+        standalone: false
         objectives: [OBJ-9.4-1, OBJ-9.4-2]
         prompt: >-
-          כאן $D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$ הוא הגורם שבו הזמן בין הבהובים נקלטים ארוך מהזמן העצמי בין
-          הפליטות, כשהמקור והקולט מתרחקים זה מזה במהירות $\beta c$ (במוסכמה של שיעור 9.4, עם $\beta > 0$ בהתקרבות, זה
-          $1/D(-\beta)$, ושווה ל-$D(\beta)$). לקיצור נכתוב $D(u)$ במקום $D(u/c)$.
+          כאן $D(\beta) = \sqrt{(1 + \beta)/(1 - \beta)}$ הוא היחס בין הזמן בין שני הבהובים שנקלטים לבין הזמן העצמי בין
+          הפליטות שלהם, כשהמקור והקולט מתרחקים זה מזה במהירות $\beta c$. (זו אותה נוסחה כמו בשיעור 9.4, אבל שם $\beta > 0$
+          בהתקרבות והגורם מכפיל את התדירות. בהתרחקות התדירות קטנה פי $D(\beta)$, ולכן הזמן גדל פי $D(\beta)$.) לקיצור נכתוב
+          $D(u)$ במקום $D(u/c)$.
 
           (1) כל כמה זמן, בשעון החללית, עוברים בה ההבהובים שהגשושית שולחת אחורה?
 
@@ -500,23 +536,24 @@ questions:
           - kind: limit
             text: >-
               מהירויות קטנות: $D(\beta) \approx 1 + \beta$, והמכפלה $(1 + \beta_1)(1 + \beta_2) \approx 1 + \beta_1 + \beta_2$, כלומר
-              $u \approx u' + v$, החיבור של גליליי. ו-$u' = c$: $D(u') \to \infty$, ולכן גם $D(u) \to \infty$ ו-$u = c$, בכל $v$, כמו
-              בהנחה השנייה.
+              $u \approx u' + v$, החיבור של גליליי. ו-$u' = c$, בדיקה של הנוסחה הסופית ב-$\beta_1 = 1$ (במקום גשושית, אור
+              שהחללית שולחת קדימה): $\beta = \dfrac{1 + \beta_2}{1 + \beta_2} = 1$, כלומר $u = c$ בכל $v$, כמו בהנחה השנייה.
           - kind: units
             text: >-
               $\beta_1$, $\beta_2$, $D$ ו-$K$ חסרי ממדים, ו-$u$ יוצא ביחידות של $c$, כמו מהירות.
           - kind: substitution
             text: >-
-              כאן $D(0.6) = 2$, ולכן $D(u) = 4$, $K = 16$ ו-$\beta = \dfrac{15}{17} = 0.882$, כמו בחלק א, ו-$4\,\mu\text{s}$ בין
+              כאן $D(0.6) = \sqrt{1.6/0.4} = 2$. ב-(1) ההבהובים עוברים בחללית כל $D(0.6)T_0 = 2.0\,\mu\text{s}$ בשעון שלה.
+              ב-(3) $D(u) = 2\cdot2 = 4$, $K = 16$ ו-$\beta = \dfrac{15}{17} = 0.882$, כמו בחלק א, ו-$4\,\mu\text{s}$ בין
               הבהובים, כמו בחלק ג.
           - kind: result
             text: >-
               גורמי דופלר במהירויות על אותו קו מוכפלים, $D(u) = D(u')D(v)$, וכלל החיבור היחסותי נובע מזה. בגבול האיטי הוא חוזר
               לגליליי, ועם $u' = c$ הוא נותן $c$.
         rubric:
-          - text: הסברתי שההבהובים עוברים בחללית בהפרש $D(u')T_0$ ומגיעים לכדור הארץ כמו הבהובים של מקור שמתרחק במהירות $v$.
+          - text: הסברתי שההבהובים עוברים בחללית בהפרש $D(u')T_0 = 2.0\,\mu\text{s}$ ומגיעים לכדור הארץ כמו הבהובים של מקור שמתרחק במהירות $v$.
           - text: העליתי בריבוע ובודדתי $\beta = (K - 1)/(K + 1)$, וקיבלתי את כלל החיבור.
-          - text: בדקתי שבמהירויות קטנות יוצא $u' + v$, ושעם $u' = c$ יוצא $c$.
+          - text: בדקתי שבמהירויות קטנות יוצא $u' + v$, ושהנוסחה הסופית נותנת $c$ עם $u' = c$.
           - text: בדקתי במספרים שהתוצאה מתאימה לחלקים א ו-ג.
 
   # ------------------------------------------------------------ 4: a train in a tunnel, struck by lightning
@@ -624,6 +661,7 @@ questions:
         type: open
         points: 8
         level: bagrut
+        standalone: false
         objectives: [OBJ-9.6-2, OBJ-9.5-1]
         prompt: >-
           במערכת של המנהרה, $S$, הברקים לא פוגעים ברכבת: הם פוגעים $20\,\text{m}$ לפני החזית שלה ו-$20\,\text{m}$ מאחורי הקצה
@@ -631,8 +669,7 @@ questions:
           (1) מצאו ב-$S'$ את המקום והזמן של כל פגיעה, והראו שגם שם אף ברק לא פוגע ברכבת. (2) חשבו את האינטרוול בין שתי
           הפגיעות, סווגו אותו, והסבירו למה סדר הפגיעות יכול להיות שונה בשתי המערכות. (3) מצאו בביטוי כללי, באמצעות $L_0$
           ו-$\ell_0$, את המהירות $\beta^*$ שממנה הרכבת נכנסת כולה למנהרה במערכת של המנהרה, ובדקו אותו בגבולות $\ell_0 \to L_0$
-          ו-$\ell_0 \ll L_0$. הראו שבמהירות הזו הברקים פוגעים בדיוק בשני הקצוות של הרכבת, בשתי המערכות. ב-$S'$ זכרו שהמנהרה
-          זזה בין שתי הפגיעות.
+          ו-$\ell_0 \ll L_0$. הראו שבמהירות הזו הברקים פוגעים בדיוק בשני הקצוות של הרכבת, בשתי המערכות.
         hints:
           - 'ב-$S$ שימו את הכניסה ב-$x = 0$ ואת היציאה ב-$x = 360\,\text{m}$, והפגיעות ב-$t = 0$. איפה הקצוות של הרכבת?'
           - 'במערכת של הרכבת הקצוות שלה נחים, ב-$x'' = \gamma x$ של המקום שלהם ברגע $t = 0$.'
@@ -657,11 +694,12 @@ questions:
             text: >-
               הרכבת נכנסת למנהרה במערכת של המנהרה כש-$L_0/\gamma \le \ell_0$, כלומר $\gamma \ge L_0/\ell_0$, ו-$1 - \beta^2 \le (\ell_0/L_0)^2$:
               $$\beta^* = \sqrt{1 - \left(\frac{\ell_0}{L_0}\right)^2},\qquad \gamma^* = \frac{L_0}{\ell_0}$$
-              במהירות הזו בדיוק הרכבת באורך $\ell_0$ במערכת של המנהרה, ושני הברקים פוגעים בדיוק בשני הקצוות שלה. במערכת של
-              הרכבת המנהרה באורך $\ell_0/\gamma^*$, ובין הפגיעות, $\gamma^*\beta^*\ell_0/c$ לפי חלק ג, היא זזה
-              $\beta^*c\cdot\gamma^*\beta^*\ell_0/c = \gamma^*\beta^{*2}\ell_0$. יחד
-              $$\frac{\ell_0}{\gamma^*} + \gamma^*\beta^{*2}\ell_0 = \gamma^*\ell_0\left(\frac{1}{\gamma^{*2}} + \beta^{*2}\right) = \gamma^*\ell_0 = L_0$$
-              שוב בדיוק הקצוות. ההסכמה על "נגע או לא נגע" נשמרת גם בגבול.
+              במהירות הזו בדיוק הרכבת באורך $\ell_0$ במערכת של המנהרה, ושני הברקים פוגעים בדיוק בשני הקצוות שלה: הקצה
+              האחורי ב-$x = 0$ והחזית ב-$x = \ell_0$ ברגע $t = 0$. במערכת של הרכבת, מהטרנספורמציה, הקצה האחורי ב-$x' = 0$
+              והחזית ב-$x' = \gamma^*\ell_0 = L_0$, והפגיעות ב-$x' = 0$ וב-$x' = \gamma^*\ell_0 = L_0$: שוב בדיוק הקצוות.
+              ואיך מנהרה באורך $\ell_0/\gamma^* < L_0$ מספיקה לזה: בין הפגיעות, $\gamma^*\beta^*\ell_0/c$ לפי חלק ג, היא זזה
+              $\gamma^*\beta^{*2}\ell_0$, ו-$\ell_0/\gamma^* + \gamma^*\beta^{*2}\ell_0 = \gamma^*\ell_0\left(1/\gamma^{*2} + \beta^{*2}\right) = L_0$.
+              ההסכמה על "נגע או לא נגע" נשמרת גם בגבול.
           - kind: limit
             text: >-
               כש-$\ell_0 \to L_0$, $\beta^* \to 0$: מנהרה ארוכה כמו הרכבת מכילה אותה כבר במנוחה. כש-$\ell_0 \ll L_0$, $\beta^* \to 1$:
@@ -685,8 +723,8 @@ questions:
           - text: הראיתי ששתי הפגיעות מחוץ לרכבת, $25\,\text{m}$ לפני החזית ו-$25\,\text{m}$ מאחורי הקצה האחורי.
           - text: חישבתי $s^2 < 0$ בשתי המערכות, סיווגתי את האינטרוול כמרחבי, והסברתי שלכן הסדר בזמן יכול להתהפך.
           - text: >-
-              מצאתי $\beta^* = \sqrt{1 - (\ell_0/L_0)^2} = 0.436$, בדקתי את הגבולות $\ell_0 \to L_0$ ו-$\ell_0 \ll L_0$, והראיתי ש-$\ell_0/\gamma^* + \gamma^*\beta^{*2}\ell_0 = L_0$:
-              במהירות הזו הברקים פוגעים בדיוק בקצוות, בשתי המערכות.
+              מצאתי $\beta^* = \sqrt{1 - (\ell_0/L_0)^2} = 0.436$, בדקתי את הגבולות $\ell_0 \to L_0$ ו-$\ell_0 \ll L_0$, והראיתי
+              שב-$S'$ הפגיעות ב-$x' = 0$ וב-$x' = \gamma^*\ell_0 = L_0$: במהירות הזו הברקים פוגעים בדיוק בקצוות, בשתי המערכות.
 
   # ------------------------------------------------------------ 5: a clock on a satellite (joins 9.2 with 2.6, 6.4–6.6, 0.3)
   - id: Q-9-bagrut-5
@@ -696,9 +734,9 @@ questions:
       לוויין נושא שעון ונע סביב כדור הארץ, שמסתו $M$, במסלול מעגלי ברדיוס $r$. $S$ היא מערכת הייחוס של מרכז כדור הארץ,
       ונחשיב אותה אינרציאלית (מזניחים את הסיבוב של כדור הארץ ואת התנועה שלו סביב השמש), ו-$t$ הוא הזמן שמראים שעונים
       שנחים ב-$S$ ומסונכרנים בה. בודקים כאן רק את ההשפעה של **התנועה** על קצב השעון, ומתעלמים מההשפעה של הכבידה עצמה על
-      קצב שעונים, שהיא נושא של תורת היחסות הכללית, מחוץ לקורס. כמו בקו העולם השבור של שיעור 9.6, שסוכמים לאורכו את הזמן
-      העצמי קטע אחרי קטע, שעון שנע מתקדם בכל פרק זמן קצר $dt$ של $S$ בזמן עצמי $d\tau = \sqrt{1 - v^2/c^2}\,dt$, כאשר $v$
-      גודל המהירות שלו באותו רגע, גם כשהכיוון שלה משתנה.
+      קצב שעונים, שהיא נושא של תורת היחסות הכללית, מחוץ לקורס. שעון שנע מתקדם בכל פרק זמן קצר $dt$ של $S$ בזמן עצמי
+      $d\tau = \sqrt{1 - v^2/c^2}\,dt$, כאשר $v$ גודל המהירות שלו באותו רגע. זה נכון גם כשכיוון המהירות משתנה: סוכמים את
+      הזמן העצמי קטע אחרי קטע, כמו לאורך קו העולם השבור של שיעור 9.6.
     parts:
       - label: א
         type: twotier
@@ -729,7 +767,7 @@ questions:
             correct: true
             feedback: >-
               זה הנימוק. מהחוק השני בכיוון הרדיאלי, $GMm/r^2 = mv^2/r$, ולכן $v = \sqrt{GM/r}$: ברדיוס $4r$ המהירות חצי,
-              והפיגור ליחידת זמן, שתלוי ב-$v^2$, קטן פי 4.
+              ולכן $d\tau/dt$ שלו קרוב יותר ל-1, והשעון שלו מפגר פחות.
           - text: לתאוצה הצנטריפטלית של הלוויין הנמוך, $GM/r^2$, גודל גדול יותר, והתאוצה היא שמאטה את השעון.
             feedback: >-
               בנוסחה $d\tau = \sqrt{1 - v^2/c^2}\,dt$ אין תאוצה: שני שעונים באותה מהירות מתקדמים באותו קצב, גם אם רק אחד
@@ -794,7 +832,7 @@ questions:
         standalone: false
         objectives: [OBJ-0.3-2, OBJ-9.2-1]
         prompt: >-
-          הפיגור בהקפה אחת, $\Delta = T - \tau$, קטן מאוד לעומת $T$. (1) בקירוב מסדר ראשון, בטאו את $\Delta$ ואת הפיגור
+          הפיגור בהקפה אחת, $\Delta = T - \tau$, קטן מאוד לעומת $T$. (1) בקירוב מסדר ראשון בגודל הקטן $x = GM/(rc^2)$, בטאו את $\Delta$ ואת הפיגור
           ליחידת זמן של $S$, $\Delta/T$, באמצעות $G$, $M$, $r$ ו-$c$.
 
           (2) לוויין ניווט נע במסלול מעגלי ברדיוס $r = 2.66\cdot10^7\,\text{m}$, ולכדור הארץ $GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$.
@@ -814,8 +852,9 @@ questions:
               $$\Delta \approx 2\pi\sqrt{\frac{r^3}{GM}}\cdot\frac{GM}{2rc^2} = \frac{\pi\sqrt{GMr}}{c^2},\qquad \frac{\Delta}{T} \approx \frac{GM}{2rc^2} = \frac{v^2}{2c^2}$$
           - kind: limit
             text: >-
-              כש-$r \to \infty$, $\Delta/T \to 0$, כמו $1/r$: הלוויין איטי יותר. אבל $\Delta$ גדל כמו $\sqrt r$, כי ההקפה מתארכת
-              כמו $r^{3/2}$. ברדיוס $4r$: הפיגור ליחידת זמן קטן פי 4, ההקפה ארוכה פי 8, והפיגור בהקפה גדל פי 2. והקירוב טוב:
+              כש-$r \to \infty$, $\Delta/T \to 0$, כמו שחלק ב נותן ($\tau/T \to 1$). ו-$\Delta/T = v^2/(2c^2)$ הוא בדיוק הפיגור
+              של שעון במהירות קטנה בשיעור 9.2, מ-$\gamma \approx 1 + \beta^2/2$: התוצאה חוזרת למקרה מוכר. מצד שני $\Delta$
+              עצמו גדל כמו $\sqrt r$, כי ההקפה מתארכת כמו $r^{3/2}$. ברדיוס $4r$: הפיגור ליחידת זמן קטן פי 4, ההקפה ארוכה פי 8, והפיגור בהקפה גדל פי 2. והקירוב טוב:
               האיבר הבא בפיתוח, $x^2/8$, קטן מ-$x/2$ פי $x/4 \approx 4\cdot10^{-11}$.
           - kind: units
             text: >-
@@ -829,7 +868,8 @@ questions:
           - kind: result
             text: >-
               $\Delta \approx \pi\sqrt{GMr}/c^2 = 3.59\,\mu\text{s}$ בהקפה, ו-$\Delta/T \approx GM/(2rc^2)$, כ-$7.2\,\mu\text{s}$ ביממה.
-              (בלוויינים אמיתיים ההשפעה של הכבידה, שמחוץ לקורס, גדולה מזו ובכיוון ההפוך.)
+              (בלוויין ניווט אמיתי במסלול הזה, בהשוואה לשעון על פני כדור הארץ, ההשפעה של הכבידה, שמחוץ לקורס, גדולה
+              מזו ובכיוון ההפוך: בסך הכול השעון של הלוויין ממהר.)
         rubric:
           - text: השתמשתי בקירוב $\sqrt{1 - x} \approx 1 - x/2$, וקיבלתי $\Delta \approx \pi\sqrt{GMr}/c^2$ ו-$\Delta/T \approx GM/(2rc^2)$.
           - text: הסברתי למה ברדיוס $4r$ הפיגור ליחידת זמן קטן פי 4 והפיגור בהקפה גדל פי 2, ובדקתי את הגבול $r \to \infty$.
@@ -845,45 +885,54 @@ questions:
           לוויין אחר נע במסלול אליפטי, שחצי הציר הראשי שלו $a$ והאקסצנטריות שלו $e$, ולכן גודל המהירות שלו משתנה לאורך המסלול.
           הראו שבקירוב מסדר ראשון הפיגור של השעון שלו בהקפה אחת הוא $\Delta = \pi\sqrt{GMa}/c^2$, כמו במסלול מעגלי ברדיוס
           $a$, בלי תלות ב-$e$. היעזרו ב-vis-viva, $v^2 = GM\left(2/r - 1/a\right)$ (שיעור 6.6), במשוואת המסלול
-          $r = p/(1 + e\cos\theta)$ עם $p = h^2/GM$ (שיעור 6.4), וב-$h = r^2\dot\theta$, התנע הזוויתי ליחידת מסה, שנשמר. בדקו
-          את התוצאה בגבול $e \to 0$.
+          $r = p/(1 + e\cos\theta)$ עם $p = h^2/GM = a(1 - e^2)$ (שיעור 6.4), וב-$h = r^2\dot\theta$, התנע הזוויתי ליחידת מסה
+          סביב מרכז כדור הארץ, שנשמר. כאן $T = 2\pi\sqrt{a^3/GM}$ הוא זמן המחזור, ו-$\int_0^T$ הוא אינטגרל על הזמן לאורך הקפה
+          אחת. בדקו את הדרך שלכם בגבול $e \to 0$ מול חלק ג, והסבירו למה הפיגור לא גדל כש-$e \to 1$, אף שליד נקודת הקרבה
+          המהירות גדלה בלי גבול.
         hints:
           - >-
-            בסדר ראשון $d\tau \approx \left(1 - \dfrac{v^2}{2c^2}\right)dt$, ולכן $\Delta \approx \dfrac{1}{2c^2}\displaystyle\oint v^2\,dt$.
-            אחרי הצבת vis-viva, הנעלם היחיד הוא $\oint dt/r$.
+            בסדר ראשון $d\tau \approx \left(1 - \dfrac{v^2}{2c^2}\right)dt$, ולכן $\Delta \approx \dfrac{1}{2c^2}\displaystyle\int_0^T v^2\,dt$.
+            אחרי הצבת vis-viva, הנעלם היחיד הוא $\displaystyle\int_0^T\frac{dt}{r}$.
           - >-
-            החליפו משתנה, $dt = r^2\,d\theta/h$. מטבלת אינטגרלים, $\displaystyle\int_0^{2\pi}\frac{d\theta}{1 + e\cos\theta} = \frac{2\pi}{\sqrt{1 - e^2}}$,
-            ו-$p = a(1 - e^2)$.
+            החליפו משתנה מ-$t$ ל-$\theta$: מ-$h = r^2\,d\theta/dt$, $dt = r^2\,d\theta/h$, ובהקפה אחת $\theta$ עובר מ-$0$ עד $2\pi$.
+            מטבלת אינטגרלים, $\displaystyle\int_0^{2\pi}\frac{d\theta}{1 + e\cos\theta} = \frac{2\pi}{\sqrt{1 - e^2}}$.
         solution:
           - kind: law
             text: >-
               $d\tau = \sqrt{1 - v^2/c^2}\,dt \approx \left(1 - \dfrac{v^2}{2c^2}\right)dt$, כמו בחלק ג. vis-viva,
-              $v^2 = GM(2/r - 1/a)$. החוק השלישי של קפלר, $T = 2\pi\sqrt{a^3/GM}$. ושימור התנע הזוויתי, $h = r^2\dot\theta$, עם
-              $r = p/(1 + e\cos\theta)$, $p = h^2/GM = a(1 - e^2)$.
+              $v^2 = GM(2/r - 1/a)$. החוק השלישי של קפלר, $T = 2\pi\sqrt{a^3/GM}$. ושימור התנע הזוויתי סביב מרכז כדור הארץ,
+              $h = r^2\dot\theta$, עם $r = p/(1 + e\cos\theta)$, $p = h^2/GM = a(1 - e^2)$.
           - kind: manipulation
             text: >-
-              $$\Delta = \oint(dt - d\tau) \approx \frac{1}{2c^2}\oint v^2\,dt = \frac{GM}{2c^2}\left(2\oint\frac{dt}{r} - \frac{T}{a}\right)$$
-              ב-$\oint dt/r$ מחליפים משתנה, $dt = r^2\,d\theta/h$:
-              $$\oint\frac{dt}{r} = \frac{1}{h}\int_0^{2\pi}r\,d\theta = \frac{p}{h}\int_0^{2\pi}\frac{d\theta}{1 + e\cos\theta} = \frac{p}{h}\cdot\frac{2\pi}{\sqrt{1 - e^2}}$$
-              עם $h = \sqrt{GMp}$, $\dfrac{p}{h} = \sqrt{\dfrac{p}{GM}}$, ו-$\dfrac{\sqrt p}{\sqrt{1 - e^2}} = \sqrt{\dfrac{a(1 - e^2)}{1 - e^2}} = \sqrt a$.
-              לכן $\oint\dfrac{dt}{r} = 2\pi\sqrt{\dfrac{a}{GM}} = \dfrac{T}{a}$, ו-
-              $$\Delta \approx \frac{GM}{2c^2}\left(\frac{2T}{a} - \frac{T}{a}\right) = \frac{GMT}{2ac^2} = \frac{\pi\sqrt{GMa}}{c^2}$$
+              סוכמים את ההפרש בין שעון של $S$ לשעון של הלוויין לאורך הקפה, ומציבים vis-viva:
+              $$\Delta = \int_0^T(dt - d\tau) \approx \frac{1}{2c^2}\int_0^T v^2\,dt = \frac{GM}{2c^2}\left(2\int_0^T\frac{dt}{r} - \frac{1}{a}\int_0^T dt\right) = \frac{GM}{2c^2}\left(2\int_0^T\frac{dt}{r} - \frac{T}{a}\right)$$
           - kind: manipulation
             text: >-
-              הממוצע בזמן של $1/r$ לאורך ההקפה הוא בדיוק $1/a$, ולכן הממוצע בזמן של $v^2$ הוא $GM(2/a - 1/a) = GM/a$, בדיוק
-              $v^2$ של מסלול מעגלי ברדיוס $a$. ליד נקודת הקרבה הלוויין מהיר, אבל עובר אותה מהר; ליד נקודת הריחוק הוא איטי,
-              ושוהה שם זמן רב.
+              ב-$\int_0^T dt/r$ מחליפים משתנה מ-$t$ ל-$\theta$. מ-$h = r^2\,d\theta/dt$ נובע $dt = r^2\,d\theta/h$, ובהקפה אחת
+              $\theta$ עובר מ-$0$ עד $2\pi$:
+              $$\int_0^T\frac{dt}{r} = \frac{1}{h}\int_0^{2\pi}r\,d\theta = \frac{p}{h}\int_0^{2\pi}\frac{d\theta}{1 + e\cos\theta} = \frac{p}{h}\cdot\frac{2\pi}{\sqrt{1 - e^2}}$$
+              מ-$p = h^2/GM$, $h = \sqrt{GMp}$ ו-$\dfrac{p}{h} = \dfrac{p}{\sqrt{GMp}} = \dfrac{\sqrt p}{\sqrt{GM}}$. מציבים
+              $p = a(1 - e^2)$: $\dfrac{\sqrt p}{\sqrt{1 - e^2}} = \sqrt a$, וה-$e$ נעלם:
+              $$\int_0^T\frac{dt}{r} = 2\pi\sqrt{\frac{a}{GM}} = \frac{1}{a}\cdot2\pi\sqrt{\frac{a^3}{GM}} = \frac{T}{a}$$
+              ולכן
+              $$\Delta \approx \frac{GM}{2c^2}\left(\frac{2T}{a} - \frac{T}{a}\right) = \frac{GMT}{2ac^2} = \frac{GM}{2ac^2}\cdot2\pi\sqrt{\frac{a^3}{GM}} = \frac{\pi\sqrt{GMa}}{c^2}$$
+              במילים: הממוצע בזמן של $1/r$ לאורך ההקפה הוא בדיוק $1/a$, ולכן הממוצע בזמן של $v^2$ הוא $GM(2/a - 1/a) = GM/a$,
+              בדיוק $v^2$ של מסלול מעגלי ברדיוס $a$.
           - kind: limit
             text: >-
-              כש-$e \to 0$, $r = a$ לאורך כל המסלול, ו-$\Delta = \pi\sqrt{GMa}/c^2$ היא התוצאה של חלק ג עם $r = a$. ולכל $e < 1$
-              התשובה זהה: כמו האנרגיה וזמן המחזור (שיעור 6.5), הפיגור בהקפה תלוי רק ב-$a$.
+              $e \to 0$: המסלול מעגל, $r = a$ ו-$v^2 = GM/a$ בכל רגע, וחלק ג נותן בלי שום אינטגרל
+              $\Delta = \dfrac{v^2}{2c^2}T = \pi\sqrt{GMa}/c^2$. הדרך הכללית נותנת אותו דבר: ב-$e = 0$, $p = a$ והאינטגרל על $\theta$
+              הוא $2\pi$, כלומר $\int_0^T dt/r = 2\pi a/h = T/a$. $e \to 1$ עם $a$ קבוע: ליד נקודת הקרבה, ב-$r = a(1 - e)$,
+              $r \to 0$ והמהירות גדלה בלי גבול, והאינטגרל על $\theta$ גדל כמו $1/\sqrt{1 - e^2}$. אבל $p/h$ קטן כמו $\sqrt{1 - e^2}$,
+              והמכפלה נשארת $T/a$: הלוויין עובר את נקודת הקרבה מהר כל כך שהזמן שהוא שוהה שם לא מוסיף לממוצע.
           - kind: units
-            text: 'כמו בחלק ג, $\sqrt{GMa}/c^2$ בשניות. ו-$\oint dt/r$ ביחידות $\text{s/m}$, כמו $T/a$.'
+            text: 'כמו בחלק ג, $\sqrt{GMa}/c^2$ בשניות. ו-$\int_0^T dt/r$ ביחידות $\text{s/m}$, כמו $T/a$.'
           - kind: result
             text: >-
               $\Delta \approx \dfrac{GMT}{2ac^2} = \dfrac{\pi\sqrt{GMa}}{c^2}$, בלי תלות באקסצנטריות: לוויין במסלול אליפטי מפגר
-              בכל הקפה כמו לוויין במסלול מעגלי ברדיוס $a$.
+              בכל הקפה כמו לוויין במסלול מעגלי ברדיוס $a$. כמו האנרגיה וזמן המחזור (שיעור 6.5), הפיגור בהקפה תלוי רק ב-$a$.
         rubric:
-          - text: כתבתי $\Delta \approx \frac{1}{2c^2}\oint v^2\,dt$, הצבתי vis-viva, ונשאר לי לחשב $\oint dt/r$.
-          - text: החלפתי משתנה, $dt = r^2\,d\theta/h$, חישבתי את האינטגרל, וקיבלתי $\oint dt/r = T/a$.
-          - text: קיבלתי $\Delta = \pi\sqrt{GMa}/c^2$, ובדקתי שב-$e \to 0$ חוזרת התוצאה של חלק ג.
+          - text: כתבתי $\Delta \approx \frac{1}{2c^2}\int_0^T v^2\,dt$, הצבתי vis-viva, ונשאר לי לחשב $\int_0^T dt/r$.
+          - text: החלפתי משתנה, $dt = r^2\,d\theta/h$, חישבתי את האינטגרל, והשתמשתי ב-$h = \sqrt{GMp}$ וב-$p = a(1 - e^2)$ כדי לקבל $\int_0^T dt/r = T/a$.
+          - text: קיבלתי $\Delta = \pi\sqrt{GMa}/c^2$.
+          - text: בדקתי שב-$e \to 0$ הדרך הכללית נותנת את התוצאה של חלק ג, והסברתי למה ב-$e \to 1$ הפיגור לא גדל.
