@@ -1,0 +1,197 @@
+# E-final-b-2: a satellite on a circular orbit enters a thin dust cloud whose drag is linear, F = -b v, and spirals in
+# slowly. Joins chapter 6 (6.5 the energy of a circular orbit, E = -K, U = 2E, Kepler III) with chapter 3 (3.3
+# dE/dt = power of the non-conservative force; 3.7 dL/dt = torque about the planet, gravity central), chapter 2 (2.6 the
+# radial second law; 2.7 linear drag, the rate b/m) and chapter 1 (1.4 the radial velocity component).
+# Overlap: W-6.5-10 solves a finite energy loss (the satellite speeds up, dK = -dE, dU = 2dE) and W-3.2 (MIT 8.012)
+# a quadratic drag per revolution (dr = -4 pi A r^2); here both are footholds at most. The asks are new: the linear
+# drag gives r = r1 e^{-2bt/m} and v = v1 e^{+bt/m} (the 2.7 decay rate with the opposite sign); a second, exact
+# route through the torque, dL/dt = -(b/m) L on any path; the power of gravity 2bv^2 through the radial velocity; the
+# time and the number of revolutions of the fall, N = m(w2 - w1)/(6 pi b).
+# Every number was recomputed by .scratch/exam-b/q2.ts, all checks passing:
+#   א: E = -K, U = 2E, L = m sqrt(GMr), Kepler III, dE/dr by a finite difference;
+#   a full 2D RK4 run (rk4Step, gravity + drag, no circular assumption; GM = 3.98e14, b/m = 1e-7 s^-1) reproduces,
+#   orbit-averaged, r(t) and v(t) (relErr 4e-8), rdot = -2br/m and P_g = 2bv^2 = -2 P_d (relErr < 1e-5),
+#   dK/dt = bv^2, the fall time t12 and the accumulated angle N (relErr 5e-6), and L = L1 e^{-bt/m} exactly
+#   (relErr 1e-13); dimensionless runs with b/(m w1) = 1e-3 and 1e-2 keep L exact and the quasi-circular t12, N within
+#   1e-5 and 1e-3 (second order in b/(m w)); the limit r2 -> r1 gives N -> w1 t12/(2 pi).
+#   Numbers (ד): m/(2b) = 5.0e6 s, ln(r1/r2) = 0.0588, t12 = 2.94e5 s = 3.4 d; w1 = 1.077e-3 rad/s,
+#   (r1/r2)^{3/2} = 1.0923, w2 = 1.177e-3 rad/s, N = 52.7; v1 = 7540 m/s, v2 = 7766 m/s, v2/v1 = 1.030;
+#   4 pi b/(m w1) = 1.17e-3; T1 = 5833 s, T2 = 5340 s.
+# reviewed 2026-11-20 (independent, .scratch/exam-b-review/q2.ts): every number recomputed from the printed values;
+#   a 2D RK4 (gravity + drag, started on the spiral) gives L = L1 e^{-bt/m} to 3e-13, orbit-averaged r(t), v(t) to
+#   1e-7, P_g = 2bv^2 = 2|P_d| to 5e-6, alpha = 2b/(m w), the time to reach r2 = t12 (5e-6) and N(t12) = 52.73.
+#   Changed: b/m printed to three figures (1.00e-7, m/2b = 5.00e6); the circle that defines alpha is named as
+#   centred at O. Overlap: W-6.5-10 states the qualitative "gravity does twice the drag's work"; ג derives it, fine.
+#   After the student read (timed 40-45 min): ב(2) now asks to explain, from E = -K and U = 2E, where the extra K
+#   comes from, and the rubric grades it (its line split in two). r(t) stays derived twice: ג(1)'s is one line and is
+#   the point of the part, the exact torque law confirming the energy route's quasi-circular result.
+#   After a second timed read (~48 min, target ~42): ג(1) no longer re-derives r(t) (kept in the solution as an
+#   ungraded check) and separates the exact law dL/dt = -(b/m)L from the near-circular estimate of |dL| per turn;
+#   ג(3) no longer asks P_g + P_d = dK/dt (ב(2)'s energy explanation covers it; the ratio 2 stays); ד(3) no longer
+#   asks days or v2/v1; ב(2) defines the straight-line body's mass m and initial speed v0.
+id: E-final-b-2
+type: bagrut
+title: לוויין שנבלם בענן אבק
+prompt: >-
+  לוויין במסה $m$ מקיף כוכב לכת במסה $M$, עם $M \gg m$, כך שכוכב הלכת נשאר במנוחה במערכת ייחוס אינרציאלית. הראשית
+  $O$ במרכז כוכב הלכת, $r$ המרחק של הלוויין ממנה, ו-$G$ קבוע הכבידה. עד הרגע $t = 0$ הלוויין נע במסלול מעגלי ברדיוס
+  $r_1$, במהירות $v_1$ ובמהירות זוויתית $\omega_1$. מ-$t = 0$ הוא נע בתוך ענן אבק דליל ואחיד, שנמצא במנוחה ביחס לכוכב
+  הלכת ומפעיל על הלוויין כוח גרר ליניארי, $\vec F_d = -b\vec v$, עם $b > 0$ קבוע ($\vec v$ המהירות של הלוויין).
+
+
+  הגרר חלש: בהקפה אחת הוא משנה את המסלול מעט מאוד, ולכן אפשר לתאר את התנועה כמסלול כמעט מעגלי שהרדיוס שלו, $r(t)$,
+  קטן לאט (בחלק ב תנסחו את התנאי לכך). הרדיוס של כוכב הלכת קטן מכל המרחקים בשאלה, ומלבד הכבידה והגרר לא פועלים על
+  הלוויין כוחות. האנרגיה הפוטנציאלית הכבידתית מתאפסת באינסוף.
+diagramAlt: >-
+  מבט מלמעלה על מישור המסלול. במרכז עיגול קטן, כוכב הלכת $M$. סביבו עיגול מקווקו, המסלול המעגלי ברדיוס $r_1$, וקו
+  מהמרכז אליו מסומן $r_1$. מנקודה על העיגול המקווקו מימין יוצאת ספירלה שמתקרבת לאט למרכז, נגד כיוון השעון, ומסתיימת
+  בלוויין $m$, נקודה מתחת למרכז. מהלוויין יוצאים שלושה חצים: המהירות $v$ ימינה, כמעט משיקה למעגל ונוטה מעט פנימה;
+  כוח הגרר $F_d$ שמאלה, הפוך למהירות; וכוח הכבידה $F_g$ כלפי מעלה, אל מרכז כוכב הלכת.
+diagram: |
+  <svg viewBox="0 0 420 270" width="420" height="270" font-size="14" aria-hidden="true">
+    <circle cx="210" cy="140" r="120" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/>
+    <circle cx="210" cy="140" r="24" fill="var(--paper-2)" stroke="currentColor" stroke-width="1.5"/>
+    <text x="204" y="145" fill="currentColor" font-style="italic">M</text>
+    <line x1="193" y1="123" x2="125.1" y2="55.1" stroke="currentColor" stroke-width="1"/>
+    <text x="172" y="86" fill="currentColor" font-style="italic">r₁</text>
+    <polyline points="330.0,140.0 327.9,126.0 324.2,112.6 319.1,99.8 312.5,87.8 304.6,76.8 295.6,66.9 285.6,58.2 274.8,50.8 263.3,44.8 251.3,40.3 239.0,37.2 226.5,35.6 214.1,35.5 201.9,36.9 190.0,39.6 178.7,43.7 168.0,49.0 158.2,55.5 149.3,63.0 141.4,71.4 134.6,80.5 129.0,90.3 124.6,100.6 121.5,111.2 119.7,122.0 119.2,132.9 119.9,143.5 121.9,154.0 125.1,164.0 129.3,173.4 134.6,182.2 140.9,190.2 147.9,197.4 155.7,203.6 164.0,208.8 172.8,213.0 181.9,216.0 191.3,218.0 200.7,218.8 210.0,218.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="330" cy="140" r="2.5" fill="currentColor"/>
+    <line x1="214.0" y1="218.2" x2="255.8" y2="214.4" stroke="var(--velocity)" stroke-width="2.5"/>
+    <polygon points="267.8,213.3 256.3,219.4 255.4,209.4" fill="var(--velocity)"/>
+    <text x="262" y="236" fill="var(--velocity)" font-style="italic">v</text>
+    <line x1="206.0" y1="218.9" x2="180.1" y2="221.2" stroke="var(--force)" stroke-width="2.5"/>
+    <polygon points="168.2,222.3 179.7,216.2 180.6,226.2" fill="var(--force)"/>
+    <text x="158" y="240" fill="var(--force)" font-style="italic">F<tspan font-size="10" dy="3">d</tspan></text>
+    <line x1="210" y1="213" x2="210" y2="182" stroke="var(--force)" stroke-width="2.5"/>
+    <polygon points="210,170 205,182 215,182" fill="var(--force)"/>
+    <text x="217" y="196" fill="var(--force)" font-style="italic">F<tspan font-size="10" dy="3">g</tspan></text>
+    <circle cx="210" cy="218.5" r="4.5" fill="currentColor"/>
+    <text x="204" y="250" fill="currentColor" font-style="italic">m</text>
+  </svg>
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-2.6-1, OBJ-6.5-2, OBJ-3.7-1]
+    prompt: >-
+      בלי גרר: בטאו באמצעות $G$, $M$, $m$ ו-$r$ את גודל המהירות $v$, את המהירות הזוויתית $\omega$ ואת גודל התנע הזוויתי
+      $L$ סביב $O$ של לוויין במסלול מעגלי ברדיוס $r$, ואת האנרגיה הקינטית $K$, האנרגיה הפוטנציאלית $U$ והאנרגיה המכנית
+      $E = K + U$. הראו ש-$E = -K$ ו-$U = 2E$, ובדקו שהקשר בין זמן המחזור $T$ ל-$r$ הוא החוק השלישי של קפלר.
+    solution:
+      - { kind: law, text: 'הכוח היחיד על הלוויין הוא כוח הכבידה שכוכב הלכת מפעיל עליו, $GMm/r^2$ אל $O$. במסלול מעגלי הוא הכוח השקול הרדיאלי, והחוק השני ברכיב הרדיאלי (כלפי $O$) נותן $\dfrac{mv^2}{r} = \dfrac{GMm}{r^2}$. האנרגיה הפוטנציאלית הכבידתית, עם אפס באינסוף: $U = -\dfrac{GMm}{r}$.' }
+      - { kind: manipulation, text: '$v = \sqrt{\dfrac{GM}{r}}$, $\omega = \dfrac vr = \sqrt{\dfrac{GM}{r^3}}$, ו-$L = mvr = m\sqrt{GMr}$ (המהירות ניצבת לרדיוס). $K = \tfrac12mv^2 = \dfrac{GMm}{2r}$, ולכן $E = K + U = \dfrac{GMm}{2r} - \dfrac{GMm}{r} = -\dfrac{GMm}{2r}$. כלומר $E = -K$, ו-$U = -\dfrac{GMm}{r} = 2E$.' }
+      - { kind: limit, text: '$T = \dfrac{2\pi}{\omega}$, ולכן $T^2 = \dfrac{4\pi^2r^3}{GM}$: החוק השלישי של קפלר, עם חצי הציר הראשי $a = r$ של מעגל, בלי תלות ב-$m$. וכש-$r \to \infty$: $v$, $K$ ו-$E$ שואפים לאפס, ו-$E$ שלילית תמיד, כמו שמתאים למסלול קשור.' }
+      - { kind: units, text: '$GM/r$ ביחידות $\dfrac{\text{N}\cdot\text{m}^2}{\text{kg}^2}\cdot\dfrac{\text{kg}}{\text{m}} = \text{m}^2/\text{s}^2$, ולכן $v$ ב-$\text{m/s}$, $\omega$ ב-$\text{s}^{-1}$, $m\sqrt{GMr}$ ב-$\text{kg}\cdot\text{m}^2/\text{s}$, ו-$GMm/r$ ב-$\text{J}$.' }
+      - { kind: result, text: '$v = \sqrt{GM/r}$, $\omega = \sqrt{GM/r^3}$, $L = m\sqrt{GMr}$; $K = \dfrac{GMm}{2r}$, $U = -\dfrac{GMm}{r}$, $E = -\dfrac{GMm}{2r} = -K$, $U = 2E$; $T^2 = 4\pi^2r^3/(GM)$.' }
+    rubric:
+      - text: 'כתבתי את החוק השני ברכיב הרדיאלי, עם הכבידה ככוח השקול, ומצאתי $v$, $\omega$ ו-$L = m\sqrt{GMr}$.'
+      - text: 'מצאתי $K = GMm/(2r)$, $U = -GMm/r$ ו-$E = -GMm/(2r)$, והראיתי ש-$E = -K$ ו-$U = 2E$.'
+        weight: 2
+      - text: 'בדקתי ש-$T^2 = 4\pi^2r^3/(GM)$, החוק השלישי של קפלר.'
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-3.3-1, OBJ-2.7-1, OBJ-6.5-2]
+    prompt: >-
+      (1) עכשיו עם הגרר. כתבו את קצב השינוי של האנרגיה המכנית $E$ של הלוויין לפי ההספק של הגרר, והניחו שבכל רגע
+      מתקיימים הקשרים של חלק א, עם $r(t)$ במקום $r$. מצאו את $\dot r$ באמצעות $b$, $m$ ו-$r$, ואת $r(t)$ ואת $v(t)$
+      באמצעות $r_1$, $v_1$, $b$, $m$ ו-$t$.
+
+
+      (2) לפי (1), גודל המהירות של הלוויין גדל, אף שהכוח היחיד מלבד הכבידה מנוגד לתנועה. הסבירו בעזרת הקשרים
+      $E = -K$ ו-$U = 2E$ מחלק א מאין באה התוספת לאנרגיה הקינטית. השוו את $v(t)$ למהירות של גוף
+      במסה $m$ שנע על קו ישר, במהירות התחלתית $v_0$, כשהכוח היחיד עליו הוא אותו גרר, $\vec F_d = -b\vec v$, ובדקו את $r(t)$ בגבול $b \to 0$.
+
+
+      (3) ההנחה של מסלול כמעט מעגלי טובה כשבהקפה אחת הרדיוס משתנה בחלק קטן מאוד מעצמו. מצאו את השינוי היחסי
+      $|\Delta r|/r$ בהקפה אחת, ונסחו את התנאי כאי-שוויון בין $b/m$ ל-$\omega$. האם התנאי משתפר או מחמיר בזמן שהלוויין
+      יורד?
+    solution:
+      - { kind: law, text: 'הכבידה כוח משמר, והיא כלולה ב-$U$. הגרר הוא הכוח הלא משמר היחיד, ולכן קצב השינוי של האנרגיה המכנית הוא ההספק שלו: $\dfrac{dE}{dt} = \vec F_d\cdot\vec v = -bv^2$.' }
+      - { kind: manipulation, text: '(1) מחלק א, $E = -\dfrac{GMm}{2r}$, ולפי כלל השרשרת $\dfrac{dE}{dt} = \dfrac{GMm}{2r^2}\,\dot r$. ובמסלול המעגלי $v^2 = GM/r$, ולכן ההספק של הגרר הוא $P_d = -bv^2 = -\dfrac{bGM}{r}$. משווים: $\dfrac{GMm}{2r^2}\,\dot r = -\dfrac{bGM}{r}$, כלומר $\dot r = -\dfrac{2b}{m}\,r$. בהפרדת משתנים, $\dfrac{dr}{r} = -\dfrac{2b}{m}\,dt$, ועם $r(0) = r_1$: $r(t) = r_1e^{-2bt/m}$. מכאן $v = \sqrt{GM/r} = v_1e^{bt/m}$.' }
+      - { kind: manipulation, text: '(2) על קו ישר, $m\dot v = -bv$, ולכן $v = v_0e^{-bt/m}$: המהירות דועכת בקצב $b/m$, עם קבוע הזמן $m/b$. במסלול המהירות **גדלה** באותו קצב בדיוק, $v = v_1e^{+bt/m}$. ההסבר באנרגיה: $E$ יורדת, ומכיוון ש-$E = -K$, האנרגיה הקינטית עולה באותה מידה, $\dfrac{dK}{dt} = -\dfrac{dE}{dt} = bv^2$, בזמן ש-$U = 2E$ יורדת פי שניים. הירידה ב-$U$ משלמת גם על מה שהגרר לוקח וגם על התוספת ל-$K$.' }
+      - { kind: manipulation, text: '(3) בהקפה אחת, $T = 2\pi/\omega$, ולכן $\dfrac{|\Delta r|}{r} = \dfrac{2b}{m}\cdot\dfrac{2\pi}{\omega} = \dfrac{4\pi b}{m\omega}$. התנאי: $\dfrac{4\pi b}{m\omega} \ll 1$, כלומר $\dfrac bm \ll \omega$, קבוע הזמן $m/b$ ארוך מאוד לעומת זמן המחזור. $\omega = \sqrt{GM/r^3}$ גדלה כש-$r$ קטן, ו-$b/m$ קבוע, ולכן התנאי **משתפר** בזמן שהלוויין יורד: אם הוא מתקיים ב-$r_1$, הוא מתקיים כל הדרך.' }
+      - { kind: limit, text: '$b \to 0$: $r(t) = r_1$ ו-$v(t) = v_1$, המסלול המעגלי של חלק א. גם לוויין כבד מאוד, $m \to \infty$ עם $b$ קבוע, כמעט לא מושפע, כמו שקבוע הזמן $m/b$ גדל עם המסה בשיעור 2.7. ובזמנים קצרים, $t \ll m/b$: $r \approx r_1\left(1 - \dfrac{2bt}{m}\right)$, ירידה בקצב קבוע $2br_1/m$.' }
+      - { kind: units, text: '$b$ הוא כוח חלקי מהירות, ב-$\text{kg/s}$, ולכן $b/m$ ב-$\text{s}^{-1}$ והמעריך $bt/m$ חסר יחידות; $\dot r = 2br/m$ ב-$\text{m/s}$; $b/(m\omega)$ חסר יחידות.' }
+      - { kind: result, text: '$\dot r = -\dfrac{2b}{m}\,r$, $r(t) = r_1e^{-2bt/m}$ ו-$v(t) = v_1e^{bt/m}$: הלוויין יורד ומהירותו גדלה, באותו קצב $b/m$ שבו הגרר לבדו היה מאט אותו על קו ישר. התנאי: $\dfrac{4\pi b}{m\omega} \ll 1$, והוא משתפר בירידה.' }
+    rubric:
+      - text: 'כתבתי $dE/dt = -bv^2$ ואת $dE/dt = \dfrac{GMm}{2r^2}\,\dot r$, וקיבלתי $\dot r = -2br/m$.'
+        weight: 2
+      - text: 'מצאתי $r(t) = r_1e^{-2bt/m}$ ו-$v(t) = v_1e^{bt/m}$, והסברתי בעזרת $E = -K$ ו-$U = 2E$ ש-$K$ גדלה כי $U$ יורדת פי שניים ממה שהגרר לוקח.'
+      - text: 'השוויתי לדעיכה $v_0e^{-bt/m}$ על קו ישר, ובדקתי שכש-$b \to 0$ חוזרים למעגל של חלק א.'
+      - text: 'מצאתי $|\Delta r|/r = 4\pi b/(m\omega)$ בהקפה, ניסחתי את התנאי $b/m \ll \omega$, וקבעתי שהוא משתפר כש-$r$ קטן.'
+
+  - label: ג
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.7-1, OBJ-3.7-2, OBJ-1.4-1, OBJ-3.3-1]
+    prompt: >-
+      (1) חשבו את מומנט הכוח סביב $O$ של כל אחד משני הכוחות על הלוויין, והראו ש-$\dfrac{d\vec L}{dt} = -\dfrac bm\,\vec L$
+      **בדיוק**: בכל מסלול, בלי ההנחה של מסלול כמעט מעגלי. מצאו מכאן את $L(t)$.
+      אחר כך, בקירוב של מסלול כמעט מעגלי (עם $L$ וזמן המחזור של מסלול מעגלי מחלק א): כמה תנע זוויתי $|\Delta L|$
+      הלוויין מאבד בהקפה אחת? בטאו באמצעות $b$ ו-$r$.
+
+
+      (2) מחלק ב, $\dot r = -2br/m$: המסלול הוא ספירלה פנימה, ולמהירות יש רכיב רדיאלי. מצאו את הזווית הקטנה $\alpha$ בין
+      המהירות $\vec v$ לבין המשיק למעגל שמרכזו ב-$O$ ושעובר דרך הלוויין, באמצעות $b$, $m$ ו-$\omega$.
+
+
+      (3) חשבו את ההספק $P_g$ של כוח הכבידה על הלוויין ואת ההספק $P_d$ של הגרר, באמצעות $b$ ו-$v$. איזה כוח עושה על
+      הלוויין עבודה חיובית, ופי כמה היא גדולה בערכה המוחלט מהעבודה של הגרר? בדקו מה קורה ל-$\alpha$ ול-$P_g$ בגבול $b \to 0$.
+    solution:
+      - { kind: law, text: 'כוכב הלכת במנוחה, ולכן $O$ נקודה קבועה במערכת אינרציאלית, ו-$\dfrac{d\vec L}{dt} = \sum\vec r\times\vec F$, עם $\vec L = \vec r\times m\vec v$. ההספק של כוח הוא $P = \vec F\cdot\vec v$. המהירות בקואורדינטות קוטביות: $\vec v = \dot r\,\hat r + r\dot\theta\,\hat\theta$.' }
+      - { kind: manipulation, text: '(1) הכבידה פועלת לאורך $\vec r$ (כוח מרכזי), ולכן $\vec r\times\vec F_g = 0$. לגרר: $\vec r\times\left(-b\vec v\right) = -\dfrac bm\,\vec r\times m\vec v = -\dfrac bm\,\vec L$. לכן $\dfrac{d\vec L}{dt} = -\dfrac bm\,\vec L$ בכל מסלול: הכיוון של $\vec L$ קבוע (התנועה נשארת במישור), והגודל $L = L_1e^{-bt/m}$, בלי שום קירוב. (בדיקה, מעבר למה שנשאל: עם $L = m\sqrt{GMr}$ מחלק א, $\sqrt{r/r_1} = e^{-bt/m}$, כלומר $r = r_1e^{-2bt/m}$, כמו בחלק ב.) בקירוב של מסלול כמעט מעגלי, $L = mvr$ ו-$T = 2\pi r/v$, ובהקפה אחת: $|\Delta L| = \dfrac bm\,L\cdot T = \dfrac bm\cdot mvr\cdot\dfrac{2\pi r}{v} = 2\pi br^2$.' }
+      - { kind: manipulation, text: '(2) הרכיב הרדיאלי של המהירות הוא $v_r = \dot r = -\dfrac{2b}{m}\,r$ (פנימה), והרכיב המשיקי $v_\theta = r\dot\theta \approx \omega r$. לכן $\tan\alpha = \dfrac{|v_r|}{v_\theta} = \dfrac{2b}{m\omega}$, ולפי התנאי של חלק ב זו זווית קטנה: $\alpha \approx \dfrac{2b}{m\omega}$, והמהירות נוטה פנימה מהמשיק.' }
+      - { kind: manipulation, text: '(3) הכבידה, $\vec F_g = -\dfrac{GMm}{r^2}\,\hat r$, נותנת $P_g = \vec F_g\cdot\vec v = -\dfrac{GMm}{r^2}\,\dot r = \dfrac{GMm}{r^2}\cdot\dfrac{2br}{m} = \dfrac{2bGM}{r} = 2bv^2 > 0$. ובדרך הזווית: הרכיב של הכבידה לאורך המהירות הוא $\dfrac{GMm}{r^2}\sin\alpha = m\omega^2r\cdot\dfrac{2b}{m\omega} = 2b\,\omega r = 2bv$. הגרר: $P_d = -bv^2$. הכבידה עושה את העבודה החיובית, פי $2$ בערכה המוחלט מהעבודה של הגרר. (הסכום, $bv^2$, הוא $dK/dt$ של חלק ב: לאורך המהירות הכוח השקול הוא $bv$ קדימה.)' }
+      - { kind: limit, text: '$b \to 0$: $\alpha \to 0$, המהירות משיקה למעגל וניצבת לכבידה, ו-$P_g \to 0$: במסלול מעגלי הכבידה לא עושה עבודה, כמו כל כוח שניצב למהירות. ובדיקה נוספת: $P_g = -\dfrac{dU}{dt}$, ומ-$U = 2E$ מקבלים $\dfrac{dU}{dt} = 2\dfrac{dE}{dt} = -2bv^2$, אותו $P_g = 2bv^2$.' }
+      - { kind: units, text: '$bv^2$ ביחידות $\dfrac{\text{kg}}{\text{s}}\cdot\dfrac{\text{m}^2}{\text{s}^2} = \text{W}$; $br^2$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}$, כמו תנע זוויתי; $\dfrac{b}{m\omega}$ חסר יחידות, כמו זווית.' }
+      - { kind: result, text: 'לכבידה אין מומנט סביב $O$, ולגרר $\vec r\times\vec F_d = -\tfrac bm\vec L$, ולכן $L = L_1e^{-bt/m}$ בדיוק; בקירוב של מסלול כמעט מעגלי, $|\Delta L| = 2\pi br^2$ בהקפה. $\alpha \approx \dfrac{2b}{m\omega}$. $P_g = 2bv^2$, $P_d = -bv^2$: הכבידה עושה עבודה חיובית כפולה מזו שהגרר לוקח, וההפרש, $bv^2$, הוא $dK/dt$.' }
+    rubric:
+      - text: 'הראיתי שלכבידה אין מומנט סביב $O$ ושלגרר יש מומנט $\vec r\times\vec F_d = -\tfrac bm\vec L$, וקיבלתי $L = L_1e^{-bt/m}$.'
+        weight: 2
+      - text: 'מצאתי, בקירוב של מסלול כמעט מעגלי, שהלוויין מאבד $|\Delta L| = 2\pi br^2$ בהקפה.'
+      - text: 'מצאתי $\alpha \approx 2b/(m\omega)$ מהרכיב הרדיאלי של המהירות.'
+      - text: 'חישבתי $P_g = 2bv^2$ ו-$P_d = -bv^2$, קבעתי שהכבידה עושה את העבודה החיובית, פי $2$ בערכה המוחלט מהעבודה של הגרר.'
+      - text: 'בדקתי ש-$\alpha \to 0$ ו-$P_g \to 0$ כש-$b \to 0$.'
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-6.5-2, OBJ-2.7-1]
+    prompt: >-
+      מחלק ב, $r(t) = r_1e^{-2bt/m}$.
+
+
+      (1) מצאו את הזמן $t_{12}$ שבו הלוויין יורד מ-$r_1$ לרדיוס $r_2 < r_1$, באמצעות $b$, $m$, $r_1$ ו-$r_2$.
+
+
+      (2) מצאו את מספר ההקפות $N$ שהלוויין משלים בזמן הזה, באמצעות $b$, $m$, $\omega_1 = \sqrt{GM/r_1^3}$ ו-$\omega_2 =
+      \sqrt{GM/r_2^3}$. בדקו את $N$ בגבול $r_2 \to r_1$: השוו למספר ההקפות של לוויין שנע כל הזמן $t_{12}$ במהירות הזוויתית
+      הקבועה $\omega_1$.
+
+
+      (3) חשבו את $t_{12}$ ואת $N$ כש-$GM = 3.98\cdot10^{14}\,\text{m}^3/\text{s}^2$,
+      $r_1 = 7.00\cdot10^{6}\,\text{m}$, $r_2 = 6.60\cdot10^{6}\,\text{m}$ ו-$b/m = 1.00\cdot10^{-7}\,\text{s}^{-1}$, ובדקו
+      שהתנאי של חלק ב מתקיים.
+    solution:
+      - { kind: law, text: 'הזווית שהלוויין עובר היא האינטגרל של המהירות הזוויתית על הזמן, $\theta = \displaystyle\int\omega\,dt$, ומספר ההקפות $N = \theta/(2\pi)$. בכל רגע $\omega = \sqrt{GM/r^3}$ מחלק א.' }
+      - { kind: manipulation, text: '(1) $r_2 = r_1e^{-2bt_{12}/m}$, ולכן $t_{12} = \dfrac{m}{2b}\ln\dfrac{r_1}{r_2}$.' }
+      - { kind: manipulation, text: '(2) $\omega \propto r^{-3/2}$, ולכן $\omega(t) = \omega_1e^{3bt/m}$. $$N = \frac{1}{2\pi}\int_0^{t_{12}}\omega_1e^{3bt/m}\,dt = \frac{m\,\omega_1}{6\pi b}\left(e^{3bt_{12}/m} - 1\right)$$ ו-$e^{3bt_{12}/m} = \left(r_1/r_2\right)^{3/2} = \omega_2/\omega_1$, ולכן $N = \dfrac{m\left(\omega_2 - \omega_1\right)}{6\pi b}$.' }
+      - { kind: limit, text: '$r_2 = r_1 - \Delta r$ עם $\Delta r \ll r_1$: $\ln\dfrac{r_1}{r_2} \approx \dfrac{\Delta r}{r_1}$, ולכן $t_{12} \approx \dfrac{m\,\Delta r}{2br_1} = \dfrac{\Delta r}{|\dot r|}$, ירידה בקצב הקבוע של חלק ב. ו-$\omega_2 \approx \omega_1\left(1 + \dfrac{3\Delta r}{2r_1}\right)$, ולכן $N \approx \dfrac{m\,\omega_1}{6\pi b}\cdot\dfrac{3\Delta r}{2r_1} = \dfrac{\omega_1}{2\pi}\cdot\dfrac{m\,\Delta r}{2br_1} = \dfrac{\omega_1t_{12}}{2\pi}$: מספר ההקפות במהירות זוויתית קבועה, כמו שצריך כשהרדיוס כמעט לא משתנה. וכש-$b \to 0$ עם $r_2$ קבוע, $t_{12}$ ו-$N$ שואפים לאינסוף: בלי גרר הלוויין לא יורד.' }
+      - { kind: units, text: '$m/b$ ב-$\text{s}$, ולכן $t_{12}$ בשניות; $m\,\omega/b$ ביחידות $\text{s}\cdot\text{s}^{-1}$, ו-$N$ חסר יחידות, כמו מספר הקפות.' }
+      - { kind: substitution, text: '$\dfrac{m}{2b} = 5.00\cdot10^{6}\,\text{s}$ ו-$\ln\dfrac{7.00}{6.60} = 0.0588$, ולכן $t_{12} = 2.94\cdot10^{5}\,\text{s}$, כ-$3.4$ ימים. $\omega_1 = \sqrt{\dfrac{3.98\cdot10^{14}}{\left(7.00\cdot10^{6}\right)^3}} = 1.077\cdot10^{-3}\,\text{s}^{-1}$ ו-$\left(r_1/r_2\right)^{3/2} = 1.0923$, ולכן $\omega_2 = 1.177\cdot10^{-3}\,\text{s}^{-1}$ ו-$N = \dfrac{1.077\cdot10^{-3}\cdot0.0923}{6\pi\cdot1.00\cdot10^{-7}} = 52.7$, כ-$53$ הקפות (בדיקה: זמני המחזור $5833\,\text{s}$ ו-$5340\,\text{s}$, ו-$t_{12}$ חלקי הממוצע שלהם נותן כ-$53$). התנאי: $\dfrac{4\pi b}{m\omega_1} = 1.17\cdot10^{-3} \ll 1$, והוא רק משתפר בירידה.' }
+      - { kind: result, text: '$t_{12} = \dfrac{m}{2b}\ln\dfrac{r_1}{r_2}$ ו-$N = \dfrac{m\left(\omega_2 - \omega_1\right)}{6\pi b}$, ו-$N \to \omega_1t_{12}/(2\pi)$ כש-$r_2 \to r_1$. במספרים: $t_{12} = 2.94\cdot10^{5}\,\text{s}$ (כ-$3.4$ ימים) ו-$N = 52.7$.' }
+    rubric:
+      - text: 'מצאתי $t_{12} = \dfrac{m}{2b}\ln\dfrac{r_1}{r_2}$.'
+      - text: 'כתבתי $\omega(t) = \omega_1e^{3bt/m}$, חישבתי את האינטגרל של $\omega$ על הזמן, וקיבלתי $N = m(\omega_2 - \omega_1)/(6\pi b)$.'
+        weight: 2
+      - text: 'בדקתי שכש-$r_2 \to r_1$, $N \to \omega_1t_{12}/(2\pi)$.'
+      - text: 'חישבתי $t_{12} \approx 2.94\cdot10^{5}\,\text{s}$ ו-$N \approx 53$, ובדקתי ש-$4\pi b/(m\omega_1) \ll 1$.'

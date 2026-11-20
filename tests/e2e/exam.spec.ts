@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { EXAMS } from '../../src/assessment/exams';
 import { hydrated, progress } from './helpers';
 
 /**
@@ -64,15 +65,21 @@ test('a full sitting: choose four of five, self-grade, score out of 100, survive
   await expect(page.locator('[data-phase="intro"]')).toBeVisible();
 });
 
-test('the exam page: no KaTeX error, no sideways overflow with every solution open', async ({ page }) => {
-  await page.goto(PATH);
-  const startBtn = page.getByRole('button', { name: 'התחלת המבחן' });
-  await hydrated(startBtn);
-  await startBtn.click();
-  await page.getByRole('button', { name: 'סיום המבחן', exact: true }).click();
-  await page.getByRole('button', { name: /סיימתי לבדוק/ }).click();
-  await page.locator('details').evaluateAll((ds) => ds.forEach((d) => ((d as HTMLDetailsElement).open = true)));
-  await expect(page.locator('.katex-error')).toHaveCount(0);
-  const { sw, cw } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
-  expect(sw).toBeLessThanOrEqual(cw);
-});
+for (const exam of EXAMS) {
+  test(`${exam.id}: no KaTeX error, no sideways overflow with every solution open`, async ({ page }) => {
+    await page.goto(`/exam/${exam.id}/`);
+    const startBtn = page.getByRole('button', { name: 'התחלת המבחן' });
+    await hydrated(startBtn);
+    await startBtn.click();
+    await expect(page.locator('.exam-q')).toHaveCount(exam.count);
+    // the running phase shows every question's prompt (a wide display formula once widened its grid track)
+    const running = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(running).toBeLessThanOrEqual(0);
+    await page.getByRole('button', { name: 'סיום המבחן', exact: true }).click();
+    await page.getByRole('button', { name: /סיימתי לבדוק/ }).click();
+    await page.locator('details').evaluateAll((ds) => ds.forEach((d) => ((d as HTMLDetailsElement).open = true)));
+    await expect(page.locator('.katex-error')).toHaveCount(0);
+    const { sw, cw } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
+    expect(sw).toBeLessThanOrEqual(cw);
+  });
+}

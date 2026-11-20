@@ -1,0 +1,204 @@
+# E-final-b-1: a uniform rod (M, L) hangs from a light ring that slides without friction on a horizontal rail; a ball
+# (m, v0 along +x) hits it a depth b below the ring and sticks; d = PG, the distance from the ring to the centre of
+# mass of rod + ball (the formula sheet's b and d: b the strike distance from the axis, d the axis-to-CM distance).
+# Joins chapter 8 (8.6 the hit as on a free rod, 8.1 the velocity of the ring, 8.7 the centre of percussion and the
+# physical pendulum) with chapter 4 (4.4 the hit, then a stage with energy conserved), chapter 3 (3.5 p_x conserved,
+# 3.4 G drifts at V, 3.8 Koenig, 3.3 energy) and chapter 5 (5.2 the energy method, 5.1 the initial conditions).
+# Overlap: the pinned struck rod (omega, J_P, centre of percussion, swing, period) is solved in lesson 8.6 (text and
+# ex-8-6-4), W-8.6-07/08/09, W-8.7-03/07/09 and Q-8-bagrut-1, so the pivot here is a ring free on a rail, which no
+# lesson, bank, workbook or exam-map entry has: the hit is the free-rod hit (a foothold), b = 2L/3 now means "the ring
+# stays at rest", the swing keeps (1/2)(M+m)V^2 in drift, and the small oscillations are about G (Omega^2 =
+# (M+m) g d/I_cm). The 2014 moed-b exam (q1) has a point pendulum on a massive free cart: the theme is shared, the
+# body, the hit and the asks are not.
+# The author's script (.scratch/exam-b/q1.ts, g = 9.8) checked: the hit at three sample points against
+# rigidangular.ts strike({mount: 'free', e: 0}), a generalized-impulse solve on (x_P, theta) and a time-domain hit
+# (rk4Step); v_P the same three ways and v_P = 0 at b = 2L/3 for m = 1e-6 ... 5; the swing by the Lagrange equations of
+# (x_P, theta) with rk4Step (1 - cos(theta_max) to 2e-4, the ratio I_cm/I_P -> 1/4); small oscillations (RK4 period
+# = 2 pi/Omega and 2 pi/Omega_P to 1e-4, x_P(t) to 1.4e-5 of its amplitude); the limit m -> 0.
+# Reviewed 2026-11-20 (independent, .scratch/exam-b-review/q1.ts): the hit re-solved from p_x and angular momentum
+#   about the fixed point at P; the swing integrated by Newton-Euler (vertical force on G, torque of the ring force
+#   about G) with rk4Step; quarter periods, x_P(t) (1e-6 of the amplitude), v_P = V at b = L/2, I_P omega = m v0 b at
+#   b = 2L/3, all limits: every symbolic result agrees. Then, after a student read (65-75 min, target ~45):
+#   symbols renamed to the formula sheet's (the author's strike depth d -> b, PG = h -> d, I_G -> I_cm); the
+#   ring's vertical force is a given fact; v_P is given as "הראו ש"; ב(3) now goes through the angular momentum about
+#   P (I_P omega = m v0 b), replacing the I_G algebra and the unclear sentence about the ball's force; the numeric part
+#   ג(3) and the heavy-ball-on-the-ring limit (it contradicted 0 < b and the massless ring) are removed; θ(t) is no
+#   longer asked separately; ד(1) says why the vertical-motion term is small (a factor θ^2), and the torque check in
+#   the solution says why the ring's force is ≈ Mg. 25 points, one limit per part.
+#   After a second timed student read (≈60 min, target ≈42): x_P(t) dropped (and OBJ-5.1-1 with it; ד 7 -> 6, ג 7 -> 8);
+#   b = L/2 is checked only in א; ב's limit is now b = L, m << M against lesson 8.6's free rod (v_P -> -2 m v0/M, the
+#   top end moves back) and ג's is m << M (ratio 1/4, three quarters of the energy stays in drift); ב(2) is one
+#   line, omega = V/d = m v0 b/I_P with (M+m)d = I_P/b at b = 2L/3; ד(1) states that G moves only vertically in the
+#   moving frame; the prompt says b is measured from P, not from the rod's centre as in 8.6; "מוט + כדור" -> "המוט
+#   והכדור". The chapter-5 line above now means 5.2 only.
+#   After a third timed read (46 min, target ≈41-42): ב(1) shows the identity I_cm + (M+m)d^2 = I_P it needs, and
+#   no longer asks the ring's direction at b = L (the solution keeps it as ב's limit check).
+id: E-final-b-1
+type: bagrut
+title: מוט שתלוי על טבעת חופשית
+prompt: >-
+  מוט אחיד במסה $M$ ובאורך $L$ תלוי בקצהו העליון, $P$, על טבעת קטנה שמסתה זניחה. הטבעת מושחלת על מסילה ישרה
+  ואופקית ומחליקה עליה בלי חיכוך, והמוט מחובר אליה בציר בלי חיכוך, כך שהוא יכול להסתובב סביב $P$ במישור האנכי של
+  המסילה. נתון שהכוח שהטבעת מפעילה על המוט אנכי תמיד, גם בזמן הפגיעה (הטבעת חסרת מסה, והמסילה חלקה). בהתחלה
+  הכול במנוחה, והמוט תלוי אנכית. כדור קטן במסה $m$ נע אופקית, לאורך המסילה בכיוון $+x$, במהירות $v_0$, פוגע
+  במוט בעומק $b$ מתחת ל-$P$, עם $0 < b \le L$ ($b$ נמדד מ-$P$, לא ממרכז המוט כמו בשיעור 8.6), ונדבק אליו. הפגיעה קצרה מאוד, והמוט לא זז בזמנה. תאוצת הכובד $g$.
+  מזניחים את התנגדות האוויר ואת גודל הכדור.
+
+
+  אחרי הפגיעה המוט והכדור הם גוף צפיד אחד, במסה $M + m$. נסמן ב-$G$ את מרכז המסה שלו, ב-$d$ את המרחק $PG$,
+  וב-$I_P$ וב-$I_{cm}$ את מומנטי ההתמד שלו סביב צירים ניצבים למישור התנועה שעוברים דרך $P$ ודרך $G$:
+  $$d = \frac{ML/2 + mb}{M + m},\qquad I_P = \tfrac13ML^2 + mb^2,\qquad I_{cm} = I_P - (M + m)d^2$$
+  הזווית $\theta$ של המוט נמדדת מהאנך כלפי מטה, וחיובית כשהקצה התחתון זז בכיוון $+x$ (באיור, נגד כיוון השעון),
+  ו-$\omega = \dot\theta$. להשוואה, **המוט הנעוץ** הוא אותו מוט עם אותו כדור, כשהטבעת מרותכת למסילה ו-$P$ ציר
+  קבוע.
+diagramAlt: >-
+  מבט מהצד. למעלה קו אופקי, המסילה, ועליה עיגול קטן, הטבעת $P$. מהטבעת יורד מוט אנכי. משמאל למוט כדור קטן $m$,
+  וחץ ממנו ימינה, אל המוט, מסומן $v_0$. קו מקווקו נוטה מ-$P$ ימינה ולמטה מראה את המוט בזווית $\theta$ מהאנך, וקשת
+  בין המוט האנכי לקו המקווקו מסומנת $\theta$. משמאל שני חיצי מידה אנכיים: $b$, מגובה $P$ עד הקו של הכדור, ו-$L$,
+  מגובה $P$ עד הקצה התחתון של המוט. מימין חץ למטה מסומן $g$, ולמטה משמאל חץ ימינה מסמן את הכיוון החיובי $x$.
+diagram: '<svg viewBox="0 0 440 270" width="440" height="270" font-size="14" aria-hidden="true">
+  <line x1="130" y1="40" x2="420" y2="40" stroke="currentColor" stroke-width="3"/>
+  <rect x="216" y="47" width="8" height="173" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="220" cy="40" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="230" y="28" fill="currentColor" font-style="italic">P</text>
+  <line x1="220" y1="40" x2="296" y2="203" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/>
+  <path d="M220,95 A55,55 0 0,0 243.2,89.8" fill="none" stroke="currentColor" stroke-width="1"/>
+  <text x="229" y="122" fill="currentColor" font-style="italic">θ</text>
+  <circle cx="150" cy="184" r="9" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="1.5"/>
+  <text x="144" y="212" fill="currentColor" font-style="italic">m</text>
+  <line x1="162" y1="184" x2="198" y2="184" stroke="var(--velocity)" stroke-width="2.5"/>
+  <polygon points="198,178 210,184 198,190" fill="var(--velocity)"/>
+  <text x="170" y="171" fill="var(--velocity)" font-style="italic">v₀</text>
+  <line x1="56" y1="40" x2="130" y2="40" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="96" y1="184" x2="138" y2="184" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="56" y1="220" x2="212" y2="220" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="100" y1="50" x2="100" y2="174" stroke="currentColor" stroke-width="1"/>
+  <polygon points="100,40 95,51 105,51" fill="currentColor"/>
+  <polygon points="100,184 95,173 105,173" fill="currentColor"/>
+  <text x="106" y="118" fill="currentColor" font-style="italic">b</text>
+  <line x1="60" y1="50" x2="60" y2="210" stroke="currentColor" stroke-width="1"/>
+  <polygon points="60,40 55,51 65,51" fill="currentColor"/>
+  <polygon points="60,220 55,209 65,209" fill="currentColor"/>
+  <text x="42" y="136" fill="currentColor" font-style="italic">L</text>
+  <line x1="390" y1="80" x2="390" y2="120" stroke="currentColor" stroke-width="1.2"/>
+  <polygon points="385,120 390,130 395,120" fill="currentColor"/>
+  <text x="399" y="110" fill="currentColor" font-style="italic">g</text>
+  <line x1="20" y1="250" x2="52" y2="250" stroke="currentColor" stroke-width="1.2"/>
+  <polygon points="52,246 60,250 52,254" fill="currentColor"/>
+  <text x="64" y="255" fill="currentColor" font-style="italic">x</text>
+  </svg>'
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-8.6-2, OBJ-4.4-1, OBJ-3.5-2]
+    prompt: >-
+      (1) נמקו למה הרכיב האופקי של התנע של המוט והכדור יחד נשמר בפגיעה וגם כל הזמן אחריה, ולמה התנע הזוויתי שלהם
+      נשמר בפגיעה סביב $O$, הנקודה הקבועה שבה נמצא $G$ ברגע הפגיעה.
+
+
+      (2) בטאו את המהירות של $G$ מיד אחרי הפגיעה, $V$, ואת $\omega$ מיד אחריה, באמצעות $m$, $M$, $v_0$, $b$, $d$
+      ו-$I_{cm}$. בדקו את $\omega$ כש-$b = L/2$: מה התנועה אז?
+    solution:
+      - { kind: law, text: 'נתון שהכוח של הטבעת על המוט אנכי. בזמן הפגיעה הכוח בין הכדור למוט פנימי למערכת של המוט והכדור, והכובד סופי ואינו נותן מתקף בזמן קצר (שיעור 4.4). לכן אין מתקף חיצוני אופקי, והרכיב האופקי של התנע נשמר בפגיעה. גם אחרי הפגיעה הכוחות החיצוניים, הכובד והכוח של הטבעת, אנכיים, ולכן הרכיב האופקי של התנע נשמר כל הזמן (שיעור 3.5). סביב $O$: הכוח של הטבעת פועל ב-$P$, שנמצאת על האנך שעובר דרך $O$, והוא אנכי, ולכן אין לו זרוע סביב $O$. לכן התנע הזוויתי סביב $O$ נשמר בפגיעה.' }
+      - { kind: manipulation, text: 'לפני: הכדור נע על קו שנמצא $b - d$ מתחת ל-$O$, ו-$L_O = mv_0(b - d)$, חיובי (נגד כיוון השעון) כש-$b > d$. אחרי, לפי משפט קניג (שיעור 3.8): $L_O = (M + m)\,\vec R_G\times\vec V + I_{cm}\omega$, ו-$\vec R_G = 0$ באותו רגע, כי $G$ נמצא ב-$O$. מהתנע: $mv_0 = (M + m)V$, ולכן $V = \dfrac{mv_0}{M + m}$. מהתנע הזוויתי: $mv_0(b - d) = I_{cm}\omega$, ולכן $\omega = \dfrac{mv_0(b - d)}{I_{cm}}$. זו אותה תוצאה כמו של מוט חופשי על שולחן חלק (שיעור 8.6): בזמן הפגיעה הטבעת לא יכולה לדחוף את המוט אופקית, וזה כל מה שמבדיל אותה מציר.' }
+      - { kind: limit, text: '$b - d = b - \dfrac{ML/2 + mb}{M + m} = \dfrac{M\left(b - L/2\right)}{M + m}$, ולכן כש-$b = L/2$ גם $d = L/2$: הכדור פוגע בגובה של $G$, והקו שלו עובר דרך $O$. אז $\omega = 0$: המוט, הכדור והטבעת מחליקים יחד ב-$V$ בלי להסתובב, כמו מוט חופשי שנפגע במרכזו (שיעור 8.6). ובכיוון: כש-$b > L/2$, $\omega > 0$, והקצה התחתון יוצא קדימה.' }
+      - { kind: units, text: '$\dfrac{mv_0(b - d)}{I_{cm}}$ ביחידות $\dfrac{\text{kg}\cdot(\text{m/s})\cdot\text{m}}{\text{kg}\cdot\text{m}^2} = \text{s}^{-1}$, ו-$\dfrac{mv_0}{M + m}$ ב-$\text{m/s}$.' }
+      - { kind: result, text: 'בפגיעה נשמרים הרכיב האופקי של התנע והתנע הזוויתי סביב $O$. $V = \dfrac{mv_0}{M + m}$ ו-$\omega = \dfrac{mv_0(b - d)}{I_{cm}}$, ו-$\omega = 0$ בפגיעה ב-$b = L/2$: הכול מחליק יחד בלי סיבוב.' }
+    rubric:
+      - text: 'נימקתי, מהכוח האנכי של הטבעת, שהרכיב האופקי של התנע נשמר בפגיעה ואחריה, ושהתנע הזוויתי סביב $O$ נשמר בפגיעה כי לכוח של הטבעת אין זרוע סביבה.'
+      - text: 'מצאתי $V = mv_0/(M + m)$ ו-$\omega = mv_0(b - d)/I_{cm}$, כשאחרי הפגיעה התנע הזוויתי סביב $O$ הוא $I_{cm}\omega$ בלבד.'
+        weight: 2
+      - text: 'בדקתי ש-$\omega = 0$ כש-$b = L/2$ (אז גם $d = L/2$), ושאז הכול מחליק יחד בלי סיבוב.'
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-8.1-1, OBJ-8.7-2, OBJ-8.6-2]
+    prompt: >-
+      מחלק א, $V = \dfrac{mv_0}{M + m}$ ו-$\omega = \dfrac{mv_0(b - d)}{I_{cm}}$.
+
+
+      (1) הראו שהמהירות של הטבעת מיד אחרי הפגיעה (חיובית בכיוון $+x$) היא
+      $$v_P = \frac{mMv_0L\,(2L - 3b)}{6(M + m)I_{cm}}$$
+      (היעזרו ב-$I_{cm} + (M + m)d^2 = I_P$.) באיזה $b$ הטבעת נשארת במנוחה?
+
+
+      (2) הראו שב-$b = \tfrac23L$ מתקיים $\omega = mv_0b/I_P$, המהירות הזוויתית של המוט הנעוץ. איך נקראת הנקודה
+      הזו ביחס ל-$P$ (שיעור 8.7)?
+    solution:
+      - { kind: law, text: 'מהירות של נקודה בגוף צפיד: $\vec v = \vec V + \vec\omega\times\vec r$, כאשר $\vec r$ מ-$G$ אל הנקודה (שיעור 8.1). מיד אחרי הפגיעה $P$ נמצאת $d$ מעל $G$, ובסיבוב חיובי (נגד כיוון השעון) נקודה שמעל $G$ נעה בכיוון $-x$: $v_P = V - \omega d$.' }
+      - { kind: manipulation, text: '(1) $$v_P = \frac{mv_0}{M + m}\left[1 - \frac{(M + m)d(b - d)}{I_{cm}}\right] = \frac{mv_0\left[I_{cm} + (M + m)d^2 - (M + m)db\right]}{(M + m)I_{cm}} = \frac{mv_0\left[I_P - (M + m)db\right]}{(M + m)I_{cm}}$$ ו-$(M + m)db = \tfrac12MLb + mb^2$, ולכן האיברים $mb^2$ מתבטלים: $I_P - (M + m)db = \tfrac13ML^2 - \tfrac12MLb = \tfrac16ML(2L - 3b)$, וזו התוצאה. $I_{cm} > 0$, ולכן $v_P = 0$ בדיוק כש-$b = \tfrac23L$, לכל $m$. כש-$b > \tfrac23L$ הטבעת נעה אחורה: בפגיעה בקצה התחתון, $b = L$, $v_P = -\dfrac{mMv_0L^2}{6(M + m)I_{cm}} < 0$, בכיוון $-x$.' }
+      - { kind: manipulation, text: '(2) ב-$b = \tfrac23L$, $P$ במנוחה, ולכן $V = \omega d$ ו-$\omega = \dfrac{V}{d} = \dfrac{mv_0}{(M + m)d}$. וב-$b = \tfrac23L$: $(M + m)d = \tfrac12ML + \tfrac23mL = \tfrac16L(3M + 4m)$ ו-$I_P = \tfrac13ML^2 + \tfrac49mL^2 = \tfrac19L^2(3M + 4m)$, ולכן $(M + m)d = \dfrac{I_P}{b}$, ו-$\omega = \dfrac{mv_0b}{I_P}$: בדיוק המהירות הזוויתית של המוט הנעוץ, מהתנע הזוויתי סביב הציר שלו. אותה תנועה נותנת למוט הנעוץ את התנע $(M + m)V = mv_0$, כל התנע של הכדור, ולכן הציר שלו לא נותן מתקף. זה **מרכז ההקשה** ביחס ל-$P$, $b = \dfrac{I_P}{(M + m)d}$ (שיעור 8.7).' }
+      - { kind: limit, text: '$b = L$ ו-$m \ll M$: $I_{cm} \to \tfrac1{12}ML^2$, ולכן $v_P \to \dfrac{mMv_0L(-L)}{6M\cdot\tfrac1{12}ML^2} = -\dfrac{2mv_0}{M}$. וזו התוצאה של שיעור 8.6 לקצה העליון של מוט חופשי שמקבל מתקף $J = mv_0$ בקצה התחתון: מרכזו נע ב-$J/M$, הוא מסתובב ב-$\omega = \dfrac{J\cdot L/2}{ML^2/12} = \dfrac{6J}{ML}$, והקצה העליון נע ב-$\dfrac JM - \omega\dfrac L2 = -\dfrac{2J}{M}$, אחורה.' }
+      - { kind: units, text: '$\dfrac{mMv_0L^2}{(M + m)I_{cm}}$ ביחידות $\dfrac{\text{kg}^2\cdot(\text{m/s})\cdot\text{m}^2}{\text{kg}\cdot\text{kg}\cdot\text{m}^2} = \text{m/s}$.' }
+      - { kind: result, text: '$v_P = V - \omega d = \dfrac{mMv_0L\,(2L - 3b)}{6(M + m)I_{cm}}$. הטבעת נשארת במנוחה רק ב-$b = \tfrac23L$, לכל $m$, ובפגיעה בקצה התחתון נעה אחורה. ב-$b = \tfrac23L$, $\omega = mv_0b/I_P$, כמו במוט הנעוץ: מרכז ההקשה ביחס ל-$P$.' }
+    rubric:
+      - text: 'כתבתי $v_P = V - \omega d$ מהמהירות של נקודה בגוף צפיד והגעתי לתוצאה (האיברים $mb^2$ מתבטלים).'
+        weight: 2
+      - text: 'מצאתי ש-$v_P = 0$ רק ב-$b = \tfrac23L$, לכל $m$.'
+      - text: 'הראיתי ש-$\omega = mv_0b/I_P$ ב-$b = \tfrac23L$, וזיהיתי את מרכז ההקשה ביחס ל-$P$.'
+
+  - label: ג
+    type: open
+    points: 8
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.8-2, OBJ-4.4-2, OBJ-3.3-1, OBJ-8.3-2]
+    prompt: >-
+      אחרי הפגיעה המוט מתנדנד. הניחו שהוא לא מגיע לאופק.
+
+
+      (1) מצאו את $1 - \cos\theta_{max}$, כאשר $\theta_{max}$ הזווית המרבית של המוט, באמצעות $I_{cm}$, $\omega$, $M + m$,
+      $g$ ו-$d$.
+
+
+      (2) למוט הנעוץ, $1 - \cos\theta_{max,P} = \dfrac{I_P\omega_P^2}{2(M + m)gd}$. ב-$b = \tfrac23L$ שני המוטות נעים
+      מיד אחרי הפגיעה באותו אופן (חלק ב), ובכל זאת לא מגיעים לאותה זווית. מצאו שם את היחס
+      $\dfrac{1 - \cos\theta_{max}}{1 - \cos\theta_{max,P}}$ באמצעות $I_{cm}$ ו-$I_P$, הראו שהוא $\tfrac14$ כש-$m \ll M$,
+      והסבירו איזו אנרגיה המוט שעל הטבעת לא יכול להפוך לגובה, ולמה המוט הנעוץ כן יכול.
+    solution:
+      - { kind: law, text: 'אחרי הפגיעה הכוחות החיצוניים על המוט והכדור הם הכובד והכוח של הטבעת, ושניהם אנכיים. לכן $G$ נע אופקית במהירות הקבועה $V$ (שיעור 3.4). הכוח של הטבעת לא עושה עבודה, כי הוא אנכי והטבעת נעה אופקית, והכובד משמר: האנרגיה המכנית נשמרת בשלב הזה (שיעור 4.4). לפי משפט קניג, $K = \tfrac12(M + m)v_G^2 + \tfrac12I_{cm}\dot\theta^2$.' }
+      - { kind: manipulation, text: '(1) נשים את ראשית הציר האנכי $y$ (כלפי מעלה) על המסילה. $G$ נמצא על המוט במרחק $d$ מ-$P$, ולכן $y_G = -d\cos\theta$ ו-$\dot y_G = d\sin\theta\,\dot\theta$. בזווית המרבית $\dot\theta = 0$: אין סיבוב, ו-$G$ נע רק אופקית, ב-$V$. לכן נשארת שם אנרגיה קינטית $\tfrac12(M + m)V^2$. שימור האנרגיה בין רגע אחרי הפגיעה לזווית המרבית: $$\tfrac12(M + m)V^2 + \tfrac12I_{cm}\omega^2 = \tfrac12(M + m)V^2 + (M + m)gd\left(1 - \cos\theta_{max}\right)$$ $$1 - \cos\theta_{max} = \frac{I_{cm}\omega^2}{2(M + m)gd}$$' }
+      - { kind: manipulation, text: '(2) ב-$b = \tfrac23L$, $\omega = \omega_P$ (חלק ב), ולכן היחס הוא $\dfrac{I_{cm}}{I_P} = 1 - \dfrac{(M + m)d^2}{I_P} < 1$. ההסבר באנרגיה: שם $v_P = 0$, ולכן $V = \omega d$, והאנרגיה הקינטית של המוט הנעוץ היא $\tfrac12I_P\omega^2 = \tfrac12I_{cm}\omega^2 + \tfrac12(M + m)(\omega d)^2 = \tfrac12I_{cm}\omega^2 + \tfrac12(M + m)V^2$, אותה אנרגיה כמו של המוט שעל הטבעת. אבל על הטבעת שום דבר לא דוחף את המערכת אופקית, התנע האופקי נשמר, ו-$\tfrac12(M + m)V^2$ נשארת בתנועה האופקית. הציר הקבוע כן מפעיל כוח אופקי בזמן התנודה: הוא עוצר את התנועה האופקית של $G$, בלי לעשות עבודה כי הוא לא זז, וכל האנרגיה הקינטית הופכת לגובה.' }
+      - { kind: limit, text: '$m \ll M$: $I_{cm} \to \tfrac1{12}ML^2$ ו-$I_P \to \tfrac13ML^2$ (המומנטים של מוט לבד, סביב מרכזו וסביב קצהו), והיחס $\tfrac14$. בדיקה באנרגיה: אז $d = L/2$ ו-$V = \omega L/2$, ו-$\tfrac12MV^2 = \tfrac18ML^2\omega^2$ הם שלושה רבעים מ-$\tfrac12I_P\omega^2 = \tfrac16ML^2\omega^2$: על הטבעת רק הרבע הנותר הופך לגובה. ולכל $m$ היחס קטן מ-1, כי $I_P = I_{cm} + (M + m)d^2$: המוט שעל הטבעת אף פעם לא עולה שם גבוה יותר מהנעוץ.' }
+      - { kind: units, text: '$\dfrac{I_{cm}\omega^2}{(M + m)gd}$ ביחידות $\dfrac{\text{kg}\cdot\text{m}^2\cdot\text{s}^{-2}}{\text{kg}\cdot(\text{m/s}^2)\cdot\text{m}}$, חסר ממדים, כמו $1 - \cos\theta$.' }
+      - { kind: result, text: '$1 - \cos\theta_{max} = \dfrac{I_{cm}\omega^2}{2(M + m)gd}$. ב-$b = \tfrac23L$ היחס למוט הנעוץ הוא $I_{cm}/I_P$, ו-$\tfrac14$ כש-$m \ll M$: על הטבעת האנרגיה $\tfrac12(M + m)V^2$ נשארת בתנועה האופקית, והציר הקבוע עוצר אותה בלי לעשות עבודה.' }
+    rubric:
+      - text: 'כתבתי שימור אנרגיה עם משפט קניג, כשבזווית המרבית נשארת $\tfrac12(M + m)V^2$, וקיבלתי $1 - \cos\theta_{max} = \dfrac{I_{cm}\omega^2}{2(M + m)gd}$.'
+        weight: 2
+      - text: 'הראיתי שב-$b = \tfrac23L$ היחס הוא $I_{cm}/I_P$, ו-$\tfrac14$ כש-$m \ll M$.'
+      - text: 'הסברתי שעל הטבעת $\tfrac12(M + m)V^2$ נשארת בתנועה האופקית, והציר הקבוע עוצר אותה בלי לעשות עבודה.'
+        weight: 2
+
+  - label: ד
+    type: open
+    points: 6
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-5.2-2, OBJ-8.7-1, OBJ-3.4-2]
+    prompt: >-
+      עכשיו $v_0$ קטן, כך ש-$\theta$ נשארת קטנה כל הזמן.
+
+
+      (1) עברו למערכת הייחוס שנעה במהירות $V$ בכיוון $+x$. התנע האופקי בה אפס, ולכן $G$ נע בה רק אנכית. כתבו בה את
+      האנרגיה של המוט והכדור באמצעות $\theta$ ו-$\dot\theta$, והראו שבזוויות קטנות התנועה היא תנודה הרמונית בתדירות
+      זוויתית $\Omega$. בטאו את $\Omega$ באמצעות $M + m$, $g$, $d$ ו-$I_{cm}$, והראו ש-$\Omega > \Omega_P$, התדירות
+      הזוויתית של המוט הנעוץ.
+
+
+      (2) מצאו את $\Omega$ ואת היחס $T_P/T$ בין זמני המחזור כש-$m \to 0$, והסבירו את היחס.
+    solution:
+      - { kind: law, text: 'מערכת ייחוס שנעה במהירות קבועה היא אינרציאלית. בה התנע האופקי אפס, ולכן $G$ לא זז אופקית (חלק ג), ו-$y_G = -d\cos\theta$. לפי משפט קניג, האנרגיה בה היא $E = \tfrac12(M + m)\dot y_G^2 + \tfrac12I_{cm}\dot\theta^2 + (M + m)gd(1 - \cos\theta)$, והיא נשמרת: הכוח של הטבעת אנכי, והטבעת נעה רק אופקית. שיטת האנרגיה (שיעור 5.2): אם בקירוב $E = \tfrac12m_{\text{eff}}\dot q^2 + \tfrac12k_{\text{eff}}q^2$, התנועה הרמונית עם $\Omega^2 = k_{\text{eff}}/m_{\text{eff}}$.' }
+      - { kind: manipulation, text: '(1) $\dot y_G = d\sin\theta\,\dot\theta$, ולכן $\tfrac12(M + m)\dot y_G^2 = \tfrac12(M + m)d^2\sin^2\theta\,\dot\theta^2$. היחס בינו לבין $\tfrac12I_{cm}\dot\theta^2$ הוא $\dfrac{(M + m)d^2}{I_{cm}}\sin^2\theta$, קטן כמו $\theta^2$, ולכן בזוויות קטנות הוא זניח. ו-$1 - \cos\theta \approx \tfrac12\theta^2$. נשאר $E \approx \tfrac12I_{cm}\dot\theta^2 + \tfrac12(M + m)gd\,\theta^2$, עם $m_{\text{eff}} = I_{cm}$ ו-$k_{\text{eff}} = (M + m)gd$: $$\Omega^2 = \frac{(M + m)gd}{I_{cm}}$$ למוט הנעוץ $\Omega_P^2 = \dfrac{(M + m)gd}{I_P}$ (שיעור 8.7), ולכן $\dfrac{\Omega}{\Omega_P} = \sqrt{\dfrac{I_P}{I_{cm}}} = \sqrt{1 + \dfrac{(M + m)d^2}{I_{cm}}} > 1$. על הטבעת המוט מסתובב סביב $G$, שנשאר על קו אנכי, עם מומנט התמד קטן יותר, ואותו מומנט מחזיר.' }
+      - { kind: limit, text: '(2) $m \to 0$: $d = L/2$, $I_{cm} = \tfrac1{12}ML^2$ ו-$I_P = \tfrac13ML^2$, ולכן $\Omega^2 = \dfrac{MgL/2}{ML^2/12} = \dfrac{6g}{L}$, ו-$\Omega_P^2 = \dfrac{3g}{2L}$, המטוטלת הפיזיקלית המוכרת של מוט שתלוי בקצהו. $T_P/T = \Omega/\Omega_P = 2$. ההסבר: על הטבעת מרכז המוט נשאר על קו אנכי, והמוט מסתובב סביבו עם מומנט התמד $\tfrac1{12}ML^2$, רבע מ-$\tfrac13ML^2$ סביב הקצה, ואותה אנרגיה פוטנציאלית; לכן $\Omega^2$ גדל פי 4. בדיקה בדרך אחרת: התאוצה האנכית של המרכז מסדר שני ב-$\theta$, ולכן הכוח של הטבעת שווה בקירוב ל-$Mg$, כלפי מעלה; הזרוע שלו סביב המרכז היא $\tfrac L2\sin\theta$, ו-$\tfrac1{12}ML^2\ddot\theta = -Mg\tfrac L2\theta$ (שיעור 3.8) נותן אותו $\Omega^2 = 6g/L$.' }
+      - { kind: units, text: '$\dfrac{(M + m)gd}{I_{cm}}$ ביחידות $\dfrac{\text{kg}\cdot(\text{m/s}^2)\cdot\text{m}}{\text{kg}\cdot\text{m}^2} = \text{s}^{-2}$.' }
+      - { kind: result, text: '$\Omega^2 = \dfrac{(M + m)gd}{I_{cm}}$, ו-$\dfrac{\Omega}{\Omega_P} = \sqrt{\dfrac{I_P}{I_{cm}}} > 1$. כש-$m \to 0$, $\Omega^2 = 6g/L$ ו-$T_P/T = 2$.' }
+    rubric:
+      - text: 'כתבתי את האנרגיה במערכת שנעה ב-$V$, ונימקתי שהאיבר של התנועה האנכית של $G$ קטן פי $\theta^2$ בערך, ולכן זניח בזוויות קטנות.'
+      - text: 'קיבלתי $\Omega^2 = (M + m)gd/I_{cm}$, והראיתי ש-$\Omega/\Omega_P = \sqrt{I_P/I_{cm}} > 1$.'
+        weight: 2
+      - text: 'מצאתי ש-$m \to 0$ נותן $\Omega^2 = 6g/L$ ו-$T_P/T = 2$, והסברתי את היחס במומנט ההתמד סביב המרכז.'

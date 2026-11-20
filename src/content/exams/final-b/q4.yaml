@@ -1,0 +1,374 @@
+# Final exam B, question 4: a puck on a frictionless table, tied by a light string through a small smooth hole O to a
+# block hanging below it. Joins chapters 1 (1.4 polar components), 2 (2.5 the string constraint, 2.3 tension as an
+# unknown, 2.6 circular motion), 3 (3.7 central force, L conserved; 3.3 energy; 3.5 impulse), 6 (6.3 the effective
+# potential) and 5 (5.2 small oscillations with an effective inertia, 5.1 amplitude from initial conditions), with 4.4
+# (a short blow).
+# Overlap grep: workbook W-6.3-10 already solves this setup's L conservation, U_eff, boundedness, turning points and
+# circular radius (with numbers), and W-2.6-06 its circular speed; Q-3-bagrut-2, ex-1-4-6, ex-3-1-6 and lesson 3.7
+# solve the string pulled by a hand. U_eff is therefore only a foothold here (ג(1)). New: the tension
+# T = mM/(m+M)(g + r thdot^2) and why the string never slackens; the radial frequency with radial inertia m + M and
+# omega_r/Omega0 = sqrt(3m/(m+M)), so the near-circular orbit closes after one turn only for M = 2m; and a blow on the
+# hanging block, its impulse shared through the string.
+# Recomputed in .scratch/exam-b/q4.ts by an independent route: the full two-body system in Cartesian coordinates, the
+# string a stiff, critically damped spring that can only pull (no polar coordinates, no constraint elimination),
+# packed into one body in mass-weighted coordinates and stepped with rk4Step (src/physics/motion.ts):
+#   א r(1.5 s) of a generic orbit (m = 0.7, M = 0.3, r = 0.5, rdot = 0.3, v_t = 1.2) against the derived r equation
+#     (relErr 2e-6); L conserved; L = 0 gives r'' = -Mg/(m+M);
+#   ב T = mM/(m+M)(g + r thdot^2) (relErr 1e-6); the smallest T over a large-amplitude orbit, 2.063 N, stays above
+#     mMg/(m+M) = 2.058 N;
+#   ג the radial period and the angle between minima of r at (m, M) = (0.7, 0.3), (0.2, 0.4), (0.3, 2.4) (relErr
+#     < 2e-4): omega_r/Omega0 = 1.449, 1.000, 0.577 = sqrt(3m/(m+M)); U_eff''(r0) = 3Mg/r0 by finite difference;
+#   ד a 1 ms pulse J on the block only: rdot after = -J/(m+M) (relErr 3e-3), r thdot unchanged, amplitude relErr
+#     1.4e-3, r_min 0.4844 m (the angle of the first minimum, ~91 deg, is no longer asked).
+# Asks now (after review): א equations, L conserved (net force central), the r equation with its L = 0 check; ב T,
+#   T >= mMg/(m+M) while taut, the circle, the M >> m limit; ג E with U_eff given, stability, omega_r and
+#   omega_r/Omega0, closure for M = 2m (the M << m limit, sqrt 3, is an ungraded remark in the solution); ד the blow
+#   (ż = −ṙ during it given; rdot, r thdot, J_T, why L and U_eff are unchanged, limits), r(t), numbers Omega0,
+#   omega_r, r_min, J_T.
+# Exam numbers (ד): m = 0.20 kg, M = 0.40 kg, r0 = 0.50 m, J = 0.060 N s → Omega0 = omega_r = 6.26 rad/s,
+#   rdot = -0.100 m/s, A = 0.0160 m, r_min = 0.484 m, J_T = 0.0200 N s.
+# reviewed 2026-11-20 (independent, .scratch/exam-b-review/q4.ts): the puck in Cartesian coordinates stepped with
+#   rk4Step, the tension solved each instant from Newton's law on each body plus z = l - r; energy
+#   1/2 m v^2 + 1/2 M rdot^2 + M g r conserved to 1e-14 (checks T). (m+M) rdd = L^2/(m r^3) - Mg (1.7e-8), T formula and
+#   T = M(g + rdd), L = 0 gives -Mg/(m+M); radial period and omega_r/Omega0 = sqrt(3m/(m+M)) at (0.2, 0.4), (0.7, 0.3),
+#   (0.5, 0.01), (0.1, 3.0) (< 1e-7). Closure at M = 2m vs amplitude: angle between minima 359.997, 359.973, 359.70,
+#   358.83, 355.57 deg for r in +-1%, 3%, 10%, 20%, ~40% of r0 (deviation ~A^2: closure to first order only). ד: 1 ms
+#   pulse, rdot -0.0998, J_T 0.01997, r_min 0.4844 (r0 - A = 0.4840), first minimum at 91.4 deg, then 359.97 deg apart.
+#   Changed: ב(1) the never-slack claim restricted to motions that start with the string taut (a block thrown up fast
+#   slackens it); ג(1) U_eff given ("הראו ש") and the M >> m ask dropped, to bring the question to ~45 min; ג(3) rubric
+#   no longer grades irrationality (never asked); the M << m step shows r0 Omega0^2 = Mg/m << g before T -> Mg; the
+#   closure remark says first order in the amplitude with the computed 359.7 deg, and the 6.3 remark leads with "only
+#   near-circular orbits close". Theme shared with final-a q3 (n = 0 gives sqrt 3); the radial inertia m + M and the
+#   blow are new. Second pass (student timing, 48 -> ~42 min): ב(1) asks T >= mMg/(m+M) (the "smallest tension" ask
+#   was ambiguous); ב(3)'s thdot = 0 limit dropped (repeats א's L = 0); ג(3) asks to show T ~ Mg for M << m from ב;
+#   ד(1) asks why L, U_eff, r0 and omega_r are unchanged; ד(3)'s angle ask dropped; א(2) asks about the net force's
+#   torque (gravity and the normal force each have a horizontal torque, which cancel). Third pass (49 -> ~42 min):
+#   ג(3) keeps only the M = 2m closure (it feeds ד's omega_r = Omega0); the M << m limit and the spring comparison
+#   moved to an ungraded remark; ד(1) states that the string stays taut during the blow, so ż = −ṙ holds in it.
+id: E-final-b-4
+type: bagrut
+title: דסקית על שולחן ומשקולת מתחת לחור
+prompt: >-
+  דסקית קטנה בעלת מסה $m$ מחליקה בלי חיכוך על שולחן אופקי. חוט קל באורך $\ell$ קשור אליה, עובר דרך חור קטן וחלק
+  $O$ בשולחן, ובקצהו התחתון תלויה משקולת קטנה בעלת מסה $M$, שנעה רק לאורך האנך שמתחת לחור. את מקום הדסקית על
+  השולחן מתארים בקואורדינטות קוטביות $(r, \theta)$ עם ראשית ב-$O$, ו-$\hat r$ פונה מ-$O$ אל הדסקית. $z$ הוא העומק של
+  המשקולת מתחת לחור, חיובי כלפי מטה, ולכן כל עוד החוט מתוח $r + z = \ell$. $T$ היא המתיחות בחוט, ו-$L = mr^2\dot\theta$
+  הוא התנע הזוויתי של הדסקית ביחס ל-$O$ (הרכיב האנכי שלו). תאוצת הכובד היא $g$. הזניחו את החיכוך בחור, והניחו
+  שהדסקית לא מגיעה לחור ושהמשקולת לא מגיעה לשולחן.
+diagramAlt: >-
+  מבט מהצד. שולחן אופקי עם חור קטן $O$ באמצעו. על השולחן, משמאל לחור, דסקית שמסומנת $m$, ומעליה סימן של עיגול עם נקודה
+  בצבע המהירות, שמסומן $v$: המהירות שלה ניצבת לדף, החוצה. חוט יוצא מהדסקית לאורך השולחן אל החור, יורד דרכו, ובקצהו
+  התחתון תלויה משקולת שמסומנת $M$. מתחת לשולחן קו מידה אופקי מהדסקית עד החוט שיורד מהחור, שמסומן $r$. מימין למשקולת
+  חץ כלפי מטה שמסומן $z$, הכיוון החיובי של העומק, ובקצה הימני חץ כלפי מטה בצבע התאוצה שמסומן $g$.
+diagram: |
+  <svg viewBox="0 0 320 190" width="320" height="190" font-size="14" aria-hidden="true">
+    <rect x="20" y="80" width="134" height="10" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+    <rect x="166" y="80" width="134" height="10" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+    <polyline points="70,74 160,80 160,150" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <rect x="42" y="68" width="28" height="12" rx="3" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+    <text x="24" y="76" fill="currentColor" font-style="italic">m</text>
+    <circle cx="56" cy="46" r="7" fill="none" stroke="var(--velocity)" stroke-width="1.5"/>
+    <circle cx="56" cy="46" r="2" fill="var(--velocity)"/>
+    <text x="68" y="50" fill="var(--velocity)" font-style="italic">v</text>
+    <rect x="146" y="150" width="28" height="26" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+    <text x="180" y="168" fill="currentColor" font-style="italic">M</text>
+    <text x="170" y="106" fill="currentColor" font-style="italic">O</text>
+    <line x1="56" y1="94" x2="56" y2="118" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="62" y1="112" x2="150" y2="112" stroke="currentColor" stroke-width="1"/>
+    <polygon points="62,108 56,112 62,116" fill="currentColor"/>
+    <polygon points="150,108 156,112 150,116" fill="currentColor"/>
+    <text x="102" y="130" fill="currentColor" font-style="italic">r</text>
+    <line x1="212" y1="112" x2="212" y2="152" stroke="currentColor" stroke-width="1.5"/>
+    <polygon points="206,150 212,164 218,150" fill="currentColor"/>
+    <text x="222" y="144" fill="currentColor" font-style="italic">z</text>
+    <line x1="280" y1="112" x2="280" y2="152" stroke="var(--accel)" stroke-width="2"/>
+    <polygon points="274,150 280,164 286,150" fill="var(--accel)"/>
+    <text x="290" y="144" fill="var(--accel)" font-style="italic">g</text>
+  </svg>
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-1.4-2, OBJ-2.5-1, OBJ-3.7-2]
+    prompt: >-
+      (1) כתבו את החוק השני לדסקית, ברכיב הרדיאלי וברכיב המשיקי, בעזרת רכיבי התאוצה בקואורדינטות קוטביות, ואת החוק
+      השני למשקולת לאורך $z$. ציינו לכל כוח איזה גוף מפעיל אותו.
+
+      (2) הראו ש-$L$ נשמר, ונמקו מדוע לכוח השקול על הדסקית אין מומנט כוח ביחס ל-$O$.
+
+      (3) גזרו משוואת תנועה שבה מופיעים רק $r$ ונגזרותיו, $m$, $M$, $g$ ו-$L$. בדקו אותה במקרה $L = 0$ (הדסקית
+      משוחררת בלי מהירות משיקית): השוו לתאוצה של גוש על שולחן חלק שגוש תלוי מושך אותו בחוט דרך גלגלת.
+    solution:
+      - kind: law
+        text: >-
+          רכיבי התאוצה בקואורדינטות קוטביות (שיעור 1.4): $a_r = \ddot r - r\dot\theta^2$ ו-$a_\theta = r\ddot\theta +
+          2\dot r\dot\theta = \dfrac1r\dfrac{d}{dt}\left(r^2\dot\theta\right)$. אורך החוט קבוע (שיעור 2.5): $r + z = \ell$,
+          ולכן $\ddot z = -\ddot r$.
+      - kind: manipulation
+        text: >-
+          על הדסקית פועלים הכובד (כדור הארץ) והכוח הנורמלי (השולחן), שניהם אנכיים ומאזנים זה את זה, והמתיחות
+          (החוט), בגודל $T$, אל החור, כלומר בכיוון $(-\hat r)$. לכן
+          $$m\left(\ddot r - r\dot\theta^2\right) = -T,\qquad m\left(r\ddot\theta + 2\dot r\dot\theta\right) = 0$$
+          על המשקולת פועלים הכובד, $Mg$ כלפי מטה (כדור הארץ), והמתיחות, $T$ כלפי מעלה (החוט): $M\ddot z = Mg - T$.
+      - kind: manipulation
+        text: >-
+          המשוואה המשיקית היא $\dfrac{m}{r}\dfrac{d}{dt}\left(r^2\dot\theta\right) = 0$, ולכן $L = mr^2\dot\theta$
+          קבוע. הסיבה: המתיחות פונה אל $O$, ולכן $\vec r\times\vec T = 0$, והכובד והנורמלי מבטלים זה את זה, ולכן גם
+          המומנטים שלהם מתבטלים: הכוח השקול על הדסקית הוא $-T\hat r$, כוח מרכזי, ואין לו מומנט כוח ביחס ל-$O$ (שיעור
+          3.7). מהמשקולת, עם $\ddot z = -\ddot r$: $T = M\left(g + \ddot r\right)$. מציבים במשוואה הרדיאלית
+          ומחליפים $\dot\theta = L/(mr^2)$: $m\ddot r - \dfrac{L^2}{mr^3} = -Mg - M\ddot r$, כלומר
+          $$(m + M)\,\ddot r = \frac{L^2}{mr^3} - Mg$$
+      - kind: limit
+        text: >-
+          כש-$L = 0$: $\ddot r = -\dfrac{M}{m + M}\,g$. הדסקית מאיצה ישר אל החור ב-$\dfrac{M}{m + M}g$, בדיוק התאוצה של
+          גוש $m$ על שולחן חלק שגוש $M$ מושך דרך גלגלת (שיעור 2.5): החור ממלא את התפקיד של הגלגלת. ובלי משקולת,
+          $M \to 0$: $\ddot r = L^2/(m^2r^3) = r\dot\theta^2$, כלומר $a_r = 0$, גוף חופשי שנע בקו ישר.
+      - kind: units
+        text: >-
+          $\dfrac{L^2}{mr^3}$ ביחידות $\dfrac{(\text{kg}\cdot\text{m}^2/\text{s})^2}{\text{kg}\cdot\text{m}^3} =
+          \text{kg}\cdot\text{m/s}^2 = \text{N}$, כמו $Mg$ ו-$(m + M)\ddot r$.
+      - kind: result
+        text: >-
+          $m\left(\ddot r - r\dot\theta^2\right) = -T$, $\;L = mr^2\dot\theta$ קבוע, $\;M\ddot z = Mg - T$ עם $\ddot z =
+          -\ddot r$, ומכאן
+          $$(m + M)\,\ddot r = \frac{L^2}{mr^3} - Mg$$
+    rubric:
+      - text: >-
+          כתבתי $m(\ddot r - r\dot\theta^2) = -T$ לדסקית ו-$M\ddot z = Mg - T$ למשקולת, עם האילוץ $\ddot z = -\ddot r$,
+          וציינתי מי מפעיל כל כוח.
+        weight: 2
+      - text: >-
+          הראיתי מהרכיב המשיקי ש-$L = mr^2\dot\theta$ נשמר, ונימקתי שהכוח השקול על הדסקית מרכזי (המתיחות פונה אל $O$,
+          והכובד והנורמלי מתבטלים), ולכן אין לו מומנט כוח ביחס ל-$O$.
+      - text: >-
+          הגעתי ל-$(m + M)\ddot r = L^2/(mr^3) - Mg$.
+      - text: >-
+          בדקתי שכש-$L = 0$ הדסקית מאיצה אל החור ב-$Mg/(m + M)$, כמו גוש על שולחן שגוש תלוי מושך.
+
+  - label: ב
+    type: open
+    points: 5
+    level: mid
+    standalone: false
+    objectives: [OBJ-2.3-1, OBJ-2.6-1, OBJ-2.2-2]
+    prompt: >-
+      מחלק א, $(m + M)\,\ddot r = \dfrac{L^2}{mr^3} - Mg$, והמתיחות היא $T = M\left(g + \ddot r\right)$.
+
+      (1) בטאו את $T$ באמצעות $m$, $M$, $g$, $r$ ו-$\dot\theta$, והראו ש-$T \ge \dfrac{mM}{m + M}\,g$ בכל רגע שבו החוט
+      מתוח. הסיקו שאם בהתחלה החוט מתוח והמשקולת נעה איתו ($\dot z = -\dot r$), החוט לא מתרפה לעולם.
+
+      (2) הדסקית נעה במעגל ברדיוס $r_0$. מצאו את המהירות הזוויתית שלה, $\Omega_0$, ואת המתיחות.
+
+      (3) בדקו את הביטוי ל-$T$ מסעיף (1) בגבול $M \gg m$.
+    solution:
+      - kind: law
+        text: >-
+          המתיחות נקבעת מהאילוץ (שיעור 2.3): מהמשקולת, $T = M\left(g + \ddot r\right)$, ו-$\ddot r$ מחלק א. בתנועה
+          מעגלית $\dot r = 0$ ו-$\ddot r = 0$, והמתיחות היא הכוח השקול הרדיאלי על הדסקית (שיעור 2.6).
+      - kind: manipulation
+        text: >-
+          מציבים את $\ddot r$, עם $\dfrac{L^2}{mr^3} = mr\dot\theta^2$:
+          $$T = M\left[g + \frac{mr\dot\theta^2 - Mg}{m + M}\right] = \frac{M\left[(m + M)g + mr\dot\theta^2 - Mg\right]}{m + M} = \frac{mM}{m + M}\left(g + r\dot\theta^2\right)$$
+          שני האיברים בסוגריים אינם שליליים, ולכן $T \ge \dfrac{mM}{m + M}\,g > 0$ בכל רגע של תנועה שבה החוט מתוח: התנועה
+          עם החוט המתוח לא מגיעה אף פעם למצב שבו הוא היה צריך לדחוף, והחוט לא מתרפה. (אם בהתחלה זורקים את המשקולת
+          כלפי מעלה מהר יותר מ-$\dot r$, החוט רפוי מהרגע הראשון, והמשוואות של חלק א לא חלות; לכן הדרישה על ההתחלה.)
+          השוויון $T = \dfrac{mM}{m + M}g$ מתקבל רק כש-$\dot\theta = 0$. במילים: החוט היה מתרפה רק
+          אם המשקולת הייתה צריכה ליפול בתאוצה גדולה מ-$g$, כלומר $\ddot r < -g$. אבל מחלק א
+          $\ddot r \ge -\dfrac{M}{m + M}\,g > -g$, כי האיבר $L^2/(mr^3)$ רק מגדיל את $\ddot r$.
+      - kind: manipulation
+        text: >-
+          במעגל ברדיוס $r_0$, $\ddot r = 0$, ולכן מחלק א $\dfrac{L^2}{mr_0^3} = Mg$, כלומר $mr_0\Omega_0^2 = Mg$:
+          $$\Omega_0 = \sqrt{\frac{Mg}{mr_0}}$$
+          והמתיחות $T = M(g + 0) = Mg$: המשקולת במנוחה, והמתיחות שהיא מחזיקה היא בדיוק הכוח השקול הרדיאלי
+          $mr_0\Omega_0^2$ שהדסקית צריכה. בדיקה בביטוי הכללי: $\dfrac{mM}{m + M}\left(g + \dfrac{Mg}{m}\right) = Mg$.
+      - kind: limit
+        text: >-
+          כש-$M \gg m$: $T \to m\left(g + r\dot\theta^2\right)$. המשקולת הכבדה כמעט לא מרגישה את
+          הדסקית ונופלת כמעט חופשית, $\ddot r \to -g$, והחוט צריך לתת לדסקית פנימה בדיוק
+          $m\left(r\dot\theta^2 - \ddot r\right) = m\left(g + r\dot\theta^2\right)$: גם בשביל הסיבוב וגם בשביל ההאצה
+          אל החור.
+      - kind: units
+        text: >-
+          $\dfrac{mM}{m + M}$ ביחידות מסה ו-$g + r\dot\theta^2$ ביחידות תאוצה, ולכן $T$ בניוטון. $\sqrt{Mg/(mr_0)}$
+          ביחידות $\sqrt{(\text{m/s}^2)/\text{m}} = \text{s}^{-1}$.
+      - kind: result
+        text: >-
+          $T = \dfrac{mM}{m + M}\left(g + r\dot\theta^2\right) \ge \dfrac{mM}{m + M}\,g > 0$: החוט תמיד מתוח. במעגל
+          $\Omega_0 = \sqrt{Mg/(mr_0)}$ ו-$T = Mg$.
+    rubric:
+      - text: >-
+          הצבתי את $\ddot r$ מחלק א ב-$T = M(g + \ddot r)$ וקיבלתי $T = \dfrac{mM}{m + M}\left(g + r\dot\theta^2\right)$.
+        weight: 2
+      - text: >-
+          הראיתי ש-$T \ge mMg/(m + M) > 0$ כל עוד החוט מתוח, והסקתי שחוט שמתוח בהתחלה לא מתרפה.
+      - text: >-
+          מצאתי למעגל $\Omega_0 = \sqrt{Mg/(mr_0)}$ ו-$T = Mg$.
+      - text: >-
+          בדקתי את $T$ בגבול $M \gg m$: $T \to m(g + r\dot\theta^2)$, משקולת שנופלת כמעט חופשית.
+
+  - label: ג
+    type: open
+    points: 8
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.3-1, OBJ-6.3-1, OBJ-6.3-2, OBJ-5.2-2]
+    prompt: >-
+      מחלק ב, במעגל ברדיוס $r_0$ המהירות הזוויתית היא $\Omega_0 = \sqrt{Mg/(mr_0)}$.
+
+      (1) הראו שהאנרגיה המכנית של הדסקית והמשקולת יחד נשמרת, ושעד כדי קבוע אפשר לכתוב אותה בצורה
+      $$E = \tfrac12(m + M)\dot r^2 + U_{\text{eff}}(r),\qquad U_{\text{eff}}(r) = \frac{L^2}{2mr^2} + Mgr$$
+      הראו שהמסלול המעגלי נמצא במינימום של $U_{\text{eff}}$, ושהוא יציב לכל $r_0$.
+
+      (2) בטאו את התדירות הזוויתית $\omega_r$ של תנודות רדיאליות קטנות סביב $r_0$ באמצעות $m$, $M$, $g$ ו-$r_0$, ואת
+      היחס $\omega_r/\Omega_0$.
+
+      (3) נתון שבמסלול כבידה כמעט מעגלי $r$ משלים בדיוק תנודה אחת בכל סיבוב, ולכן המסלול נסגר אחרי סיבוב אחד. לאיזה
+      יחס $M/m$ גם המסלול הכמעט מעגלי של הדסקית נסגר אחרי סיבוב אחד? נמקו.
+    solution:
+      - kind: law
+        text: >-
+          שימור אנרגיה (שיעור 3.3): האנרגיה המכנית נשמרת כשרק כוחות משמרים עושים עבודה. הפוטנציאל האפקטיבי (שיעור
+          6.3): מחליפים $\dot\theta = L/(mr^2)$ ומקבלים בעיה בממד אחד ב-$r$. הקירוב ההרמוני (שיעור 5.2): כש-$E =
+          \tfrac12m_{\text{eff}}\dot x^2 + U(x)$, תנודות קטנות סביב מינימום $x_0$ הן בתדירות
+          $\omega^2 = U''(x_0)/m_{\text{eff}}$.
+      - kind: manipulation
+        text: >-
+          העבודה של המתיחות על הדסקית בזמן $dt$ היא $\vec T\cdot d\vec r = -T\dot r\,dt$, ועל המשקולת $T\cdot(-\dot z)\,dt
+          = T\dot r\,dt$: יחד אפס, כי החוט רק מעביר אנרגיה מגוף לגוף. הכוח הנורמלי ניצב לתנועת הדסקית, והחור חלק.
+          נשאר הכובד על המשקולת, שהוא משמר: $U = -Mgz = Mgr - Mg\ell$. האנרגיה הקינטית היא
+          $\tfrac12m\left(\dot r^2 + r^2\dot\theta^2\right) + \tfrac12M\dot z^2$, עם $\dot z = -\dot r$ ו-$mr^2\dot\theta^2 =
+          L^2/(mr^2)$. לכן, בלי הקבוע $Mg\ell$:
+          $$E = \tfrac12(m + M)\dot r^2 + U_{\text{eff}}(r),\qquad U_{\text{eff}}(r) = \frac{L^2}{2mr^2} + Mgr$$
+      - kind: manipulation
+        text: >-
+          $U_{\text{eff}}'(r) = -\dfrac{L^2}{mr^3} + Mg$ מתאפסת ב-$r_0^3 = \dfrac{L^2}{mMg}$, אותו תנאי כמו $\ddot r = 0$
+          בחלק א, ושם
+          $$U_{\text{eff}}''(r_0) = \frac{3L^2}{mr_0^4} = \frac{3Mg}{r_0} > 0$$
+          מינימום, ולכן המעגל יציב לכל $r_0$. ($U_{\text{eff}}$ שואף לאינסוף גם כש-$r \to 0$, בגלל המחסום, וגם כש-$r \to
+          \infty$, בגלל המשקולת שעולה, ויש לו מינימום יחיד.) האינרציה של התנועה הרדיאלית היא $m + M$, ולא $m$, כי
+          כש-$r$ משתנה גם המשקולת זזה. לכן
+          $$\omega_r^2 = \frac{U_{\text{eff}}''(r_0)}{m + M} = \frac{3Mg}{(m + M)\,r_0},\qquad \frac{\omega_r}{\Omega_0} = \sqrt{\frac{3Mg}{(m + M)\,r_0}\cdot\frac{mr_0}{Mg}} = \sqrt{\frac{3m}{m + M}}$$
+      - kind: manipulation
+        text: >-
+          בין שני מעברים סמוכים במרחק הקטן ביותר מהחור עובר זמן מחזור רדיאלי אחד, $2\pi/\omega_r$, והדסקית מסתובבת
+          בזמן הזה בזווית $2\pi\Omega_0/\omega_r$. המסלול נסגר אחרי סיבוב אחד כש-$\omega_r = \Omega_0$: $3m = m + M$,
+          כלומר $M = 2m$. זה נכון רק בקירוב של תנודות קטנות: הזווית בין שני מרחקים קטנים ביותר עוקבים היא
+          $360^\circ$ עד סדר ראשון באמפליטודה, ובתנודה גדולה היא קטנה מעט מ-$360^\circ$ (חישוב מדויק: בערך
+          $359.7^\circ$ כש-$r$ נע בין $0.91\,r_0$ ל-$1.11\,r_0$), והמסלול שוב לא נסגר בדיוק. זה לא סותר את שיעור
+          6.3, שלפיו רק בכבידה ובקפיץ כל המסלולים הקשורים נסגרים: כאן נסגרים רק המסלולים הכמעט מעגליים. (וגם
+          אין כאן חלקיק בכוח מרכזי שתלוי רק ב-$r$: המתיחות תלויה גם ב-$\dot\theta$.) לכל יחס אחר המסלול הכמעט
+          מעגלי הוא רוזטה.
+      - kind: limit
+        text: >-
+          (גבולות שלא נשאלו.) כש-$M \ll m$: מחלק ב $T =\dfrac{mM}{m + M}\left(g + r\dot\theta^2\right) \approx M\left(g + r\dot\theta^2\right)$,
+          ובמסלול כמעט מעגלי $r\dot\theta^2 \approx r_0\Omega_0^2 = Mg/m \ll g$, ולכן $T \approx Mg$: האינרציה של
+          המשקולת זניחה, והדסקית נעה תחת כוח מרכזי בגודל קבוע. אז $\omega_r/\Omega_0 \to \sqrt3 \approx 1.73$. $\sqrt3$ נמצא בין $1$ של הכבידה, שנחלשת עם המרחק, ל-$2$ של הקפיץ,
+          שמתחזק עם המרחק, כמצופה מכוח שלא תלוי במרחק; והוא לא רציונלי, ולכן המסלול לא נסגר, כמו שקובע שיעור 6.3
+          לכוח מרכזי שאינו כבידה או קפיץ. כש-$M \gg m$: $\omega_r/\Omega_0 \to 0$. $\omega_r^2 \to 3g/r_0$ נשאר סופי,
+          אבל $\Omega_0^2 = Mg/(mr_0)$ גדל בלי גבול: הדסקית מסתובבת פעמים רבות בזמן תנודה רדיאלית אחת. בדיקה בדרך
+          שנייה ל-$\omega_r$: מפתחים את משוואת חלק א סביב $r_0$, עם $r = r_0 + u$ ו-$L$ קבוע:
+          $(m + M)\ddot u = -\dfrac{3L^2}{mr_0^4}\,u = -\dfrac{3Mg}{r_0}\,u$, אותה תדירות.
+      - kind: units
+        text: >-
+          $\dfrac{L^2}{mr^2}$ ו-$Mgr$ ב-$\text{J}$. $\dfrac{3Mg}{(m + M)r_0}$ ביחידות $\dfrac{\text{m/s}^2}{\text{m}} =
+          \text{s}^{-2}$, ו-$\omega_r/\Omega_0$ חסר ממדים.
+      - kind: result
+        text: >-
+          $U_{\text{eff}} = \dfrac{L^2}{2mr^2} + Mgr$, עם מינימום יחיד ב-$r_0$: המעגל יציב.
+          $\omega_r^2 = \dfrac{3Mg}{(m + M)r_0}$ ו-$\dfrac{\omega_r}{\Omega_0} = \sqrt{\dfrac{3m}{m + M}}$: $\sqrt3$ כש-$M
+          \ll m$ (כוח מרכזי קבוע $Mg$), אפס כש-$M \gg m$, ו-$1$, מסלול שנסגר אחרי סיבוב אחד, כש-$M = 2m$.
+    rubric:
+      - text: >-
+          הראיתי שהעבודה הכוללת של המתיחות אפס, והגעתי ל-$E = \tfrac12(m + M)\dot r^2 + L^2/(2mr^2) + Mgr$.
+      - text: >-
+          הראיתי שהמעגל במינימום של $U_{\text{eff}}$ ושם $U_{\text{eff}}'' = 3Mg/r_0 > 0$, ולכן הוא יציב לכל $r_0$.
+      - text: >-
+          חילקתי ב-$m + M$, לא ב-$m$, וקיבלתי $\omega_r^2 = 3Mg/\left((m + M)r_0\right)$ ו-$\omega_r/\Omega_0 =
+          \sqrt{3m/(m + M)}$.
+        weight: 2
+      - text: >-
+          נימקתי שבזמן מחזור רדיאלי אחד הדסקית מסתובבת ב-$2\pi\Omega_0/\omega_r$, ולכן המסלול נסגר אחרי סיבוב אחד
+          כש-$\omega_r = \Omega_0$, ומצאתי $M = 2m$.
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.5-1, OBJ-4.4-1, OBJ-5.1-1, OBJ-3.7-2]
+    prompt: >-
+      הדסקית נעה במעגל ברדיוס $r_0$ במהירות הזוויתית $\Omega_0$ של חלק ב. ברגע $t = 0$ נותנים למשקולת מכה קצרה כלפי
+      מטה, עם מתקף $J$. המכה קצרה כל כך שבזמנה $r$ ו-$\theta$ לא משתנים. מחלק ג,
+      $\omega_r^2 = \dfrac{3Mg}{(m + M)\,r_0}$.
+
+      (1) במהלך המכה החוט נשאר מתוח, ולכן $\dot z = -\dot r$ גם בה, והחוט נותן לדסקית מתקף $J_T$ אל החור. מצאו את
+      $\dot r$ ואת המהירות המשיקית $r\dot\theta$ של הדסקית מיד אחרי המכה, ואת $J_T$. הסבירו מדוע $L$ לא משתנה במכה, ולכן גם $U_{\text{eff}}$, $r_0$ ו-$\omega_r$ של חלק ג לא משתנים. בדקו את
+      התוצאות בגבולות $M \gg m$ ו-$M \ll m$.
+
+      (2) בהנחה שהתנודה שאחרי המכה קטנה, בטאו את $r(t)$ באמצעות $r_0$, $J$, $m$, $M$ ו-$\omega_r$. מה התנאי על $J$
+      שההנחה הזו דורשת?
+
+      (3) חשבו עבור $m = 0.20\,\text{kg}$, $M = 0.40\,\text{kg}$, $r_0 = 0.50\,\text{m}$, $J = 0.060\,\text{N}\cdot\text{s}$
+      ו-$g = 9.8\,\text{m/s}^2$ את $\Omega_0$, את $\omega_r$, את המרחק הקטן ביותר של הדסקית מהחור ואת $J_T$.
+    solution:
+      - kind: law
+        text: >-
+          המתקף על כל גוף שווה לשינוי בתנע שלו (שיעור 3.5). בזמן מכה קצרה הכוחות הסופיים, הכובד והנורמלי, נותנים
+          מתקף זניח (שיעור 4.4); מתקף נותנות רק המכה והמתיחות, שגדלה מאוד בזמן המכה. האילוץ $\dot z = -\dot r$ נשמר
+          גם בזמן המכה, כי המכה כלפי מטה מותחת את החוט.
+      - kind: manipulation
+        text: >-
+          נסמן ב-$J_T$ את המתקף של המתיחות. על הדסקית הוא פונה אל $O$, ולכן ברכיב הרדיאלי $m\,\Delta\dot r = -J_T$;
+          ואין לו מומנט כוח ביחס ל-$O$, ולכן $L$, וגם $r\dot\theta = \Omega_0r_0$, לא משתנים. על המשקולת, חיובי כלפי
+          מטה: $M\,\Delta\dot z = J - J_T$, עם $\Delta\dot z = -\Delta\dot r = J_T/m$. לכן $\dfrac{M}{m}J_T = J - J_T$:
+          $$J_T = \frac{m}{m + M}\,J,\qquad \dot r(0^+) = -\frac{J}{m + M},\qquad r\dot\theta = \Omega_0r_0$$
+          לאורך החוט שני הגופים מקבלים את המכה יחד, כמו גוף אחד במסה $m + M$.
+      - kind: manipulation
+        text: >-
+          $L$ לא השתנה, ולכן גם $U_{\text{eff}}$ של חלק ג לא השתנה: אותו מינימום $r_0$ ואותה $\omega_r$. השתנתה רק
+          האנרגיה, ב-$\dfrac{J^2}{2(m + M)}$. לתנודה קטנה, $u = r - r_0$ מקיים $\ddot u = -\omega_r^2u$ עם $u(0) = 0$
+          ו-$\dot u(0) = -J/(m + M)$ (שיעור 5.1), ולכן
+          $$r(t) = r_0 - \frac{J}{(m + M)\,\omega_r}\sin\omega_rt$$
+          האמפליטודה $A = \dfrac{J}{(m + M)\,\omega_r}$, וההנחה טובה כש-$A \ll r_0$, כלומר $J \ll (m + M)\,\omega_rr_0$.
+          בדיקה מהאנרגיה: $\dfrac{J^2}{2(m + M)} = \tfrac12U_{\text{eff}}''(r_0)A^2 = \tfrac12(m + M)\,\omega_r^2A^2$ נותן
+          אותה $A$.
+      - kind: limit
+        text: >-
+          כש-$M \gg m$: $J_T \to 0$, והמשקולת נעה ב-$J/M$, כאילו אין חוט: היא מקבלת את המכה לבדה, והדסקית הקלה נגררת
+          אחריה בלי לבלום אותה. כש-$M \ll m$: $J_T \to J$ ו-$\dot r \to -J/m$: המשקולת הקלה מעבירה את כל המכה דרך
+          החוט, והדסקית זזה כאילו קיבלה את המכה ישירות. בשני הגבולות התוצאה ידועה בלי החישוב: גוף חופשי שמקבל מתקף
+          $J$ זז ב-$J$ חלקי המסה שלו.
+      - kind: units
+        text: >-
+          $J/(m + M)$ ביחידות $\text{N}\cdot\text{s}/\text{kg} = \text{m/s}$, ו-$J/\left((m + M)\omega_r\right)$ ביחידות
+          $(\text{m/s})\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\Omega_0 = \sqrt{\dfrac{0.40\cdot9.8}{0.20\cdot0.50}} = 6.26\,\text{rad/s}$ ו-$\omega_r =
+          \sqrt{\dfrac{3\cdot0.40\cdot9.8}{0.60\cdot0.50}} = 6.26\,\text{rad/s}$: שוות, כי $M = 2m$ (חלק ג).
+          $\dot r(0^+) = -0.060/0.60 = -0.100\,\text{m/s}$, $A = 0.100/6.26 = 0.0160\,\text{m}$, ולכן המרחק הקטן ביותר
+          מהחור $r_0 - A = 0.484\,\text{m}$ ($A/r_0 \approx 3\%$: התנודה אכן קטנה). $J_T = \dfrac{0.20}{0.60}\cdot0.060 =
+          0.0200\,\text{N}\cdot\text{s}$. כיוון ש-$\omega_r = \Omega_0$, הדסקית מגיעה למרחק הקטן ביותר בכל סיבוב כמעט
+          באותו כיוון: המסלול נסגר, עד תיקון מסדר שני באמפליטודה (חלק ג).
+      - kind: result
+        text: >-
+          $\dot r(0^+) = -\dfrac{J}{m + M}$, $r\dot\theta$ לא משתנה, $J_T = \dfrac{mJ}{m + M}$, ו-
+          $$r(t) = r_0 - \frac{J}{(m + M)\,\omega_r}\sin\omega_rt$$
+          כש-$J \ll (m + M)\,\omega_rr_0$. במספרים: $\Omega_0 = \omega_r = 6.26\,\text{rad/s}$, המרחק הקטן ביותר
+          $0.484\,\text{m}$ ו-$J_T = 0.0200\,\text{N}\cdot\text{s}$.
+    rubric:
+      - text: >-
+          כתבתי מתקף ותנע לכל גוף בנפרד, עם המתקף $J_T$ של החוט ועם האילוץ, וקיבלתי $\dot r = -J/(m + M)$
+          ו-$J_T = mJ/(m + M)$.
+        weight: 2
+      - text: >-
+          נימקתי ש-$L$ ו-$r\dot\theta$ לא משתנים, כי ל-$J_T$ אין מומנט כוח ביחס ל-$O$, ולכן $U_{\text{eff}}$, $r_0$
+          ו-$\omega_r$ לא משתנים.
+      - text: >-
+          בדקתי את הגבולות $M \gg m$ ו-$M \ll m$ מול גוף חופשי שמקבל את המתקף.
+      - text: >-
+          כתבתי $r(t) = r_0 - \dfrac{J}{(m + M)\omega_r}\sin\omega_rt$ ואת התנאי $J \ll (m + M)\,\omega_rr_0$.
+      - text: >-
+          חישבתי $\Omega_0 = \omega_r \approx 6.26\,\text{rad/s}$, מרחק קטן ביותר $0.484\,\text{m}$ ו-$J_T =
+          0.0200\,\text{N}\cdot\text{s}$.

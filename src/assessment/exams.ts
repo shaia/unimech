@@ -20,6 +20,7 @@ export interface ExamSpec {
 
 export const EXAMS: ExamSpec[] = [
   { id: 'final-a', title: 'מבחן מסכם', sitting: 'מועד א׳', minutes: 180, count: 5, answer: 4, points: 25 },
+  { id: 'final-b', title: 'מבחן מסכם', sitting: 'מועד ב׳', minutes: 180, count: 5, answer: 4, points: 25 },
 ];
 
 export const examById = (id: string) => EXAMS.find((e) => e.id === id);

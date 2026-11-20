@@ -1,0 +1,349 @@
+# Final exam B, question 5: a photon rocket. A spaceship of initial mass M0 starts from rest and turns stored energy
+# into light that it beams backwards; its mass M falls and it accelerates along +x. Joins chapter 10 (four-momentum
+# conservation and E = pc of light 10.1, 10.4; the invariant 10.2-2; the boost of a photon's energy 10.2-1) with
+# chapter 9 (velocity addition and the Doppler effect, 9.4), chapter 3 (momentum conservation 3.5, the rocket equation
+# by a short-time balance 3.6) and chapter 0 (separation of variables 0.5, an integral built from pieces 0.4).
+# Parts (as reviewed): א all the light at once: M/M0 = √((1 − β)/(1 + β)), β = (M0² − M²)/(M0² + M²), the M → M0
+# check; ב γ = (M0² + M²)/(2M0M) from β, so E_γ = γMβc² = (M0² − M²)c²/(2M0), K = (M0 − M)²c²/(2M0),
+# η = (M0 − M)/(2M0) with its Newtonian limit, and numbers (the only numeric part); ג step by step in the momentary
+# rest frame: δE′ = −c²dM, dv′ = −c dM/M (the rocket equation with u = c), dβ = −(1 − β²)dM/M by velocity addition,
+# integrated back to א, Tsiolkovsky as the β ≪ 1 check; ד the light reaches the launch point at f = f0 M/M0, and
+# summing the Doppler-shifted pieces gives ב's E_γ again (the second, independent derivation of E_γ); M → 0: β → 1 and
+# M0c² shared half and half.
+# Overlap checked (2026-11-20): no photon rocket anywhere in the course (lessons, ladders, workbooks, review problems,
+# exam-map, final-a). Nearest: workbook 10.4 (an Fe-57 nucleus emitting one gamma photon with recoil), 10.4 example 1
+# and 10.5 example 2 (sails pushed by light from outside), 10.5 example 5 (constant force, arsinh), 3.6 (Newtonian
+# rocket, parcelRocket). The alternative scenario (symmetric relativistic elastic collision) is Q-10-bagrut-5 and was
+# not taken.
+# Recomputed in .scratch/exam-b/q5.ts (all ok) by independent routes: a flight of photon emissions built from
+# four-vectors (fourvector.photon emitted backwards in the rocket's rest frame, boostX to S, subtracted; massOf,
+# velocityOf), at M/M0 = 0.95, 0.5, 1/3, 0.1, 0.01 and as one single pulse: the ratio √((1 − β)/(1 + β)) and β(M) at
+# every state (rel < 1e-12), E_γ as the sum of the boosted photons, K = (γ − 1)Mc² by gammaOf, the energy balance;
+# ג: the exact single emission at rest gives δE′/(−c²dM) − 1 and dv′/(−c dM/M) − 1 both = dM/(2M) (second order);
+# (addVelocities(dv′, β) − β)/dv′ = 1 − β²; an RK4 of dβ/dM = −(1 − β²)/M to M/M0 = 0.9, 0.5, 1/3, 0.05 (rel < 1e-11);
+# parcelRocket (u = c) agrees with β when Δm/M0 = 1e-3 (3e-7) and departs like β²/3; β(M0/e) = tanh 1 = 0.7616;
+# ד: dopplerFactor(−β) = M/M0; the flight's Σ δE′·D(−β) equals the boosted sum; a midpoint quadrature of
+# ∫ D(−β(M′)) c² dM′ = (M0² − M²)c²/(2M0); M → 0: γMc² and γMβc → M0c²/2 and M0c/2.
+# Exam numbers (ב(3)): M0 = 1.00e3 kg, β = 0.800, c = 3.0e8 m/s → M/M0 = 1/3, M = 333 kg, γ = 5/3, M0c² = 9.00e19 J,
+#   E_γ = (4/9)M0c² = 4.00e19 J, K = (2/9)M0c² = 2.00e19 J = (γ − 1)Mc², γMc² = 5.00e19 J, ratio 1/3; rest energy lost
+#   6.00e19 J. Not asked: Tsiolkovsky with u = c would need M = M0e^(−0.8) = 449 kg.
+# reviewed 2026-11-20 (independent, .scratch/exam-b-review/q5.ts): a flight of 2000 exact single-photon emissions, each
+#   solved in the momentary rest frame by the invariant mass alone, velocities composed by rapidities (atanh/tanh, not
+#   fourvector.ts), the S energy of each photon by the 9.4 Doppler factor: β(M), √((1 − β)/(1 + β)) = M/M0, E_γ, K,
+#   momentum and energy balance at M/M0 = 0.95, 0.5, 1/3, 0.1, 0.01 (rel < 1e-11); ג first-order claims (residuals
+#   dM/(2M)), the velocity-addition slope 1 − β², tanh 1, Tsiolkovsky at β = 1e-3; ב(3) numbers; ד quadrature to
+#   M/M0 = 0.5 and 1e-4. Every step of ג is taught (10.1 conservation, 10.4 E = pc, 0.3 Taylor, 3.6 rocket equation,
+#   9.4 velocity addition, which even differentiates u by u′, 0.5 separation) or given (S′, the partial fractions).
+#   Changed: ג's solution used u both for 9.4's velocity and 3.6's exhaust speed (now w for the former) and now says dM
+#   is the same in S and S′ (rest mass is invariant); ג(1) says why δE′ and not dE′; ג(3) and (4) merged, the
+#   M0/e = (e² − 1)/(e² + 1) ask dropped (kept as a remark) to bring the question to ~45 min; ד's integration
+#   variable M′ → M̃ (primes mean "in S′" here); ד(3) rubric also accepts the η → ½ route; ב(1) points to the invariant;
+#   ב's four-vectors written (E/c, p) as in the glossary; ב(2) definition of η rephrased. Second pass (student timing,
+#   51 -> ~42 min): ב(1) no longer re-derives E_γ by the invariant: it shows γ = (M0² + M²)/(2M0M) from β and uses
+#   E_γ = γMβc² of א (objective OBJ-10.2-2 dropped from ב), so E_γ is derived twice (א/ב by conservation in S, ד by
+#   the Doppler sum); the limits are each checked once (M → M0 in א, M → 0 with β → 1 and the half-and-half split in
+#   ד; ב keeps its Newtonian limit); the editor-like notes in ג(1) and ד shortened; ג(2) states that dM is the same in
+#   S and S′. γ(β) rechecked: (M0² + M²)/(2M0M) = 5/3 at M/M0 = 1/3. Third pass (46 -> ~42 min): ב gives γ(M) as a
+#   fact (the 1 − β² algebra stays in the solution); ד defines M̃ (the mass when a given piece of light leaves,
+#   M0 ≥ M̃ ≥ M) before using it.
+id: E-final-b-5
+type: bagrut
+title: רקטת פוטונים
+prompt: >-
+  חללית נחה בחלל, רחוק מכל גוף, בראשית של מערכת אינרציאלית $S$, מערכת השיגור. המסה ההתחלתית שלה $M_0$. ברגע $t = 0$
+  מופעל המנוע שלה: הוא הופך אנרגיה שאגורה בחללית לאור, ופולט את האור כקרן צרה לאחור, בכיוון ההפוך ל-$+x$. המנוע לא
+  פולט שום דבר מלבד אור, ואין כוחות חיצוניים, ולכן החללית מאיצה לאורך ציר $x$; הציר החיובי $+x$ הוא כיוון התנועה
+  שלה. המסה $M$ של החללית ברגע מסוים היא אנרגיית המנוחה שלה חלקי $c^2$. האור לוקח איתו אנרגיה מתוך החללית, ולכן
+  $M$ קטנה בזמן שהמנוע פועל, אף שאף חומר לא יוצא ממנה (שיעור 10.4). סמנו ב-$\beta c$ את המהירות של החללית ב-$S$
+  ברגע שבו המסה שלה $M$, ו-$\gamma = 1/\sqrt{1 - \beta^2}$. מהירות האור $c$.
+diagramAlt: >-
+  ציר $x$ אופקי בתחתית, וראשית $0$ משמאל. מעל הראשית נקודה שמסמנת את הצופה בנקודת השיגור. מימין, החללית: צורה
+  מוארכת שהחרטום שלה פונה ימינה, ובתוכה האות $M$. מעליה חץ ימינה בצבע המהירות שמסומן $\beta c$. מהזנב של החללית
+  יוצא גל בצבע של אור, שמתקדם שמאלה, אל הצופה, ובקצהו ראש חץ שמאלה.
+diagram: |
+  <svg viewBox="0 0 460 140" width="460" height="140" font-size="14" aria-hidden="true">
+    <line x1="20" y1="112" x2="438" y2="112" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+    <polygon points="438,107 448,112 438,117" fill="currentColor"/>
+    <text x="442" y="132" fill="currentColor" font-style="italic">x</text>
+    <line x1="50" y1="86" x2="50" y2="112" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 3"/>
+    <text x="46" y="132" fill="currentColor">0</text>
+    <circle cx="50" cy="80" r="5" fill="currentColor"/>
+    <path d="M296,80 q-5,-7 -10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0 t-10,0" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <polygon points="96,73 82,80 96,87" fill="var(--accent)"/>
+    <polygon points="300,68 350,68 370,80 350,92 300,92" fill="var(--paper)" stroke="currentColor" stroke-width="1.8"/>
+    <text x="320" y="85" fill="currentColor" font-style="italic">M</text>
+    <line x1="300" y1="44" x2="360" y2="44" stroke="var(--velocity)" stroke-width="2.5"/>
+    <polygon points="360,38 373,44 360,50" fill="var(--velocity)"/>
+    <text x="380" y="49" fill="var(--velocity)" font-style="italic">βc</text>
+  </svg>
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-10.4-1, OBJ-10.1-1, OBJ-3.5-2]
+    prompt: >-
+      החשיבו את כל האור שנפלט מ-$t = 0$ ועד הרגע שבו המסה של החללית $M$ כמערכת אחת, שהאנרגיה הכוללת שלה ב-$S$ היא
+      $E_\gamma$.
+
+      (1) מה התנע הכולל של האור הזה ב-$S$, גודל וכיוון? בטאו אותו באמצעות $E_\gamma$ ו-$c$ ונמקו.
+
+      (2) כתבו את שימור האנרגיה ואת שימור התנע ב-$S$, והראו ש-
+      $$\frac{M}{M_0} = \sqrt{\frac{1 - \beta}{1 + \beta}}$$
+
+      (3) בטאו את $\beta$ באמצעות $M$ ו-$M_0$, ובדקו את התוצאה בגבול $M \to M_0$.
+    solution:
+      - kind: law
+        text: >-
+          אין כוחות חיצוניים, ולכן האנרגיה הכוללת והתנע הכולל של החללית ושל האור נשמרים ב-$S$ (שיעורים 3.5 ו-10.1). לחללית
+          $E = \gamma Mc^2$ ו-$p = \gamma M\beta c$. לאור, כמו לכל חלקיק חסר מסה, $E = pc$ (שיעור 10.4).
+      - kind: manipulation
+        text: >-
+          כל פוטון נע לאורך ציר $x$ בכיוון ההפוך ל-$+x$, עם תנע שגודלו האנרגיה שלו חלקי $c$. התנעים של כל הפוטונים באותו
+          כיוון, ולכן הם מסתכמים בגודל: לאור יש תנע שגודלו $E_\gamma/c$, בכיוון ההפוך ל-$+x$. לפני ההפעלה החללית נחה, עם
+          אנרגיה $M_0c^2$ ובלי תנע. לכן
+          $$M_0c^2 = \gamma Mc^2 + E_\gamma,\qquad 0 = \gamma M\beta c - \frac{E_\gamma}{c}$$
+      - kind: manipulation
+        text: >-
+          מהשנייה $E_\gamma = \gamma M\beta c^2$. מציבים בראשונה: $M_0c^2 = \gamma Mc^2(1 + \beta)$, כלומר
+          $$\frac{M}{M_0} = \frac{1}{\gamma(1 + \beta)} = \frac{\sqrt{(1 - \beta)(1 + \beta)}}{1 + \beta} = \sqrt{\frac{1 - \beta}{1 + \beta}}$$
+          מעלים בריבוע: $M^2(1 + \beta) = M_0^2(1 - \beta)$, ולכן $\beta = \dfrac{M_0^2 - M^2}{M_0^2 + M^2}$.
+      - kind: limit
+        text: >-
+          כש-$M = M_0$, $\beta = 0$ ו-$E_\gamma = \gamma M\beta c^2 = 0$: לא נפלט אור, והחללית נשארת במנוחה, כמו שחייב
+          להיות. (הגבול $M \to 0$ נבדק בחלק ד.)
+      - kind: units
+        text: >-
+          $\gamma Mc^2$ ו-$E_\gamma$ אנרגיות, ו-$\gamma M\beta c$ ו-$E_\gamma/c$ תנעים; $M/M_0$ ו-$\beta$ חסרי ממדים.
+      - kind: result
+        text: >-
+          לאור תנע $E_\gamma/c$ בכיוון ההפוך ל-$+x$. משימור האנרגיה והתנע $\dfrac{M}{M_0} = \sqrt{\dfrac{1 - \beta}{1 + \beta}}$,
+          כלומר $\beta = \dfrac{M_0^2 - M^2}{M_0^2 + M^2}$.
+    rubric:
+      - text: >-
+          נימקתי שלאור תנע שגודלו $E_\gamma/c$, בכיוון ההפוך ל-$+x$, כי כל פוטון נע לאחור עם $E = pc$.
+      - text: >-
+          כתבתי $M_0c^2 = \gamma Mc^2 + E_\gamma$ ו-$0 = \gamma M\beta c - E_\gamma/c$, והגעתי ל-$M/M_0 = \sqrt{(1 - \beta)/(1 + \beta)}$.
+        weight: 2
+      - text: >-
+          מצאתי $\beta = (M_0^2 - M^2)/(M_0^2 + M^2)$.
+      - text: >-
+          בדקתי ש-$\beta = 0$ כש-$M = M_0$: בלי אור החללית נשארת במנוחה.
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-10.1-1, OBJ-10.1-2]
+    prompt: >-
+      מחלק א, $\beta = \dfrac{M_0^2 - M^2}{M_0^2 + M^2}$ ו-$E_\gamma = \gamma M\beta c^2$. נתון שמכאן
+      $\gamma = \dfrac{M_0^2 + M^2}{2M_0M}$.
+
+      (1) בטאו באמצעות $M_0$, $M$ ו-$c$ את $E_\gamma$, האנרגיה ב-$S$ של כל האור שנפלט עד שהמסה של החללית $M$, ואת
+      האנרגיה הקינטית $K = (\gamma - 1)Mc^2$ של החללית באותו רגע.
+
+      (2) $\eta = \dfrac{K}{(M_0 - M)c^2}$ הוא היחס בין האנרגיה הקינטית של החללית לבין אנרגיית המנוחה שהיא איבדה.
+      הראו ש-$\eta = \dfrac{M_0 - M}{2M_0}$. בדקו שכאשר $M_0 - M \ll M_0$, $K$ שווה לאנרגיה הקינטית של ניוטון,
+      $\tfrac12M_0v^2$, עם המהירות $v = \beta c$ של חלק א.
+
+      (3) חשבו את $M$, $E_\gamma$, $K$ ו-$\eta$ לחללית שהמסה ההתחלתית שלה $M_0 = 1.00\cdot10^{3}\,\text{kg}$ ומגיעה
+      למהירות $0.800c$, עם $c = 3.0\cdot10^8\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          גורם לורנץ $\gamma = 1/\sqrt{1 - \beta^2}$, האנרגיה של האור מחלק א, $E_\gamma = \gamma M\beta c^2$, והאנרגיה
+          הקינטית $K = \gamma Mc^2 - Mc^2$ (שיעור 10.1).
+      - kind: manipulation
+        text: >-
+          $\gamma$ נתון; הוא נובע מ-$\beta$ של חלק א:
+          $$1 - \beta^2 = \frac{(M_0^2 + M^2)^2 - (M_0^2 - M^2)^2}{(M_0^2 + M^2)^2} = \frac{4M_0^2M^2}{(M_0^2 + M^2)^2},\qquad \gamma = \frac{M_0^2 + M^2}{2M_0M}$$
+          לכן $E_\gamma = \gamma M\beta c^2 = \dfrac{M_0^2 + M^2}{2M_0}\cdot\dfrac{M_0^2 - M^2}{M_0^2 + M^2}\,c^2 =
+          \dfrac{(M_0^2 - M^2)c^2}{2M_0}$, והאנרגיה של החללית $\gamma Mc^2 = \dfrac{(M_0^2 + M^2)c^2}{2M_0}$, כך ש-
+          $$K = \frac{\left(M_0^2 + M^2 - 2M_0M\right)c^2}{2M_0} = \frac{(M_0 - M)^2c^2}{2M_0}$$
+          בדיקה: $\gamma Mc^2 + E_\gamma = M_0c^2$, שימור האנרגיה של חלק א.
+      - kind: manipulation
+        text: >-
+          מחלקים ב-$(M_0 - M)c^2$: $\eta = \dfrac{M_0 - M}{2M_0}$. היחס תמיד קטן מחצי: לפחות חצי מאנרגיית המנוחה שהחללית
+          איבדה יוצאת עם האור.
+      - kind: limit
+        text: >-
+          נסמן $\Delta m = M_0 - M \ll M_0$. מחלק א, $\beta = \dfrac{(M_0 - M)(M_0 + M)}{M_0^2 + M^2} \approx
+          \dfrac{\Delta m\cdot2M_0}{2M_0^2} = \dfrac{\Delta m}{M_0}$, ולכן $\tfrac12M_0v^2 \approx \tfrac12M_0c^2\dfrac{\Delta m^2}{M_0^2}
+          = \dfrac{\Delta m^2c^2}{2M_0}$, בדיוק $K$. אז גם $\eta \to 0$ ו-$E_\gamma \approx \Delta m\,c^2$: כמו ברקטה של
+          ניוטון שהגזים שלה מהירים בהרבה ממנה, כמעט כל האנרגיה הולכת לפליטה.
+      - kind: units
+        text: >-
+          $M^2c^2/M_0$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$; $\eta$ חסר ממדים.
+      - kind: substitution
+        text: >-
+          $M/M_0 = \sqrt{0.200/1.800} = 1/3$, ולכן $M = 333\,\text{kg}$. $M_0c^2 = 1.00\cdot10^{3}\cdot9.0\cdot10^{16} =
+          9.00\cdot10^{19}\,\text{J}$. $E_\gamma = \tfrac12\left(1 - \tfrac19\right)M_0c^2 = \tfrac49M_0c^2 = 4.00\cdot10^{19}\,\text{J}$,
+          $K = \tfrac12\left(\tfrac23\right)^2M_0c^2 = \tfrac29M_0c^2 = 2.00\cdot10^{19}\,\text{J}$, ו-$\eta = \tfrac{2/3}{2} = 0.333$.
+          בדיקה: $\gamma = 1/0.600 = 5/3$, ו-$(\gamma - 1)Mc^2 = \tfrac23\cdot333\cdot9.0\cdot10^{16} = 2.00\cdot10^{19}\,\text{J}$; וגם
+          $\gamma Mc^2 + E_\gamma = 5.00\cdot10^{19} + 4.00\cdot10^{19} = M_0c^2$.
+      - kind: result
+        text: >-
+          $E_\gamma = \dfrac{(M_0^2 - M^2)c^2}{2M_0}$, $K = \dfrac{(M_0 - M)^2c^2}{2M_0}$, $\eta = \dfrac{M_0 - M}{2M_0}$. ב-$0.800c$:
+          $M = 333\,\text{kg}$, $E_\gamma = 4.00\cdot10^{19}\,\text{J}$, $K = 2.00\cdot10^{19}\,\text{J}$, ו-$\eta = 1/3$: מתוך
+          $6.00\cdot10^{19}\,\text{J}$ של אנרגיית מנוחה שאבדה, שליש נשאר בחללית כאנרגיה קינטית.
+    rubric:
+      - text: >-
+          הצבתי את $\gamma$ ומצאתי $E_\gamma = (M_0^2 - M^2)c^2/(2M_0)$ ו-$K = (M_0 - M)^2c^2/(2M_0)$.
+        weight: 2
+      - text: >-
+          הראיתי ש-$\eta = (M_0 - M)/(2M_0)$.
+      - text: >-
+          בדקתי שכש-$M_0 - M \ll M_0$, $v \approx c(M_0 - M)/M_0$ ו-$K \approx \tfrac12M_0v^2$.
+      - text: >-
+          חישבתי $M \approx 333\,\text{kg}$, $E_\gamma = 4.0\cdot10^{19}\,\text{J}$, $K = 2.0\cdot10^{19}\,\text{J}$ ו-$\eta = 1/3$.
+
+  - label: ג
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.6-1, OBJ-9.4-1, OBJ-0.5-2, OBJ-0.3-2]
+    prompt: >-
+      גזרו עכשיו את התוצאה של חלק א צעד אחר צעד, כמו שגזרנו את משוואת הרקטה בשיעור 3.6. ברגע מסוים המסה של החללית $M$
+      ומהירותה ב-$S$ היא $\beta c$. $S'$ היא המערכת האינרציאלית שבה החללית נחה באותו רגע; היא נעה ביחס ל-$S$ במהירות
+      $\beta c$ בכיוון $+x$. בפרק זמן קצר המנוע פולט אור, והמסה של החללית משתנה ב-$dM$, כאשר $dM < 0$.
+
+      (1) כתבו את שימור האנרגיה ואת שימור התנע ב-$S'$ עד סדר ראשון בגדלים הקטנים. הראו שהאנרגיה של האור שנפלט, כפי
+      שנמדדת ב-$S'$, היא $\delta E' = -c^2\,dM$, ושהחללית מקבלת ב-$S'$ את המהירות $dv' = -c\,dM/M$ ($\delta E'$: כמות
+      קטנה שהאור לוקח, לא שינוי של גודל של החללית). השוו למשוואת הרקטה של שיעור 3.6, $M\,dv = -u\,dM$: מהי מהירות הפליטה?
+
+      (2) היעזרו בחיבור מהירויות יחסותי, והראו שב-$S$ המהירות של החללית משתנה ב-$d\beta = -(1 - \beta^2)\,dM/M$.
+      ($dM$, השינוי במסת המנוחה, זהה ב-$S$ וב-$S'$.)
+
+      (3) פתרו את המשוואה בהפרדת משתנים, עם $\beta = 0$ כש-$M = M_0$, והראו שמתקבלת התוצאה של חלק א,
+      $M/M_0 = \sqrt{(1 - \beta)/(1 + \beta)}$. נתון:
+      $$\frac{1}{1 - \beta^2} = \frac12\left(\frac{1}{1 - \beta} + \frac{1}{1 + \beta}\right)$$
+      בדקו שבגבול $\beta \ll 1$ מתקבלת משוואת ציולקובסקי של שיעור 3.6.
+    solution:
+      - kind: law
+        text: >-
+          כמו בשיעור 3.6, משווים את המצב לפני הפליטה למצב שאחריה ושומרים איברים מסדר ראשון. ב-$S'$, שהיא אינרציאלית,
+          האנרגיה והתנע נשמרים (שיעור 10.1), ולאור $E = pc$. אחר כך עוברים ל-$S$ בחיבור מהירויות יחסותי (שיעור 9.4):
+          גוף שנע ב-$S'$ במהירות $w'$ נע ב-$S$ במהירות $w = \dfrac{w' + v}{1 + w'v/c^2}$, כאשר $v = \beta c$ (זו
+          הנוסחה של שיעור 9.4, שם עם $u$; כאן $u$ שמורה למהירות הפליטה).
+      - kind: manipulation
+        text: >-
+          לפני: החללית נחה ב-$S'$, עם אנרגיה $Mc^2$ ובלי תנע. אחרי: החללית, במסה $M + dM$, נעה במהירות קטנה $dv'$, והאור
+          נושא אנרגיה $\delta E'$ ותנע שגודלו $\delta E'/c$, בכיוון ההפוך ל-$+x$. גורם לורנץ של $dv'$ הוא
+          $1 + \tfrac12(dv'/c)^2 + \dots$, כלומר 1 עד סדר ראשון. לכן
+          $$Mc^2 = (M + dM)c^2 + \delta E',\qquad 0 = M\,dv' - \frac{\delta E'}{c}$$
+          (במשוואת התנע השמטנו את $dM\,dv'$, מסדר שני). מהראשונה $\delta E' = -c^2\,dM$, ומהשנייה
+          $M\,dv' = \delta E'/c = -c\,dM$. זו משוואת הרקטה $M\,dv = -u\,dM$ עם מהירות פליטה $u = c$: ברגע נתון, במערכת
+          שבה היא נחה, רקטת פוטונים היא רקטה של ניוטון שהגזים שלה יוצאים במהירות האור.
+      - kind: manipulation
+        text: >-
+          החללית נעה ב-$S'$ במהירות $w' = dv'$, ולכן ב-$S$
+          $$v + dv = \frac{dv' + v}{1 + v\,dv'/c^2} \approx (v + dv')\left(1 - \frac{v\,dv'}{c^2}\right) \approx v + \left(1 - \frac{v^2}{c^2}\right)dv'$$
+          עד סדר ראשון ב-$dv'$. $dM$ זהה בשתי המערכות (נתון: מסת מנוחה). לכן $d\beta = (1 - \beta^2)\,\dfrac{dv'}{c} = -(1 - \beta^2)\,\dfrac{dM}{M}$. הגורם
+          $(1 - \beta^2)$ הוא החידוש של היחסות: אותה דחיפה ב-$S'$ מוסיפה ב-$S$ פחות ופחות מהירות ככל ש-$\beta$ גדל.
+      - kind: manipulation
+        text: >-
+          מפרידים משתנים, $\dfrac{d\beta}{1 - \beta^2} = -\dfrac{dM}{M}$, ומבצעים אינטגרל מסוים, מ-$(M_0, 0)$ עד
+          $(M, \beta)$. עם הזהות הנתונה:
+          $$\frac12\left[-\ln(1 - \beta) + \ln(1 + \beta)\right] = -\left(\ln M - \ln M_0\right)$$
+          כלומר $\tfrac12\ln\dfrac{1 + \beta}{1 - \beta} = \ln\dfrac{M_0}{M}$, ו-$\sqrt{\dfrac{1 + \beta}{1 - \beta}} = \dfrac{M_0}{M}$:
+          התוצאה של חלק א.
+      - kind: limit
+        text: >-
+          כש-$\beta \ll 1$, בפיתוח טיילור מסדר ראשון $\ln(1 \pm \beta) \approx \pm\beta$, ולכן
+          $\tfrac12\ln\dfrac{1 + \beta}{1 - \beta} \approx \tfrac12(\beta + \beta) = \beta$, ו-$v = c\ln\dfrac{M_0}{M}$: משוואת
+          ציולקובסקי, $v = u\ln(M_0/M)$, עם $u = c$, כמו שחלק (1) צפה. אבל ציולקובסקי היה נותן $v = c$ כבר
+          ב-$M = M_0/e$, ושם לפי חלק א $\beta = \dfrac{e^2 - 1}{e^2 + 1} \approx 0.76$: שתי התשובות נפרדות כש-$\beta$
+          מתקרב ל-1, כי הגורם $(1 - \beta^2)$ קרוב ל-1 רק כש-$\beta \ll 1$.
+      - kind: units
+        text: >-
+          $dM/M$ חסר ממדים, ולכן $c\,dM/M$ ביחידות של מהירות, כמו $dv'$; $c^2\,dM$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 =
+          \text{J}$; $\beta$ והלוגריתם חסרי ממדים.
+      - kind: result
+        text: >-
+          ב-$S'$: $\delta E' = -c^2\,dM$ ו-$M\,dv' = -c\,dM$, משוואת הרקטה עם $u = c$. ב-$S$:
+          $d\beta = -(1 - \beta^2)\,dM/M$, ואחרי אינטגרציה $\tfrac12\ln\dfrac{1 + \beta}{1 - \beta} = \ln\dfrac{M_0}{M}$, התוצאה של
+          חלק א. כש-$\beta \ll 1$ זו משוואת ציולקובסקי, $v = c\ln(M_0/M)$.
+    rubric:
+      - text: >-
+          כתבתי את שימור האנרגיה והתנע ב-$S'$ עד סדר ראשון, והראיתי ש-$\delta E' = -c^2\,dM$ ו-$M\,dv' = -c\,dM$:
+          משוואת הרקטה עם מהירות פליטה $c$.
+        weight: 2
+      - text: >-
+          הראיתי בחיבור מהירויות ש-$d\beta = (1 - \beta^2)\,dv'/c$, ולכן $d\beta = -(1 - \beta^2)\,dM/M$.
+      - text: >-
+          הפרדתי משתנים, חישבתי את האינטגרל וקיבלתי $\tfrac12\ln\dfrac{1 + \beta}{1 - \beta} = \ln\dfrac{M_0}{M}$, התוצאה של חלק א.
+      - text: >-
+          בדקתי שכש-$\beta \ll 1$ מתקבל $v = c\ln(M_0/M)$, משוואת ציולקובסקי עם $u = c$.
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-9.4-2, OBJ-10.2-1, OBJ-0.4-2]
+    prompt: >-
+      המנוע הוא לייזר: במערכת שבה החללית נחה ברגע הפליטה, האור שלו תמיד בתדירות $f_0$. צופה נשאר בנקודת השיגור,
+      $x = 0$, נח ב-$S$, וכל האור מגיע אליו. מחלק א, $\dfrac{M}{M_0} = \sqrt{\dfrac{1 - \beta}{1 + \beta}}$. נסמן ב-$\tilde M$
+      את מסת החללית ברגע שבו היא פולטת אור מסוים ($M_0 \ge \tilde M \ge M$). מחלק ג, בזמן שהמסה יורדת מ-$\tilde M$
+      ל-$\tilde M + d\tilde M$ ($d\tilde M < 0$), האור שנפלט נושא, במערכת שבה החללית נחה, את האנרגיה
+      $\delta E' = -c^2\,d\tilde M$.
+
+      (1) הראו שהאור שנפלט ברגע שבו המסה של החללית הייתה $M$ מגיע אל הצופה בתדירות $f = f_0\,M/M_0$.
+
+      (2) האנרגיה של אור עוברת ממערכת למערכת באותו גורם דופלר כמו התדירות שלו (שיעור 10.4). בנו מכך אינטגרל, וחשבו את
+      האנרגיה ב-$S$ של כל האור שנפלט עד שהמסה של החללית $M$. השוו ל-$E_\gamma$ של חלק ב,
+      $E_\gamma = \dfrac{(M_0^2 - M^2)c^2}{2M_0}$.
+
+      (3) בדקו את התוצאות בגבול $M \to 0$: מה $\beta$, ומה האנרגיה והתנע של החללית ב-$S$? הסבירו מדוע החללית והאור
+      מתחלקים אז באנרגיה $M_0c^2$ שווה בשווה, אף שלחללית כמעט לא נשארה מסה.
+    solution:
+      - kind: law
+        text: >-
+          אפקט דופלר היחסותי לאורך קו הראייה (שיעור 9.4): $f = f_0\sqrt{\dfrac{1 + \beta}{1 - \beta}}$, עם $\beta > 0$ בהתקרבות
+          ו-$\beta < 0$ בהתרחקות. האנרגיה של פוטון עוברת בין מערכות באותו גורם, כי $E/c$ הוא הרכיב הראשון של ארבעה-וקטור
+          האנרגיה-תנע $(E/c,\ p)$ (שיעורים 10.2 ו-10.4). האנרגיה הכוללת היא סכום על כל חלקי האור.
+      - kind: manipulation
+        text: >-
+          החללית מתרחקת מהצופה במהירות $\beta c$, והאור נע ממנה אליו: מחליפים $\beta$ ב-$(-\beta)$, ו-
+          $f = f_0\sqrt{\dfrac{1 - \beta}{1 + \beta}} = f_0\dfrac{M}{M_0}$ לפי חלק א. גורם דופלר תלוי רק במהירות של החללית ברגע
+          הפליטה. ובארבעה-וקטורים: לפוטון שנע ב-$S'$ בכיוון ההפוך ל-$+x$, באנרגיה $E'$, התנע לאורך $x$ הוא $(-E'/c)$,
+          וב-$S$ האנרגיה שלו $\gamma\left(E' - \beta E'\right) = \gamma(1 - \beta)E' = \sqrt{\dfrac{1 - \beta}{1 + \beta}}\,E'$,
+          אותו גורם. הצופה קורא את המסה של החללית מהצבע של האור: האור האחרון הוא האדום ביותר.
+      - kind: manipulation
+        text: >-
+          האור שנפלט בזמן שהמסה ירדה מ-$\tilde M$ ל-$\tilde M + d\tilde M$ נושא ב-$S$ את האנרגיה
+          $\dfrac{\tilde M}{M_0}\left(-c^2\,d\tilde M\right)$. מסכמים על כל השלבים, מ-$\tilde M = M_0$ עד $\tilde M = M$:
+          $$\int_{M}^{M_0}\frac{\tilde M}{M_0}\,c^2\,d\tilde M =\frac{c^2}{M_0}\cdot\frac{M_0^2 - M^2}{2} = \frac{(M_0^2 - M^2)c^2}{2M_0}$$
+          בדיוק $E_\gamma$ של חלק ב, בדרך אחרת לגמרי: שם שימור במערכת $S$ בבת אחת, וכאן סכום של אור שנפלט במערכות שונות,
+          כל חלק בגורם דופלר שלו. האור מגיע לצופה עם פחות אנרגיה מאנרגיית המנוחה שהחללית איבדה, $(M_0 - M)c^2$; ההפרש,
+          $(M_0 - M)c^2 - E_\gamma = \dfrac{(M_0 - M)^2c^2}{2M_0}$, הוא $K$ של חלק ב.
+      - kind: limit
+        text: >-
+          כש-$M \to 0$: מחלק א $\beta = \dfrac{M_0^2 - M^2}{M_0^2 + M^2} \to 1$, ולכל $M > 0$, $\beta < 1$: כדי להתקרב
+          למהירות האור צריך להפוך כמעט את כל המסה לאור, ולמהירות האור עצמה החללית לא מגיעה, כמו שחייב להיות לגוף בעל
+          מסה (שיעור 10.5). האור שנפלט אחרון מגיע לצופה בתדירות $f_0M/M_0 \to 0$, ו-$E_\gamma \to M_0c^2/2$, ולכן לחללית נשארת האנרגיה $\gamma Mc^2 = M_0c^2 - E_\gamma \to M_0c^2/2$, ומשימור התנע
+          (חלק א) התנע שלה הוא $E_\gamma/c \to M_0c/2$, בכיוון $+x$. הסיבה: התנע הכולל אפס, ולכן לחללית ולאור תנעים שווים
+          בגודלם, $p$. לאור $E = pc$, ולחללית $E = \sqrt{(pc)^2 + (Mc^2)^2} \to pc$ כש-$M \to 0$. שתי אנרגיות שוות שסכומן
+          $M_0c^2$: חצי וחצי. וזה מתאים ל-$\eta = (M_0 - M)/(2M_0) \to \tfrac12$ של חלק ב.
+      - kind: units
+        text: >-
+          $\dfrac{c^2}{M_0}\cdot M^2$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$; $f$ ביחידות של $f_0$, כי
+          $M/M_0$ חסר ממדים.
+      - kind: result
+        text: >-
+          $f = f_0M/M_0$, ו-$\displaystyle\int_M^{M_0}\frac{\tilde M}{M_0}c^2\,d\tilde M =\frac{(M_0^2 - M^2)c^2}{2M_0} = E_\gamma$, כמו
+          בחלק ב. כש-$M \to 0$ החללית והאור נושאים כל אחד $M_0c^2/2$ ותנע $M_0c/2$, בכיוונים הפוכים.
+    rubric:
+      - text: >-
+          זיהיתי שהחללית מתרחקת מהצופה, כתבתי $f = f_0\sqrt{(1 - \beta)/(1 + \beta)}$, וקיבלתי מחלק א $f = f_0M/M_0$.
+      - text: >-
+          כתבתי שהאור של כל שלב נושא ב-$S$ את האנרגיה $(\tilde M/M_0)(-c^2\,d\tilde M)$, וחישבתי את האינטגרל עד
+          $(M_0^2 - M^2)c^2/(2M_0)$, כמו $E_\gamma$ של חלק ב.
+        weight: 2
+      - text: >-
+          מצאתי שכש-$M \to 0$, $\beta \to 1$ בלי להגיע אליו.
+      - text: >-
+          מצאתי שכש-$M \to 0$ לחללית אנרגיה $M_0c^2/2$ ותנע $M_0c/2$, והסברתי למה האנרגיה מתחלקת שווה בשווה: מתנעים
+          שווים בגודלם ו-$E \to pc$, או מ-$\eta \to \tfrac12$ של חלק ב.

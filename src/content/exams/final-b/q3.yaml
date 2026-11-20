@@ -1,0 +1,344 @@
+# Final exam B, question 3: a block m0 strikes, head-on and elastically, block 1 of a spring dumbbell (blocks 1 and 2,
+# each of mass m, joined by a light relaxed spring k, at rest) on a frictionless table; the hit is much shorter than
+# the spring's period. Joins chapter 4 (the elastic hit 4.1, the CM split of the energy 4.2, the short hit and the
+# stages 4.4) with chapter 5 (the two-body oscillation 5.5, the oscillator 5.1/5.2) and 3.4 (the CM moves at a
+# constant velocity). Parts: א the velocities just after the hit; ב V, the vibration energy (1/2)mu v1'^2 and
+# s_max = v1'/omega, with numbers; ג x1(t), x2(t) and the block that stops but never goes back; ד does the striker get
+# hit a second time: the gap d(t), never for m0 <= m, and a critical ratio m0/m = sqrt(1 + theta*^2) = 4.60 from
+# tan theta = theta, the same for every k and v0; the limit m0 >> m (a dumbbell bouncing off a wall: back after T/2).
+# Overlap found by grep: lesson 5.5's ex-5-5-5 (a dumbbell given a blow: V, omega = sqrt(k/mu), |r|max) and review
+# problem Q-5-bagrut-5 (a ball that STICKS to block A of an equal-mass dumbbell: V, the lost energy, s_max, eta,
+# v_B(t), does a block move backward). So here the hit is elastic, the striker stays in the problem, and the summit is
+# new: whether and when the striker is struck again. V and s_max are footholds.
+# Recomputed in .scratch/exam-b/q3.ts. Independent route: RK4 (src/physics/motion.ts) of all three blocks, where the
+# collision is not assumed but modelled as a stiff repulsive contact spring Kc = 2e5..2e6 k (elastic, lasting
+# ~4e-4 s << 1/omega = 0.05 s), and contacts are counted:
+#   exam numbers m = 0.20 kg, m0 = 0.30 kg, k = 40 N/m, v0 = 1.5 m/s: omega = 20.0 rad/s, v0' = 0.300 m/s,
+#   v1' = 1.80 m/s, V = 0.900 m/s, s_max = 0.0900 m; energy 0.3375 J = 0.0135 (striker) + 0.162 (CM) + 0.162 (vib) J.
+#   RK4: v0', v1' (rel 4e-6), v2' = 0 during the hit, s_max (rel 6e-7), x1, x2, v1 = V(1 + cos wt) at 4 times
+#   (rel < 5e-4, time from the middle of the finite contact), one contact only.
+#   ג limits: x1 ~ v1't, x2 - l ~ v1' w^2 t^3/12 for wt << 1, and k -> 0.
+#   ד: theta* = 4.49341 rad, (m0/m)* = -1/cos theta* = sqrt(1 + theta*^2) = 4.60334; a scan of theta + lambda sin theta
+#   (no zero for lambda = 1, 4.55; a zero for 4.65); RK4 contact counts over 3 periods: one contact for m0/m = 1, 3,
+#   4.4, two for 4.8 (at two different k, v0: the criterion is m0/m alone), 6 and 1000; the second-hit time agrees
+#   with the first root of theta + (m0/m) sin theta (rel 1.5e-3 at the near-grazing 4.8, shrinking as Kc grows;
+#   5e-4 at 1000, where w t = 3.145 ~ pi).
+# reviewed 2026-11-20 (independent, .scratch/exam-b-review/q3.ts): every number recomputed from the printed values;
+#   RK4 of (x0, x1, x2) with a stiff elastic contact (Kc = 1e6 k): v0', v1' (7e-7), v2' ~ 0, s_max (1e-7), x1(t) and
+#   v1 = V(1 + cos wt) at five times, one contact; second-hit scan m0/m = 1, 3, 4.4, 4.55 none, 4.65, 4.8 (two k, v0)
+#   and 1000 a second contact at the first root of theta + (m0/m) sin theta; theta_c = 4.49341 by bisection,
+#   sqrt(1 + 4.493^2) = 4.603, d' -> -0.998 v0 at m0/m = 1000. The number 4.60 in ד stays: it is a pure number from a
+#   given mathematical constant, not a second substitution of physical data. Changed: the pair is masculine (שלו,
+#   מתנודד); K = (1/2)(m1 + m2)V^2 instead of an undefined M; ג states it holds until any second hit; the
+#   dimensional argument for k, v0 dropping out of the criterion is made exact. ג(3) echoes Q-5-bagrut-5 ד(3) (does
+#   a block move backward) in an equal-mass, position form: kept as a mid foothold that ד needs.
+#   After the student read (timed 45-50 min): ב(3) no longer asks the energy split (kept in the solution as a check),
+#   to trim time; ד(2)'s rubric accepts any proof, and the solution adds the short route (v0' <= 0 so x0 <= 0, and
+#   x1 > 0 from part ג); ד(3)'s rubric accepts -1/cos(theta_c) or sqrt(1 + theta_c^2), and the solution notes that
+#   -1/cos(4.493) = 4.59 on a calculator (cos is sensitive there; exact 4.603), so 4.59 and 4.60 both pass as ~4.6;
+#   ג says x1(t), x2(t) hold only until a second hit.
+#   After a second timed read (~48 min, target ~42): ג(4), the wt << 1 check, is no longer asked or graded (it only
+#   re-checked the initial conditions ג imposed; the solution keeps it and the k -> 0 limit); ד(4)'s explanation in
+#   block 0's frame stays, as the independent check of the summit. The one event is worded "הפגיעה השנייה בין גוש 0
+#   לגוש 1" throughout ג and ד. ב(2) lists for E_vib only m0, m, v0. The stem defines omega first and compares the
+#   hit with 2 pi/omega, the period of the pair's oscillation, not "the spring's period".
+#   After a third timed read (45 min, ד 17 min): ד(4) no longer asks the explanation in block 0's frame (the limit
+#   itself, t = pi/omega and relative speed v0, stays; the solution keeps the frame view as unasked); ב(1) and its
+#   law step say V is constant only until a second hit, if any (for m0/m > 4.60 that hit changes the pair's momentum).
+id: E-final-b-3
+type: bagrut
+title: גוש שפוגע בזוג גושים עם קפיץ
+prompt: >-
+  על שולחן אופקי חלק, בלי חיכוך, מונחים שני גושים, 1 ו-2, כל אחד בעל מסה $m$. ביניהם מחובר קפיץ קל בעל קבוע $k$,
+  באורכו הרפוי $\ell$, והגושים במנוחה. לגושים 1 ו-2 עם הקפיץ נקרא "הזוג". גוש שלישי, 0, בעל מסה $m_0$, מחליק לאורך הקו של הקפיץ במהירות $v_0$ ופוגע
+  חזיתית בגוש 1, מהצד הרחוק מגוש 2. סמנו $\omega = \sqrt{2k/m}$ (בחלק ג תראו שזו התדירות
+  הזוויתית של התנודה של הזוג). ההתנגשות אלסטית, וקצרה בהרבה מ-$2\pi/\omega$, זמן המחזור של התנודה הזו. הגושים
+  קטנים: הזניחו את
+  הממדים שלהם, כך שגושים 0 ו-1 נוגעים זה בזה כשהם באותו מקום. ציר $x$ בכיוון של $v_0$, מגוש 1 אל גוש 2; הראשית
+  במקום של גוש 1 לפני הפגיעה, ו-$t = 0$ הוא רגע הפגיעה. $x_0$, $x_1$ ו-$x_2$ הם המקומות של שלושת הגושים.
+diagramAlt: >-
+  מבט מהצד על שולחן. משמאל גוש שמסומן $m_0$, ומעליו חץ ימינה בצבע המהירות שמסומן $v_0$. מימינו, במרחק, גוש שמסומן
+  $m$ ומעליו המספר 1, ממנו יוצא ימינה קפיץ בצורת זיגזג שמסומן $k$, ובקצה הקפיץ גוש שני שמסומן $m$ ומעליו המספר 2.
+  מתחת לשולחן ציר $x$ ימינה, שהראשית שלו $0$ מתחת לגוש 1.
+diagram: '<svg viewBox="0 0 440 170" width="440" height="170" font-size="14" aria-hidden="true">
+  <line x1="10" y1="120" x2="430" y2="120" stroke="currentColor" stroke-width="1.5"/>
+  <rect x="40" y="82" width="46" height="38" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+  <text x="51" y="106" fill="currentColor" font-style="italic">m₀</text>
+  <line x1="42" y1="62" x2="88" y2="62" stroke="var(--velocity)" stroke-width="2.5"/>
+  <polygon points="88,56 101,62 88,68" fill="var(--velocity)"/>
+  <text x="106" y="67" fill="var(--velocity)" font-style="italic">v₀</text>
+  <rect x="160" y="82" width="40" height="38" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+  <text x="175" y="106" fill="currentColor" font-style="italic">m</text>
+  <text x="176" y="74" fill="currentColor">1</text>
+  <polyline points="200,101 212,101 219,91 233,111 247,91 261,111 275,91 282,101 294,101" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="243" y="83" fill="currentColor" font-style="italic">k</text>
+  <rect x="294" y="82" width="40" height="38" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+  <text x="309" y="106" fill="currentColor" font-style="italic">m</text>
+  <text x="310" y="74" fill="currentColor">2</text>
+  <line x1="160" y1="140" x2="224" y2="140" stroke="currentColor" stroke-width="1.2"/>
+  <polygon points="224,136 232,140 224,144" fill="currentColor"/>
+  <text x="237" y="145" fill="currentColor" font-style="italic">x</text>
+  <line x1="160" y1="134" x2="160" y2="146" stroke="currentColor" stroke-width="1.2"/>
+  <text x="156" y="162" fill="currentColor">0</text>
+  </svg>'
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-4.1-1, OBJ-4.4-1]
+    prompt: >-
+      מצאו את המהירויות $v_0'$, $v_1'$ ו-$v_2'$ של שלושת הגושים מיד אחרי ההתנגשות, באמצעות $m_0$, $m$ ו-$v_0$.
+      נמקו מדוע מותר להתעלם בזמן ההתנגשות מהקפיץ ומגוש 2. בדקו את התוצאה במקרה $m_0 = m$ ובגבול $m_0 \gg m$.
+    solution:
+      - kind: law
+        text: >-
+          בזמן התנגשות קצרה מותר להזניח כל כוח סופי לעומת הכוח בין הגושים שמתנגשים (שיעור 4.4). בהתנגשות אלסטית
+          בממד אחד נשמרים התנע והאנרגיה הקינטית, ולכן המהירות היחסית מתהפכת (שיעור 4.1). כשגוש 1 עומד לפני
+          הפגיעה, שני התנאים נותנים
+          $$v_0' = \frac{(m_0 - m)\,v_0}{m_0 + m},\qquad v_1' = \frac{2m_0v_0}{m_0 + m}$$
+      - kind: manipulation
+        text: >-
+          ברגע $t = 0$ הקפיץ רפוי, ולכן הכוח שלו אפס. במשך ההתנגשות $\Delta t$ גוש 1 זז לכל היותר $v_1'\Delta t$,
+          ולכן כוח הקפיץ קטן מ-$kv_1'\Delta t$, והמתקף שלו קטן מ-$kv_1'\Delta t^2$. היחס בינו לבין התנע $mv_1'$ הוא
+          לכל היותר $(k/m)\Delta t^2$, בסדר גודל של $(\omega\Delta t)^2 \ll 1$, כי $\Delta t$ קצר בהרבה מזמן המחזור.
+          לכן ההתנגשות היא של גושים 0 ו-1 בלבד. על גוש 2 פועל כוח אופקי רק מהקפיץ, והמתקף שלו זניח: $v_2' = 0$.
+      - kind: limit
+        text: >-
+          כש-$m_0 = m$: $v_0' = 0$ ו-$v_1' = v_0$, החלפת מהירויות, כמו בכל התנגשות אלסטית חזיתית של מסות שוות. כש-$m_0
+          \gg m$: $v_0' \to v_0$ ו-$v_1' \to 2v_0$. זה נכון גם בלי חישוב: במערכת של הגוש הכבד, שכמעט לא מאט, גוש 1
+          מתקרב במהירות $v_0$ וניתז אחורה ב-$v_0$, כמו מקיר; במערכת השולחן זה $v_0 + v_0 = 2v_0$.
+      - kind: units
+        text: >-
+          $\dfrac{m_0 - m}{m_0 + m}$ ו-$\dfrac{2m_0}{m_0 + m}$ חסרי ממדים, ולכן שתי המהירויות במטר לשנייה, כמו $v_0$.
+      - kind: result
+        text: >-
+          $v_0' = \dfrac{m_0 - m}{m_0 + m}\,v_0$, $v_1' = \dfrac{2m_0}{m_0 + m}\,v_0$, $v_2' = 0$. מיד אחרי ההתנגשות
+          הקפיץ עדיין רפוי.
+    rubric:
+      - text: >-
+          נימקתי שבזמן ההתנגשות הקצרה הקפיץ כמעט לא מתכווץ, ולכן המתקף שלו זניח, ההתנגשות היא של גושים 0 ו-1 בלבד,
+          ו-$v_2' = 0$.
+      - text: >-
+          כתבתי שימור תנע ושימור אנרגיה קינטית לגושים 0 ו-1, וקיבלתי $v_0' = (m_0 - m)v_0/(m_0 + m)$ ו-$v_1' =
+          2m_0v_0/(m_0 + m)$.
+        weight: 2
+      - text: >-
+          בדקתי שכש-$m_0 = m$ הגושים מחליפים מהירויות, ושכש-$m_0 \gg m$, $v_1' \to 2v_0$.
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-3.4-2, OBJ-4.2-2, OBJ-5.2-1]
+    prompt: >-
+      מחלק א, מיד אחרי ההתנגשות $v_0' = \dfrac{m_0 - m}{m_0 + m}\,v_0$, $v_1' = \dfrac{2m_0v_0}{m_0 + m}$ ו-$v_2' = 0$.
+
+      (1) בטאו באמצעות $m_0$, $m$ ו-$v_0$ את המהירות $V$ של מרכז המסה של הזוג, ונמקו מדוע היא קבועה מרגע
+      ההתנגשות ועד לפגיעה שנייה בין גוש 0 לגוש 1, אם תהיה.
+
+      (2) בעזרת הפירוק של האנרגיה הקינטית של הזוג לאנרגיה של מרכז המסה ולאנרגיה של התנועה היחסית (שיעור 4.2),
+      בטאו את האנרגיה $E_{\text{vib}}$ של התנודה של הזוג באמצעות $m_0$, $m$ ו-$v_0$, ואת הכיווץ המרבי
+      $s_{\max}$ של הקפיץ באמצעות $m_0$, $m$, $v_0$ ו-$\omega$. בדקו את $s_{\max}$ בגבול $k \to \infty$.
+
+      (3) חשבו את $\omega$, $V$ ו-$s_{\max}$ כש-$m = 0.20\,\text{kg}$, $m_0 = 0.30\,\text{kg}$, $k = 40\,\text{N/m}$
+      ו-$v_0 = 1.5\,\text{m/s}$.
+    solution:
+      - kind: law
+        text: >-
+          אחרי ההתנגשות, ועד לפגיעה שנייה בין גוש 0 לגוש 1 אם תהיה, לא פועל על הזוג שום כוח חיצוני אופקי: השולחן
+          חלק, הכובד והכוח הנורמלי אנכיים, וכוח הקפיץ פנימי. לכן מרכז המסה שלו נע במהירות קבועה (שיעור 3.4). האנרגיה הקינטית של שני גופים היא $K = \tfrac12(m_1 + m_2)V^2
+          + \tfrac12\mu v_{\text{rel}}^2$, עם המסה המצומצמת $\mu = \dfrac{m_1m_2}{m_1 + m_2}$ (שיעור 4.2), והקפיץ משמר.
+      - kind: manipulation
+        text: >-
+          $V = \dfrac{mv_1' + m\cdot0}{2m} = \dfrac{v_1'}{2} = \dfrac{m_0v_0}{m_0 + m}$. לשני גושים שווים $\mu =
+          m/2$, ומיד אחרי ההתנגשות $v_{\text{rel}} = v_1' - v_2' = v_1'$. החלק $\tfrac12(2m)V^2$ שייך לתנועת מרכז
+          המסה ונשאר קבוע, ולכן האנרגיה של התנודה, קינטית ועוד פוטנציאלית של הקפיץ, היא
+          $$E_{\text{vib}} = \tfrac12\mu v_1'^2 = \frac{m}{4}\,v_1'^2 = \frac{mm_0^2v_0^2}{(m_0 + m)^2}$$
+          בכיווץ המרבי הקפיץ לא מתקצר ולא מתארך, ולכן שני הגושים נעים ב-$V$, האנרגיה היחסית אפס, וכל $E_{\text{vib}}$
+          בקפיץ: $\tfrac12ks_{\max}^2 = \tfrac12\cdot\tfrac{m}{2}\,v_1'^2$, כלומר
+          $$s_{\max} = v_1'\sqrt{\frac{m}{2k}} = \frac{v_1'}{\omega} = \frac{2m_0v_0}{(m_0 + m)\,\omega}$$
+      - kind: limit
+        text: >-
+          כש-$k \to \infty$, $\omega \to \infty$ ו-$s_{\max} \to 0$: קפיץ קשיח מאוד הוא כמו מוט, והזוג כמעט לא
+          מתכווץ. $E_{\text{vib}}$ לא תלוי ב-$k$: אותה אנרגיה נאגרת בקפיץ קשיח בכיווץ קטן יותר, כי $s_{\max} \propto
+          1/\sqrt k$. ובדיקה נוספת: מיד אחרי ההתנגשות כל האנרגיה של הזוג, $\tfrac12mv_1'^2$, היא סכום שני החלקים,
+          $\tfrac12(2m)\tfrac{v_1'^2}{4} + \tfrac{m}{4}v_1'^2$, ולשני גושים שווים היא מתחלקת חצי-חצי.
+      - kind: units
+        text: >-
+          $V$ במטר לשנייה, כמו $v_0$; $mv_0^2$ בג׳ול; $v_1'/\omega$ ביחידות $(\text{m/s})/\text{s}^{-1} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\omega = \sqrt{2\cdot40/0.20} = 20.0\,\text{rad/s}$. $v_0' = \dfrac{0.10}{0.50}\cdot1.5 = 0.300\,\text{m/s}$,
+          $v_1' = \dfrac{0.60}{0.50}\cdot1.5 = 1.80\,\text{m/s}$, $V = 0.900\,\text{m/s}$, $s_{\max} = 1.80/20.0 =
+          0.0900\,\text{m}$. (בדיקה, מעבר למה שנשאל: האנרגיה ההתחלתית $\tfrac12\cdot0.30\cdot1.5^2 = 0.3375\,\text{J}$ מתחלקת כך: גוש 0,
+          $\tfrac12\cdot0.30\cdot0.300^2 = 0.0135\,\text{J}$; מרכז המסה של הזוג, $\tfrac12\cdot0.40\cdot0.900^2 =
+          0.162\,\text{J}$; התנודה, $\tfrac{0.20}{4}\cdot1.80^2 = 0.162\,\text{J}$. הסכום $0.3375\,\text{J}$: ההתנגשות
+          אלסטית, ושום דבר לא אבד.)
+      - kind: result
+        text: >-
+          $V = \dfrac{m_0v_0}{m_0 + m}$, קבועה; $E_{\text{vib}} = \dfrac{mm_0^2v_0^2}{(m_0 + m)^2}$ ו-$s_{\max} =
+          \dfrac{2m_0v_0}{(m_0 + m)\,\omega}$. במספרים: $\omega = 20.0\,\text{rad/s}$, $V = 0.900\,\text{m/s}$, $s_{\max}
+          = 9.00\,\text{cm}$.
+    rubric:
+      - text: >-
+          מצאתי $V = m_0v_0/(m_0 + m)$, ונימקתי שהיא קבועה כי אין על הזוג כוח חיצוני אופקי וכוח הקפיץ פנימי.
+      - text: >-
+          פירקתי את האנרגיה של הזוג ל-$\tfrac12(2m)V^2$ ול-$\tfrac12\mu v_1'^2$ עם $\mu = m/2$, וקיבלתי את
+          $E_{\text{vib}}$.
+      - text: >-
+          השוויתי $\tfrac12ks_{\max}^2 = E_{\text{vib}}$ וקיבלתי $s_{\max} = v_1'/\omega = 2m_0v_0/[(m_0 + m)\omega]$.
+        weight: 2
+      - text: 'בדקתי ש-$s_{\max} \to 0$ כש-$k \to \infty$.'
+      - text: >-
+          חישבתי $\omega = 20.0\,\text{rad/s}$, $V = 0.900\,\text{m/s}$ ו-$s_{\max} = 9.0\,\text{cm}$.
+
+  - label: ג
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-5.5-1, OBJ-5.1-1, OBJ-3.4-2]
+    prompt: >-
+      מחלקים א ו-ב, מיד אחרי ההתנגשות $x_1 = 0$, $x_2 = \ell$, $\dot x_1 = v_1'$ ו-$\dot x_2 = 0$, ומרכז המסה של
+      הזוג נע במהירות $V = v_1'/2$. סמנו $s = \ell - (x_2 - x_1)$, הכיווץ של הקפיץ. התוצאות של החלק הזה, וגם
+      $x_1(t)$ ו-$x_2(t)$, תקפות רק עד הפגיעה השנייה בין גוש 0 לגוש 1, אם יש כזו (חלק ד).
+
+      (1) כתבו את משוואות התנועה של גושים 1 ו-2, ציינו איזה גוף מפעיל כל כוח אופקי, והראו ש-$\ddot s = -\omega^2s$.
+
+      (2) מצאו את $x_1(t)$ ואת $x_2(t)$ באמצעות $V$, $\omega$, $\ell$ ו-$t$.
+
+      (3) הראו שגוש 1 לעולם לא נע אחורה, נגד ציר $x$, ומצאו את הרגעים שבהם הוא נעצר לרגע.
+    solution:
+      - kind: law
+        text: >-
+          על כל גוש פועל כוח אופקי אחד, של הקפיץ. כשהקפיץ מכווץ ($s > 0$) הוא דוחף את גוש 1 אחורה ואת גוש 2 קדימה
+          (חוק הוק): $m\ddot x_1 = -ks$ ו-$m\ddot x_2 = +ks$. הכובד (כדור הארץ) והכוח הנורמלי (השולחן) אנכיים ומבטלים
+          זה את זה. התנועה היא סכום של שני אופני תנודה (שיעור 5.5): תנועה של מרכז המסה, ותנודה של $s$.
+      - kind: manipulation
+        text: >-
+          $\ddot s = \ddot x_1 - \ddot x_2 = -\dfrac{2k}{m}\,s = -\omega^2s$. תנאי ההתחלה: $s(0) = 0$ ו-$\dot s(0) =
+          \dot x_1 - \dot x_2 = v_1' = 2V$, ולכן $s = \dfrac{2V}{\omega}\sin\omega t$ (שיעור 5.1). מרכז המסה,
+          $X = \tfrac12(x_1 + x_2) = \tfrac{\ell}{2} + Vt$, ו-$x_2 - x_1 = \ell - s$, ולכן $x_1 = X - \tfrac12(\ell - s)$
+          ו-$x_2 = X + \tfrac12(\ell - s)$:
+          $$x_1(t) = Vt + \frac{V}{\omega}\sin\omega t,\qquad x_2(t) = \ell + Vt - \frac{V}{\omega}\sin\omega t$$
+      - kind: manipulation
+        text: >-
+          גוזרים: $\dot x_1 = V\left(1 + \cos\omega t\right) \ge 0$ ו-$\dot x_2 = V\left(1 - \cos\omega t\right) \ge 0$.
+          גוש 1 לא נע אחורה אף פעם, ונעצר לרגע כש-$\cos\omega t = -1$, ברגעים $t = \pi/\omega,\ 3\pi/\omega,\ \dots$,
+          כלומר אחרי חצי זמן מחזור ועוד מספר שלם של זמני מחזור. באותם רגעים גוש 2 נע ב-$2V$: הזוג מתקדם כמו זחל,
+          פעם גוש אחד ופעם השני.
+      - kind: limit
+        text: >-
+          כש-$\omega t \ll 1$, $\sin\omega t \approx \omega t - \tfrac16(\omega t)^3$, ולכן $x_1 \approx 2Vt = v_1't$
+          ו-$x_2 \approx \ell + \tfrac16V\omega^2t^3$: גוש 1 יוצא במהירות $v_1'$ של חלק א, וגוש 2 עדיין במקום עד סדר
+          ראשון ב-$t$, כמו ש-$v_2' = 0$ אומר. ובגבול $k \to 0$ ($\omega \to 0$) אותו פיתוח נותן $x_1 = v_1't$ ו-$x_2 =
+          \ell$ לכל $t$: בלי קפיץ, גוש 1 ממשיך לבד וגוש 2 לא זז.
+      - kind: units
+        text: >-
+          $V/\omega$ ביחידות $(\text{m/s})/\text{s}^{-1} = \text{m}$, ו-$\omega t$ חסר ממדים; $2k/m$ ביחידות
+          $\text{s}^{-2}$.
+      - kind: result
+        text: >-
+          $\ddot s = -\omega^2s$, $x_1(t) = Vt + \dfrac{V}{\omega}\sin\omega t$, $x_2(t) = \ell + Vt - \dfrac{V}{\omega}
+          \sin\omega t$. גוש 1 נע ב-$V(1 + \cos\omega t) \ge 0$, ונעצר לרגע כש-$\omega t = \pi, 3\pi, \dots$.
+    rubric:
+      - text: >-
+          כתבתי $m\ddot x_1 = -ks$ ו-$m\ddot x_2 = ks$, ציינתי שהקפיץ מפעיל את שני הכוחות, והראיתי ש-$\ddot s =
+          -\omega^2s$.
+      - text: >-
+          פתרתי עם $s(0) = 0$ ו-$\dot s(0) = 2V$, הוספתי את תנועת מרכז המסה, וקיבלתי $x_1(t) = Vt + (V/\omega)\sin
+          \omega t$ ו-$x_2(t) = \ell + Vt - (V/\omega)\sin\omega t$.
+        weight: 2
+      - text: >-
+          הראיתי ש-$\dot x_1 = V(1 + \cos\omega t) \ge 0$, ומצאתי שגוש 1 נעצר כש-$\omega t = \pi, 3\pi, \dots$.
+
+  - label: ד
+    type: open
+    points: 8
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-4.4-2, OBJ-5.5-2, OBJ-4.1-1]
+    prompt: >-
+      מחלקים א עד ג, אחרי ההתנגשות $x_1(t) = Vt + \dfrac{V}{\omega}\sin\omega t$ עם $V = \dfrac{m_0v_0}{m_0 + m}$,
+      וגוש 0 נע במהירות הקבועה $v_0' = \dfrac{m_0 - m}{m_0 + m}\,v_0$, עד הפגיעה השנייה בין גוש 0 לגוש 1, אם יש כזו.
+
+      (1) הראו שהמרחק בין גוש 0 לגוש 1, $d(t) = x_1 - x_0$, הוא
+      $$d(t) = \frac{v_0}{(m_0 + m)\,\omega}\left(m\,\omega t + m_0\sin\omega t\right)$$
+
+      (2) הראו שכש-$m_0 \le m$ אין פגיעה שנייה בין גוש 0 לגוש 1.
+
+      (3) כשגוש 0 כבד מספיק, $d$ מגיע לאפס. ביחס המסות הקריטי $(m_0/m)_{\text{c}}$, $d$ רק נוגע באפס: באותו רגע
+      $d = 0$ וגם $\dot d = 0$. הראו שברגע הזה $\theta = \omega t$ מקיים $\tan\theta = \theta$. נתון שהפתרון
+      החיובי הקטן ביותר של המשוואה הזו הוא $\theta_{\text{c}} = 4.493\,\text{rad}$. בטאו את $(m_0/m)_{\text{c}}$ באמצעות
+      $\theta_{\text{c}}$ וחשבו אותו, והסבירו מדוע הוא לא תלוי ב-$k$ וב-$v_0$.
+
+      (4) בדקו את הגבול $m_0 \gg m$: אחרי כמה זמן מתרחשת הפגיעה השנייה בין גוש 0 לגוש 1, ומה
+      המהירות של גוש 1 ביחס לגוש 0 ברגע הזה?
+    solution:
+      - kind: law
+        text: >-
+          אחרי ההתנגשות על גוש 0 לא פועל כוח אופקי, ולכן $x_0 = v_0't$. יש פגיעה שנייה בין גוש 0 לגוש 1 אם ורק אם $d(t)$ מגיע לאפס
+          ברגע כלשהו $t > 0$. התנועה של גוש 1 נקבעת מהתהליך בשלבים (שיעור 4.4): ההתנגשות, ואחריה תנועה של מרכז
+          המסה ועוד תנודה של הזוג (חלק ג).
+      - kind: manipulation
+        text: >-
+          (1) $d = x_1 - v_0't = \left(V - v_0'\right)t + \dfrac{V}{\omega}\sin\omega t$, ו-$V - v_0' = \dfrac{m_0 -
+          (m_0 - m)}{m_0 + m}\,v_0 = \dfrac{mv_0}{m_0 + m}$. מוציאים $\dfrac{v_0}{(m_0 + m)\omega}$ ומקבלים את
+          $d(t)$ שבשאלה. נסמן $f(\theta) = m\theta + m_0\sin\theta$; $d$ מתאפס בדיוק כש-$f$ מתאפס.
+
+          (2) לכל $\theta > 0$, $|\sin\theta| < \theta$, ולכן כש-$m_0 \le m$: $f \ge m\theta - m_0|\sin\theta| >
+          m\theta - m\theta = 0$. $d$ חיובי לכל $t > 0$, ואין פגיעה שנייה. דרך קצרה יותר, בלי $d(t)$: כש-$m_0 \le m$,
+          $v_0' \le 0$, ולכן $x_0 \le 0$ כל הזמן (גוש 0 נרתע אחורה, או עומד כש-$m_0 = m$). וגוש 1 לא נע אחורה אף פעם
+          (חלק ג), $\dot x_1 = V(1 + \cos\omega t)$ מתאפס רק ברגעים בודדים, ולכן $x_1 > 0$ לכל $t > 0$. לכן $d =
+          x_1 - x_0 > 0$.
+      - kind: manipulation
+        text: >-
+          (3) $f$ מתחיל בעלייה, $f'(0) = m + m_0 > 0$. המינימומים שלו הם ב-$\cos\theta = -m/m_0$ עם $\sin\theta < 0$,
+          ברביע השלישי ועוד כפולות של $2\pi$. בכל מחזור $f$ גדל ב-$2\pi m$, ולכן המינימום הראשון הוא הנמוך ביותר, ו-$d$
+          מתאפס אם ורק אם הוא שלילי או אפס. ביחס הקריטי הוא בדיוק אפס: $f = 0$ ו-$f' = 0$,
+          $$m_0\sin\theta = -m\theta,\qquad m_0\cos\theta = -m$$
+          מחלקים: $\tan\theta = \theta$. ב-$\theta_{\text{c}}$, $\cos\theta_{\text{c}} < 0$ ו-$\cos^2\theta_{\text{c}} =
+          1/(1 + \tan^2\theta_{\text{c}}) = 1/(1 + \theta_{\text{c}}^2)$, ולכן
+          $$\left(\frac{m_0}{m}\right)_{\text{c}} = -\frac{1}{\cos\theta_{\text{c}}} = \sqrt{1 + \theta_{\text{c}}^2}$$
+          כש-$m_0/m$ גדול מזה, המינימום שלילי, והפגיעה השנייה בין גוש 0 לגוש 1 מתרחשת לפני $\omega t = \theta_{\text{c}}$, בערך
+          $0.72$ מזמן המחזור; כשהוא קטן מזה, אף פעם לא. $k$ ו-$v_0$ מופיעים רק בגורם $v_0/\omega$ שלפני הסוגריים
+          ובקנה המידה של הזמן, $\theta = \omega t$: הם מותחים את הגרף של $d(t)$ לאורך ולרוחב, אבל לא משנים את השאלה אם
+          הוא חוצה את האפס. כמו שחייב להיות: $\ell$ לא נכנס ל-$d$, ו-$m_0/m$ הוא הצירוף היחיד חסר הממדים של $m_0$,
+          $m$, $k$ ו-$v_0$ (רק ב-$v_0$ יש מטרים, ולכן הוא לא יכול להופיע בצירוף כזה, ובלעדיו גם לא $k$).
+      - kind: limit
+        text: >-
+          (4) כש-$m_0 \gg m$, $f \approx m_0\left(\sin\theta + \tfrac{m}{m_0}\theta\right)$ מתאפס מעט אחרי $\theta = \pi$:
+          $\theta \approx \pi(1 + m/m_0) \to \pi$, כלומר אחרי חצי זמן מחזור, $t = \pi/\omega$. המהירות היחסית, $\dot d
+          = \dfrac{v_0}{m_0 + m}\left(m + m_0\cos\omega t\right) \to -v_0$. זה ידוע בלי החישוב (הסבר שלא נשאל): במערכת של גוש 0, שכמעט לא
+          מאט, הזוג כולו מגיע במהירות $v_0$ אל קיר. גוש 1 ניתז אחורה ב-$v_0$ (חלק א), ואז הזוג עומד כמכלול
+          ומתנודד סביב מרכז המסה שלו. אחרי חצי זמן מחזור התנודה מחזירה את גוש 1 למקום שבו התחיל, עם המהירות ההפוכה:
+          הוא פוגע שוב בקיר ב-$v_0$. וגם $(m_0/m)_{\text{c}} = \sqrt{1 + \theta_{\text{c}}^2} > 1$, בהתאם לסעיף (2).
+      - kind: units
+        text: >-
+          $\dfrac{v_0}{\omega}$ ביחידות $(\text{m/s})/\text{s}^{-1} = \text{m}$, והסוגריים $m\omega t + m_0\sin\omega t$
+          ביחידות מסה, שמתקזזות מול $m_0 + m$: $d$ במטרים. $(m_0/m)_{\text{c}}$ ו-$\theta_{\text{c}}$ חסרי ממדים.
+      - kind: substitution
+        text: >-
+          $\left(m_0/m\right)_{\text{c}} = \sqrt{1 + 4.493^2} = \sqrt{21.19} = 4.60$. אותו ביטוי בצורה
+          $-1/\cos\theta_{\text{c}}$ נותן במחשבון $-1/\cos(4.493) = 4.59$: ליד $\theta_{\text{c}}$ הקוסינוס רגיש
+          לספרה הרביעית של הזווית, ושתי התשובות נכונות (הערך המדויק $4.603$).
+      - kind: result
+        text: >-
+          $d(t) = \dfrac{v_0}{(m_0 + m)\omega}\left(m\omega t + m_0\sin\omega t\right)$. כש-$m_0 \le m$ אין פגיעה שנייה.
+          יש פגיעה שנייה אם ורק אם $\dfrac{m_0}{m} > \sqrt{1 + \theta_{\text{c}}^2} = 4.60$, בלי תלות ב-$k$ וב-$v_0$.
+          כש-$m_0 \gg m$ הפגיעה השנייה אחרי חצי זמן מחזור, $\pi/\omega$, במהירות יחסית $v_0$.
+    rubric:
+      - text: >-
+          הראיתי ש-$d = (V - v_0')t + (V/\omega)\sin\omega t$, עם $V - v_0' = mv_0/(m_0 + m)$, והגעתי ל-$d(t)$ שבשאלה.
+      - text: >-
+          הראיתי שכש-$m_0 \le m$, $d > 0$ לכל $t > 0$ (מ-$d(t)$, או מכך שגוש 0 לא נע קדימה וגוש 1 לא נע אחורה).
+      - text: >-
+          כתבתי $d = 0$ ו-$\dot d = 0$, קיבלתי $\tan\theta = \theta$, ומצאתי $(m_0/m)_{\text{c}}$ באמצעות
+          $\theta_{\text{c}}$, בצורה $-1/\cos\theta_{\text{c}}$ או $\sqrt{1 + \theta_{\text{c}}^2}$, וחישבתי $\approx 4.6$.
+        weight: 2
+      - text: >-
+          הסברתי ש-$k$ ו-$v_0$ רק משנים את קנה המידה של $d$ ושל הזמן, ולכן היחס הקריטי תלוי רק ב-$m_0/m$.
+      - text: >-
+          בדקתי שכש-$m_0 \gg m$ הפגיעה השנייה בין גוש 0 לגוש 1 מתרחשת אחרי $t = \pi/\omega$ במהירות יחסית $v_0$.
