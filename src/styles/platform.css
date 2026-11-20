@@ -89,6 +89,8 @@
 .exam-grade,
 .exam-report {
   display: grid;
+  /* an implicit (auto) track grows to the widest display formula and never shrinks: the page then scrolls sideways */
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
 .exam-rules {
