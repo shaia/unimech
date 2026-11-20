@@ -9,6 +9,8 @@ import { hydrated, progress } from './helpers';
 const PATH = '/exam/final-a/';
 
 test('a full sitting: choose four of five, self-grade, score out of 100, survive a reload', async ({ page }) => {
+  // one journey of ~30 actions and two reloads: on a CI runner with tracing on it took ~35 s, past the 30 s default
+  test.slow();
   await page.goto(PATH);
   const startBtn = page.getByRole('button', { name: 'התחלת המבחן' });
   await hydrated(startBtn);
