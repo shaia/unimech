@@ -30,6 +30,11 @@
 #   isotropy; pc and d computed from √15 (3.87·135.0 = 522, 3.87·2.55 = 9.87 contradicted the printed 523, 9.88);
 #   "within 15% of φ_s" → 2/√3 − 1 ≈ 15.5% (the β → 1 value exceeds 15%); "most pairs" → half (only half is shown);
 #   the diagram's photon 2 now at 60° below (θ′ = 60° at β = 0.8 gives 21.8° and 60.0°; it was 30°, matching no β).
+# 2026-11-20, trimmed after a timed student read (≈43 min against ≈41 per question): ג no longer asks the check by the
+#   invariant mass (ד(1) does it for every θ′); ד(2) no longer asks the second proof of φ ≥ φ_s from E₁ + E₂ = γMc² and
+#   the AM–GM inequality; ד(3)'s open "what does a detector see" now asks two specific things (the smallest φ measured,
+#   the range holding half of the pairs), which its rubric line grades. Points unchanged (5/6/6/8); the cut checks' share
+#   goes to the remaining lines of ג and ד. No number changed.
 id: E-final-a-5
 type: bagrut
 title: פיון ניטרלי שדועך לשני פוטונים בתנועה
@@ -202,13 +207,12 @@ parts:
     prompt: >-
       דעיכה סימטרית: ב-$S'$ הפוטונים יוצאים בניצב לתנועה, $\theta' = 90^\circ$. מצאו את האנרגיה של כל פוטון במעבדה ואת
       הזווית $\alpha$ בין כל אחד מהם לציר $+x$, והראו שהזווית ביניהם, $\varphi_s$, מקיימת $\sin(\varphi_s/2) = 1/\gamma$.
-      בדקו את התוצאה בעזרת המסה האינווריאנטית של שני הפוטונים, ובדקו אותה בגבולות $\beta \to 0$ ו-$\beta \to 1$.
+      בדקו את התוצאה בגבולות $\beta \to 0$ ו-$\beta \to 1$.
     solution:
       - kind: law
         text: >-
           אברציה (שיעור 9.4): אור שנע ב-$S'$ בזווית $\theta'$ לציר $x'$ נע ב-$S$ בזווית $\theta$, עם
           $\cos\theta = \dfrac{\cos\theta' + \beta}{1 + \beta\cos\theta'}$. ולחלופין, הטרנספורמציה של הארבעה-וקטור מחלק ב.
-          המסה האינווריאנטית של שני פוטונים (שיעור 10.2): $\left(Mc^2\right)^2 = 2E_1E_2(1 - \cos\varphi)$.
       - kind: manipulation
         text: >-
           ב-$\theta' = 90^\circ$: $\cos\alpha = \beta$, ולכן $\sin\alpha = \sqrt{1 - \beta^2} = 1/\gamma$. באותה דרך מהארבעה-וקטור:
@@ -216,10 +220,6 @@ parts:
           $$E = \gamma\frac{Mc^2}{2},\qquad p_xc = \gamma\beta\frac{Mc^2}{2},\qquad p_yc = \frac{Mc^2}{2}$$
           ו-$\cos\alpha = p_xc/E = \beta$, כמו קודם. לפוטון השני $p_y$ הפוך, ולכן הוא נע בזווית $\alpha$ מתחת לציר:
           $\varphi_s = 2\alpha$, ו-$\sin(\varphi_s/2) = \sin\alpha = 1/\gamma$.
-      - kind: manipulation
-        text: >-
-          בדיקה במסה האינווריאנטית: $1 - \cos\varphi = 2\sin^2(\varphi/2)$, ולכן $\left(Mc^2\right)^2 = 4E_1E_2\sin^2(\varphi/2)$.
-          עם $E_1 = E_2 = \gamma Mc^2/2$ ו-$\sin(\varphi_s/2) = 1/\gamma$: $4\cdot\dfrac{\gamma^2\left(Mc^2\right)^2}{4}\cdot\dfrac{1}{\gamma^2} = \left(Mc^2\right)^2$.
       - kind: limit
         text: >-
           כש-$\beta \to 0$: $\gamma = 1$, $\sin(\varphi_s/2) = 1$ ו-$\varphi_s = \pi$, גב אל גב, כמו במנוחה. כש-$\beta \to 1$:
@@ -238,8 +238,6 @@ parts:
       - text: >-
           הסקתי מהסימטריה ש-$\varphi_s = 2\alpha$, ולכן $\sin(\varphi_s/2) = 1/\gamma$.
       - text: >-
-          בדקתי ש-$4E_1E_2\sin^2(\varphi_s/2) = \left(Mc^2\right)^2$.
-      - text: >-
           בדקתי ש-$\varphi_s = \pi$ כש-$\beta \to 0$ ו-$\varphi_s \approx 2/\gamma$ כש-$\beta \to 1$.
 
   - label: ד
@@ -252,13 +250,12 @@ parts:
       ו-$\theta'$, והראו ש
       $$\sin\frac{\varphi}{2} = \frac{1}{\gamma\sqrt{1 - \beta^2\cos^2\theta'}}$$
 
-      (2) הסיקו שהזווית בין הפוטונים אינה קטנה אף פעם מ-$\varphi_s$ של חלק ג, ובאיזו דעיכה היא $\pi$. הראו שוב שהיא
-      אינה קטנה מ-$\varphi_s$, הפעם בלי $\theta'$: רק משימור האנרגיה במעבדה ומהמסה האינווריאנטית. (היעזרו בעובדה
-      שמכפלה של שני מספרים חיוביים שסכומם קבוע היא הגדולה ביותר כשהם שווים, והוכיחו אותה.)
+      (2) הסיקו שהזווית בין הפוטונים אינה קטנה אף פעם מ-$\varphi_s$ של חלק ג, ובאיזו דעיכה היא $\pi$.
 
       (3) ב-$S'$ כל הכיוונים במרחב שכיחים באותה מידה, לא רק הכיוונים שבמישור אחד. אפשר להראות שלכן החלק של הדעיכות
       שבהן $\cos\theta'$ נמצא בקטע כלשהו בתוך $[-1,\ 1]$ יחסי לאורך הקטע; השתמשו בזה בלי הוכחה. הראו שבמחצית מהדעיכות $\sin(\varphi/2) \le \dfrac{2}{\gamma\sqrt{4 - \beta^2}}$, ובדקו את
-      החסם בגבולות $\beta \to 0$ ו-$\beta \to 1$. מה רואה לכן גלאי שמודד את $\varphi$ של פיונים רבים, כולם באותה מהירות?
+      החסם בגבולות $\beta \to 0$ ו-$\beta \to 1$. גלאי מודד את $\varphi$ של פיונים רבים, כולם באותה מהירות: מהי הזווית
+      הקטנה ביותר שהוא ימדוד, ובאיזה תחום של $\varphi$ שמתחיל בה נמצאת מחצית מהזוגות?
     solution:
       - kind: law
         text: >-
@@ -275,15 +272,16 @@ parts:
         text: >-
           (2) המכנה $1 - \beta^2\cos^2\theta'$ גדול ביותר, $1$, כש-$\cos\theta' = 0$, ולכן תמיד $\sin(\varphi/2) \ge 1/\gamma$:
           הזווית הקטנה ביותר היא $\varphi_s$ של הדעיכה הסימטרית. כש-$\cos^2\theta' = 1$, הפוטונים לאורך הציר כמו בחלק ב,
-          $\sin(\varphi/2) = 1/\left(\gamma\sqrt{1 - \beta^2}\right) = 1$ ו-$\varphi = \pi$. בלי $\theta'$: שימור האנרגיה במעבדה
-          נותן $E_1 + E_2 = \gamma Mc^2$, ולסכום קבוע $4E_1E_2 = (E_1 + E_2)^2 - (E_1 - E_2)^2 \le \left(\gamma Mc^2\right)^2$.
-          לכן $\sin^2(\varphi/2) = \left(Mc^2\right)^2/(4E_1E_2) \ge 1/\gamma^2$, עם שוויון רק כש-$E_1 = E_2$.
+          $\sin(\varphi/2) = 1/\left(\gamma\sqrt{1 - \beta^2}\right) = 1$ ו-$\varphi = \pi$.
       - kind: manipulation
         text: >-
           (3) $\sin(\varphi/2)$ גדל עם $|\cos\theta'|$. הדעיכות עם $|\cos\theta'| \le \tfrac12$ הן הקטע $\left[-\tfrac12,\ \tfrac12\right]$,
           שאורכו $1$ מתוך $2$: מחצית מהדעיכות. בקצה הקטע
           $$\sin\frac{\varphi}{2} = \frac{1}{\gamma\sqrt{1 - \beta^2/4}} = \frac{2}{\gamma\sqrt{4 - \beta^2}}$$
-          ובכל הדעיכות האלה $\sin(\varphi/2)$ קטן או שווה לזה.
+          ובכל הדעיכות האלה $\sin(\varphi/2)$ קטן או שווה לזה. לכן הגלאי לא ימדוד אף זוג עם $\varphi < \varphi_s$ (חלק (2)),
+          ומחצית מהזוגות נמצאים בתחום $\varphi_s \le \varphi \le \varphi_{1/2}$, כאשר
+          $\sin(\varphi_{1/2}/2) = 2/\left(\gamma\sqrt{4 - \beta^2}\right)$: בדיוק הדעיכות עם $|\cos\theta'| \le \tfrac12$, כי
+          $\varphi$ גדלה עם $|\cos\theta'|$.
       - kind: limit
         text: >-
           כש-$\beta \to 0$: $\gamma = 1$ ו-$\sin(\varphi/2) = 1$ לכל $\theta'$, כלומר $\varphi = \pi$ תמיד: פיון שנח זורק את
@@ -297,19 +295,20 @@ parts:
         text: >-
           $E_{1,2} = \tfrac12\gamma Mc^2\left(1 \pm \beta\cos\theta'\right)$ ו-$\sin(\varphi/2) = 1/\left(\gamma\sqrt{1 - \beta^2\cos^2\theta'}\right)$.
           הזווית נעה בין $\varphi_s$, עם $\sin(\varphi_s/2) = 1/\gamma$ (פוטונים שווי אנרגיה), לבין $\pi$ (פוטונים לאורך הציר).
-          במחצית מהדעיכות $\sin(\varphi/2) \le 2/\left(\gamma\sqrt{4 - \beta^2}\right)$. הגלאי רואה התפלגות של $\varphi$ שאין
-          בה אף זוג מתחת ל-$\varphi_s$, ומחצית מהזוגות צפופים ממש מעליה; מהקצה הזה אפשר לקרוא את $\gamma$ של הפיונים מהזוויות בלבד.
+          במחצית מהדעיכות $\sin(\varphi/2) \le 2/\left(\gamma\sqrt{4 - \beta^2}\right)$. הזווית הקטנה ביותר שהגלאי ימדוד היא
+          $\varphi_s$, ומחצית מהזוגות בתחום שבין $\varphi_s$ לזווית של החסם, כש-$\beta \to 1$ לכל היותר $2/\sqrt3 - 1 \approx 15.5\%$ מעל $\varphi_s$;
+          מהקצה הזה אפשר לקרוא את $\gamma$ של הפיונים מהזוויות בלבד.
     rubric:
       - text: >-
           כתבתי $E_{1,2} = \tfrac12\gamma Mc^2(1 \pm \beta\cos\theta')$, הצבתי ב-$\left(Mc^2\right)^2 = 4E_1E_2\sin^2(\varphi/2)$ והגעתי
           לביטוי ל-$\sin(\varphi/2)$.
         weight: 2
       - text: >-
-          הסקתי ש-$\sin(\varphi/2) \ge 1/\gamma$, עם שוויון בדעיכה הסימטרית ו-$\varphi = \pi$ כשהפוטונים לאורך הציר, והראיתי את
-          המינימום גם מ-$E_1 + E_2 = \gamma Mc^2$ ומ-$4E_1E_2 \le (E_1 + E_2)^2$.
+          הסקתי ש-$\sin(\varphi/2) \ge 1/\gamma$, עם שוויון בדעיכה הסימטרית, ו-$\varphi = \pi$ כשהפוטונים לאורך הציר.
       - text: >-
           הראיתי שמחצית מהדעיכות הן אלה עם $|\cos\theta'| \le 1/2$, וקיבלתי את החסם $2/\left(\gamma\sqrt{4 - \beta^2}\right)$.
       - text: >-
           בדקתי ש-$\varphi = \pi$ לכל $\theta'$ כש-$\beta \to 0$, ושכש-$\beta \to 1$ החסם גדול מ-$1/\gamma$ רק פי $2/\sqrt3$.
       - text: >-
-          הסברתי שהגלאי רואה קצה חד ב-$\varphi_s$, בלי זוגות מתחתיו, ומחצית מהזוגות צפופים ממש מעליו.
+          קבעתי שהזווית הקטנה ביותר שהגלאי ימדוד היא $\varphi_s$, ושמחצית מהזוגות בתחום שבין $\varphi_s$ לזווית שבה
+          $\sin(\varphi/2) = 2/\left(\gamma\sqrt{4 - \beta^2}\right)$.

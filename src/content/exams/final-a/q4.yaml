@@ -26,6 +26,12 @@
 # says the bound holds for every t1 and is small against V1/w0 when w0 t1 >> 1; ד(2) gives the potential energy mAy'
 # of the fictitious force as a fact; ד(3) says what is averaged (1/2 k X^2 of ב over t1); the solution says why the
 # heat balance may be written in S' (b ẏ'^2 depends only on the relative velocity of the damper's ends).
+# 2026-11-20, trimmed after a timed student read (≈46 min against ≈41 per question): ד(2) asked "the total heat from
+# t = 0 until the oscillation dies out", a trap (E'(0) = E'(∞) = 0 gives zero, because nothing said the term mAy' leaves
+# at t1, where E' jumps from -mA^2/(2w0^2) to +mA^2/(2w0^2) with no heat): it now asks E_th,1 during the acceleration and
+# E_th,2 after t1 separately; ד(3) keeps only the k -> ∞ limit (the comparison with the t1-average of (1/2)kX^2 is cut);
+# ב(1) drops its t1 -> 0 limit (ג(2)'s impulse limit covers it) and now asks why y', ẏ' are continuous at t1, which its
+# rubric grades. Points: ב 6 -> 5, ד 7 -> 8. No number changed.
 id: E-final-a-4
 type: bagrut
 title: משקולת על קפיץ במעלית שמאיצה
@@ -109,17 +115,16 @@ parts:
 
   - label: ב
     type: open
-    points: 6
+    points: 5
     level: mid
     standalone: false
     objectives: [OBJ-5.1-1, OBJ-1.5-2, OBJ-7.1-2]
     prompt: >-
       מחלק א, בזמן ההאצה $y'(t) = -\dfrac{A}{\omega_0^2}\left(1 - \cos\omega_0t\right)$.
 
-      (1) הסבירו מדוע אחרי הרגע $t_1$ משוואת התנועה ב-$S'$ היא $\ddot y' = -\omega_0^2y'$, והראו שהאמפליטודה של
-      התנודה אחרי $t_1$ היא
+      (1) הסבירו מדוע אחרי הרגע $t_1$ משוואת התנועה ב-$S'$ היא $\ddot y' = -\omega_0^2y'$, ומדוע המקום והמהירות של
+      המשקולת ב-$S'$ רציפים ברגע $t_1$. הראו שהאמפליטודה של התנודה אחרי $t_1$ היא
       $$X = \frac{2A}{\omega_0^2}\left|\sin\frac{\omega_0t_1}{2}\right|$$
-      בדקו את התוצאה בגבול $t_1 \to 0$.
 
       (2) אחרי אילו משכי האצה $t_1$ המשקולת נשארת במנוחה ביחס למעלית? הסבירו את הסיבה הפיזיקלית.
 
@@ -145,10 +150,9 @@ parts:
           מספר שלם של מחזורים, כשהמשקולת עומדת בנקודה הנמוכה ביותר שלה.
       - kind: limit
         text: >-
-          כש-$t_1 \to 0$ ו-$A$ קבוע, $X \approx \dfrac{2A}{\omega_0^2}\cdot\dfrac{\omega_0t_1}{2} = \dfrac{At_1}{\omega_0}
-          \to 0$: האצה שכמעט לא התחילה לא מזיזה את המשקולת. ותמיד $X \le 2A/\omega_0^2$, המרחק הגדול ביותר של
-          המשקולת מ-$y' = 0$ בזמן ההאצה (חלק א), כמו שחייב להיות: משקולת שנעצרת בנקודה הרחוקה ביותר מתנודדת סביב
-          $y' = 0$ באמפליטודה הזו בדיוק.
+          תמיד $X \le 2A/\omega_0^2$, המרחק הגדול ביותר של המשקולת מ-$y' = 0$ בזמן ההאצה (חלק א), כמו שחייב להיות:
+          משקולת שנעצרת בנקודה הרחוקה ביותר מתנודדת סביב $y' = 0$ באמפליטודה הזו בדיוק. (הגבול של האצה קצרה נבדק
+          בחלק ג.)
       - kind: units
         text: >-
           $A/\omega_0^2$ במטרים, והסינוס הוא של מספר חסר ממדים; $\omega_0 = \sqrt{k/m}$ ביחידות
@@ -172,8 +176,6 @@ parts:
       - text: >-
           מצאתי $X = 0$ כש-$t_1 = nT_0$, והסברתי שהמשקולת עוצרת אז בדיוק בנקודת שיווי המשקל של המעלית שנעה במהירות
           קבועה.
-      - text: >-
-          בדקתי ש-$X \to 0$ כש-$t_1 \to 0$.
       - text: >-
           חישבתי $\omega_0 = 5.00\,\text{rad/s}$, $X \approx 7.7\,\text{cm}$ ו-$T_0 \approx 1.26\,\text{s}$.
 
@@ -252,7 +254,7 @@ parts:
 
   - label: ד
     type: open
-    points: 7
+    points: 8
     level: bagrut
     standalone: false
     objectives: [OBJ-5.3-1, OBJ-5.3-2, OBJ-3.3-1, OBJ-7.1-1]
@@ -265,13 +267,12 @@ parts:
       לחלק ב.
 
       (2) בזמן ההאצה פועל על המשקולת ב-$S'$ הכוח המדומה הקבוע $(-mA)$, כלפי מטה, ולכוח קבוע כזה יש אנרגיה
-      פוטנציאלית $mAy'$, כמו $mgy$ לכובד. הראו שהחום הכולל $E_{\text{th}}$ שהבולם מפיק, מ-$t = 0$ ועד שהתנודות
-      דועכות לגמרי, הוא
+      פוטנציאלית $mAy'$, כמו $mgy$ לכובד. חשבו את החום $E_{\text{th},1}$ שהבולם מפיק בזמן ההאצה, $0 < t < t_1$, ואת
+      החום $E_{\text{th},2}$ שהוא מפיק אחרי $t_1$, עד שהתנודות דועכות לגמרי. הראו שהחום הכולל הוא
       $$E_{\text{th}} = \frac{m^2A^2}{k}$$
       ושהוא לא תלוי ב-$b$.
 
-      (3) בדקו את התוצאה בגבול $k \to \infty$. אחר כך השוו אותה לאנרגיה של התנודה בלי ריסון אחרי $t_1$, $\tfrac12kX^2$
-      עם $X$ של חלק ב, כשמחשבים את הממוצע שלה על ערכי $t_1$ (כלומר על הפאזה $\omega_0t_1$).
+      (3) בדקו את התוצאה בגבול $k \to \infty$, והסבירו את מה שיוצא.
     solution:
       - kind: law
         text: >-
@@ -295,18 +296,17 @@ parts:
           מינוס הקצב הזה.
           ב-$t = 0$, $E' = 0$, וב-$t_1$:
           $$E' = \frac12k\frac{A^2}{\omega_0^4} - mA\frac{A}{\omega_0^2} = \frac{mA^2}{2\omega_0^2} - \frac{mA^2}{\omega_0^2} = -\frac{mA^2}{2\omega_0^2}$$
-          ולכן בזמן ההאצה $E_{\text{th},1} = \dfrac{mA^2}{2\omega_0^2}$. אחרי $t_1$ המערכת אינרציאלית, והאנרגיה של התנודה,
-          $\tfrac12k\left(A/\omega_0^2\right)^2 = \dfrac{mA^2}{2\omega_0^2}$, דועכת עד אפס: $E_{\text{th},2} = E_{\text{th},1}$. יחד, עם
+          ולכן בזמן ההאצה $E_{\text{th},1} = \dfrac{mA^2}{2\omega_0^2}$. אחרי $t_1$ המערכת אינרציאלית, אין כוח מדומה, והאיבר
+          $mAy'$ יוצא מהאנרגיה: ברגע $t_1$, $E'$ קופץ מ-$-\dfrac{mA^2}{2\omega_0^2}$ ל-$+\dfrac{mA^2}{2\omega_0^2}$ בלי שום חום.
+          (מי שמחבר את $E' = 0$ ב-$t = 0$ ל-$E' = 0$ בסוף, בלי לעצור ב-$t_1$, מקבל בטעות $E_{\text{th}} = 0$.) האנרגיה של
+          התנודה, $\tfrac12k\left(A/\omega_0^2\right)^2 = \dfrac{mA^2}{2\omega_0^2}$, דועכת עד אפס: $E_{\text{th},2} = E_{\text{th},1}$. יחד, עם
           $\omega_0^2 = k/m$:
           $$E_{\text{th}} = \frac{mA^2}{\omega_0^2} = \frac{m^2A^2}{k}$$
           ו-$b$ לא מופיע: הוא קובע כמה מהר החום מופק, לא כמה.
       - kind: limit
         text: >-
           כש-$k \to \infty$, $E_{\text{th}} \to 0$: קפיץ קשיח מאוד הוא כמו מוט, המשקולת נעה יחד עם המעלית, אין מהירות יחסית ואין
-          חום. ובלי ריסון בזמן ההאצה (בולם שמחברים רק אחרי $t_1$), החום הוא האנרגיה של התנודה מחלק ב:
-          $\tfrac12kX^2 = \dfrac{2mA^2}{\omega_0^2}\sin^2\dfrac{\omega_0t_1}{2}$. הממוצע של $\sin^2$ הוא $\tfrac12$, ולכן
-          הממוצע על $t_1$ הוא $mA^2/\omega_0^2$, אותו $E_{\text{th}}$: ההאצה הארוכה עם ריסון נותנת את הממוצע, כי היא מוחקת את
-          התלות בפאזה שבה ההאצה נגמרת.
+          חום. ובנוסחה: שיווי המשקל זז ב-$A/\omega_0^2 = mA/k \to 0$, ולכן אין תנודה שתדעך.
       - kind: units
         text: >-
           $m^2A^2/k$ ביחידות $\text{kg}^2\cdot\text{m}^2\text{s}^{-4}/(\text{kg}\cdot\text{s}^{-2}) =
@@ -320,10 +320,13 @@ parts:
           הסברתי שכש-$\gamma t_1 \gg 1$ המשקולת במנוחה ב-$y'_A$ ברגע $t_1$, ושהתנודה שאחריו מתחילה באמפליטודה
           $A/\omega_0^2$, שבניגוד לחלק ב לא תלויה ב-$t_1$.
       - text: >-
-          כתבתי את האנרגיה ב-$S'$ עם האנרגיה הפוטנציאלית $mAy'$ של הכוח המדומה, וקבעתי שהבולם מוריד אותה בקצב
-          $b\dot y'^2$.
+          כתבתי את האנרגיה ב-$S'$ בזמן ההאצה עם האנרגיה הפוטנציאלית $mAy'$ של הכוח המדומה, וקבעתי שהבולם מוריד אותה
+          בקצב $b\dot y'^2$.
       - text: >-
-          חישבתי $E_{\text{th},1} = E_{\text{th},2} = mA^2/(2\omega_0^2)$ וקיבלתי $E_{\text{th}} = m^2A^2/k$, בלי $b$.
+          מצאתי $E_{\text{th},1} = mA^2/(2\omega_0^2)$ מ-$E' = 0$ ב-$t = 0$ ו-$E' = -mA^2/(2\omega_0^2)$ ב-$t_1$.
+      - text: >-
+          נימקתי שאחרי $t_1$ אין כוח מדומה ואין איבר $mAy'$, ולכן $E_{\text{th},2}$ היא האנרגיה של התנודה,
+          $\tfrac12k(A/\omega_0^2)^2 = mA^2/(2\omega_0^2)$; חיברתי וקיבלתי $E_{\text{th}} = m^2A^2/k$, בלי $b$.
         weight: 2
       - text: >-
-          בדקתי ש-$E_{\text{th}} \to 0$ כש-$k \to \infty$, והשוויתי לממוצע של $\tfrac12kX^2$ מחלק ב על ערכי $t_1$.
+          בדקתי ש-$E_{\text{th}} \to 0$ כש-$k \to \infty$, והסברתי שהמשקולת נעה אז יחד עם המעלית, בלי מהירות יחסית בבולם.

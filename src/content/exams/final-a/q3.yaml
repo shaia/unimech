@@ -31,6 +31,13 @@
 # says 255 degrees, not three quarters of a revolution. Second pass (student read): א and ד(2) now ask the Kepler-III
 # check and the direct uniform-ball argument their rubrics grade; the n = -3 case of ב goes through du_eff/dr, without
 # the expression for u that the prompt says is not needed.
+# 2026-11-20, trimmed after a timed student read (≈44 min against ≈41 per question): ג(1) no longer asks Delta theta as
+# n -> -3 (ב(3) asks the n = -3 case) and ד(2) no longer asks the eta -> ∞ limit "directly" from a uniform ball (ג(3)'s
+# spring case); ג(3) states both closed shapes (ellipse with O at a focus; ellipse with O at its centre, which lesson 6.3
+# only mentions) and asks only the pericentres per revolution against p; the potential energy is now U(r), dU/dr = k r^n,
+# u_eff = h^2/(2r^2) + U/m (the formula sheet and chapter 6 use u = 1/r in the orbit equation); ב's rubric no longer
+# grades the unasked "h unchanged by a radial kick" (ג's stem gives it). Points unchanged (5/6/6/8); in ג the result and
+# closure line now weighs 2. No number changed.
 id: E-final-a-3
 type: bagrut
 title: מסלולים שנסגרים, ומסלולים שלא
@@ -38,8 +45,8 @@ prompt: >-
   חלקיק בעל מסה $m$ נע תחת כוח מרכזי שמושך אותו אל נקודה קבועה $O$,
   $$\vec F = -k\,r^n\,\hat r$$
   כאשר $r$ המרחק מ-$O$, $k > 0$ קבוע ו-$n$ מספר ממשי. הראשית ב-$O$, $\hat r$ פונה מ-$O$ החוצה, והזווית $\theta$ של
-  הרדיוס נמדדת בכיוון התנועה. נסמן ב-$h$ את התנע הזוויתי ליחידת מסה סביב $O$, וב-$u(r)$ את האנרגיה הפוטנציאלית ליחידת
-  מסה, כך ש-$du/dr = (k/m)\,r^n$ (אין צורך בביטוי ל-$u$ עצמו). אין כוחות אחרים, ו-$O$ נח במערכת ייחוס אינרציאלית.
+  הרדיוס נמדדת בכיוון התנועה. נסמן ב-$h$ את התנע הזוויתי ליחידת מסה סביב $O$, וב-$U(r)$ את האנרגיה הפוטנציאלית של
+  החלקיק, כך ש-$dU/dr = k\,r^n$ (אין צורך בביטוי ל-$U$ עצמו). אין כוחות אחרים, ו-$O$ נח במערכת ייחוס אינרציאלית.
 diagram: |
       <svg viewBox="0 0 340 250" width="340" height="250" font-size="14" aria-hidden="true">
         <circle cx="170" cy="132" r="82" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>
@@ -76,14 +83,14 @@ parts:
       $\Omega = \dot\theta$, ואת $h$. בדקו שבכבידה, $n = -2$ ו-$k = GMm$, מתקבל החוק השלישי של קפלר למסלול מעגלי.
     solution:
       - { kind: law, text: 'הכוח מרכזי, $\vec F \parallel \vec r$, ולכן מומנט הכוח סביב $O$, $\vec r \times \vec F$, אפס, ו-$\vec L$ נשמר. $\vec L = m\vec r \times \vec v$ ניצב ל-$\vec r$, וכיוונו קבוע, ולכן $\vec r$ נשאר כל הזמן במישור הניצב ל-$\vec L$. ליחידת מסה: $h = r^2\dot\theta$ קבוע.' }
-      - { kind: manipulation, text: 'מפרקים $v^2 = \dot r^2 + r^2\dot\theta^2$ ומציבים $\dot\theta = h/r^2$: $$\varepsilon = \tfrac12\dot r^2 + u_{\text{eff}}(r), \qquad u_{\text{eff}}(r) = \frac{h^2}{2r^2} + u(r)$$' }
+      - { kind: manipulation, text: 'מפרקים $v^2 = \dot r^2 + r^2\dot\theta^2$ ומציבים $\dot\theta = h/r^2$: $$\varepsilon = \tfrac12\dot r^2 + u_{\text{eff}}(r), \qquad u_{\text{eff}}(r) = \frac{h^2}{2r^2} + \frac{U(r)}{m}$$' }
       - { kind: manipulation, text: 'במסלול מעגלי $r$ קבוע, והכוח, שהוא הכוח השקול, נותן לחלקיק את התאוצה הצנטריפטלית $r_0\Omega^2$, פנימה: $mr_0\Omega^2 = kr_0^{\,n}$. (זה גם התנאי $du_{\text{eff}}/dr = 0$ ב-$r_0$: $-h^2/r_0^3 + (k/m)\,r_0^{\,n} = 0$.) לכן $$\Omega^2 = \frac{k}{m}\,r_0^{\,n - 1}, \qquad h^2 = r_0^4\,\Omega^2 = \frac{k}{m}\,r_0^{\,n + 3}$$' }
       - { kind: limit, text: 'כבידה: $n = -2$ ו-$k = GMm$ נותנים $\Omega^2 = GM/r_0^3$, החוק השלישי של קפלר למסלול מעגלי, ו-$h = \sqrt{GMr_0}$. קפיץ בעל אורך רפוי אפס: $n = 1$ נותן $\Omega = \sqrt{k/m}$, שאינו תלוי ב-$r_0$, כמו התדירות של מתנד הרמוני, שאינה תלויה באמפליטודה.' }
       - { kind: units, text: '$k$ ביחידות $\text{N/m}^n$, ולכן $\dfrac{k}{m}\,r_0^{\,n - 1}$ ביחידות $\dfrac{\text{N}}{\text{kg}\cdot\text{m}} = \text{s}^{-2}$, כמו $\Omega^2$; ו-$h^2 = r_0^4\Omega^2$ ביחידות $\text{m}^4/\text{s}^2$.' }
-      - { kind: result, text: 'מומנט הכוח סביב $O$ אפס, ולכן $\vec L$ נשמר, התנועה מישורית ו-$h = r^2\dot\theta$ קבוע; $\varepsilon = \tfrac12\dot r^2 + \dfrac{h^2}{2r^2} + u(r)$. במסלול המעגלי $\Omega = \sqrt{\dfrac{k}{m}\,r_0^{\,n - 1}}$ ו-$h = \sqrt{\dfrac{k}{m}\,r_0^{\,n + 3}}$.' }
+      - { kind: result, text: 'מומנט הכוח סביב $O$ אפס, ולכן $\vec L$ נשמר, התנועה מישורית ו-$h = r^2\dot\theta$ קבוע; $\varepsilon = \tfrac12\dot r^2 + \dfrac{h^2}{2r^2} + \dfrac{U(r)}{m}$. במסלול המעגלי $\Omega = \sqrt{\dfrac{k}{m}\,r_0^{\,n - 1}}$ ו-$h = \sqrt{\dfrac{k}{m}\,r_0^{\,n + 3}}$.' }
     rubric:
       - text: 'נימקתי מכך שמומנט הכוח סביב $O$ אפס ש-$\vec L$ נשמר, ומכאן שהתנועה מישורית ו-$h = r^2\dot\theta$ קבוע.'
-      - text: 'כתבתי $\varepsilon = \tfrac12\dot r^2 + h^2/(2r^2) + u(r)$.'
+      - text: 'כתבתי $\varepsilon = \tfrac12\dot r^2 + h^2/(2r^2) + U(r)/m$.'
       - text: 'מצאתי $\Omega^2 = (k/m)\,r_0^{\,n - 1}$ ו-$h^2 = (k/m)\,r_0^{\,n + 3}$ מהחוק השני בכיוון הרדיאלי, או מהתנאי $du_{\text{eff}}/dr = 0$.'
       - text: 'בדקתי שב-$n = -2$ מתקבל החוק השלישי של קפלר.'
 
@@ -114,7 +121,7 @@ parts:
       - text: 'גזרתי את $u_{\text{eff}}$ פעמיים, הצבתי את $h^2$ של המסלול המעגלי וקיבלתי $(n + 3)\,\Omega^2$.'
         weight: 2
       - text: 'קבעתי מהסימן של הנגזרת השנייה שהמעגל יציב רק כש-$n > -3$.'
-      - text: 'השתמשתי ב-$\omega_r^2 = d^2u_{\text{eff}}/dr^2$ ב-$r_0$, ונימקתי ש-$h$ לא משתנה בדחיפה רדיאלית.'
+      - text: 'השתמשתי ב-$\omega_r^2 = d^2u_{\text{eff}}/dr^2$ ב-$r_0$ וקיבלתי $\omega_r/\Omega = \sqrt{n + 3}$.'
       - text: 'בדקתי ש-$\omega_r = \Omega$ בכבידה, כמו באליפסה של קפלר, והסברתי שב-$n = -3$ אין תנודה.'
 
   - label: ג
@@ -129,25 +136,25 @@ parts:
       (1) במסלול כמעט מעגלי $r(t) = r_0 - A\cos(\omega_rt)$, עם $A \ll r_0$, ובזמן $t = 0$ החלקיק בנקודת קרבה. הראו
       שעד סדר ראשון ב-$A/r_0$, הזווית שהרדיוס מסתובב בה בין שתי נקודות קרבה עוקבות היא
       $$\Delta\theta = \frac{2\pi}{\sqrt{n + 3}}$$
-      מה קורה ל-$\Delta\theta$ כש-$n \to -3$ מלמעלה?
 
       (2) לאילו ערכי $n$ המסלול הכמעט מעגלי נסגר אחרי סיבוב אחד בדיוק, כש-$r$ משלים בו $p$ תנודות, $p = 1, 2, 3, \ldots$?
 
-      (3) בדקו את התשובה בשני הכוחות שבהם ידוע לכם שכל מסלול קשור נסגר, כבידה וקפיץ בעל אורך רפוי אפס: תארו בכל
-      אחד את צורת המסלול ואת מקומו של $O$ ביחס אליו, וכמה נקודות קרבה יש בסיבוב אחד.
+      (3) בשני כוחות כל מסלול קשור נסגר: בכבידה הוא אליפסה ש-$O$ באחד ממוקדיה, ובקפיץ בעל אורך רפוי אפס הוא
+      אליפסה ש-$O$ במרכזה. בדקו את התשובה של (2): כמה נקודות קרבה יש בכל אחד מהמסלולים האלה בסיבוב אחד, ומה $p$
+      ו-$n$ שמתאימים לכך?
     solution:
       - { kind: law, text: '$h = r^2\dot\theta$ קבוע, ולכן $\dot\theta = h/r^2$. בין שתי נקודות קרבה עוקבות עובר זמן מחזור אחד של התנועה הרדיאלית, $T_r = 2\pi/\omega_r$, ו-$\Delta\theta = \displaystyle\int_0^{T_r}\dot\theta\,dt$.' }
       - { kind: manipulation, text: 'עד סדר ראשון ב-$A/r_0$: $$\dot\theta = \frac{h}{r_0^2}\left(1 - \frac{A}{r_0}\cos\omega_rt\right)^{-2} \approx \Omega\left(1 + \frac{2A}{r_0}\cos\omega_rt\right)$$ האינטגרל של $\cos\omega_rt$ על מחזור שלם אפס, ולכן $\Delta\theta = \Omega T_r = 2\pi\,\Omega/\omega_r = 2\pi/\sqrt{n + 3}$; התיקון מסדר $A^2/r_0^2$. ($\Delta\theta$ גדול מ-$2\pi$ כש-$n < -2$ וקטן ממנו כש-$n > -2$; למשל ב-$n = -1$ הוא $254.6^\circ$, והמסלול רוזטה.)' }
       - { kind: manipulation, text: 'המסלול נסגר אחרי סיבוב אחד עם $p$ תנודות של $r$ כש-$p\,\Delta\theta = 2\pi$, כלומר $\sqrt{n + 3} = p$: $$n = p^2 - 3$$ $p = 1$ נותן $n = -2$, $p = 2$ נותן $n = 1$, ו-$p = 3$ נותן $n = 6$.' }
-      - { kind: limit, text: 'כבידה, $n = -2$ ו-$p = 1$: $\Delta\theta = 2\pi$. המסלול אליפסה ש-$O$ באחד ממוקדיה (שיעור 6.4), ונקודת הקרבה היחידה שלה היא הקודקוד הקרוב למוקד. קפיץ, $n = 1$ ו-$p = 2$: $\Delta\theta = \pi$. כאן כל רכיב קרטזי הוא מתנד הרמוני בתדירות $\sqrt{k/m}$, $x = a\cos\Omega t$ ו-$y = b\sin\Omega t$: אליפסה ש-$O$ במרכזה, ו-$r^2 = \tfrac12(a^2 + b^2) + \tfrac12(a^2 - b^2)\cos2\Omega t$ משלים שתי תנודות בסיבוב. שתי נקודות קרבה, בשני קצות הציר המשני, במרחק $\pi$ זו מזו. בשני הכוחות האלה הצורה ידועה בכל אמפליטודה, ולכן שם הסגירה מדויקת. ב-$n = 6$, לעומת זאת, היא נכונה רק בסדר ראשון: חישוב מדויק של מסלול שבו $r$ בין $0.90\,r_0$ ל-$1.10\,r_0$ נותן $121.9^\circ$ ולא $120^\circ$. וכש-$n \to -3$ מלמעלה, $\Delta\theta \to \infty$: הכוח המחזיר של חלק ב נעלם, והחלקיק מסתובב פעמים רבות לפני ש-$r$ חוזר.' }
+      - { kind: limit, text: 'כבידה: באליפסה ש-$O$ במוקדה יש נקודת קרבה אחת, הקודקוד הקרוב למוקד, ולכן $r$ משלים תנודה אחת בסיבוב: $p = 1$, $n = 1 - 3 = -2$, הכבידה, ו-$\Delta\theta = 2\pi$. קפיץ: באליפסה ש-$O$ במרכזה יש שתי נקודות קרבה, בשני קצות הציר המשני, במרחק $\pi$ זו מזו: $p = 2$, $n = 4 - 3 = 1$, הכוח $-kr\,\hat r$ של קפיץ בעל אורך רפוי אפס, ו-$\Delta\theta = \pi$. בשני הכוחות האלה הצורה ידועה בכל אמפליטודה, ולכן שם הסגירה מדויקת. ב-$n = 6$, לעומת זאת, היא נכונה רק בסדר ראשון: חישוב מדויק של מסלול שבו $r$ בין $0.90\,r_0$ ל-$1.10\,r_0$ נותן $121.9^\circ$ ולא $120^\circ$.' }
       - { kind: units, text: '$\Omega T_r$ הוא מהירות זוויתית כפול זמן, חסר ממדים (רדיאנים), כמו $2\pi/\sqrt{n + 3}$.' }
-      - { kind: result, text: '$\Delta\theta = 2\pi/\sqrt{n + 3}$, ששואף לאינסוף כש-$n \to -3$ מלמעלה. המסלול הכמעט מעגלי נסגר אחרי סיבוב אחד עם $p$ תנודות רדיאליות כש-$n = p^2 - 3$: כבידה ($p = 1$, אליפסה ש-$O$ במוקדה, נקודת קרבה אחת בסיבוב), קפיץ ($p = 2$, אליפסה ש-$O$ במרכזה, שתי נקודות קרבה), ו-$n = 6$ ($p = 3$).' }
+      - { kind: result, text: '$\Delta\theta = 2\pi/\sqrt{n + 3}$. המסלול הכמעט מעגלי נסגר אחרי סיבוב אחד עם $p$ תנודות רדיאליות כש-$n = p^2 - 3$: כבידה ($p = 1$, אליפסה ש-$O$ במוקדה, נקודת קרבה אחת בסיבוב), קפיץ ($p = 2$, אליפסה ש-$O$ במרכזה, שתי נקודות קרבה), ו-$n = 6$ ($p = 3$).' }
     rubric:
       - text: 'כתבתי $\dot\theta = h/r^2$, פיתחתי עד סדר ראשון ב-$A/r_0$, והראיתי שהאיבר המתנודד לא תורם על פני מחזור רדיאלי שלם, כך ש-$\Delta\theta = \Omega T_r$.'
         weight: 2
       - text: 'קיבלתי $\Delta\theta = 2\pi/\sqrt{n + 3}$ ואת תנאי הסגירה $n = p^2 - 3$.'
-      - text: 'תיארתי בכבידה אליפסה ש-$O$ במוקדה עם נקודת קרבה אחת, ובקפיץ אליפסה ש-$O$ במרכזה עם שתי נקודות קרבה, בהתאם ל-$p = 1$ ול-$p = 2$.'
-      - text: 'בדקתי ש-$\Delta\theta \to \infty$ כש-$n \to -3$, בהתאם למה שמצאתי בחלק ב.'
+        weight: 2
+      - text: 'מניתי נקודת קרבה אחת בסיבוב באליפסה ש-$O$ במוקדה ושתיים באליפסה ש-$O$ במרכזה, והראיתי ש-$p = 1$ ו-$p = 2$ נותנים $n = -2$ ו-$n = 1$, הכבידה והקפיץ.'
 
   - label: ד
     type: open
@@ -166,8 +173,7 @@ parts:
 
       (2) הראו ש-
       $$\frac{\omega_r^2}{\Omega^2} = \frac{1 + 4\eta}{1 + \eta}$$
-      ובדקו את התוצאה בגבולות $\eta \to 0$ ו-$\eta \to \infty$. את הגבול השני נמקו גם ישירות, מהכבידה בתוך כדור
-      אחיד.
+      ובדקו את התוצאה בגבולות $\eta \to 0$ ו-$\eta \to \infty$.
 
       (3) נקודת הקרבה זזה בין סיבוב לסיבוב בזווית $\delta\theta = \Delta\theta - 2\pi$. הראו שכש-$\eta \ll 1$,
       $\delta\theta \approx -3\pi\eta$, וקבעו אם נקודת הקרבה מתקדמת בכיוון התנועה או נסוגה. חשבו את $\delta\theta$
@@ -175,9 +181,9 @@ parts:
     solution:
       - { kind: law, text: 'משפט הקליפה (שיעור 6.1): קליפה כדורית אחידה לא מפעילה כוח כבידה על גוף שבתוכה, ומושכת גוף שמחוצה לה כאילו כל מסתה במרכזה. לכן על כוכב הלכת במרחק $r$ מושכים הכוכב והאבק שבתוך הכדור ברדיוס $r$, שמסתו $M_d(r) = \tfrac43\pi\rho r^3$, והאבק שמחוץ ל-$r$ לא תורם. הכוח עדיין מרכזי, ולכן $h$ נשמר וכל מה שנאמר על $u_{\text{eff}}$ בחלקים ב ו-ג נכון גם כאן.' }
       - { kind: manipulation, text: 'הכוח ליחידת מסה, פנימה, אל הכוכב: $$f(r) = \frac{GM}{r^2} + \frac{GM_d(r)}{r^2} = \frac{GM}{r^2} + Kr, \qquad K = \tfrac43\pi G\rho$$ ו-$\eta = Kr_0^3/(GM)$. זה סכום של שני כוחות מהסוג של חלק א, עם $n = -2$ ועם $n = 1$.' }
-      - { kind: manipulation, text: 'מעגל ב-$r_0$: $\Omega^2 = f(r_0)/r_0 = \dfrac{GM}{r_0^3} + K$, ו-$h^2 = r_0^4\Omega^2$. עם $du/dr = f$: $$\frac{d^2u_{\text{eff}}}{dr^2} = \frac{3h^2}{r^4} + \frac{df}{dr} = \frac{3h^2}{r^4} - \frac{2GM}{r^3} + K$$ וב-$r_0$: $\omega_r^2 = 3\left(\dfrac{GM}{r_0^3} + K\right) - \dfrac{2GM}{r_0^3} + K = \dfrac{GM}{r_0^3} + 4K$. מחלקים ב-$\Omega^2$, ומכפילים מונה ומכנה ב-$r_0^3/(GM)$: $\dfrac{\omega_r^2}{\Omega^2} = \dfrac{1 + 4\eta}{1 + \eta}$.' }
+      - { kind: manipulation, text: 'מעגל ב-$r_0$: $\Omega^2 = f(r_0)/r_0 = \dfrac{GM}{r_0^3} + K$, ו-$h^2 = r_0^4\Omega^2$. עם $\tfrac1m\,dU/dr = f$: $$\frac{d^2u_{\text{eff}}}{dr^2} = \frac{3h^2}{r^4} + \frac{df}{dr} = \frac{3h^2}{r^4} - \frac{2GM}{r^3} + K$$ וב-$r_0$: $\omega_r^2 = 3\left(\dfrac{GM}{r_0^3} + K\right) - \dfrac{2GM}{r_0^3} + K = \dfrac{GM}{r_0^3} + 4K$. מחלקים ב-$\Omega^2$, ומכפילים מונה ומכנה ב-$r_0^3/(GM)$: $\dfrac{\omega_r^2}{\Omega^2} = \dfrac{1 + 4\eta}{1 + \eta}$.' }
       - { kind: manipulation, text: '$\Delta\theta = 2\pi\,\Omega/\omega_r = 2\pi\sqrt{\dfrac{1 + \eta}{1 + 4\eta}}$. כש-$\eta \ll 1$: $\dfrac{1 + \eta}{1 + 4\eta} \approx 1 - 3\eta$, והשורש שלו $\approx 1 - \tfrac32\eta$, ולכן $$\delta\theta = \Delta\theta - 2\pi \approx -3\pi\eta$$ $\delta\theta$ שלילי: הרדיוס מגיע לנקודת הקרבה הבאה לפני שהשלים סיבוב, ולכן נקודת הקרבה נסוגה, נגד כיוון התנועה. זה מתאים לחלק ג: האבק מוסיף כוח שגדל עם $r$, כמו כוח שבו $n > -2$, ושם $\Delta\theta < 2\pi$.' }
-      - { kind: limit, text: '$\eta \to 0$, אין אבק: $\omega_r/\Omega \to 1$ ו-$\delta\theta \to 0$, הכבידה של חלק ב ואליפסה שנסגרת. $\eta \to \infty$, הכוכב זניח לעומת האבק: $\omega_r/\Omega \to 2$, הקפיץ של חלק ב. וזה נכון גם בלי חלק ב: בתוך כדור אחיד הכבידה גדלה ביחס ישר ל-$r$ (שיעור 6.1), בדיוק כמו כוח של קפיץ בעל אורך רפוי אפס, שבו $\Delta\theta = \pi$. בכל $\eta$ היחס $\omega_r/\Omega$ בין 1 ל-2, ולכן $\delta\theta$ תמיד שלילי ו-$|\delta\theta| < \pi$.' }
+      - { kind: limit, text: '$\eta \to 0$, אין אבק: $\omega_r/\Omega \to 1$ ו-$\delta\theta \to 0$, הכבידה של חלק ב ואליפסה שנסגרת. $\eta \to \infty$, הכוכב זניח לעומת האבק: $f \to Kr$, כוח שגדל ביחס ישר ל-$r$ כמו של קפיץ בעל אורך רפוי אפס ($n = 1$), ו-$\omega_r/\Omega \to 2 = \sqrt{1 + 3}$, כמו בחלק ב, עם $\Delta\theta = \pi$. בכל $\eta$ היחס $\omega_r/\Omega$ בין 1 ל-2, ולכן $\delta\theta$ תמיד שלילי ו-$|\delta\theta| < \pi$.' }
       - { kind: units, text: '$G\rho$ ביחידות $\dfrac{\text{N}\cdot\text{m}^2}{\text{kg}^2}\cdot\dfrac{\text{kg}}{\text{m}^3} = \text{s}^{-2}$, כמו $GM/r_0^3$ ו-$\Omega^2$. לכן $\eta$ חסר ממדים, ו-$\delta\theta$ ברדיאנים.' }
       - { kind: substitution, text: '$\delta\theta \approx -3\pi\cdot2.0\cdot10^{-3} = -1.88\cdot10^{-2}\,\text{rad} = -1.08^\circ$. בכל סיבוב נקודת הקרבה נסוגה בכ-$1.08^\circ$, ואחרי 1000 סיבובים בשלושה סיבובים שלמים. (הביטוי המלא של סעיף (2) נותן $-1.07^\circ$: התיקון מסדר $\eta^2$ קטן.)' }
       - { kind: result, text: '$f(r) = \dfrac{GM}{r^2} + \tfrac43\pi G\rho\,r$, פנימה; $\dfrac{\omega_r^2}{\Omega^2} = \dfrac{1 + 4\eta}{1 + \eta}$; $\delta\theta \approx -3\pi\eta$: נקודת הקרבה נסוגה נגד כיוון התנועה, ב-$1.08^\circ$ בכל סיבוב כש-$\eta = 2.0\cdot10^{-3}$.' }
@@ -185,6 +191,6 @@ parts:
       - text: 'השתמשתי במשפט הקליפה: רק האבק שבתוך הכדור ברדיוס $r$ מושך, וכתבתי $f = GM/r^2 + \tfrac43\pi G\rho\,r$.'
       - text: 'חישבתי את $\Omega^2$ ואת הנגזרת השנייה של $u_{\text{eff}}$ ב-$r_0$, והגעתי ל-$(1 + 4\eta)/(1 + \eta)$.'
         weight: 2
-      - text: 'בדקתי שב-$\eta \to 0$ חוזרים לכבידה (יחס 1) וב-$\eta \to \infty$ לקפיץ (יחס 2), ונימקתי את הגבול השני גם מהכבידה בתוך כדור אחיד.'
+      - text: 'בדקתי שב-$\eta \to 0$ חוזרים לכבידה, $\omega_r/\Omega \to 1$, וב-$\eta \to \infty$ לקפיץ, $\omega_r/\Omega \to 2$, בהתאם ל-$\sqrt{n + 3}$ של חלק ב.'
       - text: 'פיתחתי עד סדר ראשון ב-$\eta$, קיבלתי $\delta\theta \approx -3\pi\eta$, וקבעתי שנקודת הקרבה נסוגה.'
       - text: 'חישבתי $\delta\theta \approx -1.08^\circ$ כש-$\eta = 2.0\cdot10^{-3}$.'
