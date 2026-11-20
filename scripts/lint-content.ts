@@ -23,7 +23,8 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { parse } from 'yaml';
 import { chapters, chapterObjectives, lessonOrder, objectiveById } from '../src/course.ts';
-import { questionBank } from '../src/assessment/schema.ts';
+import { EXAMS, examById } from '../src/assessment/exams.ts';
+import { examProblem, questionBank } from '../src/assessment/schema.ts';
 import { tex } from '../src/lib/tex.ts';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -293,6 +294,56 @@ for (const { q, file, part, parent } of units) {
   }
 }
 
+/* ------------------------------------------------------------- final exams */
+
+// One file per question (src/content/exams/<exam>/q<n>.yaml), every part open, 25 points, the last part a symbolic
+// result with a limit step: the format of the mapped 77101 exams (src/assessment/exams.ts).
+const examDir = join(CONTENT, 'exams');
+const examFiles = (statSync(examDir, { throwIfNoEntry: false }) ? walk(examDir) : [])
+  .filter((f) => f.endsWith('.yaml'))
+  .map((f) => ({ file: rel(f), data: yamlFile<Question>(f) }));
+for (const { file, data: q } of examFiles) {
+  if (!q) continue;
+  const w = `${file} ${q.id}`;
+  const parsed = examProblem.safeParse(q);
+  if (!parsed.success) for (const issue of parsed.error.issues.slice(0, 8)) fail(file, `schema: ${issue.path.join('.')}: ${issue.message}`);
+  const m = file.match(/exams\/([^/]+)\/q(\d+)\.yaml$/);
+  const spec = m ? examById(m[1]) : undefined;
+  if (!m) fail(file, 'an exam question lives in src/content/exams/<exam>/q<n>.yaml');
+  else if (!spec) fail(file, `exam ${m[1]} is not listed in src/assessment/exams.ts`);
+  else {
+    if (q.id !== `E-${m[1]}-${m[2]}`) fail(w, `the question in ${m[1]}/q${m[2]}.yaml has the id E-${m[1]}-${m[2]}`);
+    const total = (q.parts ?? []).reduce((n, p) => n + (p.points ?? 0), 0);
+    if (total !== spec.points) fail(w, `parts add up to ${total} points; a question of ${spec.id} is worth ${spec.points}`);
+  }
+  if (q.diagram && !q.diagramAlt?.trim()) fail(w, 'a diagram needs diagramAlt (its accessible description)');
+  if (q.diagram && /<script|on\w+=/i.test(q.diagram)) fail(w, 'the diagram SVG must not contain scripts or event handlers');
+  for (const p of q.parts ?? []) {
+    const pw = `${w}/${p.label}`;
+    // Part's index signature (from Question) hides its known keys from Omit: name the types
+    const objs = (p.objectives as string[] | undefined) ?? [];
+    const hints = (p.hints as string[] | undefined) ?? [];
+    if (!objs.length) fail(pw, 'an exam part names the objectives it tests');
+    for (const o of objs) if (!objectiveIds.has(o)) fail(pw, `objective ${o} is not in the course map (src/course.ts)`);
+    if (p.solution?.at(-1)?.kind !== 'result') fail(pw, 'the model solution ends in a result step');
+    if (hints.length) fail(pw, 'an exam shows no hints: leave them out');
+  }
+  const last = q.parts?.at(-1);
+  if (last && !last.solution?.some((s) => s.kind === 'limit')) fail(w, 'the last part is a symbolic result: its solution has a limit step');
+  for (const [path, text] of texStrings(q, '')) {
+    try {
+      tex(text, path);
+    } catch (e) {
+      fail(w, (e as Error).message);
+    }
+  }
+}
+for (const spec of EXAMS) {
+  for (let n = 1; n <= spec.count; n++) {
+    if (!examFiles.some((e) => e.file === `src/content/exams/${spec.id}/q${n}.yaml`)) fail(`src/content/exams/${spec.id}`, `question ${n} of ${spec.count} is missing (q${n}.yaml)`, true);
+  }
+}
+
 /* ------------------------------------------------- objectives coverage */
 
 // A chapter with any bank is held to the full ladder: every objective ≥ 3 questions with one qualitative, every
@@ -506,6 +557,7 @@ const texts = [
   ...questions.map(({ q, file }) => ({ where: `${file} ${q.id}`, text: JSON.stringify(q) })),
   ...workbooks.map(({ file, data }) => ({ where: file, text: JSON.stringify(data) })),
   ...summaries.map((sm) => ({ where: sm.file, text: sm.body })),
+  ...examFiles.map(({ file, data }) => ({ where: file, text: JSON.stringify(data) })),
 ];
 /** A rejected phrase also matches in the definite form, where every word may take ה ("המטען האלמנטרי"). */
 const rejectPattern = (bad: string) =>
@@ -564,4 +616,4 @@ if (problems.length) {
   for (const p of problems) console.error(`  ✗ ${p}`);
   process.exit(1);
 }
-console.log(`lint-content: ok${onlyFile ? ` for ${onlyFile}` : ''} (${lessons.length} lessons, ${questions.length} questions, ${misconceptions.length} misconceptions, ${glossary.length} terms, ${videos.length} videos, ${workbooks.length} workbooks, ${summaries.length} chapter summaries)`);
+console.log(`lint-content: ok${onlyFile ? ` for ${onlyFile}` : ''} (${lessons.length} lessons, ${questions.length} questions, ${misconceptions.length} misconceptions, ${glossary.length} terms, ${videos.length} videos, ${workbooks.length} workbooks, ${summaries.length} chapter summaries, ${examFiles.length} exam questions)`);

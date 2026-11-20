@@ -1,0 +1,48 @@
+---
+/** Final exam in the 77101 format: five questions, answer four, self-graded against model solutions and rubrics. */
+import { getCollection } from 'astro:content';
+import ExamRunner from '~/assessment/ExamRunner';
+import { EXAMS, parseExamId, type ExamSpec } from '~/assessment/exams';
+import { renderQuestion } from '~/assessment/render';
+import type { ExamProblem, Question } from '~/content.config';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { chapters } from '~/course';
+import { lessonHref } from '~/lib/companions';
+import { url } from '~/lib/url';
+import '~/styles/lesson.css';
+import '~/styles/platform.css';
+
+export async function getStaticPaths() {
+  const all = (await getCollection('exams')).map((e) => e.data);
+  return EXAMS.map((spec) => ({
+    params: { exam: spec.id },
+    props: {
+      spec,
+      problems: all
+        .filter((q) => parseExamId(q.id)?.exam === spec.id)
+        .sort((a, b) => parseExamId(a.id)!.n - parseExamId(b.id)!.n),
+    },
+  })).filter((p) => p.props.problems.length === p.props.spec.count);
+}
+
+interface Props {
+  spec: ExamSpec;
+  problems: ExamProblem[];
+}
+const { spec, problems } = Astro.props;
+// TeX → HTML at build time; an exam problem has the shape of a review problem
+const rendered = problems.map((q) => renderQuestion(q as unknown as Question) as unknown as ExamProblem);
+
+const href = await lessonHref();
+const lessons = Object.fromEntries(chapters.flatMap((c) => c.lessons).map((l) => [l.id, { title: l.title, href: href(l.id) }]));
+---
+
+<BaseLayout title={`${spec.title} · ${spec.sitting}`} description="מבחן מסכם במבנה של מבחן 77101: חמש שאלות, עונים על ארבע, שלוש שעות">
+  <div class="platform">
+    <section class="sheet sheet-narrow">
+      <p class="kicker">מכניקה ויחסות פרטית · במבנה של מבחן 77101</p>
+      <h1>{spec.title} · {spec.sitting}</h1>
+      <ExamRunner client:load spec={spec} problems={rendered} lessons={lessons} sheetHref={url('formulas/sheet/')} meHref={url('me/')} />
+    </section>
+  </div>
+</BaseLayout>

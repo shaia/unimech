@@ -82,6 +82,57 @@
   font-weight: 400;
 }
 
+/* ---------- final exam (ExamRunner): reuses the test bar, the review-problem card and the report ---------- */
+
+.exam-intro,
+.exam-run,
+.exam-grade,
+.exam-report {
+  display: grid;
+  gap: 18px;
+}
+.exam-rules {
+  margin: 0;
+  padding-inline-start: 1.2em;
+  display: grid;
+  gap: 8px;
+}
+.exam-q.chosen {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
+}
+.exam-choose {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--ink-3);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  cursor: pointer;
+}
+.exam-choose.on {
+  border-style: solid;
+  border-color: var(--accent);
+}
+.exam-choose input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+.exam-recall summary {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  color: var(--ink-2);
+}
+.exam-solution + .exam-solution {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+
 /* ---------- chapter test ---------- */
 
 .test-intro,

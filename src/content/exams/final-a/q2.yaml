@@ -1,0 +1,204 @@
+# E-final-a-2: a cue ball launched with backspin skids on a rough table, hits an identical ball head-on (elastic,
+# frictionless contact) while still skidding, and both balls skid to rolling; the "draw shot" distance D*.
+# Joins chapter 8 (8.4 skid-to-roll, L_Q about a point of the table) with chapter 4 (4.1 elastic exchange, 4.2 the
+# energy of relative motion lost in a plastic collision, 4.4 a process in stages) and chapter 3 (3.8 internal forces on
+# one line, Koenig). Overlap: W-8.4-09 solves a ball that arrives ROLLING (2/7, 5/7); here it appears only as the limit
+# D -> s_roll, and the asks are the general impact during the skid, V1 + V2 = v_roll by total L_Q, the skid as a plastic
+# collision of m and (2/5)m, and D*.
+# Every number was recomputed by .scratch/exam/q2.ts (g = 9.8), all checks passing:
+#   closed forms of t_roll, v_roll, s_roll and the heat against rigidbody.ts skidToRoll for three launches; the heat
+#   (1/7) m u0^2 = K0 - K_roll = ½ reducedMass(m, (2/5)m) u0^2;
+#   a time-stepped two-ball run (second law + torque about each centre, friction -sign(u) mu m g, the impact as an
+#   event with collisions.ts elastic and spins unchanged, heat integrated as mu m g |u| dt) reproduces v1, omega1 R,
+#   V1, V2, V1 + V2 = v_roll and the heat for four (v0, w0, mu, D); limits D -> 0 and D -> s_roll (and D > s_roll);
+#   D* = 2 w0 (5 v0 - w0)/(25 mu g) against a bisection on the simulated V1 for three launches; D* < s_roll;
+#   w0 -> 5v0/2 gives D* = s_roll = v0^2/(2 mu g).
+#   Numbers (v0 = w0 = 3.0 m/s, mu_k = 0.20): 2 mu g = 3.92, v_roll = 9/7 = 1.29 m/s, s_roll = 1.87 m,
+#   v0 - (2/5) w0 = 1.80, D* = 72/49 = 1.47 m; D = 1.00 m: v1 = sqrt(5.08) = 2.254 m/s, V1 = -0.324 m/s, V2 = 1.61 m/s.
+#
+# Reviewed 2026-11-19 (independent, .scratch/exam-review/q2.ts): a second route with no event logic and no assumed
+# exchange: both balls integrated together (RK4 on x, v, omega R of each), smoothed kinetic friction on each, the
+# impact a stiff elastic contact spring of finite duration with the table's friction acting through it. It
+# reproduces t_roll, s_roll, v_roll and the heat (1/7) m u0^2 for three launches; V1, V2, V1 + V2 = v_roll and the
+# total L_Q for five (v0, w0, mu, D) (relErr < 5e-5), no second meeting; D* by bisection on the simulated sign of
+# V1 (relErr 1e-6); every printed number of part ד. Changes: part ג (3) now asks the limits D -> 0 and
+# D -> s_roll that its rubric grades; part ד (1) defines D* as the threshold (at D = D* ball 1 stops, it does not
+# come back), not "the largest D at which it comes back". After a student read: the heat is E_th (Q is the point
+# on the table); the diagram's backspin arrow is labelled w0 (positive rim speed), not omega0 (negative in the
+# rolling sense); ב (2) is scaffolded (conserved sum, then the two-body picture) and its weight-2 rubric line names
+# 1/2 m* u0^2 with m* = (2/7) m; א and ב now ask the w0 = 0 checks their rubrics grade.
+id: E-final-a-2
+type: bagrut
+title: כדור ביליארד עם סיבוב לאחור
+prompt: >-
+  כדור ביליארד 1 הוא כדור מלא ואחיד במסה $m$ וברדיוס $R$, ומומנט ההתמד שלו סביב מרכזו $I = \tfrac25mR^2$. מכה קצרה
+  של מקל משאירה אותו ברגע $t = 0$ בנקודה $x = 0$ על שולחן אופקי, כשמרכזו נע במהירות $v_0$ בכיוון $+x$, והוא
+  מסתובב **לאחור**, כך שמהירות השפה של הסיבוב היא $w_0$, עם $0 < w_0 < \tfrac52v_0$. המהירות הזוויתית $\omega$
+  נמדדת בכיוון הגלגול קדימה (באיור, עם כיוון השעון), ולכן $\omega_0R = -w_0$, ומהירות ההחלקה של נקודת המגע היא
+  $u = v - \omega R$. מקדם החיכוך הקינטי בין כל כדור לשולחן הוא $\mu_k$, ותאוצת הכובד $g$. מזניחים את התנגדות
+  הגלגול ואת התנגדות האוויר.
+
+
+  על הקו של התנועה עומד כדור 2, זהה לכדור 1, במנוחה ובלי סיבוב. מרכז כדור 1 עובר מרחק $D$ עד שהכדורים נוגעים זה
+  בזה. הפגיעה חזיתית, אלסטית וקצרה מאוד, והמגע בין הכדורים חלק, בלי חיכוך. הכדורים לא נפגשים פעם שנייה.
+diagramAlt: >-
+  מבט מהצד. קו אופקי הוא השולחן, ועליו שלושה עיגולים באותו רדיוס. משמאל כדור 1, וחץ אופקי ימינה ממרכזו מסמן את
+  המהירות $v_0$. חץ מעוקל בחלקו העליון של כדור 1, נגד כיוון השעון, מסמן את הסיבוב לאחור, ולידו $w_0$, מהירות השפה
+  של הסיבוב לאחור (חיובית). מימין כדור 2.
+  עיגול מקווקו שנוגע בכדור 2 משמאלו מראה את כדור 1 ברגע הפגיעה, וחץ מידה מעל הכדורים, בין מרכז כדור 1 בהתחלה
+  למרכזו ברגע הפגיעה, מסומן $D$. מתחת לשולחן חץ קטן ימינה מסמן את הכיוון החיובי $x$, והכיתוב $\mu_k$ מציין את
+  החיכוך עם השולחן.
+diagram: '<svg viewBox="0 0 440 180" width="440" height="180" font-size="14" aria-hidden="true">
+  <line x1="10" y1="150" x2="430" y2="150" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="70" cy="110" r="40" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="70" cy="110" r="3" fill="currentColor"/>
+  <text x="66" y="138" fill="currentColor">1</text>
+  <circle cx="290" cy="110" r="40" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/>
+  <circle cx="290" cy="110" r="2.5" fill="currentColor"/>
+  <circle cx="370" cy="110" r="40" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="370" cy="110" r="3" fill="currentColor"/>
+  <text x="366" y="138" fill="currentColor">2</text>
+  <line x1="70" y1="66" x2="70" y2="22" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="290" y1="66" x2="290" y2="22" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="80" y1="30" x2="280" y2="30" stroke="currentColor" stroke-width="1"/>
+  <polygon points="70,30 81,25 81,35" fill="currentColor"/>
+  <polygon points="290,30 279,25 279,35" fill="currentColor"/>
+  <text x="175" y="24" fill="currentColor" font-style="italic">D</text>
+  <line x1="74" y1="110" x2="135" y2="110" stroke="var(--velocity)" stroke-width="2.5"/>
+  <polygon points="135,104 148,110 135,116" fill="var(--velocity)"/>
+  <text x="152" y="115" fill="var(--velocity)" font-style="italic">v₀</text>
+  <path d="M87,93 A24,24 0 0,0 53,93" fill="none" stroke="currentColor" stroke-width="1.3"/>
+  <polygon points="47,99 58,95 51,88" fill="currentColor"/>
+  <text x="76" y="82" fill="currentColor" font-style="italic">w₀</text>
+  <line x1="20" y1="166" x2="52" y2="166" stroke="currentColor" stroke-width="1.2"/>
+  <polygon points="52,162 60,166 52,170" fill="currentColor"/>
+  <text x="64" y="171" fill="currentColor" font-style="italic">x</text>
+  <text x="190" y="170" fill="currentColor" font-style="italic">μₖ</text>
+  </svg>'
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-8.4-2, OBJ-8.4-1]
+    prompt: >-
+      בחלק זה ובחלק ב כדור 2 אינו על השולחן. בטאו את $v(t)$ ואת $\omega R(t)$ של כדור 1 בזמן ההחלקה. מצאו את הזמן
+      $t_{roll}$ שבו הוא מתחיל להתגלגל בלי החלקה, את מהירות המרכז שלו $v_{roll}$ באותו רגע, ואת המרחק $s_{roll}$
+      שהמרכז עובר עד אז, באמצעות $v_0$, $w_0$, $\mu_k$ ו-$g$. הראו שהתנאי $w_0 < \tfrac52v_0$ פירושו שהכדור מתגלגל
+      בסוף קדימה, ובדקו את $v_{roll}$ ואת $t_{roll}$ כש-$w_0 = 0$.
+    solution:
+      - { kind: law, text: 'בהתחלה $u_0 = v_0 + w_0 > 0$: נקודת המגע מחליקה קדימה, והחיכוך הקינטי שהשולחן מפעיל על הכדור, $\mu_kN = \mu_kmg$ (הכדור לא מתרומם, ולכן $N = mg$), פונה אחורה כל עוד $u > 0$. החוק השני למרכז: $m\dot v = -\mu_kmg$. משוואת המומנט סביב המרכז: לכובד ולכוח הנורמלי אין מומנט סביבו, והחיכוך, שפועל מתחת למרכז ופונה אחורה, מסובב בכיוון הגלגול קדימה: $\mu_kmgR = \tfrac25mR^2\dot\omega$.' }
+      - { kind: manipulation, text: '$v = v_0 - \mu_kgt$ ו-$\omega R = -w_0 + \tfrac52\mu_kgt$, ולכן $u = v_0 + w_0 - \tfrac72\mu_kgt$ יורדת בקצב קבוע ומתאפסת ב-$t_{roll} = \dfrac{2(v_0 + w_0)}{7\mu_kg}$. אז $v_{roll} = v_0 - \mu_kgt_{roll} = \dfrac{5v_0 - 2w_0}{7}$. בדרך שנייה: התנע הזוויתי סביב נקודה קבועה על השולחן, $L_Q = mR\left(v + \tfrac25\omega R\right)$, נשמר (לחיכוך אין זרוע סביבה), ולכן $v_0 - \tfrac25w_0 = \tfrac75v_{roll}$. התאוצה קבועה עד $t_{roll}$, ולכן $s_{roll} = \dfrac{v_0^2 - v_{roll}^2}{2\mu_kg}$.' }
+      - { kind: manipulation, text: '$v_{roll} > 0$ בדיוק כש-$5v_0 > 2w_0$, כלומר $w_0 < \tfrac52v_0$: אז הכדור מתגלגל בסוף קדימה. בסיבוב לאחור חזק יותר הוא היה חוזר.' }
+      - { kind: limit, text: '$w_0 = 0$ (בלי סיבוב): $v_{roll} = \tfrac57v_0$ ו-$t_{roll} = \dfrac{2v_0}{7\mu_kg}$, התוצאה של שיעור 8.4 לכדור מלא, $\dfrac{v_0}{1 + \beta}$ ו-$\dfrac{\beta u_0}{\mu_kg(1 + \beta)}$ עם $\beta = \tfrac25$. $w_0 = -v_0$ (סיבוב קדימה שמתאים למהירות): $t_{roll} = 0$ ו-$v_{roll} = v_0$, כדור שמתגלגל מההתחלה. $w_0 \to \tfrac52v_0$: $v_{roll} \to 0$, הכדור נעצר בדיוק. ו-$v_{roll}$ לא תלויה ב-$\mu_k$; רק משך ההחלקה תלוי בו.' }
+      - { kind: units, text: '$(v_0 + w_0)/(\mu_kg)$ ביחידות $(\text{m/s})/(\text{m/s}^2) = \text{s}$; $v_{roll}$ צירוף של מהירויות, ב-$\text{m/s}$; $s_{roll}$ ביחידות $(\text{m/s})^2/(\text{m/s}^2) = \text{m}$.' }
+      - { kind: result, text: '$v = v_0 - \mu_kgt$, $\omega R = -w_0 + \tfrac52\mu_kgt$; $t_{roll} = \dfrac{2(v_0 + w_0)}{7\mu_kg}$, $v_{roll} = \dfrac{5v_0 - 2w_0}{7}$, ו-$s_{roll} = \dfrac{v_0^2 - v_{roll}^2}{2\mu_kg}$. $v_{roll} > 0$ כש-$w_0 < \tfrac52v_0$.' }
+    rubric:
+      - text: 'קבעתי שהחיכוך הקינטי פונה אחורה כל זמן ההחלקה, וכתבתי את החוק השני למרכז ואת משוואת המומנט סביבו.'
+      - text: 'מצאתי $t_{roll} = 2(v_0 + w_0)/(7\mu_kg)$, $v_{roll} = (5v_0 - 2w_0)/7$ ו-$s_{roll}$.'
+        weight: 2
+      - text: 'הראיתי ש-$v_{roll} > 0$ בדיוק כש-$w_0 < \tfrac52v_0$.'
+      - text: 'בדקתי שבלי סיבוב, $w_0 = 0$, מקבלים $v_{roll} = \tfrac57v_0$.'
+
+  - label: ב
+    type: open
+    points: 5
+    level: mid
+    standalone: false
+    objectives: [OBJ-8.4-2, OBJ-4.2-2, OBJ-3.8-2]
+    prompt: >-
+      (1) חשבו בשתי דרכים את החום $E_{\text{th}}$ שנוצר בכל ההחלקה של כדור 1: מהחיכוך הקינטי והמרחק שנקודת המגע מחליקה על
+      השולחן, ומההפרש בין האנרגיה הקינטית בהתחלה לזו שב-$t_{roll}$. הראו ש-$E_{\text{th}} = \tfrac12m_*u_0^2$, עם
+      $u_0 = v_0 + w_0$ ו-$m_* = \tfrac27m$. איזה חלק מהאנרגיה הקינטית ההתחלתית נשאר כש-$w_0 = 0$?
+
+
+      (2) הראו שבזמן ההחלקה הסכום $mv + \tfrac25m\,\omega R$ נשמר (השוו את המתקף שהחיכוך נותן למרכז לשינוי
+      ב-$I\omega/R$ באותו זמן). עכשיו דמיינו שני גופים על קו אחד: גוף במסה $m$ שנע במהירות $v$, וגוף במסה $\tfrac25m$
+      שנע במהירות $\omega R$. הראו שהתנע הכולל שלהם הוא הסכום הזה, שהאנרגיה הקינטית הכוללת שלהם שווה לאנרגיה
+      הקינטית של הכדור, ושסוף ההחלקה, $v = \omega R$, הוא הרגע שבו הם נעים יחד. הסבירו מכאן למה $E_{\text{th}}$ שווה
+      לאנרגיה שהולכת לאיבוד בהתנגשות פלסטית בין שני הגופים, וחשבו את המסה המצומצמת שלהם.
+    solution:
+      - { kind: law, text: 'החום מחיכוך קינטי הוא גודל החיכוך כפול המרחק שנקודת המגע מחליקה על השולחן: $E_{\text{th}} = \mu_kmg\displaystyle\int_0^{t_{roll}}u\,dt$ (שיעור 8.4). ובדרך השנייה $E_{\text{th}} = K_0 - K_{roll}$, עם האנרגיה הקינטית של המרכז ועוד הסיבובית סביבו (משפט קניג): $K = \tfrac12mv^2 + \tfrac12\cdot\tfrac25m(\omega R)^2$.' }
+      - { kind: manipulation, text: '(1) מחלק א, $u$ יורדת בקו ישר מ-$u_0$ לאפס, ולכן $\displaystyle\int_0^{t_{roll}}u\,dt = \tfrac12u_0t_{roll} = \frac{u_0^2}{7\mu_kg}$ ו-$E_{\text{th}} = \tfrac17mu_0^2$. בדרך השנייה, $K_0 = \tfrac12m\left(v_0^2 + \tfrac25w_0^2\right) = \dfrac{m}{70}\left(35v_0^2 + 14w_0^2\right)$ ו-$K_{roll} = \tfrac12\cdot\tfrac75mv_{roll}^2 = \dfrac{m}{70}\left(5v_0 - 2w_0\right)^2$, ולכן $$K_0 - K_{roll} = \frac{m}{70}\left(10v_0^2 + 20v_0w_0 + 10w_0^2\right) = \frac{m}{7}\left(v_0 + w_0\right)^2$$ אותו חום: $E_{\text{th}} = \tfrac17mu_0^2 = \tfrac12\cdot\tfrac27m\,u_0^2$.' }
+      - { kind: manipulation, text: '(2) בפרק זמן קצר החיכוך נותן מתקף $J$ אחורה: הוא משנה את $mv$ ב-$-J$, ואת $I\omega$ ב-$JR$ (המומנט $\mu_kmgR$ כפול הזמן), כלומר את $\tfrac25m\,\omega R = I\omega/R$ ב-$+J$. לכן $mv + \tfrac25m\,\omega R = L_Q/R$ נשמר, כמו התנע הכולל של שני גופים שמתנגשים. האנרגיה, $\tfrac12mv^2 + \tfrac12\cdot\tfrac25m(\omega R)^2$, היא בדיוק של גוף במסה $m$ במהירות $v$ וגוף במסה $\tfrac25m$ במהירות $\omega R$, וההחלקה נגמרת כש-$v = \omega R$, כמו שני גופים שנצמדים. בהתנגשות פלסטית הולכת לאיבוד כל האנרגיה של התנועה היחסית, $\tfrac12\dfrac{m_1m_2}{m_1 + m_2}\,v_{\text{rel}}^2$ (שיעור 4.2), והמהירות היחסית כאן היא $v - \omega R = u$, בהתחלה $u_0$. המסה המצומצמת: $\dfrac{m\cdot\tfrac25m}{m + \tfrac25m} = \tfrac27m = m_*$.' }
+      - { kind: limit, text: '$w_0 = 0$: $E_{\text{th}} = \tfrac17mv_0^2 = \tfrac27K_0$, ונשארים $\tfrac57$ מהאנרגיה, כמו בכדור הבאולינג של שיעור 8.4. $u_0 \to 0$ (כדור שיוצא מתגלגל): $E_{\text{th}} \to 0$. ו-$E_{\text{th}}$ לא תלוי ב-$\mu_k$: חיכוך חזק יותר מגדיל את הכוח ומקצר את מרחק ההחלקה באותו יחס, כמו שהאנרגיה שאובדת בהתנגשות פלסטית לא תלויה בכוח שבין הגופים.' }
+      - { kind: units, text: '$mu_0^2$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$, ו-$m_*$ ביחידות מסה.' }
+      - { kind: result, text: '$E_{\text{th}} = \tfrac17m(v_0 + w_0)^2 = \tfrac12m_*u_0^2$, עם $m_* = \tfrac27m$, המסה המצומצמת של $m$ ושל $\tfrac25m$: ההחלקה היא התנגשות פלסטית בין התנועה של המרכז לסיבוב.' }
+    rubric:
+      - text: 'חישבתי את החום כחיכוך כפול מרחק ההחלקה של נקודת המגע, וקיבלתי $\tfrac17mu_0^2$.'
+      - text: 'קיבלתי את אותו חום מ-$K_0 - K_{roll}$, כולל האנרגיה הסיבובית.'
+      - text: 'הראיתי ש-$mv + \tfrac25m\,\omega R$ נשמר, וכתבתי שבהתנגשות פלסטית של $m$ ושל $\tfrac25m$ במהירות יחסית $u_0$ אובדת האנרגיה $\tfrac12m_*u_0^2$, עם $m_* = \dfrac{m\cdot\tfrac25m}{m + \tfrac25m} = \tfrac27m$, וזה $E_{\text{th}}$.'
+        weight: 2
+      - text: 'בדקתי שבלי סיבוב התחלתי נשארים $\tfrac57$ מהאנרגיה.'
+
+  - label: ג
+    type: open
+    points: 8
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-4.1-1, OBJ-4.4-2, OBJ-3.8-1, OBJ-8.4-2]
+    prompt: >-
+      עכשיו כדור 2 על השולחן, ו-$D < s_{roll}$: כדור 1 פוגע בו כשהוא עדיין מחליק.
+
+
+      (1) נמקו מה הפגיעה עושה למהירויות המרכזים ולמהירויות הזוויתיות של שני הכדורים.
+
+
+      (2) בטאו את מהירות המרכז של כדור 1 רגע לפני הפגיעה, $v_1$, באמצעות $v_0$, $\mu_k$, $g$ ו-$D$, ואת $\omega_1R$
+      שלו באותו רגע באמצעות $v_0$, $w_0$ ו-$v_1$.
+
+
+      (3) אחרי הפגיעה כל כדור מחליק עד שהוא מתגלגל בלי החלקה. בטאו את המהירויות הסופיות של המרכזים, $V_1$ ו-$V_2$
+      (חיוביות בכיוון $+x$), באמצעות $v_0$, $w_0$ ו-$v_1$. הראו ש-$V_1 + V_2 = v_{roll}$ לכל $D$, והסבירו זאת משימור
+      התנע הזוויתי הכולל של שני הכדורים סביב נקודה קבועה על השולחן. בדקו את $V_1$ ואת $V_2$ בגבולות $D \to 0$
+      ו-$D \to s_{roll}$.
+    solution:
+      - { kind: law, text: '(1) המגע חלק, ולכן הכוח בין הכדורים ניצב למשטחים בנקודת המגע, כלומר פועל לאורך הקו שמחבר את המרכזים: אין לו מומנט סביב אף מרכז, והמהירויות הזוויתיות לא משתנות. החיכוך עם השולחן סופי, והמתקף שלו בפגיעה הקצרה זניח (שיעור 4.4), ולכן התנע של המרכזים נשמר. האנרגיה הסיבובית לא משתנה, ולכן בהתנגשות אלסטית נשמרת גם האנרגיה הקינטית של המרכזים, ובמסות שוות הכדורים מחליפים מהירויות (שיעור 4.1). אחרי הפגיעה לכדור 1 $v = 0$ ו-$\omega R = \omega_1R$, ולכדור 2 $v = v_1$ ו-$\omega = 0$.' }
+      - { kind: manipulation, text: '(2) עד הפגיעה כדור 1 מחליק עם $u > 0$ (כי $D < s_{roll}$), בתאוצה הקבועה $-\mu_kg$: $v_1^2 = v_0^2 - 2\mu_kgD$. ומשימור $L_Q$ שלו עד הפגיעה, $v_1 + \tfrac25\omega_1R = v_0 - \tfrac25w_0$, כלומר $\omega_1R = \dfrac{5(v_0 - v_1) - 2w_0}{2}$. (אותו דבר מהזמן: $t_1 = (v_0 - v_1)/(\mu_kg)$ ו-$\omega_1R = -w_0 + \tfrac52\mu_kgt_1$.)' }
+      - { kind: manipulation, text: '(3) אחרי הפגיעה הכדורים נפרדים, ולכל כדור $L_Q$ שלו נשמר עד שהוא מתגלגל; בסוף $L_Q = \tfrac75mRV$. כדור 1: $\tfrac75V_1 = 0 + \tfrac25\omega_1R$, כלומר $V_1 = \tfrac27\omega_1R = \dfrac{5(v_0 - v_1) - 2w_0}{7}$. כדור 2: $\tfrac75V_2 = v_1$, כלומר $V_2 = \tfrac57v_1$. הסכום: $V_1 + V_2 = \dfrac{5v_0 - 2w_0}{7} = v_{roll}$, בלי $v_1$, ולכן בלי $D$.' }
+      - { kind: manipulation, text: 'ההסבר: סביב נקודה קבועה $Q$ על השולחן, לחיכוך מהשולחן על כל כדור אין זרוע, כי הוא פועל לאורך השולחן; הכובד והכוח הנורמלי על כל כדור שווים, הפוכים ופועלים על קו אחד; והכוחות שהכדורים מפעילים זה על זה בפגיעה שווים, הפוכים ופועלים על אותו קו (הצורה החזקה של החוק השלישי, שיעור 3.8), ולכן המומנטים שלהם מתבטלים. התנע הזוויתי הכולל סביב $Q$ נשמר כל הזמן: בהתחלה $mR\left(v_0 - \tfrac25w_0\right)$, ובסוף, כששני הכדורים מתגלגלים, $\tfrac75mR\left(V_1 + V_2\right)$. זה אותו שוויון שנתן את $v_{roll}$ בחלק א.' }
+      - { kind: limit, text: '$D \to 0$: $v_1 = v_0$ ו-$\omega_1R = -w_0$, ולכן $V_2 = \tfrac57v_0$, כמו כדור שנזרק בלי סיבוב, ו-$V_1 = -\tfrac27w_0$, כמו כדור שמסתובב במקום ומונח על הרצפה (שיעור 8.4: $v = \dfrac{\beta}{1 + \beta}\,\omega_0R$), כאן אחורה. $D \to s_{roll}$: $v_1 \to v_{roll}$, וגם $\omega_1R \to \tfrac52\left(v_0 - v_{roll}\right) - w_0 = v_{roll}$, ומקבלים $V_1 = \tfrac27v_{roll}$ ו-$V_2 = \tfrac57v_{roll}$: התוצאה המוכרת לכדור שמגיע מתגלגל.' }
+      - { kind: units, text: '$\mu_kgD$ ביחידות $(\text{m/s}^2)\cdot\text{m} = \text{m}^2/\text{s}^2$, כמו $v_0^2$; $V_1$ ו-$V_2$ צירופים של מהירויות, ב-$\text{m/s}$.' }
+      - { kind: result, text: 'בפגיעה הכדורים מחליפים את מהירויות המרכזים, והסיבובים לא משתנים. $v_1 = \sqrt{v_0^2 - 2\mu_kgD}$ ו-$\omega_1R = \tfrac52(v_0 - v_1) - w_0$. בסוף $V_1 = \dfrac{5(v_0 - v_1) - 2w_0}{7}$ ו-$V_2 = \tfrac57v_1$, ו-$V_1 + V_2 = v_{roll}$ משימור התנע הזוויתי הכולל סביב נקודה על השולחן.' }
+    rubric:
+      - text: 'נימקתי שבפגיעה המרכזים מחליפים מהירויות והסיבובים לא משתנים: מגע חלק, כוח דרך המרכזים, מסות שוות.'
+      - text: 'מצאתי $v_1^2 = v_0^2 - 2\mu_kgD$ ואת $\omega_1R$ ברגע הפגיעה.'
+      - text: 'מצאתי $V_1 = \tfrac27\omega_1R$ ו-$V_2 = \tfrac57v_1$ משימור $L_Q$ של כל כדור אחרי הפגיעה.'
+        weight: 2
+      - text: 'הראיתי ש-$V_1 + V_2 = v_{roll}$ והסברתי זאת בשימור התנע הזוויתי הכולל, כולל הביטול של המומנטים של הכוחות בין הכדורים.'
+      - text: 'בדקתי את הגבולות $D \to 0$ ו-$D \to s_{roll}$.'
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-4.4-2, OBJ-8.4-2]
+    prompt: >-
+      מחלק ג, $V_1 = \dfrac{5(v_0 - v_1) - 2w_0}{7}$ ו-$V_2 = \tfrac57v_1$, עם $v_1^2 = v_0^2 - 2\mu_kgD$.
+
+
+      (1) כדור 1 חוזר אחרי הפגיעה (מתגלגל בסוף בכיוון השלילי של $x$) בדיוק כש-$D < D^*$. מצאו את $D^*$ באמצעות
+      $v_0$, $w_0$, $\mu_k$ ו-$g$. מה הסיבוב של כדור 1 ברגע הפגיעה כש-$D = D^*$, ומה הוא עושה אחריה?
+
+
+      (2) בדקו את $D^*$ בגבולות $w_0 \to 0$ ו-$w_0 \to \tfrac52v_0$ (השוו אז ל-$s_{roll}$ מחלק א), והראו ש-$D^* < s_{roll}$
+      תמיד.
+
+
+      (3) חשבו את $D^*$ ואת $s_{roll}$ כש-$v_0 = 3.0\,\text{m/s}$, $w_0 = 3.0\,\text{m/s}$, $\mu_k = 0.20$ ו-$g = 9.8\,\text{m/s}^2$,
+      ואת $V_1$ ואת $V_2$ כש-$D = 1.00\,\text{m}$.
+    solution:
+      - { kind: law, text: 'מחלק ג, $V_1 = \tfrac27\omega_1R$: כדור 1 חוזר בדיוק כשברגע הפגיעה הוא עדיין מסתובב לאחור, $\omega_1R < 0$. ו-$v_1$ קטנה כש-$D$ גדל.' }
+      - { kind: manipulation, text: '$V_1 < 0$ פירושו $5(v_0 - v_1) < 2w_0$, כלומר $v_1 > v_0 - \tfrac25w_0$, מהירות חיובית כי $w_0 < \tfrac52v_0$. עם $v_1^2 = v_0^2 - 2\mu_kgD$: $$D < D^* = \frac{v_0^2 - \left(v_0 - \tfrac25w_0\right)^2}{2\mu_kg} = \frac{2w_0\left(5v_0 - w_0\right)}{25\,\mu_kg}$$ כש-$D = D^*$, $\omega_1R = 0$: הסיבוב לאחור נגמר בדיוק ברגע הפגיעה, ואחריה $V_1 = 0$: כדור 1 נעצר ונשאר במקום, וכדור 2 ממשיך. $D^*$ הוא המרחק שכדור לבד מחליק עד שהסיבוב שלו מתאפס, ושם מהירותו $v_0 - \tfrac25w_0$ (שימור $L_Q$ עם $\omega = 0$).' }
+      - { kind: manipulation, text: 'ההשוואה ל-$s_{roll}$: $v_{roll} = \dfrac{5v_0 - 2w_0}{7} = \tfrac57\left(v_0 - \tfrac25w_0\right) < v_0 - \tfrac25w_0$, ולכן $s_{roll} = \dfrac{v_0^2 - v_{roll}^2}{2\mu_kg} > D^*$: הסיבוב לאחור מתאפס לפני שההחלקה נגמרת (ברגע ש-$\omega = 0$, עדיין $u = v > 0$). לכן ההנחה של חלק ג, $D < s_{roll}$, מתקיימת לכל $D \le D^*$.' }
+      - { kind: limit, text: '$w_0 \to 0$: $D^* \to 0$. כדור בלי סיבוב לאחור מתחיל מיד להסתובב קדימה, ולכן הוא לא חוזר לעולם, ורק בפגיעה מיידית הוא נעצר במקום, כמו העגלות של שיעור 4.1. $w_0 \to \tfrac52v_0$: $v_0 - \tfrac25w_0 \to 0$ ו-$D^* \to \dfrac{v_0^2}{2\mu_kg}$; באותו גבול $v_{roll} \to 0$ ו-$s_{roll} \to \dfrac{v_0^2}{2\mu_kg}$: שני המרחקים מתלכדים, כי הכדור נעצר בדיוק כשהסיבוב שלו מתאפס. ו-$\mu_k \to \infty$: $D^* \to 0$, הסיבוב לאחור נגמר מיד.' }
+      - { kind: units, text: '$w_0v_0/(\mu_kg)$ ביחידות $(\text{m/s})^2/(\text{m/s}^2) = \text{m}$.' }
+      - { kind: substitution, text: '$2\mu_kg = 3.92\,\text{m/s}^2$ ו-$v_0 - \tfrac25w_0 = 1.80\,\text{m/s}$: $D^* = \dfrac{9.00 - 3.24}{3.92} = 1.47\,\text{m}$ (וגם $\dfrac{2\cdot3.0\cdot12.0}{25\cdot1.96} = 1.47\,\text{m}$). $v_{roll} = \tfrac97\,\text{m/s} = 1.29\,\text{m/s}$, ולכן $s_{roll} = \dfrac{9.00 - 1.65}{3.92} = 1.87\,\text{m}$. כש-$D = 1.00\,\text{m}$: $v_1 = \sqrt{9.00 - 3.92} = 2.254\,\text{m/s}$, $V_1 = \dfrac{5\cdot0.746 - 6.0}{7} = -0.324\,\text{m/s}$ ו-$V_2 = \tfrac57\cdot2.254 = 1.61\,\text{m/s}$. בדיקה: $V_1 + V_2 = 1.29\,\text{m/s} = v_{roll}$.' }
+      - { kind: result, text: '$D^* = \dfrac{2w_0(5v_0 - w_0)}{25\,\mu_kg}$, ותמיד $D^* < s_{roll}$. כש-$D = D^*$ הסיבוב של כדור 1 מתאפס בדיוק ברגע הפגיעה, והוא נעצר ונשאר במקום. במספרים: $D^* = 1.47\,\text{m}$ ו-$s_{roll} = 1.87\,\text{m}$; כש-$D = 1.00\,\text{m}$, $V_1 = -0.324\,\text{m/s}$ (כדור 1 חוזר) ו-$V_2 = 1.61\,\text{m/s}$.' }
+    rubric:
+      - text: 'קבעתי שכדור 1 חוזר כש-$\omega_1R < 0$ ברגע הפגיעה, וגזרתי $D^* = 2w_0(5v_0 - w_0)/(25\mu_kg)$.'
+        weight: 2
+      - text: 'הסברתי שכש-$D = D^*$ הסיבוב מתאפס ברגע הפגיעה וכדור 1 נעצר במקום.'
+      - text: 'בדקתי את הגבולות $w_0 \to 0$ ו-$w_0 \to \tfrac52v_0$, והראיתי ש-$D^* < s_{roll}$.'
+      - text: 'חישבתי $D^* \approx 1.47\,\text{m}$ ו-$s_{roll} \approx 1.87\,\text{m}$, ו-$V_1 \approx -0.32\,\text{m/s}$, $V_2 \approx 1.61\,\text{m/s}$ כש-$D = 1.00\,\text{m}$.'

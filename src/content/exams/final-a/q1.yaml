@@ -1,0 +1,360 @@
+# Final exam A, question 1: a bead on a smooth vertical hoop of radius R that turns at constant omega about its
+# vertical diameter, in gravity. In the hoop frame: U_eff = -mgR cos(theta) - (1/2) m omega^2 R^2 sin^2(theta), the
+# equilibria and omega_c = sqrt(g/R); the small-oscillation frequencies about each stable equilibrium,
+# Omega_1 = sqrt(omega_c^2 - omega^2) about the bottom and Omega_2 = omega sin(theta0) = sqrt(omega^2 - omega_c^4/omega^2)
+# about theta0; the bead released at the (unstable) bottom above omega_c swings to cos(theta_max) = 2 cos(theta0) - 1
+# and rises above the centre when omega > sqrt(2) omega_c; in the lab, the work of the hoop's force up to theta_max,
+# W = m omega^2 R^2 sin^2(theta_max) = 4mgR(1 - g/(omega^2 R)), by lab energy and by W = omega Delta L_z.
+# Joins chapters 7 (7.3), 5 (5.2) and 3 (3.3, 3.7).
+# Not a copy: lesson 7.3 (Explain "bead") and example ex-2-6-5 solve the equilibria, omega_c and the normal force;
+# the 7.3 ladder asks the angle and the parabola z = k rho^2. Those are only the foothold here (part א); the
+# frequencies about both equilibria, the release from the bottom, the rise above the centre and the lab-frame work
+# are solved nowhere in the course. The 2014 moed A q4 (exam-map) asks the frequency about the far points of a hoop
+# WITHOUT gravity: here that is only the omega -> infinity limit of part ב (Omega_2 -> omega).
+#
+# .scratch/exam/q1.ts recomputed (2026-11-19), g = 9.8:
+# - finite differences of U_eff: dU/dtheta = 0 at theta0; sqrt(U''/(mR^2)) = Omega_2 at omega = 6.0, R = 0.40
+#   (relErr 1e-8) and Omega_1 at omega = 3.0 (1e-8); U''(pi) = -mgR - m omega^2 R^2 < 0;
+# - a 3D RK4 integration (rk4Step) in the hoop frame with nonInertialForce of src/physics/rotating.ts (gravity +
+#   centrifugal + Coriolis) and the hoop's force as the constraint force: periods 1.42924 s about theta0 at
+#   omega = 6.0 and 1.59593 s about the bottom at omega = 3.0 (relErr < 1e-6); released 1e-6 rad off the bottom,
+#   cos(theta_max) = 0.361111, -0.216000, 0.812130 at (omega, R) = (6.0, 0.40), (10, 0.25), (5.2, 0.40), and the
+#   lab-frame work integrated as N . v_lab dt = 4mgR(1 - g/(omega^2 R)) (relErr < 1e-9); theta_max = 102.5 deg at
+#   omega = 10, R = 0.25 (above the centre, omega > sqrt(2) omega_c);
+# - limits: theta_max/theta0 -> sqrt(2) and Omega_2^2 -> 2(omega^2 - omega_c^2) near omega_c; Omega_2 -> omega and
+#   W -> 4mgR at large omega; Omega_1 -> sqrt(g/R) as omega -> 0;
+# - numbers of part ב: omega_c = 4.95 rad/s; omega = 3.0: Omega_1 = sqrt(15.5) = 3.94 rad/s, T = 1.60 s;
+#   omega = 6.0: cos(theta0) = 0.681, theta0 = 47.1 deg, sin(theta0) = 0.733, Omega_2 = 4.40 rad/s, T = 1.43 s.
+#
+# Reviewed 2026-11-19 (independent, .scratch/exam-review/q1.ts): a second route in the LAB frame, no fictitious
+# forces: the hoop as a moving frictionless constraint (stiff springs normal to its plane and along its radius),
+# rk4Step. Periods 1.59592 s (omega = 3.0) and 1.42937 s (omega = 6.0) against 2 pi/Omega_1, 2 pi/Omega_2 (relErr
+# 1e-5, 1e-4); released 1e-4 rad off the bottom, 1 - cos(theta_max) = 2(1 - cos theta0) at (6.0, 0.40), (10, 0.25),
+# (5.2, 0.40) (relErr < 1e-4); the lab work of the hoop's force, integrated as N . v dt, = 4mgR(1 - g/(omega^2 R))
+# = dK + dU_g = omega dL_z, half kinetic and half potential (relErr < 6e-5); every printed number of part ב.
+# Changes: the centrifugal and Coriolis forces named as fictitious (part א); the
+# omega -> infinity limit of part ג says the bead "tends to the top" (without gravity the top is an equilibrium it
+# only approaches); theta0 added to the rubric of ב. After a student read: rho = R|sin theta|; part א points to the
+# hoop's force component normal to its plane and asks the limits of theta0 its rubric grades; ג (2) asks
+# theta_max ~ sqrt2 theta0 explicitly and the solution drops the double-well aside (a, b never given); ד (3) gives
+# the torques about the axis as a stated fact (torque about an axis of a 3D force is not taught); ד (1) asks which
+# component works, and its rubric line says N_perp is required.
+id: E-final-a-1
+type: bagrut
+title: חרוז על חישוק מסתובב
+prompt: >-
+  חישוק דק וחלק ברדיוס $R$ עומד במישור אנכי ומסתובב סביב הקוטר האנכי שלו במהירות זוויתית קבועה $\omega$ (מנוע
+  שומר עליה קבועה). חרוז קטן בעל מסה $m$ מושחל על החישוק ומחליק עליו בלי חיכוך. המקום של החרוז על החישוק נתון
+  בזווית $\theta$, שנמדדת במרכז החישוק מהנקודה התחתונה שלו: $\theta = 0$ בנקודה התחתונה, $\theta = \pi$ בנקודה
+  העליונה, ו-$\theta$ חיובית בצד אחד של הציר ושלילית בצד השני. המרחק של החרוז מציר הסיבוב הוא $\rho = R|\sin\theta|$
+  (בחישובים מופיע רק $\rho^2 = R^2\sin^2\theta$), ותאוצת הנפילה החופשית היא $g$. "מערכת החישוק" היא מערכת הייחוס שמסתובבת יחד עם החישוק; בה החרוז נע רק לאורך
+  החישוק, ו-$\theta$ היא הקואורדינטה היחידה שלו.
+diagram: |
+  <svg viewBox="0 0 360 204" width="360" height="204" font-size="14" aria-hidden="true">
+    <line x1="150" y1="14" x2="150" y2="190" stroke="currentColor" stroke-width="1" stroke-dasharray="6 4"/>
+    <circle cx="150" cy="100" r="65" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="150" cy="100" r="2.5" fill="currentColor"/>
+    <path d="M128,26 A22,7 0 1,0 172,26" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+    <polygon points="172,26 164,19 163,29" fill="var(--accent)"/>
+    <text x="178" y="30" fill="var(--accent)" font-style="italic">ω</text>
+    <line x1="150" y1="100" x2="199.8" y2="141.8" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="180" y="114" fill="currentColor" font-style="italic">R</text>
+    <path d="M150,126 A26,26 0 0,0 169.9,116.7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <text x="155" y="140" fill="currentColor" font-style="italic" font-size="13">θ</text>
+    <line x1="150" y1="180" x2="199.8" y2="180" stroke="currentColor" stroke-width="1"/>
+    <line x1="150" y1="175" x2="150" y2="185" stroke="currentColor" stroke-width="1"/>
+    <line x1="199.8" y1="175" x2="199.8" y2="185" stroke="currentColor" stroke-width="1"/>
+    <text x="170" y="198" fill="currentColor" font-style="italic">ρ</text>
+    <line x1="199.8" y1="148" x2="199.8" y2="175" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2 2"/>
+    <circle cx="199.8" cy="141.8" r="6" fill="currentColor"/>
+    <text x="210" y="146" fill="currentColor" font-style="italic">m</text>
+    <line x1="300" y1="70" x2="300" y2="122" stroke="var(--accel)" stroke-width="2.2"/>
+    <polygon points="294,120 300,134 306,120" fill="var(--accel)"/>
+    <text x="310" y="104" fill="var(--accel)" font-style="italic">g</text>
+  </svg>
+diagramAlt: >-
+  חישוק אנכי ברדיוס R, וציר הסיבוב האנכי, מקווקו, עובר דרך המרכז שלו לאורך הקוטר האנכי. חץ מעוגל סביב הציר מעל
+  החישוק מסומן ω. חרוז בעל מסה m נמצא על החישוק בזווית θ מהנקודה התחתונה, שנמדדת במרכז החישוק, והמרחק האופקי שלו מהציר
+  מסומן ρ. בצד, חץ כלפי מטה מסומן g.
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-7.3-1, OBJ-3.3-2]
+    prompt: >-
+      עבדו במערכת החישוק.
+
+      (1) אילו כוחות פועלים על החרוז במערכת הזו כשהוא נע לאורך החישוק? (לכוח של החישוק החלק יכול להיות, מלבד רכיב
+      לאורך הרדיוס של החישוק, גם רכיב בניצב למישור החישוק.) נמקו אילו מהם לא עושים עבודה, וכתבו את
+      האנרגיה הפוטנציאלית האפקטיבית $U_{\text{eff}}(\theta)$ של הכובד ושל הכוח הצנטריפוגלי, כך ש-$E^{\prime} =
+      \tfrac12mR^2\dot\theta^2 + U_{\text{eff}}(\theta)$ נשמרת. קבעו את האפס של האנרגיה הפוטנציאלית של הכובד בגובה מרכז
+      החישוק, ואת האפס של זו של הכוח הצנטריפוגלי על הציר.
+
+      (2) מצאו את כל נקודות שיווי המשקל של החרוז ביחס לחישוק, ובטאו באמצעות $g$ ו-$R$ את המהירות הזוויתית הקריטית
+      $\omega_c$ שרק מעליה יש שיווי משקל מחוץ לציר, בזווית $\theta_0$. בדקו את $\theta_0$ בגבולות $\omega \to \omega_c$
+      ו-$\omega \to \infty$.
+    solution:
+      - kind: law
+        text: >-
+          מערכת החישוק מסתובבת ב-$\omega$ קבועה, ולכן אין בה כוח אוילר. על החרוז פועלים: הכובד $m\vec g$; הכוח של
+          החישוק, שניצב לחישוק כי החישוק חלק (רכיב לאורך הרדיוס של החישוק ורכיב בניצב למישור שלו); הכוח הצנטריפוגלי,
+          $m\omega^2\rho$, אופקי והחוצה מהציר; וכוח קוריוליס, $\vec F_{\text{cor}} = -2m\vec\omega\times\vec v^{\prime}$. שני האחרונים
+          כוחות מדומים: הם קיימים רק כי מערכת החישוק לא אינרציאלית. לפי משפט עבודה-אנרגיה
+          במערכת החישוק, השינוי ב-$\tfrac12mv^{\prime2}$ שווה לעבודה של כל הכוחות האלה.
+      - kind: manipulation
+        text: >-
+          במערכת החישוק המהירות של החרוז לאורך החישוק, $v^{\prime} = R\dot\theta$. הכוח של החישוק ניצב לה, ולכן לא עושה
+          עבודה. כוח קוריוליס ניצב ל-$\vec v^{\prime}$ תמיד, ולכן גם הוא לא עושה עבודה (ו-$\vec\omega$ ו-$\vec v^{\prime}$
+          שניהם במישור החישוק, ולכן כוח קוריוליס ניצב למישור, והרכיב הניצב של הכוח של החישוק מאזן אותו). נשארים שני
+          כוחות שיש להם אנרגיה פוטנציאלית: הגובה ביחס למרכז הוא $y = -R\cos\theta$, ו-$U_{\text{cf}} = -\tfrac12m\omega^2\rho^2$.
+          $$U_{\text{eff}}(\theta) = -mgR\cos\theta - \tfrac12m\omega^2R^2\sin^2\theta$$
+          והאנרגיה $E^{\prime} = \tfrac12mR^2\dot\theta^2 + U_{\text{eff}}$ נשמרת.
+      - kind: manipulation
+        text: >-
+          שיווי משקל הוא נקודה שבה $dU_{\text{eff}}/d\theta = 0$:
+          $$\frac{dU_{\text{eff}}}{d\theta} = mR\sin\theta\left(g - \omega^2R\cos\theta\right)$$
+          הנגזרת מתאפסת כש-$\sin\theta = 0$, בנקודה התחתונה ($\theta = 0$) ובנקודה העליונה ($\theta = \pi$), בכל
+          $\omega$; וכש-$\cos\theta_0 = \dfrac{g}{\omega^2R}$, בשתי נקודות סימטריות $\pm\theta_0$. לקוסינוס יש פתרון
+          מחוץ לתחתית רק כש-$g/(\omega^2R) < 1$, כלומר כש-$\omega > \omega_c = \sqrt{g/R}$.
+      - kind: limit
+        text: >-
+          כש-$\omega \to 0$ נשארות רק התחתית והנקודה העליונה: החישוק במנוחה, והחרוז הוא מטוטלת פשוטה באורך $R$, עם
+          שיווי משקל למטה ושיווי משקל הפוך למעלה. כש-$\omega \to \infty$: $\cos\theta_0 \to 0$ ו-$\theta_0 \to \pi/2$.
+          כאן הכובד זניח, ו-$U_{\text{cf}} = -\tfrac12m\omega^2\rho^2$ לבדו הכי נמוך בנקודה הרחוקה ביותר מהציר, בגובה
+          המרכז. וכש-$\omega \to \omega_c$ מלמעלה, $\theta_0 \to 0$: שיווי המשקל החדש נולד מהתחתית.
+      - kind: units
+        text: >-
+          $g/(\omega^2R)$ ביחידות $(\text{m/s}^2)/(\text{s}^{-2}\cdot\text{m})$, חסר ממדים כמו קוסינוס. $mgR$ ו-$m\omega^2R^2$
+          ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: result
+        text: >-
+          $U_{\text{eff}}(\theta) = -mgR\cos\theta - \tfrac12m\omega^2R^2\sin^2\theta$. שיווי משקל בנקודה התחתונה ובנקודה
+          העליונה בכל $\omega$, וב-$\pm\theta_0$ עם $\cos\theta_0 = g/(\omega^2R)$ רק כש-$\omega > \omega_c = \sqrt{g/R}$.
+    rubric:
+      - text: >-
+          מניתי את הכוחות במערכת החישוק ונימקתי שהכוח של החישוק וכוח קוריוליס ניצבים למהירות של החרוז, ולכן לא עושים
+          עבודה.
+      - text: >-
+          כתבתי $U_{\text{eff}}(\theta) = -mgR\cos\theta - \tfrac12m\omega^2R^2\sin^2\theta$.
+        weight: 2
+      - text: >-
+          מצאתי את התחתית, את הנקודה העליונה ואת $\cos\theta_0 = g/(\omega^2R)$, וקבעתי ש-$\theta_0$ קיימת רק כש-$\omega
+          > \sqrt{g/R}$.
+      - text: >-
+          בדקתי ש-$\theta_0 \to \pi/2$ כש-$\omega \to \infty$, וש-$\theta_0 \to 0$ כש-$\omega \to \omega_c$.
+
+  - label: ב
+    type: open
+    points: 7
+    level: mid
+    objectives: [OBJ-5.2-2, OBJ-3.3-2, OBJ-7.3-2]
+    standalone: false
+    prompt: >-
+      מחלק א: $U_{\text{eff}}(\theta) = -mgR\cos\theta - \tfrac12m\omega^2R^2\sin^2\theta$, ו-$\omega_c = \sqrt{g/R}$.
+
+      (1) קבעו, לכל אחת מנקודות שיווי המשקל, באילו מהירויות זוויתיות $\omega$ היא יציבה.
+
+      (2) בטאו באמצעות $\omega$ ו-$\omega_c$ את התדירות הזוויתית של תנודות קטנות של החרוז לאורך החישוק סביב כל שיווי
+      משקל יציב: $\Omega_1$ סביב הנקודה התחתונה כש-$\omega < \omega_c$, ו-$\Omega_2$ סביב $\theta_0$ כש-$\omega >
+      \omega_c$. בדקו את התוצאות בגבולות $\omega \to 0$, $\omega \to \omega_c$ ו-$\omega \to \infty$.
+
+      (3) חשבו את $\Omega_1$ ואת זמן המחזור כש-$\omega = 3.0\,\text{rad/s}$, ואת $\theta_0$, $\Omega_2$ וזמן המחזור כש-$\omega
+      = 6.0\,\text{rad/s}$, עבור $R = 0.40\,\text{m}$ ו-$g = 9.8\,\text{m/s}^2$.
+    solution:
+      - kind: law
+        text: >-
+          הקירוב ההרמוני: $E^{\prime} = \tfrac12\left(mR^2\right)\dot\theta^2 + U_{\text{eff}}(\theta)$ היא האנרגיה של "חלקיק"
+          בעל "מסה" $mR^2$ בפוטנציאל $U_{\text{eff}}$. ליד שיווי משקל $\theta_e$,
+          $U_{\text{eff}} \approx U_{\text{eff}}(\theta_e) + \tfrac12\kappa\,(\theta - \theta_e)^2$ עם
+          $\kappa = d^2U_{\text{eff}}/d\theta^2$ ב-$\theta_e$. שיווי המשקל יציב כש-$\kappa > 0$, ואז $\Omega^2 = \kappa/(mR^2)$.
+      - kind: manipulation
+        text: >-
+          גוזרים פעמיים, עם $\tfrac{d}{d\theta}\sin^2\theta = \sin2\theta$:
+          $$\frac{d^2U_{\text{eff}}}{d\theta^2} = mgR\cos\theta - m\omega^2R^2\cos2\theta$$
+          בתחתית: $\kappa = mR^2\left(\omega_c^2 - \omega^2\right)$, חיובי רק כש-$\omega < \omega_c$, ואז
+          $\Omega_1 = \sqrt{\omega_c^2 - \omega^2}$. בנקודה העליונה: $\kappa = -mgR - m\omega^2R^2 < 0$, אף פעם לא יציבה.
+      - kind: manipulation
+        text: >-
+          ב-$\theta_0$, עם $g = \omega^2R\cos\theta_0$ ו-$\cos2\theta_0 = 2\cos^2\theta_0 - 1$:
+          $$\kappa = m\omega^2R^2\left[\cos^2\theta_0 - \left(2\cos^2\theta_0 - 1\right)\right] = m\omega^2R^2\sin^2\theta_0 > 0$$
+          ולכן $\theta_0$ יציבה בכל פעם שהיא קיימת, ו-$\Omega_2 = \omega\sin\theta_0$. עם $\cos\theta_0 = \omega_c^2/\omega^2$:
+          $$\Omega_2 = \sqrt{\omega^2 - \frac{\omega_c^4}{\omega^2}}$$
+      - kind: limit
+        text: >-
+          $\omega \to 0$: $\Omega_1 \to \sqrt{g/R}$, המטוטלת הפשוטה באורך $R$, כמו שצריך לחישוק שעומד. $\omega \to
+          \omega_c$: גם $\Omega_1$ וגם $\Omega_2$ שואפות לאפס, משני הצדדים: ב-$\omega_c$ העקמומיות בתחתית מתאפסת והכוח
+          המחזיר נעלם. (בקרבת $\omega_c$, $\Omega_2^2 \approx 2(\omega^2 - \omega_c^2)$, פי שניים מ-$\Omega_1^2$ באותו
+          מרחק מתחת.) $\omega \to \infty$: $\Omega_2 \to \omega$. בלי כובד, $U_{\text{eff}} = -\tfrac12m\omega^2R^2\sin^2\theta$,
+          והעקמומיות שלו ב-$\theta = \pi/2$ היא $m\omega^2R^2$, כלומר $\Omega = \omega$ בדיוק.
+      - kind: units
+        text: >-
+          $\omega_c^2 - \omega^2$ ו-$\omega_c^4/\omega^2$ ביחידות $\text{s}^{-2}$, ולכן $\Omega$ ביחידות $\text{rad/s}$.
+          $\kappa/(mR^2)$: $\text{J}/(\text{kg}\cdot\text{m}^2) = \text{s}^{-2}$.
+      - kind: substitution
+        text: >-
+          $\omega_c = \sqrt{9.8/0.40} = \sqrt{24.5} = 4.95\,\text{rad/s}$. ב-$\omega = 3.0\,\text{rad/s}$ (מתחת ל-$\omega_c$):
+          $\Omega_1 = \sqrt{24.5 - 9.0} = \sqrt{15.5} = 3.94\,\text{rad/s}$, וזמן המחזור $2\pi/\Omega_1 = 1.60\,\text{s}$.
+          ב-$\omega = 6.0\,\text{rad/s}$ (מעל): $\cos\theta_0 = \dfrac{9.8}{36\cdot0.40} = 0.681$, $\theta_0 = 47.1^\circ$,
+          $\sin\theta_0 = 0.733$, $\Omega_2 = 6.0\cdot0.733 = 4.40\,\text{rad/s}$, וזמן המחזור $1.43\,\text{s}$.
+      - kind: result
+        text: >-
+          התחתית יציבה רק כש-$\omega < \omega_c$, הנקודה העליונה אף פעם, ו-$\pm\theta_0$ תמיד כשהן קיימות.
+          $\Omega_1 = \sqrt{\omega_c^2 - \omega^2}$ ו-$\Omega_2 = \omega\sin\theta_0 = \sqrt{\omega^2 - \omega_c^4/\omega^2}$.
+          במספרים: $\Omega_1 = 3.94\,\text{rad/s}$ ($1.60\,\text{s}$); $\theta_0 = 47.1^\circ$ ו-$\Omega_2 = 4.40\,\text{rad/s}$
+          ($1.43\,\text{s}$).
+    rubric:
+      - text: >-
+          כתבתי $\Omega^2 = \kappa/(mR^2)$, עם העקמומיות של $U_{\text{eff}}$ בשיווי המשקל ועם $mR^2$ במכנה.
+      - text: >-
+          הראיתי שהתחתית יציבה רק כש-$\omega < \omega_c$, שהנקודה העליונה אף פעם לא יציבה, וש-$\theta_0$ יציבה בכל פעם שהיא
+          קיימת.
+      - text: >-
+          קיבלתי $\Omega_1 = \sqrt{\omega_c^2 - \omega^2}$ ו-$\Omega_2 = \omega\sin\theta_0 = \sqrt{\omega^2 - \omega_c^4/\omega^2}$.
+        weight: 2
+      - text: >-
+          בדקתי את הגבולות: מטוטלת פשוטה כש-$\omega \to 0$, תדירות שואפת לאפס משני הצדדים של $\omega_c$, ו-$\Omega_2 \to
+          \omega$ כש-$\omega \to \infty$.
+      - text: >-
+          חישבתי $\Omega_1 \approx 3.94\,\text{rad/s}$, $\theta_0 \approx 47.1^\circ$ ו-$\Omega_2 \approx 4.40\,\text{rad/s}$, זמני מחזור
+          $1.60$ ו-$1.43\,\text{s}$.
+
+  - label: ג
+    type: open
+    points: 6
+    level: bagrut
+    objectives: [OBJ-3.3-2, OBJ-7.3-2]
+    standalone: false
+    prompt: >-
+      עכשיו $\omega > \omega_c$. החרוז מוחזק במנוחה ביחס לחישוק בנקודה התחתונה ומשוחרר, והפרעה זעירה מזיזה אותו
+      ממנה לצד $\theta > 0$.
+
+      (1) הסבירו מדוע החרוז לא נשאר בתחתית, ובטאו באמצעות $g$, $\omega$ ו-$R$ את הזווית הגדולה ביותר $\theta_{\max}$
+      שאליה הוא מגיע. הראו ש-$\cos\theta_{\max} = 2\cos\theta_0 - 1$.
+
+      (2) בדקו את התוצאה בגבולות $\omega \to \omega_c$ ו-$\omega \to \infty$. הראו שליד $\omega_c$, כששתי הזוויות קטנות,
+      $\theta_{\max} \approx \sqrt2\,\theta_0$ (פתחו את שני הקוסינוסים לסדר שני).
+
+      (3) שיווי המשקל $\theta_0$ תמיד מתחת לגובה של מרכז החישוק. מעל איזו מהירות זוויתית החרוז המשוחרר עולה גבוה יותר
+      מהמרכז? בטאו אותה באמצעות $\omega_c$.
+    solution:
+      - kind: law
+        text: >-
+          מחלק א, $E^{\prime} = \tfrac12mR^2\dot\theta^2 + U_{\text{eff}}(\theta)$ נשמרת במערכת החישוק. מעל $\omega_c$
+          העקמומיות של $U_{\text{eff}}$ בתחתית שלילית (חלק ב): התחתית היא מקסימום, שיווי משקל לא יציב, והפרעה זעירה
+          גדלה. בנקודת מפנה $\dot\theta = 0$, ולכן $U_{\text{eff}}(\theta_{\max}) = E^{\prime} = U_{\text{eff}}(0) = -mgR$.
+      - kind: manipulation
+        text: >-
+          $$-mgR\cos\theta_{\max} - \tfrac12m\omega^2R^2\sin^2\theta_{\max} = -mgR$$
+          כלומר
+          $$g\left(1 - \cos\theta_{\max}\right) = \tfrac12\omega^2R\left(1 - \cos\theta_{\max}\right)\left(1 + \cos\theta_{\max}\right)$$
+          השורש $\cos\theta = 1$ הוא נקודת ההתחלה. מצמצמים ב-$1 - \cos\theta_{\max} \ne 0$:
+          $$\cos\theta_{\max} = \frac{2g}{\omega^2R} - 1 = 2\cos\theta_0 - 1$$
+          בין $0$ ל-$\theta_{\max}$ מתקיים $U_{\text{eff}} < U_{\text{eff}}(0)$ (שם הבור סביב $\theta_0$), ולכן החרוז אכן
+          מגיע לשם. $\cos\theta_{\max} - \cos\theta_0 = \cos\theta_0 - 1 < 0$, ולכן $\theta_{\max} > \theta_0$: החרוז חולף
+          על פני שיווי המשקל, נעצר ב-$\theta_{\max}$ וחוזר אל התחתית.
+      - kind: manipulation
+        text: >-
+          מעל המרכז פירושו $\theta_{\max} > \pi/2$, כלומר $\cos\theta_{\max} < 0$: $\dfrac{2g}{\omega^2R} < 1$, או
+          $\omega > \sqrt{2g/R} = \sqrt2\,\omega_c$. שיווי המשקל לא עולה מעל המרכז, אבל החרוז בתנועה כן.
+      - kind: limit
+        text: >-
+          $\omega \to \omega_c$ מלמעלה: $\cos\theta_0 \to 1$ ו-$\theta_{\max} \to 0$, החרוז כמעט לא זז. בזוויות קטנות,
+          עם $\cos x \approx 1 - \tfrac12x^2$: $1 - \tfrac12\theta_{\max}^2 = 1 - \theta_0^2$, ולכן $\theta_{\max} \approx \sqrt2\,\theta_0$:
+          החרוז חולף על פני שיווי המשקל ועולה הלאה, כמו שמצפים מגוף שמשוחרר במנוחה מראש גבעה בבור. $\omega \to \infty$: $\cos\theta_{\max}
+          \to -1$ ו-$\theta_{\max} \to \pi$. בלי כובד, $U_{\text{eff}} \propto -\sin^2\theta$ סימטרי סביב $\pi/2$, והחרוז
+          שיוצא מהתחתית שואף בדיוק לנקודה העליונה, שגם היא על הציר (ושם הוא נעצר רק בגבול, כי היא שיווי משקל).
+      - kind: units
+        text: >-
+          $2g/(\omega^2R)$ חסר ממדים, כמו קוסינוס, ו-$\sqrt{2g/R}$ ביחידות $\text{s}^{-1}$, של מהירות זוויתית.
+      - kind: result
+        text: >-
+          $\cos\theta_{\max} = \dfrac{2g}{\omega^2R} - 1 = 2\cos\theta_0 - 1$, ו-$\theta_{\max} > \theta_0$. החרוז עולה מעל
+          מרכז החישוק כש-$\omega > \sqrt2\,\omega_c = \sqrt{2g/R}$.
+    rubric:
+      - text: >-
+          נימקתי שמעל $\omega_c$ התחתית היא מקסימום של $U_{\text{eff}}$, ולכן הפרעה זעירה מרחיקה ממנה את החרוז.
+      - text: >-
+          השוויתי $U_{\text{eff}}(\theta_{\max}) = U_{\text{eff}}(0)$ בנקודת המפנה, צמצמתי ב-$1 - \cos\theta$ וקיבלתי
+          $\cos\theta_{\max} = 2g/(\omega^2R) - 1$.
+        weight: 2
+      - text: >-
+          בדקתי ש-$\theta_{\max} \to 0$, ובקירוב $\sqrt2\,\theta_0$, כש-$\omega \to \omega_c$, ו-$\theta_{\max} \to \pi$ כש-$\omega
+          \to \infty$.
+      - text: >-
+          מצאתי שהחרוז עולה מעל המרכז כש-$\omega > \sqrt2\,\omega_c$.
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    objectives: [OBJ-3.7-1, OBJ-3.3-1, OBJ-7.3-2]
+    standalone: false
+    prompt: >-
+      במצב של חלק ג, עברו למערכת החדר, שהיא אינרציאלית. מחלק ג, $\cos\theta_{\max} = \dfrac{2g}{\omega^2R} - 1$.
+
+      (1) האנרגיה המכנית של החרוז בחדר לא נשמרת, אף ש-$E^{\prime}$ נשמרת במערכת החישוק. איזה כוח, ואיזה רכיב שלו, עושה
+      עליו עבודה בחדר, ומדוע אותו רכיב לא עושה עבודה במערכת החישוק?
+
+      (2) בטאו את העבודה $W$ שהחישוק עושה על החרוז, מרגע השחרור ועד שהחרוז מגיע ל-$\theta_{\max}$, באמצעות $m$, $\omega$,
+      $R$ ו-$\theta_{\max}$, משינוי האנרגיה המכנית בחדר. הראו ש-$W = 4mgR\left(1 - \dfrac{g}{\omega^2R}\right)$.
+
+      (3) נתון: לכובד ולרכיב של כוח החישוק שבמישור החישוק (מישור שמכיל את הציר) אין מומנט סביב הציר האנכי, ולרכיב
+      $N_\perp$ שניצב למישור החישוק יש מומנט $\rho N_\perp$ סביבו. הראו שההספק של הכוח של החישוק בחדר הוא
+      $\omega\,dL_z/dt$, כאשר $L_z$ התנע הזוויתי של החרוז סביב הציר האנכי, וקבלו מכאן את $W$ בדרך שנייה. בדקו את $W$ בגבולות $\omega \to \omega_c$, $\omega \to \infty$, ו-$g \to 0$ ב-$\omega$
+      קבועה.
+    solution:
+      - kind: law
+        text: >-
+          בחדר: משפט עבודה-אנרגיה, $W = \Delta K + \Delta U_g$, כי מלבד הכובד רק החישוק מפעיל כוח על החרוז. וסביב הציר
+          האנכי: $dL_z/dt = \tau_z$, סכום המומנטים של הכוחות סביב הציר.
+      - kind: manipulation
+        text: >-
+          (1) בחדר למהירות של החרוז יש, מלבד $R\dot\theta$ לאורך החישוק, גם רכיב $\omega\rho$ בניצב למישור החישוק: החישוק
+          סוחב אותו סביב הציר. לכוח של החישוק יש רכיב בניצב למישור, $N_\perp$ (במערכת החישוק הוא מאזן את כוח קוריוליס),
+          והוא לאורך המהירות הזו (בכיוונה כש-$\rho$ גדל, ונגדה כש-$\rho$ קטן), ולכן ההספק שלו לא אפס. במערכת החישוק אין לחרוז מהירות בניצב למישור, ולכן שם אותו כוח
+          ניצב למהירות ולא עושה עבודה: העבודה תלויה במערכת, כי המהירות תלויה בה. את האנרגיה מספק המנוע ששומר על $\omega$.
+      - kind: manipulation
+        text: >-
+          (2) ברגע השחרור החרוז על הציר, $\rho = 0$ ו-$\dot\theta = 0$, ולכן הוא במנוחה בחדר. ב-$\theta_{\max}$, $\dot\theta = 0$
+          ונשארת רק המהירות $\omega R\sin\theta_{\max}$:
+          $$W = \tfrac12m\omega^2R^2\sin^2\theta_{\max} + mgR\left(1 - \cos\theta_{\max}\right)$$
+          לפי תנאי נקודת המפנה מחלק ג, $g(1 - \cos\theta_{\max}) = \tfrac12\omega^2R\sin^2\theta_{\max}$, שני האיברים
+          שווים: $W = m\omega^2R^2\sin^2\theta_{\max}$. עם $c_0 = \cos\theta_0 = g/(\omega^2R)$,
+          $\sin^2\theta_{\max} = (1 - \cos\theta_{\max})(1 + \cos\theta_{\max}) = (2 - 2c_0)\cdot2c_0$, ולכן
+          $W = 4m\omega^2R^2c_0(1 - c_0) = 4mgR\left(1 - \dfrac{g}{\omega^2R}\right)$.
+      - kind: manipulation
+        text: >-
+          (3) לפי הנתון (הכובד מקביל לציר, והרכיב שבמישור החישוק נמצא במישור שמכיל את הציר), רק ל-$N_\perp$ יש מומנט
+          סביב הציר, עם זרוע $\rho$: $\tau_z = \rho N_\perp = dL_z/dt$. ההספק
+          שלו הוא $N_\perp\cdot\omega\rho = \omega\tau_z = \omega\,dL_z/dt$. כש-$\omega$ קבועה, $W = \omega\,\Delta L_z$.
+          התנע הזוויתי סביב הציר בא רק מהמהירות $\omega\rho$: $L_z = m\rho\cdot\omega\rho = m\omega R^2\sin^2\theta$, שמתחיל
+          באפס. לכן $W = \omega\cdot m\omega R^2\sin^2\theta_{\max} = m\omega^2R^2\sin^2\theta_{\max}$, כמו בדרך הראשונה.
+      - kind: limit
+        text: >-
+          $\omega \to \omega_c$: $W \to 0$, כי החרוז כמעט לא עוזב את התחתית. $g \to 0$ ב-$\omega$ קבועה: $W \to 0$. בלי
+          כובד החרוז נע מהתחתית אל הנקודה העליונה (חלק ג), מהציר בחזרה אל הציר, ולכן $L_z$ מתחיל ונגמר באפס: החישוק מחזיר
+          את מה שנתן. $\omega \to \infty$: $W \to 4mgR$. החרוז מגיע כמעט לנקודה העליונה, ו-$\Delta U_g \to 2mgR$, ו-$\sin^2\theta_{\max}
+          \approx 4g/(\omega^2R)$ נותן אנרגיה קינטית $\tfrac12m\omega^2R^2\cdot4g/(\omega^2R) = 2mgR$: חצי וחצי, כמו בתוצאה הכללית.
+      - kind: units
+        text: >-
+          $m\omega^2R^2$ ו-$mgR$ ביחידות $\text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$. ו-$\omega\,\Delta L_z$:
+          $\text{s}^{-1}\cdot\text{kg}\cdot\text{m}^2/\text{s} = \text{J}$.
+      - kind: result
+        text: >-
+          את העבודה בחדר עושה הרכיב של כוח החישוק שניצב למישור החישוק.
+          $W = m\omega^2R^2\sin^2\theta_{\max} = \omega\,\Delta L_z = 4mgR\left(1 - \dfrac{g}{\omega^2R}\right)$, חציה אנרגיה קינטית
+          בחדר וחציה אנרגיה פוטנציאלית של כובד.
+    rubric:
+      - text: >-
+          כתבתי שבחדר עושה עבודה הרכיב של כוח החישוק שניצב למישור החישוק, $N_\perp$ (לא הרכיב שלאורך הרדיוס של
+          החישוק), ונימקתי: בחדר לחרוז יש מהירות $\omega\rho$ בכיוון הזה, ואילו במערכת החישוק אין לו מהירות בניצב למישור.
+      - text: >-
+          כתבתי $W = \tfrac12m\omega^2R^2\sin^2\theta_{\max} + mgR(1 - \cos\theta_{\max})$, והשתמשתי בתנאי נקודת המפנה כדי
+          לקבל $W = m\omega^2R^2\sin^2\theta_{\max} = 4mgR\left(1 - g/(\omega^2R)\right)$.
+        weight: 2
+      - text: >-
+          הראיתי מהנתון, $\tau_z = \rho N_\perp = dL_z/dt$, ש-$P = N_\perp\omega\rho = \omega\,dL_z/dt$, וש-$W = \omega\,\Delta L_z$
+          עם $L_z = m\omega R^2\sin^2\theta$ נותן אותה תוצאה.
+      - text: >-
+          בדקתי ש-$W \to 0$ כש-$\omega \to \omega_c$ וכש-$g \to 0$, ו-$W \to 4mgR$ כש-$\omega \to \infty$.

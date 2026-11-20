@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { readdir, readFile } from 'node:fs/promises';
 import { parse } from 'yaml';
-import { questionBank } from './assessment/schema';
+import { examProblem, questionBank } from './assessment/schema';
 
 /**
  * A collection kept as one YAML list per lesson (`<dir>/1-5.yaml`, …), merged into one collection.
@@ -50,7 +50,7 @@ const lessons = defineCollection({
 });
 
 export { question } from './assessment/schema';
-export type { Question, BagrutQuestion, Part, OpenPart, AutoPart } from './assessment/schema';
+export type { Question, BagrutQuestion, Part, OpenPart, AutoPart, ExamProblem } from './assessment/schema';
 
 const questions = defineCollection({
   loader: glob({ base: './src/content/questions', pattern: '**/*.yaml' }),
@@ -165,4 +165,10 @@ const summaries = defineCollection({
   schema: z.object({ chapter: z.number().int().min(0).max(10), title: z.string() }),
 });
 
-export const collections = { lessons, questions, misconceptions, glossary, videos, workbook, summaries };
+/** Final exams: one file per question, src/content/exams/<exam>/q<n>.yaml; the exams are listed in src/assessment/exams.ts. */
+const exams = defineCollection({
+  loader: glob({ base: './src/content/exams', pattern: '**/*.yaml' }),
+  schema: examProblem,
+});
+
+export const collections = { lessons, questions, misconceptions, glossary, videos, workbook, summaries, exams };

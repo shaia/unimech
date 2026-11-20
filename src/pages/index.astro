@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { chaptersWithQuestions } from '~/assessment/bank';
+import { EXAMS, parseExamId } from '~/assessment/exams';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import CoverArt from '~/ui/CoverArt.astro';
 import { chapters, lessonSlug } from '~/course';
@@ -14,6 +15,9 @@ const written = new Set(
 const withPractice = new Set(await chaptersWithQuestions());
 const withSummary = await chaptersWithSummary();
 const firstLesson = chapters.flatMap((c) => c.lessons).find((l) => written.has(l.id));
+// an exam is linked only once all its questions exist (the page is built only then)
+const examQuestions = (await getCollection('exams')).map((e) => e.data.id);
+const exams = EXAMS.filter((e) => examQuestions.filter((id) => parseExamId(id)?.exam === e.id).length === e.count);
 ---
 
 <BaseLayout title="מכניקה ויחסות פרטית">
@@ -86,6 +90,26 @@ const firstLesson = chapters.flatMap((c) => c.lessons).find((l) => written.has(l
         }
       </ol>
     </section>
+
+    {
+      exams.length > 0 && (
+        <section class="sheet toc" aria-labelledby="exam-h">
+          <h2 id="exam-h">לקראת המבחן</h2>
+          <p>
+            מבחן מסכם במבנה של מבחן 77101: שלוש שעות, חמש שאלות שמחברות פרקים, ועונים על ארבע. ודף נוסחאות לדוגמה בגודל
+            שמותר להביא, ארבעה עמודי A4.
+          </p>
+          <p class="chapter-tools">
+            {exams.map((e) => (
+              <a class="btn primary" href={url(`exam/${e.id}/`)}>
+                {e.title} · {e.sitting}
+              </a>
+            ))}
+            {pageExists('formulas/sheet/') && <a class="btn" href={url('formulas/sheet/')}>דף נוסחאות למבחן</a>}
+          </p>
+        </section>
+      )
+    }
   </div>
 </BaseLayout>
 

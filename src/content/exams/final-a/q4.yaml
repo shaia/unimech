@@ -1,0 +1,329 @@
+# Final exam A, question 4: a mass on a spring hangs from the ceiling of an elevator that accelerates upward at A for
+# a time t1 and then moves at constant speed V1 = A t1. Joins chapters 7 (the accelerating frame, 7.1) and 5 (the
+# oscillator, its energy, damping: 5.1, 5.2, 5.3) with 1.5 (relative velocity, a constant-velocity frame), 2.3
+# (Hooke), 3.3 (work of a non-conservative force) and 3.5/4.4 (an impulse that vanishes in a short time).
+# Parts: א the motion in S' during the acceleration; ב the amplitude after it, (2A/ω0²)|sin(ω0t1/2)|, with numbers;
+# ג the same at fixed V1: the impulse limit V1/ω0, checked in the ground frame, and the slow limit;
+# ד a weak damper and a long acceleration: amplitude A/ω0² after t1, heat m²A²/k independent of b.
+# Recomputed in .scratch/exam/q4.ts by an independent route: RK4 (src/physics/motion.ts) of the mass in the GROUND
+# frame (gravity, a spring to a ceiling whose motion is prescribed, a damper on the velocity relative to the
+# elevator; no fictitious force), at a sample point m = 0.7, k = 23, A = 1.9:
+#   א y'(t1), ẏ'(t1) at t1 = 0.83 and the lowest point −2A/ω0² (rel. error < 1e-10);
+#   ב X after t1 and X = 0 for t1 = 2T0; ג X/(V1/ω0) = |sin(θ/2)/(θ/2)| for θ = 0.001 … 50 at V1 fixed, the
+#   bound 2V1/(ω0²t1); ד y'(t1) = −A/ω0² and the heat ∫b ẏ'² dt = m²A²/k for γ = 0.3, 0.6, 1.2 and an overdamped
+#   γ = 3ω0 (rel. error < 1e-4), and the average of ½kX² over t1 = mA²/ω0².
+# Exam numbers (ב): m = 0.40 kg, k = 10 N/m, A = 1.0 m/s², t1 = 2.0 s → ω0 = 5.00 rad/s, A/ω0² = 0.0400 m,
+#   |sin 5.00| = 0.959, X = 0.0767 m (bound 0.0800 m), T0 = 1.26 s.
+# reviewed 2026-11-19 (independent, .scratch/exam-review/q4.ts): own ground-frame RK4 (spring to a prescribed ceiling,
+# gravity g = 9.8, damper on the velocity relative to the elevator; y' formed afterwards). א y'(t1), ẏ'(t1) at
+# m = 0.7, k = 23, A = 1.9, t1 = 0.83 (relErr 3e-11) and the lowest point -2A/w0^2; ב with the exam numbers RK4
+# X = 0.07671 m, w0 = 5.000, T0 = 1.2566 s, X(t1 = T0) = 2e-12; ג X/(V1/w0) = |sin(theta/2)/(theta/2)| at theta =
+# 0.001 ... 50 (to 6 digits); ד gamma = 0.1, 0.25, 0.5 with gamma t1 = 30: y'(t1) = -0.0400 m, E_th = 0.016000 J =
+# m^2A^2/k (relErr < 3e-7), and the t1-average of (1/2)kX^2 = 0.016000 J. Every closed form re-derived, incl.
+# E_th = -mA y'(t1) in general (why the damped E_th equals the t1-average). No physics defect; rubric line ד1 now asks the
+# comparison with ב that the prompt asks. Second pass (student read): the heat is E_th, not Q (Q is the quality factor
+# of 5.3); א and ב(1) ask the limit their rubric grades, and ב's limit and numbers are separate rubric lines; ג(3)
+# says the bound holds for every t1 and is small against V1/w0 when w0 t1 >> 1; ד(2) gives the potential energy mAy'
+# of the fictitious force as a fact; ד(3) says what is averaged (1/2 k X^2 of ב over t1); the solution says why the
+# heat balance may be written in S' (b ẏ'^2 depends only on the relative velocity of the damper's ends).
+id: E-final-a-4
+type: bagrut
+title: משקולת על קפיץ במעלית שמאיצה
+prompt: >-
+  משקולת בעלת מסה $m$ תלויה על קפיץ חסר מסה, בעל קבוע $k$, מתקרת מעלית; סמנו $\omega_0 = \sqrt{k/m}$ ו-$T_0 =
+  2\pi/\omega_0$. בהתחלה המעלית עומדת, והמשקולת במנוחה בשיווי משקל. ברגע $t = 0$ המעלית מתחילה להאיץ כלפי מעלה
+  בתאוצה קבועה $A$, עד הרגע $t_1$, ומאז היא נעה כלפי מעלה במהירות הקבועה $V_1 = At_1$. המשקולת נעה רק לאורך האנך.
+  $S'$ היא מערכת הייחוס של המעלית, ו-$y'$ הוא המקום של המשקולת ב-$S'$, חיובי כלפי מעלה, שנמדד מנקודת שיווי המשקל
+  שלה כשהמעלית עומדת (נקודה קבועה במעלית). תאוצת הכובד היא $g$. בחלקים א עד ג הזניחו כל ריסון.
+diagramAlt: >-
+  מבט מהצד. מעלית מלבנית תלויה על כבל. מתקרת המעלית יורד קפיץ שמסומן $k$, ובקצהו התחתון משקולת שמסומנת $m$. בתוך
+  המעלית, משמאל למשקולת, ציר אנכי כלפי מעלה שמסומן $y'$, וקו מקווקו אופקי מסמן עליו את הראשית $0$ בגובה המשקולת.
+  מימין למעלית, מחוץ לה, חץ כלפי מעלה בצבע התאוצה שמסומן $A$: התאוצה של המעלית.
+diagram: |
+  <svg viewBox="0 0 300 220" width="300" height="220" font-size="14" aria-hidden="true">
+    <line x1="150" y1="0" x2="150" y2="20" stroke="currentColor" stroke-width="1.5"/>
+    <rect x="70" y="20" width="160" height="190" fill="var(--paper)" stroke="currentColor" stroke-width="2"/>
+    <polyline points="150,20 150,30 138,35 162,45 138,55 162,65 138,75 162,85 150,90 150,100" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="170" y="62" fill="currentColor" font-style="italic">k</text>
+    <rect x="136" y="100" width="28" height="26" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+    <text x="172" y="118" fill="currentColor" font-style="italic">m</text>
+    <line x1="95" y1="185" x2="95" y2="58" stroke="currentColor" stroke-width="1.5"/>
+    <polygon points="90,58 95,46 100,58" fill="currentColor"/>
+    <text x="103" y="58" fill="currentColor" font-style="italic">y'</text>
+    <line x1="95" y1="113" x2="136" y2="113" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="80" y="118" fill="currentColor">0</text>
+    <line x1="260" y1="150" x2="260" y2="82" stroke="var(--accel)" stroke-width="2.5"/>
+    <polygon points="254,84 260,70 266,84" fill="var(--accel)"/>
+    <text x="270" y="115" fill="var(--accel)" font-style="italic">A</text>
+  </svg>
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-7.1-1, OBJ-2.3-1, OBJ-5.1-1, OBJ-5.1-2]
+    prompt: >-
+      בזמן ההאצה, $0 < t < t_1$: כתבו את החוק השני למשקולת במערכת $S'$, וציינו לכל כוח אמיתי איזה גוף מפעיל אותו.
+      מצאו את נקודת שיווי המשקל $y'_A$ של המשקולת ב-$S'$ בזמן ההאצה, ואת $y'(t)$. בטאו באמצעות $A$, $\omega_0$
+      ו-$t$. בדקו את התוצאה בגבול $A \to 0$, או מכוח הקפיץ על המשקולת כשהיא בשיווי המשקל $y'_A$.
+    solution:
+      - kind: law
+        text: >-
+          החוק השני במערכת בתאוצה קווית (שיעור 7.1): $m\vec a' = \sum\vec F - m\vec A$, כאשר $\sum\vec F$ הוא סכום
+          הכוחות האמיתיים, ו-$(-m\vec A)$ הוא הכוח המדומה, שאין גוף שמפעיל אותו.
+      - kind: manipulation
+        text: >-
+          על המשקולת פועלים שני כוחות אמיתיים: הכובד, $mg$ כלפי מטה, שכדור הארץ מפעיל, וכוח הקפיץ, שהקפיץ מפעיל.
+          ב-$y' = 0$ הקפיץ מתוח ב-$mg/k$ ומושך כלפי מעלה בכוח $mg$. הקצה העליון שלו צמוד לתקרה, ולכן כשהמשקולת
+          ב-$y'$ ההתארכות קטנה ב-$y'$, וכוח הקפיץ כלפי מעלה הוא $mg - ky'$. עם הכוח המדומה $(-mA)$:
+          $$m\ddot y' = mg - ky' - mg - mA = -ky' - mA$$
+      - kind: manipulation
+        text: >-
+          בשיווי משקל $\ddot y' = 0$, ולכן $y'_A = -\dfrac{mA}{k} = -\dfrac{A}{\omega_0^2}$: נמוך ב-$A/\omega_0^2$
+          מהנקודה המקורית. המשוואה היא $\ddot y' = -\omega_0^2\left(y' - y'_A\right)$, ולכן
+          $y' - y'_A = C_1\cos\omega_0t + C_2\sin\omega_0t$. ברגע $t = 0$ המעלית עדיין עומדת, והמהירות שלה רציפה,
+          ולכן $y'(0) = 0$ ו-$\dot y'(0) = 0$: $C_1 = A/\omega_0^2$ ו-$C_2 = 0$.
+      - kind: limit
+        text: >-
+          כש-$A \to 0$ יוצא $y'(t) = 0$ לכל $t$: מעלית שלא מאיצה לא מזיזה את המשקולת. ובשיווי המשקל החדש הקפיץ מושך
+          כלפי מעלה בכוח $mg + k\cdot\dfrac{A}{\omega_0^2} = m(g + A)$, בדיוק המתיחות של משקולת שתלויה במנוחה במעלית
+          מאיצה, עם תאוצת נפילה אפקטיבית $g + A$ (שיעור 7.1).
+      - kind: units
+        text: >-
+          $A/\omega_0^2$ ביחידות $(\text{m/s}^2)/\text{s}^{-2} = \text{m}$, ו-$\omega_0t$ חסר ממדים.
+      - kind: result
+        text: >-
+          $m\ddot y' = -ky' - mA$, שיווי המשקל $y'_A = -A/\omega_0^2$, ו-
+          $$y'(t) = -\frac{A}{\omega_0^2}\left(1 - \cos\omega_0t\right)$$
+          המשקולת מתנודדת סביב $y'_A$, בין $y' = 0$ ל-$y' = -2A/\omega_0^2$.
+    rubric:
+      - text: >-
+          כתבתי את החוק השני ב-$S'$ עם הכובד (כדור הארץ), כוח הקפיץ (הקפיץ) והכוח המדומה $(-mA)$, שאין גוף
+          שמפעיל אותו.
+      - text: 'מצאתי $y''_A = -A/\omega_0^2$.'
+      - text: >-
+          פתרתי עם $y'(0) = 0$ ו-$\dot y'(0) = 0$, וקיבלתי $y'(t) = -(A/\omega_0^2)(1 - \cos\omega_0t)$.
+        weight: 2
+      - text: >-
+          בדקתי שכש-$A \to 0$ המשקולת לא זזה, או שבשיווי המשקל החדש הקפיץ מושך בכוח $m(g + A)$.
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    standalone: false
+    objectives: [OBJ-5.1-1, OBJ-1.5-2, OBJ-7.1-2]
+    prompt: >-
+      מחלק א, בזמן ההאצה $y'(t) = -\dfrac{A}{\omega_0^2}\left(1 - \cos\omega_0t\right)$.
+
+      (1) הסבירו מדוע אחרי הרגע $t_1$ משוואת התנועה ב-$S'$ היא $\ddot y' = -\omega_0^2y'$, והראו שהאמפליטודה של
+      התנודה אחרי $t_1$ היא
+      $$X = \frac{2A}{\omega_0^2}\left|\sin\frac{\omega_0t_1}{2}\right|$$
+      בדקו את התוצאה בגבול $t_1 \to 0$.
+
+      (2) אחרי אילו משכי האצה $t_1$ המשקולת נשארת במנוחה ביחס למעלית? הסבירו את הסיבה הפיזיקלית.
+
+      (3) חשבו את $\omega_0$ ואת $X$ כש-$m = 0.40\,\text{kg}$, $k = 10\,\text{N/m}$, $A = 1.0\,\text{m/s}^2$
+      ו-$t_1 = 2.0\,\text{s}$, ואת משך ההאצה הקצר ביותר שאחריו המשקולת במנוחה ביחס למעלית.
+    solution:
+      - kind: law
+        text: >-
+          מעלית שנעה במהירות קבועה היא מערכת אינרציאלית (שיעור 1.5: התאוצה זהה בכל המערכות שנעות זו ביחס לזו
+          במהירות קבועה), ולכן אחרי $t_1$ אין כוח מדומה: $m\ddot y' = -ky'$, ושיווי המשקל חוזר ל-$y' = 0$. המהירות
+          של המעלית רציפה ברגע $t_1$ (רק התאוצה שלה קופצת), ולכן גם $y'$ ו-$\dot y'$ רציפים. האמפליטודה נקבעת
+          מתנאי ההתחלה ברגע $t_1$ (שיעור 5.1): $X^2 = y'(t_1)^2 + \left(\dot y'(t_1)/\omega_0\right)^2$.
+      - kind: manipulation
+        text: >-
+          נסמן $\theta = \omega_0t_1$. מחלק א, $y'(t_1) = -\dfrac{A}{\omega_0^2}(1 - \cos\theta)$ ו-$\dot y'(t_1) =
+          -\dfrac{A}{\omega_0}\sin\theta$. לכן
+          $$X^2 = \frac{A^2}{\omega_0^4}\left[(1 - \cos\theta)^2 + \sin^2\theta\right] = \frac{2A^2}{\omega_0^4}(1 - \cos\theta) = \frac{4A^2}{\omega_0^4}\sin^2\frac{\theta}{2}$$
+      - kind: manipulation
+        text: >-
+          $X = 0$ כש-$\sin(\omega_0t_1/2) = 0$, כלומר $t_1 = nT_0$ עם $n = 1, 2, \dots$. אחרי מספר שלם של זמני מחזור
+          המשקולת חוזרת ל-$y' = 0$ ועוצרת שם (חלק א) בדיוק ברגע שההאצה נגמרת, וזו נקודת שיווי המשקל של המעלית שנעה
+          במהירות קבועה: אין ממה להתנודד. ה-$X$ הגדול ביותר, $2A/\omega_0^2$, מתקבל כשההאצה נגמרת אחרי חצי מחזור ועוד
+          מספר שלם של מחזורים, כשהמשקולת עומדת בנקודה הנמוכה ביותר שלה.
+      - kind: limit
+        text: >-
+          כש-$t_1 \to 0$ ו-$A$ קבוע, $X \approx \dfrac{2A}{\omega_0^2}\cdot\dfrac{\omega_0t_1}{2} = \dfrac{At_1}{\omega_0}
+          \to 0$: האצה שכמעט לא התחילה לא מזיזה את המשקולת. ותמיד $X \le 2A/\omega_0^2$, המרחק הגדול ביותר של
+          המשקולת מ-$y' = 0$ בזמן ההאצה (חלק א), כמו שחייב להיות: משקולת שנעצרת בנקודה הרחוקה ביותר מתנודדת סביב
+          $y' = 0$ באמפליטודה הזו בדיוק.
+      - kind: units
+        text: >-
+          $A/\omega_0^2$ במטרים, והסינוס הוא של מספר חסר ממדים; $\omega_0 = \sqrt{k/m}$ ביחידות
+          $\sqrt{(\text{N/m})/\text{kg}} = \text{s}^{-1}$.
+      - kind: substitution
+        text: >-
+          $\omega_0 = \sqrt{10/0.40} = 5.00\,\text{rad/s}$ ו-$A/\omega_0^2 = 0.0400\,\text{m}$. $\omega_0t_1/2 =
+          5.00\,\text{rad}$ ו-$|\sin 5.00| = 0.959$, ולכן $X = 0.0800\cdot0.959 = 0.0767\,\text{m}$, קרוב לגבול העליון
+          $0.0800\,\text{m}$. משך ההאצה הקצר ביותר שאחריו $X = 0$ הוא $T_0 = 2\pi/\omega_0 = 1.26\,\text{s}$.
+      - kind: result
+        text: >-
+          אחרי $t_1$ המעלית אינרציאלית, $\ddot y' = -\omega_0^2y'$, ו-$X = \dfrac{2A}{\omega_0^2}\left|\sin
+          \dfrac{\omega_0t_1}{2}\right|$. $X = 0$ כש-$t_1$ כפולה שלמה של $T_0$. במספרים: $\omega_0 = 5.00\,\text{rad/s}$,
+          $X = 7.67\,\text{cm}$, והמשך הקצר ביותר שאחריו המשקולת במנוחה הוא $1.26\,\text{s}$.
+    rubric:
+      - text: >-
+          הסברתי שאחרי $t_1$ המעלית מערכת אינרציאלית, ושהמקום והמהירות של המשקולת ב-$S'$ רציפים ברגע $t_1$.
+      - text: >-
+          הצבתי את $y'(t_1)$ ואת $\dot y'(t_1)$ בנוסחת האמפליטודה מתנאי ההתחלה והגעתי ל-$X = 2A|\sin(\omega_0t_1/2)|/\omega_0^2$.
+        weight: 2
+      - text: >-
+          מצאתי $X = 0$ כש-$t_1 = nT_0$, והסברתי שהמשקולת עוצרת אז בדיוק בנקודת שיווי המשקל של המעלית שנעה במהירות
+          קבועה.
+      - text: >-
+          בדקתי ש-$X \to 0$ כש-$t_1 \to 0$.
+      - text: >-
+          חישבתי $\omega_0 = 5.00\,\text{rad/s}$, $X \approx 7.7\,\text{cm}$ ו-$T_0 \approx 1.26\,\text{s}$.
+
+  - label: ג
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-3.5-1, OBJ-4.4-1, OBJ-1.5-1, OBJ-5.2-1]
+    prompt: >-
+      השוו מעליות שמגיעות לאותה מהירות סופית $V_1 = At_1$ בהאצות שונות.
+
+      (1) הראו שהתוצאה של חלק ב היא
+      $$X = \frac{V_1}{\omega_0}\left|\frac{\sin(\theta/2)}{\theta/2}\right|,\qquad \theta = \omega_0t_1$$
+
+      (2) מצאו את $X$ בגבול של מכה: $A \to \infty$ ו-$t_1 \to 0$ כש-$V_1$ קבוע. קבלו את אותה תוצאה בדרך שנייה,
+      במערכת הקרקע: מה המהירות של המשקולת, ביחס לקרקע וביחס למעלית, מיד אחרי המכה, ומה האמפליטודה שנובעת מכך?
+
+      (3) הראו שלכל $t_1$, $X \le \dfrac{2V_1}{\omega_0^2t_1}$, ושבהאצה ארוכה, $\omega_0t_1 \gg 1$, החסם הזה קטן
+      בהרבה מ-$X$ של המכה. הסבירו מדוע מעלית שמאיצה במשך הרבה זמני מחזור של המשקולת כמעט לא מעוררת אותה.
+    solution:
+      - kind: law
+        text: >-
+          מחלק ב, $X = \dfrac{2A}{\omega_0^2}\left|\sin\dfrac{\theta}{2}\right|$. לדרך השנייה: המתקף של הכוח השקול,
+          $\int F\,dt$, שווה לשינוי בתנע (שיעור 3.5), והאנרגיה של מתנד, $\tfrac12m\dot y'^2 + \tfrac12ky'^2$, נשמרת
+          במערכת אינרציאלית (שיעור 5.2).
+      - kind: manipulation
+        text: >-
+          $A = V_1/t_1 = V_1\omega_0/\theta$, ולכן $\dfrac{2A}{\omega_0^2} = \dfrac{V_1}{\omega_0}\cdot\dfrac{2}{\theta}$,
+          ו-$X = \dfrac{V_1}{\omega_0}\left|\dfrac{\sin(\theta/2)}{\theta/2}\right|$. במכה $\theta \to 0$ כש-$V_1$ קבוע,
+          $\sin(\theta/2)/(\theta/2) \to 1$, ולכן $X \to V_1/\omega_0$.
+      - kind: manipulation
+        text: >-
+          במערכת הקרקע, שהיא אינרציאלית, פועלים על המשקולת רק הכובד וכוח הקפיץ. בזמן המכה התקרה עולה
+          $\tfrac12At_1^2 = \tfrac12V_1t_1 \to 0$, ולכן ההתארכות של הקפיץ כמעט לא משתנה, והכוח השקול על המשקולת נשאר
+          סופי (קרוב לאפס). המתקף שלו בזמן $t_1 \to 0$ שואף לאפס, ולכן מיד אחרי המכה המשקולת עדיין במנוחה ביחס לקרקע,
+          באותו מקום. המעלית נעה עכשיו כלפי מעלה במהירות $V_1$, ולכן ביחס למעלית (שיעור 1.5) המשקולת נעה כלפי מטה
+          במהירות $V_1$: $\dot y' = -V_1$ ב-$y' = 0$, שהיא נקודת שיווי המשקל של המעלית שנעה במהירות קבועה. שימור
+          אנרגיה ב-$S'$, שהיא עכשיו אינרציאלית: $\tfrac12mV_1^2 = \tfrac12kX^2$, כלומר $X = V_1\sqrt{m/k} =
+          V_1/\omega_0$, כמו בדרך הראשונה.
+      - kind: manipulation
+        text: >-
+          לכל $t_1$, מכיוון ש-$|\sin(\theta/2)| \le 1$, $X \le \dfrac{V_1}{\omega_0}\cdot\dfrac{2}{\theta} =
+          \dfrac{2V_1}{\omega_0^2t_1}$: היחס בין $X$ לאמפליטודה של המכה הוא לכל היותר $2/(\omega_0t_1)$, ובהאצה ארוכה,
+          $\omega_0t_1 \gg 1$, הוא קטן בהרבה מ-1. הסיבה:
+          אותה מהירות סופית בהאצה ארוכה פירושה תאוצה קטנה, $A = V_1/t_1$, ולכן שיווי המשקל של המשקולת זז רק
+          ב-$A/\omega_0^2$, ורק פעמיים, בהתחלה ובסוף. בין שתי הקפיצות המשקולת מתנודדת סביב שיווי המשקל באמפליטודה
+          $A/\omega_0^2$ לכל היותר, ולכן מעלית שמאיצה במשך הרבה זמני מחזור כמעט לא מנדנדת את מה שתלוי בה.
+      - kind: limit
+        text: >-
+          גבול המכה נבדק בדרך בלתי תלויה: במערכת הקרקע, ממתקף אפס ומשימור אנרגיה, יצא אותו $V_1/\omega_0$. בגבול
+          השני, $t_1 \to \infty$ כש-$V_1$ קבוע, $X \to 0$: מעלית שמאיצה לאט מאוד היא בכל רגע כמעט אינרציאלית, והמשקולת
+          נשארת בשיווי משקל. ובין שני הגבולות $X \le V_1/\omega_0$ לכל $t_1$, כי $|\sin u| \le |u|$: מכה היא הדרך
+          שמעוררת את המשקולת הכי חזק.
+      - kind: units
+        text: >-
+          $V_1/\omega_0$ ביחידות $(\text{m/s})/\text{s}^{-1} = \text{m}$, ו-$\theta$ חסר ממדים; $V_1/(\omega_0^2t_1)$
+          ביחידות $(\text{m/s})/(\text{s}^{-2}\cdot\text{s}) = \text{m}$.
+      - kind: result
+        text: >-
+          $X = \dfrac{V_1}{\omega_0}\left|\dfrac{\sin(\omega_0t_1/2)}{\omega_0t_1/2}\right|$. במכה $X = V_1/\omega_0$,
+          וזה גם מה שיוצא ממתקף אפס על המשקולת במערכת הקרקע ומשימור אנרגיה במעלית. בהאצה ארוכה
+          $X \le 2V_1/(\omega_0^2t_1)$, ששואף לאפס.
+    rubric:
+      - text: >-
+          כתבתי את $X$ באמצעות $V_1$ ו-$\theta$, ומצאתי $X \to V_1/\omega_0$ כש-$\theta \to 0$.
+      - text: >-
+          נימקתי במערכת הקרקע שהמתקף על המשקולת בזמן המכה שואף לאפס, ולכן מיד אחריה היא נעה כלפי מטה במהירות $V_1$
+          ביחס למעלית.
+        weight: 2
+      - text: >-
+          קיבלתי $X = V_1/\omega_0$ משימור אנרגיה, $\tfrac12mV_1^2 = \tfrac12kX^2$, ובדקתי שזו אותה תוצאה.
+      - text: >-
+          הראיתי ש-$X \le 2V_1/(\omega_0^2t_1)$, שזה קטן בהרבה מ-$V_1/\omega_0$ כש-$\omega_0t_1 \gg 1$, והסברתי למה
+          המשקולת כמעט לא מתעוררת.
+
+  - label: ד
+    type: open
+    points: 7
+    level: bagrut
+    standalone: false
+    objectives: [OBJ-5.3-1, OBJ-5.3-2, OBJ-3.3-1, OBJ-7.1-1]
+    prompt: >-
+      עכשיו מחברים בין המשקולת לרצפת המעלית בולם חלש. הוא מפעיל על המשקולת כוח $F_{\text{d}} = -b\dot y'$, שתלוי
+      במהירות שלה ביחס למעלית, וקצב הריסון $\gamma = b/m$ קטן בהרבה מ-$\omega_0$. ההאצה ארוכה מאוד: $\gamma t_1 \gg 1$.
+      מחלק א, בזמן ההאצה שיווי המשקל הוא $y'_A = -A/\omega_0^2$.
+
+      (1) מה המקום ומה המהירות של המשקולת ב-$S'$ ברגע $t_1$, ומה האמפליטודה של התנודה שמתחילה מיד אחריו? השוו
+      לחלק ב.
+
+      (2) בזמן ההאצה פועל על המשקולת ב-$S'$ הכוח המדומה הקבוע $(-mA)$, כלפי מטה, ולכוח קבוע כזה יש אנרגיה
+      פוטנציאלית $mAy'$, כמו $mgy$ לכובד. הראו שהחום הכולל $E_{\text{th}}$ שהבולם מפיק, מ-$t = 0$ ועד שהתנודות
+      דועכות לגמרי, הוא
+      $$E_{\text{th}} = \frac{m^2A^2}{k}$$
+      ושהוא לא תלוי ב-$b$.
+
+      (3) בדקו את התוצאה בגבול $k \to \infty$. אחר כך השוו אותה לאנרגיה של התנודה בלי ריסון אחרי $t_1$, $\tfrac12kX^2$
+      עם $X$ של חלק ב, כשמחשבים את הממוצע שלה על ערכי $t_1$ (כלומר על הפאזה $\omega_0t_1$).
+    solution:
+      - kind: law
+        text: >-
+          משוואת המתנד המרוסן (שיעור 5.3) ב-$S'$, עם הכוח המדומה של חלק א: $m\ddot y' = -ky' - mA - b\dot y'$ בזמן
+          ההאצה, ו-$m\ddot y' = -ky' - b\dot y'$ אחריה. השינוי באנרגיה המכנית שווה לעבודה של הכוח הלא-משמר, כאן הבולם
+          (שיעור 3.3). הכוח המדומה $(-mA)$ קבוע בזמן ההאצה, ולכן הוא משמר, עם אנרגיה פוטנציאלית $mAy'$.
+      - kind: manipulation
+        text: >-
+          בזמן ההאצה המשקולת מתנודדת סביב $y'_A$ באמפליטודה שדועכת כמו $e^{-\gamma t/2}$. כש-$\gamma t_1 \gg 1$ התנודה
+          דעכה, ולכן ברגע $t_1$ המשקולת במנוחה ב-$y'_A$: $y'(t_1) = -A/\omega_0^2$ ו-$\dot y'(t_1) = 0$. אחרי $t_1$
+          שיווי המשקל קופץ חזרה ל-$y' = 0$, והמשקולת משתחררת ממנוחה במרחק $A/\omega_0^2$ ממנו: התנודה מתחילה
+          באמפליטודה $A/\omega_0^2$ ודועכת כמו $e^{-\gamma(t - t_1)/2}$. בלי ריסון (חלק ב) $X$ נע בין $0$
+          ל-$2A/\omega_0^2$ לפי $t_1$; עם ריסון, ההאצה הארוכה מוחקת את התנודה שהתחילה ב-$t = 0$, ונשארת רק הקפיצה של
+          שיווי המשקל בסוף, בלי תלות ב-$t_1$.
+      - kind: manipulation
+        text: >-
+          בזמן ההאצה האנרגיה ב-$S'$ היא $E' = \tfrac12m\dot y'^2 + \tfrac12ky'^2 + mAy'$, ו-$dE'/dt = F_{\text{d}}\dot y'
+          = -b\dot y'^2$. מותר לכתוב את מאזן החום במערכת הלא-אינרציאלית: החום שהבולם מפיק תלוי רק במהירות היחסית
+          בין שני הקצוות שלו, $\dot y'$ (קצה אחד על המשקולת, השני על רצפת המעלית), ולכן קצב ייצור החום, $b\dot y'^2$,
+          זהה בכל מערכת ייחוס. ב-$S'$ הרצפה עומדת, והעבודה של הבולם על המשקולת, $-b\dot y'^2$ ליחידת זמן, היא בדיוק
+          מינוס הקצב הזה.
+          ב-$t = 0$, $E' = 0$, וב-$t_1$:
+          $$E' = \frac12k\frac{A^2}{\omega_0^4} - mA\frac{A}{\omega_0^2} = \frac{mA^2}{2\omega_0^2} - \frac{mA^2}{\omega_0^2} = -\frac{mA^2}{2\omega_0^2}$$
+          ולכן בזמן ההאצה $E_{\text{th},1} = \dfrac{mA^2}{2\omega_0^2}$. אחרי $t_1$ המערכת אינרציאלית, והאנרגיה של התנודה,
+          $\tfrac12k\left(A/\omega_0^2\right)^2 = \dfrac{mA^2}{2\omega_0^2}$, דועכת עד אפס: $E_{\text{th},2} = E_{\text{th},1}$. יחד, עם
+          $\omega_0^2 = k/m$:
+          $$E_{\text{th}} = \frac{mA^2}{\omega_0^2} = \frac{m^2A^2}{k}$$
+          ו-$b$ לא מופיע: הוא קובע כמה מהר החום מופק, לא כמה.
+      - kind: limit
+        text: >-
+          כש-$k \to \infty$, $E_{\text{th}} \to 0$: קפיץ קשיח מאוד הוא כמו מוט, המשקולת נעה יחד עם המעלית, אין מהירות יחסית ואין
+          חום. ובלי ריסון בזמן ההאצה (בולם שמחברים רק אחרי $t_1$), החום הוא האנרגיה של התנודה מחלק ב:
+          $\tfrac12kX^2 = \dfrac{2mA^2}{\omega_0^2}\sin^2\dfrac{\omega_0t_1}{2}$. הממוצע של $\sin^2$ הוא $\tfrac12$, ולכן
+          הממוצע על $t_1$ הוא $mA^2/\omega_0^2$, אותו $E_{\text{th}}$: ההאצה הארוכה עם ריסון נותנת את הממוצע, כי היא מוחקת את
+          התלות בפאזה שבה ההאצה נגמרת.
+      - kind: units
+        text: >-
+          $m^2A^2/k$ ביחידות $\text{kg}^2\cdot\text{m}^2\text{s}^{-4}/(\text{kg}\cdot\text{s}^{-2}) =
+          \text{kg}\cdot\text{m}^2/\text{s}^2 = \text{J}$.
+      - kind: result
+        text: >-
+          ברגע $t_1$: $y' = -A/\omega_0^2$ ו-$\dot y' = 0$, והתנודה שאחריו מתחילה באמפליטודה $A/\omega_0^2$, בלי תלות
+          ב-$t_1$. החום הכולל $E_{\text{th}} = m^2A^2/k = mA^2/\omega_0^2$, חציו בזמן ההאצה וחציו אחריה, בלי תלות ב-$b$.
+    rubric:
+      - text: >-
+          הסברתי שכש-$\gamma t_1 \gg 1$ המשקולת במנוחה ב-$y'_A$ ברגע $t_1$, ושהתנודה שאחריו מתחילה באמפליטודה
+          $A/\omega_0^2$, שבניגוד לחלק ב לא תלויה ב-$t_1$.
+      - text: >-
+          כתבתי את האנרגיה ב-$S'$ עם האנרגיה הפוטנציאלית $mAy'$ של הכוח המדומה, וקבעתי שהבולם מוריד אותה בקצב
+          $b\dot y'^2$.
+      - text: >-
+          חישבתי $E_{\text{th},1} = E_{\text{th},2} = mA^2/(2\omega_0^2)$ וקיבלתי $E_{\text{th}} = m^2A^2/k$, בלי $b$.
+        weight: 2
+      - text: >-
+          בדקתי ש-$E_{\text{th}} \to 0$ כש-$k \to \infty$, והשוויתי לממוצע של $\tfrac12kX^2$ מחלק ב על ערכי $t_1$.

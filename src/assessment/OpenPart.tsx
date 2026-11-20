@@ -10,7 +10,7 @@ import { recordAttempt, type AttemptKind } from '~/progress/store';
 import { gradeOpen, partId, partScore } from './bagrut';
 import './question.css';
 
-const STEP_LABEL: Record<OpenPartData['solution'][number]['kind'], string> = {
+export const STEP_LABEL: Record<OpenPartData['solution'][number]['kind'], string> = {
   formula: 'נוסחה מדף הנוסחאות',
   law: 'החוק הכללי',
   manipulation: 'סידור הביטוי',

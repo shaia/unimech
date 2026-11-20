@@ -146,6 +146,18 @@ const bagrut = z.object({
   parts: z.array(part).min(2).max(6),
 });
 
+/*
+ * ---- Exam problem (שאלת מבחן): one question of a final exam in the 77101 format ----
+ * The shape of a review problem, so the renderer and the open-part grading are shared, but every part is open:
+ * the mapped exams ask only for written, justified answers (src/content/exam-map.yaml). Hints are not shown in
+ * an exam. The id is `E-<exam>-<n>`, and the file is src/content/exams/<exam>/q<n>.yaml.
+ */
+export const examProblem = bagrut.extend({
+  id: z.string().regex(/^E-[a-z0-9]+(?:-[a-z0-9]+)*-\d+$/),
+  parts: z.array(z.object({ ...partCommon, ...openBody })).min(2).max(6),
+});
+export type ExamProblem = z.infer<typeof examProblem>;
+
 export const question = z.discriminatedUnion('type', [mc, multi, numeric, vector, rank, twotier, bagrut]);
 export type Question = z.infer<typeof question>;
 export type BagrutQuestion = Extract<Question, { type: 'bagrut' }>;

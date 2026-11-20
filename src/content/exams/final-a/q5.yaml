@@ -1,0 +1,315 @@
+# Final exam A, question 5: a neutral pion moving at βc decays in flight to two photons. Joins chapter 10 (four-momentum
+# and its transformation 10.2, the two-body decay 10.3, the photon E = pc 10.4, E and p of the pion 10.1) with chapter 9
+# (time dilation and proper time 9.2, the Doppler effect and aberration 9.4).
+# Parts: א the mean distance d = (pc/Mc²) cτ_π, with numbers (the only numeric part); ב the forward and backward photon
+# energies (Mc²/2)√((1 ± β)/(1 ∓ β)) = Doppler, checked by conservation, E_F·E_B = (Mc²/2)²; ג the symmetric decay
+# (θ' = 90°): cos α = β by aberration, sin(φ_s/2) = 1/γ, checked by the invariant mass; ד general θ':
+# sin(φ/2) = 1/(γ√(1 − β²cos²θ')), so φ ≥ φ_s (also from E₁ + E₂ = γMc² and E₁E₂ ≤ (E₁ + E₂)²/4), and half of the
+# decays have sin(φ/2) ≤ 2/(γ√(4 − β²)) (→ 2/(√3 γ), 15% above the minimum, as β → 1).
+# Overlap checked (2026-11-19): W-10.2-c1 solves the symmetric π⁰ decay the other way round (angle ±45° given → E, β,
+# distance); lesson 10.3's example 5 gives a product's lab energy range γ(1 ± β)p'c and tan θ = 1/(γβ) for θ' = 90°
+# (a neutrino); Q-10-bagrut-1 boosts a forward neutrino; Q-10-bagrut-5 has tan(φ/2) = 1/γ_c for massive equal masses;
+# lesson 9.4 has the aberration example θ' = 90° → cos θ = β. The minimum opening angle of a photon pair, φ(θ') and the
+# distribution of φ are solved nowhere in the course; part ב adds the Doppler identification and the invariant E_F·E_B.
+# Recomputed in .scratch/exam/q5.ts (209 checks, all ok) by independent routes: d against v·relativity.dilatedTime;
+# every photon energy, angle and opening angle against reldecay.decayInFlight (a rest-frame decay boosted with
+# fromPrimed) and reldecay.openingAngle, at β = 0.3, 0.6, 0.9, √15/4, 0.999 and eight θ' each; E_F against
+# relativity.dopplerFactor; cos α against relativity.aberrationCos; 4E₁E₂sin²(φ/2) = (Mc²)² on the boosted pairs; the
+# minimum of φ over a scan of 20 001 values of θ' (at θ' = 90°, = 2 arcsin(1/γ)); the half-of-the-decays bound by
+# counting 200 000 equally spaced cos θ' (fraction 0.5000 to 1e-4); conservation of E and p of the pair.
+# Exam numbers (א): Mc² = 135.0 MeV, E_π = 540 MeV, τ_π = 8.5e-17 s, c = 3.0e8 m/s → γ = 4.00, γβ = √15 = 3.87
+#   (β = 0.968), pc = 523 MeV, cτ_π = 2.55e-8 m, γτ_π = 3.40e-16 s, d = 9.88e-8 m (with β = 0.968: 9.87e-8),
+#   without dilation βcτ_π = 2.47e-8 m. Not asked: at γ = 4, φ_s = 29.0°, α = 14.5°, φ_½/φ_s = 1.147.
+# Reviewed 2026-11-19 (independent recompute, .scratch/exam-review/q5.ts, all ok): d by the inverse Lorentz
+#   transformation of the decay event (t′ = τ_π, x′ = 0); E_F, E_B against doppler.receivedPeriodSourceMoving; cos α by
+#   photon velocities (transverseVelocity); E₁, E₂, φ, the invariant mass and the minimum by fourvector.boostX on rest-frame
+#   pairs; the half-of-the-decays bound by 400 000 directions drawn isotropically in 3D (Gaussian on the sphere, not
+#   uniform cos θ′): fraction 0.500 at every β; an in-plane uniform θ′ gives 1/3 instead. Fixed: the prompt said "all
+#   motion in the x–y plane" and then "all directions equally likely, so cos θ′ is uniform", which is false in a plane
+#   (1/3, not 1/2): now y is chosen per decay to contain the photons, and ד(3) gives the uniform cos θ′ as a fact for 3D
+#   isotropy; pc and d computed from √15 (3.87·135.0 = 522, 3.87·2.55 = 9.87 contradicted the printed 523, 9.88);
+#   "within 15% of φ_s" → 2/√3 − 1 ≈ 15.5% (the β → 1 value exceeds 15%); "most pairs" → half (only half is shown);
+#   the diagram's photon 2 now at 60° below (θ′ = 60° at β = 0.8 gives 21.8° and 60.0°; it was 30°, matching no β).
+id: E-final-a-5
+type: bagrut
+title: פיון ניטרלי שדועך לשני פוטונים בתנועה
+prompt: >-
+  פיון ניטרלי, $\pi^0$, שאנרגיית המנוחה שלו $Mc^2$, נע במעבדה בכיוון $+x$ במהירות $\beta c$, עם גורם לורנץ
+  $\gamma = 1/\sqrt{1 - \beta^2}$, ודועך לשני פוטונים. זמן החיים הממוצע שלו, במערכת שבה הוא נח, הוא $\tau_\pi$. המעבדה
+  היא $S$, ומערכת המנוחה של הפיון היא $S'$, שנעה ביחס למעבדה במהירות $\beta c$ בכיוון $+x$; גדלים שנמדדים ב-$S'$
+  מסומנים בתג. ב-$S'$ פוטון אחד יוצא בזווית $\theta'$ לציר $+x'$, והשני בכיוון ההפוך. $\varphi$ היא הזווית בין כיווני
+  התנועה של שני הפוטונים במעבדה, $0 \le \varphi \le \pi$. בכל דעיכה בוחרים את ציר $y$ כך ששני הפוטונים נעים במישור $x$–$y$.
+diagramAlt: >-
+  שני חלקים זה לצד זה. משמאל, מערכת $S'$: נקודה שמסמנת את הפיון במנוחה, ציר $x'$ אופקי מקווקו שעובר דרכה, ושני חצים
+  בצבע של אור יוצאים ממנה בכיוונים מנוגדים: חץ 1 למעלה וימינה, בזווית $\theta'$ מציר $x'$ שמסומנת בקשת, וחץ 2 למטה
+  ושמאלה. מימין, המעבדה $S$: ציר $x$ אופקי מקווקו. הפיון נוצר בנקודה משמאל, וחץ בצבע המהירות שמסומן $\beta c$ מראה
+  שהוא נע ימינה עד נקודת הדעיכה. מתחת, קו מידה בין נקודת היצירה לנקודת הדעיכה מסומן $d$. מנקודת הדעיכה יוצאים שני
+  חצים בצבע של אור, שניהם קדימה: חץ 1 נוטה מעט מעל הציר, וחץ 2, קצר יותר, נוטה מתחתיו בזווית גדולה יותר; קשת ביניהם
+  מסומנת $\varphi$.
+diagram: |
+  <svg viewBox="0 0 460 190" width="460" height="190" font-size="14" aria-hidden="true">
+    <text x="16" y="26" fill="currentColor" font-style="italic">S′</text>
+    <line x1="30" y1="105" x2="200" y2="105" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+    <polygon points="200,100 210,105 200,110" fill="currentColor"/>
+    <text x="196" y="126" fill="currentColor" font-style="italic">x′</text>
+    <line x1="110" y1="105" x2="139" y2="54.79" stroke="var(--accent)" stroke-width="2.5"/>
+    <polygon points="145,44.4 143.33,57.29 134.67,52.29" fill="var(--accent)"/>
+    <text x="150" y="44" fill="var(--accent)">1</text>
+    <line x1="110" y1="105" x2="81" y2="155.21" stroke="var(--accent)" stroke-width="2.5"/>
+    <polygon points="75,165.6 85.33,157.71 76.67,152.71" fill="var(--accent)"/>
+    <text x="60" y="176" fill="var(--accent)">2</text>
+    <path d="M135,105 A25,25 0 0,0 122.5,83.35" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <text x="139" y="94" fill="currentColor" font-style="italic">θ′</text>
+    <circle cx="110" cy="105" r="4" fill="currentColor"/>
+    <line x1="230" y1="10" x2="230" y2="182" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 4"/>
+    <text x="246" y="26" fill="currentColor" font-style="italic">S</text>
+    <line x1="250" y1="105" x2="442" y2="105" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+    <polygon points="442,100 452,105 442,110" fill="currentColor"/>
+    <text x="444" y="96" fill="currentColor" font-style="italic">x</text>
+    <circle cx="258" cy="105" r="3.5" fill="var(--paper)" stroke="currentColor" stroke-width="1.3"/>
+    <line x1="262" y1="105" x2="310" y2="105" stroke="var(--velocity)" stroke-width="2.5"/>
+    <polygon points="310,99 323,105 310,111" fill="var(--velocity)"/>
+    <text x="274" y="94" fill="var(--velocity)" font-style="italic">βc</text>
+    <line x1="330" y1="105" x2="412.69" y2="74.9" stroke="var(--accent)" stroke-width="2.5"/>
+    <polygon points="423.97,70.8 414.4,79.6 410.98,70.2" fill="var(--accent)"/>
+    <text x="428" y="68" fill="var(--accent)">1</text>
+    <line x1="330" y1="105" x2="361" y2="158.69" stroke="var(--accent)" stroke-width="2.5"/>
+    <polygon points="367,169.08 365.33,156.19 356.67,161.19" fill="var(--accent)"/>
+    <text x="374" y="180" fill="var(--accent)">2</text>
+    <path d="M367.59,91.32 A40,40 0 0,1 350,139.64" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <text x="378" y="124" fill="currentColor" font-style="italic">φ</text>
+    <circle cx="330" cy="105" r="4" fill="currentColor"/>
+    <line x1="258" y1="160" x2="330" y2="160" stroke="currentColor" stroke-width="1"/>
+    <line x1="258" y1="154" x2="258" y2="166" stroke="currentColor" stroke-width="1"/>
+    <line x1="330" y1="154" x2="330" y2="166" stroke="currentColor" stroke-width="1"/>
+    <text x="289" y="180" fill="currentColor" font-style="italic">d</text>
+  </svg>
+parts:
+  - label: א
+    type: open
+    points: 5
+    level: basic
+    objectives: [OBJ-9.2-1, OBJ-10.1-1]
+    prompt: >-
+      נמקו מדוע $\tau_\pi$ הוא זמן עצמי, ובטאו את המרחק הממוצע $d$ שהפיון עובר במעבדה עד שהוא דועך באמצעות גודל התנע
+      שלו במעבדה $p$, ו-$M$, $c$ ו-$\tau_\pi$. אחר כך חשבו את $d$ לפיון שהאנרגיה היחסותית שלו במעבדה
+      $E_\pi = 540\,\text{MeV}$, כאשר $Mc^2 = 135.0\,\text{MeV}$, $\tau_\pi = 8.5\cdot10^{-17}\,\text{s}$ ו-$c = 3.0\cdot10^8\,\text{m/s}$.
+      פי כמה $d$ גדול מהמרחק שהיה מתקבל בלי התארכות הזמן? בדקו את הביטוי ל-$d$ בגבול $\beta \to 0$.
+    solution:
+      - kind: law
+        text: >-
+          $\tau_\pi$ נמדד במערכת $S'$, שבה הפיון נח, ולכן שני המאורעות, היצירה והדעיכה, קורים בה באותו מקום: זה הזמן
+          שמודד שעון שנע עם הפיון, זמן עצמי. בכל מערכת אחרת הזמן בין אותם מאורעות ארוך פי $\gamma$, $\Delta t = \gamma\,\Delta\tau$
+          (התארכות זמן, שיעור 9.2). ותנע הפיון במעבדה $p = \gamma M\beta c$ (שיעור 10.1).
+      - kind: manipulation
+        text: >-
+          במעבדה הפיון חי בממוצע $\gamma\tau_\pi$ ונע במהירות $\beta c$, ולכן $d = \beta c\cdot\gamma\tau_\pi$. מהתנע,
+          $\gamma\beta = \dfrac{p}{Mc} = \dfrac{pc}{Mc^2}$, ולכן
+          $$d = \gamma\beta\,c\tau_\pi = \frac{pc}{Mc^2}\,c\tau_\pi$$
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$, $p \to 0$ ו-$d \to 0$: פיון שנח דועך במקום. בלי התארכות הזמן היה יוצא $\beta c\tau_\pi$, קטן פי
+          $\gamma$; כש-$\beta \ll 1$, $\gamma \approx 1$ ושני הביטויים מתלכדים, הגבול של ניוטון. וכש-$\beta \to 1$, $d$ גדל
+          בלי גבול יחד עם התנע, אף שהמהירות לא עוברת את $c$.
+      - kind: units
+        text: >-
+          $pc/(Mc^2)$ חסר ממדים (שתי אנרגיות), ו-$c\tau_\pi$ ביחידות $\text{m/s}\cdot\text{s} = \text{m}$.
+      - kind: substitution
+        text: >-
+          $\gamma = E_\pi/(Mc^2) = 540/135.0 = 4.00$, $\gamma\beta = \sqrt{\gamma^2 - 1} = \sqrt{15} = 3.87$ ($\beta = 0.968$),
+          ו-$pc = \sqrt{15}\cdot135.0\,\text{MeV} = 523\,\text{MeV}$. $c\tau_\pi = 3.0\cdot10^8\cdot8.5\cdot10^{-17} = 2.55\cdot10^{-8}\,\text{m}$,
+          ולכן $d = \sqrt{15}\cdot2.55\cdot10^{-8} = 9.88\cdot10^{-8}\,\text{m}$. בלי התארכות:
+          $\beta c\tau_\pi = 0.968\cdot2.55\cdot10^{-8} = 2.47\cdot10^{-8}\,\text{m}$, קטן פי $\gamma = 4.00$.
+      - kind: result
+        text: >-
+          $d = \dfrac{pc}{Mc^2}\,c\tau_\pi = \gamma\beta c\tau_\pi$. ב-$E_\pi = 540\,\text{MeV}$: $d \approx 9.9\cdot10^{-8}\,\text{m}$,
+          כעשירית המיקרומטר, פי $4$ מהמרחק שבלי התארכות הזמן. גם פיון מהיר דועך כמעט במקום שבו נוצר, ולכן הגלאי רואה רק
+          את הפוטונים.
+    rubric:
+      - text: >-
+          נימקתי ש-$\tau_\pi$ זמן עצמי, כי הוא נמדד במערכת שבה הפיון נח, וכתבתי שבמעבדה זמן החיים הממוצע $\gamma\tau_\pi$.
+      - text: >-
+          קיבלתי $d = \gamma\beta c\tau_\pi = \dfrac{pc}{Mc^2}\,c\tau_\pi$.
+        weight: 2
+      - text: >-
+          בדקתי שכש-$\beta \to 0$, $d \to 0$, ושבלי התארכות הזמן המרחק קטן פי $\gamma$.
+      - text: >-
+          חישבתי $\gamma = 4.00$ ו-$d \approx 9.9\cdot10^{-8}\,\text{m}$, פי $4$ מ-$2.5\cdot10^{-8}\,\text{m}$.
+
+  - label: ב
+    type: open
+    points: 6
+    level: mid
+    objectives: [OBJ-10.3-1, OBJ-10.4-1, OBJ-10.2-1, OBJ-9.4-2]
+    prompt: >-
+      (1) הראו שב-$S'$ האנרגיה של כל אחד מהפוטונים היא $Mc^2/2$.
+
+      (2) בדעיכה מסוימת פוטון אחד יוצא קדימה, $\theta' = 0$, והשני אחורה. בטאו באמצעות $M$, $c$ ו-$\beta$ את האנרגיות שלהם
+      במעבדה, $E_F$ של הפוטון שנע קדימה ו-$E_B$ של זה שנע אחורה, וזהו בתוצאה את אפקט דופלר היחסותי.
+
+      (3) בדקו את התוצאה בשימור האנרגיה והתנע במעבדה, והראו שהמכפלה $E_FE_B$ אינה תלויה ב-$\beta$. בדקו את $E_F$ ואת
+      $E_B$ בגבולות $\beta \to 0$ ו-$\beta \to 1$.
+    solution:
+      - kind: law
+        text: >-
+          ב-$S'$ התנע הכולל אפס והאנרגיה הכוללת $Mc^2$. לפוטון $E = pc$ (שיעור 10.4). ארבעה-וקטור האנרגיה-תנע עובר מ-$S'$
+          למעבדה בטרנספורמציה ההפוכה (שיעור 10.3): $E = \gamma\left(E' + \beta\,p'_xc\right)$, $p_xc = \gamma\left(p'_xc + \beta E'\right)$,
+          $p_y = p'_y$.
+      - kind: manipulation
+        text: >-
+          (1) התנע הכולל ב-$S'$ אפס, ולכן הפוטונים יוצאים גב אל גב עם אותו גודל תנע $p'$, ואותה אנרגיה $E' = p'c$. מ-$2E' = Mc^2$:
+          $E' = Mc^2/2$.
+
+          (2) לפוטון שיוצא קדימה $p'_xc = +E'$, ולזה שיוצא אחורה $p'_xc = -E'$:
+          $$E_F = \gamma(1 + \beta)\frac{Mc^2}{2} = \frac{Mc^2}{2}\sqrt{\frac{1 + \beta}{1 - \beta}},\qquad E_B = \gamma(1 - \beta)\frac{Mc^2}{2} = \frac{Mc^2}{2}\sqrt{\frac{1 - \beta}{1 + \beta}}$$
+          כי $\gamma(1 \pm \beta) = (1 \pm \beta)/\sqrt{(1 - \beta)(1 + \beta)}$. זו נוסחת דופלר של שיעור 9.4,
+          $f = f_0\sqrt{(1 + \beta)/(1 - \beta)}$, עם $E = hf$: הפיון הוא מקור שמתקרב לגלאי שלפניו (הסחה לכחול) ומתרחק מגלאי
+          שמאחוריו ($\beta$ בסימן הפוך).
+      - kind: manipulation
+        text: >-
+          (3) שימור במעבדה: $E_F + E_B = \tfrac12\gamma Mc^2\left[(1 + \beta) + (1 - \beta)\right] = \gamma Mc^2$, האנרגיה של
+          הפיון, ו-$p_xc = E_F - E_B = \gamma\beta Mc^2 = pc$, התנע שלו. והמכפלה
+          $$E_FE_B = \gamma^2\left(1 - \beta^2\right)\left(\frac{Mc^2}{2}\right)^2 = \left(\frac{Mc^2}{2}\right)^2$$
+          היא הגודל האינווריאנטי: $\left(Mc^2\right)^2 = (E_F + E_B)^2 - (E_F - E_B)^2 = 4E_FE_B$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$: $E_F = E_B = Mc^2/2$, הדעיכה במנוחה. כש-$\beta \to 1$: $E_F \to \gamma Mc^2$, כמעט כל האנרגיה של
+          הפיון, ו-$E_B = \dfrac{Mc^2}{2\gamma(1 + \beta)} \to \dfrac{Mc^2}{4\gamma} \to 0$.
+      - kind: units
+        text: >-
+          $\gamma$ ו-$\beta$ חסרי ממדים, ולכן $E_F$ ו-$E_B$ ביחידות של $Mc^2$, אנרגיה ($\text{MeV}$).
+      - kind: result
+        text: >-
+          $E_F = \dfrac{Mc^2}{2}\sqrt{\dfrac{1 + \beta}{1 - \beta}}$ ו-$E_B = \dfrac{Mc^2}{2}\sqrt{\dfrac{1 - \beta}{1 + \beta}}$:
+          האנרגיה $Mc^2/2$ של מערכת המנוחה, כפול גורם דופלר. סכומן $\gamma Mc^2$, ההפרש ביניהן $pc$, ומכפלתן $(Mc^2/2)^2$
+          בכל מהירות.
+    rubric:
+      - text: >-
+          הראיתי שב-$S'$ הפוטונים יוצאים גב אל גב, עם אנרגיה $Mc^2/2$ כל אחד.
+      - text: >-
+          העברתי את הארבעה-וקטור למעבדה, קיבלתי $E_{F,B} = \gamma(1 \pm \beta)Mc^2/2$ וזיהיתי בזה את גורם דופלר.
+        weight: 2
+      - text: >-
+          בדקתי ש-$E_F + E_B = \gamma Mc^2$ ו-$E_F - E_B = pc$, ושהמכפלה היא $(Mc^2/2)^2$.
+      - text: >-
+          בדקתי את הגבולות $\beta \to 0$ ו-$\beta \to 1$.
+
+  - label: ג
+    type: open
+    points: 6
+    level: mid
+    objectives: [OBJ-9.4-3, OBJ-10.2-1, OBJ-10.2-2]
+    prompt: >-
+      דעיכה סימטרית: ב-$S'$ הפוטונים יוצאים בניצב לתנועה, $\theta' = 90^\circ$. מצאו את האנרגיה של כל פוטון במעבדה ואת
+      הזווית $\alpha$ בין כל אחד מהם לציר $+x$, והראו שהזווית ביניהם, $\varphi_s$, מקיימת $\sin(\varphi_s/2) = 1/\gamma$.
+      בדקו את התוצאה בעזרת המסה האינווריאנטית של שני הפוטונים, ובדקו אותה בגבולות $\beta \to 0$ ו-$\beta \to 1$.
+    solution:
+      - kind: law
+        text: >-
+          אברציה (שיעור 9.4): אור שנע ב-$S'$ בזווית $\theta'$ לציר $x'$ נע ב-$S$ בזווית $\theta$, עם
+          $\cos\theta = \dfrac{\cos\theta' + \beta}{1 + \beta\cos\theta'}$. ולחלופין, הטרנספורמציה של הארבעה-וקטור מחלק ב.
+          המסה האינווריאנטית של שני פוטונים (שיעור 10.2): $\left(Mc^2\right)^2 = 2E_1E_2(1 - \cos\varphi)$.
+      - kind: manipulation
+        text: >-
+          ב-$\theta' = 90^\circ$: $\cos\alpha = \beta$, ולכן $\sin\alpha = \sqrt{1 - \beta^2} = 1/\gamma$. באותה דרך מהארבעה-וקטור:
+          ב-$S'$, $p'_x = 0$, $p'_yc = Mc^2/2$ ו-$E' = Mc^2/2$, ולכן במעבדה
+          $$E = \gamma\frac{Mc^2}{2},\qquad p_xc = \gamma\beta\frac{Mc^2}{2},\qquad p_yc = \frac{Mc^2}{2}$$
+          ו-$\cos\alpha = p_xc/E = \beta$, כמו קודם. לפוטון השני $p_y$ הפוך, ולכן הוא נע בזווית $\alpha$ מתחת לציר:
+          $\varphi_s = 2\alpha$, ו-$\sin(\varphi_s/2) = \sin\alpha = 1/\gamma$.
+      - kind: manipulation
+        text: >-
+          בדיקה במסה האינווריאנטית: $1 - \cos\varphi = 2\sin^2(\varphi/2)$, ולכן $\left(Mc^2\right)^2 = 4E_1E_2\sin^2(\varphi/2)$.
+          עם $E_1 = E_2 = \gamma Mc^2/2$ ו-$\sin(\varphi_s/2) = 1/\gamma$: $4\cdot\dfrac{\gamma^2\left(Mc^2\right)^2}{4}\cdot\dfrac{1}{\gamma^2} = \left(Mc^2\right)^2$.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$: $\gamma = 1$, $\sin(\varphi_s/2) = 1$ ו-$\varphi_s = \pi$, גב אל גב, כמו במנוחה. כש-$\beta \to 1$:
+          $\varphi_s \approx 2/\gamma \to 0$, שני הפוטונים נזרקים קדימה בתוך חרוט צר, כמו האור של מקור מהיר בשיעור 9.4.
+      - kind: units
+        text: >-
+          $\beta$ ו-$1/\gamma$ חסרי ממדים, כמו קוסינוס וסינוס של זווית; $E$ ביחידות של $Mc^2$.
+      - kind: result
+        text: >-
+          לכל פוטון $E = \gamma Mc^2/2$ ו-$\cos\alpha = \beta$, כלומר $\sin\alpha = 1/\gamma$, והזווית ביניהם
+          $\varphi_s = 2\alpha$ עם $\sin(\varphi_s/2) = 1/\gamma$.
+    rubric:
+      - text: >-
+          מצאתי $\cos\alpha = \beta$ מנוסחת האברציה או מהטרנספורמציה של הארבעה-וקטור, ו-$E = \gamma Mc^2/2$ לכל פוטון.
+        weight: 2
+      - text: >-
+          הסקתי מהסימטריה ש-$\varphi_s = 2\alpha$, ולכן $\sin(\varphi_s/2) = 1/\gamma$.
+      - text: >-
+          בדקתי ש-$4E_1E_2\sin^2(\varphi_s/2) = \left(Mc^2\right)^2$.
+      - text: >-
+          בדקתי ש-$\varphi_s = \pi$ כש-$\beta \to 0$ ו-$\varphi_s \approx 2/\gamma$ כש-$\beta \to 1$.
+
+  - label: ד
+    type: open
+    points: 8
+    level: bagrut
+    objectives: [OBJ-10.2-2, OBJ-10.3-1, OBJ-10.2-1]
+    prompt: >-
+      (1) לזווית $\theta'$ כלשהי: בטאו את האנרגיות $E_1$ ו-$E_2$ של שני הפוטונים במעבדה באמצעות $M$, $c$, $\gamma$, $\beta$
+      ו-$\theta'$, והראו ש
+      $$\sin\frac{\varphi}{2} = \frac{1}{\gamma\sqrt{1 - \beta^2\cos^2\theta'}}$$
+
+      (2) הסיקו שהזווית בין הפוטונים אינה קטנה אף פעם מ-$\varphi_s$ של חלק ג, ובאיזו דעיכה היא $\pi$. הראו שוב שהיא
+      אינה קטנה מ-$\varphi_s$, הפעם בלי $\theta'$: רק משימור האנרגיה במעבדה ומהמסה האינווריאנטית. (היעזרו בעובדה
+      שמכפלה של שני מספרים חיוביים שסכומם קבוע היא הגדולה ביותר כשהם שווים, והוכיחו אותה.)
+
+      (3) ב-$S'$ כל הכיוונים במרחב שכיחים באותה מידה, לא רק הכיוונים שבמישור אחד. אפשר להראות שלכן החלק של הדעיכות
+      שבהן $\cos\theta'$ נמצא בקטע כלשהו בתוך $[-1,\ 1]$ יחסי לאורך הקטע; השתמשו בזה בלי הוכחה. הראו שבמחצית מהדעיכות $\sin(\varphi/2) \le \dfrac{2}{\gamma\sqrt{4 - \beta^2}}$, ובדקו את
+      החסם בגבולות $\beta \to 0$ ו-$\beta \to 1$. מה רואה לכן גלאי שמודד את $\varphi$ של פיונים רבים, כולם באותה מהירות?
+    solution:
+      - kind: law
+        text: >-
+          המסה האינווריאנטית של זוג הפוטונים היא מסת הפיון, בכל מערכת (שיעור 10.2):
+          $\left(Mc^2\right)^2 = 2E_1E_2(1 - \cos\varphi) = 4E_1E_2\sin^2(\varphi/2)$. והאנרגיה עוברת מ-$S'$ למעבדה כמו בחלק ב:
+          $E = \gamma\left(E' + \beta\,p'_xc\right)$.
+      - kind: manipulation
+        text: >-
+          (1) ב-$S'$ לפוטון הראשון $p'_xc = \tfrac12Mc^2\cos\theta'$, ולשני רכיב הפוך, $p'_xc = -\tfrac12Mc^2\cos\theta'$; לשניהם
+          $E' = \tfrac12Mc^2$. לכן
+          $$E_{1,2} = \frac{\gamma Mc^2}{2}\left(1 \pm \beta\cos\theta'\right),\qquad E_1E_2 = \frac{\gamma^2\left(Mc^2\right)^2}{4}\left(1 - \beta^2\cos^2\theta'\right)$$
+          מציבים במסה האינווריאנטית: $\sin^2\dfrac{\varphi}{2} = \dfrac{\left(Mc^2\right)^2}{4E_1E_2} = \dfrac{1}{\gamma^2\left(1 - \beta^2\cos^2\theta'\right)}$.
+      - kind: manipulation
+        text: >-
+          (2) המכנה $1 - \beta^2\cos^2\theta'$ גדול ביותר, $1$, כש-$\cos\theta' = 0$, ולכן תמיד $\sin(\varphi/2) \ge 1/\gamma$:
+          הזווית הקטנה ביותר היא $\varphi_s$ של הדעיכה הסימטרית. כש-$\cos^2\theta' = 1$, הפוטונים לאורך הציר כמו בחלק ב,
+          $\sin(\varphi/2) = 1/\left(\gamma\sqrt{1 - \beta^2}\right) = 1$ ו-$\varphi = \pi$. בלי $\theta'$: שימור האנרגיה במעבדה
+          נותן $E_1 + E_2 = \gamma Mc^2$, ולסכום קבוע $4E_1E_2 = (E_1 + E_2)^2 - (E_1 - E_2)^2 \le \left(\gamma Mc^2\right)^2$.
+          לכן $\sin^2(\varphi/2) = \left(Mc^2\right)^2/(4E_1E_2) \ge 1/\gamma^2$, עם שוויון רק כש-$E_1 = E_2$.
+      - kind: manipulation
+        text: >-
+          (3) $\sin(\varphi/2)$ גדל עם $|\cos\theta'|$. הדעיכות עם $|\cos\theta'| \le \tfrac12$ הן הקטע $\left[-\tfrac12,\ \tfrac12\right]$,
+          שאורכו $1$ מתוך $2$: מחצית מהדעיכות. בקצה הקטע
+          $$\sin\frac{\varphi}{2} = \frac{1}{\gamma\sqrt{1 - \beta^2/4}} = \frac{2}{\gamma\sqrt{4 - \beta^2}}$$
+          ובכל הדעיכות האלה $\sin(\varphi/2)$ קטן או שווה לזה.
+      - kind: limit
+        text: >-
+          כש-$\beta \to 0$: $\gamma = 1$ ו-$\sin(\varphi/2) = 1$ לכל $\theta'$, כלומר $\varphi = \pi$ תמיד: פיון שנח זורק את
+          הפוטונים גב אל גב, והחסם $2/\sqrt4 = 1$ מתאים. כש-$\beta \to 1$: החסם שואף ל-$\dfrac{2}{\sqrt3\,\gamma}$, פי $2/\sqrt3 \approx 1.15$
+          מ-$\sin(\varphi_s/2) = 1/\gamma$. הזוויות קטנות, $\varphi \approx 2\sin(\varphi/2)$, ולכן במחצית מהזוגות $\varphi$ גדולה
+          מ-$\varphi_s$ בפחות מ-$2/\sqrt3 - 1 \approx 15.5\%$. ובכל $\theta'$ קבוע שאינו $0$ או $\pi$, $\varphi \approx 2/(\gamma|\sin\theta'|) \to 0$.
+      - kind: units
+        text: >-
+          $\beta$, $\gamma$ ו-$\cos\theta'$ חסרי ממדים, ולכן גם אגף ימין, כמו סינוס; $E_{1,2}$ ביחידות של $Mc^2$.
+      - kind: result
+        text: >-
+          $E_{1,2} = \tfrac12\gamma Mc^2\left(1 \pm \beta\cos\theta'\right)$ ו-$\sin(\varphi/2) = 1/\left(\gamma\sqrt{1 - \beta^2\cos^2\theta'}\right)$.
+          הזווית נעה בין $\varphi_s$, עם $\sin(\varphi_s/2) = 1/\gamma$ (פוטונים שווי אנרגיה), לבין $\pi$ (פוטונים לאורך הציר).
+          במחצית מהדעיכות $\sin(\varphi/2) \le 2/\left(\gamma\sqrt{4 - \beta^2}\right)$. הגלאי רואה התפלגות של $\varphi$ שאין
+          בה אף זוג מתחת ל-$\varphi_s$, ומחצית מהזוגות צפופים ממש מעליה; מהקצה הזה אפשר לקרוא את $\gamma$ של הפיונים מהזוויות בלבד.
+    rubric:
+      - text: >-
+          כתבתי $E_{1,2} = \tfrac12\gamma Mc^2(1 \pm \beta\cos\theta')$, הצבתי ב-$\left(Mc^2\right)^2 = 4E_1E_2\sin^2(\varphi/2)$ והגעתי
+          לביטוי ל-$\sin(\varphi/2)$.
+        weight: 2
+      - text: >-
+          הסקתי ש-$\sin(\varphi/2) \ge 1/\gamma$, עם שוויון בדעיכה הסימטרית ו-$\varphi = \pi$ כשהפוטונים לאורך הציר, והראיתי את
+          המינימום גם מ-$E_1 + E_2 = \gamma Mc^2$ ומ-$4E_1E_2 \le (E_1 + E_2)^2$.
+      - text: >-
+          הראיתי שמחצית מהדעיכות הן אלה עם $|\cos\theta'| \le 1/2$, וקיבלתי את החסם $2/\left(\gamma\sqrt{4 - \beta^2}\right)$.
+      - text: >-
+          בדקתי ש-$\varphi = \pi$ לכל $\theta'$ כש-$\beta \to 0$, ושכש-$\beta \to 1$ החסם גדול מ-$1/\gamma$ רק פי $2/\sqrt3$.
+      - text: >-
+          הסברתי שהגלאי רואה קצה חד ב-$\varphi_s$, בלי זוגות מתחתיו, ומחצית מהזוגות צפופים ממש מעליו.

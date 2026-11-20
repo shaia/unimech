@@ -33,6 +33,9 @@ const total = groups.reduce((s, g) => s + g.lessons.reduce((t, l) => t + l.formu
         הנוסחאות שמופיעות בשיעורים, לפי פרק ולפי שיעור, ועם קישור אל השיעור שמסביר מאיפה הן באות. הדף מתעדכן לבד כשנוספים שיעורים.
         עד עכשיו <span class="ltr">{total}</span> נוסחאות.
       </p>
+      <p class="p-note">
+        לקראת המבחן: <a href={url('formulas/sheet/')}>דף נוסחאות מקוצר</a> בגודל שמותר להביא למבחן, ארבעה עמודי A4 להדפסה.
+      </p>
       <ul class="toc-line" aria-label="קפיצה לפרק">
         {groups.map((g) => <li><a href={`#ch-${g.chapter.n}`}>פרק {g.chapter.n}</a></li>)}
       </ul>

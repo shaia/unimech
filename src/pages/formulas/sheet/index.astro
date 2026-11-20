@@ -1,0 +1,195 @@
+---
+/**
+ * The exam formula sheet (src/formula-sheet.ts): four A4 pages when printed, the size of the two sheets a 77101
+ * student may bring. On screen it is a reference page; in print the site chrome and the introduction go away and
+ * the sections flow in three columns.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formulaSheet } from '~/formula-sheet';
+import { tex } from '~/lib/tex';
+import { url } from '~/lib/url';
+import '~/styles/platform.css';
+
+/**
+ * A row's formulas, split at its top-level \qquad / \quad: each piece is rendered on its own, so a row wraps
+ * between formulas instead of overflowing a narrow column (display math never wraps).
+ */
+function pieces(src: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (c === '{') depth++;
+    else if (c === '}') depth--;
+    else if (src.startsWith('\\left', i)) depth++;
+    else if (src.startsWith('\\right', i)) depth--;
+    else if (depth === 0 && /^\\q?quad(?![a-zA-Z])/.test(src.slice(i))) {
+      out.push(src.slice(start, i));
+      i += src.startsWith('\\qquad', i) ? 5 : 4;
+      start = i + 1;
+    }
+  }
+  out.push(src.slice(start));
+  return out.map((p) => p.trim()).filter(Boolean);
+}
+
+const sections = formulaSheet.map((s) => ({
+  ...s,
+  items: s.items.map((it, i) => ({
+    label: it.label ? tex(it.label, `formula-sheet ${s.id}[${i}].label`) : '',
+    math: pieces(it.tex).map((p) => tex(`$\\displaystyle ${p}$`, `formula-sheet ${s.id}[${i}]`)),
+  })),
+}));
+---
+
+<BaseLayout title="דף נוסחאות למבחן" description="דף נוסחאות לדוגמה למבחן 77101: ארבעה עמודי A4, להדפסה">
+  <div class="platform">
+    <header class="sheet sheet-narrow no-print">
+      <p class="kicker">דף נוסחאות למבחן</p>
+      <h1>הקורס כולו, בפחות מארבעה עמודים</h1>
+      <p class="p-lede">
+        במבחן של 77101 מותר להביא שני דפי נוסחאות שהכנתם בעצמכם, ארבעה עמודי A4, ואין דף קבועים: כל מספר שצריך נתון
+        בשאלה. זה דף לדוגמה בסימונים של הקורס. בהדפסה הוא תופס שלושה עמודים, ונשאר עמוד למה שאתם צריכים להוסיף. הכי טוב
+        להכין את שלכם: הכנת הדף היא חזרה על הקורס, ונוסחה שכתבתם בעצמכם קל למצוא תחת לחץ.
+      </p>
+      <p class="p-note">
+        דף נוסחאות לא מחליף הבנה: כל נוסחה כאן נכונה רק בתנאים שלה (ציר, נקודה, מערכת ייחוס). הנוסחאות המלאות, עם
+        ההסברים, נמצאות ב<a href={url('formulas/')}>דף הנוסחאות של הקורס</a> ובסיכומי הפרקים.
+      </p>
+      <div class="p-links">
+        <button type="button" class="btn primary" data-print>הדפסה</button>
+        <a class="btn" href={url('exam/final-a/')}>למבחן המסכם</a>
+      </div>
+    </header>
+
+    <article class="fs" aria-label="דף הנוסחאות">
+      {
+        sections.map((s) => (
+          <section class="fs-section" id={`fs-${s.id}`} aria-labelledby={`fs-h-${s.id}`}>
+            <h2 id={`fs-h-${s.id}`}>{s.title}</h2>
+            {s.items.map((it) => (
+              <div class="fs-item">
+                {it.label && <p class="fs-label" set:html={it.label} />}
+                <div class="fs-math">
+                  {it.math.map((m) => (
+                    <span class="fs-piece" set:html={m} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </section>
+        ))
+      }
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .fs {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 18px 20px;
+    background: var(--paper);
+    border: 1px solid var(--paper-edge);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    columns: 2 420px;
+    column-gap: 26px;
+    column-rule: 1px solid var(--rule);
+  }
+  .fs-section {
+    break-inside: auto;
+    margin-bottom: 12px;
+  }
+  .fs-section h2 {
+    margin: 0 0 6px;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--paper-2);
+    font: 700 1rem var(--font-ui);
+    break-after: avoid;
+  }
+  .fs-item {
+    break-inside: avoid;
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .fs-label {
+    margin: 0;
+    font: 500 0.8rem/1.3 var(--font-ui);
+    color: var(--ink-2);
+  }
+  /* physics space: the formulas of a row read left to right and wrap between pieces */
+  .fs-math {
+    direction: ltr;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px 1.6em;
+    padding: 2px 0;
+  }
+  .fs-piece {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .fs-math :global(.katex) {
+    font-size: 1em;
+  }
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 8mm 7mm;
+    }
+    :global(html),
+    :global(body) {
+      font-size: 10pt;
+    }
+    :global(main),
+    .platform {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .fs {
+      max-width: none;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      columns: 2;
+      column-gap: 5mm;
+      column-rule: 0.3pt solid #999;
+      background: #fff;
+    }
+    .fs-section {
+      margin-bottom: 1.6mm;
+    }
+    .fs-section h2 {
+      font-size: 10pt;
+      padding: 0.4mm 1.5mm;
+      margin-bottom: 0.6mm;
+      background: #e8e8e8;
+      color: #000;
+    }
+    .fs-item {
+      padding: 0.3mm 0;
+      border-bottom: 0.2pt dotted #bbb;
+    }
+    .fs-label {
+      font-size: 7.8pt;
+      color: #333;
+    }
+    .fs-math {
+      gap: 0.5mm 4mm;
+      padding: 0.3mm 0;
+    }
+    .fs-piece {
+      overflow: visible;
+    }
+  }
+</style>
